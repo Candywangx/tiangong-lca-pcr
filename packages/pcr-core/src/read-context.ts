@@ -16,7 +16,6 @@ import {
   pcrIdAliasValidationDependencies,
   pcrIdAliasSourcePcrPathStates,
   readPcrIdAliases,
-  isPcrIdAlias,
   type PcrIdAlias,
   type AliasSourcePcrPathState,
 } from "./pcr-id-aliases.ts";
@@ -34,11 +33,8 @@ interface ContextObservers {
   onCatalogSnapshot: ((event: RootEvent & {entryCount: number}) => void) | null;
   onPcrArtifactRead: ((event: RootEvent & {relative_path: string}) => void) | null;
 }
-/** Trusted internal compatibility receipt. Matching current bytes/fingerprints
- * proves freshness, not that arbitrary caller-authored aliases were previously
- * semantically validated. Existing Viewer callers supply their own validated
- * snapshot attestation; public repository/library sessions must not forward
- * untrusted JSON into this extension. Viewer receipt hardening is separate work. */
+/** Retained compatibility input. Persisted hashes and caller-authored aliases are
+ * freshness metadata, never proof of prior semantic validation. */
 export interface ValidatedAliasReuse { readonly fingerprint: string; readonly aliases: readonly PcrIdAlias[] }
 export interface PcrReadContextOptions {
   root: string;
@@ -46,7 +42,7 @@ export interface PcrReadContextOptions {
   beforeAliasValidation?: ((event: RootEvent) => void) | null;
   onBindingCheck?: ContextObservers['onBindingCheck']; onCatalogSnapshot?: ContextObservers['onCatalogSnapshot']; onPcrArtifactRead?: ContextObservers['onPcrArtifactRead'];
   beforeBoundSourceOpen?: ((event: RootEvent & {relativePath: string}) => void) | null;
-  validatedAliasReuse?: ValidatedAliasReuse | null;
+  validatedAliasReuse?: unknown;
 }
 interface BoundReadOptions { root: string; relativePath: string; beforeBoundSourceOpen?: PcrReadContextOptions['beforeBoundSourceOpen'] }
 interface ContextOptions { context: PcrReadContext; root?: string | undefined }
@@ -56,7 +52,7 @@ function field(value: unknown, key: string): unknown {
   const result: unknown = Reflect.get(value, key);
   return result;
 }
-function aliasesIn(value: unknown): PcrIdAlias[] | null { return Array.isArray(value) && value.every(isPcrIdAlias) ? value : null; }
+
 const CATALOG_PATH = "library/catalog.yaml";
 const MANAGED_READ_FLAGS =
   fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK;
@@ -91,7 +87,6 @@ export function createPcrReadContext({
   onCatalogSnapshot = null,
   onPcrArtifactRead = null,
   beforeBoundSourceOpen = null,
-  validatedAliasReuse = null,
 }: PcrReadContextOptions): PcrReadContext {
   const rootPath = canonicalRoot(root);
   const catalogSource = readRepositoryFile({ root: rootPath, relativePath: CATALOG_PATH });
@@ -117,41 +112,12 @@ export function createPcrReadContext({
     aliasDependencyPaths: aliasDependencyPathsBefore,
     aliasSourcePathStates: aliasSourcePathStatesBefore,
   });
-  let aliases: PcrIdAlias[];
-  if (validatedAliasReuse !== null) {
-    // The internal caller attests prior semantic validation. Keep exact-data and
-    // before/after freshness checks, while preserving the legacy no-revalidation
-    // path; this is not an opaque capability or hostile-caller-proof receipt.
-    const declaredRegistry = parseYaml(readRepositoryFile({
-      root: rootPath,
-      relativePath: declaredPath(field(catalog.pcr_id_aliases, "path"), "pcr_id_aliases.path", rootPath),
-    }).text);
-    const parsedAliases = aliasesIn(field(declaredRegistry, "aliases"));
-    const declaredAliases = parsedAliases === null ? null : structuredClone(parsedAliases).sort(compareAliases);
-    const attestedAliases = Array.isArray(validatedAliasReuse?.aliases)
-      ? structuredClone(validatedAliasReuse.aliases).sort(compareAliases)
-      : null;
-    if (
-      validatedAliasReuse?.fingerprint !== aliasFingerprintBefore ||
-      attestedAliases === null ||
-      declaredAliases === null ||
-      stableJson(attestedAliases) !== stableJson(declaredAliases)
-    ) {
-      throw new PcrReadContextStaleError({
-        root: rootPath,
-        source: PCR_ID_ALIAS_REGISTRY_PATH,
-        reason: "validated alias reuse attestation does not match current bound inputs",
-      });
-    }
-    aliases = attestedAliases;
-  } else {
-    beforeAliasValidation?.({ root: rootPath });
-    aliases = readPcrIdAliases({ root: rootPath });
-    onAliasValidation?.({
-      root: rootPath,
-      aliases: deepFreeze(structuredClone(aliases)),
-    });
-  }
+  // A new context establishes semantic validity once from its bound repository.
+  // Session reuse below keeps that result private and rechecks all dependencies;
+  // no caller or persisted snapshot can manufacture validation authority.
+  beforeAliasValidation?.({ root: rootPath });
+  const aliases = readPcrIdAliases({ root: rootPath });
+  onAliasValidation?.({ root: rootPath, aliases: deepFreeze(structuredClone(aliases)) });
   const aliasDependencyPathsAfter = pcrIdAliasValidationDependencies({ root: rootPath });
   const aliasSourcePathStatesAfter = pcrIdAliasSourcePcrPathStates({ root: rootPath });
   if (!sameStrings(aliasDependencyPathsBefore, aliasDependencyPathsAfter)) {
@@ -511,23 +477,6 @@ function sameRecords(left: readonly AliasSourcePcrPathState[], right: readonly A
   return left.length === right.length && left.every(
     (entry, index) => entry.path === right[index]?.path && entry.state === right[index]?.state,
   );
-}
-
-function compareAliases(left: PcrIdAlias, right: PcrIdAlias): number {
-  return String(left?.source_pcr_id ?? "").localeCompare(String(right?.source_pcr_id ?? ""));
-}
-
-function stableJson(value: unknown): string | undefined {
-  if (Array.isArray(value)) {
-    return `[${value.map((entry) => stableJson(entry)).join(",")}]`;
-  }
-  if (record(value)) {
-    return `{${Object.keys(value)
-      .sort()
-      .map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`)
-      .join(",")}}`;
-  }
-  return JSON.stringify(value);
 }
 
 function aliasInputFingerprint({ bindings, aliasDependencyPaths, aliasSourcePathStates }: { bindings: Map<string, string>; aliasDependencyPaths: readonly string[]; aliasSourcePathStates: readonly AliasSourcePcrPathState[] }): string {

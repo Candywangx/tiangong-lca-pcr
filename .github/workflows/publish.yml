@@ -61,12 +61,12 @@ jobs:
           if [[ "$RELEASE_TAG" == v* ]]; then
             test "$PRODUCT_ENABLED" = true
             test "$LEGACY_BOOTSTRAP" != true
-            node builder/scripts/product-release.mjs context "$RELEASE_TAG"
+            node builder/scripts/product-release.ts context "$RELEASE_TAG"
             echo 'product=true' >> "$GITHUB_OUTPUT"
           else
             test "$LEGACY_ENABLED" = true
             test ! -f product-release.json
-            node builder/scripts/npm-release.mjs context "$RELEASE_TAG"
+            node builder/scripts/npm-release.ts context "$RELEASE_TAG"
             echo 'product=false' >> "$GITHUB_OUTPUT"
           fi
 
@@ -105,7 +105,7 @@ jobs:
         run: |
           git fetch origin +refs/heads/main:refs/remotes/origin/main
           git fetch --force origin '+refs/tags/*:refs/tags/*'
-          node builder/scripts/product-release.mjs context "$PRODUCT_TAG"
+          node builder/scripts/product-release.ts context "$PRODUCT_TAG"
       - name: Download only the qualified product bundle
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
@@ -122,7 +122,7 @@ jobs:
           PCR_EDGEONE_DEPLOY_HOOK_URL: ${{ secrets.PCR_EDGEONE_DEPLOY_HOOK_URL }}
           PCR_RETRY_WEB: ${{ inputs.retry_web }}
           PCR_RETRY_NPM: ${{ inputs.retry_npm || 'none' }}
-        run: node builder/scripts/product-publish.mjs dist/product-release
+        run: node builder/scripts/product-publish.ts dist/product-release
       - name: Preserve the attempt journal even when a target remains pending
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -157,7 +157,7 @@ jobs:
         run: |
           git fetch origin +refs/heads/main:refs/remotes/origin/main
           git fetch --force origin '+refs/tags/*:refs/tags/*'
-          node builder/scripts/npm-release.mjs context "$RELEASE_TAG"
+          node builder/scripts/npm-release.ts context "$RELEASE_TAG"
       - name: Install locked build dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build exact publishable tarball and offline assets
@@ -166,11 +166,11 @@ jobs:
         id: registry
         run: |
           (cd dist/npm-release && sha256sum --check SHA256SUMS)
-          node builder/scripts/npm-release.mjs registry dist/npm-release/release.json
+          node builder/scripts/npm-release.ts registry dist/npm-release/release.json
       - name: Publish through npm trusted publisher
         if: steps.registry.outputs.registry_state == 'missing' && inputs.bootstrap != true
         run: |
-          node builder/scripts/npm-release.mjs channel "$RELEASE_TAG"
+          node builder/scripts/npm-release.ts channel "$RELEASE_TAG"
           npm publish dist/npm-release/*.tgz --access public --provenance --ignore-scripts --tag "$DIST_TAG"
       - name: Bootstrap an unregistered package with an explicitly supplied temporary token
         if: steps.registry.outputs.registry_state == 'missing' && inputs.bootstrap == true
@@ -178,7 +178,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PCR_NPM_BOOTSTRAP_TOKEN }}
         run: |
           test -n "$NODE_AUTH_TOKEN" || { echo 'Missing npm-release environment secret PCR_NPM_BOOTSTRAP_TOKEN' >&2; exit 1; }
-          node builder/scripts/npm-release.mjs bootstrap "$RELEASE_TAG"
+          node builder/scripts/npm-release.ts bootstrap "$RELEASE_TAG"
           npm publish dist/npm-release/*.tgz --access public --provenance --ignore-scripts --tag "$DIST_TAG"
       - name: Attach offline assets to GitHub Release
         env:

@@ -10,6 +10,7 @@ export function createPublisherFixture({ root, source }: {root: string; source: 
   mkdirSync(root, { recursive: true });
   const copy = (file: string) => { mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); cpSync(path.join(source, file), path.join(root, file), { recursive: true }); };
   for (const file of ["package.json", "package-lock.json", "builder/vocab", "builder/schemas/pcr-material-index.schema.json", "packages/pcr-core/src", "packages/pcr-core/schemas", "packages/pcr-viewer/scripts", "packages/pcr-viewer/static", "packages/pcr-viewer/schemas"]) copy(file);
+  for (const file of ["tsconfig.json", "tsconfig.viewer-browser.json"]) if (existsSync(path.join(source, file))) copy(file);
   const typedWorker=existsSync(path.join(source,"builder/goal-harness/pinned-viewer-publisher-worker.ts"));
   const extension=typedWorker?".ts":".mjs";
   for (const file of readdirSync(path.join(source, "builder/goal-harness")).filter(f => f.endsWith(extension) && !f.endsWith(`.test${extension}`))) copy(`builder/goal-harness/${file}`);

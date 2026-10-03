@@ -22,7 +22,8 @@ import {
 } from "./viewer-publication.ts";
 import { landGoalSnapshot } from "./landing.ts";
 import { createPublisherFixture } from "./viewer-test-fixture.ts";
-import { VIEWER_INCREMENTAL_GENERATOR_VERSION,ViewerSnapshotStore } from "./viewer-test-api.ts";
+import { VIEWER_INCREMENTAL_GENERATOR_VERSION } from "../../packages/pcr-viewer/scripts/build-viewer-data.ts";
+import { ViewerSnapshotStore } from "../../packages/pcr-viewer/scripts/snapshot-store.ts";
 import { record as object,records,text,field,errorCode,jsonRecord } from "./domain.ts";
 import type { GoalTask,GoalEventInput,UnknownRecord } from "./domain.ts";
 import type { ViewerGoalConfig,ViewerPublishOptions } from "./viewer-publication.ts";
@@ -176,7 +177,8 @@ function publishFastValidViewerSnapshot(options:ViewerPublishOptions) {
     generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
     sourceVerifier: options.sourceVerifier,
   });
-  store.recover({ forceStaleLock: options.forceStaleLock });
+  assert.ok(options.forceStaleLock === undefined || typeof options.forceStaleLock === "boolean");
+  store.recover(options.forceStaleLock === undefined ? {} : {forceStaleLock: options.forceStaleLock});
   return store.publish({
     snapshotId: options.snapshotId,
     goalId: options.goalId,
@@ -215,10 +217,10 @@ function replacePreparedWithSelfConsistentSubstitute({artifactStore,journalPath}
   const originalJournal = jsonRecord(readFileSync(journalPath, "utf8"));
   const manifest = store.readManifest(originalJournal.manifest_ref);
   const pcrEntries = Object.values(object(manifest.refs.pcr_entries)).map((ref) => structuredClone(store.readObject(ref).entry));
-  const firstPcr=item(pcrEntries,0),markdown=object(firstPcr.markdown); markdown["en-US"]=text(markdown["en-US"])+"\n<!-- self-consistent substitute -->\n";
+  const firstPcr=object(item(pcrEntries,0)),markdown=object(firstPcr.markdown); markdown["en-US"]=text(markdown["en-US"])+"\n<!-- self-consistent substitute -->\n";
   const aliasEntries = Object.values(object(manifest.refs.alias_entries)).map((ref) => structuredClone(store.readObject(ref).entry));
   const coverageEntries = Object.values(object(manifest.refs.coverage_entries)).map((ref) => structuredClone(store.readObject(ref).entry));
-  const uiBundle = store.readObject(manifest.capture.ui_bundle_ref).entry;
+  const uiBundle = object(store.readObject(manifest.capture.ui_bundle_ref).entry);
   rmSync(journalPath);
   assert.throws(
     () => store.publish({
@@ -264,11 +266,11 @@ function recoverFromDivergentCurrentCheckout({root,config}:{root:string;config:V
     writeFileSync(path.join(root, worker), readFileSync(path.join(sourceRoot, worker)));
   }
 
-  const currentGenerator = path.join(root, "packages/pcr-viewer/scripts/build-viewer-data.mjs");
+  const currentGenerator = path.join(root, "packages/pcr-viewer/scripts/build-viewer-data.ts");
   writeFileSync(currentGenerator, `${readFileSync(currentGenerator, "utf8")}\nthrow new Error("CURRENT_CHECKOUT_GENERATOR_MUST_NOT_LOAD");\n`);
   for (const relativePath of [
-    "packages/pcr-viewer/scripts/snapshot-store.mjs",
-    "packages/pcr-viewer/scripts/snapshot-format.mjs",
+    "packages/pcr-viewer/scripts/snapshot-store.ts",
+    "packages/pcr-viewer/scripts/snapshot-format.ts",
     "packages/pcr-core/src/index.ts",
   ]) {
     const currentModule = path.join(root, relativePath);
@@ -826,7 +828,7 @@ test("reserved publication recovery retries after a pinned generator version cha
     const first = commitFullTreeValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "first" });
     const published = publishPendingViewerSnapshots({ config });
 
-    const generatorPath = "packages/pcr-viewer/scripts/build-viewer-data.mjs";
+    const generatorPath = "packages/pcr-viewer/scripts/build-viewer-data.ts";
     const nextVersion = `${VIEWER_INCREMENTAL_GENERATOR_VERSION}-next`;
     const generator = readFileSync(path.join(root, generatorPath), "utf8");
     const nextGenerator = generator.replace(

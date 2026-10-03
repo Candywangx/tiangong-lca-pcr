@@ -13,7 +13,7 @@ function git(root: string, args: string[]): string {
 }
 function worker(root: string, operation: string, options: UnknownRecord): UnknownRecord {
   return jsonRecord(execFileSync(process.execPath,[path.join(root,"builder/goal-harness/pinned-viewer-publisher-worker.ts")],{
-    cwd:root,encoding:"utf8",input:JSON.stringify({operation,module_path:path.join(root,"packages/pcr-viewer/scripts/build-viewer-data.mjs"),store_module_path:path.join(root,"packages/pcr-viewer/scripts/snapshot-store.mjs"),import_nonce:"typed-worker-contract",options}),maxBuffer:8*1024*1024,
+    cwd:root,encoding:"utf8",input:JSON.stringify({operation,module_path:path.join(root,"packages/pcr-viewer/scripts/build-viewer-data.ts"),store_module_path:path.join(root,"packages/pcr-viewer/scripts/snapshot-store.ts"),import_nonce:"typed-worker-contract",options}),maxBuffer:8*1024*1024,
   }));
 }
 

@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {searchTerms,searchTermsFromSegments} from '../lib/search-terms.ts';
+
+test('Han words retain identical tokens when Firefox reports isWordLike false',()=>{for(const segment of ['其他','珊瑚','中国工厂'])assert.deepEqual(searchTermsFromSegments(segment,[{segment,isWordLike:false}]),searchTermsFromSegments(segment,[{segment,isWordLike:true}]));assert.deepEqual(searchTermsFromSegments('珊瑚',[{segment:'珊瑚',isWordLike:false}]),['珊瑚','珊','瑚']);});
+test('false word markers never admit punctuation whitespace emoji or mixed non-word segments',()=>{assert.deepEqual(searchTermsFromSegments('',[{segment:'，',isWordLike:false},{segment:' ',isWordLike:false},{segment:'🙂',isWordLike:false},{segment:'PCR珊瑚',isWordLike:false},{segment:'珊，瑚',isWordLike:false},{segment:'abc',isWordLike:false}]),[]);});
+test('mixed English and Han preserve ordered deduplication and machine IDs',()=>{assert.deepEqual(searchTermsFromSegments('pcr_id',[{segment:'pcr',isWordLike:true},{segment:' ',isWordLike:false},{segment:'珊瑚',isWordLike:false},{segment:'珊瑚',isWordLike:true}]),['pcr','珊瑚','珊','瑚','pcr_id']);assert.deepEqual(searchTerms('ＬＣＡ 珊瑚 kg pcr_id','zh-CN'),['lca','珊瑚','珊','瑚','kg','pcr_id']);});
+test('ordinary English units exact IDs and empty queries retain existing behavior',()=>{assert.deepEqual(searchTerms('Wheat seed 1 kg','en-US'),['wheat','seed','1','kg']);assert.deepEqual(searchTerms('','en-US'),[]);assert.deepEqual(searchTerms(' … ','zh-CN'),[]);assert.ok(searchTerms('550e8400-e29b-41d4-a716-446655440000','en-US').includes('550e8400-e29b-41d4-a716-446655440000'));});

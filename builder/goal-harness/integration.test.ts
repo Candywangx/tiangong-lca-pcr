@@ -17,15 +17,10 @@ import {
 } from "./integration.ts";
 import { commitRepositoryValidation, listCommittedRepositoryValidations, reserveRepositoryCandidate } from "./repository-coordinator.ts";
 import { publishAllPendingViewerSnapshots } from "./viewer-publication.ts";
-import { field, record, text, type GoalTask, type GoalSnapshot, type UnknownRecord } from "./domain.ts";
+import { record, text, type GoalTask, type GoalSnapshot, type UnknownRecord } from "./domain.ts";
 import { item, errorField } from "./fixtures/assertions.ts";
 import type {IntegrationOptions, IntegrationConfig, IntegrationCommandRequest} from "./integration.ts";
-const viewerModule: unknown = await import(new URL("../../packages/pcr-viewer/scripts/build-viewer-data.mjs", import.meta.url).href);
-function checkViewerCandidates(options: UnknownRecord): UnknownRecord {
-  const check = field(viewerModule, "checkViewerCandidates");
-  if (typeof check !== "function") throw new TypeError("Historical Viewer candidate checker is unavailable.");
-  return record(Reflect.apply(check, undefined, [options]) as unknown);
-}
+import { checkViewerCandidates } from "../../packages/pcr-viewer/scripts/build-viewer-data.ts";
 interface Fixture {root: string; stateDir: string; store: GoalEventStore; config: IntegrationConfig; commit: string; task: GoalTask; snapshot: GoalSnapshot}
 
 import { acceptedReviewTask } from "./fixtures/review-results.ts";
@@ -371,8 +366,8 @@ test("Harness Viewer candidate gate performs bounded PCR reads and each real glo
   const result = checkViewerCandidates({
     root: repositoryRoot,
     pcrIds: boundedPcrs.map((entry) => entry.id),
-    onPcrArtifactRead: (event: UnknownRecord) => artifactReads.push(text(event.relative_path)),
-    onGlobalGate: (event: UnknownRecord) => gates.push(event),
+    onPcrArtifactRead: event => artifactReads.push(text(event.relative_path)),
+    onGlobalGate: event => gates.push(event),
   });
 
   assert.deepEqual(result.checked_pcr_ids, boundedPcrs.map((entry) => entry.id).sort());

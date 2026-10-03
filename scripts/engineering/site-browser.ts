@@ -1,0 +1,143 @@
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {constants, closeSync, existsSync, fstatSync, lstatSync, mkdirSync, openSync, readFileSync, readdirSync, realpathSync, writeFileSync} from 'node:fs';
+import {createServer} from 'node:http';
+import type {Server} from 'node:http';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
+import {chromium, firefox, webkit} from 'playwright';
+import type {Page, BrowserType, Request} from 'playwright';
+
+export class SiteBrowserError extends Error {
+  readonly code:string;
+  constructor(code:string,message:string,options?:ErrorOptions){super(message,options);this.name='SiteBrowserError';this.code=code;}
+}
+export interface SiteBrowserOptions {root:string;report:string}
+export interface ExportFile {path:string;bytes:number;sha256:string}
+export interface SiteRoute {kind:'home'|'catalog'|'pcr'|'module'|'history';locale:'en'|'zh'|'default';path:string}
+export interface SiteExport {root:string;files:ExportFile[];treeSha256:string;bytes:number;source:Record<string,unknown>;routes:SiteRoute[];availability:{locale:string;kind:string;present:boolean}[]}
+function object(value:unknown):value is Record<string,unknown>{return typeof value==='object'&&value!==null&&!Array.isArray(value);}
+function failure(code:string,message:string):never {throw new SiteBrowserError(code,message);}
+function contained(root:string,file:string){const rel=path.relative(root,file);return rel!==''&&!rel.startsWith('..'+path.sep)&&rel!=='..'&&!path.isAbsolute(rel);}
+function readRegular(root:string,relative:string):Buffer {
+ const file=path.resolve(root,relative);if(!contained(root,file))failure('SITE_EXPORT_PATH','Export path escapes its root.');
+ let current=root;for(const part of path.relative(root,file).split(path.sep)){current=path.join(current,part);const stat=lstatSync(current);if(stat.isSymbolicLink())failure('SITE_EXPORT_PATH','Export inputs must not contain symbolic links.');}
+ const fd=openSync(file,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);
+ try {if(!fstatSync(fd).isFile())failure('SITE_EXPORT_PATH','Export input must be a regular file.');return readFileSync(fd);}finally{closeSync(fd);}
+}
+function readIdentityJson(root:string,key:string):unknown {try{const value:unknown=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(readRegular(root,key)));const finite=(item:unknown):boolean=>typeof item==='number'?Number.isFinite(item):Array.isArray(item)?item.every(finite):object(item)?Object.values(item).every(finite):true;if(!finite(value))failure('SITE_EXPORT_IDENTITY','Identity contains a nonfinite number.');return value;}catch(error){if(error instanceof SiteBrowserError)throw error;throw new SiteBrowserError('SITE_EXPORT_IDENTITY','Invalid UTF-8/JSON identity: '+key,{cause:error});}}
+function hash(bytes:Buffer|string){return createHash('sha256').update(bytes).digest('hex');}
+export function parseSiteBrowserArguments(args:readonly string[]):SiteBrowserOptions|'help' {
+ if(args.length===1&&args[0]==='--help')return 'help';
+ const values:Record<string,string>={};
+ for(let i=0;i<args.length;i+=2){const key=args[i],value=args[i+1];if((key!=='--root'&&key!=='--report')||!value||value.startsWith('--')||values[key]!==undefined)failure('SITE_BROWSER_ARGUMENT','Expected exactly --root <existing export> and --report <new evidence directory>.');values[key]=value;}
+ if(!values['--root']||!values['--report'])failure('SITE_BROWSER_ARGUMENT','Both --root and --report are required.');
+ return {root:path.resolve(values['--root']),report:path.resolve(values['--report'])};
+}
+export function inspectSiteExport(input:string):SiteExport {
+ const root=path.resolve(input);if(!existsSync(root)||lstatSync(root).isSymbolicLink()||!lstatSync(root).isDirectory())failure('SITE_EXPORT_INPUT','Root must be an existing export directory.');
+ const canonical=realpathSync(root),files:ExportFile[]=[];
+ function visit(relative:string){for(const entry of readdirSync(path.join(canonical,relative),{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name,'en'))){const key=relative?relative+'/'+entry.name:entry.name;if(entry.isSymbolicLink())failure('SITE_EXPORT_PATH','Export inputs must not contain symbolic links.');if(entry.isDirectory())visit(key);else if(entry.isFile()){const bytes=readRegular(canonical,key);files.push({path:key,bytes:bytes.length,sha256:hash(bytes)});}else failure('SITE_EXPORT_PATH','Export inputs must be regular files or directories.');}}
+ visit('');
+ const fileSet=new Set(files.map(file=>file.path));if(files.some(file=>/\.(?:ts|tsx|mts|cts)$/u.test(file.path)))failure('SITE_EXPORT_INPUT','Browser exports must not contain raw TypeScript source.');
+ for(const key of ['index.html','en/index.html','zh/index.html','en/docs/pcr/index.html','zh/docs/pcr/index.html','generated/version.json','generated/product-release.json','generated/search-worker.mjs'])if(!fileSet.has(key))failure('SITE_EXPORT_INPUT','Missing required exported input: '+key);
+ const source=readIdentityJson(canonical,'generated/version.json');
+ if(!object(source)||typeof source.sourceCommit!=='string'||! /^[a-f0-9]{40,64}$/u.test(source.sourceCommit)||typeof source.sourceFingerprint!=='string'||!/^sha256:[a-f0-9]{64}$/u.test(source.sourceFingerprint))failure('SITE_EXPORT_IDENTITY','Version metadata must bind sourceCommit and sourceFingerprint.');
+ const release=readIdentityJson(canonical,'generated/product-release.json');
+ if(!object(release)||release.sourceCommit!==source.sourceCommit||release.sourceFingerprint!==source.sourceFingerprint)failure('SITE_EXPORT_IDENTITY','Version and product identity disagree.');
+ const routes:SiteRoute[]=[{kind:'home',locale:'default',path:'/'}],availability:SiteExport['availability']=[];
+ for(const locale of ['en','zh'] as const){routes.push({kind:'home',locale,path:`/${locale}/`},{kind:'catalog',locale,path:`/${locale}/docs/pcr/`});
+  const candidates=files.filter(file=>file.path.startsWith(`${locale}/docs/pcr/`)&&file.path.endsWith('/index.html')&&file.path.split('/').length===7).sort((a,b)=>b.bytes-a.bytes||a.path.localeCompare(b.path,'en'));
+  if(!candidates[0])failure('SITE_EXPORT_INPUT','No exported PCR leaf for '+locale);routes.push({kind:'pcr',locale,path:'/'+candidates[0].path.slice(0,-10)});
+  for(const kind of ['module','history'] as const){const candidate=files.filter(file=>file.path.startsWith(`${locale}/docs/`)&&file.path.endsWith('/index.html')&&(kind==='module'?file.path.includes('/modules/'):file.path.includes('/versions/'))).sort((a,b)=>b.bytes-a.bytes||a.path.localeCompare(b.path,'en'))[0];availability.push({locale,kind,present:!!candidate});if(candidate)routes.push({kind,locale,path:'/'+candidate.path.slice(0,-10)});}
+ }
+ if(!availability.some(item=>item.kind==='module'&&item.present))failure('SITE_EXPORT_INPUT','No exported module page.');
+ return {root:canonical,files,treeSha256:hash(files.map(file=>`${file.path}\0${file.bytes}\0${file.sha256}\n`).join('')),bytes:files.reduce((sum,file)=>sum+file.bytes,0),source,routes,availability};
+}
+export function prepareSiteBrowserReport(report:string,root:string):string {
+ const output=path.resolve(report),canonicalRoot=realpathSync(root);
+ let parent=path.dirname(output),suffix=path.basename(output);while(!existsSync(parent)){suffix=path.basename(parent)+path.sep+suffix;parent=path.dirname(parent);}
+ const resolved=path.join(realpathSync(parent),suffix);
+ if(resolved===canonicalRoot||contained(canonicalRoot,resolved)||contained(resolved,canonicalRoot))failure('SITE_BROWSER_REPORT','Report must be outside the export tree.');
+ if(existsSync(output))failure('SITE_BROWSER_REPORT','Report directory must be new; existing evidence is never overwritten.');
+ mkdirSync(output,{recursive:true});return realpathSync(output);
+}
+const mime:Record<string,string>={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.ico':'image/x-icon','.xml':'application/xml'};
+export async function withSiteExportServer<T>(root:string,callback:(origin:string)=>Promise<T>):Promise<T> {
+ const canonical=realpathSync(root);
+ const server=createServer((request,response)=>{try{
+  const raw=(request.url??'/').split('?')[0]!;const decoded=decodeURIComponent(raw);
+  if(!decoded.startsWith('/')||decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(segment=>segment==='.'||segment==='..')||/%(?:2f|5c)/iu.test(raw)){response.writeHead(403);response.end('Forbidden');return;}
+  let relative=decoded.slice(1);if(relative===''||decoded.endsWith('/'))relative+='index.html';else if(existsSync(path.join(canonical,relative))&&lstatSync(path.join(canonical,relative)).isDirectory())relative+='/index.html';
+  const bytes=readRegular(canonical,relative);response.writeHead(200,{'content-type':mime[path.extname(relative)]??'application/octet-stream','cache-control':'no-store','content-length':bytes.length});response.end(request.method==='HEAD'?undefined:bytes);
+ }catch(error){response.writeHead(error instanceof SiteBrowserError?403:404);response.end('Not found');}});
+ await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
+ try {const address=server.address();assert.ok(address&&typeof address==='object');return await callback(`http://127.0.0.1:${address.port}`);}finally{await closeServer(server);}
+}
+async function closeServer(server:Server){server.closeAllConnections();await new Promise<void>((resolve,reject)=>server.close(error=>error?reject(error):resolve()));}
+export interface CancelledRequest {url:string;reason:string;method:string;headers:Record<string,string>;status?:number|undefined}
+export function isCancelledSitePrefetch(request:CancelledRequest,prefetchUrls:readonly string[]):boolean {
+ if(request.reason!=='net::ERR_ABORTED')return false;
+ if(request.headers['next-router-prefetch']==='1'||request.headers['purpose']==='prefetch'||/(?:^|[;\s,])prefetch(?:$|[;\s,])/u.test(request.headers['sec-purpose']??''))return true;
+ // Next 16 output:export probes the canonical HTML URL with HEAD before its
+ // explicitly marked segment prefetch. Require both the successful probe and
+ // that exact companion request; ordinary document/asset failures still fail.
+ if(request.method!=='HEAD'||request.status!==200)return false;
+ const probe=new URL(request.url);return prefetchUrls.some(value=>{const next=new URL(value);return next.origin===probe.origin&&next.pathname===probe.pathname.replace(/\/?$/u,'/')+'__next._tree.txt';});
+}
+interface BrowserEvidence {engine:string;engineVersion:string;viewport:string;route:SiteRoute;assertions:string[];errors:string[];ignoredPrefetchAborts:string[];screenshot:string;screenshots?:string[];diagnosticError?:string;search?:{query:string;hits:number;workerUrls:string[]};failure?:string}
+function message(error:unknown){return error instanceof Error?error.message:String(error);}
+async function captureSiteEvidence(page:Page,report:string,file:string):Promise<string[]> {
+ const size=await page.evaluate(()=>({height:document.documentElement.scrollHeight,viewport:window.innerHeight}));
+ if(size.height<=16_000){await page.screenshot({path:path.join(report,file),fullPage:true});return [file];}
+ const names:string[]=[];for(const [label,y] of [['top',0],['middle',Math.floor((size.height-size.viewport)/2)],['bottom',size.height-size.viewport]] as const){await page.evaluate(position=>window.scrollTo(0,position),y);await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));const name=label==='top'?file:file.replace(/\.png$/u,'-'+label+'.png');await page.screenshot({path:path.join(report,name),fullPage:false});names.push(name);}
+ await page.evaluate(()=>window.scrollTo(0,0));await page.waitForLoadState('networkidle');return names;
+}
+async function checkPage(page:Page,origin:string,route:SiteRoute,viewport:string,evidence:BrowserEvidence,exported:SiteExport){
+ const response=await page.goto(origin+route.path,{waitUntil:'networkidle',timeout:45_000});assert.equal(response?.status(),200);await page.locator('h1').first().waitFor();
+ evidence.assertions.push('HTTP 200 and rendered h1');
+ const expectedLocale=route.locale==='default'?'zh':route.locale;
+ const brand=expectedLocale==='zh'?'天工产品类别规则':'TianGong PCR';assert.equal(await page.locator('.pcr-brand-name').first().innerText(),brand);evidence.assertions.push('locale brand');
+ const dimensions=await page.evaluate(()=>({viewport:window.innerWidth,width:document.documentElement.scrollWidth}));assert.ok(dimensions.width<=dimensions.viewport+1,`Horizontal overflow: ${dimensions.width} > ${dimensions.viewport}`);evidence.assertions.push('no horizontal overflow');
+ if(route.kind!=='home'){
+  const toc=await page.evaluate(()=>Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')).filter(a=>a.getAttribute('href')!=='#').map(a=>({href:a.getAttribute('href')!,found:!!document.getElementById(decodeURIComponent(a.hash.slice(1)))})));
+  if(route.kind==='pcr')assert.ok(toc.length>0,'Document must expose anchors');assert.ok(toc.every(anchor=>anchor.found),'TOC/local anchor points to a missing element');evidence.assertions.push(`local TOC anchors resolve (${toc.length})`);
+  if(viewport==='mobile'){await page.getByRole('button',{name:expectedLocale==='zh'?'打开侧栏':'Open sidebar',exact:true}).first().click();await page.locator('#nd-sidebar-mobile').waitFor({state:'visible'});}
+  const sidebar=await page.locator((viewport==='mobile'?'#nd-sidebar-mobile':'#nd-sidebar')+' a[href]').evaluateAll(links=>links.map(link=>link.getAttribute('href')!).filter(href=>/^\/(?:en|zh)\/docs\/pcr\/[^/]+\/[^/]+\/[^/]+\/?$/u.test(href)));
+  if(route.kind==='pcr')assert.ok(sidebar.length>0,'Sidebar must expose PCR leaf links');for(const href of sidebar)assert.ok(exported.files.some(file=>file.path===href.replace(/^\//u,'').replace(/\/?$/u,'/')+'index.html'),'Missing sidebar leaf '+href);evidence.assertions.push(`sidebar PCR leaves resolve (${sidebar.length})`);
+  if(viewport==='mobile'){await page.locator('#nd-sidebar-mobile').getByRole('button',{name:expectedLocale==='zh'?'关闭侧栏':'Close sidebar',exact:true}).click();await page.locator('#nd-sidebar-mobile').waitFor({state:'hidden'});evidence.assertions.push('mobile sidebar opens and closes');}
+ }
+}
+async function checkSearch(page:Page,route:SiteRoute,evidence:BrowserEvidence){
+ const locale=route.locale==='zh'?'zh':'en',heading=await page.locator('h1').first().innerText();
+ const query=locale==='zh'?(heading.match(/[\p{Script=Han}]{2,}/u)?.[0].slice(0,2)??'产品'):(heading.match(/[A-Za-z]{3,}/u)?.[0]??'PCR');
+ const workers:string[]=[];evidence.search={query,hits:0,workerUrls:workers};page.on('worker',worker=>workers.push(worker.url()));
+ const triggers=page.locator('button[data-search], button[data-search-full]');let clicked=false;for(let i=0;i<await triggers.count();i++){const trigger=triggers.nth(i);if(await trigger.evaluate(button=>{const rect=button.getBoundingClientRect();const hit=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);return rect.width>0&&rect.height>0&&hit!==null&&button.contains(hit);})){await trigger.click();clicked=true;break;}}assert.ok(clicked,'No unobstructed search trigger');
+ const dialog=page.locator('[data-pcr-search]');await dialog.waitFor({state:'visible'});await page.getByLabel(locale==='zh'?'搜索 PCR、领域或关键词…':'Search PCRs, domains, or keywords…',{exact:true}).fill(query);
+ await page.waitForFunction(()=>{const dialog=document.querySelector('[data-pcr-search]');return !!dialog?.querySelector('.pcr-search-footer, .pcr-search-error')||/^(没有匹配的 PCR|No PCR matches)/u.test(dialog?.querySelector('[role="status"]')?.textContent??'');},{},{timeout:45_000});assert.ok(await dialog.locator('.pcr-search-footer').count(),`Search returned no results for ${query}: ${await dialog.innerText()}`);const links=dialog.locator('button[aria-selected]');const hits=await links.count();assert.ok(hits>0,'Search must return actual result buttons');assert.ok(workers.some(url=>new URL(url,page.url()).href===new URL('/generated/search-worker.mjs',page.url()).href),'Search must use the emitted Worker');
+ evidence.search={query,hits,workerUrls:workers};evidence.assertions.push('emitted Worker returns search results');const origin=new URL(page.url()).origin;await links.first().click();await page.waitForLoadState('networkidle');assert.equal(new URL(page.url()).origin,origin);assert.ok(new URL(page.url()).pathname.startsWith(`/${locale}/docs/`));await page.locator('h1').first().waitFor();evidence.assertions.push('search result navigation');
+}
+export async function qualifySiteBrowser(options:SiteBrowserOptions){
+ const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.63.0')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.63.0.');
+ const exported=inspectSiteExport(options.root),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.63.0',results,status:'running',completedAt:'',failure:''};
+ try {await withSiteExportServer(exported.root,async origin=>{
+  for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
+   try {for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size});
+    try {for(const route of exported.routes){const page=await context.newPage();const evidence:BrowserEvidence={engine:name,engineVersion:browser.version(),viewport,route,assertions:[],errors:[],ignoredPrefetchAborts:[],screenshot:`${name}-${viewport}-${route.locale}-${route.kind}.png`};results.push(evidence);
+     const consoleErrors:{text:string;url:string}[]=[],failedRequests:CancelledRequest[]=[],prefetchUrls:string[]=[],responses=new WeakMap<Request,number>();
+     page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});
+     page.on('request',request=>{if(request.headers()['next-router-prefetch']==='1')prefetchUrls.push(request.url());});page.on('response',response=>{responses.set(response.request(),response.status());if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});
+     page.on('requestfailed',request=>{failedRequests.push({url:request.url(),reason:request.failure()?.errorText??'unknown',method:request.method(),headers:request.headers(),status:responses.get(request)});});
+     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='pcr')await checkSearch(page,route,evidence);for(const request of failedRequests){if(isCancelledSitePrefetch(request,prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}assert.deepEqual(evidence.errors,[],'Browser reported errors');}
+     catch(error){evidence.failure=message(error);try{writeFileSync(path.join(report,evidence.screenshot+'.html'),await page.content());}catch(diagnostic){evidence.diagnosticError=message(diagnostic);}}
+     finally {try{if(!existsSync(path.join(report,evidence.screenshot)))evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);}catch(diagnostic){evidence.diagnosticError=message(diagnostic);if(!evidence.failure)throw diagnostic;}finally{await page.close();}}
+    }}finally{await context.close();}
+   }}finally{await browser.close();}
+  }
+ });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
+ }catch(error){receipt.status='failed';receipt.failure=message(error);throw error;}finally{receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'report.json'),JSON.stringify(receipt,null,2)+'\n');}
+}
+export async function siteBrowserMain(args:readonly string[]){const options=parseSiteBrowserArguments(args);if(options==='help'){process.stdout.write('Usage: node scripts/engineering/site-browser.ts --root <existing export> --report <new evidence directory>\n');return;}const receipt=await qualifySiteBrowser(options);process.stdout.write(JSON.stringify({status:receipt.status,sourceCommit:receipt.source.sourceCommit,report:path.join(options.report,'report.json'),cases:receipt.results.length})+'\n');}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))siteBrowserMain(process.argv.slice(2)).catch((error:unknown)=>{process.stderr.write(JSON.stringify({code:error instanceof SiteBrowserError?error.code:'SITE_BROWSER_FAILED',message:message(error)})+'\n');process.exitCode=1;});
