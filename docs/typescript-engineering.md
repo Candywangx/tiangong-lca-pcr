@@ -294,3 +294,8 @@ source identity, browser versions, all selected routes and screenshots, and chec
 that export bytes remain unchanged. All available planned route cases are recorded
 even after a failure; missing engines or required input fail rather than skip.
 The documentation CI runs it against its complete export before product sealing.
+
+Successive Goal runtime overlays compare both the original Goal baseline and the
+actual receiving runtime tree. They retain the original receipt behavior while
+restoring unchanged source-format markers and deleting legacy modules introduced
+by an intervening runtime; canonical PCR content remains outside the allowlist.

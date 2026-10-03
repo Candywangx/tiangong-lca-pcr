@@ -86,9 +86,12 @@ export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, g
       return runtimeBaseline(state.runtime_baseline);
     }
 
-    const paths = gitZ(projectRoot, ["diff", "--name-only", "-z", text(field(state.baseline,"commit")), sourceCommit, "--"])
-      .filter(isApprovedRuntimePath)
-      .sort();
+    // Preserve original-baseline installation receipts while also synchronizing
+    // additions/deletions introduced in the tree receiving this overlay.
+    const paths = [...new Set([
+      ...gitZ(projectRoot, ["diff", "--name-only", "-z", text(field(state.baseline,"commit")), sourceCommit, "--"]),
+      ...gitZ(projectRoot, ["diff", "--name-only", "-z", baseCommit, sourceCommit, "--"]),
+    ].filter(isApprovedRuntimePath))].sort();
     if (paths.length === 0) {
       return { schema_version: 1, commit: baseCommit, base_commit: baseCommit, source_commit: sourceCommit, paths: [], path_sha256: {}, created_at: now() };
     }

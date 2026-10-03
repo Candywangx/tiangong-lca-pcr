@@ -402,3 +402,7 @@ The offline storage context is scoped to explicit consumer calls and is never en
 by the documentation build.
 
 Projection v2 adds source units and ancestor context to exact structured downloads and complete record JSON. Canonical language bodies remain the displayed methodological source; flat structured summaries do not independently establish applicability. Historical projection v1 remains readable and is not rewritten by export. The [semantic projection contract](semantic-projection-contract.md) governs these fields; publication and translation approval remain separate.
+
+Chinese catalog presentation labels cover every domain and subdomain in the
+material index. A corpus-backed contract rejects missing Chinese category labels;
+this presentation dictionary never rewrites canonical titles, IDs or source files.
