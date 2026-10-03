@@ -1,0 +1,391 @@
+import assert from "node:assert/strict";
+import { readFileSync, readdirSync } from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import { fileURLToPath } from "node:url";
+
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
+
+import {
+  parsePcrMarkdownToStructured,
+  structuredProjectionYaml,
+} from "./markdown-projection.ts";
+
+function manifestRecord(text: string): {id:string;content_maturity:string} { const raw=parseYaml(text); assert.ok(raw && typeof raw === "object" && !Array.isArray(raw)); assert.equal(typeof raw.id,"string");assert.equal(typeof raw.content_maturity,"string");return raw as {id:string;content_maturity:string}; }
+
+const repoRoot = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
+
+function manifestFiles(directory: string): string[] {
+  const files = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...manifestFiles(entryPath));
+    } else if (entry.name === "manifest.yaml") {
+      files.push(entryPath);
+    }
+  }
+  return files;
+}
+
+test("parsePcrMarkdownToStructured reads localized Chinese flow cards", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 6. 过程清单结构
+
+### 过程：清洗（\`cleaning\`）
+
+#### 输入
+
+##### 产品流
+
+###### 清洗水（\`washing_water\`）
+
+清洗水作为输入产品流记录。
+
+- 选定流：过程水 \`ec205030-248c-496f-9cf2-06d9d26dc6ff\`
+- 流属性/单位：Mass / kg
+- 数量规则：计量用水量
+- 数值来源模式：前景记录（\`foreground_record\`）
+- 适用范围：场址特定（\`site_specific\`）
+- 归一化基准：每 1,000 kg 清洁产品输出
+- 基准类型：过程输出（\`process_output\`）
+- 证据类型：采集记录（\`collected_record\`）
+- 采集协议：\`cp_washing_water_records\`
+- 来源：\`source-id\`
+`);
+
+  const process = projection.processInventory[0];
+  assert.ok(process);
+  const row = process.inputs.product[0];
+  assert.ok(row);
+
+  assert.equal(row.row_id, "washing_water");
+  assert.equal(row.role, "清洗水");
+  assert.equal(row.uuid, "ec205030-248c-496f-9cf2-06d9d26dc6ff");
+  assert.equal(row.amount.value_mode, "foreground_record");
+  assert.equal(row.amount.specificity, "site_specific");
+  assert.equal(row.amount.basis.kind, "process_output");
+  assert.equal(row.amount.evidence.kind, "collected_record");
+  assert.equal(row.amount.evidence.collection_protocol_id, "cp_washing_water_records");
+  assert.deepEqual(row.amount.evidence.source_ids, ["source-id"]);
+});
+
+test("parsePcrMarkdownToStructured reads nested localized range fields", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 6. 过程清单结构
+
+### 过程：接收（\`receipt\`）
+
+#### 输出
+
+##### 废物流
+
+###### 接收拒收物（\`receipt_rejects\`）
+
+接收阶段移除的不合格材料。
+
+- 选定流：选择路线特定废物流
+- 流属性/单位：Mass / kg
+- 数量规则：接收后移除的拒收质量。
+- 数值来源模式：前景记录（\`foreground_record\`）
+- 适用范围：场址特定（\`site_specific\`）
+- 归一化基准：相对于进厂来源材料的拒收质量。
+- 基准类型：过程输出（\`process_output\`）
+- 证据类型：采集记录（\`collected_record\`）
+- 采集协议：\`cp_reject_records\`
+- 数量范围：质量守恒 QA 校验范围
+  - 范围角色：QA 校验（\`qa_guardrail\`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg/kg 接收来源材料
+  - 基准：接收来源材料的质量分数
+  - 基准类型：过程输出（\`process_output\`）
+  - 证据类型：方法公式（\`method_formula\`）
+  - 来源：\`mass-balance-identity\`
+`);
+
+  const row = projection.processInventory[0]!.outputs.waste[0];
+  assert.ok(row);
+
+  assert.deepEqual(row.amount.ranges, [
+    {
+      role: "qa_guardrail",
+      lower: "0",
+      upper: "1",
+      unit: "kg/kg 接收来源材料",
+      basis: "接收来源材料的质量分数",
+      basis_kind: "process_output",
+      evidence_kind: "method_formula",
+      source_ids: ["mass-balance-identity"],
+    },
+  ]);
+});
+
+test("parsePcrMarkdownToStructured projects English boundary, allocation, and validation rules", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 5. System Boundary
+
+The foreground boundary includes:
+
+1. Include directly controlled collection and preparation.
+2. Link purchased material to an upstream dataset.
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | source_material_received |
+
+## 6A. Same-Category Input and Cut-Off Rules
+
+Same-category inputs remain visible product inputs.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| \`avoid_allocation\` | separable batches | Subdivide the process before allocating shared burdens. | \`allocation-source\` |
+
+## 9. Validation Rules
+
+A foreground data package conforms only when:
+
+- the reference product is normalized to the declared mass;
+- the allocation method is declared and justified.
+`);
+
+  assert.deepEqual(projection.systemBoundary, {
+    rules: [
+      {
+        rule_id: "system_boundary_rule_1",
+        applies_to: "foreground_system_boundary",
+        rule: "Include directly controlled collection and preparation.",
+        source_ids: [],
+      },
+      {
+        rule_id: "system_boundary_rule_2",
+        applies_to: "foreground_system_boundary",
+        rule: "Link purchased material to an upstream dataset.",
+        source_ids: [],
+      },
+      {
+        rule_id: "system_boundary_rule_3",
+        applies_to: "foreground_system_boundary",
+        rule: "Same-category inputs remain visible product inputs.",
+        source_ids: [],
+      },
+    ],
+  });
+  assert.deepEqual(projection.allocationRules, [
+    {
+      rule_id: "avoid_allocation",
+      applies_to: "separable batches",
+      rule: "Subdivide the process before allocating shared burdens.",
+      source_ids: ["allocation-source"],
+    },
+  ]);
+  assert.deepEqual(projection.validationRules, [
+    {
+      rule_id: "validation_rule_1",
+      applies_to: "foreground_dataset_conformance",
+      rule: "the reference product is normalized to the declared mass;",
+      source_ids: [],
+    },
+    {
+      rule_id: "validation_rule_2",
+      applies_to: "foreground_dataset_conformance",
+      rule: "the allocation method is declared and justified.",
+      source_ids: [],
+    },
+  ]);
+  assert.deepEqual(projection.boundaryAbstraction, {
+    declared_starting_condition: "source_material_received",
+  });
+});
+
+test("parsePcrMarkdownToStructured supports Chinese rule headings and deterministic fallback ids", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 5. 系统边界
+
+默认边界包括：
+
+1. 纳入前景直接控制的清洗活动。
+
+## 7. 分配与共产品处理
+
+按以下顺序决策：
+
+1. 优先通过过程细分避免分配。
+2. 无法细分时披露所选分配基准。
+
+## 9. 校验规则
+
+发布前检查：
+
+- 参考产品按声明质量归一化。
+- 所有废物流均有明确去向。
+`);
+
+  assert.equal(projection.systemBoundary.rules[0]!.rule_id, "system_boundary_rule_1");
+  assert.equal(projection.systemBoundary.rules[0]!.rule, "纳入前景直接控制的清洗活动。");
+  assert.deepEqual(
+    projection.allocationRules.map(({ rule_id, rule }) => ({ rule_id, rule })),
+    [
+      { rule_id: "allocation_rule_1", rule: "优先通过过程细分避免分配。" },
+      { rule_id: "allocation_rule_2", rule: "无法细分时披露所选分配基准。" },
+    ],
+  );
+  assert.deepEqual(
+    projection.validationRules.map(({ rule_id, rule }) => ({ rule_id, rule })),
+    [
+      { rule_id: "validation_rule_1", rule: "参考产品按声明质量归一化。" },
+      { rule_id: "validation_rule_2", rule: "所有废物流均有明确去向。" },
+    ],
+  );
+});
+
+test("parsePcrMarkdownToStructured folds list continuations and nested items into the parent rule", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 7. Allocation and Co-product Handling
+
+Apply allocation in this order:
+
+1. Prefer subdivision when records allow
+and preserve the directly measured relationship.
+
+   This indented continuation remains part of the first rule.
+   - Nested condition A.
+     Nested detail stays with the parent.
+   - Nested condition B.
+2. Use mass allocation only as a fallback.
+   Its sensitivity must be disclosed.
+
+A separate paragraph remains its own rule.
+`);
+
+  assert.deepEqual(
+    projection.allocationRules.map(({ rule_id, rule }) => ({ rule_id, rule })),
+    [
+      {
+        rule_id: "allocation_rule_1",
+        rule:
+          "Prefer subdivision when records allow and preserve the directly measured relationship. This indented continuation remains part of the first rule. Nested condition A. Nested detail stays with the parent. Nested condition B.",
+      },
+      {
+        rule_id: "allocation_rule_2",
+        rule: "Use mass allocation only as a fallback. Its sensitivity must be disclosed.",
+      },
+      {
+        rule_id: "allocation_rule_3",
+        rule: "A separate paragraph remains its own rule.",
+      },
+    ],
+  );
+});
+
+test("structuredProjectionYaml renders normative rule contracts", () => {
+  const markdown = `
+## 5. System Boundary
+
+The system boundary includes direct preparation.
+
+## 7. Allocation Rules
+
+Avoid allocation by subdivision.
+
+## 9. Validation Rules
+
+The reference mass shall reconcile.
+`;
+  const projection = parsePcrMarkdownToStructured(markdown);
+  const yaml = structuredProjectionYaml(projection, { sourceMarkdown: markdown });
+
+  assert.match(yaml, /system_boundary:\n  rules:\n    - rule_id: system_boundary_rule_1/u);
+  assert.match(yaml, /allocation_rules:\n  - rule_id: allocation_rule_1/u);
+  assert.match(yaml, /validation_rules:\n  - rule_id: validation_rule_1/u);
+  assert.match(yaml, /source_ids: \[\]/u);
+});
+
+test("material PCR translations preserve machine-addressable normative rule ids", () => {
+  const materialManifests = manifestFiles(path.join(repoRoot, "library/pcrs"))
+    .map((manifestPath: string) => ({
+      manifestPath,
+      manifest: manifestRecord(readFileSync(manifestPath, "utf8")),
+    }))
+    .filter(({ manifest }) =>
+      ["authored_methodology", "reviewed_methodology", "published_methodology"].includes(
+        manifest.content_maturity,
+      ),
+    );
+
+  assert.ok(materialManifests.length > 0);
+  for (const { manifestPath, manifest } of materialManifests) {
+    const pcrDir = path.dirname(manifestPath);
+    const english = parsePcrMarkdownToStructured(
+      readFileSync(path.join(pcrDir, "pcr.en-US.md"), "utf8"),
+    );
+    const chinese = parsePcrMarkdownToStructured(
+      readFileSync(path.join(pcrDir, "pcr.zh-CN.md"), "utf8"),
+    );
+    for (const [label, englishRules, chineseRules] of [
+      ["system boundary", english.systemBoundary.rules, chinese.systemBoundary.rules],
+      ["allocation", english.allocationRules, chinese.allocationRules],
+      ["validation", english.validationRules, chinese.validationRules],
+    ] as const) {
+      assert.deepEqual(
+        chineseRules.map((rule) => rule.rule_id),
+        englishRules.map((rule) => rule.rule_id),
+        `${manifest.id} has misaligned ${label} rule ids`,
+      );
+    }
+  }
+});
+
+test("Chinese measurement fixture retains its unresolved reference product definition", () => {
+  const fixture = readFileSync(
+    new URL("../fixtures/measurement-44125/pcr.zh-CN.md", import.meta.url), "utf8",
+  );
+  const definition = parsePcrMarkdownToStructured(fixture).referenceFlowDefinition;
+  assert.ok(definition, "localized reference fields must not disappear");
+  assert.equal(definition.reference_amount, "1");
+  assert.equal(definition.product_flow.name, "成品秸秆或饲料打捆机（UUID 未解决）");
+  assert.equal(definition.product_flow.uuid, "");
+  assert.equal(definition.flow_property_uuid, "93a60a56-a3c8-11da-a746-0800200b9a66");
+  assert.equal(definition.unit_group_uuid, "93a60a57-a4c8-11da-a746-0800200c9a66");
+  assert.equal(definition.reference_unit, "kg");
+  assert.ok(definition.required_qualifiers.some(value => value.includes("制造商和工厂")));
+});
+
+test("English and existing Chinese reference field labels resolve the same UUID identity", () => {
+  const uuid = "AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE";
+  const english = `## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Iron \`${uuid}\` |
+| Reference flow property | Mass \`93a60a56-a3c8-11da-a746-0800200b9a66\` |
+| Reference unit group | Mass \`93a60a57-a4c8-11da-a746-0800200c9a66\` |
+| Reference unit | kg |
+| Required qualifiers | grade; geography |
+`;
+  const en = parsePcrMarkdownToStructured(english).referenceFlowDefinition;
+  for (const [productLabel, qualifierLabel] of [
+    ["参考产品流", "必需限定信息"],
+    ["参考产品", "必填限定信息"],
+  ] as const) {
+    const chinese = english
+      .replace("Reference Flow", "参考流")
+      .replace("| Field | Value |", "| 字段 | 值 |")
+      .replace("Reference amount", "参考数量")
+      .replace("Reference product flow", productLabel)
+      .replace("Reference flow property", "参考流属性")
+      .replace("Reference unit group", "参考单位组")
+      .replace("Reference unit", "参考单位")
+      .replace("Required qualifiers", qualifierLabel);
+    const zh = parsePcrMarkdownToStructured(chinese).referenceFlowDefinition;
+    assert.ok(zh);
+    assert.deepEqual(zh, en);
+    assert.equal(zh.product_flow.uuid, uuid.toLowerCase());
+  }
+});
