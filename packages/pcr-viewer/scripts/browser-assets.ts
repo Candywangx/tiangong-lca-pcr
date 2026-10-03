@@ -1,3 +1,4 @@
+import {createRequire} from "node:module";
 import {spawnSync} from "node:child_process";
 import {readFileSync,lstatSync,mkdirSync,mkdtempSync,realpathSync,rmSync,writeFileSync} from "node:fs";
 import {tmpdir} from "node:os";
@@ -7,10 +8,10 @@ import {unknownField} from "../../pcr-core/src/types.ts";
 const repositoryRoot=path.resolve(fileURLToPath(new URL("../../..",import.meta.url)));
 /** Emit browser code from owned TypeScript; source files are never browser assets. */
 export function compileViewerBrowserAssets({root=repositoryRoot,outputRoot}:{root?:string;outputRoot:string}) {
- const compiler=path.join(root,"node_modules/typescript/bin/tsc");
- const compilerPackage=path.join(root,"node_modules/typescript/package.json");
- let installed:unknown;
- try {installed=JSON.parse(readFileSync(compilerPackage,"utf8"));if(!lstatSync(compiler).isFile())throw new Error("compiler is not a regular file");}
+ let compiler:string,installed:unknown;
+ // Detached pinned worktrees resolve their coordinator-owned dependencies by
+ // Node's normal source-relative lookup. The captured source still owns the pin.
+ try {const compilerPackage=createRequire(path.join(root,"package.json")).resolve("typescript/package.json");compiler=path.join(path.dirname(compilerPackage),"bin/tsc");installed=JSON.parse(readFileSync(compilerPackage,"utf8"));if(!lstatSync(compiler).isFile())throw new Error("compiler is not a regular file");}
  catch(error){throw Object.assign(new Error("The pinned TypeScript compiler is required to generate browser assets.",{cause:error}),{code:"BROWSER_COMPILER_UNAVAILABLE"});}
  const manifest:unknown=JSON.parse(readFileSync(path.join(root,"package.json"),"utf8"));
  const expected=unknownField(unknownField(manifest,"devDependencies"),"typescript");
