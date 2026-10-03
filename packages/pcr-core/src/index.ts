@@ -280,7 +280,7 @@ function readPcrCatalogPageWithinContext({ root, refresh = false, scope = "all",
   const normalizedRoot = path.resolve(root);
   const bindings: { entry: CatalogEntry; bytes: Buffer }[] = [];
   const candidates: CatalogEntry[] = [];
-  for (const entry of getPcrCatalog({ root: normalizedRoot, refresh })) {
+  for (const entry of catalogForRead(normalizedRoot, refresh, context)) {
     const captured = readConsistentManifestSnapshot({ root: normalizedRoot, entry });
     bindings.push({ entry, bytes: captured.bytes });
     const kind = recordKindForPcr({ status: optionalString(captured.manifest.status, "unknown", "PCR status"), content_maturity: nullableString(captured.manifest.content_maturity, "PCR maturity") });
@@ -294,6 +294,10 @@ function readPcrCatalogPageWithinContext({ root, refresh = false, scope = "all",
     if (!current.bytes.equals(binding.bytes)) throw new PcrCurrentSnapshotInconsistentError({ pcrId: binding.entry.id, pcrPath: binding.entry.path, attempts: CURRENT_SNAPSHOT_MAX_ATTEMPTS, lastFailure: { code: "catalog_selection_changed", message: "PCR metadata changed while selecting the requested page." } });
   }
   return { totalCount: candidates.length, items };
+}
+
+function catalogForRead(root: string, refresh: boolean, context: PcrReadContext | null): readonly CatalogEntry[] {
+  return context ? [...getPcrReadContextCatalog({ context, root, readCatalog: readPcrCatalog }).values()] : getPcrCatalog({ root, refresh });
 }
 
 function getPcrCatalog({ root, refresh = false }: RootOptions): CatalogEntry[] {
@@ -348,7 +352,7 @@ function buildPcrTreeWithinContext({ root, depth = Infinity, scope = "all", cont
   if (source) return treeFromRecords(source.listPcrs(normalizedScope), depth);
   const normalizedRoot = path.resolve(root);
   const tree: PcrTree = {};
-  for (const entry of getPcrCatalog({ root: normalizedRoot })) {
+  for (const entry of catalogForRead(normalizedRoot, false, context)) {
     if (normalizedScope !== "all" && !currentCatalogEntryMatchesScope(normalizedRoot, entry, normalizedScope)) continue;
     const segments = entry.path.replace(/^library\/pcrs\//u, "").split("/");
     let node = tree;

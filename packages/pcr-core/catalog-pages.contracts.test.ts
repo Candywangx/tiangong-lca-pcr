@@ -77,3 +77,13 @@ test('body-free pages and trees cannot return metadata under stale context bindi
     () => buildPcrTree({ root, depth: 2, context }),
   ]) assert.throws(read, { code: 'PCR_READ_CONTEXT_STALE' });
 });
+
+test('a fresh explicit context never inherits an older process catalog cache', t => {
+  const root = fixture(t); const directory = path.join(root, base, 'wheat-seed');
+  rmSync(directory, { recursive: true });
+  assert.equal(readPcrCatalogPage({ root, refresh: true }).totalCount, 1);
+  cpSync(path.join(process.cwd(), base, 'wheat-seed'), directory, { recursive: true });
+  const context = createPcrReadContext({ root });
+  assert.equal(readPcrCatalogPage({ root, context }).totalCount, 2);
+  assert.ok(JSON.stringify(buildPcrTree({ root, depth: 3, context })).includes('wheat-seed'));
+});
