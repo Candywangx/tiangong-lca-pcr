@@ -13,8 +13,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.mjs";
-import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.mjs";
+import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.ts";
+import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.ts";
 
 const cliPath = path.resolve("packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
 const repoRoot = path.resolve(".");

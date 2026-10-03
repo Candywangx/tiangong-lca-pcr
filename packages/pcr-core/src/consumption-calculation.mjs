@@ -1,4 +1,4 @@
-import { ConsumptionError, object, strictNumber } from "./consumption-data.mjs";
+import { ConsumptionError, object, strictNumber } from "./consumption-data.ts";
 
 function text(value, name) {
   if (typeof value !== "string" || !value.trim()) throw new ConsumptionError("PCR_CALCULATION_INPUT", `${name} must state the unit, basis or evidence explicitly.`, { field: name });

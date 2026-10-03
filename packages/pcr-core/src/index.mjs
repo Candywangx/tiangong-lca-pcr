@@ -1,3 +1,4 @@
+import { buildCompleteGuidance, deriveSnapshotGuidanceContext } from "./compiler/guidance-envelope.ts";
 import { pcrSource } from "./source-context.mjs";
 import { createHash } from "node:crypto";
 import {
@@ -23,7 +24,7 @@ import { assertCoreContract, validateCoreContract } from "./contracts.mjs";
 import {
   inspectProjectionIntegrity,
   projectionNotRequiredState,
-} from "./projection-integrity.mjs";
+} from "./projection-integrity.ts";
 import {
   hasDeclaredUnresolvedReferenceProductFlow,
   materialProjectionCompletenessIssues,
@@ -703,6 +704,7 @@ export function getVerifiedPcrProjection({ root, pcrId, context = null }) {
     readiness: structuredClone(pcr.readiness),
     source_structured: toPosix(path.relative(root, structuredPath)),
     structured: structuredClone(structured),
+    ...deriveSnapshotGuidanceContext(snapshot),
   };
 }
 
@@ -715,34 +717,7 @@ function buildGuidanceForOperation({ root, pcrId, operation, context = null }) {
       `PCR ${pcrId} passed readiness without a verified structured projection.`,
     );
   }
-  const guidance = {
-    schema_version: 1,
-    guidance_kind: "tiangong-pcr-agent-guidance",
-    pcr,
-    readiness: structuredClone(pcr.readiness),
-    source_structured: toPosix(path.relative(root, structuredPath)),
-    system_boundary: structured.system_boundary ?? {},
-    reference_flow: structured.reference_flow_definition ?? {},
-    boundary_abstraction: structured.boundary_abstraction ?? {},
-    measurement_rules: structured.measurement_rules ?? structured.unit_conventions ?? [],
-    process_map: structured.process_map ?? [],
-    process_inventory: structured.process_inventory ?? [],
-    production_guidance: {
-      collection_protocols: structured.dataset_production?.collection_protocols ?? [],
-      calculation_rules: structured.dataset_production?.calculation_rules ?? [],
-      data_quality_requirements: structured.dataset_production?.data_quality_requirements ?? [],
-    },
-    published_dataset_profile: structured.published_dataset_profile ?? {},
-    allocation_rules: structured.allocation_rules ?? [],
-    data_quality_rules: structured.data_quality_rules ?? [],
-    validation_rules: structured.validation_rules ?? [],
-    data_sources: structured.data_sources ?? [],
-    validation_notes: [
-      "Use this guidance for LCA data authoring, optional TIDAS process authoring, or Agent-led review of existing process/model data. Select requirements for the declared scope.",
-      "Preserve PCR-derived UUID identities exactly. They are version-free suggestions; preserve and verify explicit versions on supplied TIDAS dataset references.",
-      "validate-model checks qualifier text presence; validate-dataset checks collection protocol ID presence. Neither performs TIDAS schema validation or semantic review. Use inspect and review prepare/check to support Agent-led review; a foreground package is optional.",
-    ],
-  };
+  const guidance = buildCompleteGuidance(snapshot, toPosix(path.relative(root, structuredPath)));
   assertCoreContract("guidance-output.schema.json", guidance, {
     code: "PCR_INTERNAL_CONTRACT_INVALID",
     entityKind: "Agent guidance output",
@@ -1621,6 +1596,7 @@ function inspectPcrProjection({ root, pcr, manifest, artifacts }) {
     sourceMarkdown,
     structuredText,
     metadata: structured?.projection_metadata,
+    structuredProjection: structured,
   });
   const schemaIssues = schemaResult.valid
     ? []

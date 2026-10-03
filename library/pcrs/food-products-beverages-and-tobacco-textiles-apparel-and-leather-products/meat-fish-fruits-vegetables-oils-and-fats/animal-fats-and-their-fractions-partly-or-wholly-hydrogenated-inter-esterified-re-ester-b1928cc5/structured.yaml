@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1312,12 +1312,569 @@ data_sources:
     type: "official_guidance"
     reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated official text https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30 (retrieved 2026-08-07)"
     used_for: "Functional-unit completeness, foreground and secondary data, data quality, cut-off disclosure, system boundary, and the allocation hierarchy."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:62c5b013c15452673919b3fa90e44952df3fb4213af4fb085daa06d662672db7"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7477"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7477
+          line: 61
+          column: 1
+        end:
+          offset: 11347
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins when qualified rendered or refined animal fat is received at the modification facility and ends when conforming bulk modified animal fat is ready for dispatch at the same facility gate. It includes receipt, heated storage where needed, conditioning, the declared modification reaction, catalyst or reagent recovery, filtration, optional bleaching or deodorisation, product finishing, directly controlled utilities, process water, wastewater, residues, off-gas, and fugitive releases.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_included_operations` | foreground facility | Include every directly controlled operation from received qualified animal-fat feedstock through conforming bulk product, including route-specific reaction, separation, filtration, optional bleaching or deodorisation, and directly controlled waste and wastewater handling. | `ec-jrc-fdm-bref-2019` |\n| `boundary_upstream_inputs` | purchased inputs | Link rendered or refined source fat, electricity, steam or heat, hydrogen, catalysts, enzymes, reagents, water, filter aids, and treatment services to representative upstream datasets; do not assign zero upstream burden merely because they are purchased. | `eu-environmental-footprint-2021-2279` |\n| `boundary_recursive_inputs` | same-category rework or purchased modified fat | Record same-category rework or purchased modified animal fat as an explicit product input. Internal recycle stays inside the foreground mass balance; purchased same-category material requires an upstream dataset and must not recursively invoke this PCR without termination. | `eu-environmental-footprint-2021-2279` |\n| `boundary_source_fat` | slaughter and rendering | Treat slaughter, rendering, and prior refining as upstream unless they are under the same data-control boundary and separately inventoried. For food-grade source fat, preserve evidence of eligible animal origin and hygienic raw-material handling. | `codex-cxs-211-1999`; `eu-regulation-853-2004` |\n| `boundary_exclusions` | downstream life cycle | Exclude packaging, distribution, use, formulation into further-prepared products, and end of life unless the study explicitly expands the boundary and reports those additions separately from the gate-to-gate PCR result. | `eu-environmental-footprint-2021-2279` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Qualified rendered or refined animal fat is received at the modification facility gate with source species or source-fat family, prior rendering and refining status, grade, quantity, quality specification, and supplier lot declared. |\n| starting_condition_role | Upstream product input to the foreground modification system; it is not a burden-free waste by default. |\n| product_classification_scope | Semantic category of animal fats and their fractions modified by the covered routes; CPC 3.0 code 21590 is mapping context only. |\n| recursive_input_rule | Internal rework is tracked within the foreground balance. Purchased modified animal fat is an explicit same-category product input linked once to an upstream dataset; no silent recursion or burden-free substitution is allowed. |\n| upstream_dataset_requirement | Use representative upstream datasets for source animal fat, purchased energy, hydrogen, catalysts, enzymes, reagents, water, filter aids, transport included by the study, and off-site treatment. Record geography, technology, period, grade, and allocation compatibility. |\n| disclosure | Declare source animal, feedstock route, grade, modification route sequence, reaction and post-treatment technology, upstream boundary, allocation decisions, internal recycle, co-products, waste destinations, included utilities, packaging status, jurisdiction, reporting period, and data gaps. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 8
+              column: 1
+            end:
+              offset: 454
+              line: 8
+              column: 163
+          text: "# Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7477
+              line: 61
+              column: 1
+            end:
+              offset: 7498
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48603"
+      family: "allocation"
+      span:
+        start:
+          offset: 48603
+          line: 843
+          column: 1
+        end:
+          offset: 50621
+          line: 854
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | separable processes, batches, meters, and product lines | Avoid allocation by subdividing unit processes and collecting directly attributable material, energy, emission, and waste records for the covered product. | `eu-environmental-footprint-2021-2279` |\n| `allocation_system_expansion` | multifunctional outputs with a defensible substituted function | If subdivision is not possible, evaluate system expansion before partitioning burdens and document the substituted function and dataset. | `eu-environmental-footprint-2021-2279` |\n| `allocation_physical` | remaining shared inputs and outputs | If allocation cannot be avoided, use a relevant quantifiable physical relationship that reflects the function provided; simple mass allocation is allowed only when mass is demonstrably relevant. | `eu-environmental-footprint-2021-2279` |\n| `allocation_other_relationship` | cases without a defensible physical relationship | Use another relationship such as economic value only after documenting why subdivision, system expansion, and physical allocation are not applicable; prices must match the process stage and reporting period. | `eu-environmental-footprint-2021-2279` |\n| `allocation_internal_recycle` | internal rework, recovered catalyst, recovered fat, and solvent or water recycle | Keep internal recycle inside the foreground balance and count only net purchased inputs and net outputs crossing the boundary. Do not assign avoided burdens to internal recycle. | `eu-environmental-footprint-2021-2279` |\n| `allocation_residue_status` | recovered fat, distillate, spent catalyst, filter media, and other residues | Classify an output as co-product, recoverable material, or waste from documented destination and market function. Disclose the allocation or treatment applied and test sensitivity when the choice is material. | `eu-environmental-footprint-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 8
+              column: 1
+            end:
+              offset: 454
+              line: 8
+              column: 163
+          text: "# Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48603
+              line: 843
+              column: 1
+            end:
+              offset: 48643
+              line: 843
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_60394"
+      family: "validation"
+      span:
+        start:
+          offset: 60394
+          line: 889
+          column: 1
+        end:
+          offset: 63308
+          line: 904
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | product category and reference flow | The canonical PCR id, reference flow UUID, mass property UUID, unit-group UUID, CPC context, product name, and required qualifiers are present and mutually consistent. | `unsd-cpc-3-0-21590` |\n| `validate_reference_mass` | final dataset | Exactly one reference product is normalized to 1 kg conforming net output; packaging, off-spec material, rework, and co-products are not counted as reference product. | `eu-environmental-footprint-2021-2279` |\n| `validate_route_processes` | process map | `feedstock_receipt_conditioning` and `finishing_and_dispatch` are present; every declared hydrogenation, interesterification, re-esterification, or elaidinisation route has a matching process inventory and collection protocol. | `ec-jrc-fdm-bref-2019` |\n| `validate_uuid_integrity` | all UUID-bearing rows | Every stored UUID is confirmed without a dataset version and its flow type, property, unit, route, and compartment match the row. Unresolved route-specific identities remain explicit blockers and are never replaced by a semantically wrong proxy. |  |\n| `validate_mass_balance` | each process and full foreground | Inputs, outputs, wastes, elementary releases, recycle, and inventory change reconcile; every unexplained residual is quantified, investigated, and disclosed. | `eu-environmental-footprint-2021-2279` |\n| `validate_hydrogenation` | hydrogenation route | Hydrogen supply route, net use, vent or fugitive release, catalyst identity, active content, reuse, recovery, spent-catalyst destination, and achieved product modification are reported. | `ec-jrc-fdm-bref-2019` |\n| `validate_water_and_waste` | water, wastewater, catalyst, filter media, and residues | Intake, recirculation, discharge, treatment destination, pollutant data, recovered materials, and waste status are consistent with water and mass balances. | `ec-jrc-fdm-bref-2019` |\n| `validate_allocation` | shared and multifunctional operations | Allocation is avoided by subdivision or system expansion where possible; any physical or other allocation is justified, reproducible, and disclosed with sensitivity when material. | `eu-environmental-footprint-2021-2279` |\n| `validate_grade_and_law` | food-, feed-, or technical-grade output | The declared grade, jurisdiction, source-fat eligibility, quality specification, and applicable legal or customer limits are supported by current records; this PCR does not convert Codex or EU examples into universal limits. | `codex-cxs-211-1999`; `eu-regulation-853-2004` |\n| `validate_data_quality` | foreground and upstream data | Coverage, calibration, technological, geographical and time representativeness, precision, substitutions, missing data, and every provisional estimate are reported. | `eu-environmental-footprint-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 8
+              column: 1
+            end:
+              offset: 454
+              line: 8
+              column: 163
+          text: "# Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 60394
+              line: 889
+              column: 1
+            end:
+              offset: 60416
+              line: 889
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 7500
+          line: 63
+          column: 1
+        end:
+          offset: 8014
+          line: 63
+          column: 515
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_included_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 8087
+          line: 67
+          column: 1
+        end:
+          offset: 8443
+          line: 67
+          column: 357
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 8444
+          line: 68
+          column: 1
+        end:
+          offset: 8791
+          line: 68
+          column: 348
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_recursive_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 8792
+          line: 69
+          column: 1
+        end:
+          offset: 9189
+          line: 69
+          column: 398
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_source_fat"
+      identity_kind: "explicit"
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 9190
+          line: 70
+          column: 1
+        end:
+          offset: 9539
+          line: 70
+          column: 350
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 9540
+          line: 71
+          column: 1
+        end:
+          offset: 9852
+          line: 71
+          column: 313
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 48716
+          line: 847
+          column: 1
+        end:
+          offset: 49000
+          line: 847
+          column: 285
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_system_expansion"
+      identity_kind: "explicit"
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 49001
+          line: 848
+          column: 1
+        end:
+          offset: 49279
+          line: 848
+          column: 279
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 49280
+          line: 849
+          column: 1
+        end:
+          offset: 49581
+          line: 849
+          column: 302
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_other_relationship"
+      identity_kind: "explicit"
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 49582
+          line: 850
+          column: 1
+        end:
+          offset: 49919
+          line: 850
+          column: 338
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_internal_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 49920
+          line: 851
+          column: 1
+        end:
+          offset: 50257
+          line: 851
+          column: 338
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residue_status"
+      identity_kind: "explicit"
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 50258
+          line: 852
+          column: 1
+        end:
+          offset: 50619
+          line: 852
+          column: 362
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 60489
+          line: 893
+          column: 1
+        end:
+          offset: 60743
+          line: 893
+          column: 255
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 60744
+          line: 894
+          column: 1
+        end:
+          offset: 60999
+          line: 894
+          column: 256
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_route_processes"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 61000
+          line: 895
+          column: 1
+        end:
+          offset: 61298
+          line: 895
+          column: 299
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_uuid_integrity"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 61299
+          line: 896
+          column: 1
+        end:
+          offset: 61603
+          line: 896
+          column: 305
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 61604
+          line: 897
+          column: 1
+        end:
+          offset: 61867
+          line: 897
+          column: 264
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_hydrogenation"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 61868
+          line: 898
+          column: 1
+        end:
+          offset: 62131
+          line: 898
+          column: 264
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_water_and_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 62132
+          line: 899
+          column: 1
+        end:
+          offset: 62403
+          line: 899
+          column: 272
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 62404
+          line: 900
+          column: 1
+        end:
+          offset: 62692
+          line: 900
+          column: 289
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_grade_and_law"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 62693
+          line: 901
+          column: 1
+        end:
+          offset: 63039
+          line: 901
+          column: 347
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_data_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 63040
+          line: 902
+          column: 1
+        end:
+          offset: 63306
+          line: 902
+          column: 267
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 7477
+          line: 61
+          column: 1
+        end:
+          offset: 7498
+          line: 61
+          column: 22
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 7500
+          line: 63
+          column: 1
+        end:
+          offset: 8014
+          line: 63
+          column: 515
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 8087
+          line: 67
+          column: 1
+        end:
+          offset: 8443
+          line: 67
+          column: 357
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 8444
+          line: 68
+          column: 1
+        end:
+          offset: 8791
+          line: 68
+          column: 348
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 8792
+          line: 69
+          column: 1
+        end:
+          offset: 9189
+          line: 69
+          column: 398
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 9190
+          line: 70
+          column: 1
+        end:
+          offset: 9539
+          line: 70
+          column: 350
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 9540
+          line: 71
+          column: 1
+        end:
+          offset: 9852
+          line: 71
+          column: 313
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7477"
+      source_span:
+        start:
+          offset: 9880
+          line: 75
+          column: 1
+        end:
+          offset: 11345
+          line: 82
+          column: 310
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48603"
+      source_span:
+        start:
+          offset: 48603
+          line: 843
+          column: 1
+        end:
+          offset: 48643
+          line: 843
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_60394"
+      source_span:
+        start:
+          offset: 60394
+          line: 889
+          column: 1
+        end:
+          offset: 60416
+          line: 889
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:62c5b013c15452673919b3fa90e44952df3fb4213af4fb085daa06d662672db7"
-  generated_content_sha256: "sha256:b662f9e96054f030bac2b3d9fad11ad3ab3b26b4ebbf0ba66a883453969901a2"
+  generated_content_sha256: "sha256:4a974e7a84cb37060eb01b34b4a453fab4ae6365fd742251f6ece6ace41de595"

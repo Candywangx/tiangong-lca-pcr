@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1795,12 +1795,549 @@ data_sources:
     type: "literature"
     reference: "Bamber, N., Kroebel, R. and Pelletier, N. (2026), Allocation in field crop and livestock life cycle assessment. International Journal of Life Cycle Assessment. https://doi.org/10.1007/s11367-026-02618-z"
     used_for: "allocation hierarchy, causal alternatives and price-volatility sensitivity"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:834dddb66c7e2437076b8512258095eb3cb681168b33faf645dd12984b9f43b9"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6058"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6058
+          line: 66
+          column: 1
+        end:
+          offset: 8924
+          line: 88
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Live sheep accepted at the integrated slaughterhouse receiving gate, with upstream husbandry and inbound transport supplied by traceable upstream datasets |\n| starting_condition_role | Foreground slaughter input carrying upstream sheep-production and inbound-transport burdens |\n| product_classification_scope | CPC 3.0:21155 context; this methodology is restricted to chilled sheep liver |\n| recursive_input_rule | If an input already represents edible sheep liver from another facility, do not restart the live-sheep route; link the upstream liver dataset and disclose the transferred starting condition, but such a route is outside this locked PCR |\n| upstream_dataset_requirement | Species-, production-system-, geography-, period- and transport-representative live-sheep supply datasets; no generic sheep-offal proxy |\n| disclosure | Declare slaughterhouse, reporting period, live-sheep origin, slaughter and inspection regime, organ identity, temperature log, refrigeration technology, wastewater destination, package specification and allocation price basis |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_route_lock` | foreground system | Include only the integrated chilled-sheep-liver route stated in section 1; do not average tissues, fresh/chilled/frozen states or mutually exclusive wastewater and refrigeration routes. | `fao-small-ruminant-slaughter-manual`; `eu-ec-853-2004-meat-hygiene` |\n| `sb_upstream_scope` | upstream supply | Include sheep husbandry and inbound transport through traceable upstream datasets attached to `live_sheep_input`; keep those upstream processes outside foreground measurements. | `fao-who-cxc-58-2005-meat-hygiene` |\n| `sb_foreground_scope` | slaughterhouse foreground | Include slaughter/evisceration, red-offal separation, liver trimming, potable-water washing, forced-air chilling and cold holding, packaging, sanitation, waste handling and transfer of wastewater to off-site treatment. | `fao-who-cxc-58-2005-meat-hygiene`; `fao-slaughter-meat-processing-guidelines`; `fao-small-ruminant-slaughter-manual` |\n| `sb_temperature_gate` | product release | Release only liver with a measured core temperature of 0–3 °C; maintain the cold chain and exclude any frozen lot. | `eu-ec-853-2004-meat-hygiene` |\n| `sb_wastewater_route` | wastewater | Model the locked off-site-treatment route: record carrier volume and each listed pollutant load separately at the facility sewer boundary; do not also model a direct elementary discharge. | `ifc-2007-meat-processing-ehs` |\n| `sb_exclusions` | downstream stages | Exclude distribution after the factory gate, retail, cooking, consumption, packaging end-of-life and off-site wastewater treatment beyond the transfer boundary. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 310
+              line: 10
+              column: 1
+            end:
+              offset: 359
+              line: 10
+              column: 50
+          text: "# Edible offal of sheep, fresh, chilled or frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6058
+              line: 66
+              column: 1
+            end:
+              offset: 6079
+              line: 66
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_52059"
+      family: "allocation"
+      span:
+        start:
+          offset: 52059
+          line: 1057
+          column: 1
+        end:
+          offset: 54311
+          line: 1068
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `alloc_subdivide_direct_operations` | `liver_washing`; `air_chilling_cold_holding`; `primary_packaging` | Attribute metered post-separation liver operations directly to liver; do not dilute these burdens across carcass, skin or other organs. | `bamber-et-al-2026-allocation-review` |\n| `alloc_joint_block_definition` | `slaughter_evisceration`; `liver_separation_trimming` | Treat slaughter through completion of organ separation as one joint-production block when its shared inputs cannot be subdivided; retain separate measured masses and destinations for carcass, liver, heart, lungs, trachea, sheepskin and recovered blood. | `le-feon-2020-meat-coproduct-allocation` |\n| `alloc_primary_economic` | joint-production block | Apply `calc_economic_allocation` using contemporaneous net ex-works revenue for every marketable output at the common separation gate. Waste and legally condemned material receive no co-product share; their handling burden remains with the joint block. | `eu-pef-2013-allocation-hierarchy`; `le-feon-2020-meat-coproduct-allocation` |\n| `alloc_price_evidence` | co-product price ledger | Use invoiced net prices and saleable masses for the same reporting period, currency and gate; disclose zero-price, internal-transfer and missing-price treatment. Do not infer a liver price from another organ. | `eu-pef-2013-allocation-hierarchy` |\n| `alloc_economic_sensitivity` | liver allocation result | Recalculate the liver share using every observed monthly net price in the reporting period and report the minimum, maximum and mass-weighted base result; if fewer than 12 months exist, report all observed months and the evidence gap without inventing prices. | `le-feon-2020-meat-coproduct-allocation`; `bamber-et-al-2026-allocation-review` |\n| `alloc_method_sensitivity` | liver allocation result | Also report mass-based allocation across marketable outputs and, only when tissue-growth data support it, a biophysical allocation result; keep these as sensitivity scenarios and do not merge them with the primary economic result. | `le-feon-2020-meat-coproduct-allocation`; `bamber-et-al-2026-allocation-review` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 310
+              line: 10
+              column: 1
+            end:
+              offset: 359
+              line: 10
+              column: 50
+          text: "# Edible offal of sheep, fresh, chilled or frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 52059
+              line: 1057
+              column: 1
+            end:
+              offset: 52099
+              line: 1057
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_69415"
+      family: "validation"
+      span:
+        start:
+          offset: 69415
+          line: 1119
+          column: 1
+        end:
+          offset: 72546
+          line: 1138
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_reference_identity` | reference flow | Require the exact Tiangong UUID, Mass property UUID, 1,000 kg net amount and all required qualifiers. |  |\n| `val_single_tissue_state` | product identity | Reject organ averaging, mixed-offal reference products, fresh liver, frozen liver or any lot with freezing history. |  |\n| `val_process_completion` | process map | Require all six processes in the declared order and a detailed section for every process_id. |  |\n| `val_atomic_rows` | process inventory | Require one card per actual material, utility, chemical, refrigerant, packaging material, co-product, waste, wastewater pollutant and air emission; reject aggregate cards such as energy, materials, chemicals, packaging, wastes or emissions. |  |\n| `val_uuid_policy` | flow identity | Permit a flow UUID only on `packaged_chilled_sheep_liver`; require every other atomic flow UUID to remain blank pending separate reviewed identity selection. |  |\n| `val_transfer_equality` | intermediate liver and pluck rows | Require batch-linked output/input equality at every adjacent process transfer; differences must be represented as a named product or waste row, not hidden loss. |  |\n| `val_mass_balance` | joint-production block | Calculate and disclose the mass-balance gap and every included term; unexplained differences make completeness inconclusive. |  |\n| `val_temperature` | product release | Reject lots without calibrated core readings or with any release reading below 0 °C or above 3 °C; retain evidence that product never froze. | `eu-ec-853-2004-meat-hygiene` |\n| `val_refrigerant_balance` | R717 system | Require a closed inventory and equality of allocated R717 replenishment input and ammonia-to-air loss unless documented recovery, return or transfer terms explain the difference. |  |\n| `val_wastewater_no_double_count` | wastewater | Require carrier volume and each pollutant load as separate rows; because wastewater is transferred off site, reject simultaneous direct-to-water elementary emissions for the same load. | `ifc-2007-meat-processing-ehs` |\n| `val_allocation_ledger` | joint-production block | Require masses, destinations and price records for carcass, liver, heart, lungs, trachea, sheepskin and recovered blood, plus explicit treatment of zero-price and waste outputs. | `le-feon-2020-meat-coproduct-allocation` |\n| `val_allocation_sensitivity` | liver burden | Require reproducible monthly economic sensitivity and mass-allocation sensitivity; do not accept a single undocumented economic fraction. | `le-feon-2020-meat-coproduct-allocation`; `bamber-et-al-2026-allocation-review` |\n| `val_foreground_amounts` | non-reference amounts | Require `foreground_record` or `calculated_value`, its collection protocol, and reporting-period evidence; reject uncited generic defaults. |  |\n| `val_bilingual_structure` | PCR source | Require identical ordered process_id, row_id, controlled token, formula, numeric value, UUID, URL, source_id and collection-protocol field sequences in en-US and zh-CN. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 310
+              line: 10
+              column: 1
+            end:
+              offset: 359
+              line: 10
+              column: 50
+          text: "# Edible offal of sheep, fresh, chilled or frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 69415
+              line: 1119
+              column: 1
+            end:
+              offset: 69437
+              line: 1119
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_route_lock"
+      identity_kind: "explicit"
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 7310
+          line: 81
+          column: 1
+        end:
+          offset: 7608
+          line: 81
+          column: 299
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_upstream_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 7609
+          line: 82
+          column: 1
+        end:
+          offset: 7866
+          line: 82
+          column: 258
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_foreground_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 7867
+          line: 83
+          column: 1
+        end:
+          offset: 8261
+          line: 83
+          column: 395
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_temperature_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 8262
+          line: 84
+          column: 1
+        end:
+          offset: 8454
+          line: 84
+          column: 193
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_wastewater_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 8455
+          line: 85
+          column: 1
+        end:
+          offset: 8716
+          line: 85
+          column: 262
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sb_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 8717
+          line: 86
+          column: 1
+        end:
+          offset: 8922
+          line: 86
+          column: 206
+    - pointer: "/allocation_rules/0"
+      rule_id: "alloc_subdivide_direct_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 52172
+          line: 1061
+          column: 1
+        end:
+          offset: 52457
+          line: 1061
+          column: 286
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_joint_block_definition"
+      identity_kind: "explicit"
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 52458
+          line: 1062
+          column: 1
+        end:
+          offset: 52846
+          line: 1062
+          column: 389
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_primary_economic"
+      identity_kind: "explicit"
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 52847
+          line: 1063
+          column: 1
+        end:
+          offset: 53234
+          line: 1063
+          column: 388
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_price_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 53235
+          line: 1064
+          column: 1
+        end:
+          offset: 53535
+          line: 1064
+          column: 301
+    - pointer: "/allocation_rules/4"
+      rule_id: "alloc_economic_sensitivity"
+      identity_kind: "explicit"
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 53536
+          line: 1065
+          column: 1
+        end:
+          offset: 53937
+          line: 1065
+          column: 402
+    - pointer: "/allocation_rules/5"
+      rule_id: "alloc_method_sensitivity"
+      identity_kind: "explicit"
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 53938
+          line: 1066
+          column: 1
+        end:
+          offset: 54309
+          line: 1066
+          column: 372
+    - pointer: "/validation_rules/0"
+      rule_id: "val_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 69510
+          line: 1123
+          column: 1
+        end:
+          offset: 69662
+          line: 1123
+          column: 153
+    - pointer: "/validation_rules/1"
+      rule_id: "val_single_tissue_state"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 69663
+          line: 1124
+          column: 1
+        end:
+          offset: 69832
+          line: 1124
+          column: 170
+    - pointer: "/validation_rules/2"
+      rule_id: "val_process_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 69833
+          line: 1125
+          column: 1
+        end:
+          offset: 69973
+          line: 1125
+          column: 141
+    - pointer: "/validation_rules/3"
+      rule_id: "val_atomic_rows"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 69974
+          line: 1126
+          column: 1
+        end:
+          offset: 70261
+          line: 1126
+          column: 288
+    - pointer: "/validation_rules/4"
+      rule_id: "val_uuid_policy"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 70262
+          line: 1127
+          column: 1
+        end:
+          offset: 70462
+          line: 1127
+          column: 201
+    - pointer: "/validation_rules/5"
+      rule_id: "val_transfer_equality"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 70463
+          line: 1128
+          column: 1
+        end:
+          offset: 70692
+          line: 1128
+          column: 230
+    - pointer: "/validation_rules/6"
+      rule_id: "val_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 70693
+          line: 1129
+          column: 1
+        end:
+          offset: 70870
+          line: 1129
+          column: 178
+    - pointer: "/validation_rules/7"
+      rule_id: "val_temperature"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 70871
+          line: 1130
+          column: 1
+        end:
+          offset: 71085
+          line: 1130
+          column: 215
+    - pointer: "/validation_rules/8"
+      rule_id: "val_refrigerant_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 71086
+          line: 1131
+          column: 1
+        end:
+          offset: 71313
+          line: 1131
+          column: 228
+    - pointer: "/validation_rules/9"
+      rule_id: "val_wastewater_no_double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 71314
+          line: 1132
+          column: 1
+        end:
+          offset: 71583
+          line: 1132
+          column: 270
+    - pointer: "/validation_rules/10"
+      rule_id: "val_allocation_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 71584
+          line: 1133
+          column: 1
+        end:
+          offset: 71859
+          line: 1133
+          column: 276
+    - pointer: "/validation_rules/11"
+      rule_id: "val_allocation_sensitivity"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 71860
+          line: 1134
+          column: 1
+        end:
+          offset: 72129
+          line: 1134
+          column: 270
+    - pointer: "/validation_rules/12"
+      rule_id: "val_foreground_amounts"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 72130
+          line: 1135
+          column: 1
+        end:
+          offset: 72327
+          line: 1135
+          column: 198
+    - pointer: "/validation_rules/13"
+      rule_id: "val_bilingual_structure"
+      identity_kind: "explicit"
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 72328
+          line: 1136
+          column: 1
+        end:
+          offset: 72544
+          line: 1136
+          column: 217
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 6058
+          line: 66
+          column: 1
+        end:
+          offset: 6079
+          line: 66
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6058"
+      source_span:
+        start:
+          offset: 6107
+          line: 70
+          column: 1
+        end:
+          offset: 7237
+          line: 77
+          column: 243
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_52059"
+      source_span:
+        start:
+          offset: 52059
+          line: 1057
+          column: 1
+        end:
+          offset: 52099
+          line: 1057
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_69415"
+      source_span:
+        start:
+          offset: 69415
+          line: 1119
+          column: 1
+        end:
+          offset: 69437
+          line: 1119
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:834dddb66c7e2437076b8512258095eb3cb681168b33faf645dd12984b9f43b9"
-  generated_content_sha256: "sha256:e693d386b5daf71484010ad4937ad8a49ee15a03bfea1054233ca264ac50674e"
+  generated_content_sha256: "sha256:1cf1e893b5ab25e83b83a63a15d06620e266e83243c37c54c8237c3f00aff5a4"

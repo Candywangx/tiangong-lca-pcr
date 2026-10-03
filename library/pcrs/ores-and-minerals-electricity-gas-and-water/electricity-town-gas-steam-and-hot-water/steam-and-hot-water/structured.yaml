@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -797,12 +797,393 @@ data_sources:
     type: "official_guidance"
     reference: "U.S. EPA, Methods for Calculating CHP Efficiency; https://www.epa.gov/chp/methods-calculating-chp-efficiency ; Total System Efficiency; updated 13 February 2026; retrieved 2026-10-01"
     used_for: "CHP net useful outputs and caution about equating electrical and thermal energy; no efficiency ranges adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:283fe53f4498ea51a2610d39cb65f24e5c87b2beae36c26c3b55a6d76bd0af04"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4726"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4726
+          line: 65
+          column: 1
+        end:
+          offset: 6852
+          line: 88
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Delivered fuels, electricity, make-up water and purchased steam at identified site inlets; separately declared recovered-heat inlet |\n| starting_condition_role | Foreground starts at measured site receipts; background represents upstream production |\n| product_classification_scope | Steam and hot-water thermal energy; electricity co-product retains separate identity |\n| recursive_input_rule | Record imported steam once as imported_steam_heat; link its supplier dataset and do not unfold the same supplier recursively |\n| upstream_dataset_requirement | Link compatible supplier fuel, electricity, water, chemical, imported-heat, waste-treatment and material infrastructure datasets |\n| disclosure | Declare plant versus consumer gate; network length and ownership; return loop; recovery source; CHP scope; infrastructure; cut-offs and upstream coverage |\n\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_operation | foreground | Include water management, heat generation, metering and delivery, startup and standby consumption within the declared gate. | `doe-steam-boiler-water` |\n| boundary_returns | water_management | Measure make-up and return separately; internal condensate circulation is a balance record, not repeated purchased-water input. Record external blowdown and leakage. | `doe-steam-boiler-water` |\n| boundary_network | heat_delivery | At a consumer gate include network pumping and losses; at a plant gate disclose the excluded downstream network. | `doe-steam-boiler-water` |\n| boundary_chp | heat_generation | Include the whole CHP generation and heat-recovery unit before splitting common burdens; subtract internal electrical loads from gross electrical production. | `epa-chp-efficiency` |\n| boundary_additions | all processes | Add individual atomic exchanges for actual fuels, treatment agents, ash streams, refrigerants and environmental heat sources absent from the common inventory. No blanket omission of unlisted exchanges is permitted. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 10
+              column: 1
+            end:
+              offset: 274
+              line: 10
+              column: 22
+          text: "# Steam and hot water"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4726
+              line: 65
+              column: 1
+            end:
+              offset: 4747
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25099"
+      family: "allocation"
+      span:
+        start:
+          offset: 25099
+          line: 480
+          column: 1
+        end:
+          offset: 26311
+          line: 490
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_separate | all processes | Assign separately metered equipment and delivery loads directly before allocating shared generation burdens. |  |\n| allocation_chp | heat_generation | For indivisible CHP common burdens use a declared physical allocation consistent with the study method. Collect net exported electricity, useful heat by grade and common fuel use; document why energy, exergy or another causal model represents the coupled process. Do not silently impose equal-value energy allocation across different heat grades. | `epa-chp-efficiency` |\n| allocation_recovery | imported_steam_heat | Recovered heat requires a stated upstream burden or cut-off agreement and linked source process. Avoided heat or electricity is a separate consequential comparison; never subtract it from attributional inventory without declaring system expansion. |  |\n| allocation_losses | heat_delivery | Assign actual generation and network losses to heat delivered at the declared gate. Return condensate is internal recovery, not an automatic avoided-production credit. | `doe-steam-boiler-water` |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 10
+              column: 1
+            end:
+              offset: 274
+              line: 10
+              column: 22
+          text: "# Steam and hot water"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25099
+              line: 480
+              column: 1
+            end:
+              offset: 25139
+              line: 480
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32267"
+      family: "validation"
+      span:
+        start:
+          offset: 32267
+          line: 526
+          column: 1
+        end:
+          offset: 33320
+          line: 537
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | supplied_heat | Require exactly 1 MJ output, all required qualifiers and the same denominator for every inventory row and collection protocol. |  |\n| validate_identity | all inventory rows | Check atomic exchange identity, flow type, product state, property, unit and public UUID support; an unresolved UUID remains explicit. |  |\n| validate_balance | foreground | Check period balances, allocation sums, double counting of purchased heat, imported/exported electricity and recycled water; unexplained residuals require correction or disclosure. |  |\n| validate_gate | heat_delivery | A consumer-gate dataset must contain actual delivery pumping and loss accounting, rather than assuming plant output equals delivered heat. | `doe-steam-boiler-water` |\n| validate_evidence | all inventory rows | Do not replace site records with an unsupported industry range; missing quantitative evidence must remain a collection requirement. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 10
+              column: 1
+            end:
+              offset: 274
+              line: 10
+              column: 22
+          text: "# Steam and hot water"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32267
+              line: 526
+              column: 1
+            end:
+              offset: 32289
+              line: 526
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_operation"
+      identity_kind: "explicit"
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 5770
+          line: 81
+          column: 1
+        end:
+          offset: 5958
+          line: 81
+          column: 189
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 5959
+          line: 82
+          column: 1
+        end:
+          offset: 6193
+          line: 82
+          column: 235
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_network"
+      identity_kind: "explicit"
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 6194
+          line: 83
+          column: 1
+        end:
+          offset: 6372
+          line: 83
+          column: 179
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_chp"
+      identity_kind: "explicit"
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 6373
+          line: 84
+          column: 1
+        end:
+          offset: 6590
+          line: 84
+          column: 218
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_additions"
+      identity_kind: "explicit"
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 6591
+          line: 85
+          column: 1
+        end:
+          offset: 6849
+          line: 85
+          column: 259
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_separate"
+      identity_kind: "explicit"
+      unit_id: "normative_25099"
+      source_span:
+        start:
+          offset: 25212
+          line: 484
+          column: 1
+        end:
+          offset: 25365
+          line: 484
+          column: 154
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_chp"
+      identity_kind: "explicit"
+      unit_id: "normative_25099"
+      source_span:
+        start:
+          offset: 25366
+          line: 485
+          column: 1
+        end:
+          offset: 25774
+          line: 485
+          column: 409
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_25099"
+      source_span:
+        start:
+          offset: 25775
+          line: 486
+          column: 1
+        end:
+          offset: 26073
+          line: 486
+          column: 299
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_25099"
+      source_span:
+        start:
+          offset: 26074
+          line: 487
+          column: 1
+        end:
+          offset: 26308
+          line: 487
+          column: 235
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_32267"
+      source_span:
+        start:
+          offset: 32362
+          line: 530
+          column: 1
+        end:
+          offset: 32532
+          line: 530
+          column: 171
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_32267"
+      source_span:
+        start:
+          offset: 32533
+          line: 531
+          column: 1
+        end:
+          offset: 32715
+          line: 531
+          column: 183
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_32267"
+      source_span:
+        start:
+          offset: 32716
+          line: 532
+          column: 1
+        end:
+          offset: 32935
+          line: 532
+          column: 220
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_32267"
+      source_span:
+        start:
+          offset: 32936
+          line: 533
+          column: 1
+        end:
+          offset: 33137
+          line: 533
+          column: 202
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_32267"
+      source_span:
+        start:
+          offset: 33138
+          line: 534
+          column: 1
+        end:
+          offset: 33317
+          line: 534
+          column: 180
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 4726
+          line: 65
+          column: 1
+        end:
+          offset: 4747
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4726"
+      source_span:
+        start:
+          offset: 4775
+          line: 69
+          column: 1
+        end:
+          offset: 5696
+          line: 76
+          column: 171
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25099"
+      source_span:
+        start:
+          offset: 25099
+          line: 480
+          column: 1
+        end:
+          offset: 25139
+          line: 480
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32267"
+      source_span:
+        start:
+          offset: 32267
+          line: 526
+          column: 1
+        end:
+          offset: 32289
+          line: 526
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:283fe53f4498ea51a2610d39cb65f24e5c87b2beae36c26c3b55a6d76bd0af04"
-  generated_content_sha256: "sha256:e88a611a990b71fb36aecb5bce529c6d830983c44f69c159f00ae6c6a7f7cd92"
+  generated_content_sha256: "sha256:bd512994310cdf3ad4c3f10cb9f8e6fbe9c5d8556df126d5f79c1f683025f21e"

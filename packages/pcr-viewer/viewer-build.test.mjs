@@ -917,7 +917,7 @@ test("generator contract recursively binds real guidance, readiness, schema, and
       bootstrap: true,
     });
     const firstManifest = first.store.readManifest(first.manifestRef);
-    const dependency = path.join(contractRoot, "packages/pcr-core/src/projection-integrity.mjs");
+    const dependency = path.join(contractRoot, "packages/pcr-core/src/projection-integrity.ts");
     writeFileSync(dependency, `${readFileSync(dependency, "utf8")}\n// contract mutation\n`);
     const after = computeViewerGeneratorContractSha256({ contractRoot });
     assert.notEqual(after, before);

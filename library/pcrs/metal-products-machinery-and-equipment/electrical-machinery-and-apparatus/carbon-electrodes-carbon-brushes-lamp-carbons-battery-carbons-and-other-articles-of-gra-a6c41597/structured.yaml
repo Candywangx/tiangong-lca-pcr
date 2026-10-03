@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1220,12 +1220,453 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission, Recommendation (EU) 2021/2279 of 15 December 2021 on the use of Environmental Footprint methods, Annex I. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-09-04)"
     used_for: "Original-text-verified system-boundary, multifunctionality/allocation hierarchy, data quality, materiality, and validation disclosure rules"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:4ad1f99ddf8fa651185c2fd7ba7815d9d24f133d1bc7d46e4cbc235193e786bf"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6904"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6904
+          line: 61
+          column: 1
+        end:
+          offset: 10909
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe default study is cradle-to-factory-gate. Foreground collection begins when purchased carbonaceous feedstocks, binders, metals, water, and energy cross the manufacturing-site boundary and ends when the declared finished article is quality released. Upstream production and transport of every purchased input are represented by compatible upstream datasets. Foreground includes blending, forming, required thermal consolidation, conditional impregnation/rebaking, conditional graphitization, machining, attachment assembly, internal recycling, direct emissions, and wastes. Packaging, distribution, use, installation, and end-of-life are excluded unless explicitly added outside this reference flow.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_cradle_to_gate` | Product system and purchased inputs | Include upstream production and inbound transport for each purchased feedstock, binder, metal, water, fuel, and electricity flow; include all foreground manufacturing stages through quality release of the unpackaged product. | `eu-2021-environmental-footprint-method`; `usitc-small-diameter-graphite-electrodes-2009` |\n| `boundary_route_declaration` | Product-family and technology variants | Declare the actual product family, formulation, thermal route, impregnation count, graphitization technology, machining, and attachments. Include conditional stages only when performed; never average absent stages as zero without declaring route applicability. | `mersen-carbon-brush-technical-guide`; `resonac-graphite-electrode-process` |\n| `boundary_direct_emissions` | Foreground combustion and carbonization | Record direct site emissions and wastes at their physical boundary. The fossil-carbon-dioxide rows cover only direct foreground emissions; upstream power- and fuel-supply emissions remain in their upstream datasets and shall not be duplicated. | `eu-2021-environmental-footprint-method` |\n| `boundary_packaging_exclusion` | Reference product and downstream additions | Exclude removable sale and transport packaging from the 1 kg reference product. If packaging is required by the study goal, add each packaging component as a separate atomic flow outside this PCR reference product and disclose the extension. | `usitc-small-diameter-graphite-electrodes-2009` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased carbonaceous feedstocks, binders, metallic additions or attachments, process water, and delivered energy at the manufacturing-site gate; supplier product state and upstream coverage declared |\n| starting_condition_role | Foreground manufacturing input boundary for the finished electrical-carbon article |\n| product_classification_scope | Finished electrical-purpose graphite or other carbon articles within the semantic boundary represented by CPC 3.0 code 46950 |\n| recursive_input_rule | A purchased article already within this finished-product category is recorded as a distinct input only when it physically enters the foreground product; do not recurse into this PCR. Link a compatible upstream dataset and disclose the purchased article, mass, grade, and supplier gate. Site-internal green, heat-treated, rebaked, and graphitized articles are internal transfer rows and receive no upstream burden. |\n| upstream_dataset_requirement | Use geography-, technology-, product-state-, and reference-year-compatible upstream datasets for every purchased input. Preserve supplier-specific data where available and reject a dataset whose flow property or unit group cannot be reconciled without a documented conversion. |\n| disclosure | Declare product family, grade, formulation, metal content, recycled content, all included and absent conditional stages, furnace and graphitization technology, energy supply, site geography, data period, allocation, internal recycling, direct-emission method, wastewater treatment state, attachment scope, and packaging exclusion. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 250
+              line: 8
+              column: 1
+            end:
+              offset: 402
+              line: 8
+              column: 153
+          text: "# Carbon electrodes, carbon brushes, lamp carbons, battery carbons and other articles of graphite or other carbon of a kind used for electrical purposes"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6904
+              line: 61
+              column: 1
+            end:
+              offset: 6925
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42663"
+      family: "allocation"
+      span:
+        start:
+          offset: 42663
+          line: 740
+          column: 1
+        end:
+          offset: 44370
+          line: 749
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide_first` | Shared equipment, furnaces, pollution controls, and multi-product lines | First obtain product- and stage-specific records or subdivide by meter, batch, equipment time, or another causal operating record. System expansion may be used only when the additional function and substituted system are demonstrated and disclosed. | `eu-2021-environmental-footprint-method` |\n| `allocation_physical_relationship` | Unavoidable shared burdens | If subdivision or system expansion is not feasible, use a measured physical relationship causally connected to the shared burden, such as furnace occupancy-time-energy, processed mass, or machine time. Document the numerator, denominator, co-products, and allocation period. | `eu-2021-environmental-footprint-method` |\n| `allocation_other_relationship` | Burdens without a defensible physical relationship | Economic or another relationship is permitted only after documenting why subdivision, system expansion, and physical allocation are infeasible. Report the prices, reference period, currency basis, allocation shares, and sensitivity to the next plausible method. | `eu-2021-environmental-footprint-method` |\n| `allocation_internal_recycling` | Carbon dust, offcuts, pitch, and internal intermediates returned within the site | Treat same-site return as an internal transfer: subtract it from external waste and new purchased input only through a transparent mass balance. Do not award an avoided-production credit or count the same returned mass as both waste and input. | `eu-2021-environmental-footprint-method` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 250
+              line: 8
+              column: 1
+            end:
+              offset: 402
+              line: 8
+              column: 153
+          text: "# Carbon electrodes, carbon brushes, lamp carbons, battery carbons and other articles of graphite or other carbon of a kind used for electrical purposes"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42663
+              line: 740
+              column: 1
+            end:
+              offset: 42703
+              line: 740
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_57207"
+      family: "validation"
+      span:
+        start:
+          offset: 57207
+          line: 788
+          column: 1
+        end:
+          offset: 59151
+          line: 798
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity_and_reference` | Product identity and reference flow | Reject a package that lacks any required qualifier, includes removable packaging in the 1 kg reference mass, uses a non-mass reference property, or claims category-wide service equivalence without a performance- and lifetime-equivalent functional unit. | `un-cpc-3-0-2025`; `eu-2021-environmental-footprint-method` |\n| `validate_route_and_atomic_inventory` | Process map and inventory | Confirm one actual product route; match every included detailed process to the process map; require each exchange to be one atomic physical, chemical, waste, or energy flow; reject umbrella flows and silent zeros for conditional stages. | `mersen-carbon-brush-technical-guide`; `resonac-graphite-electrode-process` |\n| `validate_units_and_uuid` | Flow identity and measurement | Confirm every UUID, flow type, property, unit group, and Chinese display name against the audited identity. Reject proxy UUIDs, unrecorded density conversions, mixed gas reference conditions, or electricity not normalized in MJ. |  |\n| `validate_no_double_counting` | Upstream and foreground emissions, internal recycling, and allocations | Reject double counting of upstream electricity or fuel-supply emissions as direct site emissions, counting the same internal return as both waste and input, or allocating shared burdens without the required hierarchy and disclosure. | `eu-2021-environmental-footprint-method` |\n| `validate_completeness_and_quality` | Foreground period and reconciliation | Confirm temporal coverage, production denominator, meter and scale calibration, route completeness, mass and energy reconciliation, waste destinations, wastewater state, and direct-emission method. Report unresolved UUIDs and range-evidence needs as limitations. | `eu-2021-environmental-footprint-method` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 250
+              line: 8
+              column: 1
+            end:
+              offset: 402
+              line: 8
+              column: 153
+          text: "# Carbon electrodes, carbon brushes, lamp carbons, battery carbons and other articles of graphite or other carbon of a kind used for electrical purposes"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 57207
+              line: 788
+              column: 1
+            end:
+              offset: 57229
+              line: 788
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 6927
+          line: 63
+          column: 1
+        end:
+          offset: 7628
+          line: 63
+          column: 702
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_cradle_to_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 7701
+          line: 67
+          column: 1
+        end:
+          offset: 8087
+          line: 67
+          column: 387
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_route_declaration"
+      identity_kind: "explicit"
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 8088
+          line: 68
+          column: 1
+        end:
+          offset: 8502
+          line: 68
+          column: 415
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_direct_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 8503
+          line: 69
+          column: 1
+        end:
+          offset: 8865
+          line: 69
+          column: 363
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_packaging_exclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 8866
+          line: 70
+          column: 1
+        end:
+          offset: 9239
+          line: 70
+          column: 374
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide_first"
+      identity_kind: "explicit"
+      unit_id: "normative_42663"
+      source_span:
+        start:
+          offset: 42776
+          line: 744
+          column: 1
+        end:
+          offset: 43176
+          line: 744
+          column: 401
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_relationship"
+      identity_kind: "explicit"
+      unit_id: "normative_42663"
+      source_span:
+        start:
+          offset: 43177
+          line: 745
+          column: 1
+        end:
+          offset: 43564
+          line: 745
+          column: 388
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_other_relationship"
+      identity_kind: "explicit"
+      unit_id: "normative_42663"
+      source_span:
+        start:
+          offset: 43565
+          line: 746
+          column: 1
+        end:
+          offset: 43960
+          line: 746
+          column: 396
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_internal_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_42663"
+      source_span:
+        start:
+          offset: 43961
+          line: 747
+          column: 1
+        end:
+          offset: 44368
+          line: 747
+          column: 408
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity_and_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_57207"
+      source_span:
+        start:
+          offset: 57302
+          line: 792
+          column: 1
+        end:
+          offset: 57694
+          line: 792
+          column: 393
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_route_and_atomic_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_57207"
+      source_span:
+        start:
+          offset: 57695
+          line: 793
+          column: 1
+        end:
+          offset: 58081
+          line: 793
+          column: 387
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_units_and_uuid"
+      identity_kind: "explicit"
+      unit_id: "normative_57207"
+      source_span:
+        start:
+          offset: 58082
+          line: 794
+          column: 1
+        end:
+          offset: 58377
+          line: 794
+          column: 296
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_no_double_counting"
+      identity_kind: "explicit"
+      unit_id: "normative_57207"
+      source_span:
+        start:
+          offset: 58378
+          line: 795
+          column: 1
+        end:
+          offset: 58762
+          line: 795
+          column: 385
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_completeness_and_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_57207"
+      source_span:
+        start:
+          offset: 58763
+          line: 796
+          column: 1
+        end:
+          offset: 59149
+          line: 796
+          column: 387
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 6904
+          line: 61
+          column: 1
+        end:
+          offset: 6925
+          line: 61
+          column: 22
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 6927
+          line: 63
+          column: 1
+        end:
+          offset: 7628
+          line: 63
+          column: 702
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 7701
+          line: 67
+          column: 1
+        end:
+          offset: 8087
+          line: 67
+          column: 387
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 8088
+          line: 68
+          column: 1
+        end:
+          offset: 8502
+          line: 68
+          column: 415
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 8503
+          line: 69
+          column: 1
+        end:
+          offset: 8865
+          line: 69
+          column: 363
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 8866
+          line: 70
+          column: 1
+        end:
+          offset: 9239
+          line: 70
+          column: 374
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6904"
+      source_span:
+        start:
+          offset: 9267
+          line: 74
+          column: 1
+        end:
+          offset: 10907
+          line: 81
+          column: 348
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42663"
+      source_span:
+        start:
+          offset: 42663
+          line: 740
+          column: 1
+        end:
+          offset: 42703
+          line: 740
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_57207"
+      source_span:
+        start:
+          offset: 57207
+          line: 788
+          column: 1
+        end:
+          offset: 57229
+          line: 788
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:4ad1f99ddf8fa651185c2fd7ba7815d9d24f133d1bc7d46e4cbc235193e786bf"
-  generated_content_sha256: "sha256:88598880f06be76628cb30b67c87f0476db1b78e5a31f7073a139ac8a1b47570"
+  generated_content_sha256: "sha256:9a2e81f09f45faaaef2b3fca789d1874f2846bf1caccbe1b77646a2ad520a038"

@@ -1,6 +1,6 @@
-import { atPointer } from "./consumption-data.mjs";
+import { atPointer } from "./consumption-data.ts";
 import { getVerifiedPcrProjection } from "./index.mjs";
-import { projectionBinding } from "./consumption-guidance.mjs";
+import { projectionBinding } from "./consumption-guidance.ts";
 import { documentIdentity, extractReferences, loadTidasContext } from "./tidas-inspection.mjs";
 import { validateCoreContract } from "./contracts.mjs";
 

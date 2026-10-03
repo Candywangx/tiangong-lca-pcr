@@ -1,6 +1,6 @@
 import { readdirSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
-import { ConsumptionError, atPointer, entriesAt, object, paginate, pointerToken, preview, readJsonDocument } from "./consumption-data.mjs";
+import { ConsumptionError, atPointer, entriesAt, object, paginate, pointerToken, preview, readJsonDocument } from "./consumption-data.ts";
 
 // Field paths, not a second TIDAS schema or consumer validation policy.
 // Basis: public-spec candidate 0.2.3, revision f118660dbcbfbf736be74837cce0bf26cd177245.

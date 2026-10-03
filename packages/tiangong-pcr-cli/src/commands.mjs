@@ -4,11 +4,11 @@ import { withPcrSource } from "../../pcr-core/src/source-context.mjs";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { GUIDANCE_TOPICS, selectGuidance } from "../../pcr-core/src/consumption-guidance.mjs";
+import { GUIDANCE_TOPICS, selectGuidance } from "../../pcr-core/src/consumption-guidance.ts";
 import { inspectTidas, INSPECTION_SECTIONS } from "../../pcr-core/src/tidas-inspection.mjs";
 import { prepareReview, checkReview } from "../../pcr-core/src/consumption-review.mjs";
 import { calculate } from "../../pcr-core/src/consumption-calculation.mjs";
-import { readJsonDocument, sha256 } from "../../pcr-core/src/consumption-data.mjs";
+import { readJsonDocument, sha256 } from "../../pcr-core/src/consumption-data.ts";
 
 import {
   CLASSIFICATION_COVERAGE_STATUSES,

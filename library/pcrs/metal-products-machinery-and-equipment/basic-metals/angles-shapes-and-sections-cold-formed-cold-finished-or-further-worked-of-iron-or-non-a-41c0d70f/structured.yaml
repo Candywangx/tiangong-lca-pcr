@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -889,12 +889,445 @@ data_sources:
     type: "method_factor"
     reference: "World Steel Association, *Life Cycle Inventory Methodology Report*, 2017, https://worldsteel.org/media/publications/lci-report-2017-pdf/?do_download_id=7f96813a-3756-4842-8dbc-38ce201f2914"
     used_for: "1 kg declared unit, gate-to-gate boundary, upstream dataset matching, data period and quality, completeness, mass balance, allocation and scrap treatment"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:200020adfd8486d27422d70c279820b7382db3107c4549fba2884bdfabe3e9b0"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7051"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7051
+          line: 65
+          column: 1
+        end:
+          offset: 11236
+          line: 88
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground starts when declared purchased steel feedstock crosses the producing facility gate and ends when the conforming section is packed as applicable and ready for dispatch. The integrated process includes receiving and handling; actual cold forming or cold finishing; cutting, straightening, sizing, punching, drilling, grinding or other further working when performed; conditional pickling, rinsing, drying and neutralization; conditional heat treatment; inspection; internal transport; on-site utility generation; waste handling; abatement; and packing. `eu-jrc-fmp-bref-2022` supports the conditional operation and input/output decomposition, while `worldsteel-lci-methodology-2017` supports the gate-to-gate boundary and complete recording of energy, materials, wastes and emissions.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased iron or non-alloy steel flat product, hot-worked section, or same-category semi-finished section at the foreground facility gate, with mass, grade, form, surface and prior processing state declared |\n| starting_condition_role | Foreground gate that separates purchased steel production from the incremental cold processing and further working represented by this PCR |\n| product_classification_scope | Iron or non-alloy steel angles, shapes and sections that leave the foreground facility in a cold-formed, cold-finished or further-worked state consistent with CPC 3.0 code 41262 |\n| recursive_input_rule | When a purchased input is already in this same product category, record it once as `input_same_category_section`, require an upstream dataset for its incoming state, and model only the additional operations performed in the foreground; do not unfold the same PCR recursively |\n| upstream_dataset_requirement | Use supplier-specific datasets where available, otherwise geographically and technologically representative datasets for each declared steel feedstock, electricity supply, fuel, chemical, water and packaging component; disclose dataset geography, technology, product state and reference year |\n| disclosure | Declare facility, reporting period, steel grade, incoming feedstock route and state, included and absent operations, utility supply conditions, yield and scrap destination, abatement and wastewater route, packaging state, allocation, exclusions and any deviation from this boundary |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_gate_to_gate` | foreground product system | Include every operation and ancillary service performed from receipt of purchased steel feedstock through the section ready for dispatch, including internal transport, on-site utilities, abatement, waste handling and packing when used. | `worldsteel-lci-methodology-2017`; `eu-jrc-fmp-bref-2022` |\n| `boundary_qualifying_operation` | category eligibility | Confirm that at least one cold-forming, cold-finishing or further-working operation changes the incoming steel into the declared market state; a product that is only hot-worked is outside this PCR. | `un-cpc-3-0-2025`; `un-hs-2017-7216` |\n| `boundary_upstream_inputs` | purchased inputs | Link each purchased steel state, electricity supply, fuel, chemical, water and packaging component to an upstream dataset matching its geography, technology and delivery state; never recreate upstream steelmaking as an unqualified generic process inside the foreground. | `worldsteel-lci-methodology-2017` |\n| `boundary_cutoff` | completeness | Record all energetic inputs. An excluded material flow shall be below 1% of mass, energy and environmental relevance for its unit process, and all excluded flows together shall remain below 5%; document the screening and never use cut-off to omit a hazardous or regulated release. | `worldsteel-lci-methodology-2017` |\n| `boundary_downstream` | excluded life-cycle stages | Exclude outbound distribution, fabrication into a specific structure, installation, use, maintenance, demolition and end-of-life unless a separately declared expanded study adds them without changing this reference flow. | `worldsteel-lci-methodology-2017` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 297
+              line: 10
+              column: 1
+            end:
+              offset: 400
+              line: 10
+              column: 104
+          text: "# Angles, shapes and sections, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7051
+              line: 65
+              column: 1
+            end:
+              offset: 7072
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33836"
+      family: "allocation"
+      span:
+        start:
+          offset: 33836
+          line: 491
+          column: 1
+        end:
+          offset: 35329
+          line: 500
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | foreground operations | Prefer subdivision and direct meters, scales or batch records for the declared product family so allocation is avoided. | `worldsteel-lci-methodology-2017` |\n| `allocation_shared_line` | shared line inputs and emissions | When direct measurement is not practicable, allocate shared exchanges using a documented physical relationship that reflects causation, such as machine time, metered load or processed mass. State the driver and test a materially different plausible driver when allocation changes conclusions. | `worldsteel-lci-methodology-2017` |\n| `allocation_scrap` | ferrous process scrap | Treat segregated ferrous process scrap as a waste output at the foreground gate unless a documented expanded model applies a named recycling method. Do not add an end-of-life recycling credit to this gate-to-gate product and do not count internally reworked steel as both input and exported scrap. | `worldsteel-lci-methodology-2017` |\n| `allocation_recovered_output` | recovered non-product outputs | Treat a recovered output as a co-product only when its quantity, destination, market demand and substituted function are documented. If system expansion is used, name the substituted product, disclose functional equivalence and conduct sensitivity analysis when the result is material. | `worldsteel-lci-methodology-2017` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 297
+              line: 10
+              column: 1
+            end:
+              offset: 400
+              line: 10
+              column: 104
+          text: "# Angles, shapes and sections, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33836
+              line: 491
+              column: 1
+            end:
+              offset: 33876
+              line: 491
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45301"
+      family: "validation"
+      span:
+        start:
+          offset: 45301
+          line: 535
+          column: 1
+        end:
+          offset: 47725
+          line: 548
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_identity` | reference product | Reject a data package that omits steel grade, section geometry and dimensions, incoming feedstock state, qualifying cold or further-working operation, surface state, facility geography or reporting period. | `un-cpc-3-0-2025`; `un-hs-2017-7216` |\n| `validation_reference_mass` | reference flow | Confirm that the reference output is exactly 1 kg net conforming section after normalization and that packaging tare is excluded from product mass but each consumed packaging component is inventoried separately. | `worldsteel-lci-methodology-2017`; `eu-jrc-fmp-bref-2022` |\n| `validation_route_rows` | conditional inventory rows | For every absent conditional row, require evidence that its named operation or material is absent. Reject blank values or missing records presented as `not_applicable`. | `eu-jrc-fmp-bref-2022` |\n| `validation_balance` | steel-bearing inventory | Recalculate the steel mass balance using unrounded reporting-period totals and require an explanation for every discrepancy, inventory change, internal rework and rejected output. | `worldsteel-lci-methodology-2017` |\n| `validation_energy_and_emissions` | utilities and direct emissions | Reconcile electricity and natural gas with invoices and meter hierarchy; ensure direct emissions are restricted to foreground sources and that fossil CO2 is not duplicated from upstream electricity. | `worldsteel-lci-methodology-2017`; `eu-jrc-fmp-bref-2022` |\n| `validation_allocation` | shared production | Verify subdivision first, reproduce the declared physical allocation calculation, and require sensitivity analysis when another plausible driver materially changes results. | `worldsteel-lci-methodology-2017` |\n| `validation_recursive_input` | same-category input | Verify that a purchased same-category section has one qualified upstream dataset and that only incremental site operations are represented, with no recursive expansion of this PCR. | `worldsteel-lci-methodology-2017` |\n| `validation_uuid` | UUID-bearing rows | Accept only UUIDs supported by a finalized hybrid-search receipt and public state-code 100 direct reads. Keep every non-adopted candidate from the receipts used for an inventory row rejected unless new route facts establish an exact semantic match and a new audit is completed. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 297
+              line: 10
+              column: 1
+            end:
+              offset: 400
+              line: 10
+              column: 104
+          text: "# Angles, shapes and sections, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45301
+              line: 535
+              column: 1
+            end:
+              offset: 45323
+              line: 535
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 7074
+          line: 67
+          column: 1
+        end:
+          offset: 7871
+          line: 67
+          column: 798
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_gate_to_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 9555
+          line: 82
+          column: 1
+        end:
+          offset: 9908
+          line: 82
+          column: 354
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_qualifying_operation"
+      identity_kind: "explicit"
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 9909
+          line: 83
+          column: 1
+        end:
+          offset: 10206
+          line: 83
+          column: 298
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_upstream_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 10207
+          line: 84
+          column: 1
+        end:
+          offset: 10564
+          line: 84
+          column: 358
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_cutoff"
+      identity_kind: "explicit"
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 10565
+          line: 85
+          column: 1
+        end:
+          offset: 10920
+          line: 85
+          column: 356
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 10921
+          line: 86
+          column: 1
+        end:
+          offset: 11234
+          line: 86
+          column: 314
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_33836"
+      source_span:
+        start:
+          offset: 33949
+          line: 495
+          column: 1
+        end:
+          offset: 34159
+          line: 495
+          column: 211
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared_line"
+      identity_kind: "explicit"
+      unit_id: "normative_33836"
+      source_span:
+        start:
+          offset: 34160
+          line: 496
+          column: 1
+        end:
+          offset: 34554
+          line: 496
+          column: 395
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_33836"
+      source_span:
+        start:
+          offset: 34555
+          line: 497
+          column: 1
+        end:
+          offset: 34937
+          line: 497
+          column: 383
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_recovered_output"
+      identity_kind: "explicit"
+      unit_id: "normative_33836"
+      source_span:
+        start:
+          offset: 34938
+          line: 498
+          column: 1
+        end:
+          offset: 35327
+          line: 498
+          column: 390
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 45396
+          line: 539
+          column: 1
+        end:
+          offset: 45688
+          line: 539
+          column: 293
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 45689
+          line: 540
+          column: 1
+        end:
+          offset: 46011
+          line: 540
+          column: 323
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_route_rows"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 46012
+          line: 541
+          column: 1
+        end:
+          offset: 46264
+          line: 541
+          column: 253
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 46265
+          line: 542
+          column: 1
+        end:
+          offset: 46533
+          line: 542
+          column: 269
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_energy_and_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 46534
+          line: 543
+          column: 1
+        end:
+          offset: 46865
+          line: 543
+          column: 332
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 46866
+          line: 544
+          column: 1
+        end:
+          offset: 47124
+          line: 544
+          column: 259
+    - pointer: "/validation_rules/6"
+      rule_id: "validation_recursive_input"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 47125
+          line: 545
+          column: 1
+        end:
+          offset: 47398
+          line: 545
+          column: 274
+    - pointer: "/validation_rules/7"
+      rule_id: "validation_uuid"
+      identity_kind: "explicit"
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 47399
+          line: 546
+          column: 1
+        end:
+          offset: 47723
+          line: 546
+          column: 325
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 7051
+          line: 65
+          column: 1
+        end:
+          offset: 7072
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7051"
+      source_span:
+        start:
+          offset: 7899
+          line: 71
+          column: 1
+        end:
+          offset: 9482
+          line: 78
+          column: 299
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33836"
+      source_span:
+        start:
+          offset: 33836
+          line: 491
+          column: 1
+        end:
+          offset: 33876
+          line: 491
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45301"
+      source_span:
+        start:
+          offset: 45301
+          line: 535
+          column: 1
+        end:
+          offset: 45323
+          line: 535
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:200020adfd8486d27422d70c279820b7382db3107c4549fba2884bdfabe3e9b0"
-  generated_content_sha256: "sha256:d6c1a21519b8eb427cd8d2803dc0ca8c6fbdaeac6cf32cee809068abf1fa2814"
+  generated_content_sha256: "sha256:3b89faf00fcef69d9bcfefecc83d3230fd56438a1f29917c043913a8f6445a08"

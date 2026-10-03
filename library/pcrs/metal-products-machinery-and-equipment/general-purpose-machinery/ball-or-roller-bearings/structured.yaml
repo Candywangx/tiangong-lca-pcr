@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -812,12 +812,484 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
     used_for: "Official original legal text verified for functional-unit definition, allocation hierarchy, data quality, and foreground inventory rules."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:af0c67d2e5b57c9f1196733c6d22e01024e5e1a30f8572e4d38747003c74bc0b"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6358"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6358
+          line: 59
+          column: 1
+        end:
+          offset: 10253
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins when steel, purchased parts, auxiliaries, energy, water, and packaging are received at the reporting manufacturing site or at a contracted operation attributed to the product. It ends with the conforming, preserved, inspected, and packaged bearing leaving the factory gate. The operation sequence and inspection stages follow the bearing-manufacturing descriptions in `skf-insert-bearings-18033`; material, auxiliary, energy, cleaning, packaging, and residual-product relevance follows `skf-green-bearings`.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Delivered bearing-grade steel and any purchased bearing parts, auxiliaries, energy, process water, and packaging at the reporting site gate, with supplier, material grade, product state, recycled content when known, and upstream dataset identified |\n| starting_condition_role | Foreground manufacturing input; extraction and production of purchased goods and energy are represented by linked upstream datasets rather than repeated inside the foreground process |\n| product_classification_scope | Complete ball or roller bearings; loose parts and other power-transmission products remain outside the reference-product identity |\n| recursive_input_rule | A purchased complete ball or roller bearing used as a component must be recorded once as an upstream product input with its own dataset and must not be recursively decomposed under this PCR unless the study intentionally replaces that supplier dataset with primary component records |\n| upstream_dataset_requirement | Use supplier-specific datasets where available for bearing steel, purchased components, lubricant, preservation oil, packaging, electricity, natural gas, and water; otherwise use geographically, technologically, temporally, and materially representative datasets and disclose substitutions |\n| disclosure | Declare which operations are on-site or outsourced, the incoming state of steel and parts, furnace and finishing technologies, cleaning route, lubrication and preservation state, rejects and rework, waste destinations, packaging, site geography, reporting period, and exclusions |\n\n### System Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_rule_1` | foreground_operations | Include forming and turning, heat treatment, grinding and honing or superfinishing, cleaning, assembly, lubrication or sealing when applicable, inspection, preservation, and packaging when they are performed under the producer's control or attributed contract manufacturing. | `skf-insert-bearings-18033`; `skf-green-bearings` |\n| `boundary_rule_2` | purchased_inputs | Link cradle-to-gate upstream datasets for every purchased material, component, auxiliary, energy carrier, water supply, and packaging input; do not treat the reporting-site gate as a zero-burden origin. | `skf-green-bearings`; `eu-recommendation-2021-2279` |\n| `boundary_rule_3` | outsourced_steps | Represent an outsourced manufacturing step once, either as a supplier-specific process or within a purchased-component dataset. Do not also count the same energy, auxiliary, waste, or emission in the reporting-site inventory. | `skf-insert-bearings-18033` |\n| `boundary_rule_4` | downstream_stages | Exclude distribution after the factory gate, mounting, operation, maintenance, replacement, remanufacturing, and end of life from this declared unit. A downstream model may add them only with separately declared application and scenario data. | `international-epd-pcr-2023-03` |\n| `boundary_rule_5` | capital_goods_and_minor_flows | Do not apply an automatic mass or cost cut-off. Include measured production exchanges and disclose any excluded capital good or minor flow with a documented significance check for the intended study. | `eu-recommendation-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 168
+              line: 8
+              column: 1
+            end:
+              offset: 193
+              line: 8
+              column: 26
+          text: "# Ball or roller bearings"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6358
+              line: 59
+              column: 1
+            end:
+              offset: 6379
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28638"
+      family: "allocation"
+      span:
+        start:
+          offset: 28638
+          line: 437
+          column: 1
+        end:
+          offset: 30329
+          line: 447
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_rule_1` | shared_processes | Avoid allocation by subdividing production lines, batches, meters, furnaces, and waste records so inputs and outputs directly attributable to the declared bearing are collected separately. | `eu-recommendation-2021-2279` |\n| `allocation_rule_2` | unavoidable_shared_burdens | When subdivision is not possible, use a causal physical relationship such as machine time, furnace occupancy, metered energy, processed mass, surface area, or batch time. Document the driver, numerator, denominator, affected products, and sensitivity. | `eu-recommendation-2021-2279` |\n| `allocation_rule_3` | non_physical_allocation | Use economic or another non-physical relationship only after documenting why subdivision and a relevant physical relationship are infeasible. Record prices, period, geography, co-product status, and sensitivity. | `eu-recommendation-2021-2279` |\n| `allocation_rule_4` | recycled_metal_and_waste | Keep the burdens of collecting, conditioning, and treating chips, swarf, wastewater, and other wastes on the generating system until the declared treatment or end-of-waste boundary. Report any recycling credit or substitution scenario separately; do not subtract it invisibly from foreground quantities. | `eu-recommendation-2021-2279` |\n| `allocation_rule_5` | rework_and_internal_recycling | Track internal rework and recirculated material without creating a second product output. Count only net external inputs and outputs while retaining gross process records for audit and mass-balance checks. | `skf-green-bearings` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 168
+              line: 8
+              column: 1
+            end:
+              offset: 193
+              line: 8
+              column: 26
+          text: "# Ball or roller bearings"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28638
+              line: 437
+              column: 1
+            end:
+              offset: 28678
+              line: 437
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40273"
+      family: "validation"
+      span:
+        start:
+          offset: 40273
+          line: 488
+          column: 1
+        end:
+          offset: 42329
+          line: 503
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule |\n| --- | --- |\n| `validation_rule_1` | Confirm that the declared product is a complete ball or roller bearing under the stated boundary and not a bearing housing, plain bearing, loose ball, loose roller, bearing unit, or spare part. |\n| `validation_rule_2` | Confirm that the reference product is exactly 1 kg net conforming finished bearing at the factory gate and that packaging mass is excluded from that net mass. |\n| `validation_rule_3` | Confirm that all five required manufacturing stages are represented, including outsourced stages, and that exclusions or non-applicable steps are explicitly justified. |\n| `validation_rule_4` | Confirm that every inventory row is an atomic physical, chemical, waste, energy, or elementary exchange and that no umbrella utility, fuel, packaging, chemical, wastewater, residue, or emission row is used. |\n| `validation_rule_5` | Confirm that forming, heat-treatment, and grinding electricity are collected and reported separately, even where an allocation procedure uses a shared meter. |\n| `validation_rule_6` | Confirm that machining chips and grinding swarf remain separate waste flows and are not netted against bearing-steel input or combined with rejected bearings. |\n| `validation_rule_7` | Confirm that direct fossil carbon dioxide represents only foreground gaseous-natural-gas combustion and excludes upstream energy-system emissions. |\n| `validation_rule_8` | Confirm that the metal balance and the cleaning-water balance have been performed and that material discrepancies are documented. |\n| `validation_rule_9` | Confirm that UUID-bearing rows match the audited TianGong English and Chinese base names, flow type, classification, flow property, unit group, and public state; unresolved rows must retain empty UUIDs and manifest review records. |\n| `validation_rule_10` | Confirm that no externally inferred range is used unless at least two independent, original-text-verified sources have compatible boundaries, reference flow, product state, and units. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 168
+              line: 8
+              column: 1
+            end:
+              offset: 193
+              line: 8
+              column: 26
+          text: "# Ball or roller bearings"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40273
+              line: 488
+              column: 1
+            end:
+              offset: 40295
+              line: 488
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 6381
+          line: 61
+          column: 1
+        end:
+          offset: 6919
+          line: 61
+          column: 539
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 8669
+          line: 78
+          column: 1
+        end:
+          offset: 9043
+          line: 78
+          column: 375
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 9044
+          line: 79
+          column: 1
+        end:
+          offset: 9343
+          line: 79
+          column: 300
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 9344
+          line: 80
+          column: 1
+        end:
+          offset: 9642
+          line: 80
+          column: 299
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 9643
+          line: 81
+          column: 1
+        end:
+          offset: 9963
+          line: 81
+          column: 321
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_rule_5"
+      identity_kind: "explicit"
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 9964
+          line: 82
+          column: 1
+        end:
+          offset: 10251
+          line: 82
+          column: 288
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_28638"
+      source_span:
+        start:
+          offset: 28751
+          line: 441
+          column: 1
+        end:
+          offset: 29016
+          line: 441
+          column: 266
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_28638"
+      source_span:
+        start:
+          offset: 29017
+          line: 442
+          column: 1
+        end:
+          offset: 29355
+          line: 442
+          column: 339
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_28638"
+      source_span:
+        start:
+          offset: 29356
+          line: 443
+          column: 1
+        end:
+          offset: 29651
+          line: 443
+          column: 296
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_28638"
+      source_span:
+        start:
+          offset: 29652
+          line: 444
+          column: 1
+        end:
+          offset: 30040
+          line: 444
+          column: 389
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_rule_5"
+      identity_kind: "explicit"
+      unit_id: "normative_28638"
+      source_span:
+        start:
+          offset: 30041
+          line: 445
+          column: 1
+        end:
+          offset: 30327
+          line: 445
+          column: 287
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 40330
+          line: 492
+          column: 1
+        end:
+          offset: 40549
+          line: 492
+          column: 220
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 40550
+          line: 493
+          column: 1
+        end:
+          offset: 40734
+          line: 493
+          column: 185
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 40735
+          line: 494
+          column: 1
+        end:
+          offset: 40928
+          line: 494
+          column: 194
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 40929
+          line: 495
+          column: 1
+        end:
+          offset: 41161
+          line: 495
+          column: 233
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_rule_5"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 41162
+          line: 496
+          column: 1
+        end:
+          offset: 41345
+          line: 496
+          column: 184
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_rule_6"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 41346
+          line: 497
+          column: 1
+        end:
+          offset: 41530
+          line: 497
+          column: 185
+    - pointer: "/validation_rules/6"
+      rule_id: "validation_rule_7"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 41531
+          line: 498
+          column: 1
+        end:
+          offset: 41703
+          line: 498
+          column: 173
+    - pointer: "/validation_rules/7"
+      rule_id: "validation_rule_8"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 41704
+          line: 499
+          column: 1
+        end:
+          offset: 41859
+          line: 499
+          column: 156
+    - pointer: "/validation_rules/8"
+      rule_id: "validation_rule_9"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 41860
+          line: 500
+          column: 1
+        end:
+          offset: 42116
+          line: 500
+          column: 257
+    - pointer: "/validation_rules/9"
+      rule_id: "validation_rule_10"
+      identity_kind: "explicit"
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 42117
+          line: 501
+          column: 1
+        end:
+          offset: 42327
+          line: 501
+          column: 211
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 6358
+          line: 59
+          column: 1
+        end:
+          offset: 6379
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6358"
+      source_span:
+        start:
+          offset: 6947
+          line: 65
+          column: 1
+        end:
+          offset: 8569
+          line: 72
+          column: 296
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28638"
+      source_span:
+        start:
+          offset: 28638
+          line: 437
+          column: 1
+        end:
+          offset: 28678
+          line: 437
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40273"
+      source_span:
+        start:
+          offset: 40273
+          line: 488
+          column: 1
+        end:
+          offset: 40295
+          line: 488
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:af0c67d2e5b57c9f1196733c6d22e01024e5e1a30f8572e4d38747003c74bc0b"
-  generated_content_sha256: "sha256:0d7c175c36ca7f069afcf44ca0c9cded20c4675f4cc1a69eb090766bd938f2cb"
+  generated_content_sha256: "sha256:7a02ccc34427ad769123bab7982a09d7c7bc0f87d8e002ddf2e95fb0c69460e8"

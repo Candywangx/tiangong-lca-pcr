@@ -46,9 +46,9 @@ remains review-required even when `usable_for_guidance` is true.
 
 Start with `guidance --pcr <id> --topic overview --format json` and the reference-flow
 and boundary topics. Load other topics when a question needs them. Preserve rule
-text, applicability and source references. Retrieve truncated values using
+text, applicability and source references. Guidance values are complete, with normative source units and ancestor context; read them together before deciding applicability. Use exact pointers with
 `guidance --pcr <id> --pointer <source.pointer> --format json`; use `--output <new-file>`
-for large results. Full `guidance` remains available for a saved complete view.
+for large results. Full `guidance` remains available for a saved complete view. Preserve stored projection hashes separately from derived legacy context provenance; fallback IDs and pointers are snapshot-local.
 
 ## Choose the task route
 

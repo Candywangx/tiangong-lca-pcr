@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1072,12 +1072,391 @@ data_sources:
     type: "official_guidance"
     reference: "U.S. EPA, AP-42 Section 12.1, Primary Aluminum Production, https://www.epa.gov/sites/production/files/2020-11/documents/c12s01.pdf"
     used_for: "Bayer process sequence, separation from aluminium smelting, raw-material additions, red mud, calcination, and particulate release points"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:85d06def3d38c86a8cb894fa16148b9d19558933120338130a5d9c95913b0b9c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4642"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4642
+          line: 60
+          column: 1
+        end:
+          offset: 6495
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground starts when bauxite and other purchased inputs cross the refinery gate and ends when conforming dry alumina crosses the refinery gate. Include refinery handling, grinding, digestion, clarification, precipitation, calcination, product recovery, directly operated residue management, and directly operated steam generation. Include direct fuel combustion and measured releases; link purchased inputs to separate upstream datasets without incorporating their upstream exchanges into foreground rows.\n\nExclude bauxite mining and beneficiation before the declared gate, manufacture of purchased chemicals and energy, capital goods unless the study explicitly requires them, employee travel, downstream transport and use, aluminium smelting, and artificial-corundum fusion. Disclose any material site operation omitted from this gate-to-gate boundary.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Bauxite, chemicals, water, fuels, and purchased energy at the refinery gate, with supplier state and metering basis declared |\n| starting_condition_role | Gate-to-gate foreground starting condition |\n| product_classification_scope | CPC 3.0 `41432`, excluding artificial corundum and downstream conversions |\n| recursive_input_rule | Any returned alumina or same-category material entering the refinery is recorded once as a separate input with origin and state; do not recursively apply this PCR to that input inside the same foreground package. |\n| upstream_dataset_requirement | Use geographically, technologically, temporally, and product-state representative upstream datasets for each purchased input. |\n| disclosure | Report cut-offs, missing meters, allocation, recycled liquor and seed loops, residue route, energy origin, and deviations from the declared boundary. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 182
+              line: 8
+              column: 1
+            end:
+              offset: 237
+              line: 8
+              column: 56
+          text: "# Alumina (aluminium oxide), except artificial corundum"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4642
+              line: 60
+              column: 1
+            end:
+              offset: 4663
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25058"
+      family: "allocation"
+      span:
+        start:
+          offset: 25058
+          line: 509
+          column: 1
+        end:
+          offset: 26603
+          line: 520
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nAvoid allocation by submetering the five process groups and reconciling internal red-mud, steam, liquor, water, and seed transfers. Internal recycle is not a new product input or output. Saleable by-products, recovered materials exported from the boundary, or shared services shall be reported explicitly rather than hidden in the alumina balance.\n\n| allocation_id | circumstance | required rule | disclosure |\n| --- | --- | --- | --- |\n| `alloc_direct` | Inputs and releases attributable to one process or product | Assign directly using meters, batches, or engineering records | Measurement source and reconciliation |\n| `alloc_shared_energy` | Shared electricity, steam, fuel, or water meter | Allocate using causal equipment operating data, metered energy, steam enthalpy, or mass; economic allocation is not the default | Driver, period, quantities, and sensitivity |\n| `alloc_exported_coproduct` | A material leaves as a saleable co-product | Prefer subdivision or system expansion when the study goal permits; otherwise apply a documented physical relation before economic allocation | Product state, quantity, method, prices if used, and sensitivity |\n| `alloc_residue` | Red mud sent to treatment, storage, disposal, or beneficial use | Keep residue generation in the alumina system and model the declared downstream route consistently with the study boundary; do not assign avoided burden without an explicit consequential rule | Destination, moisture, solids, stock change, and any credit |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 182
+              line: 8
+              column: 1
+            end:
+              offset: 237
+              line: 8
+              column: 56
+          text: "# Alumina (aluminium oxide), except artificial corundum"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25058
+              line: 509
+              column: 1
+            end:
+              offset: 25098
+              line: 509
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36427"
+      family: "validation"
+      span:
+        start:
+          offset: 36427
+          line: 573
+          column: 1
+        end:
+          offset: 38034
+          line: 587
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| validation_id | severity | rule |\n| --- | --- | --- |\n| `v_reference` | error | `calc_alumina` shall equal 1,000 kg dry conforming non-fused alumina after normalization and shall use the audited reference-product UUID. |\n| `v_inventory_identity` | error | Every row shall contain exactly one atomic exchange; UUID-empty rows shall remain explicitly unresolved and shall not use a proxy UUID. |\n| `v_row_completeness` | error | Every included process row shall have a value, unit, method, reporting-period coverage, and evidence reference; a conditional process may be marked not applicable only with evidence. |\n| `v_mass_basis` | error | Bauxite, chemicals, alumina, particulate matter, and red mud shall disclose consistent wet/dry or concentration bases and conversion records. |\n| `v_residue_balance` | error | Red-mud generation, transfers, stocks, and destinations shall reconcile on one declared solids and moisture basis. |\n| `v_energy_double_count` | error | When on-site steam generation is included, its natural gas and direct CO2 shall not also be embedded in a purchased-steam foreground record. |\n| `v_boundary` | error | Artificial-corundum fusion, aluminium smelting, and bauxite mining shall not be represented as covered foreground processes. |\n| `v_sources` | error | Final evidence shall cite verified original text; discovery metadata or snippets alone are insufficient. |\n| `v_ranges` | warning | No external numeric QA range is asserted until two compatible, mutually independent original-text sources support it; foreground collection remains mandatory. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 182
+              line: 8
+              column: 1
+            end:
+              offset: 237
+              line: 8
+              column: 56
+          text: "# Alumina (aluminium oxide), except artificial corundum"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36427
+              line: 573
+              column: 1
+            end:
+              offset: 36449
+              line: 573
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_4642"
+      source_span:
+        start:
+          offset: 4665
+          line: 62
+          column: 1
+        end:
+          offset: 5176
+          line: 62
+          column: 512
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_4642"
+      source_span:
+        start:
+          offset: 5178
+          line: 64
+          column: 1
+        end:
+          offset: 5525
+          line: 64
+          column: 348
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_25058"
+      source_span:
+        start:
+          offset: 25100
+          line: 511
+          column: 1
+        end:
+          offset: 25447
+          line: 511
+          column: 348
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 36507
+          line: 577
+          column: 1
+        end:
+          offset: 36673
+          line: 577
+          column: 167
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 36674
+          line: 578
+          column: 1
+        end:
+          offset: 36846
+          line: 578
+          column: 173
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 36847
+          line: 579
+          column: 1
+        end:
+          offset: 37064
+          line: 579
+          column: 218
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 37065
+          line: 580
+          column: 1
+        end:
+          offset: 37235
+          line: 580
+          column: 171
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_rule_5"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 37236
+          line: 581
+          column: 1
+        end:
+          offset: 37384
+          line: 581
+          column: 149
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_rule_6"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 37385
+          line: 582
+          column: 1
+        end:
+          offset: 37563
+          line: 582
+          column: 179
+    - pointer: "/validation_rules/6"
+      rule_id: "validation_rule_7"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 37564
+          line: 583
+          column: 1
+        end:
+          offset: 37715
+          line: 583
+          column: 152
+    - pointer: "/validation_rules/7"
+      rule_id: "validation_rule_8"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 37716
+          line: 584
+          column: 1
+        end:
+          offset: 37846
+          line: 584
+          column: 131
+    - pointer: "/validation_rules/8"
+      rule_id: "validation_rule_9"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 37847
+          line: 585
+          column: 1
+        end:
+          offset: 38032
+          line: 585
+          column: 186
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4642"
+      source_span:
+        start:
+          offset: 4642
+          line: 60
+          column: 1
+        end:
+          offset: 4663
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4642"
+      source_span:
+        start:
+          offset: 5553
+          line: 68
+          column: 1
+        end:
+          offset: 6493
+          line: 75
+          column: 167
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25058"
+      source_span:
+        start:
+          offset: 25058
+          line: 509
+          column: 1
+        end:
+          offset: 25098
+          line: 509
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_25058"
+      source_span:
+        start:
+          offset: 25100
+          line: 511
+          column: 1
+        end:
+          offset: 25447
+          line: 511
+          column: 348
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_25058"
+      source_span:
+        start:
+          offset: 25449
+          line: 513
+          column: 1
+        end:
+          offset: 26601
+          line: 518
+          column: 342
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36427"
+      source_span:
+        start:
+          offset: 36427
+          line: 573
+          column: 1
+        end:
+          offset: 36449
+          line: 573
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:85d06def3d38c86a8cb894fa16148b9d19558933120338130a5d9c95913b0b9c"
-  generated_content_sha256: "sha256:299b4464aaf9aa9c6d50381f6d3b673ee25aa3ec410dad666b714615f32e0401"
+  generated_content_sha256: "sha256:25f971381145906434960cd86550ebfdd61ae457fc88686f1dc1f9713b2e3bb0"

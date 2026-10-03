@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 title: PCR Library Release Policy
 docType: contract
 scope: repo

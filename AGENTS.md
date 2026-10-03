@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -290,6 +290,10 @@ Read only the context needed for the current task.
 - For builder CLI, schema, script, template, or vocab changes, use `builder/README.md`, then inspect only the affected implementation files.
 - For public PCR consumption CLI, Agent skill, or feedback issue template changes, inspect `packages/**`, `skills/tiangong-pcr/**`, `.github/ISSUE_TEMPLATE/**`, `README.md`, and `docs/architecture.md`.
 - For create, update, translate, review, or publish PCR workflows, start at `builder/AGENTS.md` and `builder/docs/index.md`.
+
+## Normative source context
+
+Follow `docs/semantic-projection-contract.md` for projection v2, complete unit/ancestor context, legacy v1 enrichment and distinct citation identities. Flat rules alone do not establish applicability. Preserve published bytes and scientific/translation gates; regenerate unpublished projections through the normal transaction.
 
 ## TypeScript engineering
 

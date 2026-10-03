@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -17,11 +17,11 @@ functional_unit:
   reference_flow_link: "reference_product_output"
 system_boundary:
   rules:
-    - rule_id: system_boundary_rule_1
+    - rule_id: system_boundary_rule_1_snapshot
       applies_to: "foreground_system_boundary"
       rule: "The foreground boundary begins with receipt of hot-rolled non-alloy steel strip and ends with net conforming cold-rolled product after final width control at the factory gate. It includes chemical pickling, cold reduction, conditional annealing and atmosphere generation at the line, conditional tempering, finishing, slitting, direct utilities, direct emissions, on-site treatment attributable to these operations, and outgoing process wastes. Production of hot-rolled feed, purchased chemicals, electricity, gas and water is represented by linked upstream datasets. Customer transport, use, downstream fabrication and end-of-life are outside this gate-to-gate boundary."
       source_ids: []
-    - rule_id: system_boundary_rule_1_2
+    - rule_id: system_boundary_rule_1
       applies_to: "Foreground start and end"
       rule: "Start at hot-rolled strip receipt and end at net conforming product after finishing and width verification; keep packaging outside the reference product mass."
       source_ids:
@@ -1072,12 +1072,517 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, 2022, JRC131649, https://doi.org/10.2760/196475"
     used_for: "Cold-rolling process sequence, chemical pickling, cold reduction, annealing, tempering, finishing, slitting, oil and water circuits, wastes and direct-emission collection scope"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:98af9cdfe4de6f8732d7ca1638624287dae261390f9b7404423fca30f585f77d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5633"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5633
+          line: 60
+          column: 1
+        end:
+          offset: 8621
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins with receipt of hot-rolled non-alloy steel strip and ends with net conforming cold-rolled product after final width control at the factory gate. It includes chemical pickling, cold reduction, conditional annealing and atmosphere generation at the line, conditional tempering, finishing, slitting, direct utilities, direct emissions, on-site treatment attributable to these operations, and outgoing process wastes. Production of hot-rolled feed, purchased chemicals, electricity, gas and water is represented by linked upstream datasets. Customer transport, use, downstream fabrication and end-of-life are outside this gate-to-gate boundary.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `system_boundary_rule_1` | Foreground start and end | Start at hot-rolled strip receipt and end at net conforming product after finishing and width verification; keep packaging outside the reference product mass. | `ec-jrc-fmp-bref-2022` |\n| `system_boundary_rule_2` | Conditional routes | Include annealing, atmosphere gases, tempering, slitting, protective oil and their exchanges only when actual production records show that operation for the represented product. | `ec-jrc-fmp-bref-2022` |\n| `system_boundary_rule_3` | Treatment and recycling loops | Record make-up inputs and net outputs crossing each foreground process boundary; do not count internally recirculated acid, emulsion, cooling water or internally returned scrap as a new external exchange. | `ec-jrc-fmp-bref-2022` |\n| `system_boundary_rule_4` | Excluded life-cycle stages | Exclude customer transport, use, downstream fabrication and end-of-life; require linked datasets for all purchased inputs crossing the foreground start boundary. |  |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Hot-rolled non-alloy steel strip received at the cold-rolling site, with mass, grade, width, thickness, surface condition, supplier and upstream dataset declared |\n| starting_condition_role | Upstream product input to the foreground cold-rolling system |\n| product_classification_scope | Semantic product boundary for non-alloy steel flat-rolled product in a cold-rolled state with finished width below 600 mm; CPC 3.0 41222 is mapping context only |\n| recursive_input_rule | If externally supplied cold-rolled product in the same category enters the foreground system, record it as an upstream product input with its own provider dataset and do not regenerate its inherited production burden inside this foreground model |\n| upstream_dataset_requirement | Link provider datasets for hot-rolled strip, each acid or chemical, water, alternating-current electricity, natural gas, atmosphere gas and other purchased product input |\n| disclosure | Declare site, geography, period, steel grade, product form, actual route, excluded operations, internal-loop accounting, treatment boundary and any same-category input |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 227
+              line: 8
+              column: 1
+            end:
+              offset: 337
+              line: 8
+              column: 111
+          text: "# Flat-rolled products of non-alloy steel, not further worked than cold-rolled, of a width of less than 600 mm"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5633
+              line: 60
+              column: 1
+            end:
+              offset: 5654
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35135"
+      family: "allocation"
+      span:
+        start:
+          offset: 35135
+          line: 634
+          column: 1
+        end:
+          offset: 36507
+          line: 644
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_rule_1` | Process subdivision | Avoid allocation by using process-specific meters, batch records and mass balances for pickling, rolling, annealing and finishing. |  |\n| `allocation_rule_2` | Shared utilities | Allocate a shared meter to represented production using logged operating time and measured or rated load; disclose formula, denominator, other users and sensitivity. |  |\n| `allocation_rule_3` | Internal loops | Assign no new external input or output to acid, emulsion, cooling water or scrap recirculated within the declared foreground boundary; record only make-up and net exported quantities. | `ec-jrc-fmp-bref-2022` |\n| `allocation_rule_4` | Conforming product and exported ferrous scrap | First subdivide direct scrap-generating operations. If inseparable burdens remain, allocate those burdens by measured dry mass between conforming output and exported ferrous scrap, without avoided-burden credit, and disclose the treatment in the downstream model. |  |\n| `allocation_rule_5` | Off-specification steel | Return internally reprocessed steel to the mass balance without a second production burden; treat steel leaving the boundary as its specific waste or co-product flow and disclose destination. | `ec-jrc-fmp-bref-2022` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 227
+              line: 8
+              column: 1
+            end:
+              offset: 337
+              line: 8
+              column: 111
+          text: "# Flat-rolled products of non-alloy steel, not further worked than cold-rolled, of a width of less than 600 mm"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35135
+              line: 634
+              column: 1
+            end:
+              offset: 35175
+              line: 634
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45178"
+      family: "validation"
+      span:
+        start:
+          offset: 45178
+          line: 683
+          column: 1
+        end:
+          offset: 46982
+          line: 696
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_rule_1` | Reference product | Fail if net reference output is not 1,000 kg after normalization, if packaging is included, or if finished width is not strictly below 600 mm. | `unsd-cpc-3-0-structure-2025` |\n| `validation_rule_2` | Product boundary | Fail if alloy or stainless steel, hot-rolled-only, coated or clad product, width 600 mm or more, or a fabricated downstream article is represented as the reference product. | `unsd-cpc-3-0-structure-2025` |\n| `validation_rule_3` | Route applicability | Fail if a conditional operation or exchange is populated without route evidence, or marked not applicable despite records showing it occurred. | `ec-jrc-fmp-bref-2022` |\n| `validation_rule_4` | Inventory atomicity | Fail if any row combines multiple fuels, utilities, acids, gases, wastes or emission species, or if a UUID-empty row is absent from the manifest unresolved register. |  |\n| `validation_rule_5` | Energy and gas units | Fail if kWh-to-MJ conversion differs from 3.6, or if gas volumes with different reference conditions are aggregated without documented conversion. |  |\n| `validation_rule_6` | Steel mass balance | Fail if the steel mass-balance result is missing; flag any unexplained difference and require correction or disclosure before release. |  |\n| `validation_rule_7` | Allocation | Fail if shared utilities or inseparable exported scrap burdens lack the required allocation formula, denominator, records and sensitivity disclosure. |  |\n| `validation_rule_8` | Evidence and traceability | Fail if the reporting period, site scope, raw records, meter or scale quality evidence, source ids or provider datasets needed to reproduce a material result are missing. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 227
+              line: 8
+              column: 1
+            end:
+              offset: 337
+              line: 8
+              column: 111
+          text: "# Flat-rolled products of non-alloy steel, not further worked than cold-rolled, of a width of less than 600 mm"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45178
+              line: 683
+              column: 1
+            end:
+              offset: 45200
+              line: 683
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1_snapshot"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 5656
+          line: 62
+          column: 1
+        end:
+          offset: 6327
+          line: 62
+          column: 672
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 6400
+          line: 66
+          column: 1
+        end:
+          offset: 6641
+          line: 66
+          column: 242
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 6642
+          line: 67
+          column: 1
+        end:
+          offset: 6896
+          line: 67
+          column: 255
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "system_boundary_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 6897
+          line: 68
+          column: 1
+        end:
+          offset: 7189
+          line: 68
+          column: 293
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "system_boundary_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 7190
+          line: 69
+          column: 1
+        end:
+          offset: 7414
+          line: 69
+          column: 225
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_35135"
+      source_span:
+        start:
+          offset: 35248
+          line: 638
+          column: 1
+        end:
+          offset: 35429
+          line: 638
+          column: 182
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_35135"
+      source_span:
+        start:
+          offset: 35430
+          line: 639
+          column: 1
+        end:
+          offset: 35643
+          line: 639
+          column: 214
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_35135"
+      source_span:
+        start:
+          offset: 35644
+          line: 640
+          column: 1
+        end:
+          offset: 35895
+          line: 640
+          column: 252
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_35135"
+      source_span:
+        start:
+          offset: 35896
+          line: 641
+          column: 1
+        end:
+          offset: 36236
+          line: 641
+          column: 341
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_rule_5"
+      identity_kind: "explicit"
+      unit_id: "normative_35135"
+      source_span:
+        start:
+          offset: 36237
+          line: 642
+          column: 1
+        end:
+          offset: 36505
+          line: 642
+          column: 269
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 45273
+          line: 687
+          column: 1
+        end:
+          offset: 45493
+          line: 687
+          column: 221
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 45494
+          line: 688
+          column: 1
+        end:
+          offset: 45743
+          line: 688
+          column: 250
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 45744
+          line: 689
+          column: 1
+        end:
+          offset: 45959
+          line: 689
+          column: 216
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 45960
+          line: 690
+          column: 1
+        end:
+          offset: 46176
+          line: 690
+          column: 217
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_rule_5"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 46177
+          line: 691
+          column: 1
+        end:
+          offset: 46375
+          line: 691
+          column: 199
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_rule_6"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 46376
+          line: 692
+          column: 1
+        end:
+          offset: 46560
+          line: 692
+          column: 185
+    - pointer: "/validation_rules/6"
+      rule_id: "validation_rule_7"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 46561
+          line: 693
+          column: 1
+        end:
+          offset: 46752
+          line: 693
+          column: 192
+    - pointer: "/validation_rules/7"
+      rule_id: "validation_rule_8"
+      identity_kind: "explicit"
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 46753
+          line: 694
+          column: 1
+        end:
+          offset: 46980
+          line: 694
+          column: 228
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 5633
+          line: 60
+          column: 1
+        end:
+          offset: 5654
+          line: 60
+          column: 22
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 5656
+          line: 62
+          column: 1
+        end:
+          offset: 6327
+          line: 62
+          column: 672
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 6400
+          line: 66
+          column: 1
+        end:
+          offset: 6641
+          line: 66
+          column: 242
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 6642
+          line: 67
+          column: 1
+        end:
+          offset: 6896
+          line: 67
+          column: 255
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 6897
+          line: 68
+          column: 1
+        end:
+          offset: 7189
+          line: 68
+          column: 293
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 7190
+          line: 69
+          column: 1
+        end:
+          offset: 7414
+          line: 69
+          column: 225
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 7442
+          line: 73
+          column: 1
+        end:
+          offset: 8619
+          line: 80
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35135"
+      source_span:
+        start:
+          offset: 35135
+          line: 634
+          column: 1
+        end:
+          offset: 35175
+          line: 634
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45178"
+      source_span:
+        start:
+          offset: 45178
+          line: 683
+          column: 1
+        end:
+          offset: 45200
+          line: 683
+          column: 23
+    - code: "SNAPSHOT_RULE_ID_DISAMBIGUATED"
+      message: "Snapshot-local candidate \"system_boundary_rule_1\" was disambiguated to \"system_boundary_rule_1_snapshot\"; authored explicit ID \"system_boundary_rule_1\" and all other authored explicit IDs remain unchanged."
+      unit_id: "normative_5633"
+      source_span:
+        start:
+          offset: 5656
+          line: 62
+          column: 1
+        end:
+          offset: 6327
+          line: 62
+          column: 672
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:98af9cdfe4de6f8732d7ca1638624287dae261390f9b7404423fca30f585f77d"
-  generated_content_sha256: "sha256:fb6b56fb52d2d199a57d6dc0d7c7ec97ba9f68382aa69c393adc71edc893054b"
+  generated_content_sha256: "sha256:cdcd3c29479d35c891f492712c1730558813deb2c1064807ee86a94ba814b818"

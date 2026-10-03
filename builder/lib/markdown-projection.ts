@@ -1,9 +1,75 @@
-import { isTableLine, normalizeHeader, parseTable, stripInlineCode, tableCell } from "./markdown-table.mjs";
-import { normalizeFingerprintText } from "../../packages/pcr-core/src/projection-integrity.mjs";
+export { structuredProjectionYaml } from "./structured-yaml-projection.ts";
+import { isTableLine, normalizeHeader, parseTable, stripInlineCode, tableCell } from "./markdown-table.ts";
+import { normalizeFingerprintText } from "../../packages/pcr-core/src/projection-integrity.ts";
 
-export { structuredProjectionYaml } from "./structured-yaml-projection.mjs";
+import type { MarkdownTable } from "./markdown-table.ts";
+import { compileNormativeProjection } from "../../packages/pcr-core/src/compiler/normative-projection.ts";
+import type { NormativeProjectionContext, NormativeRule } from "../../packages/pcr-core/src/compiler/normative-projection.ts";
 
-function normalizeAsciiSlug(value) {
+export type FlatFields = Record<string, string>;
+export interface InventoryRange {
+  role: string; lower: string; upper: string; unit: string; basis: string;
+  basis_kind: string; evidence_kind: string; source_ids: string[];
+}
+export interface ReferenceFlow {
+  role: string; name: string; flow_type: string; uuid: string;
+  flow_property_uuid: string; unit_group_uuid: string; preferred_unit: string;
+}
+export interface ReferenceFlowDefinition {
+  reference_amount: string; product_flow: { name: string; uuid: string };
+  flow_property_uuid: string; unit_group_uuid: string; reference_unit: string;
+  required_qualifiers: string[];
+}
+export interface MeasurementRule {
+  id: string; applies_to: string; required_property: string;
+  required_property_uuid: string; required_unit: string; rule: string;
+}
+export interface ProcessMapEntry {
+  id: string; name: string; inclusion: string; inclusion_condition: string;
+  role: string; quantitative_reference: string;
+}
+export interface InventoryAmount {
+  expression: string; value_mode: string; specificity: string;
+  basis: { text: string; kind: string };
+  evidence: { kind: string; collection_protocol_id: string; source_ids: string[] };
+  ranges: InventoryRange[];
+}
+export interface InventoryFlow {
+  row_id: string; role: string; name: string; flow_type: string; uuid: string;
+  property_unit: string; description: string; amount: InventoryAmount;
+}
+export type InventoryDirection = "inputs" | "outputs";
+export type InventoryFlowType = "product" | "waste" | "elementary";
+export type InventoryFlowGroups = Record<InventoryFlowType, InventoryFlow[]>;
+export interface ProcessInventoryEntry {
+  id: string; label: string; inputs: InventoryFlowGroups; outputs: InventoryFlowGroups;
+}
+export interface CollectionProtocol {
+  protocol_id: string; process_id: string; flow_role: string; record_type: string;
+  raw_fields: string; collection_method: string; unit: string; frequency: string;
+  temporal_coverage: string; site_scope: string; aggregation_rule: string; quality_evidence: string;
+}
+export interface CalculationRule {
+  id: string; applies_to: string; rule: string; inputs: string[]; output: string; source_ids: string[];
+}
+export interface DataQualityRequirement { id: string; applies_to: string; requirement: string; evidence: string; }
+export interface DataSource { id: string; type: string; reference: string; used_for: string; }
+export interface PcrMarkdownProjection {
+  productCategoryIdentity: FlatFields | null; functionalUnit: FlatFields | null;
+  systemBoundary: { rules: NormativeRule[] }; boundaryAbstraction: FlatFields | null;
+  referenceFlowDefinition: ReferenceFlowDefinition | null; referenceFlows: ReferenceFlow[];
+  measurementRules: MeasurementRule[]; processMap: ProcessMapEntry[];
+  processInventory: ProcessInventoryEntry[]; allocationRules: NormativeRule[];
+  collectionProtocols: CollectionProtocol[]; calculationRules: CalculationRule[];
+  dataQualityRequirements: DataQualityRequirement[]; validationRules: NormativeRule[];
+  publishedDatasetProfile: FlatFields | null; dataSources: DataSource[];
+  normativeContext: NormativeProjectionContext;
+}
+interface ParsedBullet { indent: number; key: string; value: string; }
+type FlowCardFields = Record<string, string | FlatFields>;
+
+
+function normalizeAsciiSlug(value: unknown) {
   return String(value)
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/gu, "")
@@ -14,14 +80,14 @@ function normalizeAsciiSlug(value) {
     .replace(/-{2,}/gu, "-");
 }
 
-function extractFirstUuid(value) {
+function extractFirstUuid(value: unknown) {
   const match = stripInlineCode(value).match(
     /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/iu,
   );
   return match ? match[0].toLowerCase() : "";
 }
 
-function extractSourceIds(value) {
+function extractSourceIds(value: unknown) {
   const matches = String(value ?? "").match(/`([^`]+)`/gu) ?? [];
   if (matches.length > 0) {
     return matches.map((match) => match.slice(1, -1).trim()).filter(Boolean);
@@ -32,25 +98,25 @@ function extractSourceIds(value) {
     .filter(Boolean);
 }
 
-function splitListValue(value) {
+function splitListValue(value: unknown) {
   return stripInlineCode(value)
     .split(/[;,]/u)
     .map((entry) => entry.trim())
     .filter(Boolean);
 }
 
-function labelWithoutUuid(value) {
+function labelWithoutUuid(value: unknown) {
   return stripInlineCode(value)
     .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/giu, "")
     .replace(/\s{2,}/gu, " ")
     .trim();
 }
 
-function normalizeStructuredId(value) {
+function normalizeStructuredId(value: unknown) {
   return normalizeAsciiSlug(value).replaceAll("-", "_");
 }
 
-function normalizeProjectionHeader(value) {
+function normalizeProjectionHeader(value: unknown) {
   const raw = stripInlineCode(value).trim().toLowerCase();
   const localizedHeaders = new Map([
     ["字段", "field"],
@@ -72,7 +138,7 @@ function normalizeProjectionHeader(value) {
   return localizedHeaders.get(raw) ?? normalizeHeader(raw);
 }
 
-function normalizeReferenceField(value) {
+function normalizeReferenceField(value: unknown) {
   const localizedFields = new Map([
     ["参考数量", "reference_amount"],
     ["参考产品流", "reference_product_flow"],
@@ -86,19 +152,19 @@ function normalizeReferenceField(value) {
   return localizedFields.get(stripInlineCode(value).trim()) ?? normalizeHeader(value);
 }
 
-function inlineCodeValues(value) {
-  return [...String(value ?? "").matchAll(/`([^`]+)`/gu)].map((match) => match[1].trim()).filter(Boolean);
+function inlineCodeValues(value: unknown) {
+  return [...String(value ?? "").matchAll(/`([^`]+)`/gu)].map((match) => (match[1] ?? "").trim()).filter(Boolean);
 }
 
-function controlledValue(value) {
+function controlledValue(value: unknown) {
   const codes = inlineCodeValues(value);
   if (codes.length > 0) {
-    return codes[0];
+    return codes[0] ?? "";
   }
   return stripInlineCode(value);
 }
 
-function normalizeDirection(value) {
+function normalizeDirection(value: unknown) {
   const raw = controlledValue(value).trim().toLowerCase();
   const normalized = normalizeStructuredId(raw);
   if (
@@ -118,7 +184,7 @@ function normalizeDirection(value) {
   return normalized;
 }
 
-function normalizeFlowType(value) {
+function normalizeFlowType(value: unknown) {
   const raw = controlledValue(value).trim().toLowerCase();
   const normalized = normalizeStructuredId(raw);
   if (["product", "product_flow", "product_flows"].includes(normalized)) {
@@ -142,7 +208,7 @@ function normalizeFlowType(value) {
   return normalized;
 }
 
-function normalizeFlowCardKey(value) {
+function normalizeFlowCardKey(value: unknown) {
   const raw = String(value ?? "").trim().replace(/\s+/gu, " ");
   const localizedKeyMap = new Map([
     ["选定流", "selected_flow"],
@@ -185,7 +251,7 @@ function normalizeFlowCardKey(value) {
   return keyMap.get(normalized) ?? normalized;
 }
 
-function normalizeRangeFieldKey(value) {
+function normalizeRangeFieldKey(value: unknown) {
   const raw = String(value ?? "").trim().replace(/\s+/gu, " ");
   const localizedKeyMap = new Map([
     ["范围角色", "role"],
@@ -220,9 +286,9 @@ function normalizeRangeFieldKey(value) {
   return keyMap.get(normalized) ?? normalized;
 }
 
-function parseTitledId(value) {
+function parseTitledId(value: unknown): { id: string; label: string } {
   const codes = inlineCodeValues(value);
-  const rowId = codes.length > 0 ? normalizeStructuredId(codes[codes.length - 1]) : "";
+  const rowId = codes.length > 0 ? normalizeStructuredId(codes[codes.length - 1] ?? "") : "";
   const labelSource = rowId
     ? String(value ?? "").replace(/\s*[（(]\s*`[^`]+`\s*[)）]\s*$/u, "")
     : String(value ?? "");
@@ -236,23 +302,23 @@ function parseTitledId(value) {
   };
 }
 
-function parseBullet(rawLine) {
+function parseBullet(rawLine: string): ParsedBullet | null {
   const match = rawLine.match(/^(\s*)[-*]\s+([^:：]+)[:：]\s*(.*)$/u);
   if (!match) {
     return null;
   }
   return {
-    indent: match[1].length,
-    key: match[2],
-    value: match[3].trim(),
+    indent: (match[1] ?? "").length,
+    key: match[2] ?? "",
+    value: (match[3] ?? "").trim(),
   };
 }
 
-function parseNestedRange(lines, startIndex, parentIndent) {
-  const range = {};
+function parseNestedRange(lines: readonly string[], startIndex: number, parentIndent: number): { range: FlatFields; nextIndex: number } {
+  const range: FlatFields = {};
   let index = startIndex;
   for (; index < lines.length; index += 1) {
-    const rawLine = lines[index];
+    const rawLine = lines[index] ?? "";
     const line = rawLine.trim();
     if (!line) {
       continue;
@@ -270,13 +336,13 @@ function parseNestedRange(lines, startIndex, parentIndent) {
   return { range, nextIndex: index };
 }
 
-function parseFlowCardFields(lines, startIndex) {
-  const fields = {};
+function parseFlowCardFields(lines: readonly string[], startIndex: number): { fields: FlowCardFields; description: string; nextIndex: number } {
+  const fields: FlowCardFields = {};
   const descriptions = [];
   let rangeIndex = 0;
   let index = startIndex;
   for (; index < lines.length; index += 1) {
-    const rawLine = lines[index];
+    const rawLine = lines[index] ?? "";
     const line = rawLine.trim();
     if (/^#{1,6}\s+/u.test(line)) {
       break;
@@ -306,8 +372,8 @@ function parseFlowCardFields(lines, startIndex) {
   return { fields, description: descriptions.join(" ").trim(), nextIndex: index };
 }
 
-function parseRangeEntry(value) {
-  const fields = {};
+function parseRangeEntry(value: string | FlatFields): InventoryRange | null {
+  const fields: FlatFields = {};
   if (value && typeof value === "object" && !Array.isArray(value)) {
     Object.assign(fields, value);
   } else {
@@ -336,8 +402,8 @@ function parseRangeEntry(value) {
   };
 }
 
-function parseRangeEntries(fields) {
-  const ranges = [];
+function parseRangeEntries(fields: FlowCardFields): InventoryRange[] {
+  const ranges: InventoryRange[] = [];
   for (const [key, value] of Object.entries(fields)) {
     if (key === "range" || key.startsWith("range_")) {
       const range = parseRangeEntry(value);
@@ -349,7 +415,7 @@ function parseRangeEntries(fields) {
   return ranges;
 }
 
-function parseReferenceFlowTable(table) {
+function parseReferenceFlowTable(table: MarkdownTable): ReferenceFlow[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -371,14 +437,14 @@ function parseReferenceFlowTable(table) {
     .filter((row) => row.uuid);
 }
 
-function parseReferenceFlowDefinitionTable(table) {
+function parseReferenceFlowDefinitionTable(table: MarkdownTable): ReferenceFlowDefinition | null {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
   if (!headerIndex.has("field") || !headerIndex.has("value")) {
     return null;
   }
-  const fields = new Map();
+  const fields = new Map<string, string>();
   for (const row of table.rows) {
     const key = normalizeReferenceField(tableCell(row, headerIndex, ["field"]));
     const value = tableCell(row, headerIndex, ["value"]);
@@ -411,7 +477,7 @@ function parseReferenceFlowDefinitionTable(table) {
   };
 }
 
-function parseFieldValueTable(table) {
+function parseFieldValueTable(table: MarkdownTable): FlatFields | null {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -421,7 +487,7 @@ function parseFieldValueTable(table) {
   if (!headerIndex.has("value")) {
     return null;
   }
-  const result = {};
+  const result: FlatFields = {};
   for (const row of table.rows) {
     const key = normalizeStructuredId(tableCell(row, headerIndex, ["field"]));
     const value = stripInlineCode(tableCell(row, headerIndex, ["value"]));
@@ -432,7 +498,7 @@ function parseFieldValueTable(table) {
   return Object.keys(result).length > 0 ? result : null;
 }
 
-function parseFunctionalUnitTable(table) {
+function parseFunctionalUnitTable(table: MarkdownTable): FlatFields | null {
   const fields = parseFieldValueTable(table);
   if (!fields) {
     return null;
@@ -447,7 +513,7 @@ function parseFunctionalUnitTable(table) {
   return hasFunctionalUnitField ? fields : null;
 }
 
-function parseMeasurementRuleRows(table) {
+function parseMeasurementRuleRows(table: MarkdownTable): MeasurementRule[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -466,7 +532,7 @@ function parseMeasurementRuleRows(table) {
     .filter((row) => row.id || row.applies_to || row.rule);
 }
 
-function parseProcessMapRows(table) {
+function parseProcessMapRows(table: MarkdownTable): ProcessMapEntry[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -487,7 +553,7 @@ function parseProcessMapRows(table) {
     .filter((row) => row.id || row.name);
 }
 
-function parseDataSourceRows(table) {
+function parseDataSourceRows(table: MarkdownTable): DataSource[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -501,7 +567,7 @@ function parseDataSourceRows(table) {
     .filter((row) => row.id && !/^tg-/u.test(row.id));
 }
 
-function parseCollectionProtocolRows(table) {
+function parseCollectionProtocolRows(table: MarkdownTable): CollectionProtocol[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -526,7 +592,7 @@ function parseCollectionProtocolRows(table) {
     .filter((row) => row.protocol_id);
 }
 
-function parseCalculationRuleRows(table) {
+function parseCalculationRuleRows(table: MarkdownTable): CalculationRule[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -545,7 +611,7 @@ function parseCalculationRuleRows(table) {
     .filter((row) => row.id);
 }
 
-function parseDataQualityRequirementRows(table) {
+function parseDataQualityRequirementRows(table: MarkdownTable): DataQualityRequirement[] {
   const headerIndex = new Map(
     table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
   );
@@ -562,7 +628,7 @@ function parseDataQualityRequirementRows(table) {
     .filter((row) => row.id);
 }
 
-function markdownSectionKind(title) {
+function markdownSectionKind(title: string): string {
   const normalized = String(title ?? "").toLowerCase();
   if (normalized.includes("product category identity") || normalized.includes("产品类别识别")) {
     return "product_category_identity";
@@ -622,245 +688,34 @@ function markdownSectionKind(title) {
   return "";
 }
 
-function sectionBodyLines(lines, targetSection) {
-  const body = [];
-  let active = false;
-  for (const rawLine of lines) {
-    const heading = rawLine.trim().match(/^##\s+(?:\d+\.\s*)?(.+)$/u);
-    if (heading) {
-      active = markdownSectionKind(heading[1]) === targetSection;
-      continue;
-    }
-    if (active) {
-      body.push(rawLine);
-    }
-  }
-  return body;
-}
-
-function parseNormativeRuleRows(table, defaultAppliesTo) {
-  const headerIndex = new Map(
-    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
-  );
-  if (!headerIndex.has("rule") && !headerIndex.has("requirement")) {
-    return [];
-  }
-  return table.rows
-    .map((row) => ({
-      rule_id: normalizeStructuredId(
-        tableCell(row, headerIndex, ["rule_id", "requirement_id", "id"]),
-      ),
-      applies_to:
-        stripInlineCode(tableCell(row, headerIndex, ["applies_to", "scope"])) ||
-        defaultAppliesTo,
-      rule: stripInlineCode(tableCell(row, headerIndex, ["rule", "requirement", "description"])),
-      source_ids: extractSourceIds(tableCell(row, headerIndex, ["source_ids", "sources"])),
-    }))
-    .filter((entry) => entry.rule);
-}
-
-function nextMeaningfulLine(lines, startIndex) {
-  for (let index = startIndex; index < lines.length; index += 1) {
-    if (lines[index].trim()) {
-      return lines[index].trim();
-    }
-  }
-  return "";
-}
-
-function leadingWhitespaceWidth(value) {
-  const leadingWhitespace = String(value ?? "").match(/^[ \t]*/u)?.[0] ?? "";
-  return [...leadingWhitespace].reduce(
-    (width, character) => width + (character === "\t" ? 4 : 1),
-    0,
-  );
-}
-
-function parseNormativeListItem(value) {
-  const match = String(value ?? "").match(/^([ \t]*)(?:[-+*]|\d+[.)])\s+(.+)$/u);
-  if (!match) {
-    return null;
-  }
-  return {
-    indent: leadingWhitespaceWidth(match[1]),
-    content: match[2].trim(),
-  };
-}
-
-function parseNormativeListRule(lines, startIndex) {
-  const rootItem = parseNormativeListItem(lines[startIndex]);
-  if (!rootItem) {
-    return null;
-  }
-
-  const fragments = [rootItem.content];
-  let blankSinceContent = false;
-  let index = startIndex + 1;
-  for (; index < lines.length; index += 1) {
-    const rawLine = lines[index];
-    const line = rawLine.trim();
-    if (!line) {
-      blankSinceContent = true;
-      continue;
-    }
-    if (/^#{3,6}\s+/u.test(line) || isTableLine(line)) {
-      break;
-    }
-
-    const nestedItem = parseNormativeListItem(rawLine);
-    if (nestedItem) {
-      if (nestedItem.indent <= rootItem.indent) {
-        break;
-      }
-      fragments.push(nestedItem.content);
-      blankSinceContent = false;
-      continue;
-    }
-
-    const continuationIndent = leadingWhitespaceWidth(rawLine);
-    if (
-      continuationIndent < rootItem.indent ||
-      (blankSinceContent && continuationIndent <= rootItem.indent)
-    ) {
-      break;
-    }
-    fragments.push(line);
-    blankSinceContent = false;
-  }
-
-  return {
-    rule: stripInlineCode(fragments.join(" ")).replace(/\s+/gu, " ").trim(),
-    nextIndex: index,
-  };
-}
-
-function parseNormativeSection(lines, targetSection, idPrefix, defaultAppliesTo) {
-  const body = sectionBodyLines(lines, targetSection);
-  const rawRules = [];
-
-  for (let index = 0; index < body.length; index += 1) {
-    const rawLine = body[index];
-    const line = rawLine.trim();
-    if (!line) {
-      continue;
-    }
-    if (/^#{3,6}\s+/u.test(line)) {
-      continue;
-    }
-    if (isTableLine(line)) {
-      const { table, nextIndex } = parseTable(body, index);
-      if (table) {
-        rawRules.push(...parseNormativeRuleRows(table, defaultAppliesTo));
-      }
-      index = nextIndex - 1;
-      continue;
-    }
-    const listRule = parseNormativeListRule(body, index);
-    if (listRule) {
-      rawRules.push({
-        rule_id: "",
-        applies_to: defaultAppliesTo,
-        rule: listRule.rule,
-        source_ids: [],
-      });
-      index = listRule.nextIndex - 1;
-      continue;
-    }
-
-    const paragraphLines = [line];
-    let nextIndex = index + 1;
-    while (nextIndex < body.length) {
-      const candidate = body[nextIndex].trim();
-      if (
-        !candidate ||
-        /^#{3,6}\s+/u.test(candidate) ||
-        isTableLine(candidate) ||
-        parseNormativeListItem(body[nextIndex])
-      ) {
-        break;
-      }
-      paragraphLines.push(candidate);
-      nextIndex += 1;
-    }
-    const paragraph = paragraphLines.join(" ").trim();
-    const nextLine = nextMeaningfulLine(body, nextIndex);
-    const introducesStructuredRules =
-      /[:：]$/u.test(paragraph) &&
-      (Boolean(parseNormativeListItem(nextLine)) || isTableLine(nextLine));
-    if (!introducesStructuredRules) {
-      rawRules.push({
-        rule_id: "",
-        applies_to: defaultAppliesTo,
-        rule: stripInlineCode(paragraph).replace(/\s+/gu, " ").trim(),
-        source_ids: [],
-      });
-    }
-    index = nextIndex - 1;
-  }
-
-  const usedRuleIds = new Set();
-  return rawRules.map((entry, index) => {
-    const fallbackId = `${idPrefix}_rule_${index + 1}`;
-    let ruleId = entry.rule_id || fallbackId;
-    let suffix = 2;
-    while (usedRuleIds.has(ruleId)) {
-      ruleId = `${entry.rule_id || fallbackId}_${suffix}`;
-      suffix += 1;
-    }
-    usedRuleIds.add(ruleId);
-    return {
-      rule_id: ruleId,
-      applies_to: entry.applies_to || defaultAppliesTo,
-      rule: entry.rule,
-      source_ids: entry.source_ids ?? [],
-    };
-  });
-}
-
-export function parsePcrMarkdownToStructured(markdown) {
+export function parsePcrMarkdownToStructured(markdown: string): PcrMarkdownProjection {
   const lines = normalizeFingerprintText(markdown).split("\n");
-  const systemBoundaryRules = parseNormativeSection(
-    lines,
-    "system_boundary",
-    "system_boundary",
-    "foreground_system_boundary",
-  );
-  const allocationRules = parseNormativeSection(
-    lines,
-    "allocation_rules",
-    "allocation",
-    "foreground_burden_allocation",
-  );
-  const validationRules = parseNormativeSection(
-    lines,
-    "validation_rules",
-    "validation",
-    "foreground_dataset_conformance",
-  );
-  let productCategoryIdentity = null;
-  let functionalUnit = null;
-  let boundaryAbstraction = null;
-  const referenceFlows = [];
-  let referenceFlowDefinition = null;
-  const measurementRules = [];
-  const processMap = [];
-  const processInventory = [];
-  const collectionProtocols = [];
-  const calculationRules = [];
-  const dataQualityRequirements = [];
-  let publishedDatasetProfile = null;
-  const dataSources = [];
+  const normative = compileNormativeProjection(markdown);
+  const { systemBoundaryRules, allocationRules, validationRules } = normative;
+  let productCategoryIdentity: FlatFields | null = null;
+  let functionalUnit: FlatFields | null = null;
+  let boundaryAbstraction: FlatFields | null = null;
+  const referenceFlows: ReferenceFlow[] = [];
+  let referenceFlowDefinition: ReferenceFlowDefinition | null = null;
+  const measurementRules: MeasurementRule[] = [];
+  const processMap: ProcessMapEntry[] = [];
+  const processInventory: ProcessInventoryEntry[] = [];
+  const collectionProtocols: CollectionProtocol[] = [];
+  const calculationRules: CalculationRule[] = [];
+  const dataQualityRequirements: DataQualityRequirement[] = [];
+  let publishedDatasetProfile: FlatFields | null = null;
+  const dataSources: DataSource[] = [];
   let section = "";
   let subSection = "";
-  let currentProcess = null;
-  let direction = null;
-  let flowType = null;
+  let currentProcess: ProcessInventoryEntry | null = null;
+  let direction: InventoryDirection | null = null;
+  let flowType: InventoryFlowType | null = null;
 
   for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index].trim();
+    const line = (lines[index] ?? "").trim();
     const h2 = line.match(/^##\s+(?:\d+\.\s*)?(.+)$/u);
     if (h2) {
-      section = markdownSectionKind(h2[1]);
+      section = markdownSectionKind(h2[1] ?? "");
       subSection = "";
       direction = null;
       flowType = null;
@@ -869,7 +724,7 @@ export function parsePcrMarkdownToStructured(markdown) {
 
     const h3Boundary = line.match(/^###\s+(.+)$/u);
     if (h3Boundary && section === "system_boundary") {
-      const title = h3Boundary[1].toLowerCase();
+      const title = (h3Boundary[1] ?? "").toLowerCase();
       if (title.includes("boundary abstraction") || title.includes("边界概化")) {
         subSection = "boundary_abstraction";
       } else {
@@ -880,7 +735,7 @@ export function parsePcrMarkdownToStructured(markdown) {
 
     const h3 = line.match(/^###\s+(.+)$/u);
     if (h3 && section === "dataset_production") {
-      const title = h3[1].toLowerCase();
+      const title = (h3[1] ?? "").toLowerCase();
       if (title.includes("data collection protocols") || title.includes("数据采集协议")) {
         subSection = "collection_protocols";
       } else if (title.includes("calculation rules") || title.includes("计算规则")) {
@@ -938,7 +793,7 @@ export function parsePcrMarkdownToStructured(markdown) {
       const flowTitle = parseTitledId(flowCard[1]);
       const rowDirection = normalizeDirection(fields.direction ?? "") || direction;
       const rowFlowType = normalizeFlowType(fields.flow_type ?? "") || flowType;
-      const row = {
+      const row: InventoryFlow = {
         row_id: flowTitle.id,
         role: stripInlineCode(fields.role ?? flowTitle.label),
         name: labelWithoutUuid(fields.selected_flow ?? fields.flow ?? ""),
@@ -964,7 +819,7 @@ export function parsePcrMarkdownToStructured(markdown) {
           ranges: parseRangeEntries(fields),
         },
       };
-      if (["inputs", "outputs"].includes(rowDirection) && ["product", "waste", "elementary"].includes(rowFlowType)) {
+      if ((rowDirection === "inputs" || rowDirection === "outputs") && (rowFlowType === "product" || rowFlowType === "waste" || rowFlowType === "elementary")) {
         currentProcess[rowDirection][rowFlowType].push(row);
       } else {
         currentProcess.inputs.product.push(row);
@@ -1046,5 +901,6 @@ export function parsePcrMarkdownToStructured(markdown) {
     validationRules,
     publishedDatasetProfile,
     dataSources,
+    normativeContext: normative.context,
   };
 }

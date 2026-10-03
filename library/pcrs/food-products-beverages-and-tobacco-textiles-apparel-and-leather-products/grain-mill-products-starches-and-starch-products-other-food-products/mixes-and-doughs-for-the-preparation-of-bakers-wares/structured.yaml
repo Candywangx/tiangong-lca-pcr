@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -2713,12 +2713,601 @@ data_sources:
     type: "standard"
     reference: "WRI and WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard-EReader_041613_0.pdf (retrieved 2026-08-13)"
     used_for: "Process maps, primary data, data-quality assessment, allocation hierarchy, subdivision, disclosure, and sensitivity expectations"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8835ef07ca242e3220f53d879ac77ba6c952f9611e7b2a134332f5596cbe13b1"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7449"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7449
+          line: 68
+          column: 1
+        end:
+          offset: 11113
+          line: 91
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Individually identified ingredients, packaging, purchased energy, water, and cleaning chemicals received at the manufacturing site boundary with quantity, supplier geography, and upstream dataset reference declared |\n| starting_condition_role | Foreground gate-to-gate production starts at receipt; upstream production and inbound transport remain linked product systems rather than omitted burdens |\n| product_classification_scope | Unbaked bakery mixes and doughs within the reviewed CPC 3.0 23180 semantic boundary; classification is context, not canonical identity |\n| recursive_input_rule | A purchased mix or dough already within this PCR category is an individual technosphere input with its own upstream dataset and declared route; do not recursively reopen or silently absorb its production inventory |\n| upstream_dataset_requirement | Link representative upstream datasets for every ingredient, packaging material, energy carrier, water supply, cleaning chemical, refrigerant, transport service, and waste treatment used by the selected route |\n| disclosure | Declare route_code, formulation_id, leavening_mode, make_up_state, site, geography, campaign period, product temperature, storage duration, packaging, cut-offs, allocation, rework, and all deviations from this boundary |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_route_lock` | All foreground datasets | Select exactly one route_code and one formulation_id. Do not average dry mix, ambient wet dough, chilled wet dough, or frozen wet dough, and do not combine different leavening or preservation routes. | `un-cpc-v3-explanatory-notes-2025` |\n| `sb_included_operations` | Selected route | Include every listed process whose gate is satisfied, from ingredient receipt through factory-gate storage, together with directly attributable sanitation, refrigerant loss, wastewater, waste, and onsite utility burdens. | `us-epa-bakery-oven-act-1992`; `eu-emas-food-beverage-2017`; `eu-fdm-bref-2019` |\n| `sb_upstream_links` | Purchased inputs | Keep upstream production and inbound transport outside the foreground process but link representative datasets; disclose any missing upstream coverage. | `ghg-protocol-product-standard-2011` |\n| `sb_excluded_downstream` | Downstream preparation | Exclude proofing, thawing, baking, retail storage, consumption, and end-of-life after the declared factory gate unless the dataset explicitly expands its boundary; never import finished-bakery-product oven burdens into this product route. | `un-cpc-v3-explanatory-notes-2025`; `us-epa-bakery-oven-act-1992` |\n| `sb_cold_route` | wet_dough_chilled and wet_dough_frozen | Include actual conditioning and cold-storage electricity, temperature records, refrigerant additions and releases, cold losses, and storage duration. Apply the Codex quick-frozen temperature rules only when the product is declared quick frozen. | `codex-cxc-8-1976`; `eu-emas-food-beverage-2017` |\n| `sb_shared_services` | Shared utility, cleaning, warehouse, and refrigeration systems | Prefer process subdivision and sub-metering. If shared services remain, allocate by a documented causal driver and retain the unallocated facility total and reconciliation. | `ghg-protocol-product-standard-2011` |\n| `sb_direct_emissions` | Site emissions | Include separate elementary flows for each direct emission actually occurring; do not hide combustion, refrigerant, dust, fermentation, or direct-water releases inside generic emissions cards. | `eu-emas-food-beverage-2017`; `eu-fdm-bref-2019` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 275
+              line: 8
+              column: 1
+            end:
+              offset: 330
+              line: 8
+              column: 56
+          text: "# Mixes and doughs for the preparation of bakers’ wares"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7449
+              line: 68
+              column: 1
+            end:
+              offset: 7470
+              line: 68
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_84078"
+      family: "allocation"
+      span:
+        start:
+          offset: 84078
+          line: 1779
+          column: 1
+        end:
+          offset: 86251
+          line: 1791
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `al_avoid_allocation` | All multi-output or shared processes | Avoid allocation first through route-specific datasets, process subdivision, separate batch records, and sub-metering. | `ghg-protocol-product-standard-2011` |\n| `al_no_route_average` | Facilities producing multiple product states | Never allocate by first averaging dry, ambient, chilled, and frozen routes. Establish separate route inventories before treating genuinely shared services. | `ghg-protocol-product-standard-2011`; `codex-cxc-8-1976` |\n| `al_rework` | Same-product rework | Return same-formulation rework to the originating route as an internal loop and disclose gross generation and returned mass; do not count returned mass as waste or a co-product. | `ghg-protocol-product-standard-2011` |\n| `al_shared_service_physical` | Shared electricity, cleaning, storage, refrigeration, and utilities | If subdivision is unavailable, use a causal physical driver: metered operating time for equipment, cleaned surface or cleaning cycle for sanitation, tonne-day and temperature lift for storage, or delivered useful heat for thermal utilities. | `ghg-protocol-product-standard-2011`; `eu-emas-food-beverage-2017` |\n| `al_economic_fallback` | Residual shared burdens | Use economic allocation only when no defensible physical relationship exists; disclose prices, period, geography, volatility, and a physical-versus-economic sensitivity result. | `ghg-protocol-product-standard-2011` |\n| `al_waste_and_saleable_output` | Residues and off-specification product | Treat an output with no economic value and a required treatment route as waste. If sold or used as a functionally valuable output, classify it as a co-product and apply the allocation hierarchy. | `ghg-protocol-product-standard-2011` |\n| `al_recycling` | Packaging and other recyclable wastes | Report the selected recycling convention and keep collection, sorting, treatment, recycled-content credit, and any avoided-burden claim explicit; do not mix conventions within one dataset. | `ghg-protocol-product-standard-2011` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 275
+              line: 8
+              column: 1
+            end:
+              offset: 330
+              line: 8
+              column: 56
+          text: "# Mixes and doughs for the preparation of bakers’ wares"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 84078
+              line: 1779
+              column: 1
+            end:
+              offset: 84118
+              line: 1779
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_103267"
+      family: "validation"
+      span:
+        start:
+          offset: 103267
+          line: 1842
+          column: 1
+        end:
+          offset: 107385
+          line: 1863
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_reference_identity` | Reference flow | Require UUID 0252f353-8398-4eab-9e26-6a13e4b4f06b, exact product name, CPC 23180 classification leaf, Product flow type, and Mass property; flag the CPC 232 generalComment defect without using it as evidence. |  |\n| `val_route_exclusive` | Dataset route | Fail if route_code is missing, outside the four allowed values, or if records from more than one route_code are averaged. | `un-cpc-v3-explanatory-notes-2025` |\n| `val_process_gates` | Process map | Require every process whose condition is true and reject dry blending on wet routes, wet mixing on dry routes, cold conditioning on ambient routes, or fermentation where the operation is not performed. | `us-epa-bakery-oven-act-1992`; `codex-cxc-8-1976` |\n| `val_atomic_inputs` | Product inputs | Fail any aggregate materials, ingredients, chemicals, cleaning agents, packaging, energy carriers, fuels, thermal energy, or refrigerants row; require one named flow per actual substance or product. | `eu-emas-food-beverage-2017`; `eu-fdm-bref-2019` |\n| `val_atomic_outputs` | Waste and elementary outputs | Fail any aggregate wastes or emissions row; require separate treatment flows and separate substances for air and water releases. | `eu-fdm-bref-2019` |\n| `val_uuid_scope` | UUID-bearing inventory | Permit the verified UUIDs only on the reference product and its Mass reference property; all other flow UUIDs remain blank until individually mapped by the foreground author. |  |\n| `val_mass_balance` | Each process and whole system | Require a reported mass-balance gap and investigation of unexplained differences; never close the balance with an unnamed other material, waste, or emission. | `ghg-protocol-product-standard-2011` |\n| `val_cold_records` | Chilled and frozen routes | Require conditioning method, product temperature, storage setpoint, duration, electricity, named refrigerant reconciliation, and product loss. | `codex-cxc-8-1976`; `eu-emas-food-beverage-2017` |\n| `val_quick_frozen_claim` | Quick-frozen product | When freezing_claim = quick_frozen, require evidence that the thermal centre reached -18 °C or colder after stabilization and that subsequent storage was maintained at -18 °C or colder, subject to declared permitted tolerances. | `codex-cxc-8-1976` |\n| `val_energy_carriers` | Thermal utility | Fail combined fuel or thermal-energy inputs; natural gas, LPG, diesel, purchased steam, and purchased hot water shall remain separate and reconcile to useful heat. | `eu-emas-food-beverage-2017`; `eu-fdm-bref-2019` |\n| `val_refrigerants` | Cold systems | Fail generic refrigerant entries or combined refrigerant losses; require actual chemical identity and a non-negative reconciled mass balance. | `eu-emas-food-beverage-2017`; `codex-cxc-8-1976` |\n| `val_effluent_double_count` | Wastewater and water emissions | If wastewater is sent to external treatment, do not also report treatment-plant releases as direct site emissions; if discharge is onsite final, require measured individual loads and discharge destination. | `eu-fdm-bref-2019` |\n| `val_allocation` | Shared processes | Require documented subdivision attempt, causal driver, unallocated total, allocated total, and reconciliation; require sensitivity when economic allocation is used. | `ghg-protocol-product-standard-2011` |\n| `val_reasoned_estimates` | Amount ranges | Prohibit a reasoned_estimate from silently becoming the foreground amount. Require collection protocol values and disclose any sensitivity use of provisional bounds. | `ghg-protocol-product-standard-2011` |\n| `val_source_applicability` | Method evidence | Reject bakery-oven emission factors for this unbaked product boundary and reject the erroneous Tiangong generalComment as a source. | `us-epa-bakery-oven-act-1992` |\n| `val_bilingual_machine_semantics` | Bilingual PCR | Require identical ordered process_id, row_id, rule_id, protocol_id, controlled tokens, formulas, numerical values, UUIDs, source_ids, and source URLs across en-US and zh-CN. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 275
+              line: 8
+              column: 1
+            end:
+              offset: 330
+              line: 8
+              column: 56
+          text: "# Mixes and doughs for the preparation of bakers’ wares"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 103267
+              line: 1842
+              column: 1
+            end:
+              offset: 103289
+              line: 1842
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_route_lock"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 8925
+          line: 83
+          column: 1
+        end:
+          offset: 9209
+          line: 83
+          column: 285
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_included_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 9210
+          line: 84
+          column: 1
+        end:
+          offset: 9560
+          line: 84
+          column: 351
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_upstream_links"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 9561
+          line: 85
+          column: 1
+        end:
+          offset: 9796
+          line: 85
+          column: 236
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_excluded_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 9797
+          line: 86
+          column: 1
+        end:
+          offset: 10159
+          line: 86
+          column: 363
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_cold_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 10160
+          line: 87
+          column: 1
+        end:
+          offset: 10518
+          line: 87
+          column: 359
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sb_shared_services"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 10519
+          line: 88
+          column: 1
+        end:
+          offset: 10822
+          line: 88
+          column: 304
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "sb_direct_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 10823
+          line: 89
+          column: 1
+        end:
+          offset: 11111
+          line: 89
+          column: 289
+    - pointer: "/allocation_rules/0"
+      rule_id: "al_avoid_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 84191
+          line: 1783
+          column: 1
+        end:
+          offset: 84415
+          line: 1783
+          column: 225
+    - pointer: "/allocation_rules/1"
+      rule_id: "al_no_route_average"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 84416
+          line: 1784
+          column: 1
+        end:
+          offset: 84705
+          line: 1784
+          column: 290
+    - pointer: "/allocation_rules/2"
+      rule_id: "al_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 84706
+          line: 1785
+          column: 1
+        end:
+          offset: 84962
+          line: 1785
+          column: 257
+    - pointer: "/allocation_rules/3"
+      rule_id: "al_shared_service_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 84963
+          line: 1786
+          column: 1
+        end:
+          offset: 85377
+          line: 1786
+          column: 415
+    - pointer: "/allocation_rules/4"
+      rule_id: "al_economic_fallback"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 85378
+          line: 1787
+          column: 1
+        end:
+          offset: 85648
+          line: 1787
+          column: 271
+    - pointer: "/allocation_rules/5"
+      rule_id: "al_waste_and_saleable_output"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 85649
+          line: 1788
+          column: 1
+        end:
+          offset: 85960
+          line: 1788
+          column: 312
+    - pointer: "/allocation_rules/6"
+      rule_id: "al_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 85961
+          line: 1789
+          column: 1
+        end:
+          offset: 86249
+          line: 1789
+          column: 289
+    - pointer: "/validation_rules/0"
+      rule_id: "val_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 103362
+          line: 1846
+          column: 1
+        end:
+          offset: 103621
+          line: 1846
+          column: 260
+    - pointer: "/validation_rules/1"
+      rule_id: "val_route_exclusive"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 103622
+          line: 1847
+          column: 1
+        end:
+          offset: 103824
+          line: 1847
+          column: 203
+    - pointer: "/validation_rules/2"
+      rule_id: "val_process_gates"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 103825
+          line: 1848
+          column: 1
+        end:
+          offset: 104118
+          line: 1848
+          column: 294
+    - pointer: "/validation_rules/3"
+      rule_id: "val_atomic_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 104119
+          line: 1849
+          column: 1
+        end:
+          offset: 104411
+          line: 1849
+          column: 293
+    - pointer: "/validation_rules/4"
+      rule_id: "val_atomic_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 104412
+          line: 1850
+          column: 1
+        end:
+          offset: 104619
+          line: 1850
+          column: 208
+    - pointer: "/validation_rules/5"
+      rule_id: "val_uuid_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 104620
+          line: 1851
+          column: 1
+        end:
+          offset: 104845
+          line: 1851
+          column: 226
+    - pointer: "/validation_rules/6"
+      rule_id: "val_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 104846
+          line: 1852
+          column: 1
+        end:
+          offset: 105099
+          line: 1852
+          column: 254
+    - pointer: "/validation_rules/7"
+      rule_id: "val_cold_records"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 105100
+          line: 1853
+          column: 1
+        end:
+          offset: 105346
+          line: 1853
+          column: 247
+    - pointer: "/validation_rules/8"
+      rule_id: "val_quick_frozen_claim"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 105347
+          line: 1854
+          column: 1
+        end:
+          offset: 105649
+          line: 1854
+          column: 303
+    - pointer: "/validation_rules/9"
+      rule_id: "val_energy_carriers"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 105650
+          line: 1855
+          column: 1
+        end:
+          offset: 105910
+          line: 1855
+          column: 261
+    - pointer: "/validation_rules/10"
+      rule_id: "val_refrigerants"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 105911
+          line: 1856
+          column: 1
+        end:
+          offset: 106143
+          line: 1856
+          column: 233
+    - pointer: "/validation_rules/11"
+      rule_id: "val_effluent_double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 106144
+          line: 1857
+          column: 1
+        end:
+          offset: 106437
+          line: 1857
+          column: 294
+    - pointer: "/validation_rules/12"
+      rule_id: "val_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 106438
+          line: 1858
+          column: 1
+        end:
+          offset: 106683
+          line: 1858
+          column: 246
+    - pointer: "/validation_rules/13"
+      rule_id: "val_reasoned_estimates"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 106684
+          line: 1859
+          column: 1
+        end:
+          offset: 106935
+          line: 1859
+          column: 252
+    - pointer: "/validation_rules/14"
+      rule_id: "val_source_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 106936
+          line: 1860
+          column: 1
+        end:
+          offset: 107150
+          line: 1860
+          column: 215
+    - pointer: "/validation_rules/15"
+      rule_id: "val_bilingual_machine_semantics"
+      identity_kind: "explicit"
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 107151
+          line: 1861
+          column: 1
+        end:
+          offset: 107383
+          line: 1861
+          column: 233
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 7449
+          line: 68
+          column: 1
+        end:
+          offset: 7470
+          line: 68
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7449"
+      source_span:
+        start:
+          offset: 7498
+          line: 72
+          column: 1
+        end:
+          offset: 8852
+          line: 79
+          column: 236
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_84078"
+      source_span:
+        start:
+          offset: 84078
+          line: 1779
+          column: 1
+        end:
+          offset: 84118
+          line: 1779
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_103267"
+      source_span:
+        start:
+          offset: 103267
+          line: 1842
+          column: 1
+        end:
+          offset: 103289
+          line: 1842
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:8835ef07ca242e3220f53d879ac77ba6c952f9611e7b2a134332f5596cbe13b1"
-  generated_content_sha256: "sha256:26a3bc059e5920789d12995e0dbda0ffaf076b6c0708319491f32a6812c192db"
+  generated_content_sha256: "sha256:0a1561026e81c508627af05aa52400a5da72c2b3b4af8e638cc9ca3ffe6668f4"

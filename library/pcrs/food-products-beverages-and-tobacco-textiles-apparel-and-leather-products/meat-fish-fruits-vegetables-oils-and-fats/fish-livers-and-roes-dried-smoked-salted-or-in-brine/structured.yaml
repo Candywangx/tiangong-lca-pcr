@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1959,12 +1959,556 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission, Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods, CELEX 32021H2279, http://data.europa.eu/eli/reco/2021/2279/oj"
     used_for: "System boundary, allocation hierarchy, company-specific data, dataset quality, representativeness, and disclosure rules"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:79fa1e1463c886fe6679a9a0cc5318b1ee55993d50e2f6be0f37964b73848673"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6930"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6930
+          line: 63
+          column: 1
+        end:
+          offset: 10805
+          line: 87
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground system covers operations controlled by the preserving facility from receipt of identified livers or roes through release of the finished packaged product. Include actual cleaning, sorting, membrane or tissue removal, draining, thawing, salting, brining, drying, smoking, cooling, intermediate storage, packaging, finished-product storage, sanitation-related process water, on-site waste handling, and on-site wastewater treatment when performed and attributable.\n\nUse upstream datasets for incoming fish livers or roes, salt and other ingredients, water, energy carriers, fuels, packaging materials, refrigerants, transport services, and treatment services. Distribution after the facility gate, retail, consumer preparation, consumption, and end-of-life of packaging are outside the foreground boundary unless a study explicitly adds them as downstream scenarios.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_actual_route` | Foreground preservation system | Include every preparation, preservation, packaging, holding, and on-site treatment operation actually used for the declared lot; do not insert an unused drying, smoking, salting, or brining route. | `codex-cxc-52-2003`; `fao-fish-processing-storage` |\n| `boundary_upstream_inputs` | Inputs crossing the facility gate | Represent upstream production and inbound transport through traceable upstream datasets and disclose any missing or proxy dataset; do not assign zero burden to incoming livers, roes, salt, fuel, packaging, or utilities. | `eu-pef-2021-2279` |\n| `boundary_food_safety_controls` | Product- and line-specific controls | Document the applicable hazard analysis, control points, monitoring records, and release criteria for the actual product and line. Food-safety records support process identity and quality but do not replace environmental inventory measurements. | `codex-cxc-52-2003` |\n| `boundary_storage_losses` | Intermediate and finished-product storage | Include electricity, refrigerant losses, product losses, and waste handling attributable to storage inside the declared facility boundary and period. | `fao-fish-processing-storage`; `eu-pef-2021-2279` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified edible fish livers or roes received at the preserving facility in a declared fresh, chilled, or frozen state, with species or species group, source, supplier, lot, upstream dataset, and net received mass recorded |\n| starting_condition_role | Upstream product input to the foreground preserving system |\n| product_classification_scope | Fish livers and fish roes whose finished state is produced by drying, smoking, salting, or holding in brine within CPC 3.0 code 21227 mapping context |\n| recursive_input_rule | If an already preserved fish liver or roe product in this category is used as an input, record it once as an upstream product flow with its own dataset. Do not recursively re-run this PCR unless the foreground facility performs a further named preservation transformation. |\n| upstream_dataset_requirement | Each incoming fish liver or roe input requires a traceable upstream dataset that declares capture or aquaculture origin, species, primary-processing boundary, co-product or by-product treatment, allocation method, geography, period, and incoming preservation state. Other material and energy inputs require representative upstream datasets or disclosed proxies. |\n| disclosure | Declare facility location, reporting period, species or species group, liver or roe, incoming state, actual preservation sequence, product formulation, net-mass basis, packaging, storage condition and duration, rejected material, co-products, wastes, on-site treatment, upstream dataset choices, allocation, proxies, and retained reasoned estimates. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 304
+              line: 8
+              column: 57
+          text: "# Fish livers and roes dried, smoked, salted or in brine"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6930
+              line: 63
+              column: 1
+            end:
+              offset: 6951
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67355"
+      family: "allocation"
+      span:
+        start:
+          offset: 67355
+          line: 1286
+          column: 1
+        end:
+          offset: 69099
+          line: 1296
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision_first` | Multi-output preparation, preservation, packaging, and utility systems | Avoid allocation where measured process subdivision or direct metering can assign inputs, energy, emissions, wastes, and losses to the liver or roe product. | `eu-pef-2021-2279` |\n| `allocation_physical_relation` | Unavoidable joint processes with multiple valuable outputs | When subdivision is not possible, use a documented physical causal relationship that reflects how the joint process changes with output production. Mass allocation may be used only when mass is an appropriate causal proxy. | `eu-pef-2021-2279` |\n| `allocation_economic_fallback` | Joint valuable outputs without a defensible physical causal relationship | Use economic allocation only as a fallback. Record prices, currency, geography, averaging period, product state, and treatment of abnormal or missing prices, and test material sensitivity. | `eu-pef-2021-2279` |\n| `allocation_incoming_material` | Upstream fish liver or roe dataset | Preserve and disclose the upstream dataset's treatment of livers or roes arising with fish meat or other co-products. Do not replace upstream allocation with zero burden at the preservation facility gate. | `eu-pef-2021-2279` |\n| `allocation_residual_destination` | Removed tissue, off-specification product, spent brine, and packaging residuals | Classify each output as waste or recovered co-product according to its actual destination and applicable rules. Do not grant an avoided-burden credit without an explicit downstream substitution model outside this foreground inventory. | `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 304
+              line: 8
+              column: 57
+          text: "# Fish livers and roes dried, smoked, salted or in brine"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67355
+              line: 1286
+              column: 1
+            end:
+              offset: 67395
+              line: 1286
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_79191"
+      family: "validation"
+      span:
+        start:
+          offset: 79191
+          line: 1335
+          column: 1
+        end:
+          offset: 82127
+          line: 1350
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Require reference amount 1 kg, product flow UUID `ab283f96-8c07-4a11-8904-4d5a6542d1fe`, Mass UUID `93a60a56-a3c8-11da-a746-0800200b9a66`, unit-group UUID `93a60a57-a4c8-11da-a746-0800200c9a66`, and unit kg. |  |\n| `validate_required_qualifiers` | Dataset metadata | Fail completeness when any required qualifier is absent or when liver and roe, species, route, packaging, storage state, or net-mass basis cannot be determined. | `unsd-cpc-3-0-21227` |\n| `validate_route_presence` | Process inventory | Require at least one of drying, smoking, dry salting, wet salting, or in-brine preservation and require every declared route operation to appear in the process map and records. | `codex-cxc-52-2003`; `fao-fish-processing-storage` |\n| `validate_route_conditional_flows` | Preservation inputs and outputs | Require salt for a declared salting or brining route, make-up water and spent brine accounting for a brining route, smoke material and direct-emission review for direct smoking, and energy or ambient-condition disclosure for drying. Mark non-applicable route flows explicitly rather than assigning an unexplained zero. | `codex-cxc-52-2003`; `fao-fish-processing-storage` |\n| `validate_mass_balance` | Each process and production lot | Check incoming material = transferred product + measured residuals + product losses + explained mass change, allowing declared moisture gain or loss and documented inventory change. Report the balance gap and basis. |  |\n| `validate_collection_links` | Foreground and calculated inventory rows | Require a valid collection protocol for every `foreground_record` and `calculated_value` row and all calculation-rule inputs needed to reproduce the value. |  |\n| `validate_allocation` | Multi-output processes and upstream input | Require the allocation hierarchy, driver, factors, co-product or waste classification, upstream liver or roe allocation treatment, and sensitivity disclosure where economic allocation is used. | `eu-pef-2021-2279` |\n| `validate_food_safety_records` | Preservation, packaging, and storage process identity | Require the applicable product- and line-specific hazard-control records and actual operating-condition records; do not claim product compliance from this LCA validation. | `codex-cxc-52-2003` |\n| `validate_estimate_status` | Provisional ranges and values | Reject presentation of a `reasoned_estimate` as a measured, source-backed, typical, or allowed industry range; require disclosure and replacement priority. |  |\n| `validate_source_integrity` | Source references and quantitative factors | Require every non-empty source id to resolve in Data Sources. Require an actual external source for any emission factor, conversion factor, or quantitative constraint not derived solely from collected records. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 304
+              line: 8
+              column: 57
+          text: "# Fish livers and roes dried, smoked, salted or in brine"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 79191
+              line: 1335
+              column: 1
+            end:
+              offset: 79213
+              line: 1335
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 6953
+          line: 65
+          column: 1
+        end:
+          offset: 7430
+          line: 65
+          column: 478
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 7432
+          line: 67
+          column: 1
+        end:
+          offset: 7832
+          line: 67
+          column: 401
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_actual_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 7905
+          line: 71
+          column: 1
+        end:
+          offset: 8217
+          line: 71
+          column: 313
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_upstream_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 8218
+          line: 72
+          column: 1
+        end:
+          offset: 8527
+          line: 72
+          column: 310
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_food_safety_controls"
+      identity_kind: "explicit"
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 8528
+          line: 73
+          column: 1
+        end:
+          offset: 8870
+          line: 73
+          column: 343
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_storage_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 8871
+          line: 74
+          column: 1
+        end:
+          offset: 9148
+          line: 74
+          column: 278
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision_first"
+      identity_kind: "explicit"
+      unit_id: "normative_67355"
+      source_span:
+        start:
+          offset: 67468
+          line: 1290
+          column: 1
+        end:
+          offset: 67755
+          line: 1290
+          column: 288
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_67355"
+      source_span:
+        start:
+          offset: 67756
+          line: 1291
+          column: 1
+        end:
+          offset: 68097
+          line: 1291
+          column: 342
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_economic_fallback"
+      identity_kind: "explicit"
+      unit_id: "normative_67355"
+      source_span:
+        start:
+          offset: 68098
+          line: 1292
+          column: 1
+        end:
+          offset: 68419
+          line: 1292
+          column: 322
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_incoming_material"
+      identity_kind: "explicit"
+      unit_id: "normative_67355"
+      source_span:
+        start:
+          offset: 68420
+          line: 1293
+          column: 1
+        end:
+          offset: 68719
+          line: 1293
+          column: 300
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_residual_destination"
+      identity_kind: "explicit"
+      unit_id: "normative_67355"
+      source_span:
+        start:
+          offset: 68720
+          line: 1294
+          column: 1
+        end:
+          offset: 69097
+          line: 1294
+          column: 378
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 79286
+          line: 1339
+          column: 1
+        end:
+          offset: 79549
+          line: 1339
+          column: 264
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_required_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 79550
+          line: 1340
+          column: 1
+        end:
+          offset: 79789
+          line: 1340
+          column: 240
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_route_presence"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 79790
+          line: 1341
+          column: 1
+        end:
+          offset: 80071
+          line: 1341
+          column: 282
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_route_conditional_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 80072
+          line: 1342
+          column: 1
+        end:
+          offset: 80518
+          line: 1342
+          column: 447
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 80519
+          line: 1343
+          column: 1
+        end:
+          offset: 80801
+          line: 1343
+          column: 283
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_collection_links"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 80802
+          line: 1344
+          column: 1
+        end:
+          offset: 81037
+          line: 1344
+          column: 236
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 81038
+          line: 1345
+          column: 1
+        end:
+          offset: 81323
+          line: 1345
+          column: 286
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_food_safety_records"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 81324
+          line: 1346
+          column: 1
+        end:
+          offset: 81609
+          line: 1346
+          column: 286
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_estimate_status"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 81610
+          line: 1347
+          column: 1
+        end:
+          offset: 81833
+          line: 1347
+          column: 224
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_source_integrity"
+      identity_kind: "explicit"
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 81834
+          line: 1348
+          column: 1
+        end:
+          offset: 82125
+          line: 1348
+          column: 292
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 6930
+          line: 63
+          column: 1
+        end:
+          offset: 6951
+          line: 63
+          column: 22
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 6953
+          line: 65
+          column: 1
+        end:
+          offset: 7430
+          line: 65
+          column: 478
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 7432
+          line: 67
+          column: 1
+        end:
+          offset: 7832
+          line: 67
+          column: 401
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 7905
+          line: 71
+          column: 1
+        end:
+          offset: 8217
+          line: 71
+          column: 313
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 8218
+          line: 72
+          column: 1
+        end:
+          offset: 8527
+          line: 72
+          column: 310
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 8528
+          line: 73
+          column: 1
+        end:
+          offset: 8870
+          line: 73
+          column: 343
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 8871
+          line: 74
+          column: 1
+        end:
+          offset: 9148
+          line: 74
+          column: 278
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6930"
+      source_span:
+        start:
+          offset: 9176
+          line: 78
+          column: 1
+        end:
+          offset: 10803
+          line: 85
+          column: 367
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67355"
+      source_span:
+        start:
+          offset: 67355
+          line: 1286
+          column: 1
+        end:
+          offset: 67395
+          line: 1286
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_79191"
+      source_span:
+        start:
+          offset: 79191
+          line: 1335
+          column: 1
+        end:
+          offset: 79213
+          line: 1335
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:79fa1e1463c886fe6679a9a0cc5318b1ee55993d50e2f6be0f37964b73848673"
-  generated_content_sha256: "sha256:65c267fb571b7c2f009cb02f5095d1dd00d5412472c1228d625b2dc74e173142"
+  generated_content_sha256: "sha256:b76d6bb6525e03fce70a05562b8fc3373cb34fa79c1191543a7d3c91ba4f94b8"

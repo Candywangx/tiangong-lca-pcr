@@ -11,7 +11,7 @@ import {
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
-import { inspectProjectionIntegrity } from "../../packages/pcr-core/src/projection-integrity.mjs";
+import { inspectProjectionIntegrity } from "../../packages/pcr-core/src/projection-integrity.ts";
 import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
 import {
   REQUIRED_PCR_LANGUAGES,
@@ -485,6 +485,7 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
     sourceMarkdown: texts["pcr.en-US.md"],
     structuredText: texts["structured.yaml"],
     metadata: structured.projection_metadata,
+    structuredProjection: structured,
   });
   if (integrity.status !== "current") {
     for (const issue of integrity.issues) {
