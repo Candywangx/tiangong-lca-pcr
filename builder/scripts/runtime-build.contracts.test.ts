@@ -29,11 +29,11 @@ test("the sealed provider importer still loads without installed package depende
   const temp = mkdtempSync(path.join(realpathSync(tmpdir()), "pcr-provider-import-"));
   t.after(() => rmSync(temp, { recursive: true, force: true }));
   for (const relative of [
-    "builder/scripts/product-web-materialize.mjs", "builder/scripts/product-release.mjs",
-    "builder/scripts/product-identity.mjs", "builder/scripts/product-web.mjs", "builder/scripts/npm-release.mjs",
-    "builder/lib/lifecycle-policy.mjs", "builder/lib/lifecycle-vocab.mjs",
-    "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/generated/controlled-vocabulary.mjs",
-    "packages/pcr-docs/scripts/build-storage.mjs",
+    "builder/scripts/release-types.ts", "builder/scripts/product-web-materialize.ts", "builder/scripts/product-release.ts",
+    "builder/scripts/product-identity.ts", "builder/scripts/product-web.ts", "builder/scripts/npm-release.ts",
+    "builder/lib/lifecycle-policy.ts", "builder/lib/lifecycle-vocab.ts",
+    "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/vocabulary.ts", "packages/pcr-core/schemas/controlled-vocabulary.schema.json",
+    "packages/pcr-docs/scripts/build-storage.ts",
   ]) {
     mkdirSync(path.dirname(path.join(temp, relative)), { recursive: true });
     cpSync(path.join(root, relative), path.join(temp, relative));
@@ -47,7 +47,7 @@ test("the sealed provider importer still loads without installed package depende
     import assert from "node:assert/strict";
     const dependencies: string[] = ${JSON.stringify(Object.keys(dependencies))};
     for (const name of dependencies) assert.throws(() => import.meta.resolve(name), { code: "ERR_MODULE_NOT_FOUND" });
-    await import("./builder/scripts/product-web-materialize.mjs");
+    await import("./builder/scripts/product-web-materialize.ts");
     console.log("dependency-free importer ready");
   `);
   const output = execFileSync(process.execPath, [path.join(temp, "probe.ts")], {

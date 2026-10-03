@@ -92,13 +92,29 @@ test('opening a substituted bound file never follows a symbolic link', t => {
 test('alias reuse remains fingerprint-bound and rechecks dependencies after construction', t => {
   const root = fixture(t); const fingerprint = pcrReadContextAliasInputFingerprint({ root });
   let validations = 0;
-  // Low-level callers attest prior semantic validation; this structural receipt
-  // is not proof against caller-authored data. Public session selectors do not
-  // expose it. Matching reuse intentionally performs zero alias validations.
   const context = createPcrReadContext({ root, validatedAliasReuse: { aliases: [], fingerprint }, onAliasValidation() { validations += 1; } });
-  assert.equal(validations, 0);
+  assert.equal(validations, 1, 'a matching persisted receipt cannot establish semantic validity');
   assert.strictEqual(assertPcrReadContextFresh({ context }), context);
-  assert.throws(() => createPcrReadContext({ root, validatedAliasReuse: { aliases: [], fingerprint: digest('unrelated') } }), { code: 'PCR_READ_CONTEXT_STALE' });
+  createPcrReadContext({ root, validatedAliasReuse: { aliases: [], fingerprint: digest('unrelated') }, onAliasValidation() { validations += 1; } });
+  assert.equal(validations, 2, 'untrusted freshness metadata never suppresses cold validation');
   write(root, registryPath, renderYaml({ schema_version: 1, registry_kind: 'legacy-pcr-id-aliases', status: 'current', aliases: [] }) + '\n');
   assert.throws(() => assertPcrReadContextFresh({ context }), { code: 'PCR_READ_CONTEXT_STALE' });
+});
+
+test('caller-authored alias receipts cannot bypass terminal-target semantic validation', t => {
+  const root = fixture(t);
+  const aliases = [{source_pcr_id:'pcr.legacy.products.example',source_pcr_path:'library/pcrs/legacy/products/example',target:{kind:'canonical_pcr',pcr_id:'pcr.missing.products.example'},reason:'canonical_pcr_replacement',decision_ref:'docs/adr/alias.md'}];
+  const registry=renderYaml({schema_version:1,registry_kind:'legacy-pcr-id-aliases',status:'current',aliases});
+  write(root,registryPath,registry);write(root,'docs/adr/alias.md','# Alias fixture decision\n');
+  write(root,'library/catalog.yaml',renderYaml({schema_version:1,pcr_index:indexPath,pcr_id_aliases:{path:registryPath,hash_mode:'exact_bytes',sha256:digest(registry),entry_count:1},classification_mappings:[mappingPath],classification_coverage_indexes:[]}));
+  const fingerprint=pcrReadContextAliasInputFingerprint({root});let calls=0;
+  assert.throws(()=>createPcrReadContext({root,validatedAliasReuse:{fingerprint,aliases},beforeAliasValidation(){calls+=1;}}),{code:'PCR_INVALID_PCR_ID_ALIASES'});
+  assert.equal(calls,1);
+});
+
+ test('one context validates aliases once while repeated owned session reads reuse the result', t => {
+  const root=fixture(t);let validations=0;
+  const context=createPcrReadContext({root,validatedAliasReuse:JSON.parse('{"aliases":[],"fingerprint":"forged"}') as unknown,onAliasValidation(){validations+=1;}});
+  withPcrReadContextSession({context,read(){for(let index=0;index<10;index+=1)assert.equal(context.findPcrIdAlias('pcr.missing.products.example'),null);}});
+  assert.equal(validations,1);
 });
