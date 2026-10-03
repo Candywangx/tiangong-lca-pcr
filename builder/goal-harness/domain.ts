@@ -40,8 +40,8 @@ export interface GoalTrialTurn extends UnknownRecord {
 export interface GoalTrialReview extends UnknownRecord { key: string; ok: boolean; category: string; findings: GoalFinding[] }
 export interface GoalTask extends UnknownRecord {
   id: string; state: string;
-  goal_id?: string; cpc_code?: string; pcr_id?: string; pcr_path?: string; allowed_files?: string[];
-  queue_action?: string; queue_order?: number; product_name_en?: string; product_name_zh?: string;
+  goal_id?: string; cpc_code?: string; pcr_id?: string | null; pcr_path?: string; allowed_files?: string[];
+  queue_action?: string; queue_order?: number; product_name_en?: string; product_name_zh?: string | null;
   attempt?: number; repair_count?: number; repair_resume_count?: number; infrastructure_resume_count?: number;
   execution_continue_count?: number; execution_recheck_count?: number; evidence_recheck_count?: number;
   uuid_enrichment_generation?: number; uuid_search_contract_version?: number;
@@ -68,8 +68,10 @@ export interface GoalTask extends UnknownRecord {
   pending_gate_findings?: GoalFinding[]; review_assessment?: UnknownRecord;
 }
 export interface GoalSnapshot extends UnknownRecord {
-  id: string; goal_id?: string; state?: string; task_ids: string[];
+  id: string; goal_id?: string; state?: string; task_ids?: string[];
   author_commits?: (string | null | undefined)[]; result_keys?: string[];
+  integration_commit?: string | null; base_commit?: string | null; created_at?: string | null;
+  landed_at?: string | null; validated_at?: string | null; worktree_path?: string | null;
 }
 export interface GoalState extends UnknownRecord {
   tasks: GoalTask[]; snapshots: GoalSnapshot[]; stopped: boolean;
@@ -142,8 +144,8 @@ export function errorCode(error: unknown): unknown { return field(error, 'code')
 export function json(textValue: string): unknown { const value: unknown = JSON.parse(textValue); return value; }
 export function jsonRecord(textValue: string): UnknownRecord { return record(json(textValue)); }
 
-const taskStrings = ['goal_id','cpc_code','pcr_id','pcr_path','queue_action','product_name_en','product_name_zh','author_base_commit','author_content_base_commit','author_model','author_reasoning_effort','failure_code','failure_message','updated_at','valid_at','landed_at','integration_snapshot_id','dispatched_at','repair_started_at','integration_commit'];
-const taskNullableStrings = ['thread_id','turn_id','worktree_path','author_branch','author_commit','last_author_commit','report_path','report_sha256','submission_path','submission_sha256'];
+const taskStrings = ['goal_id','cpc_code','pcr_path','queue_action','product_name_en','author_base_commit','author_content_base_commit','author_model','author_reasoning_effort','failure_code','failure_message','updated_at','valid_at','landed_at','integration_snapshot_id','dispatched_at','repair_started_at','integration_commit'];
+const taskNullableStrings = ['pcr_id','product_name_zh','thread_id','turn_id','worktree_path','author_branch','author_commit','last_author_commit','report_path','report_sha256','submission_path','submission_sha256'];
 const taskNumbers = ['queue_order','attempt','repair_count','repair_resume_count','infrastructure_resume_count','execution_continue_count','execution_recheck_count','evidence_recheck_count','uuid_enrichment_generation','uuid_search_contract_version','authoring_contract_version','author_draft_schema_version','author_report_schema_version'];
 const taskBooleans = ['report_complete','infrastructure_resume_pending','execution_continue_pending','repair_resume_pending','execution_recheck_pending','evidence_recheck_pending'];
 const taskStringArrays = ['allowed_files','transition_ids','previous_thread_ids','previous_worktree_paths'];
@@ -196,7 +198,8 @@ export function isGoalTask(value: unknown): value is GoalTask {
 export function goalTask(value: unknown): GoalTask { if (!isGoalTask(value)) throw new TypeError('Persisted Goal task shape is invalid.'); return value; }
 export function goalTasks(value: unknown): GoalTask[] { const items=array(value); if (!items.every(isGoalTask)) throw new TypeError('Persisted Goal task inventory is invalid.'); return items; }
 export function isGoalSnapshot(value: unknown): value is GoalSnapshot {
-  return isRecord(value) && typeof value.id==='string' && isStrings(value.task_ids) && optionalFields(value,['goal_id','state'],entry=>typeof entry==='string')
+  return isRecord(value) && typeof value.id==='string' && optionalFields(value,['task_ids'],isStrings) && optionalFields(value,['goal_id','state'],entry=>typeof entry==='string')
+    && optionalFields(value,['integration_commit','base_commit','created_at','landed_at','validated_at','worktree_path'],entry=>entry===null||typeof entry==='string')
     && optionalFields(value,['result_keys'],isStrings) && optionalFields(value,['author_commits'],entry=>Array.isArray(entry)&&entry.every(commit=>commit==null||typeof commit==='string'));
 }
 export function goalSnapshot(value: unknown): GoalSnapshot { if (!isGoalSnapshot(value)) throw new TypeError('Persisted Goal snapshot shape is invalid.'); return value; }
