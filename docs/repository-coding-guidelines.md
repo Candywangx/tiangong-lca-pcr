@@ -14,8 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-06-24
-lastReviewedCommit: 08707c730a7e4a04331ae5f93a1101eae286ece4
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: 9d166fdf1e78a207fd8475e7e4e560edc2d23b8c
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
@@ -64,3 +65,14 @@ Commands that write, publish, bump, scaffold, sync, or rewrite files should repo
 Design CLI output as context for an Agent, not just text for a terminal.
 
 The repository-level rule is simple: an Agent-facing CLI should be discoverable, bounded, deterministic, and useful in the next reasoning step. The detailed design contract lives in `docs/ai-friendly-cli-design.md`.
+
+## 7. TypeScript source and test engineering
+
+Follow [TypeScript and test engineering](typescript-engineering.md) for exact Node
+pins, strict TypeScript projects, the legacy migration inventory, complete test
+suites and source-mapped coverage. New implementation and tests use TS/TSX; the
+approved upstream Python SEO snapshot remains unchanged. Run the complete
+validation entrypoint after installing both current dependency graphs. Each phase
+must distinguish native source tests, emitted code tests and installed-artifact
+qualification. Do not weaken production filesystem guards to accommodate test
+fixture aliases, or copy known semantic losses into expected output.
