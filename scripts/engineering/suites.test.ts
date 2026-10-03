@@ -229,3 +229,13 @@ test("POSIX SIGTERM is forwarded to the real test process and owned temporary fi
   assert.deepEqual(readRunResult(stdout), { exitCode: null, signal: "SIGTERM" });
   assert.equal(existsSync(temporaryRoot), false);
 });
+
+
+test("browser contracts remain explicit members of all/root and use their own base suite", () => {
+  const filename = "tests/browser/viewer.browser.test.ts";
+  const inventory = classifyTestFiles([filename, "sample.unit.test.ts"]);
+  assert.deepEqual(inventory.browser, [filename]);
+  assert.deepEqual(selectSuite(inventory, "browser"), [filename]);
+  assert.deepEqual(selectSuite(inventory, "all"), ["sample.unit.test.ts", filename]);
+  assert.deepEqual(selectSuite(inventory, "root"), selectSuite(inventory, "all"));
+});

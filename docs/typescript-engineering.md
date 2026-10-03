@@ -103,6 +103,7 @@ nvm install
 nvm use
 npm ci
 npm --prefix packages/pcr-docs ci
+npm run browser:install
 npm run validate
 ```
 
@@ -121,6 +122,7 @@ test files. New test placement/names must satisfy the suite contract.
 | `test:offline` | Real SQLite and installed tool/library distribution |
 | `test:product` | Product sealing, publication and importer contracts |
 | `test:engineering` | Runtime, migration and test-discovery boundaries |
+| `test:browser` | Compiled Viewer interaction in Chromium, Firefox and WebKit |
 | `test:coverage` | Emitted engineering tests and source-mapped engineering coverage |
 | `docs:build` | Full static export/source/provider validation |
 
@@ -210,3 +212,25 @@ The typed Markdown parser, serializer, projection integrity, source-context comp
 The consumer core, SQLite reader, CLI and offline-library builder use strict TypeScript. The runtime compiler now includes only TypeScript sources and no longer enables the legacy `allowJs` transport bridge. Generated npm bins are `.js`; consumers run them without a compiler or Node type stripping. Remaining Builder/Harness/site/release JavaScript stays in the shrinking migration inventory for subsequent phases.
 
 Read sessions own their source scope and handles. Repository sessions bind selected current-artifact bytes and recheck before returning; SQLite sessions retain one readonly transaction. Bounded caches belong to one synchronous callback and cannot escape as reusable validation receipts. Session tests cover source isolation, mutated inputs, eviction, closure, and ordered all-or-error batches.
+
+
+## Browser source and interaction qualification
+
+Browser entrypoints use TypeScript under separate DOM and Web Worker projects;
+Node release/importer tooling remains in its own runtime type environment.
+`tsconfig.viewer-browser.json` and `tsconfig.docs-worker.json` emit reviewed browser
+assets with the pinned repository compiler. HTML/worker URLs retain their existing
+JavaScript filenames. Browsers receive emitted JavaScript, never TypeScript source.
+
+The `browser` suite is an explicit part of `all`/`root`, using the existing Node
+test runner and pinned Playwright library rather than a second test-runner contract.
+Install its exact matching engines with `npm run browser:install`; Linux CI uses
+Playwright's `install --with-deps` so missing system libraries fail qualification.
+Tests exercise the actual compiled Viewer assets in Chromium, Firefox and WebKit:
+lazy detail fetch, literal filtering, language selection, escaped Markdown,
+keyboard tabs, retained snapshot links, mobile overflow and stale selection races.
+Fixture servers bind only loopback ephemeral ports and are closed together with
+browser processes; compiled temporary assets are removed. Diagnostic screenshots
+and request/error logs remain in `.reports/browser` and are uploaded by CI.
+These deterministic transport fixtures do not replace final browser acceptance of
+the exact extracted production web artifact.

@@ -49,6 +49,9 @@ jobs:
       - name: Install dependencies
         run: npm ci && npm --prefix packages/pcr-docs ci
 
+      - name: Install browser qualification runtimes
+        run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
+
       - name: Verify emitted TypeScript tests and source-mapped coverage
         run: npm run test:coverage
 
@@ -86,6 +89,15 @@ jobs:
             if [ "$validation_status" -eq 0 ]; then validation_status=1; fi
           fi
           exit "$validation_status"
+
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .reports/browser/
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Preserve complete validation diagnostics
         if: always()

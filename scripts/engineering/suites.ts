@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const SUITE_NAMES = [
-  "unit", "contracts", "integration", "recovery", "docs", "offline", "product", "engineering",
+  "unit", "contracts", "integration", "recovery", "docs", "offline", "product", "engineering", "browser",
 ] as const;
 export type SuiteName = typeof SUITE_NAMES[number];
 export type SuiteSelector = SuiteName | "all" | "root";
@@ -20,6 +20,7 @@ export const SUITE_DESCRIPTIONS: Readonly<Record<SuiteName, string>> = {
   offline: "Offline SQLite distribution, packaging, and network-free installation.",
   product: "Product identity, npm release, publication, and sealed website artifacts.",
   engineering: "Native TypeScript engineering tools and their command boundaries.",
+  browser: "Compiled browser assets and real Chromium, Firefox and WebKit interactions.",
 };
 
 // Reviewed legacy membership uses extension-free paths so gradual .mjs -> .ts
@@ -180,7 +181,7 @@ export function discoverTestFiles(root: string): readonly string[] {
 /** Every discovered test receives exactly one base suite, or discovery fails. */
 export function classifyTestFiles(files: readonly string[]): SuiteInventory {
   const inventory: Record<SuiteName, string[]> = {
-    unit: [], contracts: [], integration: [], recovery: [], docs: [], offline: [], product: [], engineering: [],
+    unit: [], contracts: [], integration: [], recovery: [], docs: [], offline: [], product: [], engineering: [], browser: [],
   };
   const seen = new Set<string>();
   const seenStems = new Set<string>();
