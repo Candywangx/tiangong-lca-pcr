@@ -187,7 +187,12 @@ test("CLI validates exact arguments and gives unknown suite exit 2 without launc
   assert.match(help.stdout, /including docs and engineering/);
 });
 
-test("SIGTERM is forwarded to the real test process and owned temporary files are cleaned", { timeout: 15_000 }, async t => {
+test("POSIX SIGTERM is forwarded to the real test process and owned temporary files are cleaned", {
+  timeout: 15_000,
+  // Windows process.kill(SIGTERM) force-terminates the target without invoking
+  // its handler. It cannot exercise this cooperative POSIX cleanup contract.
+  skip: process.platform === "win32" ? "Windows SIGTERM is non-cooperative; ordinary child failure/cleanup is tested separately." : false,
+}, async t => {
   const root = fixture(t);
   const ready = path.join(root, "ready.json");
   writeFixture(root, "scripts/engineering/waiting.test.ts", `

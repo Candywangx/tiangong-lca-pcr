@@ -130,6 +130,13 @@ no-follow and source-identity tests; it never relaxes production path checks or
 canonicalizes user-supplied artifact paths on their behalf. Preserve useful test
 logs separately from disposable fixtures.
 
+Cooperative POSIX signal forwarding has a real subprocess test. Windows
+`process.kill(SIGTERM)` terminates its target without invoking that handler, so
+that specific case is explicitly reported as unsupported there. Ordinary child
+failure/status propagation and temporary-root cleanup still run on Windows.
+Forced termination on any platform can prevent cleanup; preserve the owned path
+for explicit recovery instead of claiming that a finally block always ran.
+
 Coverage in this foundation is an **engineering baseline**, not whole-product
 coverage. c8 maps emitted code back to TypeScript and includes unexecuted source;
 tests and generated output are excluded from the denominator. Reports are retained
