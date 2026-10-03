@@ -85,6 +85,7 @@ const LEGACY_TESTS: Readonly<Partial<Record<SuiteName, readonly string[]>>> = {
     "builder/goal-harness/model-trial.test",
     "builder/goal-harness/orchestrator.test",
     "builder/goal-harness/planner.test",
+    "builder/goal-harness/pinned-viewer-publisher-worker.test",
     "builder/goal-harness/prepared-intake.test",
     "builder/goal-harness/receipt-integrity-race.test",
     "builder/goal-harness/receipt-integrity.test",

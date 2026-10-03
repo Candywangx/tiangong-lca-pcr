@@ -1,6 +1,6 @@
 import type { BuilderOptions, LintDiagnostics, LintReport } from "./types.ts";
 import { errorMessage } from "../../packages/pcr-core/src/types.ts";
-// Diagnostic presentation only; collection and severity remain in lint-rules.mjs.
+// Diagnostic presentation only; collection and severity remain in lint-rules.ts.
 import { createHash, randomUUID } from "node:crypto";
 import { closeSync, lstatSync, mkdirSync, openSync, realpathSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";

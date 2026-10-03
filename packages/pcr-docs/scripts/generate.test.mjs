@@ -12,13 +12,13 @@ import { tmpdir } from "node:os";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
-import { createAuthoringPcr } from "../../../builder/lib/pcr-authoring-fixture.mjs";
+import { createAuthoringPcr } from "../../../builder/lib/pcr-authoring-fixture.ts";
 import {
   lifecycle,
   publish,
   revise,
   syncStructured,
-} from "../../../builder/lib/manifest-lifecycle.mjs";
+} from "../../../builder/lib/manifest-lifecycle.ts";
 import { parseYaml, renderYaml } from "../../pcr-core/src/yaml-lite.ts";
 const script = fileURLToPath(new URL("./generate.mjs", import.meta.url));
 const hash = (bytes) =>

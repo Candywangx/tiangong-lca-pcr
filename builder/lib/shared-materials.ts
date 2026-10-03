@@ -23,6 +23,7 @@ const dimensions: readonly Dimension[] = ["product", "process", "route", "state"
 const hash = (bytes: string | Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value: unknown): string => JSON.stringify(value, (_, v: unknown) => v && typeof v === "object" && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b))) : v);
 function requireThat(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
+function rawString(value: unknown, name: string): string { requireThat(typeof value === "string", `Invalid ${name}`); return value; }
 function string(value: unknown, name: string, max = 1000) { requireThat(typeof value === "string" && value.trim() && value.length <= max, `Invalid ${name}`); return value.trim(); }
 function date(value: unknown, name: string) { string(value, name, 40); requireThat(typeof value === "string", `Invalid ${name}`); requireThat(/^\d{4}-\d\d-\d\dT.*(?:Z|[+-]\d\d:\d\d)$/.test(value) && Number.isFinite(Date.parse(value)), `Invalid ${name}`); return value; }
 function strings(value: unknown, name: string, max = 30) { requireThat(Array.isArray(value) && value.length <= max, `Invalid ${name}`); return [...new Set(value.map(v => string(v, name, 240)))].sort(); }
@@ -87,7 +88,7 @@ function sourceIdentity(rawSource: unknown) {
   const doi = normalizeDoi(source.doi);
   let url;
   if (source.url) {
-    const parsed = new URL(string(source.url,"source.url"));
+    const parsed = new URL(rawString(source.url,"source.url"));
     requireThat(["http:", "https:"].includes(parsed.protocol) && !parsed.username && !parsed.password, "Use a public stable URL without credentials");
     parsed.hash = ""; url = parsed.href;
   }
@@ -115,7 +116,7 @@ export function registerMaterial({ root, input: rawInput }: {root:string;input:u
   const record: MaterialRecord = { schema_version: 1, source: sourceIdentity(input.source), tags: strings(input.tags ?? [], "tags"), fragments: [] };
   const blobs: {location:string;bytes:Buffer}[] = [];
   function blob(file: unknown, max?:number) {
-    const bytes = readFile(path.resolve(string(file,"path")), max), sha256 = hash(bytes);
+    const bytes = readFile(path.resolve(rawString(file,"path")), max), sha256 = hash(bytes);
     const location = path.join(root, "blobs", sha256);
     blobs.push({ location, bytes });
     return { path: location, sha256, bytes: bytes.length };
@@ -243,7 +244,7 @@ export function queryMaterials({ root, request: rawRequest = {}, limit = 5, offs
   requireThat(Number.isInteger(limit) && limit >= 1 && limit <= 20 && Number.isInteger(offset) && offset >= 0, "Query bound: limit 1–20, offset >= 0");
   const request=materialRequest(rawRequest);
   const doi = normalizeDoi(request.doi);
-  const url = request.url ? new URL(string(request.url,"url")) : null;
+  const url = request.url ? new URL(rawString(request.url,"url")) : null;
   if (url) url.hash = "";
   const terms = [request.product, request.process, request.need, doi, url?.href].filter(Boolean).flatMap(v => String(v).toLowerCase().split(/[^\p{L}\p{N}./:-]+/u)).filter(v => v.length > 1);
   requireThat(terms.length && terms.join(" ").length <= 2000, "Query needs a bounded product, process, need, DOI or URL");

@@ -1,3 +1,5 @@
+import {trialAssignmentEvent,assertTrialControls} from "./model-trial.ts";
+import {existsSync} from "node:fs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -159,3 +161,68 @@ test("typed receipt index retains every attestation for uniqueness checks withou
 });
 
 function first<T>(items: readonly T[]): T { const item=items[0]; assert.ok(item !== undefined); return item; }
+
+
+test("persisted enrichment reset pointers retain null and reject non-string metadata before capture", t => {
+ const stateDir=mkdtempSync(path.join(tmpdir(),"goal-reset-metadata-"));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+ const store=new GoalEventStore({stateDir});
+ for(const [key,value] of [["valid_at",{}],["integration_snapshot_id",false]] satisfies [string,unknown][]){
+  assert.throws(()=>store.initialize({tasks:[{id:"historical",state:"retryable_failure",[key]:value}]}),TypeError);
+  assert.equal(existsSync(store.initialPath),false,"Invalid external metadata must not become a persisted initial snapshot");
+ }
+ const captured=store.initialize({tasks:[{id:"historical",state:"retryable_failure",valid_at:null,integration_snapshot_id:null}]});
+ assert.equal(captured.tasks[0]?.valid_at,null);assert.equal(captured.tasks[0]?.integration_snapshot_id,null);
+});
+
+
+// Captured by the original event-store.mjs writer at 9b80e624. Keep the exact
+// legacy event bytes/hash as an oracle without retaining an executable JS import.
+test("original writer null failure pointers remain readable without changing historic event receipts", t => {
+ const dir=mkdtempSync(path.join(tmpdir(),"goal-original-null-failures-"));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const originalInitial="{\n  \"goal_id\": \"historic-nulls\",\n  \"tasks\": [\n    {\n      \"id\": \"task\",\n      \"state\": \"authoring\"\n    }\n  ],\n  \"stopped\": false,\n  \"snapshots\": [],\n  \"last_event_sequence\": 0,\n  \"last_event_hash\": null\n}\n";
+ const originalLog="{\"sequence\":1,\"event_id\":\"old-valid-result\",\"at\":\"2026-09-14T00:00:00.000Z\",\"type\":\"task_replaced\",\"payload\":{\"task\":{\"id\":\"task\",\"state\":\"valid_result\",\"failure_code\":null,\"failure_message\":null,\"failure_details\":null,\"author_model\":null,\"author_reasoning_effort\":null}},\"previous_hash\":null,\"hash\":\"4d5ba2368ebf60498b6c9afd4a88637ef028c5a3f352cf18e36a71b2f08e91fe\"}\n";
+ const originalHash="4d5ba2368ebf60498b6c9afd4a88637ef028c5a3f352cf18e36a71b2f08e91fe";
+ const store=new GoalEventStore({stateDir:dir});writeFileSync(store.initialPath,originalInitial);writeFileSync(store.eventsPath,originalLog);
+ const state=store.rebuild();const task=state.tasks[0];assert.ok(task);
+ assert.equal(task.failure_code,null);assert.equal(task.failure_message,null);assert.equal(task.failure_details,null);
+ assert.equal(task.author_model,null);assert.equal(task.author_reasoning_effort,null);
+ assert.throws(()=>store.append({event_id:"invalid-trial-model",type:"task_replaced",payload:{task:{...task,model_trial:{model:null}}}}),TypeError,"Trial allocation still requires a non-null model");
+ assert.equal(state.last_event_hash,originalHash);assert.equal(store.getEvent("old-valid-result")?.hash,originalHash);
+ assert.equal(readFileSync(store.eventsPath,"utf8"),originalLog);assert.equal(readFileSync(store.initialPath,"utf8"),originalInitial);
+ for(const key of ["failure_code","failure_message","failure_details","author_model","author_reasoning_effort"]){
+  assert.throws(()=>store.append({event_id:`invalid-${key}`,type:"task_replaced",payload:{task:{...task,[key]:42}}}),TypeError);
+  assert.equal(readFileSync(store.eventsPath,"utf8"),originalLog,"Malformed non-null metadata must not append a receipt");
+ }
+});
+
+
+// Exact original writer capture from 4b6d2a5d; enrichment intentionally retires
+// an old first-start intent before choosing a distinct new durable identity.
+test("original cleared author intent stays null on replay without granting an author start",t=>{
+ const dir=mkdtempSync(path.join(tmpdir(),"goal-cleared-start-intent-"));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const store=new GoalEventStore({stateDir:dir});
+ const initial="{\n  \"tasks\": [\n    {\n      \"id\": \"enrichment\",\n      \"state\": \"queued\"\n    }\n  ],\n  \"stopped\": false,\n  \"snapshots\": [],\n  \"last_event_sequence\": 0,\n  \"last_event_hash\": null\n}\n",log="{\"sequence\":1,\"event_id\":\"clear-old-intent\",\"at\":\"2026-09-14T00:00:00.000Z\",\"type\":\"task_replaced\",\"payload\":{\"task\":{\"id\":\"enrichment\",\"state\":\"queued\",\"uuid_enrichment_generation\":1,\"author_start_intent\":null}},\"previous_hash\":null,\"hash\":\"a365c0e19e06f478a4735f29d6b217b506f48c8d3972da665dcd67acfbb9bbb2\"}\n";
+ writeFileSync(store.initialPath,initial);writeFileSync(store.eventsPath,log);
+ const state=store.rebuild();assert.equal(state.tasks[0]?.author_start_intent,null);assert.equal(state.tasks[0]?.uuid_enrichment_generation,1);
+ assert.equal(state.last_event_hash,"a365c0e19e06f478a4735f29d6b217b506f48c8d3972da665dcd67acfbb9bbb2");assert.equal(readFileSync(store.eventsPath,"utf8"),log);
+ assert.throws(()=>store.append({event_id:"invalid-intent",type:"task_replaced",payload:{task:{id:"enrichment",state:"queued",author_start_intent:"started"}}}),TypeError);
+ assert.equal(readFileSync(store.eventsPath,"utf8"),log);
+});
+
+
+test("actual CLI trial controls retain doctor and fingerprint audit metadata without replacing live control verification", t=>{
+ const stateDir=mkdtempSync(path.join(tmpdir(),"goal-cli-trial-audit-"));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+ const store=new GoalEventStore({stateDir});
+ const tasks=Array.from({length:6},(_,i)=>({id:`task-${i}`,state:"queued",queue_action:"create_new",pcr_path:`library/pcrs/fixture/p${i}`}));
+ const state=store.initialize({tasks});
+ const controls={harness_sha256:"a".repeat(64),policy_sha256:"b".repeat(64),config_sha256:"c".repeat(64),cache_sha256:"d".repeat(64),plan_sha256:"e".repeat(64),cache_fingerprint_scope:"verified_common_uuids_projection; per-turn injected evidence separately fingerprinted",doctor:{ok:true,checked_at:"2026-09-14T00:00:00.000Z",passed:17}};
+ const assignments=tasks.map((task,i)=>({task_id:task.id,pair_id:`pair-${Math.floor(i/2)}`,model:i%2?"gpt-5.6-sol":"gpt-5.6-terra",difficulty:"matched",rationale:"Same action and independently reviewed paired workload."}));
+ const event=store.append(trialAssignmentEvent({state,trialId:"audit-trial",assignments,controls}));
+ const bytes=readFileSync(store.eventsPath),replayed=new GoalEventStore({stateDir}).rebuild();
+ assert.deepEqual(replayed.model_trials?.[0]?.controls,controls);assert.deepEqual(replayed.tasks[0]?.model_trial?.controls,controls);
+ assert.equal(replayed.last_event_hash,event.hash);assert.deepEqual(readFileSync(store.eventsPath),bytes);
+ const policy=path.join(stateDir,"policy.txt");writeFileSync(policy,"Current independently executed policy.\n");
+ const task=replayed.tasks[0];assert.ok(task);
+ assert.throws(()=>assertTrialControls(task,{policy_prompt_path:policy}),{code:"GOAL_MODEL_TRIAL_INVALID"},"A captured successful doctor record cannot approve drifted executing control bytes");
+ assert.throws(()=>new GoalEventStore({stateDir:path.join(stateDir,"bad-control")}).initialize({tasks:[],model_trials:[{id:"bad",assignments:[],controls:{...controls,plan_sha256:42}}]}),TypeError,"Known non-null hash metadata remains string-checked");
+});

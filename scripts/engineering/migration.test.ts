@@ -178,14 +178,14 @@ test('CLI emits deterministic JSON and uses failure/usage exit codes', t => {
 });
 
 test('the controlled vocabulary exemption delegates to its read-only generator check and propagates stale artifacts', async t => {
-  const artifact = 'packages/pcr-core/src/generated/controlled-vocabulary.mjs';
-  const generator = 'builder/scripts/generate-controlled-vocabulary.mjs';
+  const artifact = 'packages/pcr-core/src/generated/controlled-vocabulary.ts';
+  const generator = 'builder/scripts/generate-controlled-vocabulary.ts';
   const f = fixture(t, {
     'old.mjs': 'export {};\n',
     [generator]: [
       'import { readFileSync } from "node:fs";',
       'if (!process.argv.includes("--check")) throw new Error("Mutation forbidden in this fixture");',
-      'const output = new URL("../../packages/pcr-core/src/generated/controlled-vocabulary.mjs", import.meta.url);',
+      'const output = new URL("../../packages/pcr-core/src/generated/controlled-vocabulary.ts", import.meta.url);',
       'if (readFileSync(output, "utf8") !== "export const values = [];\\n") throw new Error("stale controlled vocabulary");',
     ].join('\n'),
     [artifact]: 'export const values = [];\n',

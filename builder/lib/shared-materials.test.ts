@@ -197,3 +197,33 @@ test("concurrent CLI writers preserve duplicates and distinct versions; incomple
   writeFileSync(path.join(root, "records", file), "{}");
   assert.equal(queryMaterials({ root, request: use }).issues[0]!.code, "record_invalid");
 });
+
+
+test("material registration preserves exact original and extraction filenames", {skip: process.platform === "win32" ? "Windows aliases trailing-space filenames; the distinct-file contract is POSIX." : false}, t => {
+  const {root, input} = fixture(t);
+  const originalPath = input.original.path + " ", extractionPath = input.extraction.path + " ";
+  const originalBytes = "Authorized original with a distinct trailing-space filename\n";
+  const extractionBytes = "Authorized extraction with a distinct trailing-space filename\n";
+  writeFileSync(originalPath, originalBytes); writeFileSync(extractionPath, extractionBytes);
+  const original = {...input.original, path: originalPath};
+  const captured = registerMaterial({root, input: {source: input.source, tags: input.tags, original}});
+  assert.ok(captured.record.original);
+  assert.equal(readFileSync(captured.record.original.path, "utf8"), originalBytes);
+  const saved = registerMaterial({root, input: {source: input.source, tags: input.tags, original,
+    extraction: {...input.extraction, path: extractionPath, source_sha256: captured.record.original.sha256}}});
+  assert.ok(saved.record.original && saved.record.extraction);
+  assert.equal(readFileSync(saved.record.original.path, "utf8"), originalBytes);
+  assert.equal(readFileSync(saved.record.extraction.path, "utf8"), extractionBytes);
+  assert.notEqual(readFileSync(input.original.path, "utf8"), originalBytes);
+  assert.notEqual(readFileSync(input.extraction.path, "utf8"), extractionBytes);
+});
+
+test("public material URLs retain existing registration and query bounds", t => {
+  const {root} = fixture(t);
+  const url = "https://example.invalid/evidence/" + "a".repeat(1400);
+  const saved = registerMaterial({root, input: {source: {title: "Long stable public locator", url, version: "unknown"}, tags: []}});
+  assert.equal(saved.record.source.url, url);
+  assert.ok(queryMaterials({root, request: {url: url + "#section"}}).candidates.some(candidate => candidate.id === saved.id));
+  assert.throws(() => queryMaterials({root, request: {url: "https://example.invalid/" + "a".repeat(2001)}}), /Query needs a bounded/u);
+  assert.throws(() => registerMaterial({root, input: {source: {title: "Credential URL", url: "https://secret@example.invalid/a", version: "unknown"}}}), /without credentials/u);
+});
