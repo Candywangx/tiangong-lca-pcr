@@ -272,7 +272,11 @@ archive; it never installs a compiler or rebuilds the frontend. Browser entrypoi
 are compiled before export. PostCSS uses declarative JSON configuration.
 
 Pinned Goal Viewer publication resolves one coherent module pair from its captured
-source: current `.ts`, historical `.mjs`, or emitted `.js`. It never mixes formats.
+source. New captures declare `.ts` in `scripts/publisher-source.json`; that
+validated marker selects exactly one pair and never falls back on a missing pair.
+Historical captures without a marker prefer `.mjs` over a coexisting typed port,
+preserving their original producer bytes; TS-only/emitted captures remain readable.
+It never mixes formats.
 Historical source remains executable without rewriting its captured commit. Runtime
 overlays include the pinned compiler configuration and dependency lock. Publisher
 attempt receipts preserve existing additional audit fields while rejecting identity

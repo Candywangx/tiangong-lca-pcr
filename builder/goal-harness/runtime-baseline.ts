@@ -64,6 +64,7 @@ const EXACT_RUNTIME_PATHS = new Set([
   "package-lock.json",
   "tsconfig.json",
   "tsconfig.viewer-browser.json",
+  "packages/pcr-viewer/scripts/publisher-source.json",
   "packages/pcr-core/src/projection-completeness.ts",
   "packages/pcr-viewer/viewer-build.test.ts",
 ]);
