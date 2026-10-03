@@ -25,7 +25,7 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
 lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 ---
 
@@ -232,3 +232,12 @@ Use explicit snapshot selection and verification for offline consumption.
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+## YAML preservation
+
+Manifest reads preserve complete YAML 1.2 continuation text, later rows, escaped
+strings and bounded acyclic aliases through the shared typed YAML boundary.
+Malformed/unsupported input fails with line/column diagnostics before author
+review can treat it as complete. The real review gate still rejects a manifest
+whose unresolved row IDs differ from the author report; parser migration does
+not relax that requirement. See [TypeScript engineering](typescript-engineering.md#yaml-boundary).

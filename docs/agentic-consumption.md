@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
 lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
 title: Agent-led PCR consumption and review
 docType: contract

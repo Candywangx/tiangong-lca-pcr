@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
 lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
-lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
+lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

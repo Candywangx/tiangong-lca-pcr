@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
 lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 title: Offline PCR distribution contract
 docType: contract
@@ -369,3 +369,20 @@ package bootstrap is unrelated to first unified-product activation.
 Upstream contracts: [npm trusted publishing and dist-tags](https://docs.npmjs.com/trusted-publishers/#managing-dist-tags-with-trusted-publishing),
 [EdgeOne Git deployment hooks](https://pages.edgeone.ai/document/create-deploys),
 [EdgeOne project environments](https://pages.edgeone.ai/document/project-management).
+
+## Compiled runtime staging
+
+The TypeScript offline-tool builder compiles core and CLI sources with the pinned
+local compiler before atomic staging. During the staged refactor, explicitly
+inventoried legacy JavaScript is emitted alongside strict TypeScript; source TS
+imports become runtime JS imports. This is not full-migration qualification.
+Schemas, Skill and license assets retain their relative locations; executable
+bins follow the emitted extension. Only locked runtime dependencies are bundled,
+including the YAML reader; development/compiler packages are excluded. Inline
+source maps use a fixed logical source root, so temporary/host paths do not leak
+into tarball bytes. Actual installed-package probes use `--no-strip-types`.
+
+The publisher/provider validation path continues to load without node_modules;
+build-only imports remain lazy. The provider still imports the same sealed web
+archive and does not compile TypeScript or rebuild the frontend. Historical
+published artifacts are unchanged.

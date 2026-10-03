@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-09-16
-lastReviewedCommit: 02d206a3f252355ee1512732383409ac452d1088
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
 lastReviewedNote: "Reviewed for PCR #15 on current main59b: bounded canonical lint retains all22422diagnostics in complete JSON, preserves all inspection/optional-language/publication logic, and rejects lost required CI evidence. Current Linux base1292/candidate1301tests pass with same4filesystem skips; full arrays match, console22428to23lines, both69s without a time-speedup claim. New documentation job is byte-preserved; source/root handoff remains separate. Independent source review and both hosted CI jobs remain pending."
 title: PCR Library Release Policy
 docType: contract
