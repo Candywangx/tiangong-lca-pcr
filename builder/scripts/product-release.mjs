@@ -6,7 +6,7 @@ import { pipeline } from "node:stream/promises";
 import { createGzip, createGunzip } from "node:zlib";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { compareSemver } from "../lib/lifecycle-policy.mjs";
+import { compareSemver } from "../lib/lifecycle-policy.ts";
 import { assertIdentity, buildPackageArtifact, githubRequest, packages } from "./npm-release.mjs";
 import { PRODUCT_VERSION_FILE, assertProductIdentity, assertProductSemver, productGit, productSha256, readProductIdentity, readProductVersion } from "./product-identity.mjs";
 import { createWebProbes, writePrebuiltConfig } from "./product-web.mjs";

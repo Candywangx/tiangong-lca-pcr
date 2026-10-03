@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 56782712f5ac3e423ab80efaef7c7e35316461f8
+lastReviewedNote: "Reviewed strict Builder/Goal source and test cutover, retained consumer/package contracts, corrected physical source routing and preserved scientific gates; site/release qualification and formal publication remain in #77/#69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -20,7 +20,7 @@ checkPaths:
   - builder/scripts/product-*.mjs
   - product-release.json
   - packages/tiangong-pcr-library/package.json
-  - builder/scripts/build-offline-*.mjs
+  - builder/scripts/build-offline-*.ts
   - packages/pcr-core/src/offline-library.ts
   - packages/pcr-core/src/source-context.ts
   - packages/tiangong-pcr-cli/**
@@ -375,7 +375,7 @@ Upstream contracts: [npm trusted publishing and dist-tags](https://docs.npmjs.co
 The TypeScript offline-tool builder compiles core and CLI sources with the pinned
 local compiler before atomic staging. The consumer runtime graph now consists of strict TypeScript; source TS
 imports become runtime JS imports without an allowJs bridge. Remaining repository
-Builder/Harness/site/release migration is tracked separately and this does not
+Site/release migration is tracked separately and this does not
 claim final full-project qualification.
 Schemas, Skill and license assets retain their relative locations; executable
 bins follow the emitted extension. Only locked runtime dependencies are bundled,

@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: e807fce800d49f1a4ef2ea835b85b06a36e450bf
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
+lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
 ---
 
 # Authoring Guide

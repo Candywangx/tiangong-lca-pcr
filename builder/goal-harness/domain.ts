@@ -17,8 +17,8 @@ export interface AuthorContractVersions {
   authoring_contract_version: 1 | 2; author_draft_schema_version: 1 | 2; author_report_schema_version: 1;
 }
 export interface AuthorTurnContract extends AuthorContractVersions { thread_id?: string | null | undefined; turn_id: string }
-export interface GoalTrialControls {
-  harness_sha256: string; policy_sha256: string; config_sha256: string; cache_sha256?: string;
+export interface GoalTrialControls extends UnknownRecord {
+  harness_sha256: string; policy_sha256: string; config_sha256: string; cache_sha256?: string; plan_sha256?: string; cache_fingerprint_scope?: string;
 }
 export interface GoalTrialAssignment extends UnknownRecord {
   task_id: string; model: string; pair_id?: string; difficulty?: string; rationale?: string;
@@ -57,7 +57,7 @@ export interface GoalTask extends UnknownRecord {
   updated_at?: string; valid_at?: string|null; landed_at?: string; integration_snapshot_id?: string|null;
   dispatched_at?: string; repair_started_at?: string; integration_commit?: string;
   transition_ids?: string[]; previous_thread_ids?: string[]; previous_worktree_paths?: string[];
-  author_turn_contracts?: AuthorTurnContract[]; author_start_intent?: UnknownRecord;
+  author_turn_contracts?: AuthorTurnContract[]; author_start_intent?: UnknownRecord|null;
   repair_history?: UnknownRecord[]; uuid_enrichment_history?: UnknownRecord[];
   infrastructure_resume_history?: UnknownRecord[]; execution_continue_history?: UnknownRecord[];
   evidence_recheck_history?: UnknownRecord[]; execution_recheck_history?: UnknownRecord[];
@@ -166,7 +166,10 @@ function isAuthorTurnContract(value: unknown): value is AuthorTurnContract {
     && (value.author_draft_schema_version === 1 || value.author_draft_schema_version === 2) && value.author_report_schema_version === 1;
 }
 function isTrialControls(value: unknown): value is GoalTrialControls {
-  return isRecord(value) && ['harness_sha256','policy_sha256','config_sha256'].every(key=>typeof value[key]==='string') && Object.values(value).every(entry=>typeof entry==='string');
+  // Extension audit facts (including the saved doctor record) are preserved,
+  // while dispatch still verifies the executing harness/policy/config hashes.
+  return isRecord(value) && ['harness_sha256','policy_sha256','config_sha256'].every(key=>typeof value[key]==='string')
+    && optionalFields(value,['cache_sha256','plan_sha256','cache_fingerprint_scope'],entry=>typeof entry==='string');
 }
 function isTaskTrial(value: unknown): value is GoalTaskTrial {
   return isRecord(value) && typeof value.model === 'string' && optionalFields(value,['trial_id','task_id','pair_id','difficulty','rationale','effort'],entry=>typeof entry==='string') && optionalFields(value,['controls'],isTrialControls);
@@ -188,7 +191,8 @@ export function isGoalTask(value: unknown): value is GoalTask {
     && optionalFields(value,taskNullableStrings,entry=>entry===null||typeof entry==='string')
     && optionalFields(value,taskNumbers,entry=>typeof entry==='number'&&Number.isFinite(entry)) && optionalFields(value,taskBooleans,entry=>typeof entry==='boolean')
     && optionalFields(value,taskStringArrays,isStrings) && optionalFields(value,taskRecordArrays,isRecords)
-    && optionalFields(value,['author_start_intent','trial_semantic_review','review_assessment'],isRecord)
+    && optionalFields(value,['trial_semantic_review','review_assessment'],isRecord)
+    && optionalFields(value,['author_start_intent'],entry=>entry===null||isRecord(entry))
     && optionalFields(value,['failure_details'],entry=>entry===null||isRecord(entry))
     && optionalFields(value,['coordinator_hold'],entry=>entry===null||isRecord(entry))
     && optionalFields(value,['author_turn_contracts'],entry=>Array.isArray(entry)&&entry.every(isAuthorTurnContract))

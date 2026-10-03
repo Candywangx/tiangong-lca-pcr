@@ -9,7 +9,7 @@ import {
   splitProjectionDocument,
 } from "./src/projection-integrity.ts";
 
-function documentFor(sourceMarkdown, generatedContent = "schema_version: 1\n") {
+function documentFor(sourceMarkdown: string, generatedContent = "schema_version: 1\n") {
   const metadata = buildProjectionMetadata({ sourceMarkdown, generatedContent });
   const structuredText = `${generatedContent}projection_metadata:\n` +
     `  contract_version: "${metadata.contract_version}"\n` +
@@ -74,9 +74,10 @@ test("projection metadata must be one final top-level block", () => {
 test("projection metadata rejects implicit normalization or hash contracts", () => {
   const sourceMarkdown = "# Example\n";
   const { metadata, structuredText } = documentFor(sourceMarkdown);
-  delete metadata.canonical_markdown.normalization;
+  const invalidMetadata = structuredClone(metadata);
+  Reflect.deleteProperty(invalidMetadata.canonical_markdown, "normalization");
 
-  const result = inspectProjectionIntegrity({ sourceMarkdown, structuredText, metadata });
+  const result = inspectProjectionIntegrity({ sourceMarkdown, structuredText, metadata: invalidMetadata });
 
   assert.equal(result.status, "invalid");
   assert.ok(result.issues.some((entry) => entry.code === "projection_fingerprint_invalid"));

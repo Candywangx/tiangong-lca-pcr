@@ -10,7 +10,7 @@ npm run vocab:generate
 
 The generator validates the complete vocabulary registry and deterministically produces:
 
-- `packages/pcr-core/src/generated/controlled-vocabulary.mjs` for builder, core, and public CLI runtime use
+- `packages/pcr-core/src/generated/controlled-vocabulary.ts` for builder, core, and public CLI runtime use
 - `packages/pcr-core/schemas/controlled-vocabulary.schema.json` for JSON Schema `$ref` use
 
 `npm run vocab:check` fails when either generated artifact is missing or stale, and `npm run validate` runs that check before lint and tests. Generated artifacts must remain self-contained so the public consumption packages do not depend on `builder/` at runtime.

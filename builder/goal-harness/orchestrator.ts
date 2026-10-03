@@ -39,7 +39,7 @@ export interface DispatchGoalOptions {config:OrchestratorConfig;stateDir:string;
 interface UuidAuditInput {report:unknown;tiangongCliRoot?:string|undefined;collect:true;phase:string;deadline:number;startAfter?:string|null|undefined}
 interface SourceAuditInput {report:unknown;stateDir:string;collect:true;phase:string;deadline:number;priorProgress?:Exclude<SourceOptions["priorProgress"],undefined>}
 interface ReceiptAuditInput {report:unknown;stateDir:string;task:GoalTask;verifiedUuidReads:UnknownRecord[];collect:true;phase:string;deadline:number;startAfter?:string|null|undefined}
-export interface HarvestGoalOptions {config:OrchestratorConfig;stateDir:string;adapter:AuthorHarvestAdapter;reviewFn?:(input:AuthorReviewOptions)=>unknown;auditUuidsFn?:(input:UuidAuditInput)=>unknown;verifySourcesFn?:(input:SourceAuditInput)=>unknown|Promise<unknown>;auditHybridSearchFn?:(input:ReceiptAuditInput)=>unknown;validateReportFn?:(report:unknown)=>{valid:boolean;errors:{message?:string}[]};auditBoundaryReviewFn?:typeof auditBoundaryReview;now?:()=>Date;reviewBudgetMs?:number}
+export interface HarvestGoalOptions {config:OrchestratorConfig;stateDir:string;adapter:AuthorHarvestAdapter;reviewFn?:(input:AuthorReviewOptions)=>unknown;auditUuidsFn?:(input:UuidAuditInput)=>unknown;verifySourcesFn?:(input:SourceAuditInput)=>unknown|Promise<unknown>;auditHybridSearchFn?:(input:ReceiptAuditInput)=>unknown;validateReportFn?:(report:unknown)=>{valid:boolean;errors?:{message?:string}[]};auditBoundaryReviewFn?:typeof auditBoundaryReview;now?:()=>Date;reviewBudgetMs?:number}
 function taskIn(state:GoalState,id:string):GoalTask {const task=state.tasks.find(value=>value.id===id);if(!task)throw new GoalHarnessError("GOAL_AUTHOR_TASK_MISSING",`Goal task ${id} is missing.`);return task;}
 function numberOrZero(value:unknown):number {return value==null?0:number(value);}
 function resultValues(value:unknown):UnknownRecord[] {return records(Array.isArray(value)?value:field(value,"results")??[]);}
@@ -700,7 +700,9 @@ export async function harvestGoalAuthors({
         }
         const reportSchema = validateReportFn(report);
         if (!reportSchema.valid) {
-          throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${reportSchema.errors.length} Schema check(s).`, { findings: [...reportedFindings,...reportSchema.errors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail }))] });
+          const schemaErrors=reportSchema.errors;
+          if(!Array.isArray(schemaErrors))throw new TypeError("Schema failure diagnostics must be an array.");
+          throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${schemaErrors.length} Schema check(s).`, { findings: [...reportedFindings,...schemaErrors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail }))] });
         }
         const reportData=record(report,"author report");
         task=goalTask({...task,report_complete:true});

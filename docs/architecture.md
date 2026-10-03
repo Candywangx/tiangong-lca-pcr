@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: e807fce800d49f1a4ef2ea835b85b06a36e450bf
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
+lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
 ---
 
 # PCR 资料库架构
@@ -448,7 +448,7 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 派生物：
 
 - `structured.yaml`：canonical PCR 内容的确定性机器侧投影；material PCR 的 repo lint 会验证共享 Schema、source/content 指纹，并逐字比较重新生成结果以拒绝 stale artifact。
-- `packages/pcr-core/src/generated/controlled-vocabulary.mjs` 与 `packages/pcr-core/schemas/controlled-vocabulary.schema.json`：由 `builder/vocab/*.yaml` 确定性生成的 runtime/Schema 投影；`npm run vocab:check` 拒绝 stale artifact。
+- `packages/pcr-core/src/generated/controlled-vocabulary.ts` 与 `packages/pcr-core/schemas/controlled-vocabulary.schema.json`：由 `builder/vocab/*.yaml` 确定性生成的 runtime/Schema 投影；`npm run vocab:check` 拒绝 stale artifact。
 - `library/indexes/**`：用于浏览和检索的索引。
 - `classifications/indexes/**`：由 normalized classification leaf、accepted mapping 与 material target state 生成的完整 coverage read model。
 - `classifications/aliases/pcr-id-aliases.yaml`：由 CPC leaf identity inventory 与 accepted mapping 确定性生成；`npm run aliases:check` 拒绝 stale artifact。
@@ -517,7 +517,7 @@ freshness 和自动测试成为合并门禁的统一入口。
 
 `packages/pcr-docs/` 是与本地 viewer 并列的消费界面。当前文档和复用模块由
 `pcr-core` 的完整只读 bundle 提供；历史版本复用 Builder 已有发布链验证器，
-通过 `builder/lib/pcr-document-history.mjs` 返回完整模型和原始字节，避免复制一套
+通过 `builder/lib/pcr-document-history.ts` 返回完整模型和原始字节，避免复制一套
 发布校验逻辑。内部 revision 正文不会被公开。
 
 生成器绑定 Git 源提交，独立建立源段落、列表关系、表格单元格、代码与链接清单，

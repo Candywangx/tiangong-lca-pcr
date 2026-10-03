@@ -3,7 +3,7 @@ import { lstatSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
 import { pathToFileURL } from "node:url";
-import { compareSemver } from "../lib/lifecycle-policy.mjs";
+import { compareSemver } from "../lib/lifecycle-policy.ts";
 import { assertCleanProductSource, assertProductIdentity } from "./product-identity.mjs";
 import { productReleaseContext, validateProductManifest, verifyProductArtifacts } from "./product-release.mjs";
 import { createProductionPublisherIO } from "./product-publish-io.mjs";

@@ -18,15 +18,16 @@ test("installed author runtime includes the working shared-materials CLI and aut
   const authorRoot = `${root}-author`;
   const stateDir = path.join(root, "library/.pcr-builder-state/goals/fixture");
   const files = [
-    "builder/cli/materials.mjs",
-    "builder/lib/shared-materials.mjs",
-    "builder/lib/shared-materials.test.mjs",
+    "builder/cli/materials.ts",
+    "builder/lib/shared-materials.ts",
+    "builder/lib/shared-materials.test.ts",
     "builder/docs/tools/shared-materials.md",
     "builder/docs/tools/data-sources-and-tools.md",
     "builder/docs/workflows/create-pcr.md",
     "builder/docs/prompts/codex-create-pcr.md",
     "builder/docs/prompts/claude-create-pcr.md",
     "packages/pcr-core/src/read-context.ts",
+    "packages/pcr-core/src/types.ts",
     "packages/pcr-viewer/scripts/snapshot-store.mjs",
     "packages/pcr-viewer/schemas/viewer-active.schema.json",
     "packages/pcr-viewer/viewer-snapshot.test.mjs",
@@ -49,7 +50,7 @@ test("installed author runtime includes the working shared-materials CLI and aut
     const runtime = ensureGoalRuntimeBaseline({ projectRoot: root, sourceRoot: root, stateDir, goalId: "fixture" });
     assert.deepEqual(runtime.paths, [...files].sort());
     git(root, ["worktree", "add", "--detach", "-q", authorRoot, runtime.commit]);
-    const query = jsonRecord(execFileSync(process.execPath, ["builder/cli/materials.mjs", "query", "--product", "wheat seed"], { cwd: authorRoot, encoding: "utf8" }));
+    const query = jsonRecord(execFileSync(process.execPath, ["builder/cli/materials.ts", "query", "--product", "wheat seed"], { cwd: authorRoot, encoding: "utf8" }));
     assert.equal(query.root, path.join(root, ".git/pcr-materials"));
     for (const file of files) assert.deepEqual(readFileSync(path.join(authorRoot, file)), readFileSync(path.join(root, file)));
   } finally {
@@ -71,7 +72,7 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     mkdirSync(path.join(root, "packages/pcr-core/src"), { recursive: true });
     mkdirSync(path.join(root, "library/pcrs/example"), { recursive: true });
     writeFileSync(path.join(root, "builder/goal-harness/runtime.mjs"), "old runtime\n");
-    writeFileSync(path.join(root, "builder/lib/schema-contracts.test.mjs"), "old contract test\n");
+    writeFileSync(path.join(root, "builder/lib/schema-contracts.test.ts"), "old contract test\n");
     writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.ts"), "old completeness\n");
     writeFileSync(path.join(root, "library/pcrs/example/manifest.yaml"), "baseline PCR\n");
     git(root, ["add", "."]);
@@ -84,7 +85,7 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     const landed = git(root, ["rev-parse", "HEAD"]);
 
     writeFileSync(path.join(root, "builder/goal-harness/runtime.mjs"), "optimized runtime\n");
-    writeFileSync(path.join(root, "builder/lib/schema-contracts.test.mjs"), "updated contract test\n");
+    writeFileSync(path.join(root, "builder/lib/schema-contracts.test.ts"), "updated contract test\n");
     writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.ts"), "updated completeness\n");
     writeFileSync(path.join(root, "library/pcrs/example/manifest.yaml"), "source branch must not leak\n");
     git(root, ["add", "."]);
@@ -101,12 +102,12 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     assert.equal(result.source_commit, source);
     assert.equal(git(root, ["rev-parse", `${result.commit}^`]), landed);
     assert.equal(git(root, ["show", `${result.commit}:builder/goal-harness/runtime.mjs`]), "optimized runtime");
-    assert.equal(git(root, ["show", `${result.commit}:builder/lib/schema-contracts.test.mjs`]), "updated contract test");
+    assert.equal(git(root, ["show", `${result.commit}:builder/lib/schema-contracts.test.ts`]), "updated contract test");
     assert.equal(git(root, ["show", `${result.commit}:packages/pcr-core/src/projection-completeness.ts`]), "updated completeness");
     assert.equal(git(root, ["show", `${result.commit}:library/pcrs/example/manifest.yaml`]), "integrated PCR");
     assert.deepEqual(result.paths, [
       "builder/goal-harness/runtime.mjs",
-      "builder/lib/schema-contracts.test.mjs",
+      "builder/lib/schema-contracts.test.ts",
       "packages/pcr-core/src/projection-completeness.ts",
     ]);
     assert.equal(selectGoalRuntimeBaseCommit(new GoalEventStore({ stateDir }).rebuild(), { projectRoot: root }), result.commit);
@@ -206,11 +207,11 @@ test("installed runtime contains the complete measurement and preparation comman
     rmSync(root, {recursive:true,force:true});
   });
   const files = [
-    "builder/cli/index.mjs", "builder/cli/goal-prepare-report.mjs",
-    "builder/lib/pcr-check.mjs", "builder/lib/measurement-consistency.mjs", "builder/lib/lint-rules.mjs",
+    "builder/cli/index.ts", "builder/cli/goal-prepare-report.ts",
+    "builder/lib/pcr-check.ts", "builder/lib/measurement-consistency.ts", "builder/lib/lint-rules.ts",
     "builder/schemas/goal-author-draft.schema.json", "builder/schemas/goal-author-submission.schema.json",
-    "builder/goal-harness/report-preparation.mjs", "builder/goal-harness/receipt-integrity.mjs",
-    "builder/goal-harness/artifact-io.mjs", "builder/goal-harness/author-submission.mjs", "package.json",
+    "builder/goal-harness/report-preparation.ts", "builder/goal-harness/receipt-integrity.ts",
+    "builder/goal-harness/artifact-io.ts", "builder/goal-harness/author-submission.ts", "package.json",
     "packages/pcr-core/src/read-session.ts", "packages/pcr-core/src/types.ts",
     "packages/pcr-core/src/compiler/guidance-context.ts",
     "packages/pcr-core/schemas/guidance-batch-request.schema.json",

@@ -626,3 +626,11 @@ test("a Goal made stale during gates rematerializes on the accepted head and rer
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+
+test("malformed mapping acceptance retains the stable rejection code", () => {
+  const entry = {code: "41111", label: "Pig iron", pcr_id: "pcr.metal.pig-iron", mapping_type: "exact", confidence: "reviewed"};
+  for (const acceptance of ["not a decision object", 42, false, [], null]) {
+    assert.throws(() => assertAcceptedMappingDecision({...entry, acceptance}, {materialPcrIds: new Set([entry.pcr_id])}), error => errorField(error, "code") === "GOAL_MAPPING_DECISION_INVALID");
+  }
+});

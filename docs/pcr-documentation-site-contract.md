@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
+lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -34,7 +34,7 @@ does not promote candidate PCR methodology or certify a translation.
 
 `packages/pcr-core/` owns consistent current PCR/module reads and verified artifacts.
 Historical bundles reuse the Builder release-chain verifier through
-`builder/lib/pcr-document-history.mjs`, returning complete parsed models and
+`builder/lib/pcr-document-history.ts`, returning complete parsed models and
 byte-exact artifacts without exposing internal revision bodies.
 `packages/pcr-docs/scripts/` owns source inventory, Markdown rendering, metadata,
 search and download generation. Fumadocs owns the public document layout,

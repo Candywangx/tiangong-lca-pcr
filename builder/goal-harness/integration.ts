@@ -26,7 +26,7 @@ import {
 } from "./viewer-publication.ts";
 import { validateIntegrationCompletionRecord, finalizeIntegrationCompletion, persistIntegrationCompletion, readIntegrationCompletion } from "./integration-completion.ts";
 
-import { record as unknownRecord,record,records,strings,text,number,field,errorCode,errorMessage,json } from "./domain.ts";
+import { record as unknownRecord,record,isRecord,records,strings,text,number,field,errorCode,errorMessage,json } from "./domain.ts";
 import type { GoalConfig,GoalState,GoalSnapshot,GoalTask,UnknownRecord } from "./domain.ts";
 import type { IntegrationCompletion } from "./integration-completion.ts";
 export interface IntegrationMapping extends UnknownRecord {code:unknown;pcr_id:string;label:string;mapping_type:string;confidence:string;acceptance:UnknownRecord}
@@ -47,7 +47,7 @@ export function assertAcceptedMappingDecision(input:unknown,{materialPcrIds}:{ma
   if (!materialPcrIds.has(entry.pcr_id)) {
     throw new GoalHarnessError("GOAL_MAPPING_TARGET_NOT_MATERIAL", `Mapping target is not a reviewed material PCR: ${entry.pcr_id}`, { entry });
   }
-  const acceptance=entry.acceptance==null?{}:record(entry.acceptance);
+  const acceptance=isRecord(entry.acceptance)?entry.acceptance:{};
   const decisionTime = Date.parse(typeof acceptance.decided_at_utc==="string"?acceptance.decided_at_utc:"");
   const valid =
     /^\d+$/u.test(String(entry.code)) &&

@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
+lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

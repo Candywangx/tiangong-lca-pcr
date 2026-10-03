@@ -25,14 +25,14 @@ const EXACT_RUNTIME_PATHS = new Set([
   "docs/architecture.md",
   "builder/docs/methods/reference-flow-decision-rules.md",
   "builder/AGENTS.md",
-  "builder/cli/index.mjs",
-  "builder/cli/goal-prepare-report.mjs",
-  "builder/cli/goal-prepare-report.test.mjs",
-  "builder/cli/pcr-check.test.mjs",
-  "builder/lib/pcr-check.mjs",
-  "builder/lib/measurement-consistency.mjs",
-  "builder/lib/measurement-consistency.test.mjs",
-  "builder/lib/lint-rules.mjs",
+  "builder/cli/index.ts",
+  "builder/cli/goal-prepare-report.ts",
+  "builder/cli/goal-prepare-report.test.ts",
+  "builder/cli/pcr-check.test.ts",
+  "builder/lib/pcr-check.ts",
+  "builder/lib/measurement-consistency.ts",
+  "builder/lib/measurement-consistency.test.ts",
+  "builder/lib/lint-rules.ts",
   "builder/schemas/goal-author-draft.schema.json",
   "builder/schemas/goal-author-submission.schema.json",
   "builder/docs/methods/measurement-unit-rules.md",
@@ -45,19 +45,19 @@ const EXACT_RUNTIME_PATHS = new Set([
 
   "README.md",
   "builder/README.md",
-  "builder/cli/goal.mjs",
-  "builder/cli/goal.test.mjs",
-  "builder/cli/goal-uuid-search.mjs",
-  "builder/cli/materials.mjs",
+  "builder/cli/goal.ts",
+  "builder/cli/goal.test.ts",
+  "builder/cli/goal-uuid-search.ts",
+  "builder/cli/materials.ts",
   "builder/docs/prompts/claude-create-pcr.md",
   "builder/docs/prompts/codex-create-pcr.md",
   "builder/docs/tools/data-sources-and-tools.md",
   "builder/docs/tools/goal-harness.md",
   "builder/docs/tools/shared-materials.md",
   "builder/docs/workflows/create-pcr.md",
-  "builder/lib/schema-contracts.test.mjs",
-  "builder/lib/shared-materials.mjs",
-  "builder/lib/shared-materials.test.mjs",
+  "builder/lib/schema-contracts.test.ts",
+  "builder/lib/shared-materials.ts",
+  "builder/lib/shared-materials.test.ts",
   "builder/schemas/goal-author-report.schema.json",
   "builder/schemas/goal-harness-config.schema.json",
   "package.json",
@@ -163,7 +163,7 @@ export function selectGoalRuntimeBaseCommit(input: unknown, { projectRoot = null
 }
 
 export function isApprovedRuntimePath(file: string): boolean {
-  return EXACT_RUNTIME_PATHS.has(file) || EXACT_RUNTIME_PATHS.has(file.replace(/\.ts$/u, ".mjs")) || file.startsWith("builder/goal-harness/") ||
+  return EXACT_RUNTIME_PATHS.has(file) || EXACT_RUNTIME_PATHS.has(file.replace(/\.mjs$/u, ".ts")) || file.startsWith("builder/goal-harness/") ||
     /^builder\/(?:cli|lib|scripts)\/[\w.-]+\.(?:ts|mjs)$/u.test(file) ||
     /^builder\/schemas\/[\w.-]+\.json$/u.test(file) ||
     /^packages\/pcr-core\/(?:src\/(?:(?:compiler|generated)\/)?[\w.-]+\.(?:ts|mjs|json)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.(?:ts|mjs))$/u.test(file) ||
