@@ -1,14 +1,20 @@
-name: Tag npm releases from main
+name: Tag PCR product releases from main
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Explicit first product tag or exact existing tag to resume, matching current main's product version.
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: npm-tag-${{ github.sha }}
+  group: pcr-product-tag
   cancel-in-progress: false
 
 jobs:
@@ -25,21 +31,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24.19.0
-      - name: Detect independent version changes
+      - name: Detect one authoritative product version change
         id: detect
         env:
           BASE_REF: ${{ github.event.before }}
           HEAD_REF: ${{ github.sha }}
-        run: node builder/scripts/npm-release.mjs detect
-
-  quality-gate:
-    needs: release-context
-    if: needs.release-context.outputs.changed == 'true' && vars.PCR_NPM_RELEASE_ENABLED == 'true'
-    uses: ./.github/workflows/validate.yml
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            echo 'any_changed=true' >> "$GITHUB_OUTPUT"
+          else
+            node builder/scripts/product-release.mjs detect
+          fi
 
   tag-release:
-    needs: [release-context, quality-gate]
-    if: needs.release-context.outputs.changed == 'true' && vars.PCR_NPM_RELEASE_ENABLED == 'true'
+    needs: release-context
+    if: needs.release-context.outputs.changed == 'true' && vars.PCR_PRODUCT_RELEASE_ENABLED == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -54,9 +60,15 @@ jobs:
           node-version: 24.19.0
       - name: Refresh main ancestry
         run: git fetch origin +refs/heads/main:refs/remotes/origin/main
-      - name: Create immutable tags and dispatch publication
+      - name: Create an immutable product tag and dispatch full qualification and publication
         env:
           GH_TOKEN: ${{ github.token }}
           BASE_REF: ${{ github.event.before }}
           HEAD_REF: ${{ github.sha }}
-        run: node builder/scripts/npm-release.mjs tag
+          PRODUCT_TAG: ${{ inputs.tag_name }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            node builder/scripts/product-release.mjs tag "$PRODUCT_TAG"
+          else
+            node builder/scripts/product-release.mjs tag
+          fi
