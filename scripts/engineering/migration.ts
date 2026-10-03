@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { lstatSync, readFileSync, realpathSync } from 'node:fs';
+import { lstatSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { API } from 'typescript/unstable/sync';
@@ -80,14 +80,18 @@ function inspectTypeScript(root: string, files: string[], findings: MigrationFin
   if (files.length === 0) return;
   // An in-memory project avoids mutating tsconfig or writing compiler caches.
   // TypeScript 7's pinned API supplies the actual parser and distinguishes types from text.
-  const config = '/__pcr_migration__/tsconfig.json';
+  // The native parser resolves Windows paths against its drive. Match its absolute,
+  // forward-slash filenames instead of relying on a POSIX-only virtual root.
+  const virtualRoot = path.join(root, '__pcr_migration__').replaceAll(path.sep, '/').replace(/^[A-Z]:/u, drive => drive.toLowerCase());
+  const virtualPath = (file: string): string => `${virtualRoot}/${file}`;
+  const config = virtualPath('tsconfig.json');
   const virtualFiles: Record<string, string> = {};
   const sources = new Map<string, string>();
   for (const file of files) {
     try { sources.set(file, readRegularFile(root, file)); }
     catch (error) { findings.push({ code: 'SOURCE_UNREADABLE', path: file, message: errorMessage(error) }); }
   }
-  for (const [file, content] of sources) virtualFiles[`/__pcr_migration__/${file}`] = content;
+  for (const [file, content] of sources) virtualFiles[virtualPath(file)] = content;
   virtualFiles[config] = JSON.stringify({ compilerOptions: { noLib: true, noResolve: true, jsx: 'preserve' }, files: [...sources.keys()].map(file => `./${file}`) });
   const api = new API({ cwd: root, fs: createVirtualFileSystem(virtualFiles) });
   try {
@@ -95,7 +99,7 @@ function inspectTypeScript(root: string, files: string[], findings: MigrationFin
     const project = snapshot.getProject(config);
     if (!project) throw new Error('TypeScript parser project is unavailable.');
     for (const [file, text] of sources) {
-      const source = project.program.getSourceFile(`/__pcr_migration__/${file}`);
+      const source = project.program.getSourceFile(virtualPath(file));
       if (!source) throw new Error(`TypeScript parser omitted ${file}`);
       for (const diagnostic of project.program.getSyntacticDiagnostics(source.fileName)) findings.push({ code: 'TYPESCRIPT_SYNTAX', path: file, message: diagnostic.text });
       const comments = new Map<number, number>();
@@ -127,7 +131,12 @@ export async function checkMigration(requestedRoot: string = process.cwd()): Pro
   const report: MigrationReport = { schemaVersion: 1, ok: false, counts: { legacy: 0, generated: 0, retainedPython: 0, typescript: 0 }, findings: [] };
   const add = (code: string, file: string, message: string): void => { report.findings.push({ code, path: file, message }); };
   try {
-    if (realpathSync(git(root, ['rev-parse', '--show-toplevel']).trim()) !== root) throw new Error('--root must be the Git repository root.');
+    // Git and Node can retain different drive/directory casing for the same Windows
+    // directory. Compare filesystem identity, preserving rejection of nested roots.
+    const repositoryRoot = git(root, ['rev-parse', '--show-toplevel']).trim();
+    const requestedIdentity = statSync(root, { bigint: true });
+    const repositoryIdentity = statSync(repositoryRoot, { bigint: true });
+    if (!requestedIdentity.isDirectory() || !repositoryIdentity.isDirectory() || requestedIdentity.dev !== repositoryIdentity.dev || requestedIdentity.ino !== repositoryIdentity.ino || git(root, ['rev-parse', '--show-prefix']).trim() !== '') throw new Error('--root must be the Git repository root.');
     const manifest = parseManifest(JSON.parse(readRegularFile(root, manifestPath)) as unknown);
     const discovered = [...new Set(git(root, ['ls-files', '--cached', '--others', '--exclude-standard', '-z']).split('\0').filter(Boolean))].filter(file => present(root, file)).sort();
     const baseline = new Set(git(root, ['ls-tree', '-r', '--name-only', '-z', manifest.baselineCommit]).split('\0').filter(Boolean));

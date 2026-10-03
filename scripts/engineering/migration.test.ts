@@ -201,3 +201,43 @@ test('the controlled vocabulary exemption delegates to its read-only generator c
   f.save();
   assert.equal((await checkMigration(f.root)).findings[0]?.code, 'INVENTORY_INVALID');
 });
+
+test('an actual directory alias identifies the complete repository without permitting a nested root', async t => {
+  const f = fixture(t);
+  const alias = `${f.root}-alias`;
+  symlinkSync(f.root, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  t.after(() => rmSync(alias, { recursive: true, force: true }));
+  f.write('typed/nested/source.ts', 'export const value: unknown = 1;\n');
+  const direct = await checkMigration(f.root);
+  assert.equal(direct.ok, true, JSON.stringify(direct.findings));
+  assert.deepEqual(await checkMigration(alias), direct);
+  // A complete copied manifest inside a subdirectory must not limit discovery to that subtree.
+  f.write('nested/config/typescript-migration.json', JSON.stringify(f.manifest));
+  const nested = await checkMigration(path.join(f.root, 'nested'));
+  assert.equal(nested.ok, false);
+  assert.equal(nested.findings[0]?.message, '--root must be the Git repository root.');
+});
+
+test('native Windows drive and directory casing aliases retain repository identity', { skip: process.platform !== 'win32' ? 'Requires actual Windows filesystem and Git path handling.' : false }, async t => {
+  const f = fixture(t);
+  f.write('typed/CasePreserved.ts', 'export type Result = unknown;\n');
+  const normal = await checkMigration(f.root);
+  assert.equal(normal.ok, true, JSON.stringify(normal.findings));
+  const driveAlias = f.root.replace(/^[A-Z]:/iu, drive => drive.toLowerCase());
+  assert.deepEqual(await checkMigration(driveAlias), normal);
+  assert.deepEqual(await checkMigration(f.root.toUpperCase()), normal);
+});
+
+test('accepting a repository directory alias still rejects symlink components in source paths', async t => {
+  const f = fixture(t);
+  const alias = `${f.root}-alias`;
+  symlinkSync(f.root, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  t.after(() => rmSync(alias, { recursive: true, force: true }));
+  const manifest = readFileSync(path.join(f.root, 'config/typescript-migration.json'), 'utf8');
+  rmSync(path.join(f.root, 'config'), { recursive: true });
+  f.write('manifest-source/typescript-migration.json', manifest);
+  symlinkSync(path.join(f.root, 'manifest-source'), path.join(f.root, 'config'), process.platform === 'win32' ? 'junction' : 'dir');
+  const result = await checkMigration(alias);
+  assert.equal(result.ok, false);
+  assert.match(result.findings[0]?.message ?? '', /regular file with no symlink components/u);
+});
