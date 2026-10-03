@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
-lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

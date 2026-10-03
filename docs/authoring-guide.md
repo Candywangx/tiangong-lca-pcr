@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
-lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 ---
 
 # Authoring Guide

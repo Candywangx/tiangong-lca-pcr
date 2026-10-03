@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: c7b134b92e674f40a268f0c82e768a7de59d7a2f
-lastReviewedNote: "Reviewed for PCR #15 on current main59b: bounded canonical lint retains all22422diagnostics in complete JSON, preserves all inspection/optional-language/publication logic, and rejects lost required CI evidence. Current Linux base1292/candidate1301tests pass with same4filesystem skips; full arrays match, console22428to23lines, both69s without a time-speedup claim. New documentation job is byte-preserved; source/root handoff remains separate. Independent source review and both hosted CI jobs remain pending."
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 title: PCR Library Release Policy
 docType: contract
 scope: repo
