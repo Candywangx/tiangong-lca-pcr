@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 72d9a8067d1aa9b742c03cb5eab65ed27174ec0d
+lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
