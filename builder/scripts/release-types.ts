@@ -1,3 +1,5 @@
+import type { ProductIdentity } from "./product-identity.ts";
+import type { WebProbes } from "./product-web.ts";
 /** Release transport boundaries stay dependency-free for the provider importer. */
 export type JsonObject = Record<string, unknown>;
 export function isRecord(value: unknown): value is JsonObject {
@@ -37,3 +39,14 @@ export function publicationReceipt(value: unknown): PublicationReceipt {
   const data = record(value, 'publication receipt');
   return { name: text(data.name), version: text(data.version), tag: text(data.tag), integrity: text(data.integrity), source_commit: text(data.source_commit) };
 }
+
+export interface ArtifactProof { filename: string; bytes: number; sha256: string }
+export interface ProductPackageReceipt extends ArtifactProof { name: string; version: string; tag: string; sourceCommit: string; integrity: string }
+export interface ProductWebArtifact extends ArtifactProof { files: number; uncompressedBytes: number; treeSha256: string; origin: string; probes: WebProbes }
+export interface ProductManifest {
+  schema: 1; kind: "pcr-product-release"; identity: ProductIdentity;
+  toolchain: { node: string; npm: string };
+  packages: Record<PackageKind, ProductPackageReceipt>; web: ProductWebArtifact; artifacts: ArtifactProof[];
+}
+export interface ArchiveEntry { path: string; bytes: number; sha256?: string }
+export interface ArchiveFile extends ArchiveEntry { sha256: string }

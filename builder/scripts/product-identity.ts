@@ -99,3 +99,11 @@ export function readProductIdentity(root: string, { requireClean = true }: { req
   return assertProductIdentity({ schema: 1, version: config.version, tag: `v${config.version}`, sourceCommit,
     sourceFingerprint: `sha256:${hash.digest("hex")}` });
 }
+
+export interface ProductReleaseSpec { version: string; tag: string; dist_tag: "latest" }
+export function productReleaseSpec(tag: unknown): ProductReleaseSpec {
+  if (typeof tag !== "string" || !tag.startsWith("v")) throw new Error("Expected a product v<SemVer> tag.");
+  const version = assertProductSemver(tag.slice(1));
+  if (version.includes("-")) throw new Error("Unified product publication currently supports stable production tags only.");
+  return { version, tag, dist_tag: "latest" };
+}
