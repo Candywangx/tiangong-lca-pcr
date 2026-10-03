@@ -96,6 +96,77 @@ function previousIsIntact(f) {
   assert.deepEqual(fs.readdirSync(f.scratchBase), []);
 }
 
+/** Exercise the shared selector itself; only OS filesystem reports are injected. */
+function wiredScratchOptions(f, { memoryBacked, force = false } = {}) {
+  const root = fs.realpathSync(f.root), selected = [], constraints = [];
+  let originReads = 0;
+  const facts = target => {
+    const resolved = fs.realpathSync(target), origin = resolved === root;
+    if (origin) originReads++;
+    return { path: resolved, device: origin && memoryBacked ? "origin-memory" : "disk", mountPoint: origin && memoryBacked ? "/dev/shm" : "/",
+      fileSystemType: origin && memoryBacked ? "tmpfs" : "ext4", availableBytes: 20 * 1024 ** 3, totalBytes: 30 * 1024 ** 3 };
+  };
+  const selectScratch = options => {
+    constraints.push(options.constraint);
+    const selection = selectScratchWorkspace({ ...options, scratchParent: f.scratchBase });
+    selected.push(selection); return selection;
+  };
+  return { options: { ...f.options, facts, selectScratch, env: force ? { PCR_BUILD_RELOCATE: "1" } : {} }, selected, constraints, originReads: () => originReads };
+}
+
+for (const [name, memoryBacked, force, handoff] of [
+  ["native tmpfs", true, false, true],
+  ["forced tmpfs", true, true, true],
+  ["forced ordinary disk", false, true, false],
+]) test(`real scratch selector imports ${name} and preserves its actual provider handoff`, async t => {
+  const f = await fixture(t), wired = wiredScratchOptions(f, { memoryBacked, force });
+  const result = await materializeProductWeb(wired.options);
+  assert.equal(wired.originReads(), 1, "one origin measurement is reused consistently");
+  assert.equal(wired.constraints.length, 1);
+  assert.equal(wired.constraints[0].fileSystemType, memoryBacked ? "tmpfs" : "ext4");
+  assert.equal(wired.selected.length, 1);
+  assert.equal(wired.selected[0].scratchFacts.fileSystemType, "ext4");
+  assert.equal(fs.readFileSync(path.join(f.root, "packages/pcr-docs/out/index.html"), "utf8"), "<h1>Sealed web</h1>");
+  assert.deepEqual(result.identity, f.identity);
+  assert.deepEqual(readProductIdentity(f.root), f.identity);
+  if (handoff) {
+    assert.equal(result.published.providerAssets.mode, "hardlink");
+    assert.equal(fs.statSync(path.join(f.root, ".edgeone/assets/index.html")).ino,
+      fs.statSync(path.join(f.root, "packages/pcr-docs/out/index.html")).ino);
+  } else {
+    assert.equal(result.published.providerAssets, undefined);
+    assert.equal(fs.existsSync(path.join(f.root, ".edgeone/assets")), false);
+  }
+  assert.equal(fs.existsSync(wired.selected[0].scratchRoot), false);
+  assert.deepEqual(fs.readdirSync(f.scratchBase), []);
+});
+
+test("real tmpfs scratch selection still rejects a source change before swapping either output", async t => {
+  const f = await fixture(t), wired = wiredScratchOptions(f, { memoryBacked: true });
+  await assert.rejects(materializeProductWeb({ ...wired.options,
+    publish(options) {
+      assert.equal(options.providerRoot, fs.realpathSync(f.root));
+      write(path.join(f.root, "library/catalog.yaml"), "schema_version: 1\n# changed source\n");
+      git(f.root, "add", "library/catalog.yaml");
+      git(f.root, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "--quiet", "-m", "changed source fixture");
+      return publishOutput(options);
+    },
+  }), /identity changed/u);
+  assert.equal(wired.selected.length, 1);
+  assert.equal(fs.existsSync(wired.selected[0].scratchRoot), false);
+  previousIsIntact(f);
+});
+
+test("real tmpfs scratch selection retains the queued-deadline rollback and owned cleanup", async t => {
+  const f = await fixture(t), wired = wiredScratchOptions(f, { memoryBacked: true, force: true }); let clock = 0;
+  await assert.rejects(materializeProductWeb({ ...wired.options, timeoutMs: 1000, now: () => clock,
+    publish(options) { assert.equal(options.providerRoot, fs.realpathSync(f.root)); clock = 1000; return publishOutput(options); },
+  }), /timed out/u);
+  assert.equal(wired.selected.length, 1);
+  assert.equal(fs.existsSync(wired.selected[0].scratchRoot), false);
+  previousIsIntact(f);
+});
+
 test("materialization imports the exact sealed web and atomically hands off provider hardlinks", async t => {
   const f = await fixture(t);
   const result = await materializeProductWeb(f.options);

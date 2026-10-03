@@ -7,7 +7,7 @@ import { readProductIdentity, readProductVersion } from "./product-identity.mjs"
 import { readProductArchive, validateProductManifest, verifyProductWebTree } from "./product-release.mjs";
 import {
   HEADROOM_BYTES, MAX_OUTPUT_FILES, PREBUILT_ASSETS_ENV, filesystemFacts,
-  publishOutput, relocationRequested, selectScratchWorkspace,
+  publishOutput, isMemoryBacked, selectScratchWorkspace,
 } from "../../packages/pcr-docs/scripts/build-storage.mjs";
 
 const repository = "tiangong-lca/pcr";
@@ -140,8 +140,10 @@ export async function materializeProductWeb({
     if (manifest.web.files >= MAX_OUTPUT_FILES) throw new Error("Product web exceeds the provider file-count limit.");
     const requiredBytes = Math.ceil((manifest.web.bytes + manifest.web.uncompressedBytes) * 1.25) + HEADROOM_BYTES;
     if (!Number.isSafeInteger(requiredBytes)) throw new Error("Product scratch capacity is not a safe byte count.");
-    const relocation = relocationRequested({ repoRoot: root, env, facts });
-    owned = selectScratch({ repoRoot: root, constraint: relocation.facts, requiredBytes, env, facts, log });
+    // Import always needs owned scratch. A relocation decision is not a filesystem
+    // snapshot (its tmpfs/forced branches intentionally carry no `facts` field).
+    const constraint = facts(root);
+    owned = selectScratch({ repoRoot: root, constraint, requiredBytes, env, facts, log });
     // The selector creates this exact task-owned directory on a proven disk-backed filesystem.
     const scratchApp = path.join(owned.scratchRoot, "repo/packages/pcr-docs");
     const out = path.join(scratchApp, "out");
@@ -189,7 +191,7 @@ export async function materializeProductWeb({
     const published = publish({
       app: path.join(root, "packages/pcr-docs"), scratchApp,
       token: randomBytes(12).toString("hex"),
-      providerRoot: relocation.reason === "memory-backed-checkout" || env[PREBUILT_ASSETS_ENV] === "1" ? root : null,
+      providerRoot: isMemoryBacked(constraint) || env[PREBUILT_ASSETS_ENV] === "1" ? root : null,
       beforeSwap() { assertDeadline(); sameIdentity(identity, readIdentity(root)); assertDeadline(); },
     });
     const result = { identity, web: { filename: manifest.web.filename, bytes: manifest.web.bytes,
