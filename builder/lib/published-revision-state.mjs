@@ -12,11 +12,11 @@ import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 import { inspectProjectionIntegrity } from "../../packages/pcr-core/src/projection-integrity.ts";
-import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
+import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.ts";
 import {
   REQUIRED_PCR_LANGUAGES,
   declaredPcrLanguages,
-} from "../../packages/pcr-core/src/languages.mjs";
+} from "../../packages/pcr-core/src/languages.ts";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   byteSha256,

@@ -106,3 +106,7 @@ to that host. npm installation does not automatically activate the Skill.
 
 Licensed under the **MIT License**; see the included `LICENSE`. Bundled
 dependencies retain their own license files and notices in `node_modules`.
+
+## Several PCRs in one read
+
+Save `{ "schema_version": 1, "pcr_ids": ["<pcr-id>"] }` to a request file, then run `tiangong-pcr guidance batch --input request.json --library <library.sqlite> --output <new-file> --format json`. One to 100 IDs share one verified source session. Order and duplicates are preserved; any failed item fails the entire batch without creating a partial file. Topic/pointer selection retains complete source context. The output records source identity, input hash and actual read/cache statistics.

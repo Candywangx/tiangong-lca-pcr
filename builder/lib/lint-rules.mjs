@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 import {
   hasDeclaredUnresolvedReferenceProductFlow,
   materialProjectionCompletenessIssues,
-} from "../../packages/pcr-core/src/projection-completeness.mjs";
+} from "../../packages/pcr-core/src/projection-completeness.ts";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   AMOUNT_RANGE_ROLE_VALUES as AMOUNT_RANGE_ROLE_VALUE_LIST,
@@ -30,7 +30,7 @@ import {
   REQUIRED_PCR_LANGUAGES,
   declaredPcrLanguages,
   pcrMarkdownFile,
-} from "../../packages/pcr-core/src/languages.mjs";
+} from "../../packages/pcr-core/src/languages.ts";
 import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
   parsePcrMarkdownToStructured,

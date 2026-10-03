@@ -1,13 +1,16 @@
 import { createRequire } from "node:module";
-import { OfflineLibrary } from "../../pcr-core/src/offline-library.mjs";
-import { withPcrSource } from "../../pcr-core/src/source-context.mjs";
+import { OfflineLibrary } from "../../pcr-core/src/offline-library.ts";
+import { withPcrSource } from "../../pcr-core/src/source-context.ts";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { GUIDANCE_TOPICS, selectGuidance } from "../../pcr-core/src/consumption-guidance.ts";
-import { inspectTidas, INSPECTION_SECTIONS } from "../../pcr-core/src/tidas-inspection.mjs";
-import { prepareReview, checkReview } from "../../pcr-core/src/consumption-review.mjs";
-import { calculate } from "../../pcr-core/src/consumption-calculation.mjs";
+import { GUIDANCE_TOPICS, selectGuidance, selectGuidanceFromSnapshot } from "../../pcr-core/src/consumption-guidance.ts";
+import { assertCoreContract } from "../../pcr-core/src/contracts.ts";
+import { withPcrReadSession } from "../../pcr-core/src/read-session.ts";
+import type { PcrReadSession, PcrReadSource, PcrReadSourceIdentity } from "../../pcr-core/src/read-session.ts";
+import { inspectTidas, INSPECTION_SECTIONS } from "../../pcr-core/src/tidas-inspection.ts";
+import { prepareReview, checkReview } from "../../pcr-core/src/consumption-review.ts";
+import { calculate } from "../../pcr-core/src/consumption-calculation.ts";
 import { readJsonDocument, sha256 } from "../../pcr-core/src/consumption-data.ts";
 
 import {
@@ -19,28 +22,49 @@ import {
   createFeedbackDraft,
   getClassificationCoverageSummary,
   listClassificationCoverage,
-  listPcrs,
+  readPcrCatalogPage,
   readPcrMarkdown,
   resolveClassification,
   resolvePcrIdentity,
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
-} from "../../pcr-core/src/index.mjs";
-import {
-  CONTENT_MATURITY_VALUES,
-  PCR_STATUS_VALUES,
-} from "../../pcr-core/src/generated/controlled-vocabulary.mjs";
+} from "../../pcr-core/src/index.ts";
+import vocabularySchema from "../../pcr-core/schemas/controlled-vocabulary.schema.json" with { type: "json" };
+import { isUnknownRecord, unknownField, errorMessage } from "../../pcr-core/src/types.ts";
+import type { PcrCatalogScope, PcrIdAlias, PcrRecord, ValidationReport } from "../../pcr-core/src/types.ts";
+import type { Pagination } from "../../pcr-core/src/consumption-data.ts";
+const CONTENT_MATURITY_VALUES = vocabularySchema.$defs.content_maturity.enum;
+const PCR_STATUS_VALUES = vocabularySchema.$defs.pcr_status.enum;
+
+export interface CliResult { stdout: string; stderr: string; exitCode: number }
+type CliOptions = Record<string, string | number | boolean | undefined>;
+interface ParsedArguments { command: string; positional: string[]; options: CliOptions }
+interface CommandDefinition { key: string; command: string; positional?: string[]; formats: string[]; defaultFormat: string }
+interface SelectedSource { root: string; library: string; "library-sha256"?: string | number | boolean | undefined }
+interface CatalogScope { requested: string | null; effective: PcrCatalogScope; source: string }
+type PcrTree = Record<string, { pcrs?: PcrRecord[]; children?: PcrTree }>;
+interface NormalizedError { code: string; message: string; details?: unknown }
+function record(value: unknown): Record<string, unknown> {
+  if (!isUnknownRecord(value)) throw new CliError("PCR_CLI_RUNTIME_ERROR", "Expected an object output.");
+  return value;
+}
+function paginationOf(value: unknown): Pagination | null {
+  return isUnknownRecord(value) && typeof value.page === "number" && typeof value.page_size === "number"
+    && typeof value.total === "number" && typeof value.total_pages === "number" && typeof value.has_more === "boolean"
+    ? { page: value.page, page_size: value.page_size, total: value.total, total_pages: value.total_pages, has_more: value.has_more } : null;
+}
+
 
 const defaultRoot = path.resolve(fileURLToPath(new URL("../../..", import.meta.url)));
 const VALID_FAIL_ON = new Set(["never", "error", "warning"]);
 const VALID_LANGUAGES = new Set(["en-US", "zh-CN"]);
 const VALID_PCR_STATUSES = new Set(PCR_STATUS_VALUES);
 const VALID_CONTENT_MATURITIES = new Set(CONTENT_MATURITY_VALUES);
-const VALID_CATALOG_SCOPES = new Set(PCR_CATALOG_SCOPES);
+const VALID_CATALOG_SCOPES = new Set<string>(PCR_CATALOG_SCOPES);
 const VALID_COVERAGE_STATUSES = new Set(CLASSIFICATION_COVERAGE_STATUSES);
 const GLOBAL_OPTIONS = new Set(["root", "library", "library-sha256", "format", "help"]);
 const GLOBAL_HELP_OPTIONS = new Set(["root", "library", "library-sha256", "help"]);
-const COMMAND_OPTIONS = {
+const COMMAND_OPTIONS: Record<string, Set<string>> = {
   library: new Set(),
   "library:info": new Set(),
   "library:verify": new Set(),
@@ -52,6 +76,7 @@ const COMMAND_OPTIONS = {
   resolve: new Set(["classification", "pcr"]),
   show: new Set(["pcr", "lang"]),
   guidance: new Set(["pcr", "topic", "pointer", "page", "page-size", "output"]),
+  "guidance:batch": new Set(["input", "topic", "pointer", "page", "page-size", "output"]),
   inspect: new Set(["input", "related", "section", "pointer", "page", "page-size", "output"]),
   calculate: new Set(["input", "output"]),
   review: new Set(),
@@ -70,7 +95,7 @@ const COMMAND_OPTIONS = {
     "proposed-change",
   ]),
 };
-const COMMAND_DEFINITIONS = [
+const COMMAND_DEFINITIONS: CommandDefinition[] = [
   { key: "library", command: "library", formats: ["json"], defaultFormat: "json" },
   { key: "library:info", command: "library", positional: ["info"], formats: ["json"], defaultFormat: "json" },
   { key: "library:verify", command: "library", positional: ["verify"], formats: ["json"], defaultFormat: "json" },
@@ -94,6 +119,7 @@ const COMMAND_DEFINITIONS = [
   { key: "resolve", command: "resolve", formats: ["json"], defaultFormat: "json" },
   { key: "show", command: "show", formats: ["markdown"], defaultFormat: "markdown" },
   { key: "guidance", command: "guidance", formats: ["json"], defaultFormat: "json" },
+  { key: "guidance:batch", command: "guidance", positional: ["batch"], formats: ["json"], defaultFormat: "json" },
   { key: "inspect", command: "inspect", formats: ["json"], defaultFormat: "json" },
   { key: "calculate", command: "calculate", formats: ["json"], defaultFormat: "json" },
   { key: "review", command: "review", formats: ["json"], defaultFormat: "json" },
@@ -111,7 +137,9 @@ const COMMAND_DEFINITIONS = [
 ];
 
 export class CliError extends Error {
-  constructor(code, message, details = undefined) {
+  readonly code: string;
+  readonly details: unknown;
+  constructor(code: string, message: string, details: unknown = undefined) {
     super(message);
     this.name = "CliError";
     this.code = code;
@@ -119,27 +147,31 @@ export class CliError extends Error {
   }
 }
 
-function installedLibrary() {
+function installedLibrary(): string | null {
   for (const filename of [path.join(process.cwd(), "package.json"), import.meta.url]) {
     try { return path.join(path.dirname(createRequire(filename).resolve("@tiangong-lca/pcr-library/package.json")), "library.sqlite"); } catch {}
   }
   return null;
 }
 
-function toolVersion() {
+function toolVersion(): string {
   const developmentManifest = fileURLToPath(new URL("../package.json", import.meta.url));
   const filename = existsSync(developmentManifest) ? developmentManifest : path.join(defaultRoot, "package.json");
-  return JSON.parse(readFileSync(filename, "utf8")).version;
+  const manifest: unknown = JSON.parse(readFileSync(filename, "utf8"));
+  const version = unknownField(manifest, "version");
+  if (typeof version !== "string") throw new CliError("PCR_CLI_RUNTIME_ERROR", "Tool manifest has no version.");
+  return version;
 }
 
-export function runTiangongPcr(argv) {
-  let library;
+export function runTiangongPcr(argv: readonly string[]): CliResult {
+  let library: OfflineLibrary | undefined;
   try {
     if (argv.length === 1 && argv[0] === "--version") return ok(`${toolVersion()}\n`);
     const { command, positional, options } = parseArgs(argv);
     if (!command || command === "help" || options.help) return runCommand(argv);
     if (command === "library" && positional.length === 0) throw new CliError("PCR_CLI_MISSING_SUBCOMMAND", "Use library info or library verify with --library <file>.");
     if (options.root && options.library) throw new CliError("PCR_CLI_SOURCE_CONFLICT", "Choose either --root or --library.");
+    if (command === "guidance" && positional[0] === "batch") return runGuidanceBatch({ command, positional, options }, requestedFormatFromArgv(argv));
     if (["inspect", "calculate"].includes(command)) {
       if (options.library || options["library-sha256"]) throw new CliError("PCR_CLI_SOURCE_UNUSED", `${command} uses local input only; omit --library and --library-sha256.`);
       return runCommand(argv);
@@ -154,15 +186,77 @@ export function runTiangongPcr(argv) {
     const definition = requireCommandDefinition(command, positional);
     validateCommandOptions(definition, options);
     validateCommandFormat(definition, options.format);
-    library = new OfflineLibrary(String(filename), { expectedSha256: options["library-sha256"] ?? null, verify: command === "library" && positional[0] === "verify" });
+    library = new OfflineLibrary(String(filename), { expectedSha256: options["library-sha256"] === undefined ? null : String(options["library-sha256"]), verify: command === "library" && positional[0] === "verify" });
     if (command === "library") return ok(`${JSON.stringify({ tool_version: toolVersion(), ...library.manifest, verified: positional[0] === "verify" || Boolean(options["library-sha256"]) }, null, 2)}\n`);
-    return withPcrSource(library.root, library, () => runCommand(argv, { root: library.root, library: path.resolve(filename), "library-sha256": options["library-sha256"] }));
+    const source = library;
+    return withPcrSource(source.root, source, () => runCommand(argv, { root: source.root, library: path.resolve(String(filename)), "library-sha256": options["library-sha256"] }));
   } catch (error) {
     return fail(error, requestedFormatFromArgv(argv), requestedRootFromArgv(argv));
   } finally { library?.close(); }
 }
 
-function runCommand(argv, selected = null) {
+function batchSource(options: CliOptions): PcrReadSource {
+  const filename = options.library ?? (options.root ? null : process.env.PCR_LIBRARY ?? (existsSync(path.join(defaultRoot, "library/catalog.yaml")) ? null : installedLibrary()));
+  if (filename) return { kind: "library", filename: path.resolve(String(filename)),
+    ...(options["library-sha256"] === undefined ? {} : { expectedSha256: String(options["library-sha256"]) }) };
+  if (options["library-sha256"]) throw new CliError("PCR_LIBRARY_REQUIRED", "Select a local snapshot with --library <library.sqlite>.");
+  if (!options.root && !existsSync(path.join(defaultRoot, "library/catalog.yaml"))) throw new CliError("PCR_LIBRARY_REQUIRED", "No offline library found. Install @tiangong-lca/pcr-library or pass --library <library.sqlite>.");
+  return { kind: "repository", root: path.resolve(String(options.root ?? defaultRoot)) };
+}
+
+function batchContinuationOptions(options: CliOptions, source: PcrReadSourceIdentity, pcrId: string): CliOptions {
+  const selected: CliOptions = { ...options, pcr: pcrId };
+  delete selected.input; delete selected.output;
+  if (source.kind === "library") {
+    delete selected.root;
+    selected.library = source.filename;
+    selected["library-sha256"] = source.sha256;
+  } else {
+    delete selected.library; delete selected["library-sha256"];
+    selected.root = source.root;
+  }
+  return selected;
+}
+
+function runGuidanceBatch(args: ParsedArguments, requestedFormat: string | null): CliResult {
+  const { command, positional, options } = args;
+  let selected: SelectedSource | null = null;
+  try {
+    const definition = requireCommandDefinition(command, positional);
+    validateCommandOptions(definition, options); validateCommandFormat(definition, options.format);
+    requireOption(options, "input"); validatePointerOptions(options, "topic");
+    const page = consumptionPage(options);
+    const input = readJsonDocument(String(options.input));
+    assertCoreContract("guidance-batch-request.schema.json", input.value, { source: input.file });
+    const ids = record(input.value).pcr_ids;
+    if (!Array.isArray(ids) || !ids.every((id: unknown) => typeof id === "string")) throw new CliError("PCR_CLI_RUNTIME_ERROR", "Validated batch request has invalid PCR IDs.");
+    const requestedIds: string[] = [...ids];
+    const source = batchSource(options);
+    if (source.kind === "library") selected = { root: path.dirname(source.filename), library: source.filename,
+      ...(source.expectedSha256 === undefined ? {} : { "library-sha256": source.expectedSha256 }) };
+    const captured: { session?: PcrReadSession } = {};
+    const select = ["topic", "pointer", "page", "page-size"].some(key => options[key] !== undefined);
+    const items = withPcrReadSession(source, session => {
+      captured.session = session;
+      if (session.source.kind === "library") selected = { root: path.dirname(session.source.filename), library: session.source.filename, "library-sha256": session.source.sha256 };
+      if (!select) return session.guidanceMany(requestedIds);
+      return session.projectionMany(requestedIds).map((snapshot, index) => {
+        const item = selectGuidanceFromSnapshot(snapshot, {
+          ...(options.topic === undefined ? {} : { topic: String(options.topic) }),
+          ...(options.pointer === undefined ? {} : { pointer: String(options.pointer) }), ...page,
+        });
+        return withConsumptionContinuation(item, "guidance", batchContinuationOptions(options, session.source, requestedIds[index] ?? snapshot.pcr.id));
+      });
+    });
+    const session = captured.session;
+    if (!session) throw new CliError("PCR_CLI_RUNTIME_ERROR", "Batch read session was not initialized.");
+    return consumptionOutput({ schema_version: 2, guidance_kind: "tiangong-pcr-guidance-batch", source: session.source,
+      requested_ids: requestedIds, count: items.length, items,
+      input: { file: input.file, sha256: input.sha256, bytes: input.bytes }, statistics: session.stats() }, options);
+  } catch (error: unknown) { return fail(error, requestedFormat, typeof options.root === "string" ? options.root : undefined, selected); }
+}
+
+function runCommand(argv: readonly string[], selected: SelectedSource | null = null): CliResult {
   const requestedFormat = requestedFormatFromArgv(argv);
   const requestedRoot = requestedRootFromArgv(argv);
   try {
@@ -185,11 +279,16 @@ function runCommand(argv, selected = null) {
     if (command === "list") {
       validateListOptions(options);
       const scope = effectiveCatalogScope(options);
-      const page = paginateList(
-        filterPcrs(listPcrs({ root, scope: scope.effective }), options),
-        options,
-        scope,
-      );
+      const pageNumber = positiveIntegerOption(options.page, "page", 1);
+      const pageSize = positiveIntegerOption(options["page-size"], "page-size", 10, 100);
+      // Out-of-range pages retain the CLI diagnostic even when their requested
+      // offset would exceed safe integer arithmetic.
+      const offset = Math.min(Number.MAX_SAFE_INTEGER, (pageNumber - 1) * pageSize);
+      const selected = readPcrCatalogPage({ root, scope: scope.effective, offset, limit: pageSize,
+        ...(options.status === undefined ? {} : { status: String(options.status) }),
+        ...(options["content-maturity"] === undefined ? {} : { contentMaturity: String(options["content-maturity"]) }),
+        ...(options["path-prefix"] === undefined ? {} : { pathPrefix: normalizePathPrefix(options["path-prefix"]) }) });
+      const page = paginateList(selected.items, options, scope, selected.totalCount);
       return ok(writeOutput(page, format, formatListTable));
     }
     if (command === "tree") {
@@ -255,7 +354,7 @@ function runCommand(argv, selected = null) {
       requireOption(options, "pcr");
       if (["topic", "pointer", "page", "page-size"].some((key) => options[key] !== undefined)) {
         validatePointerOptions(options, "topic");
-        const report = selectGuidance({ root, pcrId: String(options.pcr), topic: options.topic, pointer: options.pointer, ...consumptionPage(options) });
+        const report = selectGuidance({ root, pcrId: String(options.pcr), ...(options.topic === undefined ? {} : { topic: String(options.topic) }), ...(options.pointer === undefined ? {} : { pointer: String(options.pointer) }), ...consumptionPage(options) });
         return consumptionOutput(withConsumptionContinuation(report, "guidance", options), options);
       }
       if (options.output) return consumptionOutput(buildGuidance({ root, pcrId: String(options.pcr) }), options);
@@ -267,22 +366,22 @@ function runCommand(argv, selected = null) {
       if (options.pointer === undefined && (!options.section || options.section === "summary") && (options.page || options["page-size"])) {
         throw new CliError("PCR_CLI_OPTION_CONFLICT", "Summary is not paginated. Choose --section references|exchanges|instances|documents for paging.");
       }
-      const report = inspectTidas({ input: options.input, related: options.related, section: options.section, pointer: options.pointer, ...consumptionPage(options) });
+      const report = inspectTidas({ input: String(options.input), related: options.related === undefined ? null : String(options.related), section: String(options.section ?? "summary"), ...(options.pointer === undefined ? {} : { pointer: String(options.pointer) }), ...consumptionPage(options) });
       return consumptionOutput(withConsumptionContinuation(report, "inspect", options), options);
     }
     if (command === "calculate") {
       requireOption(options, "input");
-      const source = readJsonDocument(options.input);
+      const source = readJsonDocument(String(options.input));
       return consumptionOutput({ ...calculate(source.value), request_source: { file: source.file, sha256: source.sha256 } }, options);
     }
     if (command === "review") {
       if (!positional.length) throw new CliError("PCR_CLI_MISSING_SUBCOMMAND", "Use review prepare to create an Agent draft or review check to verify its envelope. Run review --help.");
       requireOption(options, "input");
       requireOption(options, "pcr");
-      const args = { root, pcrId: String(options.pcr), input: options.input, related: options.related };
+      const args = { root, pcrId: String(options.pcr), input: String(options.input), related: options.related === undefined ? null : String(options.related) };
       if (positional[0] === "prepare") return consumptionOutput(prepareReview(args), options);
       requireOption(options, "report");
-      const source = readJsonDocument(options.report);
+      const source = readJsonDocument(String(options.report));
       const report = checkReview({ ...args, report: source.value });
       return consumptionOutput({ ...report, report_source: { file: source.file, sha256: source.sha256 } }, options, report.envelope_valid ? 0 : 2);
     }
@@ -343,31 +442,32 @@ function runCommand(argv, selected = null) {
   }
 }
 
-function ok(stdout, exitCode = 0) {
+function ok(stdout: string, exitCode = 0): CliResult {
   return { stdout, stderr: "", exitCode };
 }
 
-function consumptionPage(options) {
+function consumptionPage(options: CliOptions) {
   return {
     page: positiveIntegerOption(options.page, "page", 1),
     pageSize: positiveIntegerOption(options["page-size"], "page-size", 10, 100),
   };
 }
 
-function validatePointerOptions(options, selector) {
+function validatePointerOptions(options: CliOptions, selector: string): void {
   if (options.pointer !== undefined && [selector, "page", "page-size"].some((key) => options[key] !== undefined)) {
     throw new CliError("PCR_CLI_OPTION_CONFLICT", `Use --pointer alone, or --${selector} with optional pagination.`);
   }
 }
 
-function withConsumptionContinuation(report, command, options) {
+function withConsumptionContinuation(value: unknown, command: string, options: CliOptions) {
+  const report = record(value);
   const parts = command === "guidance" ? commandPrefix(options) : ["tiangong-pcr"];
   parts.push(command);
   if (command === "guidance") parts.push(...sourceArguments(options));
   for (const key of command === "guidance" ? ["pcr", "topic"] : ["input", "related", "section"]) {
-    if (options[key] !== undefined) parts.push(`--${key}`, shellToken(["input", "related"].includes(key) ? path.resolve(options[key]) : options[key]));
+    if (options[key] !== undefined) parts.push(`--${key}`, shellToken(["input", "related"].includes(key) ? path.resolve(String(options[key])) : options[key]));
   }
-  const pagination = report.pagination;
+  const pagination = paginationOf(report.pagination);
   return {
     ...report,
     next_command: pagination?.has_more ? `${parts.join(" ")} --page ${pagination.page + 1} --page-size ${pagination.page_size} --format json` : null,
@@ -377,27 +477,29 @@ function withConsumptionContinuation(report, command, options) {
   };
 }
 
-function consumptionOutput(report, options, exitCode = 0) {
+function consumptionOutput(value: unknown, options: CliOptions, exitCode = 0): CliResult {
+  const report = record(value);
   const output = `${JSON.stringify(report, null, 2)}\n`;
   if (options.output) {
     const filename = path.resolve(String(options.output));
     try { writeFileSync(filename, output, { encoding: "utf8", flag: "wx" }); }
-    catch (error) { throw new CliError("PCR_CLI_OUTPUT_WRITE", `Cannot create new output file ${filename}: ${error.message}. Choose an unused path in an existing directory.`); }
+    catch (error) { throw new CliError("PCR_CLI_OUTPUT_WRITE", `Cannot create new output file ${filename}: ${errorMessage(error)}. Choose an unused path in an existing directory.`); }
     return ok(`${JSON.stringify({ artifact: filename, sha256: sha256(output), bytes: Buffer.byteLength(output), kind: report.report_kind ?? report.check_kind ?? report.guidance_kind ?? report.inspection_kind ?? report.calculation_kind, ...(report.envelope_valid === undefined ? {} : { envelope_valid: report.envelope_valid, methodology_approval: false }), next_step: "Read the saved artifact. Source inputs were not modified." }, null, 2)}\n`, exitCode);
   }
   if (output.length > 32768) throw new CliError("PCR_CLI_OUTPUT_LARGE", "Result exceeds 32768 characters. Use --output <new-file> for the complete artifact or request a smaller page/pointer.");
   return ok(output, exitCode);
 }
 
-function fail(error, requestedFormat, requestedRoot, selected = null) {
+function fail(error: unknown, requestedFormat: string | null, requestedRoot: string | undefined, selected: SelectedSource | null = null): CliResult {
   const normalized = normalizeError(error);
   if (
     normalized.code === "PCR_LEGACY_ID_REDIRECT"
-    && normalized.details?.target
+    && isUnknownRecord(normalized.details) && legacyTarget(normalized.details.target)
   ) {
+    const target = normalized.details.target;
     const originalNextCommand = normalized.details.next_command;
     const nextCommand = legacyRedirectCommand(
-      normalized.details.target,
+      target,
       { root: requestedRoot, library: selected?.library, "library-sha256": selected?.["library-sha256"] },
     );
     normalized.details.next_command = nextCommand;
@@ -420,55 +522,58 @@ function fail(error, requestedFormat, requestedRoot, selected = null) {
   };
 }
 
-function requestedFormatFromArgv(argv) {
+function requestedFormatFromArgv(argv: readonly string[]): string | null {
   for (let index = argv.length - 2; index >= 0; index -= 1) {
     if (argv[index] === "--format" && argv[index + 1] === "json") {
       return "json";
     }
   }
   const index = argv.lastIndexOf("--format");
-  return index >= 0 && typeof argv[index + 1] === "string" ? argv[index + 1] : null;
+  const value = index >= 0 ? argv[index + 1] : undefined;
+  return typeof value === "string" ? value : null;
 }
 
-function requestedRootFromArgv(argv) {
+function requestedRootFromArgv(argv: readonly string[]): string | undefined {
   const index = argv.lastIndexOf("--root");
   const value = index >= 0 ? argv[index + 1] : undefined;
   return typeof value === "string" && !value.startsWith("--") ? value : undefined;
 }
 
-function normalizeError(error) {
+function normalizeError(error: unknown): NormalizedError {
   const message = error instanceof Error ? error.message : String(error);
-  const code = error instanceof CliError || /^PCR_/u.test(String(error?.code ?? ""))
-    ? String(error.code)
-    : "PCR_CLI_RUNTIME_ERROR";
+  const rawCode = unknownField(error, "code");
+  const code = error instanceof CliError || /^PCR_/u.test(String(rawCode ?? "")) ? String(rawCode) : "PCR_CLI_RUNTIME_ERROR";
   const details = coreOrCliErrorDetails(error);
   return details === undefined ? { code, message } : { code, message, details };
 }
-
-function coreOrCliErrorDetails(error) {
-  if (error instanceof CliError) {
-    return error.details;
-  }
-  if (error?.details !== undefined) {
-    return structuredClone(error.details);
-  }
-  if (error?.readiness !== undefined) {
-    return { readiness: structuredClone(error.readiness) };
-  }
-  if (typeof error?.toJSON === "function") {
-    const serialized = error.toJSON();
-    if (serialized && typeof serialized === "object") {
-      const { code: _code, ...details } = serialized;
-      return details;
+function coreOrCliErrorDetails(error: unknown): unknown {
+  if (error instanceof CliError) return error.details;
+  const details = unknownField(error, "details");
+  if (details !== undefined) return structuredClone(details);
+  const readiness = unknownField(error, "readiness");
+  if (readiness !== undefined) return { readiness: structuredClone(readiness) };
+  const toJSON = unknownField(error, "toJSON");
+  if (typeof toJSON === "function") {
+    const serialized: unknown = toJSON.call(error);
+    if (isUnknownRecord(serialized)) {
+      const { code: _code, ...fields } = serialized;
+      return fields;
     }
-  }
-  if (error?.details && typeof error.details === "object") {
-    return structuredClone(error.details);
   }
   return undefined;
 }
+function catalogScope(value: unknown): PcrCatalogScope {
+  if (value === "material" || value === "legacy" || value === "all") return value;
+  throw invalidChoiceError("scope", value, PCR_CATALOG_SCOPES);
+}
+function legacyTarget(value: unknown): value is PcrIdAlias["target"] {
+  if (!isUnknownRecord(value)) return false;
+  return value.kind === "canonical_pcr" && typeof value.pcr_id === "string"
+    || value.kind === "classification_coverage" && typeof value.classification_system === "string"
+      && typeof value.classification_version === "string" && typeof value.code === "string";
+}
 
-function commandDefinitionFor(command, positional = []) {
+function commandDefinitionFor(command: string, positional: readonly string[] = []): CommandDefinition | undefined {
   return COMMAND_DEFINITIONS.find((definition) => {
     if (definition.command !== command) {
       return false;
@@ -479,7 +584,7 @@ function commandDefinitionFor(command, positional = []) {
   });
 }
 
-function requireCommandDefinition(command, positional) {
+function requireCommandDefinition(command: string, positional: readonly string[]): CommandDefinition {
   const definition = commandDefinitionFor(command, positional);
   if (definition) {
     return definition;
@@ -502,7 +607,7 @@ function requireCommandDefinition(command, positional) {
 
   const commandDefinitions = COMMAND_DEFINITIONS.filter((candidate) => candidate.command === command);
   if (commandDefinitions.length > 0) {
-    const expected = commandDefinitions[0].positional ?? [];
+    const expected = commandDefinitions[0]?.positional ?? [];
     const isExpectedPrefix = expected.every((value, index) => positional[index] === value);
     if (isExpectedPrefix && positional.length > expected.length) {
       throw new CliError(
@@ -517,7 +622,7 @@ function requireCommandDefinition(command, positional) {
   );
 }
 
-function validateHelpInvocation({ command, positional, options }) {
+function validateHelpInvocation({ command, positional, options }: ParsedArguments): void {
   if (command === "help" && positional.length > 0) {
     throw new CliError(
       "PCR_CLI_UNEXPECTED_POSITIONAL",
@@ -533,12 +638,12 @@ function validateHelpInvocation({ command, positional, options }) {
   }
 }
 
-function validateCommandOptions(definition, options) {
+function validateCommandOptions(definition: CommandDefinition, options: CliOptions): void {
   const allowed = new Set([...GLOBAL_OPTIONS, ...(COMMAND_OPTIONS[definition.key] ?? [])]);
   validateOptionsAgainst(options, allowed);
 }
 
-function validateOptionsAgainst(options, allowed) {
+function validateOptionsAgainst(options: CliOptions, allowed: ReadonlySet<string>): void {
   for (const [key, value] of Object.entries(options)) {
     if (!allowed.has(key)) {
       throw new CliError("PCR_CLI_UNKNOWN_OPTION", `Unknown option --${key}`, { option: key });
@@ -563,7 +668,7 @@ function validateOptionsAgainst(options, allowed) {
   }
 }
 
-function validateCommandFormat(definition, formatValue) {
+function validateCommandFormat(definition: CommandDefinition, formatValue: unknown): string {
   const format = String(formatValue ?? definition.defaultFormat);
   if (!definition.formats.includes(format)) {
     throw invalidChoiceError("format", format, definition.formats, {
@@ -573,13 +678,13 @@ function validateCommandFormat(definition, formatValue) {
   return format;
 }
 
-function parseArgs(argv) {
-  const options = {};
-  const positional = [];
+function parseArgs(argv: readonly string[]): ParsedArguments {
+  const options: CliOptions = {};
+  const positional: string[] = [];
   let command = "";
 
   for (let index = 0; index < argv.length; index += 1) {
-    const token = argv[index];
+    const token = argv[index] ?? "";
     if (token.startsWith("--")) {
       const key = token.slice(2);
       if (!key) {
@@ -607,7 +712,7 @@ function parseArgs(argv) {
   return { command, positional, options };
 }
 
-function writeOutput(value, format, tableFormatter) {
+function writeOutput<T>(value: T, format: string, tableFormatter: (value: T) => string | undefined): string {
   if (format === "json") {
     return `${JSON.stringify(value, null, 2)}\n`;
   }
@@ -617,31 +722,33 @@ function writeOutput(value, format, tableFormatter) {
   return `${tableFormatter(value)}\n`;
 }
 
-function parseDatasetInput(text) {
+function parseDatasetInput(text: string): unknown {
   try {
-    return JSON.parse(text);
+    return JSON.parse(text) as unknown;
   } catch (error) {
     throw new CliError(
       "PCR_CLI_INVALID_DATASET_JSON",
-      `Malformed dataset JSON: ${error.message}`,
+      `Malformed dataset JSON: ${errorMessage(error)}`,
     );
   }
 }
 
-function readInputFile(value) {
+function readInputFile(value: unknown): string {
   const inputPath = path.resolve(String(value));
   try {
     return readFileSync(inputPath, "utf8");
   } catch (error) {
     throw new CliError(
       "PCR_CLI_INPUT_READ_FAILED",
-      `Unable to read --input file ${inputPath}: ${error.message}`,
+      `Unable to read --input file ${inputPath}: ${errorMessage(error)}`,
       { input: inputPath },
     );
   }
 }
 
-function parseClassificationSelector(value, { includeCode }) {
+function parseClassificationSelector(value: unknown, options: { includeCode: true }): { system: string; version: string; code: string };
+function parseClassificationSelector(value: unknown, options: { includeCode: false }): { system: string; version: string };
+function parseClassificationSelector(value: unknown, { includeCode }: { includeCode: boolean }) {
   const classification = String(value ?? "");
   const parts = classification.split(":");
   const expectedParts = includeCode ? 3 : 2;
@@ -655,7 +762,7 @@ function parseClassificationSelector(value, { includeCode }) {
       { value: classification, expected_segments: expectedParts },
     );
   }
-  const [system, version, code] = parts;
+  const [system = "", version = "", code = ""] = parts;
   if (
     !/^[A-Za-z0-9][A-Za-z0-9_-]*$/u.test(system)
     || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(version)
@@ -673,7 +780,7 @@ function parseClassificationSelector(value, { includeCode }) {
   return { system, version };
 }
 
-function validateResolveSelector(options) {
+function validateResolveSelector(options: CliOptions): void {
   const supplied = ["classification", "pcr"].filter(
     (key) => options[key] !== undefined,
   );
@@ -689,7 +796,7 @@ function validateResolveSelector(options) {
   }
 }
 
-function validateListOptions(options) {
+function validateListOptions(options: CliOptions): void {
   if (options.status !== undefined && !VALID_PCR_STATUSES.has(String(options.status))) {
     throw invalidChoiceError("status", String(options.status), PCR_STATUS_VALUES);
   }
@@ -711,7 +818,7 @@ function validateListOptions(options) {
   positiveIntegerOption(options["page-size"], "page-size", 10, 100);
 }
 
-function validateCoverageListOptions(options) {
+function validateCoverageListOptions(options: CliOptions): void {
   if (options.status !== undefined && !VALID_COVERAGE_STATUSES.has(String(options.status))) {
     throw invalidChoiceError("status", String(options.status), CLASSIFICATION_COVERAGE_STATUSES, {
       command: "coverage list",
@@ -721,18 +828,18 @@ function validateCoverageListOptions(options) {
   positiveIntegerOption(options["page-size"], "page-size", 10, 100);
 }
 
-function validateCatalogScope(value) {
+function validateCatalogScope(value: unknown): void {
   if (value !== undefined && !VALID_CATALOG_SCOPES.has(String(value))) {
     throw invalidChoiceError("scope", String(value), PCR_CATALOG_SCOPES);
   }
 }
 
-function effectiveCatalogScope(options) {
+function effectiveCatalogScope(options: CliOptions): CatalogScope {
   validateCatalogScope(options.scope);
   if (options.scope !== undefined) {
     return {
       requested: String(options.scope),
-      effective: String(options.scope),
+      effective: catalogScope(options.scope),
       source: "explicit",
     };
   }
@@ -745,28 +852,9 @@ function effectiveCatalogScope(options) {
   return { requested: null, effective: "material", source: "default" };
 }
 
-function filterPcrs(pcrs, options) {
-  let result = pcrs;
-  if (options.status) {
-    result = result.filter((entry) => entry.status === String(options.status));
-  }
-  if (options["content-maturity"]) {
-    result = result.filter((entry) => entry.content_maturity === String(options["content-maturity"]));
-  }
-  if (options["path-prefix"]) {
-    const prefix = normalizePathPrefix(options["path-prefix"]);
-    result = result.filter((entry) => {
-      const relativePath = String(entry.path).replace(/^library\/pcrs\/?/u, "");
-      return relativePath === prefix || relativePath.startsWith(`${prefix}/`);
-    });
-  }
-  return result;
-}
-
-function paginateList(pcrs, options, scope) {
+function paginateList(items: PcrRecord[], options: CliOptions, scope: CatalogScope, totalCount: number) {
   const pageSize = positiveIntegerOption(options["page-size"], "page-size", 10, 100);
   const page = positiveIntegerOption(options.page, "page", 1);
-  const totalCount = pcrs.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   if (page > totalPages) {
     throw new CliError(
@@ -775,8 +863,6 @@ function paginateList(pcrs, options, scope) {
       { page, total_pages: totalPages },
     );
   }
-  const startIndex = (page - 1) * pageSize;
-  const items = pcrs.slice(startIndex, startIndex + pageSize);
   const nextPage = page < totalPages ? page + 1 : null;
   const previousPage = page > 1 ? page - 1 : null;
 
@@ -810,7 +896,7 @@ function paginateList(pcrs, options, scope) {
   };
 }
 
-function coverageSummaryOutput(summary, options) {
+function coverageSummaryOutput(summary: ReturnType<typeof getClassificationCoverageSummary>, options: CliOptions) {
   const classification = `${String(summary.classification_system).toLowerCase()}:${summary.classification_version}`;
   return {
     ...summary,
@@ -831,7 +917,7 @@ function coverageSummaryOutput(summary, options) {
   };
 }
 
-function paginateCoverage(result, classification, options) {
+function paginateCoverage(result: ReturnType<typeof listClassificationCoverage>, classification: { system: string; version: string }, options: CliOptions) {
   const pageSize = positiveIntegerOption(options["page-size"], "page-size", 10, 100);
   const page = positiveIntegerOption(options.page, "page", 1);
   const totalCount = result.entries.length;
@@ -883,7 +969,7 @@ function paginateCoverage(result, classification, options) {
   };
 }
 
-function buildCoverageListCommand(options) {
+function buildCoverageListCommand(options: CliOptions): string {
   const parts = [...commandPrefix(options), "coverage", "list"];
   parts.push("--classification", shellToken(String(options.classification)));
   if (options.status) {
@@ -902,7 +988,7 @@ function buildCoverageListCommand(options) {
   return parts.join(" ");
 }
 
-function treeOutput(tree, depth, scope) {
+function treeOutput(tree: PcrTree, depth: number, scope: CatalogScope) {
   return {
     scope: "library/pcrs",
     requested_scope: scope.requested,
@@ -922,7 +1008,7 @@ function treeOutput(tree, depth, scope) {
   };
 }
 
-function resolveOutput(resolution, options) {
+function resolveOutput(resolution: ReturnType<typeof resolveClassification>, options: CliOptions) {
   const usable = resolution.pcr?.readiness?.usable_for_guidance === true;
   const pcrId = resolution.mapping?.pcr_id;
   const guidanceCommand = usable && resolution.resolution_status === "mapped" && pcrId
@@ -975,8 +1061,9 @@ function resolveOutput(resolution, options) {
   };
 }
 
-function resolvePcrIdentityOutput(resolution, options) {
+function resolvePcrIdentityOutput(resolution: ReturnType<typeof resolvePcrIdentity>, options: CliOptions) {
   if (resolution.resolution_status === "legacy_id_redirect") {
+    if (!resolution.redirect) throw new CliError("PCR_CLI_RUNTIME_ERROR", "Legacy identity resolution has no redirect.");
     const nextCommand = legacyRedirectCommand(resolution.redirect.target, options);
     return {
       ...resolution,
@@ -993,7 +1080,7 @@ function resolvePcrIdentityOutput(resolution, options) {
   }
 
   const usable = resolution.pcr?.readiness?.usable_for_guidance === true;
-  const nextCommand = usable
+  const nextCommand = usable && resolution.pcr
     ? [
         `${commandPrefix(options).join(" ")} guidance`,
         `--pcr ${shellToken(String(resolution.pcr.id))}`,
@@ -1012,7 +1099,7 @@ function resolvePcrIdentityOutput(resolution, options) {
   };
 }
 
-function legacyRedirectCommand(target, options) {
+function legacyRedirectCommand(target: PcrIdAlias["target"], options: CliOptions): string {
   const selector = target.kind === "classification_coverage"
     ? [
         "--classification",
@@ -1029,7 +1116,7 @@ function legacyRedirectCommand(target, options) {
   ].filter(Boolean).join(" ");
 }
 
-function validationExitCode(report, failOnValue) {
+function validationExitCode(report: ValidationReport, failOnValue: unknown): number {
   const failOn = validateFailOn(failOnValue);
   if (failOn === "never") {
     return 0;
@@ -1048,7 +1135,7 @@ function validationExitCode(report, failOnValue) {
   return 0;
 }
 
-function formatListTable(page) {
+function formatListTable(page: ReturnType<typeof paginateList>): string {
   const lines = [
     "PCR id | Status | Readiness | Title | Record kind",
     "--- | --- | --- | --- | ---",
@@ -1071,7 +1158,7 @@ function formatListTable(page) {
   return lines.join("\n");
 }
 
-function formatCoverageSummary(result) {
+function formatCoverageSummary(result: ReturnType<typeof coverageSummaryOutput>): string {
   const lines = [
     `Classification coverage: ${result.classification_system} ${result.classification_version}`,
     "",
@@ -1079,7 +1166,7 @@ function formatCoverageSummary(result) {
     "--- | ---:",
   ];
   for (const status of CLASSIFICATION_COVERAGE_STATUSES) {
-    lines.push(`${status} | ${result.summary[status]}`);
+    lines.push(`${status} | ${unknownField(result.summary, status)}`);
   }
   lines.push(`total | ${result.summary.total}`);
   lines.push("");
@@ -1088,7 +1175,7 @@ function formatCoverageSummary(result) {
   return lines.join("\n");
 }
 
-function formatCoverageList(result) {
+function formatCoverageList(result: ReturnType<typeof paginateCoverage>): string {
   const lines = [
     `Classification coverage: ${result.classification.system} ${result.classification.version}`,
     "",
@@ -1114,7 +1201,7 @@ function formatCoverageList(result) {
   return lines.join("\n");
 }
 
-function positiveIntegerOption(value, optionName, fallback, maximum = Infinity) {
+function positiveIntegerOption(value: unknown, optionName: string, fallback: number, maximum = Infinity): number {
   if (value === undefined) {
     return fallback;
   }
@@ -1133,7 +1220,7 @@ function positiveIntegerOption(value, optionName, fallback, maximum = Infinity) 
   return parsed;
 }
 
-function validateFailOn(value) {
+function validateFailOn(value: unknown): string {
   const failOn = String(value ?? "error");
   if (!VALID_FAIL_ON.has(failOn)) {
     throw invalidChoiceError("fail-on", failOn, [...VALID_FAIL_ON]);
@@ -1141,7 +1228,7 @@ function validateFailOn(value) {
   return failOn;
 }
 
-function invalidChoiceError(option, value, choices, details = {}) {
+function invalidChoiceError(option: string, value: unknown, choices: readonly string[], details: Record<string, unknown> = {}): CliError {
   return new CliError(
     "PCR_CLI_INVALID_CHOICE",
     `Invalid --${option} "${value}". Expected one of: ${choices.join(", ")}.`,
@@ -1149,7 +1236,7 @@ function invalidChoiceError(option, value, choices, details = {}) {
   );
 }
 
-function normalizePathPrefix(value) {
+function normalizePathPrefix(value: unknown): string {
   const original = String(value);
   const prefix = original.replace(/^library\/pcrs\/?/u, "").replace(/^\/+|\/+$/gu, "");
   const segments = prefix.split("/");
@@ -1167,7 +1254,7 @@ function normalizePathPrefix(value) {
   return prefix;
 }
 
-function buildListCommand(options) {
+function buildListCommand(options: CliOptions): string {
   const parts = [...commandPrefix(options), "list"];
   if (options.scope) {
     parts.push("--scope", shellToken(String(options.scope)));
@@ -1194,23 +1281,23 @@ function buildListCommand(options) {
   return parts.join(" ");
 }
 
-function commandPrefix(options) {
+function commandPrefix(options: CliOptions): string[] {
   return options.library ? ["tiangong-pcr"] : ["npm", "--silent", "run", "tiangong-pcr", "--"];
 }
-function sourceArguments(options) {
+function sourceArguments(options: CliOptions): string[] {
   const parts = options.library ? ["--library", shellToken(String(options.library))] : options.root ? ["--root", shellToken(String(options.root))] : [];
   if (options["library-sha256"]) parts.push("--library-sha256", shellToken(String(options["library-sha256"])));
   return parts;
 }
 
-function shellToken(value) {
-  return /^[A-Za-z0-9_./:-]+$/u.test(value)
-    ? value
+function shellToken(value: unknown): string {
+  return /^[A-Za-z0-9_./:-]+$/u.test(String(value))
+    ? String(value)
     : `'${String(value).replaceAll("'", `'"'"'`)}'`;
 }
 
-function formatTreeMarkdown(tree, depth, scope) {
-  const lines = [];
+function formatTreeMarkdown(tree: PcrTree, depth: number, scope: CatalogScope): string {
+  const lines: string[] = [];
   lines.push(`Effective scope: ${scope.effective} (${scope.source}).`);
   lines.push("");
   renderTreeNode(tree, lines, 0);
@@ -1224,7 +1311,7 @@ function formatTreeMarkdown(tree, depth, scope) {
   return lines.join("\n");
 }
 
-function renderTreeNode(node, lines, depth) {
+function renderTreeNode(node: PcrTree, lines: string[], depth: number): void {
   for (const [segment, value] of Object.entries(node).sort(([left], [right]) => left.localeCompare(right))) {
     lines.push(`${"  ".repeat(depth)}- ${segment}`);
     for (const pcr of value.pcrs ?? []) {
@@ -1237,7 +1324,7 @@ function renderTreeNode(node, lines, depth) {
   }
 }
 
-function requireOption(options, key) {
+function requireOption(options: CliOptions, key: string): void {
   if (!options[key]) {
     throw new CliError(
       "PCR_CLI_MISSING_REQUIRED_OPTION",
@@ -1247,7 +1334,7 @@ function requireOption(options, key) {
   }
 }
 
-function helpText(command = "", positional = []) {
+function helpText(command = "", positional: readonly string[] = []): string {
   const definition = commandDefinitionFor(command, positional);
   if (command === "library") return `Usage: tiangong-pcr library info|verify --library <library.sqlite> [--library-sha256 sha256:<hex>] [--format json]\n\nRead snapshot identity, or verify the entire database checksum and SQLite integrity. No writes or network requests. Keep the manifest and pin with your task.\n`;
   if (!definition) {
@@ -1469,6 +1556,42 @@ Agent next step:
   Judge applicability and declared scope. Cite returned source references; expand truncated items with --pointer.
 `;
   }
+  if (definition.key === "guidance:batch") {
+    return `Usage: tiangong-pcr guidance batch --input <request.json> [options]
+
+Read complete guidance for 1-100 explicit PCR IDs in one verified source session.
+Request JSON: { "schema_version": 1, "pcr_ids": ["<pcr-id>"] }
+IDs retain request order and duplicates. No partial result is returned when an ID or source fails.
+The request is validated before opening the repository or SQLite library.
+
+Options:
+  --input <request.json>            Required schema-version-1 request, with no additional fields.
+  --topic <topic>                   Select the same complete topic page for each PCR.
+  --pointer <JSON Pointer>          Select the same complete stored value for each PCR.
+  --page <n> --page-size <n>         Per-PCR topic pagination; default 10, maximum 100 items.
+  --output <new-file>               Save complete JSON exclusively after the whole batch succeeds.
+  --format json                     Only supported output format; defaults to JSON.
+  --root <path>                     Repository source; conflicts with --library.
+  --library <file>                  Fixed library.sqlite, or PCR_LIBRARY/default installed library.
+  --library-sha256 <sha256:hex>      Verify the selected snapshot against an explicit checksum pin.
+  --help                            Show this command help without reading input or opening a source.
+
+JSON output includes:
+  schema_version: 2, guidance_kind, source, requested_ids, count, items,
+  input { file, sha256, bytes }, and final session statistics.
+  Without selectors, each item is existing full guidance. Topic/pointer selection preserves
+  complete values, hashes and source context; each paged item carries its own next_command.
+  Stdout is limited to 32768 characters; use --output for larger complete batches.
+
+Examples:
+  tiangong-pcr guidance batch --input request.json --output batch.json --format json
+  tiangong-pcr guidance batch --input request.json --topic boundary --page-size 1 --format json
+
+Agent next step:
+  Read each item with its complete source context. Use its next_command for later pages.
+  Correct any failed request/source before retrying; batch success does not approve methodology.
+`;
+  }
   if (definition.key === "inspect") {
     return `Usage: tiangong-pcr inspect --input <native-tidas.json> [options]
 
@@ -1649,7 +1772,7 @@ Agent next step:
   return globalHelpText();
 }
 
-function globalHelpText() {
+function globalHelpText(): string {
   return `Version: tiangong-pcr --version
 Offline: --library <library.sqlite> (or PCR_LIBRARY); --library-sha256 sha256:<hex> pins the file.
   library info|verify --library <file> --format json
@@ -1669,6 +1792,7 @@ Commands:
   resolve (--classification <system>:<version>:<code> | --pcr <pcr-id>) [--format json]
   show --pcr <pcr-id> [--lang en-US|zh-CN]
   guidance --pcr <pcr-id> [--topic <topic> | --pointer <pointer>] [--output <new-file>] [--format json]
+  guidance batch --input <request.json> [--topic <topic> | --pointer <pointer>] [--output <new-file>] [--format json]
   inspect --input <native-tidas.json> [--related <directory>] [--section <section> | --pointer <pointer>]
   calculate --input <calculation.json> [--output <new-file>]
   review prepare --pcr <pcr-id> --input <native-tidas.json> [--related <directory>] --output <new-draft.json>

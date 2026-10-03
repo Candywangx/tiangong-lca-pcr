@@ -56,3 +56,24 @@ test('bounded tree branches do not verify unused leaf bodies; full depth still d
   assert.ok(reads.some(name => name.includes('/wheat-other/')) && reads.some(name => name.includes('/wheat-seed/')));
   assert.deepEqual(leaves, buildPcrTree({ root, scope: 'material', depth: 3 }));
 });
+
+test('body-free pages and trees reject contexts from another repository root', t => {
+  const boundRoot = fixture(t), requestedRoot = fixture(t);
+  const context = createPcrReadContext({ root: boundRoot });
+  const reads = [
+    () => readPcrCatalogPage({ root: requestedRoot, offset: 20, limit: 1, context }),
+    () => buildPcrTree({ root: requestedRoot, depth: 2, context }),
+    () => buildPcrTree({ root: requestedRoot, depth: 0, context }),
+  ];
+  for (const read of reads) assert.throws(read, { code: 'PCR_READ_CONTEXT_STALE' });
+});
+
+test('body-free pages and trees cannot return metadata under stale context bindings', t => {
+  const root = fixture(t); const context = createPcrReadContext({ root });
+  const filename = path.join(root, 'library/catalog.yaml');
+  writeFileSync(filename, readFileSync(filename, 'utf8') + '\n# changed bound bytes\n');
+  for (const read of [
+    () => readPcrCatalogPage({ root, offset: 20, limit: 1, context }),
+    () => buildPcrTree({ root, depth: 2, context }),
+  ]) assert.throws(read, { code: 'PCR_READ_CONTEXT_STALE' });
+});

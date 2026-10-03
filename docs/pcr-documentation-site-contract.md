@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-03
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedAt: 2026-10-04
+lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -16,8 +16,8 @@ whenToUpdate:
   - when source-to-page, download, language or publication boundaries change
 checkPaths:
   - packages/pcr-docs/**
-  - packages/pcr-core/src/languages.mjs
-  - packages/pcr-core/src/index.mjs
+  - packages/pcr-core/src/languages.ts
+  - packages/pcr-core/src/index.ts
   - edgeone.json
 related:
   - architecture.md

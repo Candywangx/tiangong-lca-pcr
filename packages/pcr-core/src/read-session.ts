@@ -64,6 +64,10 @@ export function withPcrReadSession<T>(source: PcrReadSource, read: (session: Pcr
   if (source.kind === 'repository' ? typeof source.root !== 'string' || !source.root : typeof source.filename !== 'string' || !source.filename) {
     throw new PcrReadSessionError('PCR_READ_SOURCE_INVALID', 'The selected source requires a nonempty path.');
   }
+  if (source.kind === 'library' && ((source.verify !== undefined && typeof source.verify !== 'boolean')
+    || (source.expectedSha256 !== undefined && (typeof source.expectedSha256 !== 'string' || !/^sha256:[a-f0-9]{64}$/u.test(source.expectedSha256))))) {
+    throw new PcrReadSessionError('PCR_READ_SOURCE_INVALID', 'Library verification must be a boolean and its optional pin a sha256 digest.');
+  }
   let library: OfflineLibrary | undefined;
   const stats: PcrReadSessionStats = { records_loaded: 0, cache_hits: 0, final_verifications: 0, alias_validations: 0 };
   let active = true;

@@ -263,7 +263,7 @@ function recoverFromDivergentCurrentCheckout({ root, config }) {
   for (const relativePath of [
     "packages/pcr-viewer/scripts/snapshot-store.mjs",
     "packages/pcr-viewer/scripts/snapshot-format.mjs",
-    "packages/pcr-core/src/index.mjs",
+    "packages/pcr-core/src/index.ts",
   ]) {
     const currentModule = path.join(root, relativePath);
     writeFileSync(currentModule, `${readFileSync(currentModule, "utf8")}\nthrow new Error("CURRENT_CHECKOUT_ARTIFACT_CODE_MUST_NOT_LOAD");\n`);

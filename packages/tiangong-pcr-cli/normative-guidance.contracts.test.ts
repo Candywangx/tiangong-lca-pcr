@@ -6,7 +6,7 @@ import test from 'node:test';
 import oracle from '../pcr-core/fixtures/normative-context/independent-oracle.json' with { type: 'json' };
 import { readYamlFile } from '../pcr-core/src/yaml-lite.ts';
 import { normalizeFingerprintText, sha256Fingerprint } from '../pcr-core/src/projection-integrity.ts';
-const commandModule: unknown = await import(new URL('./src/commands.mjs', import.meta.url).href);
+const commandModule: unknown = await import(new URL('./src/commands.ts', import.meta.url).href);
 function object(value: unknown): Record<string, unknown> {
   assert.ok(value !== null && typeof value === 'object' && !Array.isArray(value));
   return value as Record<string, unknown>;

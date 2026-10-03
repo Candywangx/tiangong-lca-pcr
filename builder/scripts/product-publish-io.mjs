@@ -262,7 +262,7 @@ export function createProductionPublisherIO({ env, root, toolchain, fetcher = fe
       const work = mkdtempSync(path.join(tmpdir(), "pcr-product-install-")); temporary.push(work);
       const receipts = Object.values(manifest.packages);
       npm(["install", "--offline", "--ignore-scripts", "--no-audit", "--no-fund", ...receipts.map(item => path.join(directory, item.filename))], work);
-      const bin = path.join(work, "node_modules/@tiangong-lca/pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs"), library = path.join(work, "node_modules/@tiangong-lca/pcr-library/library.sqlite");
+      const bin = path.join(work, "node_modules/@tiangong-lca/pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.js"), library = path.join(work, "node_modules/@tiangong-lca/pcr-library/library.sqlite");
       const toolVersion = localNode([bin, "--version"], work), sidecar = JSON.parse(readFileSync(`${library}.json`, "utf8"));
       const checked = parse(Buffer.from(localNode([bin, "library", "verify", "--library", library, "--library-sha256", sidecar.sha256, "--format", "json"], work)));
       const listed = parse(Buffer.from(localNode([bin, "list", "--scope", "material", "--page-size", "1", "--library", library, "--format", "json"], work)));

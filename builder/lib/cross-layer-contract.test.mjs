@@ -25,13 +25,13 @@ import {
   getPcrReadiness,
   resolveClassification,
   validateDatasetAgainstGuidance,
-} from "../../packages/pcr-core/src/index.mjs";
+} from "../../packages/pcr-core/src/index.ts";
 import {
   assertGuidance,
   assertReadiness,
   assertStructured as assertCoreStructured,
   assertValidationReport,
-} from "../../packages/pcr-core/src/contracts.mjs";
+} from "../../packages/pcr-core/src/contracts.ts";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");

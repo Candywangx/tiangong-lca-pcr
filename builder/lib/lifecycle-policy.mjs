@@ -2,7 +2,7 @@ import {
   REQUIRED_PCR_LANGUAGES,
   assertPcrLanguageCode,
   declaredPcrLanguages,
-} from "../../packages/pcr-core/src/languages.mjs";
+} from "../../packages/pcr-core/src/languages.ts";
 import {
   CONTENT_MATURITY_VALUES,
   PCR_STATUS_VALUES,

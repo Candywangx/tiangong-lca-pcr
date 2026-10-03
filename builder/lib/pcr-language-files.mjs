@@ -24,7 +24,7 @@ import {
   assertPcrLanguageCode,
   declaredPcrLanguages,
   pcrMarkdownFile,
-} from "../../packages/pcr-core/src/languages.mjs";
+} from "../../packages/pcr-core/src/languages.ts";
 
 import { manifestReleaseArtifacts } from "./artifact-hashes.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";

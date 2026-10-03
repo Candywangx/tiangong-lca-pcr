@@ -4,7 +4,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } f
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { readPcrDocumentBundle, readPcrMarkdown } from "./src/index.mjs";
+import { readPcrDocumentBundle, readPcrMarkdown } from "./src/index.ts";
 import { parseYaml, renderYaml } from "./src/yaml-lite.ts";
 
 const relative = "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";

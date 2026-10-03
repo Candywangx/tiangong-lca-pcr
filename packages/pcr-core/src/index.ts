@@ -264,7 +264,10 @@ export interface CatalogPageOptions extends CatalogOptions {
 }
 /** Apply metadata filters and the page boundary before expensive projection
  * verification. Every returned repository item still uses the full snapshot gate. */
-export function readPcrCatalogPage({ root, refresh = false, scope = "all", offset = 0, limit = 10, status = null, contentMaturity = null, pathPrefix = null, context = null }: CatalogPageOptions): { totalCount: number; items: PcrRecord[] } {
+export function readPcrCatalogPage(options: CatalogPageOptions): { totalCount: number; items: PcrRecord[] } {
+  return options.context ? withPcrReadContextSession({ context: options.context, root: options.root, read: () => readPcrCatalogPageWithinContext(options) }) : readPcrCatalogPageWithinContext(options);
+}
+function readPcrCatalogPageWithinContext({ root, refresh = false, scope = "all", offset = 0, limit = 10, status = null, contentMaturity = null, pathPrefix = null, context = null }: CatalogPageOptions): { totalCount: number; items: PcrRecord[] } {
   if (!Number.isSafeInteger(offset) || offset < 0 || !Number.isSafeInteger(limit) || limit < 1 || limit > 100) throw new RangeError("Catalog pages require a nonnegative offset and limit from 1 to 100.");
   const normalizedScope = normalizeCatalogScope(scope);
   const matches = (record: Pick<PcrIdentity, "path" | "status" | "content_maturity">) => {
@@ -335,7 +338,11 @@ function readPcrCatalog(root: string): CatalogEntry[] {
   return catalog.sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export function buildPcrTree({ root, depth = Infinity, scope = "all", context = null }: CatalogOptions & { depth?: number; context?: PcrReadContext | null }): PcrTree {
+type TreeOptions = CatalogOptions & { depth?: number; context?: PcrReadContext | null };
+export function buildPcrTree(options: TreeOptions): PcrTree {
+  return options.context ? withPcrReadContextSession({ context: options.context, root: options.root, read: () => buildPcrTreeWithinContext(options) }) : buildPcrTreeWithinContext(options);
+}
+function buildPcrTreeWithinContext({ root, depth = Infinity, scope = "all", context = null }: CatalogOptions & { depth?: number; context?: PcrReadContext | null }): PcrTree {
   const normalizedScope = normalizeCatalogScope(scope);
   const source = pcrSource(root);
   if (source) return treeFromRecords(source.listPcrs(normalizedScope), depth);

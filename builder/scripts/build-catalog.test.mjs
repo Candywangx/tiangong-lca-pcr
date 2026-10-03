@@ -28,7 +28,7 @@ import {
   staleArtifactIssues,
   writeCatalogArtifacts,
 } from "./build-catalog.mjs";
-import { readClassificationCoverage } from "../../packages/pcr-core/src/classification-coverage.mjs";
+import { readClassificationCoverage } from "../../packages/pcr-core/src/classification-coverage.ts";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   buildOrCheckPcrIdAliases,

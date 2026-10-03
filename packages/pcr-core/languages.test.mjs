@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { assertPcrLanguageCode, declaredPcrLanguages, expectedPcrArtifactHashes, pcrArtifactFiles } from "./src/languages.mjs";
+import { assertPcrLanguageCode, declaredPcrLanguages, expectedPcrArtifactHashes, pcrArtifactFiles } from "./src/languages.ts";
 
 const manifest = (available = ["en-US", "zh-CN"]) => ({ schema_version: 1, languages: { canonical: "en-US", available } });
 

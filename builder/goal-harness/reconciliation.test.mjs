@@ -12,7 +12,7 @@ import { publishPendingViewerSnapshots } from "./viewer-publication.mjs";
 
 const mapping = "classifications/mappings/cpc-3.0-to-pcr.yaml";
 const adr = "docs/adr/0130-user.md";
-const runtime = "packages/pcr-core/src/projection-completeness.mjs";
+const runtime = "packages/pcr-core/src/projection-completeness.ts";
 const files = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map(f => `library/pcrs/category/item/${f}`);
 const git = (root, args) => execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 function put(root, file, value) { mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); writeFileSync(path.join(root, file), value); }

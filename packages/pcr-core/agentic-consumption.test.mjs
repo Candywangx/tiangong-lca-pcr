@@ -4,10 +4,10 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { atPointer, readJsonDocument, strictNumber } from "./src/consumption-data.ts";
-import { calculate } from "./src/consumption-calculation.mjs";
+import { calculate } from "./src/consumption-calculation.ts";
 import { selectGuidance } from "./src/consumption-guidance.ts";
-import { checkReview, prepareReview } from "./src/consumption-review.mjs";
-import { inspectTidas } from "./src/tidas-inspection.mjs";
+import { checkReview, prepareReview } from "./src/consumption-review.ts";
+import { inspectTidas } from "./src/tidas-inspection.ts";
 
 const root = path.resolve(".");
 const pcrId = "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-other";

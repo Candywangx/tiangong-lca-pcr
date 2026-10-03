@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
 ---
 
 # PCR 资料库架构
@@ -278,6 +278,12 @@ Markdown/projection hash，无版本号的候选 PCR 保留空版本，不生成
 Markdown 和 builder 管理，消费层不重写全部 PCR。
 validation report 同时声明 `validation_status`、`completeness`、输入接受状态、已执行检查和跳过检查；
 因此“没有 finding”不能在 coverage 不完整时被解释为完整符合。
+
+### Consumer read sessions
+
+严格 TypeScript 核心在同一同步会话中读取一个显式仓库或 SQLite 快照。完整批量读取保持顺序和重复项，一项失败则整体失败；私有缓存只在会话内复用，仓库读取返回前重新核对所选源字节，SQLite 持有只读事务并关闭自有句柄。调用方不能提供验证成功凭据。元数据分页先筛选、再校验当前页正文；目录浅层浏览不解析不可见正文。所有公开返回的 PCR 仍经过完整快照检查。
+
+`guidance batch --input <request.json>` 接受一到 100 个 ID，保留完整条款及祖先语境、来源身份和统计信息。大结果通过独占 output 文件保存，不按字符截断。此优化不改变科学适用性、方法学审核或翻译门槛。
 
 ### Agent-led authoring and review
 

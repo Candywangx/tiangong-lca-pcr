@@ -19,9 +19,9 @@ checkPaths:
   - config/typescript-migration.json
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -164,13 +164,11 @@ version is bumped merely to establish this foundation.
 ## Compiled runtime transition
 
 The first runtime migration replaces the core YAML parser, vocabulary registry
-and offline-tool builder with TypeScript. `tsconfig.runtime.json` emits both those
-strictly checked TS modules and the remaining inventoried legacy JS into an owned
-package stage. Its temporary `allowJs: true` / `checkJs: false` is a **transport
-bridge for declared legacy source**, not evidence that those files were migrated.
-The separate strict core project checks all migrated implementation and tests.
-Final refactor completion still requires zero authored legacy entries and removal
-of this bridge.
+and offline-tool builder with TypeScript. The foundation initially used an explicit legacy transport bridge; the consumer
+cutover removes it. `tsconfig.runtime.json` now emits only strict TypeScript into
+an owned package stage. The core, semantic and consumer projects check their
+implementation and tests independently. Final refactor completion still requires
+zero authored legacy entries across the remaining repository surfaces.
 
 Relative TS imports in legacy callers are rewritten to emitted JavaScript; the
 public tool has executable bins, original schemas/Skill/licenses, runtime-only
@@ -205,4 +203,10 @@ and aggregates parser failures; valid registry data remains deeply frozen.
 
 ## Normative migration boundary
 
-The typed Markdown parser, serializer, projection integrity, source-context compiler and guidance selection replace their inventoried legacy modules. `tsconfig.semantic.json` checks these implementations and their independent contracts. Remaining core APIs are still legacy; the typed selection module uses one fixed-URL, unknown-data adapter until the core port replaces it. Runtime shape/provenance checks do not count that legacy core as migrated. New generated source context is governed by [the semantic contract](semantic-projection-contract.md).
+The typed Markdown parser, serializer, projection integrity, source-context compiler and guidance selection replace their inventoried legacy modules. `tsconfig.semantic.json` checks these implementations and their independent contracts. The consumer phase replaces the remaining core APIs and removes the fixed-URL legacy selection adapter. `tsconfig.consumer.json` checks the complete consumer, CLI, offline-library builder and their TypeScript tests. New generated source context is governed by [the semantic contract](semantic-projection-contract.md).
+
+## Consumer runtime cutover
+
+The consumer core, SQLite reader, CLI and offline-library builder use strict TypeScript. The runtime compiler now includes only TypeScript sources and no longer enables the legacy `allowJs` transport bridge. Generated npm bins are `.js`; consumers run them without a compiler or Node type stripping. Remaining Builder/Harness/site/release JavaScript stays in the shrinking migration inventory for subsequent phases.
+
+Read sessions own their source scope and handles. Repository sessions bind selected current-artifact bytes and recheck before returning; SQLite sessions retain one readonly transaction. Bounded caches belong to one synchronous callback and cannot escape as reusable validation receipts. Session tests cover source isolation, mutated inputs, eviction, closure, and ordered all-or-error batches.

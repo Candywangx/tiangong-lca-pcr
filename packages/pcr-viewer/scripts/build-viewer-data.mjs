@@ -31,7 +31,7 @@ import {
   readClassificationCoverageSnapshot,
   readPcrMarkdown,
   withPcrReadContextSession,
-} from "../../pcr-core/src/index.mjs";
+} from "../../pcr-core/src/index.ts";
 import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
 import { VIEWER_DATA_SCHEMA_VERSION } from "../static/viewer-core.js";
 import { canonicalBytes, createViewerSnapshotSchemaRegistry, sha256Ref, viewerSchemaContractSha256 } from "./snapshot-format.mjs";

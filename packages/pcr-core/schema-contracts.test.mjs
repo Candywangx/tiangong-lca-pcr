@@ -8,7 +8,7 @@ import {
   createFeedbackDraft,
   getPcrReadiness,
   validateDatasetAgainstGuidance,
-} from "./src/index.mjs";
+} from "./src/index.ts";
 import {
   assertReadiness,
   assertStructured,
@@ -22,8 +22,8 @@ import {
   validateReadiness,
   validateStructured,
   validateValidationReport,
-} from "./src/contracts.mjs";
-import { createSchemaRegistry } from "./src/schema-validation.mjs";
+} from "./src/contracts.ts";
+import { createSchemaRegistry } from "./src/schema-validation.ts";
 import { parseYaml } from "./src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");

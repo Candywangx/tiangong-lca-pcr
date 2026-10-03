@@ -32,7 +32,7 @@ import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
   declaredPcrLanguages,
   pcrMarkdownFile,
-} from "../../packages/pcr-core/src/languages.mjs";
+} from "../../packages/pcr-core/src/languages.ts";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { byteSha256 } from "./artifact-hashes.mjs";
 import { inspectPublishedRevisionState } from "./published-revision-state.mjs";

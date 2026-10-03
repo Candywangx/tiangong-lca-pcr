@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { runTiangongPcr } from "../src/commands.mjs";
+import { runTiangongPcr } from "../src/commands.ts";
 
 const result = runTiangongPcr(process.argv.slice(2));
 

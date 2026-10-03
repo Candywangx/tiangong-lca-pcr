@@ -14,7 +14,7 @@ import { applyTaskTransition } from "./state-machine.mjs";
 import { selectRepositoryIntegrationHead } from "./repository-coordinator.mjs";
 
 const shared = new Set(["classifications/mappings/cpc-3.0-to-pcr.yaml", "classifications/aliases/pcr-id-aliases.yaml", "classifications/indexes/cpc-3.0-coverage.json", "library/catalog.yaml", "library/indexes/pcr-index.yaml"]);
-const runtimeDelivery = new Set(["packages/pcr-core/src/projection-completeness.mjs"]);
+const runtimeDelivery = new Set(["packages/pcr-core/src/projection-completeness.ts"]);
 
 // F4 audit boundary: plans bind exact bytes, never a broad permission to refresh CAS.
 // The coordinator supplies the user's approval reference; no approval is inferred.

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,symlinkSync,rmSync} from 'node:fs';
 import path from 'node:path';
 import {tmpdir} from 'node:os';
-import {readPcrModuleDocumentBundle} from './src/index.mjs';
+import {readPcrModuleDocumentBundle} from './src/index.ts';
 test('module bundle retains original bytes and rejects identity and path escapes',()=>{
  const root=mkdtempSync(path.join(tmpdir(),'pcr-module-doc-'));const dir=path.join(root,'library/modules/core');mkdirSync(dir,{recursive:true});
  const original=readFileSync('library/modules/core/allocation.md');writeFileSync(path.join(dir,'allocation.md'),original);
