@@ -1,3 +1,4 @@
+import {existsSync} from "node:fs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -159,3 +160,15 @@ test("typed receipt index retains every attestation for uniqueness checks withou
 });
 
 function first<T>(items: readonly T[]): T { const item=items[0]; assert.ok(item !== undefined); return item; }
+
+
+test("persisted enrichment reset pointers retain null and reject non-string metadata before capture", t => {
+ const stateDir=mkdtempSync(path.join(tmpdir(),"goal-reset-metadata-"));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+ const store=new GoalEventStore({stateDir});
+ for(const [key,value] of [["valid_at",{}],["integration_snapshot_id",false]] satisfies [string,unknown][]){
+  assert.throws(()=>store.initialize({tasks:[{id:"historical",state:"retryable_failure",[key]:value}]}),TypeError);
+  assert.equal(existsSync(store.initialPath),false,"Invalid external metadata must not become a persisted initial snapshot");
+ }
+ const captured=store.initialize({tasks:[{id:"historical",state:"retryable_failure",valid_at:null,integration_snapshot_id:null}]});
+ assert.equal(captured.tasks[0]?.valid_at,null);assert.equal(captured.tasks[0]?.integration_snapshot_id,null);
+});

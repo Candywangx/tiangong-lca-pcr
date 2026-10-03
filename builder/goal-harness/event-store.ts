@@ -334,7 +334,7 @@ function reduceEvent(state: GoalState, event: GoalEvent): GoalState {
   } else if (event.type === "landing_completed") {
     next.landed_path_fingerprints = {
       ...(next.landed_path_fingerprints ?? {}),
-      ...stringMap(event.payload.path_fingerprints ?? {}),
+      ...fingerprintMap(event.payload.path_fingerprints ?? {}),
     };
   }
   return next;
@@ -389,4 +389,4 @@ function eventLogSignature(filePath: string): string {
 }
 
 function recordArray(value: unknown): UnknownRecord[] { if (!Array.isArray(value)) throw new TypeError('Expected record array'); return value.map(entry=>record(entry)); }
-function stringMap(value: unknown): Record<string,string> { const data=record(value); const entries: [string,string][]=[]; for(const [key,item] of Object.entries(data)) entries.push([key,text(item)]); return Object.fromEntries(entries); }
+function fingerprintMap(value: unknown): Record<string,UnknownRecord> { const data=record(value); const entries: [string,UnknownRecord][]=[]; for(const [key,item] of Object.entries(data)) entries.push([key,record(item)]); return Object.fromEntries(entries); }
