@@ -2529,7 +2529,7 @@ function writeFixtureCoverageIndex({
     classification_version: version,
     source: {
       contract_version: "2",
-      generator: "builder/scripts/build-catalog.ts",
+      generator: "builder/scripts/build-catalog.mjs",
       generator_version: "2",
       normalized_leaves: {
         path: normalizedLeavesPath,
