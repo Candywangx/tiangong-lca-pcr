@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
-lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 ---
 
 # TianGong LCA PCR Library
@@ -102,6 +102,18 @@ Material PCR content should use this authoring shape:
 - validation rules
 - selected Tiangong UUIDs without dataset versions
 - external data sources for ranges, factors, official guidance, and non-default evidence
+
+## Development and verification
+
+Use `nvm install && nvm use` for the exact Node 24 version in `.nvmrc`, then
+`npm ci && npm --prefix packages/pcr-docs ci`. `npm run validate` checks the runtime,
+reviewed migration inventory, both TypeScript projects, library contracts and all
+source tests, including documentation tests. Full validation currently runs on Linux because the Goal Harness requires descriptor-anchored `/proc` access; portable suites remain available separately. `npm run test:list` shows suite
+membership; `npm run test:coverage` records the initial engineering coverage.
+The shared YAML boundary and offline-tool builder now use TypeScript; installed packages contain compiled runtime code. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
+migration boundaries and final qualification requirements. The Python SEO checker
+is retained. This foundation does not resolve the separately tracked semantic
+projection defect or claim the legacy implementation is already TypeScript.
 
 ## Builder CLI
 
@@ -273,8 +285,9 @@ Formats are enforced per command: `resolve`, `guidance`, and validation are JSON
 The public site in `packages/pcr-docs/` reads the canonical library through the core
 consistent document API and the shared immutable-history verifier. It renders
 ordinary Markdown as complete semantic HTML in a Next.js static export. Fumadocs
-provides the documentation layout, navigation and search dialog. EdgeOne builds
-production from `main`; there is no request-time SSR or preview deployment.
+provides the documentation layout, navigation and search dialog. Unified tag qualification
+builds the web artifact once; the existing EdgeOne Git project imports it from the
+`release/production` deployment pointer. There is no request-time SSR or preview deployment.
 
 ```bash
 npm ci
@@ -283,7 +296,10 @@ npm run docs:build
 ```
 
 `docs:build` generates the full library, builds Next.js, then checks exported text,
-source blocks, original-download hashes, routes, SEO and provider budgets. Use
+source blocks, original-download hashes, routes, SEO and provider file limits,
+and reports the export's total bytes and artifact composition. There is no fixed
+aggregate-byte build cap; deployment capacity is checked against actual hosting
+storage and retention. Use
 `npm run docs:dev` for local work. Generated `.generated/`, `public/generated/`,
 `.next/` and `out/` are ignored and must never be hand-authored.
 
@@ -345,8 +361,8 @@ Package-specific installation and usage instructions live in the
 [content library README](packages/tiangong-pcr-library/README.md). Each generated
 npm package includes its own README and the full MIT license.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
 
 ## License

@@ -1,6 +1,7 @@
 ---
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -129,3 +130,13 @@ Package ownership is unchanged: the tool contains CLI/Skill/adapter/report suppo
 the library contains English methodology. Both operate without network access.
 Fully offline semantic review additionally requires an offline-capable Agent/model
 provided by the caller.
+
+## Product release selection
+
+For unified product releases, provision the tool and SQLite package from the same
+complete product release. Both packages carry `product-release.json`,
+matching the website identity at `/generated/product-release.json`. Preserve that
+product version, source commit and full-source fingerprint alongside the existing
+PCR/readiness and SQLite payload hashes. Historical independently versioned packages
+remain readable under their existing compatibility contracts; installing a package
+does not activate its Skill or approve methodology.

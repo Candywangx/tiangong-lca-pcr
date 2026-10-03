@@ -53,7 +53,6 @@ export const DEFAULT_OUTPUT_BYTES = 4 * 1024 ** 3;
 const SAFETY_FACTOR = 1.25;
 export const HEADROOM_BYTES = 512 * 1024 ** 2;
 /** The same provider limits the export gate uses. */
-export const MAX_OUTPUT_BYTES = 1_500_000_000;
 export const MAX_OUTPUT_FILES = 20_000;
 
 /* ------------------------------------------------------------------ derived paths */
@@ -167,7 +166,7 @@ export function filesystemFacts(target, { mounts = mountEntries() } = {}) {
   };
 }
 
-function isMemoryBacked(facts) {
+export function isMemoryBacked(facts) {
   if (facts.fileSystemType && MEMORY_FILESYSTEMS.has(String(facts.fileSystemType).toLowerCase()))
     return true;
   const resolved = facts.path.endsWith("/") ? facts.path : facts.path + "/";
@@ -270,8 +269,9 @@ export function assertScratchSuitable({
 
 /**
  * Copy the checkout, leaving only derived directories behind. Symlinks are preserved rather than
- * dereferenced, so installed dependency links and a worktree `.git` *file* stay exactly as they
- * are; the copy is then measured and compared against the source set before it is trusted.
+ * dereferenced. The copy is measured against the complete source set before Git transport
+ * metadata is rebound: relative gitfiles cannot resolve from a relocated directory, and an
+ * original core.worktree/index must never make scratch commands inspect the original files.
  */
 export function copySourceTree({ from, to, excludes = isDerivedPath, cp = fs.cpSync }) {
   const source = fs.realpathSync(from);
@@ -304,7 +304,31 @@ export function copySourceTree({ from, to, excludes = isDerivedPath, cp = fs.cpS
         `${before.links.length} links, found ${after.files} files / ${after.bytes} bytes / ` +
         `${after.links.length} links.`,
     );
-  return { ...before, path: to };
+  const gitEnvironment = bindScratchGit({ from: source, to });
+  return { ...before, path: to, gitEnvironment };
+}
+
+/** Preserve real Git history/HEAD while binding scratch reads to its own working tree and index. */
+function bindScratchGit({ from, to }) {
+  const gitPath = (...args) => String(execFileSync("git", ["rev-parse", ...args], {
+    cwd: from, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], timeout: 120000,
+  })).trim();
+  const sourceMetadata = fs.lstatSync(path.join(from, ".git"), { throwIfNoEntry: false });
+  // The byte-copy helper also supports non-repository test/input trees. Real build
+  // orchestration independently requires a Git HEAD before it reaches this copy.
+  if (!sourceMetadata) return {};
+  let gitDirectory;
+  if (sourceMetadata.isFile()) {
+    gitDirectory = gitPath("--absolute-git-dir");
+    // Only this owned copy changes; the source gitfile/config and shared HEAD remain intact.
+    fs.writeFileSync(path.join(to, ".git"), `gitdir: ${gitDirectory}\n`);
+  } else if (sourceMetadata.isDirectory()) {
+    gitDirectory = path.join(fs.realpathSync(to), ".git");
+  } else throw new Error("Build source requires a regular Git directory or gitfile.");
+  const sourceIndex = gitPath("--path-format=absolute", "--git-path", "index");
+  const scratchIndex = path.join(path.dirname(fs.realpathSync(to)), `.pcr-git-index-${randomBytes(6).toString("hex")}`);
+  fs.copyFileSync(sourceIndex, scratchIndex, fs.constants.COPYFILE_EXCL);
+  return { GIT_DIR: gitDirectory, GIT_WORK_TREE: fs.realpathSync(to), GIT_INDEX_FILE: scratchIndex, GIT_OPTIONAL_LOCKS: "0" };
 }
 
 /* ------------------------------------------------------------------ git identity */
@@ -331,9 +355,10 @@ export function gitHead(root, { run = execFileSync } = {}) {
  * including the Search Console verification marker the export verifies — and only the recursion
  * guard and the build's own telemetry/heap settings are added. Values are never logged.
  */
-export function scratchEnvironment(env = {}) {
+export function scratchEnvironment(env = {}, gitEnvironment = {}) {
   return {
     ...env,
+    ...gitEnvironment,
     NEXT_TELEMETRY_DISABLED: "1",
     NODE_OPTIONS: "--max-old-space-size=4096",
     [IN_SCRATCH_ENV]: "1",
@@ -433,6 +458,7 @@ export function publishOutput({
   beforeSwap = () => {},
   providerRoot = null,
   rename = fs.renameSync,
+  cp = fs.cpSync,
 }) {
   const scratchOut = path.join(scratchApp, "out");
   if (!fs.existsSync(scratchOut)) throw new Error("Relocated build produced no export directory.");
@@ -447,8 +473,6 @@ export function publishOutput({
   // otherwise be rewritten to an absolute path by the copy below.
   assertNoSymlinks(scratchOut);
   const measured = summarizeTree(scratchOut);
-  if (measured.bytes > MAX_OUTPUT_BYTES)
-    throw new Error(`Export exceeds the declared deployment budget: ${measured.bytes} bytes.`);
   if (measured.files > MAX_OUTPUT_FILES)
     throw new Error(`Export exceeds the declared file budget: ${measured.files} files.`);
   const available = freeBytes ?? filesystemFacts(app).availableBytes;
@@ -468,7 +492,7 @@ export function publishOutput({
   let assetsSwapped = false;
   let assets = null;
   try {
-    fs.cpSync(scratchOut, stage, { recursive: true, dereference: false, force: false, errorOnExist: true });
+    cp(scratchOut, stage, { recursive: true, dereference: false, force: false, errorOnExist: true });
     const staged = summarizeTree(stage);
     if (!sameShape(measured, staged))
       throw new Error(
@@ -646,7 +670,7 @@ export async function runRelocatedBuild({
         `Scratch copy does not resolve the expected source commit: expected ${headBefore}, resolved ${scratchHead}.`,
       );
     const scratchApp = path.join(scratchRepo, "packages/pcr-docs");
-    await runPipeline({ cwd: scratchApp, env: scratchEnvironment(env) });
+    await runPipeline({ cwd: scratchApp, env: scratchEnvironment(env, copied.gitEnvironment) });
     sample();
     assertBudget();
     // The copy is built on a checkout that shares its object database, so identity is checked

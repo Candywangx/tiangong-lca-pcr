@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
-lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 ---
 
 # Authoring Guide
@@ -229,6 +229,15 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+## YAML preservation
+
+Manifest reads preserve complete YAML 1.2 continuation text, later rows, escaped
+strings and bounded acyclic aliases through the shared typed YAML boundary.
+Malformed/unsupported input fails with line/column diagnostics before author
+review can treat it as complete. The real review gate still rejects a manifest
+whose unresolved row IDs differ from the author report; parser migration does
+not relax that requirement. See [TypeScript engineering](typescript-engineering.md#yaml-boundary).

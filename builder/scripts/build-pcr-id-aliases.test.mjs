@@ -11,7 +11,7 @@ import {
   buildOrCheckPcrIdAliases,
   createPcrIdAliasRegistry,
 } from "./build-pcr-id-aliases.mjs";
-import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 function leaf(code, slug) {
   return {

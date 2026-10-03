@@ -135,3 +135,10 @@ for (const [name, challenge] of [
       && error.details.content_kind === "access_challenge");
   });
 }
+
+test("nested original recognizes a substantive combined Results and discussion section", async () => {
+  const html = nestedHtml({ body: section("Methodology", sourceParagraphs[3])
+    + section("Results and discussion", sourceParagraphs[1]) });
+  const [audit] = await verifyHtml(html);
+  assert.equal(audit.original_identity_verified, true);
+});

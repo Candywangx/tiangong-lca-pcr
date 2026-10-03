@@ -19,7 +19,7 @@ import { TextDecoder } from "node:util";
 import { assertClassificationMapping } from "../lib/schema-contracts.mjs";
 import { assertPcrIdAliases } from "../../packages/pcr-core/src/contracts.mjs";
 import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.mjs";
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const FATAL_UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });

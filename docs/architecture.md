@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
-lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 ---
 
 # PCR 资料库架构
@@ -520,6 +520,12 @@ freshness 和自动测试成为合并门禁的统一入口。
 Web Worker 中按语言加载。特别长的正文按章节拆页，并保留完整导航与源节点映射。
 
 网站采用 Next.js SSG / static export，EdgeOne 托管 `packages/pcr-docs/out`。
+构建记录总字节、文件数及产物分类，用实测评估重复序列化与内容增长；不设置固定的
+总字节门槛。服务商单文件/文件数限制、构建磁盘和原子交付检查仍由构建契约负责，
+实际账号存储及历史部署保留量在发布阶段核对。网站输出与 AI 使用的不可变 SQLite
+快照是同一产品版本的不同交付物，共用不可变 tag、源提交与完整规范源指纹，
+并各自保留 payload/输出树哈希。统一发布流程只在两份 npm 包可安装且网站
+实际身份一致后完成；部分失败保留回执、原产物及安全重试路径。
 部署配置、无损检查、语言及索引边界以
 [公共文档站契约](pcr-documentation-site-contract.md) 为准。
 
@@ -530,6 +536,19 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+## TypeScript 工程化迁移
+
+全量迁移由 PCR #69 分阶段交付；Node 24、严格类型检查、受审查的遗留代码清单和完整测试入口
+以 [TypeScript engineering](typescript-engineering.md) 为准。当前基础层不会改变 canonical
+Markdown、方法学审核、历史快照或统一产品发布身份。Python SEO 检查器按用户要求保留。
+共享语义编译与消费逻辑仍属于 pcr-core；Builder 保持写入和恢复边界。优先修复 #63 中的条件、
+动作和上下文丢失，然后实现批量读取和受验证快照会话。基础设施通过不等于全部迁移或语义修复完成。
+
+YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解析单文档、保留续行和转义，
+受限无环别名展开为独立 JSON 值。解析错误不产生部分对象；具体边界见 TypeScript 工程契约。
+离线工具从 TypeScript 与清单内遗留源编译出运行产物，调用者无需 TypeScript 编译器。
+该阶段保留方法学原文、发布状态和版本；Markdown 条件/动作保真仍由 PCR #63 单独交付。

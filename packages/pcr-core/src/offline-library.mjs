@@ -3,7 +3,7 @@ import { createRequire } from "node:module";
 import { closeSync, openSync, readSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { inflateRawSync } from "node:zlib";
-import { parseYaml } from "./yaml-lite.mjs";
+import { parseYaml } from "./yaml-lite.ts";
 import { expectedPcrArtifactHashes } from "./languages.mjs";
 import { PcrClassificationCoverageNotFoundError } from "./classification-coverage.mjs";
 

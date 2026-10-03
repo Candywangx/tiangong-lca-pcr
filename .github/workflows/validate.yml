@@ -2,6 +2,16 @@ name: Validate PCR library
 
 on:
   workflow_call:
+    inputs:
+      product_tag:
+        description: Unified product tag whose sealed artifacts this qualification must produce.
+        type: string
+        required: false
+        default: ''
+    outputs:
+      product_artifact_id:
+        description: Artifact ID containing the verified immutable product release bundle.
+        value: ${{ jobs.documentation.outputs.product_artifact_id }}
   pull_request:
   push:
     branches:
@@ -13,11 +23,14 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Full standard-YAML corpus/CLI tests exceed the former 15-minute harness window.
+    timeout-minutes: 30
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Initialize validation evidence
         run: |
@@ -27,11 +40,25 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
+      - name: Select the pinned validation package manager
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npm --prefix packages/pcr-docs ci
+
+      - name: Verify emitted TypeScript tests and source-mapped coverage
+        run: npm run test:coverage
+
+      - name: Preserve engineering coverage baseline
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-engineering-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .reports/coverage/engineering/
+          if-no-files-found: error
 
       - name: Install PDF text extractor
         run: |
@@ -71,7 +98,9 @@ jobs:
 
   documentation:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    outputs:
+      product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
     steps:
       - name: Check out complete source history
         uses: actions/checkout@v4
@@ -108,21 +137,27 @@ jobs:
       - name: Set up production documentation runtime
         uses: actions/setup-node@v4
         with:
-          node-version: 24.18.0
+          node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: |
             package-lock.json
             packages/pcr-docs/package-lock.json
+      - name: Select the pinned product packaging toolchain
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install locked dependencies
         run: npm ci && npm --prefix packages/pcr-docs ci
       - name: Verify document transformations
         run: npm --prefix packages/pcr-docs test
+      - name: Verify real product packing with the release npm version
+        run: npm run product:test
       - name: Build and verify the full static library
         env:
           NEXT_TELEMETRY_DISABLED: '1'
           PCR_BUILD_RELOCATE: '1'
           PCR_EDGEONE_PREBUILT_ASSETS: '1'
-          PCR_BAIDU_SITE_VERIFICATION: ci-public-baidu-marker
+          # Public ownership markers already served by the production site.
+          PCR_GOOGLE_SITE_VERIFICATION: 4W5GYY5tOwicaRGTZr7AdfJ4VB8KB87r2ex-rZxP-fM
+          PCR_BAIDU_SITE_VERIFICATION: codeva-IJKQ9SxWkZ
         run: npm --prefix packages/pcr-docs run build
       - name: Verify shared SEO invariants without rebuilding
         run: |
@@ -136,11 +171,41 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+      - name: Build and verify the two packages and sealed web artifact
+        if: inputs.product_tag != ''
+        env:
+          PRODUCT_TAG: ${{ inputs.product_tag }}
+        run: npm run product:build -- "$PRODUCT_TAG" dist/product-release packages/pcr-docs/out
+
+      - name: Preserve the exact product bundle for publication and retries
+        if: inputs.product_tag != ''
+        id: product-upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pcr-product-${{ inputs.product_tag }}-${{ github.sha }}
+          path: |
+            dist/product-release/release.json
+            dist/product-release/SHA256SUMS
+            dist/product-release/*.tgz
+            dist/product-release/*.tar.gz
+            dist/product-release/*.sqlite
+            dist/product-release/*.sqlite.json
+          if-no-files-found: error
+          retention-days: 30
+
   offline-distribution:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-15]
+        include:
+          - os: ubuntu-latest
+            arch: x64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+          - os: windows-latest
+            arch: x64
+          - os: macos-latest
+            arch: arm64
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
@@ -152,9 +217,21 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
           cache: npm
+      - name: Select the pinned offline package manager
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install locked build dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify the runner architecture
+        env:
+          PCR_EXPECTED_ARCH: ${{ matrix.arch }}
+        run: node -e "if(process.arch!==process.env.PCR_EXPECTED_ARCH)process.exit(1)"
+      - name: Verify the pinned runtime
+        run: npm run runtime:release
+      - name: Typecheck the engineering project
+        run: npm run typecheck
+      - name: Verify native engineering boundaries
+        run: npm run test:engineering
       - name: Verify complete offline distribution and reproducibility
-        run: npm run offline:test
+        run: npm run test:offline

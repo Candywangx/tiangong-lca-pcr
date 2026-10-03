@@ -1,8 +1,8 @@
 version: 1
 layout: repo
-lastReviewedAt: "2026-10-01"
-lastReviewedCommit: "02f5b58ca242035dcbce41845c4ea92dc8c63d25"
-lastReviewedNote: "Reviewed PCR #56 consumer ownership and routing; the agentic-consumption contract governs packages and Skill without changing TIDAS or canonical PCR ownership."
+lastReviewedAt: "2026-10-03"
+lastReviewedCommit: "b1954ba08d0e3e8141934edb670f739729a29ca2"
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 
 catalog:
   repos:
@@ -19,6 +19,7 @@ catalog:
         - docs/pcr-documentation-site-contract.md
         - docs/offline-distribution.md
         - docs/agentic-consumption.md
+        - docs/typescript-engineering.md
       workspaceIntegrationRequired: true
 
 ownership:
@@ -33,6 +34,12 @@ ownership:
           - .gitignore
           - .gitattributes
           - edgeone.json
+          - product-release.json
+          - .nvmrc
+          - tsconfig*.json
+          - config/typescript-migration.json
+          - scripts/engineering/**
+          - package-lock.json
           - .github/workflows/**
           - docs/**
       ownerRepo: pcr
@@ -74,6 +81,11 @@ coverage:
     - .gitignore
     - docs/**
     - package.json
+    - package-lock.json
+    - .nvmrc
+    - tsconfig*.json
+    - config/typescript-migration.json
+    - scripts/engineering/**
     - edgeone.json
     - builder/**
     - classifications/**
@@ -153,6 +165,7 @@ docInventory:
     - docs/pcr-documentation-site-contract.md
     - docs/offline-distribution.md
     - docs/agentic-consumption.md
+    - docs/typescript-engineering.md
 
 repo:
   id: pcr
@@ -317,6 +330,14 @@ rules:
     triggers:
       - path: builder/scripts/npm-release*.mjs
         kind: npm-release-contract
+      - path: builder/scripts/product-*.mjs
+        kind: product-release-contract
+      - path: tsconfig.runtime.json
+        kind: compiled-runtime-distribution
+      - path: builder/scripts/runtime-build.contracts.test.ts
+        kind: compiled-runtime-distribution-proof
+      - path: product-release.json
+        kind: product-version-source
       - path: .github/workflows/publish.yml
         kind: npm-publication
       - path: .github/workflows/tag-release-from-merge.yml
@@ -325,7 +346,7 @@ rules:
         kind: content-package
       - path: LICENSE
         kind: distribution-license
-      - path: builder/scripts/build-offline-*.mjs
+      - path: builder/scripts/build-offline-*
         kind: offline-builder
       - path: packages/pcr-core/src/offline-library.mjs
         kind: offline-reader
@@ -337,3 +358,32 @@ rules:
       - path: docs/offline-distribution.md
         mode: review_or_update
     reason: Offline package layout, integrity, language availability and compatibility are one public contract.
+
+  - id: typescript-engineering
+    scope: repo
+    repo: pcr
+    triggers:
+      - path: .nvmrc
+        kind: runtime-pin
+      - path: tsconfig*.json
+        kind: typescript-project
+      - path: config/typescript-migration.json
+        kind: migration-inventory
+      - path: scripts/engineering/**
+        kind: engineering-command
+      - path: package.json
+        kind: validation-entrypoint
+      - path: package-lock.json
+        kind: toolchain-dependencies
+      - path: .github/workflows/**
+        kind: engineering-qualification
+    requiredDocs:
+      - path: docs/typescript-engineering.md
+        mode: review_or_update
+      - path: docs/repository-coding-guidelines.md
+        mode: review_or_update
+      - path: AGENTS.md
+        mode: review_or_update
+      - path: README.md
+        mode: review_or_update
+    reason: Runtime pins, strict source migration, complete test discovery and artifact qualification must remain explicit during the TypeScript refactor.

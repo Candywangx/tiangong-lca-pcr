@@ -1,13 +1,29 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { toolFailureDetails } from "./evidence-audit.mjs";
-import { classifyFinding, selectRecovery } from "./errors.mjs";
+// Validate the explicit boundary to retained JavaScript without treating its output as typed.
+function record(value: unknown): Record<string, unknown> {
+  assert.ok(value !== null && typeof value === "object" && !Array.isArray(value));
+  return value as Record<string, unknown>;
+}
 
-function classify(error, channel = "stderr") {
+const auditModule: unknown = await import(new URL("./evidence-audit.mjs", import.meta.url).href);
+const errorModule: unknown = await import(new URL("./errors.mjs", import.meta.url).href);
+
+function invoke(module: unknown, name: string, args: unknown[]): Record<string, unknown> {
+  const callable = record(module)[name];
+  assert.ok(typeof callable === "function", `expected ${name} at the legacy runtime boundary`);
+  return record(Reflect.apply(callable, undefined, args));
+}
+
+function toolFailureDetails(result: unknown, subject: unknown): Record<string, unknown> {
+  return invoke(auditModule, "toolFailureDetails", [result, subject]);
+}
+
+function classify(error: unknown, channel: "stderr" | "stdout" = "stderr") {
   const details = toolFailureDetails({ status: 1, signal: null, stdout: "", stderr: "",
     [channel]: JSON.stringify({ error }) }, { subject_id: "public-uuid" });
   const finding = { code: "GOAL_UUID_DIRECT_READ_FAILED", details };
-  return { details, finding: classifyFinding(finding), recovery: selectRecovery(finding) };
+  return { details, finding: invoke(errorModule, "classifyFinding", [finding]), recovery: invoke(errorModule, "selectRecovery", [finding]) };
 }
 
 for (const error of [
@@ -55,7 +71,7 @@ for (const [error, kind] of [
   [{ code: "REMOTE_REQUEST_FAILED", details: { status: 503 } }, "service_unavailable"],
   [{ code: "SERVICE_UNAVAILABLE" }, "service_unavailable"],
   [{ code: "REMOTE_REQUEST_FAILED", details: { code: "FETCH_FAILED" } }, "network"],
-]) {
+] as const) {
   test(`structured transient transport stays retryable: ${JSON.stringify(error)}`, () => {
     const { details, finding, recovery } = classify(error);
     assert.equal(details.failure_kind, kind);

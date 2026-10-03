@@ -18,7 +18,7 @@ import {
   CLASSIFICATION_COVERAGE_STATUS_VALUES,
   CLASSIFICATION_MAPPING_RELATION_VALUES,
 } from "./generated/controlled-vocabulary.mjs";
-import { parseYaml } from "./yaml-lite.mjs";
+import { parseYaml } from "./yaml-lite.ts";
 
 export const CLASSIFICATION_COVERAGE_STATUSES = CLASSIFICATION_COVERAGE_STATUS_VALUES;
 export const CLASSIFICATION_COVERAGE_CONTRACT_VERSION = "2";

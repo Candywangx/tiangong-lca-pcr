@@ -1,6 +1,7 @@
 ---
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -16,6 +17,8 @@ checkPaths:
   - .github/workflows/publish.yml
   - .github/workflows/tag-release-from-merge.yml
   - builder/scripts/npm-release*.mjs
+  - builder/scripts/product-*.mjs
+  - product-release.json
   - packages/tiangong-pcr-library/package.json
   - builder/scripts/build-offline-*.mjs
   - packages/pcr-core/src/offline-library.mjs
@@ -34,7 +37,9 @@ related:
 runtime dependencies and the thin consumer Skill. `@tiangong-lca/pcr-library` contains
 `library.sqlite`, its adjacent `library.sqlite.json` manifest and notices. Each
 package includes its own consumer README and the repository MIT `LICENSE`. The tool
-has no dependency on the data package. Both have independent SemVer versions.
+has no dependency on the data package. Completed unified product releases give
+both packages the same product SemVer as the website. They remain separate
+installation units.
 The source package directories are development inputs; publish only generated packages.
 
 Starting with 0.1.2, npm distribution uses the `@tiangong-lca` organization scope.
@@ -58,11 +63,19 @@ network calls or implicit content downloads are used.
 
 ## Build and transport
 
-From a validated source checkout with locked dependencies already installed:
+For production transport, take the two tarballs from one completed product
+GitHub Release and verify its `SHA256SUMS`, or create and verify a complete bundle
+with the [product build commands](#build-and-operator-commands). Those packages
+include the common product identity.
+
+The lower-level commands below are for local development and packaging tests.
+They do not inject `product-release.json` or qualify a unified release, and their
+output must not be published as the complete product. Run them from a validated
+source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.2.0
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.1.2
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.3.1
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.3.1
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -77,11 +90,11 @@ absolute source paths are excluded. Identical inputs and the same Node/SQLite/zl
 versions produce identical bytes; different toolchains may produce a different file
 checksum while preserving the logical source fingerprint.
 
-Transfer both tarballs and a suitable Node runtime to the offline machine. In a local
+Transfer both verified product tarballs and a suitable Node runtime to the offline machine. In a local
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.2.0.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -162,131 +175,214 @@ Implementing these workflows does not itself publish either package.
 
 ## npm release automation
 
-The release pattern follows the workspace CLI and SDK repositories: merge an explicit
-version change into `main`, pass qualification, create a package tag, and publish
-through npm trusted publishing. PCR retains npm and its existing lockfile instead
-of importing another repository's pnpm setup.
+The current product release is one version, one immutable `v<version>` tag and
+one coordinated release of the tool, content package and existing production
+website. `product-release.json` is authoritative; the tool, library and private
+documentation package manifests are checked mirrors. The private repository-root
+package version is unrelated. Unified production releases use stable SemVer only.
 
-| Package | Authoritative version source | Tag |
-| --- | --- | --- |
-| `@tiangong-lca/pcr` | `packages/tiangong-pcr-cli/package.json` | `pcr-v<version>` |
-| `@tiangong-lca/pcr-library` | `packages/tiangong-pcr-library/package.json` | `library-v<version>` |
+A release PR changes the product version and all three mirrors together. After
+review and merge to `main`, `tag-release-from-merge.yml` creates an immutable tag
+and dispatches `publish.yml`. Introducing the product version source does not
+implicitly publish the first unified version; its first tag is an explicit main
+workflow dispatch. Historical `pcr-v*` and `library-v*` tags keep their original
+commits and package-only workflows. Do not create new package-specific tags from
+the unified source or move any existing tag.
 
-Both source manifests remain private. The library manifest is release metadata,
-not an installable library. Edit only the intended package version; content-only
-commits do not release automatically. Stable versions use npm `latest`, prereleases
-use `next`. Downgrades and SemVer build metadata are rejected. Introduction of a
-version source or migration from the legacy CLI package name does not trigger an
-initial release. The root private package version is unrelated.
+`publish.yml` keeps the existing npm trusted-publisher identity and `npm-release`
+environment. It binds canonical owner/repository IDs, tag/event/workflow/checkout
+SHAs and `main` ancestry. Its reusable qualification workflow runs complete Linux
+validation, documentation/source/SEO checks and offline distribution on Linux,
+Windows and macOS. The documentation job builds the website once and seals the
+two npm packages and web archive from the same source. The publish job downloads
+the exact Actions artifact ID produced by that qualification and rechecks source
+identity after environment admission. Product publication is globally serialized.
 
-`tag-release-from-merge.yml` detects increases and calls the complete `validate.yml`
-gate, including documentation and Linux x64, Windows x64 and macOS ARM64 offline
-installation tests. It then creates immutable lightweight tags using its job-scoped
-`GITHUB_TOKEN` and explicitly dispatches `publish.yml` at each tag. This avoids a
-long-lived GitHub automation token: GitHub does not run push workflows for tags
-created with `GITHUB_TOKEN`, but does allow explicit workflow dispatch.
+### Product identity and immutable artifacts
 
-`publish.yml` accepts a tag push or dispatch at that exact tag ref. It verifies the
-canonical repository and immutable owner/repository IDs, main ancestry, package
-version, checkout SHA, event SHA and workflow SHA. It reruns qualification and checks
-the source binding again after the `npm-release` environment gate. A tag moved or
-pointing outside main is rejected. Release concurrency is serialized per package. A delayed unpublished version cannot
-move its npm channel backwards; interrupted queued runs can be dispatched again.
+Each npm package in a sealed product bundle contains `product-release.json`. The website exposes
+the same object at `/generated/product-release.json`, and `/generated/version.json`
+also reports `releaseVersion`, `releaseTag`, `sourceCommit` and `sourceFingerprint`.
+The common fingerprint hashes all regular Git-tracked raw files under `library/`
+and `classifications/`, including Chinese and historical content. It is distinct
+from the existing English-only SQLite payload fingerprint, which remains intact.
+The source commit additionally binds tool code, configuration and workflows.
 
-The publisher uses Node 24.19.0 and its bundled npm (11.17.0), locked build dependencies,
-and no release-build cache. This meets npm OIDC's minimum npm 11.5.1 / Node 22.14
-contract. `release:build` requires a clean committed checkout, stages the selected
-package, adds the matching public repository and `gitHead`, and packs exactly once.
-Only that tarball is published. Each GitHub Release includes the tarball,
-`release.json` (source commit, toolchain, SHA-256 and npm SHA-512 integrity), and
-`SHA256SUMS`. Library releases also include the portable SQLite file and its sidecar.
-Failed runs retain generated transport artifacts for 30 days in Actions.
+The immutable product `release.json` records this identity, exact Node/npm
+versions, both npm tarball names/integrities/hashes, portable SQLite assets, and
+the web archive/tree hashes, byte/file counts and live verification probes. The
+web identity excludes its own output-tree hash to avoid recursive hashing.
+`SHA256SUMS` covers the transport assets. The archive is streamed and deterministic
+under the pinned toolchain; regular files and safe paths are required. Consumers
+retain individual PCR versions, readiness and scientific-review boundaries.
 
-An already published version is skipped only when its name, version, tarball integrity
-and source commit all match. Different bytes or an uncertain registry response fail;
-only HTTP 404 means missing. After `npm publish` succeeds, the workflow uploads
-GitHub assets directly. It does not poll for registry visibility: npm may scan and
-process an accepted upload before making it available to install. Workflow success
-records publication acceptance and asset delivery, not immediate npm availability.
-A failed `npm publish` still prevents GitHub asset attachment. The workflow does not
-overwrite npm versions or move existing tags. Retrying a matching tag can repair
-missing GitHub assets.
+The GitHub Release is initially visible as **preparing/prerelease**, allowing the
+existing Git-connected provider to read its sealed assets. It is not a completed
+product release. Existing same-name assets are verified rather than overwritten.
+A separate build proof binds the original qualified Actions artifact, allowing
+partial asset delivery to recover the original bytes. Attempt receipts record
+intent, acceptance, verification and pending/uncertain outcomes; they do not
+replace the immutable product manifest.
 
-### One-time owner setup
+### Existing EdgeOne project
 
-1. Confirm control of both npm names. Generated tool/content packages declare
-   MIT and include the full license plus applicable third-party notices.
-2. Create the GitHub environment `npm-release`. Apply the repository's desired
-   reviewer protection and allow `pcr-v*` and `library-v*` tag deployments. GitHub
-   tag rules must permit the release job to create these tags, while preventing
-   updates/deletions. No personal GitHub release token is required.
-3. In **each npm package's** trusted publisher settings use GitHub owner
-   `tiangong-lca`, repository `pcr`, workflow filename `publish.yml`, environment
-   `npm-release`, and allow direct `npm publish`. Normal releases require no npm
-   token. npm does not validate these settings until a publish is attempted.
-4. Set the GitHub repository variable `PCR_NPM_RELEASE_ENABLED=true` only after
-   setup. With it absent or false, tag creation and publication remain disabled;
-   regular PR validation continues. No variables or secrets are created by these files.
+The existing international project is `tiangong-lca-pcr`
+(`makers-5hadzwjpsblu`) at `https://pcr.tiangong.earth`. It remains Git-connected;
+CLI/SDK direct uploads are not used for this project. Its production environment
+must follow `release/production`, a deployment pointer that only advances to a
+qualified product tag's exact `main` commit. No code is authored on that pointer;
+`main` remains the sole development trunk and workspace integration input.
 
-For the first publication of a new scoped name, an authorized organization member
-can build the exact qualified main commit using the pinned Node/npm toolchain and
-publish each generated tarball locally with interactive npm authentication:
+The EdgeOne build command runs the dependency-free
+`builder/scripts/product-web-materialize.mjs`. It reads the checkout's product
+identity, downloads only that canonical GitHub Release's manifest and web archive,
+checks hashes and identity, safely extracts to owned disk scratch and atomically
+hands the verified export to the provider. Routing headers/redirects are retained.
+It does not rebuild the frontend. Existing disk/file limits, failure rollback and
+provider asset handoff remain enforced.
 
-```sh
-npm publish dist/release-tool/tiangong-lca-pcr-0.2.0.tgz --access public --ignore-scripts
-npm publish dist/release-library/tiangong-lca-pcr-library-0.1.2.tgz --access public --ignore-scripts
-```
+Production auto-deployment is enabled by the provider. Advancing the deployment
+pointer supplies the normal trigger; do not also send a Webhook for that same
+change. A same-source retry first checks the public site. A previous accepted but
+unverified deployment is uncertain, not proof of failure. Only after checking that
+the previous provider deployment is terminal may an operator explicitly dispatch
+`publish.yml` with `retry_web=true`; this uses the project Webhook bound to
+`release/production`. Keep the Webhook URL only in the protected
+`PCR_EDGEONE_DEPLOY_HOOK_URL` environment secret. It is a bearer trigger credential,
+not public release metadata. No undocumented deployment API or guessed deployment
+ID is used.
 
-This creates the package settings without storing an npm token in GitHub. Configure
-the new scoped packages' trusted publishers afterwards; trust on the old unscoped
-names does not transfer. Local publication does not create a CI provenance statement.
-Keep the exact source tags and tarballs for verification and GitHub asset attachment.
+### Activation and completion
 
-Alternatively, if the selected npm name has no package settings yet, use the explicit
-CI bootstrap path for its first publication: place a temporary,
-short-lived granular npm publish token in the `npm-release` environment secret
-`PCR_NPM_BOOTSTRAP_TOKEN`, create the intended tag on the qualified main commit,
-and dispatch at that tag with `bootstrap=true`. Bootstrap refuses a name that
-already exists and fails on registry errors. Both names may be bootstrapped
-independently. Afterwards configure both trusted publishers and revoke/delete the
-temporary token. Normal runs never fall back to this secret. Never paste the token
-into source, an Issue, or chat. Creating the configuration does not authorize the
-first publication; the owner selects and triggers it separately.
+Before the first unified release:
 
-### Release and recovery commands
+1. Review and merge the source change and complete workspace integration.
+2. Permit `v*` tags in the existing `npm-release` GitHub environment while retaining
+   historical tag policies. Verify both npm trusted publishers still name owner
+   `tiangong-lca`, repository `pcr`, workflow `publish.yml`, environment `npm-release`.
+3. Enable the trusted publisher's **Allow npm dist-tag** for both packages. npm
+   12.2.0 is pinned with Node 24.19.0; it supports OIDC channel management, so no
+   long-lived npm token is needed. The repository variable
+   `PCR_NPM_DIST_TAG_OIDC_ENABLED=true` records operator setup, but real operations
+   still have to succeed and be verified.
+4. Associate the existing EdgeOne production environment with `release/production`
+   and configure its scoped retry Webhook. Verify the existing custom domain,
+   public ownership markers, provider capacity and previous stable deployment.
+5. Confirm no historical `publish.yml` run is queued or in progress, disable
+   independent legacy automation with `PCR_NPM_RELEASE_ENABLED=false`, then set
+   `PCR_PRODUCT_RELEASE_ENABLED=true` and explicitly dispatch the first product
+   tag. This avoids old tag workflows promoting a separate package release while
+   the unified workflow is running. Do not infer activation from source merge or
+   a local browser login.
 
-Build reviewable artifacts locally from a clean commit without publishing:
+The workflow stages npm publication under a candidate channel, verifies registry
+identity and actual tarball bytes, and tests installation of the exact pair. It
+then advances/validates the website and promotes the verified pair to `latest`.
+Only after both npm channels and live source identity/probes agree does the
+GitHub Release become complete/stable. npm upload acceptance alone is not proof
+that a package is available to install. Stale retries cannot downgrade npm
+channels or the deployment pointer.
+
+These external operations are not one atomic transaction. Preserve per-target
+receipts and continue missing verified steps. An earlier accepted npm upload that
+still returns 404 is pending; do not blindly republish it. Conflicting bytes or
+source identities fail closed. Retry uses the original sealed bundle, not a newly
+rebuilt replacement. If original required bytes are no longer recoverable, retain
+that failure and prepare a new reviewed version. Do not delete the prior stable
+provider deployment as part of retry. Product release never approves a candidate
+methodology or replaces a PCR's own immutable scientific release lineage.
+
+An npm intent can also survive a crash before the upload was sent, or a rejected
+upload. Ordinary retries still cannot infer non-acceptance from HTTP 404. After
+confirming that the previous upload was rejected or never accepted and fixing
+its cause, an operator may explicitly dispatch with `retry_npm=tool` or
+`retry_npm=library`. This permits at most one retry for that package in the new
+Actions run, using the original sealed tarball and all source/channel guards.
+It first checks registry visibility; matching existing bytes are reused and
+uncertain responses remain blocked. An accepted upload awaiting processing is
+not eligible. Keep prior receipts; never delete them to force a publish.
+
+### Memory-backed provider import and patch recovery
+
+The importer obtains the origin filesystem facts directly and passes that snapshot
+into the shared scratch selector. Memory-backed and explicitly forced relocation
+must not rely on an optional field of a relocation-decision object. A real
+memory-backed origin always receives the provider hardlink handoff, including
+when relocation is explicitly forced; ordinary disk checkouts require the explicit
+provider-assets flag for that handoff. Source identity, streamed archive integrity,
+capacity, final deadline, atomic rollback and owned cleanup remain mandatory.
+
+The initial `v0.3.0` attempt exposed a missing filesystem constraint on the provider's
+memory-backed clone. Its two npm candidate packages and sealed assets remain
+unchanged and the release remains incomplete. The reviewed repair uses product
+`0.3.1`; the examples below target that patch. Never repair this by moving the old
+tag, replacing sealed assets, or overriding source guards in the provider console.
+
+### Build and operator commands
+
+Use the pinned Node/npm versions from `product-release.json`. On a clean reviewed
+checkout, prepare artifacts without any remote publication:
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
-npm run release:build -- pcr-v0.1.2 dist/release-tool
-npm run release:build -- library-v0.1.2 dist/release-library
+npm --prefix packages/pcr-docs ci
+npm run docs:build
+npm run product:build -- v0.3.1 dist/product-release packages/pcr-docs/out
+npm run product:verify -- dist/product-release
 ```
 
-Use the versions actually recorded at that commit. Output directories must be new.
-For routine release, merge a PR increasing the selected source version; once enabled,
-main automation handles tagging and publication. For first release, an owner creates
-the matching lightweight tag at the qualified main commit after setup.
+Release CI supplies the production site's public Google/Baidu ownership markers
+when building; local review builds must use those same public values for a
+production-equivalent artifact. The tag passed above must match the sole product
+version. Output directories must be new. Builder qualification, source hashes and
+actual provider limits remain mandatory; there is no replacement aggregate-byte
+budget.
 
-Retry an existing tag (always select the tag as the workflow ref):
+After activation, create/resume the first product tag from the exact current main
+version through the guarded workflow:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref pcr-v0.1.2 -f tag_name=pcr-v0.1.2
-# First publication only, before npm package settings exist:
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref library-v0.1.2 -f tag_name=library-v0.1.2 -F bootstrap=true
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.3.1
 ```
 
-Retry the tag workflow if it created the tag but dispatch failed; it accepts an
-existing tag only at the same commit. If npm accepted an upload but a later step
-failed, allow registry processing to finish before retrying publication normally
-(without bootstrap); identical npm bytes are reused and missing GitHub assets repaired.
-Do not interpret a temporary post-upload 404 as evidence that the upload failed.
-Older tags retain their original workflow, including any post-publish visibility
-check; this change does not rewrite them. Retry those runs only after the accepted
-version is visible, so their pre-publish check can skip the existing identical package.
-A conflicting tag/version requires a new reviewed version, never a force update.
-Package release does not change PCR lifecycle status or complete workspace integration.
+Retry an existing unified release without moving its tag:
 
-Verified upstream contracts: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/),
-[npm provenance](https://docs.npmjs.com/generating-provenance-statements/),
-[GitHub workflow triggering](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
+```sh
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.3.1 -f tag_name=v0.3.1
+```
+
+A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
+automatic reaction to a timeout. Both recovery inputs require a new explicit
+workflow dispatch when a new operation is intended: GitHub's “Re-run jobs” keeps
+the same run ID and cannot authorize another hook or npm upload. If an incomplete
+preparing release loses its original Actions artifact before all sealed files
+exist, preserve that public release and its evidence and prepare a new version;
+do not recreate different bytes under its existing tag.
+
+Historical package releases retain their original tag/workflow and recorded
+artifact versions. A necessary historical repair uses an explicit maintenance
+window: suspend unified publication, confirm no product publisher is running,
+then enable the legacy switch only for that repair and restore the switches
+after verification. Do not run the two publication modes concurrently. Legacy
+package bootstrap is unrelated to first unified-product activation.
+
+Upstream contracts: [npm trusted publishing and dist-tags](https://docs.npmjs.com/trusted-publishers/#managing-dist-tags-with-trusted-publishing),
+[EdgeOne Git deployment hooks](https://pages.edgeone.ai/document/create-deploys),
+[EdgeOne project environments](https://pages.edgeone.ai/document/project-management).
+
+## Compiled runtime staging
+
+The TypeScript offline-tool builder compiles core and CLI sources with the pinned
+local compiler before atomic staging. During the staged refactor, explicitly
+inventoried legacy JavaScript is emitted alongside strict TypeScript; source TS
+imports become runtime JS imports. This is not full-migration qualification.
+Schemas, Skill and license assets retain their relative locations; executable
+bins follow the emitted extension. Only locked runtime dependencies are bundled,
+including the YAML reader; development/compiler packages are excluded. Inline
+source maps use a fixed logical source root, so temporary/host paths do not leak
+into tarball bytes. Actual installed-package probes use `--no-strip-types`.
+
+The publisher/provider validation path continues to load without node_modules;
+build-only imports remain lazy. The provider still imports the same sealed web
+archive and does not compile TypeScript or rebuild the frontend. Historical
+published artifacts are unchanged.

@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-01
-lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedAt: 2026-10-03
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -178,10 +178,15 @@ that the provider applied its rules.
 Measure the real full corpus and largest records. Enforce provider limits on
 individual files, total file count and build resources, and partition search and
 source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
-and `main`; preview auto deployment remains disabled. Failed generation or builds
-leave the previous verified deployment intact.
+and the `release/production` deployment pointer; `main` remains the sole code trunk.
+Unified tag qualification builds and seals the complete web export. The provider runs
+`product-web-materialize.mjs` to verify and atomically import that exact artifact; it
+does not rebuild it. Preview auto deployment remains disabled. Failed import or
+builds leave the previous verified deployment intact. The product identity endpoint
+and per-route hashes bind live acceptance to the two paired npm artifacts; see
+[the unified release contract](offline-distribution.md#npm-release-automation).
 
-### Measured artifact and runtime budgets
+### Measured output and build resources
 
 The first real-corpus export showed that a full-library sidebar on every page
 produced almost 5 GB. The library index alone serializes the complete expandable
@@ -200,15 +205,37 @@ full-corpus export gate.
 Next.js retains both initial HTML and static navigation payloads; these are part
 of its supported export and are not deleted after building.
 
-The deployment gate is 1.5 GB total, fewer than 20,000 files, and less than 25 MB
-per file, leaving room for a previous production deployment within the provider's
-5 GB shared storage allowance. Recheck actual remaining storage before deployment.
+The export has no project-owned total-byte cap. The former 1.5 GB budget was a
+local retention allowance and was removed by the owner's decision in PCR #61.
+The output-size stage reports logical file bytes, file count, largest file and
+artifact-category totals. It emits an `export-size` console event and writes
+`.generated/export-size.json` before provider file checks so an oversized artifact
+remains diagnosable. Successful `.generated/verification.json` also includes those
+measurements. Size statistics measure disk artifacts before
+HTTP transfer compression and do not grant methodology or deployment approval.
+
+The export still requires fewer than 20,000 files and less than 25 MB per file.
+The provider's [current free-edition limits](https://pages.edgeone.ai/document/limits-and-quotas)
+state 5 GB combined storage across all projects under a site. Actual account
+capacity and retained deployments must be checked before deployment; the builder
+cannot infer remaining remote storage from the size of one export. Corpus growth
+is assessed from measured composition and useful rendering behavior rather than
+an arbitrary aggregate-size rejection. Supported Next navigation payloads and
+complete source artifacts remain subject to the existing fidelity contract.
+
 The build has an 18-minute task budget within the 20-minute provider limit and
 uses four workers with a 4 GB Node heap ceiling per build process. Measure total
 resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
 not proof of total process memory.
 
 ### Build workspace storage
+
+The sealed-product importer reads the checkout's actual filesystem facts directly
+before scratch selection. Its integration tests exercise the shared selector and
+atomic handoff on both native and explicitly forced memory-backed origins. A
+memory-backed origin automatically uses hardlinked provider assets even under
+forced relocation; only an ordinary disk checkout needs the explicit opt-in flag.
+
 
 The provider's temporary build filesystem is separate from its deployed-asset
 allowance. The first EdgeOne production build at source `9fe6486d` generated every
@@ -224,6 +251,12 @@ failure with diagnostics, not permission to trim source text or remove supported
 Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
 Temporary cleanup is confined to directories created by the current build.
+
+After the scratch copy passes byte-fidelity checks, a relative worktree/submodule
+gitfile is rebound to its resolved Git directory. Scratch commands explicitly
+select the copied working tree and a private index, so clean-source checks inspect
+the copied files without refreshing the original index or changing repository
+configuration. Both source and scratch HEAD are still resolved and rechecked by Git.
 
 Relocation retains `out/` as the standalone export and writes small build metrics in the original
 checkout. Its original `.generated/` is not the relocated generation metadata;

@@ -21,6 +21,18 @@ const captureFailure = async options => {
   return failure;
 };
 
+async function controlledTimerFailure(t, { timeoutMs, deadline, entryAt = 0, scheduledAt = 1, observedAt, advanceMs }) {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  let firstSample = true, observed = scheduledAt;
+  const pending = captureFailure({ timeoutMs, deadline,
+    now: () => { if (firstSample) { firstSample = false; return entryAt; } return observed; },
+    fetchImpl: () => new Promise(() => {}),
+  });
+  observed = observedAt;
+  t.mock.timers.tick(advanceMs);
+  return pending;
+}
+
 test('source diagnostics retain actual timing, remaining window, bounded I/O and complete response hash', async () => {
   let tick = 100;
   const body = originalHtml();
@@ -55,23 +67,51 @@ test('only the observed Harness request timer is a retryable local timeout', asy
   assert.equal(diagnostics.response_sha256, null);
 });
 
-test('the observed total review-window timer defers rather than claiming network failure', async () => {
-  let tick = 0;
-  const error = await captureFailure({ timeoutMs: 500, deadline: 15, now: () => tick,
-    fetchImpl: (_url, { signal }) => {
-      // Let the actual owned timer fire; advance the injected deadline clock
-      // when it aborts, rather than relying on wall-clock millisecond rounding.
-      signal.addEventListener('abort', () => { tick = 15; }, { once: true });
-      return new Promise(() => {});
-    } });
+test('the observed total review-window timer defers rather than claiming network failure', async t => {
+  const error = await controlledTimerFailure(t, { timeoutMs: 500, deadline: 15, observedAt: 15, advanceMs: 14 });
   assert.equal(error.code, 'GOAL_REVIEW_WINDOW_EXHAUSTED');
   assert.equal(error.details.origin, 'harness_deadline');
   assert.equal(error.details.failure_kind, 'execution_window');
   assert.equal(selectRecovery(error).action, 'defer');
   const diagnostics = error.details.source_fetch_diagnostics;
   assert.equal(diagnostics.abort_source, 'harness_review_window');
-  assert.ok(diagnostics.io_budget_ms > 0 && diagnostics.io_budget_ms <= 15);
+  assert.equal(diagnostics.io_budget_ms, 14);
   assert.equal(diagnostics.remaining_budget_ms_at_exit, 0);
+});
+
+test('a review-limited timer retains its source across a clock tick and early callback', async t => {
+  const error = await controlledTimerFailure(t, { timeoutMs: 500, deadline: 15, observedAt: 14, advanceMs: 14 });
+  assert.equal(error.code, 'GOAL_REVIEW_WINDOW_EXHAUSTED');
+  assert.equal(selectRecovery(error).action, 'defer');
+  const diagnostics = error.details.source_fetch_diagnostics;
+  assert.equal(diagnostics.remaining_budget_ms_at_entry, 15);
+  assert.equal(diagnostics.io_budget_ms, 14);
+  assert.equal(diagnostics.remaining_budget_ms_at_exit, 1, 'observed diagnostics are not invented to match the timer source');
+  assert.equal(diagnostics.abort_source, 'harness_review_window');
+});
+
+test('a request-limited timer remains infrastructure with sufficient review time', async t => {
+  const error = await controlledTimerFailure(t, { timeoutMs: 10, deadline: 1_000, observedAt: 10, advanceMs: 10 });
+  assert.equal(error.code, 'GOAL_SOURCE_REQUEST_TIMEOUT');
+  assert.equal(selectRecovery(error, { completeReport: true }).action, 'recheck');
+  assert.equal(error.details.source_fetch_diagnostics.abort_source, 'harness_request_timeout');
+  assert.equal(error.details.source_fetch_diagnostics.remaining_budget_ms_at_exit, 990);
+});
+
+test('the 30-second review I/O clamp is not exhaustion of a longer review window', async t => {
+  const error = await controlledTimerFailure(t, { timeoutMs: 60_000, deadline: 60_000, observedAt: 30_001, advanceMs: 30_000 });
+  assert.equal(error.code, 'GOAL_SOURCE_REQUEST_TIMEOUT');
+  assert.equal(error.details.source_fetch_diagnostics.io_budget_ms, 30_000);
+  assert.equal(error.details.source_fetch_diagnostics.abort_source, 'harness_request_timeout');
+  assert.equal(error.details.source_fetch_diagnostics.remaining_budget_ms_at_exit, 29_999);
+});
+
+test('actual deadline exhaustion overrides a request timer delivered late', async t => {
+  const error = await controlledTimerFailure(t, { timeoutMs: 10, deadline: 100, observedAt: 101, advanceMs: 10 });
+  assert.equal(error.code, 'GOAL_REVIEW_WINDOW_EXHAUSTED');
+  assert.equal(selectRecovery(error).action, 'defer');
+  assert.equal(error.details.source_fetch_diagnostics.abort_source, 'harness_review_window');
+  assert.equal(error.details.source_fetch_diagnostics.remaining_budget_ms_at_exit, 0);
 });
 
 test('deadline exhaustion after headers preserves the actual response metadata', async () => {

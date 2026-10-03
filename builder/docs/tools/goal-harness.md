@@ -466,6 +466,11 @@ transport recovery; an unproven `AbortError`, `TimeoutError`, raw network prose 
 diagnostics never copy raw errors or authentication/request headers, and failure locators retain only the URL origin.
 Existing source-report and successful/cache identity locators retain their exact matching contract.
 
+Timer classification retains the limiting budget selected from one scheduling-time sample. A review-limited timer
+defers even if clock rounding makes its callback appear slightly early; the observed remaining time is still reported
+unchanged. A 30-second I/O clamp within a longer review window remains a request timeout unless the actual review
+deadline has elapsed when the callback is handled.
+
 Original-source qualification normalizes HTML body text (including inline tags and common/numeric entities), removes
 navigation/script content, and uses Poppler `pdftotext` for PDF bytes under the remaining execution deadline. Install
 `poppler-utils` on Linux (or Poppler on other hosts); a missing extractor is a configuration hold. CI installs it explicitly.

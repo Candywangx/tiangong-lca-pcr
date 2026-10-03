@@ -15,7 +15,7 @@ x64, and macOS ARM64.
 In a project directory:
 
 ```sh
-npm install @tiangong-lca/pcr @tiangong-lca/pcr-library
+npm install @tiangong-lca/pcr@0.3.1 @tiangong-lca/pcr-library@0.3.1
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ./node_modules/.bin/tiangong-pcr list --format json
 ```
@@ -72,21 +72,21 @@ package is optional; legacy `validate-model` only checks qualifier text and
 On a connected machine, download both packages:
 
 ```sh
-npm pack @tiangong-lca/pcr@0.2.0
-npm pack @tiangong-lca/pcr-library@0.1.2
+npm pack @tiangong-lca/pcr@0.3.1
+npm pack @tiangong-lca/pcr-library@0.3.1
 ```
 
 Transfer the two tarballs and a suitable Node.js runtime to the offline machine.
 In the destination directory:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.2.0.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 
 Runtime dependencies are bundled. No install scripts, runtime downloads, or
-network connection are required. Tool and content versions are independent;
-record both versions and the snapshot hash for reproducible work. Use
+network connection are required. Unified releases pair the same tool/content product version;
+record the bundled `product-release.json` identity and the snapshot hash for reproducible work. Use
 `--library-sha256 sha256:<digest>` to require a specific trusted snapshot hash.
 The CLI does not include an LLM. Fully offline semantic review requires an
 offline-capable Agent/model supplied by the caller.

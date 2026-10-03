@@ -11,6 +11,8 @@ import {
   normalizeText,
 } from "./markdown.mjs";
 import { SUMMARY_LIMIT } from "./summaries.mjs";
+import { summarizeExportFiles } from "./export-size.mjs";
+import { readProductIdentity } from "../../../builder/scripts/product-identity.mjs";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
   out = path.join(app, "out");
@@ -41,6 +43,23 @@ function readPage(url) {
 }
 function requireThat(condition, message) {
   if (!condition) throw new Error(message);
+}
+if (fs.existsSync(path.join(root, "product-release.json"))) {
+  const expected = readProductIdentity(root, { requireClean: false });
+  const actual = JSON.parse(fs.readFileSync(path.join(out, "generated/product-release.json"), "utf8"));
+  const version = JSON.parse(fs.readFileSync(path.join(out, "generated/version.json"), "utf8"));
+  requireThat(
+    Object.keys(expected).length === Object.keys(actual).length &&
+      Object.entries(expected).every(([key, value]) => actual[key] === value),
+    "Exported product release identity does not match the source snapshot",
+  );
+  requireThat(
+    version.sourceCommit === expected.sourceCommit &&
+      version.releaseVersion === expected.version &&
+      version.releaseTag === expected.tag &&
+      version.sourceFingerprint === expected.sourceFingerprint,
+    "Exported version metadata does not match the product release identity",
+  );
 }
 const rawBySource = new Map(report.downloads.map((d) => [d.sourcePath, d]));
 for (const raw of report.downloads) {
@@ -396,6 +415,16 @@ function walk(dir) {
   }
 }
 walk(out);
+// Keep measured growth visible even when a provider file-count or per-file gate fails.
+// Shared account storage requires a deployment-time capacity check, rather than a fixed
+// per-export byte ceiling here. Native Next navigation payloads remain part of the export.
+const exportSize = summarizeExportFiles(files);
+const sizeEvidence = { sourceCommit: manifest.sourceCommit, ...exportSize };
+fs.writeFileSync(
+  path.join(app, ".generated/export-size.json"),
+  JSON.stringify(sizeEvidence),
+);
+console.log(JSON.stringify({ event: "export-size", ...sizeEvidence }));
 requireThat(
   !files.some(
     (file) =>
@@ -408,19 +437,12 @@ requireThat(
   files.every((f) => f.bytes < 25_000_000),
   "EdgeOne single-file budget exceeded",
 );
-const total = files.reduce((n, f) => n + f.bytes, 0);
-requireThat(
-  total < 1_500_000_000,
-  "Export exceeds declared 1.5 GB deployment budget",
-);
 const result = {
   pcrs: manifest.records.length,
   pages: manifest.pages.length,
   sourceDocuments: report.documents.length,
   sourceDownloads: report.downloads.length,
-  files: files.length,
-  bytes: total,
-  maxFile: files.toSorted((a, b) => b.bytes - a.bytes)[0],
+  ...sizeEvidence,
 };
 fs.writeFileSync(
   path.join(app, ".generated/verification.json"),

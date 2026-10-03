@@ -15,8 +15,9 @@ import {
   readPcrModuleDocumentBundle,
   readClassificationCoverageSnapshot,
 } from "../../pcr-core/src/index.mjs";
-import { parseYaml } from "../../pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
 import { readPcrDocumentHistory } from "../../../builder/lib/pcr-document-history.mjs";
+import { readProductIdentity } from "../../../builder/scripts/product-identity.mjs";
 import {
   assertManifest,
   assertMarkdownFrontmatter,
@@ -66,6 +67,9 @@ const git = (...args) =>
     maxBuffer: 32 * 1024 * 1024,
   }).trim();
 ensureSourceHistory(root);
+const productIdentity = fs.existsSync(path.join(root, "product-release.json"))
+  ? readProductIdentity(root, { requireClean: false })
+  : null;
 const commit = git("rev-parse", "HEAD"),
   sourceDate = git(
     "log",
@@ -1019,7 +1023,15 @@ async function generate() {
     sourceDate,
     generatorVersion: manifest.generatorVersion,
     counts: manifest.counts,
+    ...(productIdentity
+      ? {
+          releaseVersion: productIdentity.version,
+          releaseTag: productIdentity.tag,
+          sourceFingerprint: productIdentity.sourceFingerprint,
+        }
+      : {}),
   });
+  if (productIdentity) json("public/product-release.json", productIdentity);
   write(
     "public/search-worker.mjs",
     fs.readFileSync(path.join(app, "lib/search-worker.mjs")),

@@ -33,7 +33,7 @@ import {
 } from "../../packages/pcr-core/src/classification-coverage.mjs";
 import { createSchemaRegistry } from "../../packages/pcr-core/src/schema-validation.mjs";
 import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.mjs";
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   CPC_3_COVERAGE_PATH,
   CPC_3_LEAVES_PATH,

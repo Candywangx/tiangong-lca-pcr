@@ -262,11 +262,16 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
     const controller = new AbortController();
     let timeout, timerError, httpError, response, content;
     try {
-      const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id }));
+      const scheduledAt = now();
+      const remainingAtSchedule = sourceRemainingBudget(deadline, scheduledAt);
+      const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now: () => scheduledAt, phase, subjectId: source.source_id }));
+      // Bind the timer to the limit selected at scheduling, not the earlier entry
+      // sample or a rounded/early callback. The review helper's 30-second I/O
+      // clamp alone does not mean a longer review window has been exhausted.
+      const reviewLimited = remainingAtSchedule !== null && remainingAtSchedule <= ioBudget;
       diagnostics.io_budget_ms = ioBudget;
       timeout = setTimeout(() => {
-        const windowExpired = diagnostics.remaining_budget_ms_at_entry !== null
-          && (diagnostics.remaining_budget_ms_at_entry <= ioBudget || sourceRemainingBudget(deadline, now()) === 0);
+        const windowExpired = reviewLimited || sourceRemainingBudget(deadline, now()) === 0;
         diagnostics.abort_source = windowExpired ? 'harness_review_window' : 'harness_request_timeout';
         timerError = windowExpired ? windowError() : new GoalHarnessError('GOAL_SOURCE_REQUEST_TIMEOUT', 'The Harness source request timeout was reached.', {
           phase: 'source_fetch', origin: 'harness_request_timer', failure_kind: 'timeout', retryable: true, subject_id: source.source_id,
@@ -387,11 +392,11 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
     if (extracted.error?.code === "ENOENT") throw new GoalHarnessError("GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE", "PDF originals require pdftotext on PATH.", {
       phase: "source_identity", origin: "harness_review", failure_kind: "configuration", retryable: false, subject_id: source.source_id,
     });
-    if (extracted.status !== 0 || extracted.error) return { challenge: false, identifiable: false, kind: "unrecognized", rejection_reason: 'pdf_extraction_failed' };
+    if (extracted.status !== 0 || extracted.error) return { challenge: false, identifiable: false, kind: "unrecognized", rejection_reason: "pdf_extraction_failed" };
     text = extracted.stdout;
   }
   const challenge = /<input[^>]*type=["']?password|<title>[^<]*(?:sign in|log in|login)|captcha|verify you are human|checking your browser/iu.test(text);
-  if (challenge) return { challenge: true, identifiable: false, kind: "access_challenge", rejection_reason: 'access_challenge' };
+  if (challenge) return { challenge: true, identifiable: false, kind: "access_challenge", rejection_reason: "access_challenge" };
   if (!isPdf) {
     text = text.replace(/<!--[^]*?-->/gu, "").replace(/<(script|style|nav|header|footer|head)\b[^>]*>[^]*?<\/\1\s*>/giu, "");
     text = extractHtmlDocumentBody(text);
@@ -437,10 +442,10 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
   if (section !== null) sections.push(section);
   const substantiveSections = sections.filter(body => normalizeComparableText(body).length >= 150);
   const titleMatches = Boolean(title && normalized.includes(title));
-  const identifiable = titleMatches && normalized.length >= 500 && substantiveSections.length >= 2;
+  const identifiable = Boolean(titleMatches && normalized.length >= 500 && substantiveSections.length >= 2);
   const metadata = /abstract|table of contents|purchase|buy now|download (?:full text|instructions)|摘要|目录|购买|下载/iu.test(text);
   return { challenge: false, identifiable, kind: identifiable ? "original" : metadata ? "metadata" : "unrecognized",
-    rejection_reason: identifiable ? null : !titleMatches ? 'title_mismatch' : normalized.length < 500 ? 'insufficient_body_length' : 'insufficient_substantive_sections',
+    rejection_reason: identifiable ? null : !titleMatches ? "title_mismatch" : normalized.length < 500 ? "insufficient_body_length" : "insufficient_substantive_sections",
     observations: { title_matches: titleMatches, normalized_body_length: normalized.length, substantive_section_count: substantiveSections.length },
   };
 }
