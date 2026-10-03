@@ -1,9 +1,9 @@
-import { createDocumentSource } from './content-source.mjs';
+import { createDocumentSource } from './content-source.ts';
 import type { Folder, Item, Node as PageTreeNode, Root } from 'fumadocs-core/page-tree';
 import type { DocPage, Download, Language, PcrRecord, SiteManifest } from './types';
 import { DEFAULT_ROUTE } from './i18n';
 import { getSiteManifest } from './generated';
-import { recordPages, recordNavigationNode } from './record-navigation.mjs';
+import { recordPages, recordNavigationNode } from './record-navigation.ts';
 
 export type PcrSourcePage = {
   path: string;
@@ -44,7 +44,7 @@ export function recordTitle(record: PcrRecord, code: string, fallback: string): 
 }
 
 export function titleFor(
-  map: Record<string, string> | undefined,
+  map: Record<string, string | null> | undefined,
   code: string,
   fallback: string,
   slug: string,

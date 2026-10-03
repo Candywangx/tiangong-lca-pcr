@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next';
 export const dynamic = 'force-static';
 import { getSiteManifest } from '@/lib/generated';
 import { pageLastModified } from '@/lib/source';
-import { publicHomeLanguages } from '@/lib/home-policy.mjs';
+import { publicHomeLanguages } from '@/lib/home-policy.ts';
 
 /**
  * Indexable surfaces only: the entry home, the localized homes, and the document pages the

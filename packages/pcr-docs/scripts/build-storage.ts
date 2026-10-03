@@ -19,7 +19,7 @@ export interface RelocatedBuildOptions {
   runPipeline: (options: { cwd: string; env: NodeJS.ProcessEnv }) => unknown | Promise<unknown>;
   scratchParent?: string | null; reason?: string; facts?: FactsReader; head?: (root: string) => string;
   sample?: () => unknown; assertBudget?: () => unknown;
-  copy?: (options: { from: string; to: string }) => { bytes: number; gitEnvironment?: NodeJS.ProcessEnv };
+  copy?: (options: { from: string; to: string }) => { bytes: number; files?: number; gitEnvironment?: NodeJS.ProcessEnv };
   publish?: (options: PublishOptions) => unknown;
   cleanup?: (target: string, options: fs.RmOptions) => void; log?: Log; token?: string | null;
 }
