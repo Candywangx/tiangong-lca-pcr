@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -17,11 +17,11 @@ functional_unit:
   reference_flow_link: "rf_finished_pump_or_compressor"
 system_boundary:
   rules:
-    - rule_id: system_boundary_rule_1
+    - rule_id: system_boundary_rule_1_snapshot
       applies_to: "foreground_system_boundary"
       rule: "The foreground boundary begins when purchased materials and components are received at the manufacturing site and ends when the tested, quality-released product and its transport packaging are ready to leave the manufacturer gate. Product-specific bills of material and company-specific manufacturing activity are mandatory. Known product inputs, wastes, and direct elementary outputs shall be represented without replacing measured foreground records with category averages. (eu-pef-method-2021)"
       source_ids: []
-    - rule_id: system_boundary_rule_1_2
+    - rule_id: system_boundary_rule_1
       applies_to: "foreground_manufacturing"
       rule: "Include product-specific material and component inputs, in-house energy and water, processing aids, factory testing, packaging, wastes, and direct emissions from receipt through manufacturer-gate release."
       source_ids:
@@ -838,12 +838,405 @@ data_sources:
     type: "standard"
     reference: "DIN ISO 21360-1:2025-04, Vacuum technology — Standard methods for measuring vacuum-pump performance — Part 1: General description (ISO 21360-1:2020), https://www.dinmedia.de/de/norm/din-iso-21360-1/389352087 (retrieved 2026-09-05)"
     used_for: "Official standards-body description of methods for vacuum-pump volume flow, base pressure, compression ratio, and critical backing pressure"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0ca4953e259e26202ef6ff5441f4d2e104185524518c687e36719dc66eabd4b0"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6443"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6443
+          line: 64
+          column: 1
+        end:
+          offset: 9248
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins when purchased materials and components are received at the manufacturing site and ends when the tested, quality-released product and its transport packaging are ready to leave the manufacturer gate. Product-specific bills of material and company-specific manufacturing activity are mandatory. Known product inputs, wastes, and direct elementary outputs shall be represented without replacing measured foreground records with category averages. (`eu-pef-method-2021`)\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased materials and components received at the manufacturing site, with supplier state, grade, and included upstream dataset boundary declared |\n| starting_condition_role | Cradle-to-gate foreground manufacturing entry condition |\n| product_classification_scope | Finished equipment within CPC 3.0 code 43230; separate parts and supplied compressed-air or vacuum services are outside scope |\n| recursive_input_rule | A same-category pump or compressor purchased as an input is recorded once as a specific upstream product dataset and is not recursively disassembled into this foreground manufacturing inventory; disclose its role and avoid double counting its bill of materials |\n| upstream_dataset_requirement | Every purchased product input requires a geographically and technologically representative upstream dataset or a documented proxy decision; no UUID alone supplies upstream burden data |\n| disclosure | Declare manufacturing sites, production period, make-or-buy boundary, processes performed in-house, shared utilities, product-specific BoM, net product mass, packaging, factory test conditions, and any excluded or unmetered operation |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `system_boundary_rule_1` | foreground_manufacturing | Include product-specific material and component inputs, in-house energy and water, processing aids, factory testing, packaging, wastes, and direct emissions from receipt through manufacturer-gate release. | `eu-pef-method-2021` |\n| `system_boundary_rule_2` | conditional_processes | Include machining, cleaning, thermal joining, coating, or other surface operations only when performed inside the declared foreground boundary; otherwise represent the purchased component with an upstream dataset and do not duplicate its production. | `jrc-fabricated-metal-products-2020` |\n| `system_boundary_rule_3` | completeness | Add every additional product-specific BoM material, process chemical, packaging component, waste stream, and direct elementary flow as its own atomic exchange when known; the listed inventory is a minimum category pattern, not permission to aggregate or omit flows. | `eu-pef-method-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 11
+              column: 1
+            end:
+              offset: 331
+              line: 11
+              column: 52
+          text: "# Air or vacuum pumps; air or other gas compressors"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6443
+              line: 64
+              column: 1
+            end:
+              offset: 6464
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26327"
+      family: "allocation"
+      span:
+        start:
+          offset: 26327
+          line: 452
+          column: 1
+        end:
+          offset: 27639
+          line: 461
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_rule_1` | product_specific_manufacturing | Prefer product-specific metering, batch records, or physical subdivision. Do not allocate a complete factory total when a process- or product-family record is available. | `eu-pef-method-2021` |\n| `allocation_rule_2` | shared_processes | If subdivision is not feasible, allocate shared electricity, water, consumables, and wastes using the causal driver that best reflects the operation, such as machine time, test time, processed mass, or measured throughput; document the driver and reconcile allocated totals to the site record. | `eu-pef-method-2021` |\n| `allocation_rule_3` | scrap_and_recovered_material | Report physical scrap and waste outputs without an avoided-production credit inside the foreground manufacturing process. Any recycling substitution or end-of-life credit belongs to a separately declared system model. | `eu-pef-method-2021` |\n| `allocation_rule_4` | pallet_reuse | Allocate a reusable pallet's measured mass over documented uses and products per use; disclose losses, repair, and return boundary. If evidence is absent, model the pallet as single-use rather than assuming a reuse count. | `eu-pef-method-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 11
+              column: 1
+            end:
+              offset: 331
+              line: 11
+              column: 52
+          text: "# Air or vacuum pumps; air or other gas compressors"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26327
+              line: 452
+              column: 1
+            end:
+              offset: 26367
+              line: 452
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35609"
+      family: "validation"
+      span:
+        start:
+          offset: 35609
+          line: 496
+          column: 1
+        end:
+          offset: 37414
+          line: 507
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_rule_1` | identity_and_reference_flow | Reject a package that omits any required product qualifier, mixes net product and packaging mass, or lacks a traceable factory test compatible with the declared product type. | `us-doe-10-cfr-431-app-a-2024`; `din-iso-21360-1-2025`; `us-doe-compressed-air-sourcebook-2003` |\n| `validation_rule_2` | inventory_balance | Confirm that product-specific BoM inputs, separately measured packaging, finished output, scrap, wastes, and retained factory-installed fluids are reconcilable on a documented mass basis; investigate rather than force-close unexplained differences. | `eu-pef-method-2021` |\n| `validation_rule_3` | conditional_routes | A conditional process marked not applicable shall have evidence that it is outsourced, absent, or embodied in purchased components; otherwise collect its atomic exchanges. | `jrc-fabricated-metal-products-2020` |\n| `validation_rule_4` | energy_and_gases | Reconcile electricity to meter totals after allocation; preserve kWh before MJ conversion; confirm gas reference conditions and purity before aggregating volumes. | `eu-pef-method-2021` |\n| `validation_rule_5` | uuid_and_localization | Confirm every UUID-bearing English and Chinese row has the same UUID and uses the public state-100 English and Chinese base names; keep `in_cast_iron` and `in_polyethylene_film` UUID-empty until classification-compatible exact candidates are verified. |  |\n| `validation_rule_6` | evidence_and_ranges | Do not infer an external empirical range without at least two independent, original-text-verified and boundary-compatible sources. Until then require foreground records and preserve the manifest range-evidence needs. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 11
+              column: 1
+            end:
+              offset: 331
+              line: 11
+              column: 52
+          text: "# Air or vacuum pumps; air or other gas compressors"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35609
+              line: 496
+              column: 1
+            end:
+              offset: 35631
+              line: 496
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1_snapshot"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 6466
+          line: 66
+          column: 1
+        end:
+          offset: 6964
+          line: 66
+          column: 499
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 8282
+          line: 81
+          column: 1
+        end:
+          offset: 8567
+          line: 81
+          column: 286
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 8568
+          line: 82
+          column: 1
+        end:
+          offset: 8911
+          line: 82
+          column: 344
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "system_boundary_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 8912
+          line: 83
+          column: 1
+        end:
+          offset: 9246
+          line: 83
+          column: 335
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_26327"
+      source_span:
+        start:
+          offset: 26440
+          line: 456
+          column: 1
+        end:
+          offset: 26691
+          line: 456
+          column: 252
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_26327"
+      source_span:
+        start:
+          offset: 26692
+          line: 457
+          column: 1
+        end:
+          offset: 27053
+          line: 457
+          column: 362
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_26327"
+      source_span:
+        start:
+          offset: 27054
+          line: 458
+          column: 1
+        end:
+          offset: 27351
+          line: 458
+          column: 298
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_26327"
+      source_span:
+        start:
+          offset: 27352
+          line: 459
+          column: 1
+        end:
+          offset: 27637
+          line: 459
+          column: 286
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "explicit"
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 35704
+          line: 500
+          column: 1
+        end:
+          offset: 36032
+          line: 500
+          column: 329
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "explicit"
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 36033
+          line: 501
+          column: 1
+        end:
+          offset: 36350
+          line: 501
+          column: 318
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "explicit"
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 36351
+          line: 502
+          column: 1
+        end:
+          offset: 36608
+          line: 502
+          column: 258
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_rule_4"
+      identity_kind: "explicit"
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 36609
+          line: 503
+          column: 1
+        end:
+          offset: 36839
+          line: 503
+          column: 231
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_rule_5"
+      identity_kind: "explicit"
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 36840
+          line: 504
+          column: 1
+        end:
+          offset: 37144
+          line: 504
+          column: 305
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_rule_6"
+      identity_kind: "explicit"
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 37145
+          line: 505
+          column: 1
+        end:
+          offset: 37412
+          line: 505
+          column: 268
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 6443
+          line: 64
+          column: 1
+        end:
+          offset: 6464
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 6992
+          line: 70
+          column: 1
+        end:
+          offset: 8209
+          line: 77
+          column: 251
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26327"
+      source_span:
+        start:
+          offset: 26327
+          line: 452
+          column: 1
+        end:
+          offset: 26367
+          line: 452
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35609"
+      source_span:
+        start:
+          offset: 35609
+          line: 496
+          column: 1
+        end:
+          offset: 35631
+          line: 496
+          column: 23
+    - code: "SNAPSHOT_RULE_ID_DISAMBIGUATED"
+      message: "Snapshot-local candidate \"system_boundary_rule_1\" was disambiguated to \"system_boundary_rule_1_snapshot\"; authored explicit ID \"system_boundary_rule_1\" and all other authored explicit IDs remain unchanged."
+      unit_id: "normative_6443"
+      source_span:
+        start:
+          offset: 6466
+          line: 66
+          column: 1
+        end:
+          offset: 6964
+          line: 66
+          column: 499
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:0ca4953e259e26202ef6ff5441f4d2e104185524518c687e36719dc66eabd4b0"
-  generated_content_sha256: "sha256:c7c0a761799c7094cb84eeef625c501b6c1e7e70b9fdceee89cf53d7b2cccdd4"
+  generated_content_sha256: "sha256:63f7e3cb2c5298d8ea3980ef3bca83154ee84d8cbc5918a4a95edbc0774b88ae"

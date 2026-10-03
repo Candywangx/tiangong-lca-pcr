@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1394,12 +1394,556 @@ data_sources:
     type: "method_factor"
     reference: "Conservation-of-mass and metered-activity identity defined in this PCR's calculation rules; no external quantitative default."
     used_for: "Meat, packaging, refrigerant, water, pollutant-load, electricity-allocation, and normalization calculations"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:eefcb6c9c38209ad4f4c2306ce5ae2ac2cdce7d421a6b5f1dada5fce82fca4e2"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6972"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6972
+          line: 63
+          column: 1
+        end:
+          offset: 9968
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground system is a gate-to-gate frozen-meat finishing operation. Product identity is inherited from a cut-specific upstream dataset and maintained through lot-level mass and traceability records.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Chilled, food-safe, boneless farmed red deer (*Cervus elaphus*) UNECE 9237 inner part of the leg, long-cut, received as an identified lot with measured net mass and temperature |\n| starting_condition_role | Upstream product input to the frozen-meat finishing foreground system |\n| product_classification_scope | Narrower data-package instance within CPC 3.0 21139; it is not a CPC-wide species or technology mix |\n| recursive_input_rule | If any frozen meat that itself satisfies this PCR enters the foreground system, record it as a separate product input with an upstream dataset and subtract it from newly produced output; never recursively re-create or silently merge it with the reference output. |\n| upstream_dataset_requirement | Use a cut-specific dataset covering farmed red deer production, slaughter, dressing, chilling, boning, UNECE 9237 cut preparation, and allocation to the received boneless cut; a live-animal, generic carcass, generic venison, or mixed-species dataset is not sufficient. |\n| disclosure | Declare the exact species, farmed status, cut code and description, bone state, origin, upstream dataset, facility, production dates, freezing equipment, R717 equipment group, packaging specification, storage duration, dispatch temperature, and every deviation from the boundary. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_instance_gate` | all foreground packages | Include only the declared red-deer UNECE 9237 boneless forced-air/R717 configuration; do not average another species, cut, bone state, freezing technology, refrigeration system, packaging configuration, or temperature specification. | `unstats-cpc-3-2025`; `unece-deer-meat-2013`; `dinz-farmed-venison`; `wiklund-et-al-2014-venison` |\n| `boundary_upstream_cut` | chilled meat input | Require the upstream cut-specific dataset through chilled boneless-cut preparation and keep all upstream burdens outside the finishing foreground inventory to avoid double counting. | `unece-deer-meat-2013`; `fao-who-cxc-58-2005` |\n| `boundary_quick_freezing` | blast freezing and cold chain | Include measured freezing and storage operations until dispatch; quick freezing is complete only when product thermal-centre temperature reaches <= -18 deg C, and the cold chain must preserve that condition subject only to documented legal tolerances. | `fao-who-cxc-8-1976`; `fao-meat-cold-store-manual` |\n| `boundary_on_site_wastewater` | sanitation wastewater | Include the declared on-site aerobic treatment and direct discharge; another wastewater route requires a separately declared scenario and must not be averaged into this route. | `fao-who-cxc-58-2005` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 224
+              line: 8
+              column: 1
+            end:
+              offset: 255
+              line: 8
+              column: 32
+          text: "# Other meat of mammals, frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6972
+              line: 63
+              column: 1
+            end:
+              offset: 6993
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43171"
+      family: "allocation"
+      span:
+        start:
+          offset: 43171
+          line: 824
+          column: 1
+        end:
+          offset: 44844
+          line: 836
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nThe foreground finishing route has one intended meat product and no co-product. Packaging rejects, rejected meat, wastewater, and sludge remain waste flows unless a documented downstream recovery contract establishes otherwise.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `alloc_upstream_cut_specific` | upstream chilled cut | Use the supplier's cut-specific dataset and its reviewed slaughter/carcass allocation; do not allocate generic live-animal or carcass burdens inside this finishing foreground system. | `unece-deer-meat-2013` |\n| `alloc_no_cross_instance_average` | species, cut, bone state, freezing, refrigerant, packaging, and wastewater route | Do not average another configuration with this instance; produce a separately reviewed package. | `unstats-cpc-3-2025`; `unece-deer-meat-2013` |\n| `alloc_shared_electricity` | shared electric meters | Prefer process submeters; otherwise allocate each equipment group's electricity by documented operating time and power or refrigeration-load driver, preserving separate atomic electricity rows. Economic allocation is not permitted. | `mass-balance-identity` |\n| `alloc_refrigerant_by_equipment` | R717 make-up and loss | Assign refrigerant by equipment-group mass balance; do not combine blast-freezer and frozen-storage R717 rows. | `mass-balance-identity` |\n| `alloc_waste_no_credit` | rejected meat, packaging waste, wastewater, and sludge | Report gross waste leaving each process. Do not apply avoided-burden credit in the foreground inventory; model any downstream recovery as a separate documented system. | `mass-balance-identity` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 224
+              line: 8
+              column: 1
+            end:
+              offset: 255
+              line: 8
+              column: 32
+          text: "# Other meat of mammals, frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43171
+              line: 824
+              column: 1
+            end:
+              offset: 43211
+              line: 824
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_57970"
+      family: "validation"
+      span:
+        start:
+          offset: 57970
+          line: 881
+          column: 1
+        end:
+          offset: 60924
+          line: 896
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_instance_identity` | package metadata and reference flow | Fail if species, farmed status, UNECE 9237 cut, boneless state, forced-air blast technology, R717 system, packaging configuration, or <= -18 deg C dispatch gate is missing or differs; do not infer a species market share. | `unstats-cpc-3-2025`; `unece-deer-meat-2013`; `dinz-farmed-venison`; `fao-who-cxc-8-1976` |\n| `val_reference_mass` | `dispatched_frozen_red_deer_inner_leg` | Fail unless reference output is exactly 1,000 kg net edible meat and packaging, pallet, frost, glaze, ice, and free liquid are excluded. | `unece-deer-meat-2013`; `mass-balance-identity` |\n| `val_reference_uuid` | all inventory cards | Fail unless UUID `1fc83e3b-ac93-4d3b-899e-eed337072097` appears only on `dispatched_frozen_red_deer_inner_leg` and every other card has no UUID. | `mass-balance-identity` |\n| `val_atomic_flows` | process inventory | Fail any aggregate or family card, including energy, materials, chemicals, fuels, refrigerants, packaging, wastes, emissions, or route-specific carriers; every crossing flow must have one row_id and non-empty description. | `mass-balance-identity` |\n| `val_no_undeclared_route` | process and inventory | Fail if another species, cut, bone state, freezing method, refrigerant, packaging configuration, wastewater route, fuel, steam, ice, heat carrier, or distribution transport is averaged into this instance. | `unstats-cpc-3-2025`; `unece-deer-meat-2013`; `fao-who-cxc-8-1976` |\n| `val_temperature_chain` | blast freezing, storage, and dispatch | Fail if freezer thermal-centre completion and dispatch product temperature records do not demonstrate <= -18 deg C, or if storage temperature history and excursions are missing. | `fao-who-cxc-8-1976`; `fao-meat-cold-store-manual` |\n| `val_mass_closure` | meat and packaging | Fail unresolved meat-balance differences and missing separate PA/PE, PP-label, and corrugated-cardboard input/waste reconciliations. | `mass-balance-identity` |\n| `val_refrigerant_closure` | blast and storage R717 systems | Fail if R717 make-up and loss are absent, combined across equipment groups, or not supported by charge/service/recovery records. | `fao-who-cxc-8-1976`; `mass-balance-identity` |\n| `val_wastewater_closure` | sanitation and on-site treatment | Fail if raw wastewater, treatment electricity, sludge, treated-water discharge, COD, or total-nitrogen records are missing or if pollutant samples and effluent volumes are not time matched. | `fao-who-cxc-58-2005`; `mass-balance-identity` |\n| `val_evidence_gap_disclosure` | candidate use | Mark validation inconclusive for publication if foreground quantities, non-reference UUID alignment, or the open species-market-share limitation is represented as reviewed default evidence rather than disclosed as an instance gate or evidence gap. | `mass-balance-identity` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 224
+              line: 8
+              column: 1
+            end:
+              offset: 255
+              line: 8
+              column: 32
+          text: "# Other meat of mammals, frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 57970
+              line: 881
+              column: 1
+            end:
+              offset: 57992
+              line: 881
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 6995
+          line: 65
+          column: 1
+        end:
+          offset: 7198
+          line: 65
+          column: 204
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_instance_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 8667
+          line: 80
+          column: 1
+        end:
+          offset: 9056
+          line: 80
+          column: 390
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream_cut"
+      identity_kind: "explicit"
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 9057
+          line: 81
+          column: 1
+        end:
+          offset: 9337
+          line: 81
+          column: 281
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_quick_freezing"
+      identity_kind: "explicit"
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 9338
+          line: 82
+          column: 1
+        end:
+          offset: 9706
+          line: 82
+          column: 369
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_on_site_wastewater"
+      identity_kind: "explicit"
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 9707
+          line: 83
+          column: 1
+        end:
+          offset: 9966
+          line: 83
+          column: 260
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43213
+          line: 826
+          column: 1
+        end:
+          offset: 43440
+          line: 826
+          column: 228
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_upstream_cut_specific"
+      identity_kind: "explicit"
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43513
+          line: 830
+          column: 1
+        end:
+          offset: 43779
+          line: 830
+          column: 267
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_no_cross_instance_average"
+      identity_kind: "explicit"
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43780
+          line: 831
+          column: 1
+        end:
+          offset: 44045
+          line: 831
+          column: 266
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_shared_electricity"
+      identity_kind: "explicit"
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 44046
+          line: 832
+          column: 1
+        end:
+          offset: 44361
+          line: 832
+          column: 316
+    - pointer: "/allocation_rules/4"
+      rule_id: "alloc_refrigerant_by_equipment"
+      identity_kind: "explicit"
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 44362
+          line: 833
+          column: 1
+        end:
+          offset: 44561
+          line: 833
+          column: 200
+    - pointer: "/allocation_rules/5"
+      rule_id: "alloc_waste_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 44562
+          line: 834
+          column: 1
+        end:
+          offset: 44842
+          line: 834
+          column: 281
+    - pointer: "/validation_rules/0"
+      rule_id: "val_instance_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 58065
+          line: 885
+          column: 1
+        end:
+          offset: 58445
+          line: 885
+          column: 381
+    - pointer: "/validation_rules/1"
+      rule_id: "val_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 58446
+          line: 886
+          column: 1
+        end:
+          offset: 58700
+          line: 886
+          column: 255
+    - pointer: "/validation_rules/2"
+      rule_id: "val_reference_uuid"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 58701
+          line: 887
+          column: 1
+        end:
+          offset: 58920
+          line: 887
+          column: 220
+    - pointer: "/validation_rules/3"
+      rule_id: "val_atomic_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 58921
+          line: 888
+          column: 1
+        end:
+          offset: 59213
+          line: 888
+          column: 293
+    - pointer: "/validation_rules/4"
+      rule_id: "val_no_undeclared_route"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 59214
+          line: 889
+          column: 1
+        end:
+          offset: 59543
+          line: 889
+          column: 330
+    - pointer: "/validation_rules/5"
+      rule_id: "val_temperature_chain"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 59544
+          line: 890
+          column: 1
+        end:
+          offset: 59844
+          line: 890
+          column: 301
+    - pointer: "/validation_rules/6"
+      rule_id: "val_mass_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 59845
+          line: 891
+          column: 1
+        end:
+          offset: 60049
+          line: 891
+          column: 205
+    - pointer: "/validation_rules/7"
+      rule_id: "val_refrigerant_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 60050
+          line: 892
+          column: 1
+        end:
+          offset: 60291
+          line: 892
+          column: 242
+    - pointer: "/validation_rules/8"
+      rule_id: "val_wastewater_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 60292
+          line: 893
+          column: 1
+        end:
+          offset: 60596
+          line: 893
+          column: 305
+    - pointer: "/validation_rules/9"
+      rule_id: "val_evidence_gap_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 60597
+          line: 894
+          column: 1
+        end:
+          offset: 60922
+          line: 894
+          column: 326
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 6972
+          line: 63
+          column: 1
+        end:
+          offset: 6993
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6972"
+      source_span:
+        start:
+          offset: 7226
+          line: 69
+          column: 1
+        end:
+          offset: 8594
+          line: 76
+          column: 297
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43171
+          line: 824
+          column: 1
+        end:
+          offset: 43211
+          line: 824
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43213
+          line: 826
+          column: 1
+        end:
+          offset: 43440
+          line: 826
+          column: 228
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43513
+          line: 830
+          column: 1
+        end:
+          offset: 43779
+          line: 830
+          column: 267
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 43780
+          line: 831
+          column: 1
+        end:
+          offset: 44045
+          line: 831
+          column: 266
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 44046
+          line: 832
+          column: 1
+        end:
+          offset: 44361
+          line: 832
+          column: 316
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 44362
+          line: 833
+          column: 1
+        end:
+          offset: 44561
+          line: 833
+          column: 200
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_43171"
+      source_span:
+        start:
+          offset: 44562
+          line: 834
+          column: 1
+        end:
+          offset: 44842
+          line: 834
+          column: 281
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_57970"
+      source_span:
+        start:
+          offset: 57970
+          line: 881
+          column: 1
+        end:
+          offset: 57992
+          line: 881
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:eefcb6c9c38209ad4f4c2306ce5ae2ac2cdce7d421a6b5f1dada5fce82fca4e2"
-  generated_content_sha256: "sha256:946ec6d067db008b98648f7903d78d1871cf8a18f08d1d70cfadace7ac6141d1"
+  generated_content_sha256: "sha256:b1af9faa5fb6c82d2bf17e81d797f531a128943f710f7c6e00ab0bfd9c244f09"

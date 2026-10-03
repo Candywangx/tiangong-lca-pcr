@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -690,12 +690,484 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission, Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods, CELEX:32021H2279, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-09)"
     used_for: "Product-specific BOM and company-specific manufacturing data, foreground and upstream-data boundary, allocation hierarchy, data quality, completeness, verification, and disclosure rules"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:cd6335c864b05d56d4298a87e34a4bbd9e2130eb8a1cac6b63628730a4e91cb9"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7081"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7081
+          line: 60
+          column: 1
+        end:
+          offset: 10894
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_purchased_inputs` | Purchased materials, parts, subassemblies, electronics, sensors, drives, controllers, and packaging | Record each material input that crosses the manufacturing boundary and link it to the most specific available upstream dataset consistent with material, technology, geography, and supplier state. Do not treat purchased components as burden-free. | `eu-pef-2021` |\n| `boundary_foreground_operations` | Operations controlled by the manufacturing site | Include receiving and preparation, applicable machining or fabrication, surface treatment, assembly, wiring, controller and software integration, calibration and verification, rework, final inspection, and packaging when performed for the delivered configuration. | `eu-pef-2021`; `instron-3340-system-support` |\n| `boundary_direct_flows` | Site energy, water, consumables, waste, and direct emissions | Include measured or otherwise traceable electricity, fuels, process water, consumables, waste and scrap, and direct elementary emissions for included operations. Absence of a default quantity is not permission to omit a flow. | `eu-pef-2021` |\n| `boundary_release_evidence` | Calibration, verification, and release | Include the resources and rejected or reworked output attributable to applicable inspection, force-measurement verification, extensometer calibration, and performance-class confirmation; retain the applicable release standard and record identifier. | `iso-7500-1-2018`; `iso-9513-2012` |\n| `boundary_exclusions` | Activities outside manufacturing | Exclude outbound distribution, customer-site installation, product use, routine post-delivery calibration and maintenance, and end-of-life unless the study explicitly expands the boundary. Disclose R&D, office, sales, infrastructure, and capital-equipment exclusions and include them when required by the declared study method or shown material. | `eu-pef-2021` |\n| `boundary_no_data_cutoff` | Potentially relevant foreground flows | Do not omit a material or energy flow solely because data are unavailable. Document every exclusion, its reason, and the materiality check used; unresolved potentially significant exclusions make validation inconclusive. | `eu-pef-2021` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased materials, parts, subassemblies, electronics, sensors, drives, controllers, and packaging received at the manufacturing site in their documented supplier state |\n| starting_condition_role | Manufacturing gate input; upstream production is represented by linked supplier-specific or suitable secondary datasets rather than repeated in the foreground process |\n| product_classification_scope | Complete CPC 3.0:48262 testing machines and appliances; separately supplied CPC 3.0:48285 parts and accessories are outside the reference product |\n| recursive_input_rule | A purchased or transferred input that is itself a complete CPC 3.0:48262 machine shall remain an explicit product input with its own upstream dataset; do not recursively reproduce its manufacture or silently merge its mass into generic machinery |\n| upstream_dataset_requirement | Link every purchased material and component group to the most specific available upstream dataset, prioritizing supplier-specific data and matching material, manufacturing technology, geography, and delivered state |\n| disclosure | Declare the represented model or product-family logic, test principle, rated capacity, drive and frame configuration, delivered measurement and accessory set, net product mass, packaging treatment, production site and period, in-house versus purchased operations, allocation method, exclusions, and data gaps |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 265
+              line: 8
+              column: 1
+            end:
+              offset: 341
+              line: 8
+              column: 77
+          text: "# Machines and appliances for testing the mechanical properties of materials"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7081
+              line: 60
+              column: 1
+            end:
+              offset: 7102
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26025"
+      family: "allocation"
+      span:
+        start:
+          offset: 26025
+          line: 347
+          column: 1
+        end:
+          offset: 27892
+          line: 357
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_by_subdivision` | Shared manufacturing lines, utilities, and release-test operations | First avoid allocation by subdividing processes, using model- or work-order-specific BOMs, and submetering or otherwise tracing activity data to the represented configuration. | `eu-pef-2021` |\n| `allocation_physical_relationship` | Residual shared inputs and emissions after subdivision | When subdivision is not practicable, allocate using a documented physical relationship that reflects resource use, such as machine hours, test hours, measured energy demand, processed mass, or work-order time. Do not use product count when configurations differ materially in mass or processing. | `eu-pef-2021` |\n| `allocation_other_relationship` | Shared burdens lacking a defensible physical relationship | Use economic or another justified relationship only after documenting why subdivision and physical allocation are not feasible; disclose the basis, period, product pool, and sensitivity of the result. | `eu-pef-2021` |\n| `allocation_scrap_rework` | Scrap, reusable returns, rework, and rejects | Attribute consumables and energy used for rework to conforming released output; distinguish internally returned scrap from waste leaving the site and prevent double counting of internal transfers. Any recycling or avoided-burden modelling belongs to the declared downstream method and shall be disclosed separately. | `eu-pef-2021` |\n| `allocation_no_unreported_coproduct` | Saleable by-products or recovered materials | Identify every saleable co-product or recovered material. If none occurs, state this explicitly; if one occurs, apply the declared allocation hierarchy and retain quantity, destination, and allocation evidence. | `eu-pef-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 265
+              line: 8
+              column: 1
+            end:
+              offset: 341
+              line: 8
+              column: 77
+          text: "# Machines and appliances for testing the mechanical properties of materials"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26025
+              line: 347
+              column: 1
+            end:
+              offset: 26065
+              line: 347
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37795"
+      family: "validation"
+      span:
+        start:
+          offset: 37795
+          line: 390
+          column: 1
+        end:
+          offset: 41196
+          line: 405
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | The reference product UUID shall be `f88ff979-7acf-4c6d-8a10-710337b61179`, the reference flow property UUID shall be `93a60a56-a3c8-11da-a746-0800200b9a66`, the unit-group UUID shall be `93a60a57-a4c8-11da-a746-0800200c9a66`, and the normalized reference amount shall be exactly 1 kg. | `unsd-cpc-3-0-2025` |\n| `validate_category_scope` | Product identity | The represented output shall be a complete mechanical-properties testing machine or appliance within CPC 3.0:48262. A separately supplied part or accessory within CPC 3.0:48285, a testing service, or a non-mechanical analytical instrument shall fail category conformance. | `unsd-cpc-3-0-2025` |\n| `validate_required_qualifiers` | Dataset metadata and reference-flow comment | Every qualifier listed in section 3 shall be present and consistent with the product specification, BOM, and release evidence. | `iso-7500-1-2018`; `iso-9513-2012`; `instron-3340-system-support` |\n| `validate_process_coverage` | Foreground process map | All three required processes shall be represented. Every applicable in-house fabrication, finishing, assembly, software or controller integration, calibration, verification, rework, and packaging operation shall be included or explicitly justified as outside the delivered configuration. | `eu-pef-2021`; `instron-3340-system-support` |\n| `validate_release_evidence` | Released product | Retain general inspection and applicable force-measurement calibration or verification evidence, achieved performance class or result, and extensometer calibration evidence when an extensometer is included. Missing applicable release evidence fails conformance. | `iso-7500-1-2018`; `iso-9513-2012` |\n| `validate_bom_and_upstream_links` | Purchased materials and components | The product-specific BOM shall reconcile to the represented configuration, and each material or component group shall have an upstream dataset or an explicitly disclosed unresolved gap. Potentially material burden-free inputs fail conformance. | `eu-pef-2021` |\n| `validate_allocation` | Shared inputs and operations | Allocation shall follow section 7 and retain the measured shared quantity, driver, denominator, period, product pool, and justification. Unsupported allocation or product-count allocation across materially different configurations fails conformance. | `eu-pef-2021` |\n| `validate_mass_and_internal_transfers` | Mass-bearing inventory and foreground links | Internal transfer outputs and inputs shall reconcile after stock change, and the section 8 mass-balance residual shall be calculated, investigated, and disclosed. A forced or unexplained residual makes validation inconclusive. | `eu-pef-2021` |\n| `validate_temporal_site_completeness` | Foreground evidence | Inputs, outputs, stock, waste, and released mass shall share a consistent period and cover all foreground sites. Missing site or period coverage without justification makes validation inconclusive. | `eu-pef-2021` |\n| `validate_no_unlabelled_estimates` | Foreground quantities | Every quantity shall be collected, calculated from collected data, or explicitly identified under an approved modelling method. Unlabelled estimates, invented zeros, and unsupported category defaults fail conformance. | `eu-pef-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 265
+              line: 8
+              column: 1
+            end:
+              offset: 341
+              line: 8
+              column: 77
+          text: "# Machines and appliances for testing the mechanical properties of materials"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37795
+              line: 390
+              column: 1
+            end:
+              offset: 37817
+              line: 390
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_purchased_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 7175
+          line: 64
+          column: 1
+        end:
+          offset: 7572
+          line: 64
+          column: 398
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_foreground_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 7573
+          line: 65
+          column: 1
+        end:
+          offset: 7972
+          line: 65
+          column: 400
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_direct_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 7973
+          line: 66
+          column: 1
+        end:
+          offset: 8307
+          line: 66
+          column: 335
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_release_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 8308
+          line: 67
+          column: 1
+        end:
+          offset: 8668
+          line: 67
+          column: 361
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 8669
+          line: 68
+          column: 1
+        end:
+          offset: 9093
+          line: 68
+          column: 425
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_no_data_cutoff"
+      identity_kind: "explicit"
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 9094
+          line: 69
+          column: 1
+        end:
+          offset: 9402
+          line: 69
+          column: 309
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid_by_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_26025"
+      source_span:
+        start:
+          offset: 26138
+          line: 351
+          column: 1
+        end:
+          offset: 26438
+          line: 351
+          column: 301
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_relationship"
+      identity_kind: "explicit"
+      unit_id: "normative_26025"
+      source_span:
+        start:
+          offset: 26439
+          line: 352
+          column: 1
+        end:
+          offset: 26848
+          line: 352
+          column: 410
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_other_relationship"
+      identity_kind: "explicit"
+      unit_id: "normative_26025"
+      source_span:
+        start:
+          offset: 26849
+          line: 353
+          column: 1
+        end:
+          offset: 27163
+          line: 353
+          column: 315
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_scrap_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_26025"
+      source_span:
+        start:
+          offset: 27164
+          line: 354
+          column: 1
+        end:
+          offset: 27574
+          line: 354
+          column: 411
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_no_unreported_coproduct"
+      identity_kind: "explicit"
+      unit_id: "normative_26025"
+      source_span:
+        start:
+          offset: 27575
+          line: 355
+          column: 1
+        end:
+          offset: 27890
+          line: 355
+          column: 316
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 37890
+          line: 394
+          column: 1
+        end:
+          offset: 38250
+          line: 394
+          column: 361
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_category_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 38251
+          line: 395
+          column: 1
+        end:
+          offset: 38595
+          line: 395
+          column: 345
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_required_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 38596
+          line: 396
+          column: 1
+        end:
+          offset: 38873
+          line: 396
+          column: 278
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 38874
+          line: 397
+          column: 1
+        end:
+          offset: 39267
+          line: 397
+          column: 394
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_release_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 39268
+          line: 398
+          column: 1
+        end:
+          offset: 39619
+          line: 398
+          column: 352
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_bom_and_upstream_links"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 39620
+          line: 399
+          column: 1
+        end:
+          offset: 39956
+          line: 399
+          column: 337
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 39957
+          line: 400
+          column: 1
+        end:
+          offset: 40281
+          line: 400
+          column: 325
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_mass_and_internal_transfers"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 40282
+          line: 401
+          column: 1
+        end:
+          offset: 40615
+          line: 401
+          column: 334
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_temporal_site_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 40616
+          line: 402
+          column: 1
+        end:
+          offset: 40895
+          line: 402
+          column: 280
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_no_unlabelled_estimates"
+      identity_kind: "explicit"
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 40896
+          line: 403
+          column: 1
+        end:
+          offset: 41194
+          line: 403
+          column: 299
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 7081
+          line: 60
+          column: 1
+        end:
+          offset: 7102
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7081"
+      source_span:
+        start:
+          offset: 9430
+          line: 73
+          column: 1
+        end:
+          offset: 10892
+          line: 80
+          column: 326
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26025"
+      source_span:
+        start:
+          offset: 26025
+          line: 347
+          column: 1
+        end:
+          offset: 26065
+          line: 347
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37795"
+      source_span:
+        start:
+          offset: 37795
+          line: 390
+          column: 1
+        end:
+          offset: 37817
+          line: 390
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:cd6335c864b05d56d4298a87e34a4bbd9e2130eb8a1cac6b63628730a4e91cb9"
-  generated_content_sha256: "sha256:9c461c9379a5de4f17acac9243fc417512a42890fdd8bb14cac1cb3f7a8e9614"
+  generated_content_sha256: "sha256:fc39d90f8f231f1ecc6fb7ff342aae5dfa972449bfbd47d3ec7d0e9245589d26"

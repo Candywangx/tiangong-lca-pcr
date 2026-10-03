@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -5466,12 +5466,549 @@ data_sources:
     type: "official_guidance"
     reference: "Commission Recommendation (EU) 2021/2279, Annex I, Product Environmental Footprint Method, consolidated text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (accessed 2026-08-13)."
     used_for: "Product-specific bill of materials, company-specific foreground data, complete LCI, allocation, transparency, data quality, reporting, verification and validation."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f89c0c4ee4d01e95ed9b79371f5cbbb4c4518f3eaea1bb6656ff591c5f3c50ec"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6949"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6949
+          line: 65
+          column: 1
+        end:
+          offset: 10769
+          line: 91
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Facility-gate receipt of one exact bovine-meat state: fresh boneless, chilled boneless, frozen boneless, or a separately identified purchased salted, dried or smoked bovine-meat input for further processing. |\n| starting_condition_role | Foreground manufacturing gate; supplier production, slaughter and inbound transport are linked upstream activities. |\n| product_classification_scope | CPC 3.0 `21182` only: bovine meat whose finished identity is salted, dried or smoked. |\n| recursive_input_rule | Keep each purchased CPC 21182 input as one exact salted, dried or smoked product input and link an upstream dataset; do not recreate its production inside this package. |\n| upstream_dataset_requirement | Use representative datasets for bovine production, slaughter, primary chilling or freezing, ingredient manufacture, packaging manufacture, utilities and inbound transport, with geography, technology and allocation disclosed. |\n| disclosure | Declare route id, operation order, product specification, all actual ingredients, smoke technology and medium, applicable preservation endpoints, packaging, release and storage condition, facility, line, geography, period, allocation and exclusions. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route_lock` | foreground data package | Declare one route identifier before collection: one concrete salted, dried, direct-wood-smoked or liquid-smoke route, or one explicitly ordered combination. Declare the exact finished-product specification. Do not aggregate different combinations. | `un-cpc-3-0-2025`; `fao-dried-salted-meats-1985`; `fao-meat-preservation-manual-1990`; `eu-pef-2021-2279` |\n| `boundary_start` | foreground system | Start at facility-gate receipt of one exact incoming bovine-meat state or one exact purchased preserved-bovine-meat input. Keep supplier production and inbound transport in linked upstream datasets. | `un-cpc-3-0-2025`; `eu-pef-2021-2279` |\n| `boundary_end` | foreground system | End at factory-gate release of 1 kg net conforming product after the declared preservation, packaging and conditioned-storage steps. Packaging mass is outside the reference-product mass. | `un-cpc-3-0-2025`; `eu-pef-2021-2279` |\n| `boundary_upstream` | upstream modelling | Bovine rearing, feed production, slaughter, primary chilling or freezing and inbound transport are outside foreground collection; link representative upstream datasets and disclose geography, technology and allocation. | `jrc-sa-bref-2024`; `eu-pef-2021-2279` |\n| `boundary_downstream` | downstream modelling | Distribution, retail, consumer preparation, use, food loss and packaging end of life are outside this foreground boundary unless a study adds them as separate downstream stages. | `eu-pef-2021-2279` |\n| `boundary_conditional_processes` | process map | Include only preservation and utility processes that physically occur in the locked route. Document every omitted conditional process with plant evidence. | `fao-dried-salted-meats-1985`; `fao-meat-preservation-manual-1990`; `eu-pef-2021-2279` |\n| `boundary_recursive_input` | same-category input | When an incoming flow already meets CPC 21182, keep its exact salted, dried or smoked identity as a purchased input and require a separate upstream dataset; do not recreate it recursively inside this package. | `un-cpc-3-0-2025`; `eu-pef-2021-2279` |\n| `boundary_atomic_extensions` | unlisted exchange | If the site uses an ingredient, chemical, wood species, refrigerant, packaging component, waste or emission not listed here, add one card for that exact single flow. Never place multiple candidates in one Selected flow. | `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 8
+              column: 1
+            end:
+              offset: 268
+              line: 8
+              column: 39
+          text: "# Bovine meat, salted, dried or smoked"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6949
+              line: 65
+              column: 1
+            end:
+              offset: 6970
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_218483"
+      family: "allocation"
+      span:
+        start:
+          offset: 218483
+          line: 3592
+          column: 1
+        end:
+          offset: 220297
+          line: 3603
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | shared operations | First subdivide lines, rooms, meters and batch records to the locked route and finished-product specification wherever technically feasible. | `eu-pef-2021-2279` |\n| `allocation_causal` | shared utilities | When subdivision is infeasible, use a documented physical causal driver for each shared utility or treatment operation and reconcile allocated values to the measured total. | `eu-pef-2021-2279` |\n| `allocation_coproduct_identity` | trimmings and recovered fat | Classify food-grade bovine trimmings or recovered bovine fat as co-products only when a documented beneficial destination and positive product function exist; otherwise retain the exact waste flow. | `eu-pef-2021-2279`; `jrc-sa-bref-2024` |\n| `allocation_joint_process` | joint co-products | If a joint process remains after subdivision and causal modelling, apply `calc_allocation_factor` with a justified physical driver; use an economic driver only when no defensible physical relation exists. Disclose values, period and sensitivity. | `eu-pef-2021-2279` |\n| `allocation_no_hidden_credit` | waste and recovery | Do not subtract an avoided burden or hide a recovery credit in a foreground amount. Model substitution, recycling or treatment consequences as explicit downstream scenarios outside this attributional foreground inventory. | `eu-pef-2021-2279` |\n| `allocation_mass_balance` | all stages | Reconcile input meat, ingredients and water with conforming product, co-products, waste, wastewater and calculated evaporation for every locked batch; investigate and disclose residuals. | `eu-pef-2021-2279`; `fao-dried-salted-meats-1985`; `fao-meat-preservation-manual-1990` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 8
+              column: 1
+            end:
+              offset: 268
+              line: 8
+              column: 39
+          text: "# Bovine meat, salted, dried or smoked"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 218483
+              line: 3592
+              column: 1
+            end:
+              offset: 218523
+              line: 3592
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_236600"
+      family: "validation"
+      span:
+        start:
+          offset: 236600
+          line: 3646
+          column: 1
+        end:
+          offset: 240114
+          line: 3663
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | reference flow | Confirm the sole reference-product UUID, Mass UUID, Units of mass UUID and kg unit exactly match this PCR; reject any non-CPC-21182 reference product. | `un-cpc-3-0-2025` |\n| `validate_route_spec` | dataset identity | Reject a package that lacks one locked route identifier, exact operation order, finished-product specification, ingredient list, smoke medium where applicable, preservation endpoint, storage condition or packaging declaration. | `fao-dried-salted-meats-1985`; `fao-meat-preservation-manual-1990`; `eu-pef-2021-2279` |\n| `validate_atomic_flows` | inventory cards | Reject any Selected flow that contains alternatives, plural categories, unnamed carriers, unnamed ingredients, unnamed chemicals, unnamed packaging, mixed wastes or combined emissions. Keep every non-reference UUID empty until dual exact verification. | `eu-pef-2021-2279` |\n| `validate_process_applicability` | process map | Confirm every active route operation has a process section and every omitted conditional process has documentary non-applicability evidence. Never merge direct wood smoking with liquid smoke application. | `fao-meat-preservation-manual-1990`; `eu-pef-2021-2279` |\n| `validate_reference_mass` | quantitative inventory | Confirm all amounts normalize to 1 kg net conforming product and packaging mass is excluded. Reconcile released net mass to batch and pack records. | `eu-pef-2021-2279` |\n| `validate_recipe_completeness` | ingredients and packaging | Reconcile the product-specific ingredient bill and every packaging component to stock, issue, return and batch records. Any unlisted actual flow requires a new atomic card. | `eu-pef-2021-2279` |\n| `validate_utility_reconciliation` | utilities | Reconcile electricity, steam, hot water and each fuel to meters or invoices. Document causal allocation of shared records and prohibit double counting purchased heat with upstream supplier fuel. | `eu-pef-2021-2279` |\n| `validate_refrigerants_emissions` | refrigeration and direct emissions | Reconcile every named refrigerant by stock balance. For each pollutant, retain direct measurements or the exact activity record, factor, factor source, unit conversion and calculation. | `eu-pef-2021-2279`; `jrc-sa-bref-2024` |\n| `validate_wastewater` | wastewater | Reconcile each generating wastewater stream to treatment inflow and discharge. Match volume and concentration periods for each named pollutant load. | `eu-pef-2021-2279`; `jrc-sa-bref-2024` |\n| `validate_mass_balance` | all production stages | Check stage and campaign mass balances across meat, ingredients, product, co-products, waste, wastewater and evaporation. Investigate residuals instead of forcing them into an aggregate flow. | `eu-pef-2021-2279`; `fao-dried-salted-meats-1985`; `fao-meat-preservation-manual-1990` |\n| `validate_temporal_scope` | foreground evidence | Confirm route, specification, recipes, meters, waste records and laboratory samples cover the same representative period and identify shutdowns, abnormal batches and exclusions. | `eu-pef-2021-2279` |\n| `validate_quality_verification` | published dataset | Retain evidence for completeness, precision, temporal, technological and geographical representativeness, calculations, source provenance and reviewer sign-off. External communication requires the applicable PEF verification and validation procedure. | `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 8
+              column: 1
+            end:
+              offset: 268
+              line: 8
+              column: 39
+          text: "# Bovine meat, salted, dried or smoked"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 236600
+              line: 3646
+              column: 1
+            end:
+              offset: 236622
+              line: 3646
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route_lock"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 8354
+          line: 82
+          column: 1
+        end:
+          offset: 8763
+          line: 82
+          column: 410
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_start"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 8764
+          line: 83
+          column: 1
+        end:
+          offset: 9045
+          line: 83
+          column: 282
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_end"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 9046
+          line: 84
+          column: 1
+        end:
+          offset: 9313
+          line: 84
+          column: 268
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 9314
+          line: 85
+          column: 1
+        end:
+          offset: 9620
+          line: 85
+          column: 307
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 9621
+          line: 86
+          column: 1
+        end:
+          offset: 9870
+          line: 86
+          column: 250
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_conditional_processes"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 9871
+          line: 87
+          column: 1
+        end:
+          offset: 10167
+          line: 87
+          column: 297
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_recursive_input"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 10168
+          line: 88
+          column: 1
+        end:
+          offset: 10471
+          line: 88
+          column: 304
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_atomic_extensions"
+      identity_kind: "explicit"
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 10472
+          line: 89
+          column: 1
+        end:
+          offset: 10767
+          line: 89
+          column: 296
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 218596
+          line: 3596
+          column: 1
+        end:
+          offset: 218808
+          line: 3596
+          column: 213
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 218809
+          line: 3597
+          column: 1
+        end:
+          offset: 219047
+          line: 3597
+          column: 239
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_coproduct_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 219048
+          line: 3598
+          column: 1
+        end:
+          offset: 219354
+          line: 3598
+          column: 307
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_joint_process"
+      identity_kind: "explicit"
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 219355
+          line: 3599
+          column: 1
+        end:
+          offset: 219674
+          line: 3599
+          column: 320
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_no_hidden_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 219675
+          line: 3600
+          column: 1
+        end:
+          offset: 219974
+          line: 3600
+          column: 300
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 219975
+          line: 3601
+          column: 1
+        end:
+          offset: 220295
+          line: 3601
+          column: 321
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 236695
+          line: 3650
+          column: 1
+        end:
+          offset: 236908
+          line: 3650
+          column: 214
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_route_spec"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 236909
+          line: 3651
+          column: 1
+        end:
+          offset: 237271
+          line: 3651
+          column: 363
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_atomic_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 237272
+          line: 3652
+          column: 1
+        end:
+          offset: 237592
+          line: 3652
+          column: 321
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_process_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 237593
+          line: 3653
+          column: 1
+        end:
+          offset: 237907
+          line: 3653
+          column: 315
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 237908
+          line: 3654
+          column: 1
+        end:
+          offset: 238133
+          line: 3654
+          column: 226
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_recipe_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 238134
+          line: 3655
+          column: 1
+        end:
+          offset: 238392
+          line: 3655
+          column: 259
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_utility_reconciliation"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 238393
+          line: 3656
+          column: 1
+        end:
+          offset: 238660
+          line: 3656
+          column: 268
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_refrigerants_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 238661
+          line: 3657
+          column: 1
+        end:
+          offset: 238963
+          line: 3657
+          column: 303
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_wastewater"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 238964
+          line: 3658
+          column: 1
+        end:
+          offset: 239194
+          line: 3658
+          column: 231
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 239195
+          line: 3659
+          column: 1
+        end:
+          offset: 239529
+          line: 3659
+          column: 335
+    - pointer: "/validation_rules/10"
+      rule_id: "validate_temporal_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 239530
+          line: 3660
+          column: 1
+        end:
+          offset: 239782
+          line: 3660
+          column: 253
+    - pointer: "/validation_rules/11"
+      rule_id: "validate_quality_verification"
+      identity_kind: "explicit"
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 239783
+          line: 3661
+          column: 1
+        end:
+          offset: 240112
+          line: 3661
+          column: 330
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 6949
+          line: 65
+          column: 1
+        end:
+          offset: 6970
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6949"
+      source_span:
+        start:
+          offset: 6998
+          line: 69
+          column: 1
+        end:
+          offset: 8261
+          line: 76
+          column: 267
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_218483"
+      source_span:
+        start:
+          offset: 218483
+          line: 3592
+          column: 1
+        end:
+          offset: 218523
+          line: 3592
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_236600"
+      source_span:
+        start:
+          offset: 236600
+          line: 3646
+          column: 1
+        end:
+          offset: 236622
+          line: 3646
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:f89c0c4ee4d01e95ed9b79371f5cbbb4c4518f3eaea1bb6656ff591c5f3c50ec"
-  generated_content_sha256: "sha256:a7fde05032d200bfecf9bc0ce58dd630098e8d2e0c9512e87dd6c3c29d867f05"
+  generated_content_sha256: "sha256:e8febcdcd77099c7a7b214b68c030f53702762c446e122e51e33ab868d9e454b"

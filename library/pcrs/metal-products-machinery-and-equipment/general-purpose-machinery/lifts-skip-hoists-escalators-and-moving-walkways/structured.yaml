@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1033,12 +1033,471 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf (retrieved 2026-07-26)"
     used_for: "Product-specific BOM and company data, system boundary, exclusion disclosure, allocation hierarchy, foreground collection, mass balance, and data quality"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c23724072f40d7c597d2cec08587b204346cc956f2488ed58a3eb6516e6683a5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7957"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7957
+          line: 68
+          column: 1
+        end:
+          offset: 11559
+          line: 90
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Product-specific BOM and accepted purchased materials, components, and subassemblies at the reporting manufacturer's receiving boundary, with upstream datasets linked for their production and delivery |\n| starting_condition_role | The foreground starts at manufacturer-controlled receipt and covers all manufacturer-controlled preparation, assembly, testing, acceptance, packaging, and factory-gate release activities |\n| product_classification_scope | Complete equipment within the reviewed semantic scope; the CPC 43540 reference is mapping context and does not authorize inclusion of unrelated lifting or conveying machinery |\n| recursive_input_rule | A purchased lift, skip hoist, escalator, moving-walk subsystem, or same-category complete unit used as an input is recorded once as a product input with an upstream dataset; its internal manufacture is not recursively expanded in the same foreground package |\n| upstream_dataset_requirement | Each purchased material, component, energy carrier, transport service, treatment service, and other technosphere input requires a representative upstream dataset or an explicit unresolved-data disclosure |\n| disclosure | Declare equipment subtype, complete-versus-subsystem scope, BOM coverage, outsourced and in-house operations, geography, factory-gate condition, exclusions, allocation drivers, and whether installation, use, maintenance, modernization, or end-of-life processes are present |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_product_specific_bom` | Product and manufacturing scope | Use a product-specific BOM and company- or site-specific manufacturing records for the equipment in scope. Generic component shares may be used only as an explicitly disclosed temporary data gap, not as a conforming foreground result. | `eu-pef-method-2021`; `epd-intl-cpcr-008-lifts-v2-0-0` |\n| `sb_factory_gate_core` | Common foreground boundary | Include manufacturer-controlled component preparation, assembly, integration, factory testing, acceptance, packaging, and factory-gate release. Identify co-products, by-products, rejects, and wastes crossing the foreground boundary. | `eu-pef-method-2021` |\n| `sb_conditional_downstream` | Installation, use, maintenance, modernization, and end of life | Model downstream stages only as explicit conditional processes with their own scenario, geography, time basis, and data sources. Their exclusion from a factory-gate dataset must be stated and must not be interpreted as zero impact. | `eu-pef-method-2021`; `epd-intl-pcr-2019-14-v2-0-1` |\n| `sb_subtype_method_separation` | Equipment subtype | Apply lift-specific PCR evidence only to lifts. Apply ISO 25745-2 only to applicable lifts and ISO 25745-3 only to applicable escalators and moving walks. Keep skip-hoist rules grounded in foreground records or separately applicable evidence. | `epd-intl-cpcr-008-lifts-v2-0-0`; `iso-25745-2-2015`; `iso-25745-3-2015` |\n| `sb_ancillary_energy_disclosure` | Conditional operational energy | Separate equipment-associated operational energy from building or site ancillary loads. List every included and excluded ancillary load and retain meter-boundary evidence. | `iso-25745-1-2023`; `iso-25745-3-2015` |\n| `sb_exclusion_justification` | All exclusions and cut-offs | Document the reason and potential significance of each excluded process or flow. Do not omit a relevant flow solely because its quantity or UUID is not yet available. | `eu-pef-method-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 11
+              column: 1
+            end:
+              offset: 332
+              line: 11
+              column: 53
+          text: "# Lifts, skip hoists, escalators and moving walkways"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7957
+              line: 68
+              column: 1
+            end:
+              offset: 7978
+              line: 68
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36342"
+      family: "allocation"
+      span:
+        start:
+          offset: 36342
+          line: 555
+          column: 1
+        end:
+          offset: 38003
+          line: 565
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `alloc_subdivision_first` | Shared and multifunctional manufacturing processes | Avoid allocation by metering, production-order tracking, or subdivision. If that is not possible, document why and use a causal physical driver such as machine time, energy demand, processed mass, or tested unit-hours. | `eu-pef-method-2021` |\n| `alloc_other_relationship_last` | Residual shared burdens | Use economic or another non-physical relationship only after subdivision, system expansion, and a relevant physical relationship have been shown impracticable. Record the data period, factor calculation, affected processes, and sensitivity. | `eu-pef-method-2021` |\n| `alloc_internal_transfers` | Internal components and intermediate equipment states | Carry internal transfers without duplicating upstream burdens. Allocate only the incremental process inputs and outputs of the receiving process. | `eu-pef-method-2021` |\n| `alloc_rework_and_rejects` | Rework, rejects, and production scrap | Keep rework burdens with the accepted reference product. Record rejects and scrap as outputs; do not credit recycling or avoided production inside the foreground unless the chosen lifecycle method explicitly requires it and all parameters are disclosed. | `eu-pef-method-2021` |\n| `alloc_packaging` | Equipment and packaging | Keep equipment dry mass and packaging mass separate. Allocate packaging-operation burdens using directly measured packing records or a causal driver; do not add packaging mass to the equipment reference output. | `eu-pef-method-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 11
+              column: 1
+            end:
+              offset: 332
+              line: 11
+              column: 53
+          text: "# Lifts, skip hoists, escalators and moving walkways"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36342
+              line: 555
+              column: 1
+            end:
+              offset: 36382
+              line: 555
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_49968"
+      family: "validation"
+      span:
+        start:
+          offset: 49968
+          line: 605
+          column: 1
+        end:
+          offset: 52556
+          line: 619
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_identity_and_scope` | Reference product | Fail when canonical PCR id, equipment subtype, complete-versus-subsystem scope, CPC context, or required reference qualifiers are missing or contradictory. | `unsd-cpc-3-2025`; `epd-intl-cpcr-008-lifts-v2-0-0` |\n| `val_reference_uuid_and_mass` | Reference flow | Require product flow `71c9140f-5a21-4ba8-ac40-c272cdf45654`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass group `93a60a57-a4c8-11da-a746-0800200c9a66`, unit kg, reference output 1 kg, and a positive whole-unit dry mass. |  |\n| `val_bom_and_mass_balance` | Manufacturing inventory | Require a product-specific BOM, separate equipment and packaging mass, process waste by route, and documented investigation of material mass-balance residuals. | `eu-pef-method-2021` |\n| `val_required_processes` | Process coverage | Require final assembly and integration, factory testing and acceptance, and packaging and factory-gate release. Require component preparation whenever the manufacturer controls a listed component operation. | `eu-pef-method-2021` |\n| `val_allocation_evidence` | Shared processes | Fail shared-resource allocation without a reconciled total, causal driver, denominator population, data period, and explanation of why direct measurement or subdivision was not used. | `eu-pef-method-2021` |\n| `val_operational_subtype_method` | Conditional use-stage energy | Require the declared subtype-specific method. Reject lift c-PCR or ISO 25745-2 extrapolation to skip hoists, escalators, or moving walks; reject ISO 25745-3 extrapolation to lifts or skip hoists. | `epd-intl-cpcr-008-lifts-v2-0-0`; `iso-25745-2-2015`; `iso-25745-3-2015` |\n| `val_operational_boundary` | Conditional use-stage energy | Require a single-unit equipment meter or model boundary, declared included and excluded ancillary loads, period, geometry, duty or usage category, and service life. | `iso-25745-1-2023`; `iso-25745-2-2015`; `iso-25745-3-2015` |\n| `val_source_and_estimate_status` | External evidence and estimates | Fail an external-source value without a listed source id. Flag any `reasoned_estimate` as provisional and incomplete for activation until the review record explicitly accepts or replaces it. | `eu-pef-method-2021` |\n| `val_completeness_and_exclusions` | Dataset completeness | Fail silent omissions, missing upstream dataset links, missing treatment routes, or exclusions without reason and potential-significance disclosure. | `eu-pef-method-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 11
+              column: 1
+            end:
+              offset: 332
+              line: 11
+              column: 53
+          text: "# Lifts, skip hoists, escalators and moving walkways"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 49968
+              line: 605
+              column: 1
+            end:
+              offset: 49990
+              line: 605
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_product_specific_bom"
+      identity_kind: "explicit"
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 9586
+          line: 83
+          column: 1
+        end:
+          offset: 9943
+          line: 83
+          column: 358
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_factory_gate_core"
+      identity_kind: "explicit"
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 9944
+          line: 84
+          column: 1
+        end:
+          offset: 10257
+          line: 84
+          column: 314
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_conditional_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 10258
+          line: 85
+          column: 1
+        end:
+          offset: 10642
+          line: 85
+          column: 385
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_subtype_method_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 10643
+          line: 86
+          column: 1
+        end:
+          offset: 11017
+          line: 86
+          column: 375
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_ancillary_energy_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 11018
+          line: 87
+          column: 1
+        end:
+          offset: 11302
+          line: 87
+          column: 285
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sb_exclusion_justification"
+      identity_kind: "explicit"
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 11303
+          line: 88
+          column: 1
+        end:
+          offset: 11557
+          line: 88
+          column: 255
+    - pointer: "/allocation_rules/0"
+      rule_id: "alloc_subdivision_first"
+      identity_kind: "explicit"
+      unit_id: "normative_36342"
+      source_span:
+        start:
+          offset: 36455
+          line: 559
+          column: 1
+        end:
+          offset: 36781
+          line: 559
+          column: 327
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_other_relationship_last"
+      identity_kind: "explicit"
+      unit_id: "normative_36342"
+      source_span:
+        start:
+          offset: 36782
+          line: 560
+          column: 1
+        end:
+          offset: 37109
+          line: 560
+          column: 328
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_internal_transfers"
+      identity_kind: "explicit"
+      unit_id: "normative_36342"
+      source_span:
+        start:
+          offset: 37110
+          line: 561
+          column: 1
+        end:
+          offset: 37367
+          line: 561
+          column: 258
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_rework_and_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_36342"
+      source_span:
+        start:
+          offset: 37368
+          line: 562
+          column: 1
+        end:
+          offset: 37717
+          line: 562
+          column: 350
+    - pointer: "/allocation_rules/4"
+      rule_id: "alloc_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_36342"
+      source_span:
+        start:
+          offset: 37718
+          line: 563
+          column: 1
+        end:
+          offset: 38001
+          line: 563
+          column: 284
+    - pointer: "/validation_rules/0"
+      rule_id: "val_identity_and_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 50063
+          line: 609
+          column: 1
+        end:
+          offset: 50323
+          line: 609
+          column: 261
+    - pointer: "/validation_rules/1"
+      rule_id: "val_reference_uuid_and_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 50324
+          line: 610
+          column: 1
+        end:
+          offset: 50622
+          line: 610
+          column: 299
+    - pointer: "/validation_rules/2"
+      rule_id: "val_bom_and_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 50623
+          line: 611
+          column: 1
+        end:
+          offset: 50864
+          line: 611
+          column: 242
+    - pointer: "/validation_rules/3"
+      rule_id: "val_required_processes"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 50865
+          line: 612
+          column: 1
+        end:
+          offset: 51144
+          line: 612
+          column: 280
+    - pointer: "/validation_rules/4"
+      rule_id: "val_allocation_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 51145
+          line: 613
+          column: 1
+        end:
+          offset: 51401
+          line: 613
+          column: 257
+    - pointer: "/validation_rules/5"
+      rule_id: "val_operational_subtype_method"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 51402
+          line: 614
+          column: 1
+        end:
+          offset: 51742
+          line: 614
+          column: 341
+    - pointer: "/validation_rules/6"
+      rule_id: "val_operational_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 51743
+          line: 615
+          column: 1
+        end:
+          offset: 52032
+          line: 615
+          column: 290
+    - pointer: "/validation_rules/7"
+      rule_id: "val_source_and_estimate_status"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 52033
+          line: 616
+          column: 1
+        end:
+          offset: 52319
+          line: 616
+          column: 287
+    - pointer: "/validation_rules/8"
+      rule_id: "val_completeness_and_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 52320
+          line: 617
+          column: 1
+        end:
+          offset: 52554
+          line: 617
+          column: 235
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 7957
+          line: 68
+          column: 1
+        end:
+          offset: 7978
+          line: 68
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7957"
+      source_span:
+        start:
+          offset: 8006
+          line: 72
+          column: 1
+        end:
+          offset: 9513
+          line: 79
+          column: 290
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36342"
+      source_span:
+        start:
+          offset: 36342
+          line: 555
+          column: 1
+        end:
+          offset: 36382
+          line: 555
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_49968"
+      source_span:
+        start:
+          offset: 49968
+          line: 605
+          column: 1
+        end:
+          offset: 49990
+          line: 605
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:c23724072f40d7c597d2cec08587b204346cc956f2488ed58a3eb6516e6683a5"
-  generated_content_sha256: "sha256:156c94b98bd9751d65911d29432bd61bed738abccb6db6c90e658247d1511862"
+  generated_content_sha256: "sha256:154e7058621d2129574bf5395b140a66192b78cd03ba67e041a16a474d48a3fa"

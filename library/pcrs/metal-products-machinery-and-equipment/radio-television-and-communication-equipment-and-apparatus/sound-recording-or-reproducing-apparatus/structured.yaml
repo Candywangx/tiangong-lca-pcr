@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1055,12 +1055,484 @@ data_sources:
     type: "method_factor"
     reference: "Conservation-of-mass accounting identity; no external quantitative factor"
     used_for: "BOM, process, yield, and treatment reconciliation. It supplies no category-average amount or QA threshold."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:7b47b1c0d26acf560d45e6652ac4b223af54fc6b0e4bdf5f147316344b5d9d0f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7549"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7549
+          line: 63
+          column: 1
+        end:
+          offset: 11656
+          line: 91
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe required foreground boundary is cradle-to-producer-gate for the finished apparatus. Purchased materials, electronic parts, drives, storage devices, displays, controls, batteries, power supplies, enclosures, cables, and other subassemblies cross the starting boundary as product inputs. The foreground includes assembly and integration, software or firmware loading when part of production, functional and electrical tests, rework and yield losses, on-site utilities, direct releases, and packaging. Upstream production of purchased inputs is linked through supplier-specific or fit-for-purpose secondary datasets rather than silently absorbed into a generic apparatus proxy.\n\nUse and end-of-life modules are conditional and shall be added for cradle-to-grave claims or comparisons affected by operational energy, lifetime, repair, battery replacement, storage/media replacement, or treatment route. Their assumptions and results remain separately visible from producer-gate manufacturing.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased materials, named components and subassemblies, energy, water, consumables, and packaging delivered to the declared manufacturing sites. |\n| starting_condition_role | Upstream product inputs to foreground assembly, integration, test, finishing, and packaging. |\n| product_classification_scope | CPC 3.0 code 47321 only, constrained by primary sound recording/reproduction function and the required subtype qualifiers. |\n| recursive_input_rule | If a same-category apparatus or intermediate audio-equipment unit is used as an input, keep its supplied identity, mass, function, and upstream dataset link explicit; do not relabel it as the study output or recursively apply this PCR without a separately justified boundary. |\n| upstream_dataset_requirement | Prefer supplier-specific component data. Otherwise select secondary data matching component technology, material, geography, time, and production route, and disclose every mismatch and cut-off. |\n| disclosure | Declare sites, assembly depth, purchased-versus-made component groups, product subtype, included accessories, BOM coverage, test boundary, packaging, yield, allocation, use profile if any, end-of-life scenario if any, and data gaps. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_factory_gate` | Required manufacturing profile | Include raw-material and component supply links plus foreground assembly, integration, testing, rework, utilities, direct releases, waste, and packaging up to the producer gate. Keep purchased-input production distinguishable from foreground operations. | `eu-pef-2021`; `itu-l-1410-2024` |\n| `sb_component_groups` | Product composition | Report audio electronics, drive/media-handling, storage, display/control, battery, power supply, enclosure, and other included components as separate groups, including explicit zero or not-applicable values. | `iec-62474-2018` |\n| `sb_test_and_rework` | Manufacturing sites | Include functional test, electrical test, firmware/configuration operations, calibration where relevant, rework, reject handling, and associated energy and materials. | `eu-pef-2021` |\n| `sb_use_profile` | Cradle-to-grave or use-sensitive study | Model supported recording, playback/decoding, idle, standby, and auto-power-down modes separately with measured power, hours, lifetime, and electricity mix; do not impose unsupported modes. | `iec-62087-6`; `itu-l-1410-2024` |\n| `sb_end_of_life` | Cradle-to-grave study | Keep collection, preparation for reuse or repair, dismantling, battery removal, treatment, recycling, recovery, and final disposal assumptions explicit and region-specific. | `itu-l-1410-2024`; `eu-weee-2012`; `eu-batteries-2023` |\n| `sb_no_proxy_collapse` | Dataset selection and interpretation | Do not use a standalone speaker, amplifier, phone, general computer, video apparatus, intermediate audio-equipment unit, or one narrow player model as a proxy for the full CPC 47321 category. | `unsd-cpc-3` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 218
+              line: 8
+              column: 1
+            end:
+              offset: 260
+              line: 8
+              column: 43
+          text: "# Sound recording or reproducing apparatus"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7549
+              line: 63
+              column: 1
+            end:
+              offset: 7570
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36892"
+      family: "allocation"
+      span:
+        start:
+          offset: 36892
+          line: 583
+          column: 1
+        end:
+          offset: 38435
+          line: 592
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `alloc_avoid` | All multi-output or shared operations | First subdivide meters, BOM issues, labor or machine time, lines, test stations, and waste records by product or process. Use system expansion only when the substituted function and dataset are explicitly justified. | `eu-pef-2021` |\n| `alloc_shared_line` | Shared assembly, test, building services, compressed air, and packaging operations | After subdivision is exhausted, allocate using a documented physical driver causally related to resource use, such as machine time, test time, metered energy, processed mass, or accepted units. Revenue allocation requires evidence that no physical relationship is defensible and shall be disclosed. | `eu-pef-2021` |\n| `alloc_rework_scrap` | Rework, rejects, scrap, and yield loss | Attribute resources and waste to the product batch that caused them. Credit neither internal same-process recycling nor rework return as an avoided product; reconcile gross input, accepted output, internal return, and outbound waste. | `mass-balance-identity` |\n| `alloc_recycling` | End-of-life recovery and recycled inputs | State the selected cut-off, recycled-content, end-of-life, substitution, or other allocation approach and apply it consistently. Report collection, sorting, treatment yields, substitution quality, and burdens or credits separately; do not claim credit from theoretical recyclability. | `eu-pef-2021`; `eu-weee-2012` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 218
+              line: 8
+              column: 1
+            end:
+              offset: 260
+              line: 8
+              column: 43
+          text: "# Sound recording or reproducing apparatus"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36892
+              line: 583
+              column: 1
+            end:
+              offset: 36932
+              line: 583
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50572"
+      family: "validation"
+      span:
+        start:
+          offset: 50572
+          line: 630
+          column: 1
+        end:
+          offset: 53176
+          line: 644
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_reference_identity` | Reference product | Confirm UUID `cf3287f1-47c4-472c-86ab-a9e5ac93a858`, state code 100, Product flow type, CPC 3.0 code 47321 semantics, Mass property UUID, Units of mass UUID, and kg reference unit. | `unsd-cpc-3` |\n| `val_subtype_matrix` | Product metadata | Require recording/playback/both, portable/fixed, analog/digital/hybrid, internal/removable/both/external-or-streamed media configuration, consumer/professional use, and power architecture; reject undisclosed subtype values. | `unsd-cpc-3` |\n| `val_component_groups` | BOM and inventory | Require separate audio electronics, drive/media, storage, display/control, battery, power supply, enclosure, and other component masses with evidence, explicit zero/not applicable, and included-accessory treatment. | `iec-62474-2018`; `eu-batteries-2023` |\n| `val_mass_balance` | Each manufacturing and treatment stage | Reconcile mass inputs, product outputs, waste, measured direct releases, and stock change. Flag unexplained residuals; do not repair them with invented component amounts or category averages. | `mass-balance-identity` |\n| `val_power_profile` | Use-sensitive dataset | Require exact tested variant, firmware, input conditions, mode definitions, signal/media/load, external-power boundary, measured W, mode hours, lifetime, and non-overlapping energy calculation. Rated input alone is insufficient. | `iec-62087-6`; `itu-l-1410-2024` |\n| `val_functional_output` | Final product | Confirm the declared recording and/or playback functions and applicable storage/media, control, power, acoustic/electrical, and safety acceptance tests passed for the output denominator. | `iec-62087-6` |\n| `val_no_category_proxy` | Dataset selection and family averaging | Reject standalone speakers, amplifiers, phones, general computers, video equipment, intermediate audio units, parts, or a narrow player model as an unqualified proxy for CPC 47321. | `unsd-cpc-3` |\n| `val_allocation_and_recycling` | Shared operations, scrap, and end of life | Verify subdivision attempts, causal allocation drivers, yield attribution, and explicit recycling approach. Reject credits based solely on theoretical recyclability. | `eu-pef-2021`; `eu-weee-2012` |\n| `val_source_quality` | All external and secondary evidence | Verify authoritative full-text source, stable reference, applicability, time/geography/technology fit, and explicit transformations. Treat unsupported quantities and search snippets as unavailable. | `eu-pef-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 218
+              line: 8
+              column: 1
+            end:
+              offset: 260
+              line: 8
+              column: 43
+          text: "# Sound recording or reproducing apparatus"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50572
+              line: 630
+              column: 1
+            end:
+              offset: 50594
+              line: 630
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 7572
+          line: 65
+          column: 1
+        end:
+          offset: 8250
+          line: 65
+          column: 679
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 8252
+          line: 67
+          column: 1
+        end:
+          offset: 8564
+          line: 67
+          column: 313
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_factory_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 9959
+          line: 84
+          column: 1
+        end:
+          offset: 10304
+          line: 84
+          column: 346
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_component_groups"
+      identity_kind: "explicit"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 10305
+          line: 85
+          column: 1
+        end:
+          offset: 10581
+          line: 85
+          column: 277
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_test_and_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 10582
+          line: 86
+          column: 1
+        end:
+          offset: 10813
+          line: 86
+          column: 232
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sb_use_profile"
+      identity_kind: "explicit"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 10814
+          line: 87
+          column: 1
+        end:
+          offset: 11102
+          line: 87
+          column: 289
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "sb_end_of_life"
+      identity_kind: "explicit"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 11103
+          line: 88
+          column: 1
+        end:
+          offset: 11379
+          line: 88
+          column: 277
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "sb_no_proxy_collapse"
+      identity_kind: "explicit"
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 11380
+          line: 89
+          column: 1
+        end:
+          offset: 11654
+          line: 89
+          column: 275
+    - pointer: "/allocation_rules/0"
+      rule_id: "alloc_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_36892"
+      source_span:
+        start:
+          offset: 37005
+          line: 587
+          column: 1
+        end:
+          offset: 37296
+          line: 587
+          column: 292
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_shared_line"
+      identity_kind: "explicit"
+      unit_id: "normative_36892"
+      source_span:
+        start:
+          offset: 37297
+          line: 588
+          column: 1
+        end:
+          offset: 37722
+          line: 588
+          column: 426
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_rework_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_36892"
+      source_span:
+        start:
+          offset: 37723
+          line: 589
+          column: 1
+        end:
+          offset: 38050
+          line: 589
+          column: 328
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_36892"
+      source_span:
+        start:
+          offset: 38051
+          line: 590
+          column: 1
+        end:
+          offset: 38433
+          line: 590
+          column: 383
+    - pointer: "/validation_rules/0"
+      rule_id: "val_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 50667
+          line: 634
+          column: 1
+        end:
+          offset: 50913
+          line: 634
+          column: 247
+    - pointer: "/validation_rules/1"
+      rule_id: "val_subtype_matrix"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 50914
+          line: 635
+          column: 1
+        end:
+          offset: 51198
+          line: 635
+          column: 285
+    - pointer: "/validation_rules/2"
+      rule_id: "val_component_groups"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 51199
+          line: 636
+          column: 1
+        end:
+          offset: 51502
+          line: 636
+          column: 304
+    - pointer: "/validation_rules/3"
+      rule_id: "val_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 51503
+          line: 637
+          column: 1
+        end:
+          offset: 51786
+          line: 637
+          column: 284
+    - pointer: "/validation_rules/4"
+      rule_id: "val_power_profile"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 51787
+          line: 638
+          column: 1
+        end:
+          offset: 52100
+          line: 638
+          column: 314
+    - pointer: "/validation_rules/5"
+      rule_id: "val_functional_output"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 52101
+          line: 639
+          column: 1
+        end:
+          offset: 52349
+          line: 639
+          column: 249
+    - pointer: "/validation_rules/6"
+      rule_id: "val_no_category_proxy"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 52350
+          line: 640
+          column: 1
+        end:
+          offset: 52616
+          line: 640
+          column: 267
+    - pointer: "/validation_rules/7"
+      rule_id: "val_allocation_and_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 52617
+          line: 641
+          column: 1
+        end:
+          offset: 52895
+          line: 641
+          column: 279
+    - pointer: "/validation_rules/8"
+      rule_id: "val_source_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 52896
+          line: 642
+          column: 1
+        end:
+          offset: 53174
+          line: 642
+          column: 279
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 7549
+          line: 63
+          column: 1
+        end:
+          offset: 7570
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7549"
+      source_span:
+        start:
+          offset: 8592
+          line: 71
+          column: 1
+        end:
+          offset: 9866
+          line: 78
+          column: 250
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36892"
+      source_span:
+        start:
+          offset: 36892
+          line: 583
+          column: 1
+        end:
+          offset: 36932
+          line: 583
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50572"
+      source_span:
+        start:
+          offset: 50572
+          line: 630
+          column: 1
+        end:
+          offset: 50594
+          line: 630
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:7b47b1c0d26acf560d45e6652ac4b223af54fc6b0e4bdf5f147316344b5d9d0f"
-  generated_content_sha256: "sha256:57611ac645af22678b98d60946ce9657c4901a358ecdfdbdf69ba079d91da7d6"
+  generated_content_sha256: "sha256:86a14856e5e78ee876dc4debd38c3f521c34af4f77f3bb80ecee376c00ec240d"

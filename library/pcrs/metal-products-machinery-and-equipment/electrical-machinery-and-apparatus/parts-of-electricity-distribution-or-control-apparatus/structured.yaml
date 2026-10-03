@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -569,12 +569,393 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission Joint Research Centre, *Surface Treatment of Metals and Plastics BREF*, adopted August 2006, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-metals-and-plastics (retrieved 2026-09-04)"
     used_for: "Conditional electrolytic or chemical treatment boundary, water-based operations and associated activities"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8aec32586904134dead440f885144215499d54a4b2e66ae1f0100d572d3bd4f5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5921"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5921
+          line: 62
+          column: 1
+        end:
+          offset: 7943
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Production-ready purchased materials, components, chemicals and energy carriers received at the foreground factory gate |\n| starting_condition_role | Foreground manufacturing starts at receipt; extraction, refining and manufacture of purchased inputs are represented by upstream datasets |\n| product_classification_scope | Dedicated parts supplied separately for electricity distribution or control apparatus; complete apparatus and general-purpose items are excluded |\n| recursive_input_rule | A purchased CPC 46220 input is recorded once with its upstream dataset and is not recursively remanufactured inside this foreground boundary |\n| upstream_dataset_requirement | Each purchased product or energy input links to a geographically and technologically representative dataset with declared state and delivery boundary |\n| disclosure | Declare product definition, composition, purchased forms, included and subcontracted operations, geography, period, energy supply, scrap destinations, wastewater and sludge hand-off, and omissions |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_factory_gate` | foreground manufacturing | Include all on-site operations from receipt through release of the conforming part; exclude distribution, installation, use, maintenance and end of life. | `schneider-electric-masterpact-rear-connection-pep-2024` |\n| `boundary_surface_treatment` | aqueous surface treatment | Include water, each chemical, electricity and heat, bath losses, wastewater, sludge, and directly measured emissions when aqueous treatment applies; otherwise document each row as not applicable. | `eu-jrc-stm-bref-2006` |\n| `boundary_actual_materials` | purchased inputs | Add one atomic product-input row for every actual purchased material or component; never substitute an umbrella material-family row. | `schneider-electric-masterpact-rear-connection-pep-2024` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 208
+              line: 8
+              column: 1
+            end:
+              offset: 264
+              line: 8
+              column: 57
+          text: "# Parts of electricity distribution or control apparatus"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5921
+              line: 62
+              column: 1
+            end:
+              offset: 5942
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_19739"
+      family: "allocation"
+      span:
+        start:
+          offset: 19739
+          line: 302
+          column: 1
+        end:
+          offset: 20707
+          line: 311
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | shared lines and services | First avoid allocation through lot-, line- or equipment-level metering and subdivision. | |\n| `allocation_physical` | unavoidable shared exchanges | Allocate using a documented causal physical driver such as machine time, metered energy, processed mass, bath loading or occupied volume; do not default to revenue. | |\n| `allocation_scrap` | recoverable scrap | Report gross inputs and gross scrap outputs without netting. Declare the end-of-waste boundary and recycling method; do not credit avoided production inside this foreground inventory unless explicitly required by goal and scope. | |\n| `allocation_quality` | family datasets | Allow production-weighted family averages only for sufficiently homogeneous functions, specifications, materials and routes; otherwise publish separate datasets. | |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 208
+              line: 8
+              column: 1
+            end:
+              offset: 264
+              line: 8
+              column: 57
+          text: "# Parts of electricity distribution or control apparatus"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 19739
+              line: 302
+              column: 1
+            end:
+              offset: 19779
+              line: 302
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26196"
+      family: "validation"
+      span:
+        start:
+          offset: 26196
+          line: 344
+          column: 1
+        end:
+          offset: 27405
+          line: 356
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference flow | Confirm one 1 kg CPC 46220 reference output and all required qualifiers. | `un-cpc-3-0-structure-2025` |\n| `validate_atomic_rows` | inventory | Confirm every selected flow is one atomic exchange; reject umbrella material, energy, utility, packaging, waste or emission rows. | |\n| `validate_applicability` | conditional exchanges | Require a collected value or documented not-applicable determination tied to the route. | `eu-jrc-stm-bref-2006` |\n| `validate_mass_balance` | foreground manufacturing | Check accepted output plus wastes against mass inputs on consistent bases; investigate differences. | |\n| `validate_energy_boundary` | electricity and fuels | Keep purchased electricity and on-site fuel separate; report only foreground direct combustion emissions as elementary outputs. | |\n| `validate_uuid_semantics` | UUID rows | Reconfirm state-100 identity, names, flow type, classification, property, unit group, state and general comment. | |\n| `validate_unresolved` | UUID and range gaps | Keep gaps visible; never substitute proxy UUIDs or invented ranges. | |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 208
+              line: 8
+              column: 1
+            end:
+              offset: 264
+              line: 8
+              column: 57
+          text: "# Parts of electricity distribution or control apparatus"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26196
+              line: 344
+              column: 1
+            end:
+              offset: 26218
+              line: 344
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_factory_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5921"
+      source_span:
+        start:
+          offset: 7143
+          line: 77
+          column: 1
+        end:
+          offset: 7412
+          line: 77
+          column: 270
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_surface_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_5921"
+      source_span:
+        start:
+          offset: 7413
+          line: 78
+          column: 1
+        end:
+          offset: 7696
+          line: 78
+          column: 284
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_actual_materials"
+      identity_kind: "explicit"
+      unit_id: "normative_5921"
+      source_span:
+        start:
+          offset: 7697
+          line: 79
+          column: 1
+        end:
+          offset: 7941
+          line: 79
+          column: 245
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_19739"
+      source_span:
+        start:
+          offset: 19852
+          line: 306
+          column: 1
+        end:
+          offset: 19994
+          line: 306
+          column: 143
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_19739"
+      source_span:
+        start:
+          offset: 19995
+          line: 307
+          column: 1
+        end:
+          offset: 20220
+          line: 307
+          column: 226
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_19739"
+      source_span:
+        start:
+          offset: 20221
+          line: 308
+          column: 1
+        end:
+          offset: 20496
+          line: 308
+          column: 276
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_19739"
+      source_span:
+        start:
+          offset: 20497
+          line: 309
+          column: 1
+        end:
+          offset: 20705
+          line: 309
+          column: 209
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 26291
+          line: 348
+          column: 1
+        end:
+          offset: 26437
+          line: 348
+          column: 147
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_atomic_rows"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 26438
+          line: 349
+          column: 1
+        end:
+          offset: 26610
+          line: 349
+          column: 173
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 26611
+          line: 350
+          column: 1
+        end:
+          offset: 26778
+          line: 350
+          column: 168
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 26779
+          line: 351
+          column: 1
+        end:
+          offset: 26937
+          line: 351
+          column: 159
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_energy_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 26938
+          line: 352
+          column: 1
+        end:
+          offset: 27124
+          line: 352
+          column: 187
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_uuid_semantics"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 27125
+          line: 353
+          column: 1
+        end:
+          offset: 27283
+          line: 353
+          column: 159
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_unresolved"
+      identity_kind: "explicit"
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 27284
+          line: 354
+          column: 1
+        end:
+          offset: 27403
+          line: 354
+          column: 120
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5921"
+      source_span:
+        start:
+          offset: 5921
+          line: 62
+          column: 1
+        end:
+          offset: 5942
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5921"
+      source_span:
+        start:
+          offset: 5970
+          line: 66
+          column: 1
+        end:
+          offset: 7070
+          line: 73
+          column: 214
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_19739"
+      source_span:
+        start:
+          offset: 19739
+          line: 302
+          column: 1
+        end:
+          offset: 19779
+          line: 302
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26196"
+      source_span:
+        start:
+          offset: 26196
+          line: 344
+          column: 1
+        end:
+          offset: 26218
+          line: 344
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:8aec32586904134dead440f885144215499d54a4b2e66ae1f0100d572d3bd4f5"
-  generated_content_sha256: "sha256:71cd4c4849dc1586835e877f789773d32dca742a418e21eebad56490e0ddb578"
+  generated_content_sha256: "sha256:7a972261ef028e761f373f16077df49ff16f56de72f02caa65e352905962f76e"

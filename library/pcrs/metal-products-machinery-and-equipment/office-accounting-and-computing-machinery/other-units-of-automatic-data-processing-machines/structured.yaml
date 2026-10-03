@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -920,12 +920,484 @@ data_sources:
     type: "standard"
     reference: "ETSI ES 203 199 V1.3.1, Environmental Engineering: Methodology for environmental Life Cycle Assessment of Information and Communication Technology goods, networks and services, February 2015, https://www.etsi.org/deliver/etsi_es/203100_203199/203199/01.03.01_60/es_203199v010301p.pdf, retrieved 2026-08-09"
     used_for: "Functional-unit qualifiers; product composition and BOM coverage; assembly, warehousing, and packaging boundary; power modes; cooling and support goods; data collection; allocation; reporting and quality rules"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b749fc1ae6eef321ed840f66a59dcf1b4c789715dbfb347f6267a2abbf0373e7"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7472"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7472
+          line: 64
+          column: 1
+        end:
+          offset: 11480
+          line: 87
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased parts, PCBAs, modules, enclosure and mechanical parts, cables and connectors, power and integrated cooling parts, incidental storage where applicable, auxiliary materials, and packaging arrive at the manufacturing or integration site with supplier dataset identities declared. |\n| starting_condition_role | Upstream dataset boundary for supplier-produced parts and subassemblies; foreground collection begins with receipt, kitting, in-house assembly, test, warehousing, and packaging activities. |\n| product_classification_scope | Only separately presented units within the reviewed CPC 45289 equipment families; the equipment family and principal function are mandatory identity fields. |\n| recursive_input_rule | A purchased item already meeting the same CPC 45289 product identity is recorded as an upstream product input with its supplier dataset and configuration; its production is not recreated inside the receiving foreground process. |\n| upstream_dataset_requirement | Use technology-, geography-, and time-representative datasets for PCBAs, integrated circuits and other electronic parts, enclosure and mechanical parts, interfaces and cabling, power components, integrated cooling components and coolant, incidental storage, auxiliary materials, packaging, electricity, and waste treatment. |\n| disclosure | Declare equipment family; function and capacity; configuration; BOM coverage; integrated storage and interfaces; cooling and power architecture; firmware state; factory-gate or delivered state; packaging; geography; time period; yields; allocation; exclusions; and any use, maintenance, delivery, or end-of-life extension. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_identity` | product identity | Include only units whose principal identity matches one CPC 45289 equipment family. Route multifunction or unclear products to `manual_review` before modelling. | `unstats-cpc-3-0-45289` |\n| `boundary_production` | default foreground system | Include attributable parts and subassemblies, PCBA or module assembly where performed, final assembly, functional and power testing, warehousing, and packaging through the manufacturing gate. | `etsi-es-203-199-v1-3-1` |\n| `boundary_parts` | product composition | Identify applicable electronic, mechanical, cooling, cable, power, storage, interface, and packaging parts from a configuration-specific BOM; disclose excluded part categories and the reason for exclusion. | `etsi-es-203-199-v1-3-1` |\n| `boundary_cooling` | cooling and power support | Include cooling hardware and coolant physically shipped with the unit in the BOM. Allocate manufacturing-facility cooling and power-support burdens to production; exclude data-centre or customer-site cooling, UPS, and building overhead from the factory-gate product unless a separately declared downstream extension is modelled. | `etsi-es-203-199-v1-3-1` |\n| `boundary_delivery` | packaging and distribution | Inventory packaging at the plant. Outbound delivery begins after the factory gate and is excluded by default; when included, model it as a conditional route-specific process and preserve the factory-gate result. | `etsi-es-203-199-v1-3-1` |\n| `boundary_exclusions` | overlap control | Exclude complete computers and servers, complete systems, storage units, input or output peripherals, expansion cards, integrated circuits, network communications equipment, and passive parts or accessories covered by other product identities. | `unstats-cpc-3-0-45289` |\n| `boundary_use_and_end_of_life` | downstream extensions | Do not include use electricity, maintenance replacement, reuse, recycling, or disposal in the default production dataset. If a lifecycle model adds them, disclose operating lifetime, state-time profile, electricity geography, maintenance, and end-of-life scenario separately. | `etsi-es-203-199-v1-3-1` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 210
+              line: 8
+              column: 1
+            end:
+              offset: 261
+              line: 8
+              column: 52
+          text: "# Other units of automatic data processing machines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7472
+              line: 64
+              column: 1
+            end:
+              offset: 7493
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33066"
+      family: "allocation"
+      span:
+        start:
+          offset: 33066
+          line: 549
+          column: 1
+        end:
+          offset: 34624
+          line: 559
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | shared production and test processes | Avoid allocation by subdividing lines, meters, test benches, and records by configuration or production lot whenever feasible. | `etsi-es-203-199-v1-3-1` |\n| `allocation_physical` | shared facility electricity, cooling, warehousing, and assembly support | When subdivision is not feasible, use a causal physical driver. Prefer board area for PCB processes, good die area for integrated-circuit processes, machine time or metered energy for assembly and test, and mass for other components and warehousing. | `etsi-es-203-199-v1-3-1` |\n| `allocation_economic_fallback` | shared processes without a defensible physical relationship | Use economic allocation only when a physical relation is insufficient; disclose prices, period, currency, co-products, and a sensitivity check. | `etsi-es-203-199-v1-3-1` |\n| `allocation_rework` | rejects and rework | Return successfully reworked units to the originating lot without a second product credit. Assign measured rework inputs and unrecovered reject treatment to the lot that generated them. | `etsi-es-203-199-v1-3-1` |\n| `allocation_recycling` | production scrap and recoverable materials | Record scrap mass and treatment output explicitly. Do not apply an avoided-burden or recycling credit inside the foreground inventory unless the downstream study declares and consistently applies a recycling method. | `etsi-es-203-199-v1-3-1` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 210
+              line: 8
+              column: 1
+            end:
+              offset: 261
+              line: 8
+              column: 52
+          text: "# Other units of automatic data processing machines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33066
+              line: 549
+              column: 1
+            end:
+              offset: 33106
+              line: 549
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43008"
+      family: "validation"
+      span:
+        start:
+          offset: 43008
+          line: 593
+          column: 1
+        end:
+          offset: 45890
+          line: 607
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | classification and product name | The product shall match one listed CPC 45289 equipment family and shall not be represented only by the residual title \"other unit\". | `unstats-cpc-3-0-45289` |\n| `validate_reference_flow` | quantitative reference | The reference output shall use product flow `b3854d4e-54f5-4fad-9457-2f899c4a1653`, Mass `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`, and kg, normalized to accepted net product mass. |  |\n| `validate_required_qualifiers` | dataset metadata | Equipment family, function, native capacity and test, power states, chassis or board form, PCB and subassembly configuration, incidental storage, interfaces, integrated cooling, power supply, firmware state, net mass, packaging, delivery boundary, geography, period, lot, yield, and allocation shall be present or explicitly not applicable. | `etsi-es-203-199-v1-3-1` |\n| `validate_no_overlap` | category exclusion | Reject server or complete-computer datasets, complete systems, separate storage units, input or output peripherals, graphics, video, sound, or network cards, integrated circuits, network communications equipment, and passive parts or accessories. | `unstats-cpc-3-0-45289` |\n| `validate_bom_and_mass_balance` | inventory completeness | The BOM categories and process mass balance shall reconcile accepted net product, packaging, returns, rejects, scrap, wastes, and inventory change; exclusions and residual imbalance shall be disclosed. | `etsi-es-203-199-v1-3-1` |\n| `validate_power_and_cooling` | energy and thermal boundary | Power shall be tied to operating state, workload or capacity, duration, and instrument method. Integrated cooling shipped with the unit shall be in the BOM; manufacturing-facility and downstream data-centre cooling shall remain separately identified. | `etsi-es-203-199-v1-3-1` |\n| `validate_delivery_boundary` | factory-gate and delivered results | Packaging shall be separate from net reference mass, and outbound delivery shall be absent from the default result or reported as a separable route-specific extension. | `etsi-es-203-199-v1-3-1` |\n| `validate_allocation` | shared processes | The dataset shall state each shared process, allocation hierarchy, physical driver, and fallback sensitivity; unexplained economic or generic mass allocation fails validation. | `etsi-es-203-199-v1-3-1` |\n| `validate_manual_review` | broad-leaf ambiguity | If the equipment family, principal function, or boundary against excluded server, complete-machine, storage, peripheral, expansion-card, integrated-circuit, communications, or passive-part identities cannot be resolved, validation is inconclusive and the record shall be routed to `manual_review`. | `unstats-cpc-3-0-45289` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 210
+              line: 8
+              column: 1
+            end:
+              offset: 261
+              line: 8
+              column: 52
+          text: "# Other units of automatic data processing machines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43008
+              line: 593
+              column: 1
+            end:
+              offset: 43030
+              line: 593
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 9311
+          line: 79
+          column: 1
+        end:
+          offset: 9542
+          line: 79
+          column: 232
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_production"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 9543
+          line: 80
+          column: 1
+        end:
+          offset: 9817
+          line: 80
+          column: 275
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_parts"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 9818
+          line: 81
+          column: 1
+        end:
+          offset: 10095
+          line: 81
+          column: 278
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_cooling"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 10096
+          line: 82
+          column: 1
+        end:
+          offset: 10504
+          line: 82
+          column: 409
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_delivery"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 10505
+          line: 83
+          column: 1
+        end:
+          offset: 10798
+          line: 83
+          column: 294
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 10799
+          line: 84
+          column: 1
+        end:
+          offset: 11114
+          line: 84
+          column: 316
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_use_and_end_of_life"
+      identity_kind: "explicit"
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 11115
+          line: 85
+          column: 1
+        end:
+          offset: 11478
+          line: 85
+          column: 364
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_33066"
+      source_span:
+        start:
+          offset: 33179
+          line: 553
+          column: 1
+        end:
+          offset: 33396
+          line: 553
+          column: 218
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_33066"
+      source_span:
+        start:
+          offset: 33397
+          line: 554
+          column: 1
+        end:
+          offset: 33775
+          line: 554
+          column: 379
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_economic_fallback"
+      identity_kind: "explicit"
+      unit_id: "normative_33066"
+      source_span:
+        start:
+          offset: 33776
+          line: 555
+          column: 1
+        end:
+          offset: 34045
+          line: 555
+          column: 270
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_33066"
+      source_span:
+        start:
+          offset: 34046
+          line: 556
+          column: 1
+        end:
+          offset: 34305
+          line: 556
+          column: 260
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_33066"
+      source_span:
+        start:
+          offset: 34306
+          line: 557
+          column: 1
+        end:
+          offset: 34622
+          line: 557
+          column: 317
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 43103
+          line: 597
+          column: 1
+        end:
+          offset: 43320
+          line: 597
+          column: 218
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 43321
+          line: 598
+          column: 1
+        end:
+          offset: 43612
+          line: 598
+          column: 292
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_required_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 43613
+          line: 599
+          column: 1
+        end:
+          offset: 44036
+          line: 599
+          column: 424
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_no_overlap"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 44037
+          line: 600
+          column: 1
+        end:
+          offset: 44358
+          line: 600
+          column: 322
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_bom_and_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 44359
+          line: 601
+          column: 1
+        end:
+          offset: 44650
+          line: 601
+          column: 292
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_power_and_cooling"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 44651
+          line: 602
+          column: 1
+        end:
+          offset: 44993
+          line: 602
+          column: 343
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_delivery_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 44994
+          line: 603
+          column: 1
+        end:
+          offset: 45260
+          line: 603
+          column: 267
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 45261
+          line: 604
+          column: 1
+        end:
+          offset: 45510
+          line: 604
+          column: 250
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_manual_review"
+      identity_kind: "explicit"
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 45511
+          line: 605
+          column: 1
+        end:
+          offset: 45888
+          line: 605
+          column: 378
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 7472
+          line: 64
+          column: 1
+        end:
+          offset: 7493
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7472"
+      source_span:
+        start:
+          offset: 7521
+          line: 68
+          column: 1
+        end:
+          offset: 9238
+          line: 75
+          column: 340
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33066"
+      source_span:
+        start:
+          offset: 33066
+          line: 549
+          column: 1
+        end:
+          offset: 33106
+          line: 549
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43008"
+      source_span:
+        start:
+          offset: 43008
+          line: 593
+          column: 1
+        end:
+          offset: 43030
+          line: 593
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:b749fc1ae6eef321ed840f66a59dcf1b4c789715dbfb347f6267a2abbf0373e7"
-  generated_content_sha256: "sha256:1e2ddd490352eca283bb662605f57d7014437cac917d1fe0f6f417a634f595cf"
+  generated_content_sha256: "sha256:d1e10b7f654c4dca2e639d63e497d477f23e4a6e06aa656782139bfa68c6ed0a"

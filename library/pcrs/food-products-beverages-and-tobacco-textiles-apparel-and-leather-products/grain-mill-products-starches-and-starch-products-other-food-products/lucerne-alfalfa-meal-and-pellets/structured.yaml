@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -2556,12 +2556,523 @@ data_sources:
     type: "official_guidance"
     reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated English text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
     used_for: "Product-specific BoM, company-specific manufacturing data, complete inputs and outputs, allocation, reference-flow normalization, data quality, transparency, and verification"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b183386e8049f43bc433e10f366eeb9530b6bb26e178046cdab2147dcee236d3"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8094"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8094
+          line: 70
+          column: 1
+        end:
+          offset: 11064
+          line: 92
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Facility-gate receipt of fresh wilted chopped lucerne, field-dried lucerne, or purchased dehydrated lucerne, with state, moisture, origin, supplier, and lot identity recorded |\n| starting_condition_role | Foreground entry point for a route-specific meal or pellet production data package |\n| product_classification_scope | CPC 23320 lucerne (alfalfa) meal and pellets only |\n| recursive_input_rule | Purchased lucerne meal or pellets that already meet CPC 23320 shall not be hidden inside the same foreground route; disclose the quantity and supplier dataset and model it as an upstream input or create a separately bounded toll-processing package |\n| upstream_dataset_requirement | Use traceable upstream datasets for lucerne cultivation and field operations, purchased predried or dehydrated lucerne, fuels, utilities, exact additives, and packaging materials |\n| disclosure | Declare received lucerne state, artificial-drying technology and heat source, grinding/screen settings, meal or pellet form, conditioning medium, every actual binder substance or none, internal recycles, bulk or package configuration, site, period, and all boundary exclusions |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_identity` | Product category | Include only the exact CPC 23320 product; reject any bakery interpretation and do not broaden the category to mixed feed preparations. | `un-cpc-3-2025` |\n| `boundary_foreground_start` | Raw-material supply | Begin foreground collection at facility receipt; cultivation, harvest, field wilting/chopping, and inbound transport remain upstream but require disclosed background datasets. | `us-epa-ap42-alfalfa-1996`; `eu-pef-2021-2279` |\n| `boundary_route_lock` | Foreground route | Lock one received material state, artificial-drying technology or none, grinding/sieving configuration, pelleting route or none, and final form; report materially different routes separately. | `us-epa-ap42-alfalfa-1996`; `eu-fdm-bat-2019`; `eu-pef-2021-2279` |\n| `boundary_factory_operations` | Manufacturing | Include all on-site operations from receipt through release, including utilities, dust recovery, cleaning, wastes, direct emissions, and conditional on-site wastewater treatment. | `eu-jrc-fdm-bref-2019`; `eu-fdm-bat-2019`; `fefac-pefcr-feed-data-2021` |\n| `boundary_downstream_exclusion` | Downstream stages | Exclude outbound distribution, animal feeding and digestion, manure management, retail, use, and packaging end-of-life from the foreground result and disclose the exclusions. | `fefac-pefcr-feed-data-2021`; `eu-pef-2021-2279` |\n| `boundary_no_cutoff_by_label` | Inventory completeness | Do not omit an actual exchange because it lacks a Tiangong UUID or is small; retain one exact semantic flow, leave its UUID blank, and document the unresolved identity. | `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 255
+              line: 8
+              column: 1
+            end:
+              offset: 291
+              line: 8
+              column: 37
+          text: "# Lucerne (alfalfa) meal and pellets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8094
+              line: 70
+              column: 1
+            end:
+              offset: 8115
+              line: 70
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_90900"
+      family: "allocation"
+      span:
+        start:
+          offset: 90900
+          line: 1713
+          column: 1
+        end:
+          offset: 93303
+          line: 1724
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_route_separation` | Distinct raw states and manufacturing technologies | Prefer subdivision. Keep fresh-wilted, field-dried, and purchased-dehydrated inputs; each dryer technology and fuel; meal and pellet forms; and bulk and packaged release routes separately metered or calculated. Do not allocate by averaging unlike routes. | `eu-pef-2021-2279`; `us-epa-ap42-alfalfa-1996` |\n| `allocation_internal_recycle` | Recovered dryer or grinding dust, coarse screenings, and pellet fines | Measure each fraction before return. An internal return carries the originating process burden and is neither a co-product nor an avoided waste credit; prevent double counting at the sending and receiving processes. | `us-epa-ap42-alfalfa-1996`; `fao-feed-milling` |\n| `allocation_saleable_lucerne_fraction` | A separately saleable lucerne screening, meal fraction, dust fraction, or pellet-fines product | First subdivide the process where records allow. If subdivision is not possible, use a documented physical relation that reflects the causal production process; use economic allocation only when no defensible physical relation exists, and disclose quantities, prices, period, and sensitivity. | `eu-pef-2021-2279` |\n| `allocation_energy_and_utilities` | Shared electricity, steam, hot water, fuel, compressed air, and treatment services | Allocate shared utilities using stage submeters; otherwise use documented equipment time, rated demand corrected by measured load, processed mass, or wastewater volume. Do not use revenue to allocate a shared utility. | `fefac-pefcr-feed-data-2021`; `eu-pef-2021-2279` |\n| `allocation_waste_and_disposal` | Rejects, discarded dust, ash, packaging waste, screenings, sludge, and wastewater | Assign generation to the process and product route that caused it. Model treatment or disposal transparently; do not create an avoided-product credit in the foreground inventory unless a separately reviewed downstream substitution model is declared. | `eu-fdm-bat-2019`; `eu-pef-2021-2279` |\n| `allocation_packaging_reuse` | Reusable wood pallets | Allocate pallet manufacture only over documented foreground reuse cycles within the declared ownership and return system; do not assume a reuse count. | `fefac-pefcr-feed-data-2021`; `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 255
+              line: 8
+              column: 1
+            end:
+              offset: 291
+              line: 8
+              column: 37
+          text: "# Lucerne (alfalfa) meal and pellets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 90900
+              line: 1713
+              column: 1
+            end:
+              offset: 90940
+              line: 1713
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_108688"
+      family: "validation"
+      span:
+        start:
+          offset: 108688
+          line: 1767
+          column: 1
+        end:
+          offset: 112387
+          line: 1784
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Require UUID `f984b084-e66e-4d11-8365-354ae0ad5a74`, Product flow type, exact CPC 23320, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66`, unit group `93a60a57-a4c8-11da-a746-0800200c9a66`, and kg. Reject the conflicting remote bakery `generalComment`. | `un-cpc-3-2025` |\n| `validate_reference_amount` | Reference output | Require exactly 1 kg net conforming as-sold meal or pellets and exclude all packaging mass. | `un-cpc-3-2025`; `eu-fdm-bat-2019` |\n| `validate_route_lock` | Data package identity | Fail when final form, received lucerne state, drying technology and heat source or none, grinding/screen configuration, pelleting and conditioning route or none, binder identity or none, release moisture, packaging, site, or period is missing; fail when unlike routes are averaged. | `us-epa-ap42-alfalfa-1996`; `eu-fdm-bat-2019`; `eu-pef-2021-2279` |\n| `validate_process_coverage` | Process map | Require receiving, grinding/sieving, packaging or bulk release, and cleaning; require drying, pelleting, cooling/screening, and on-site wastewater treatment exactly when their inclusion conditions apply. | `us-epa-ap42-alfalfa-1996`; `fao-feed-milling`; `eu-fdm-bat-2019` |\n| `validate_atomic_selected_flow` | Inventory cards | Require every Selected flow to be one exact exchange. Reject collective or selector labels for feed, materials, energy, fuels, packaging, chemicals, additives, by-products, wastes, pollutants, or emissions. | `eu-pef-2021-2279` |\n| `validate_unlisted_actual_flow` | Actual binders, chemicals, fuels, packaging, wastes, and emissions | If an actual legal flow is not listed, require a newly authored exact card with its own row_id, property/unit, rule, protocol, sources, and unresolved UUID entry; fail any generic placeholder. | `eu-pef-2021-2279` |\n| `validate_uuid_policy` | Tiangong references | Allow only the verified reference product, Mass property, and unit-group UUIDs in this candidate. Require every other UUID cell to remain blank until exact hybrid search and direct public state100 read both verify the same semantic flow. |  |\n| `validate_uuid_closure` | Manifest review metadata | Require every inventory card without a UUID, except the UUID-bearing reference output, to have exactly one matching unresolved entry by row_id; reject missing, duplicate, or stale entries. |  |\n| `validate_amount_provenance` | Non-reference inventory quantities | Require `foreground_record` or `calculated_value` tied to a collection protocol and calculation rule where applicable; reject fabricated defaults, unsupported intervals, and undocumented estimates. | `fefac-pefcr-feed-data-2021`; `eu-pef-2021-2279` |\n| `validate_material_balance` | Each route | Require reconciled input, output, moisture, internal recycle, waste, emission, and inventory-change terms and a disclosed investigated residual. | `eu-pef-2021-2279` |\n| `validate_emission_separation` | Direct emissions | Require separate chemical cards for fossil CO2, biogenic CO2, fossil methane, nitrous oxide, carbon monoxide, nitric oxide, nitrogen dioxide, and sulfur dioxide when present; require non-overlapping particulate-size cards and separate COD, BOD5, TSS, total nitrogen, and total phosphorus loads. | `eu-fdm-bat-2019`; `eu-pef-2021-2279` |\n| `validate_data_quality` | Package evidence | Require calibration, product-specific composition, site activity data, source and factor identity, allocation records, route representativeness, quality assessment, and evidence available for review. | `eu-pef-2021-2279`; `fefac-pefcr-feed-data-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 255
+              line: 8
+              column: 1
+            end:
+              offset: 291
+              line: 8
+              column: 37
+          text: "# Lucerne (alfalfa) meal and pellets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 108688
+              line: 1767
+              column: 1
+            end:
+              offset: 108710
+              line: 1767
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 9437
+          line: 85
+          column: 1
+        end:
+          offset: 9634
+          line: 85
+          column: 198
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_foreground_start"
+      identity_kind: "explicit"
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 9635
+          line: 86
+          column: 1
+        end:
+          offset: 9915
+          line: 86
+          column: 281
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_route_lock"
+      identity_kind: "explicit"
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 9916
+          line: 87
+          column: 1
+        end:
+          offset: 10222
+          line: 87
+          column: 307
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_factory_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 10223
+          line: 88
+          column: 1
+        end:
+          offset: 10527
+          line: 88
+          column: 305
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_downstream_exclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 10528
+          line: 89
+          column: 1
+        end:
+          offset: 10811
+          line: 89
+          column: 284
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_no_cutoff_by_label"
+      identity_kind: "explicit"
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 10812
+          line: 90
+          column: 1
+        end:
+          offset: 11062
+          line: 90
+          column: 251
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_route_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 91013
+          line: 1717
+          column: 1
+        end:
+          offset: 91405
+          line: 1717
+          column: 393
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_internal_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 91406
+          line: 1718
+          column: 1
+        end:
+          offset: 91778
+          line: 1718
+          column: 373
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_saleable_lucerne_fraction"
+      identity_kind: "explicit"
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 91779
+          line: 1719
+          column: 1
+        end:
+          offset: 92234
+          line: 1719
+          column: 456
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_energy_and_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 92235
+          line: 1720
+          column: 1
+        end:
+          offset: 92628
+          line: 1720
+          column: 394
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_waste_and_disposal"
+      identity_kind: "explicit"
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 92629
+          line: 1721
+          column: 1
+        end:
+          offset: 93040
+          line: 1721
+          column: 412
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_packaging_reuse"
+      identity_kind: "explicit"
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 93041
+          line: 1722
+          column: 1
+        end:
+          offset: 93301
+          line: 1722
+          column: 261
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 108783
+          line: 1771
+          column: 1
+        end:
+          offset: 109110
+          line: 1771
+          column: 328
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference_amount"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 109111
+          line: 1772
+          column: 1
+        end:
+          offset: 109292
+          line: 1772
+          column: 182
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_route_lock"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 109293
+          line: 1773
+          column: 1
+        end:
+          offset: 109694
+          line: 1773
+          column: 402
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 109695
+          line: 1774
+          column: 1
+        end:
+          offset: 110014
+          line: 1774
+          column: 320
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_atomic_selected_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 110015
+          line: 1775
+          column: 1
+        end:
+          offset: 110298
+          line: 1775
+          column: 284
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_unlisted_actual_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 110299
+          line: 1776
+          column: 1
+        end:
+          offset: 110619
+          line: 1776
+          column: 321
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_uuid_policy"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 110620
+          line: 1777
+          column: 1
+        end:
+          offset: 110911
+          line: 1777
+          column: 292
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_uuid_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 110912
+          line: 1778
+          column: 1
+        end:
+          offset: 111160
+          line: 1778
+          column: 249
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_amount_provenance"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 111161
+          line: 1779
+          column: 1
+        end:
+          offset: 111481
+          line: 1779
+          column: 321
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_material_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 111482
+          line: 1780
+          column: 1
+        end:
+          offset: 111694
+          line: 1780
+          column: 213
+    - pointer: "/validation_rules/10"
+      rule_id: "validate_emission_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 111695
+          line: 1781
+          column: 1
+        end:
+          offset: 112085
+          line: 1781
+          column: 391
+    - pointer: "/validation_rules/11"
+      rule_id: "validate_data_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 112086
+          line: 1782
+          column: 1
+        end:
+          offset: 112385
+          line: 1782
+          column: 300
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 8094
+          line: 70
+          column: 1
+        end:
+          offset: 8115
+          line: 70
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8094"
+      source_span:
+        start:
+          offset: 8143
+          line: 74
+          column: 1
+        end:
+          offset: 9364
+          line: 81
+          column: 294
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_90900"
+      source_span:
+        start:
+          offset: 90900
+          line: 1713
+          column: 1
+        end:
+          offset: 90940
+          line: 1713
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_108688"
+      source_span:
+        start:
+          offset: 108688
+          line: 1767
+          column: 1
+        end:
+          offset: 108710
+          line: 1767
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:b183386e8049f43bc433e10f366eeb9530b6bb26e178046cdab2147dcee236d3"
-  generated_content_sha256: "sha256:deb2071d9eb6bc6364831bae20bbefd62e718da80aead12ed92b8aae74a3d5f3"
+  generated_content_sha256: "sha256:52c4ce493258c33e21b2e609141d69ca6eee97afc76f2b7b1b92eaa1ab664c87"
