@@ -172,3 +172,24 @@ test("persisted enrichment reset pointers retain null and reject non-string meta
  const captured=store.initialize({tasks:[{id:"historical",state:"retryable_failure",valid_at:null,integration_snapshot_id:null}]});
  assert.equal(captured.tasks[0]?.valid_at,null);assert.equal(captured.tasks[0]?.integration_snapshot_id,null);
 });
+
+
+// Captured by the original event-store.mjs writer at 9b80e624. Keep the exact
+// legacy event bytes/hash as an oracle without retaining an executable JS import.
+test("original writer null failure pointers remain readable without changing historic event receipts", t => {
+ const dir=mkdtempSync(path.join(tmpdir(),"goal-original-null-failures-"));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const originalInitial="{\n  \"goal_id\": \"historic-nulls\",\n  \"tasks\": [\n    {\n      \"id\": \"task\",\n      \"state\": \"authoring\"\n    }\n  ],\n  \"stopped\": false,\n  \"snapshots\": [],\n  \"last_event_sequence\": 0,\n  \"last_event_hash\": null\n}\n";
+ const originalLog="{\"sequence\":1,\"event_id\":\"old-valid-result\",\"at\":\"2026-09-14T00:00:00.000Z\",\"type\":\"task_replaced\",\"payload\":{\"task\":{\"id\":\"task\",\"state\":\"valid_result\",\"failure_code\":null,\"failure_message\":null,\"failure_details\":null,\"author_model\":null,\"author_reasoning_effort\":null}},\"previous_hash\":null,\"hash\":\"4d5ba2368ebf60498b6c9afd4a88637ef028c5a3f352cf18e36a71b2f08e91fe\"}\n";
+ const originalHash="4d5ba2368ebf60498b6c9afd4a88637ef028c5a3f352cf18e36a71b2f08e91fe";
+ const store=new GoalEventStore({stateDir:dir});writeFileSync(store.initialPath,originalInitial);writeFileSync(store.eventsPath,originalLog);
+ const state=store.rebuild();const task=state.tasks[0];assert.ok(task);
+ assert.equal(task.failure_code,null);assert.equal(task.failure_message,null);assert.equal(task.failure_details,null);
+ assert.equal(task.author_model,null);assert.equal(task.author_reasoning_effort,null);
+ assert.throws(()=>store.append({event_id:"invalid-trial-model",type:"task_replaced",payload:{task:{...task,model_trial:{model:null}}}}),TypeError,"Trial allocation still requires a non-null model");
+ assert.equal(state.last_event_hash,originalHash);assert.equal(store.getEvent("old-valid-result")?.hash,originalHash);
+ assert.equal(readFileSync(store.eventsPath,"utf8"),originalLog);assert.equal(readFileSync(store.initialPath,"utf8"),originalInitial);
+ for(const key of ["failure_code","failure_message","failure_details","author_model","author_reasoning_effort"]){
+  assert.throws(()=>store.append({event_id:`invalid-${key}`,type:"task_replaced",payload:{task:{...task,[key]:42}}}),TypeError);
+  assert.equal(readFileSync(store.eventsPath,"utf8"),originalLog,"Malformed non-null metadata must not append a receipt");
+ }
+});

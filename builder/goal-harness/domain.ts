@@ -36,7 +36,7 @@ export interface TrialUsage extends UnknownRecord {
 }
 export interface GoalTrialTurn extends UnknownRecord {
   thread_id?: string | null | undefined; turn_id?: string | null | undefined;
-  model?: string | undefined; effort?: string | undefined; usage?: TrialUsage;
+  model?: string | null | undefined; effort?: string | null | undefined; usage?: TrialUsage;
 }
 export interface GoalTrialReview extends UnknownRecord { key: string; ok: boolean; category: string; findings: GoalFinding[] }
 export interface GoalTask extends UnknownRecord {
@@ -50,10 +50,10 @@ export interface GoalTask extends UnknownRecord {
   thread_id?: string | null | undefined; turn_id?: string | null | undefined; worktree_path?: string | null | undefined;
   author_branch?: string | null | undefined; author_commit?: string | null; last_author_commit?: string | null;
   author_base_commit?: string; author_content_base_commit?: string;
-  author_model?: string; author_reasoning_effort?: string;
+  author_model?: string|null; author_reasoning_effort?: string|null;
   report_path?: string | null | undefined; report_sha256?: string | null; report_complete?: boolean;
   submission_path?: string | null; submission_sha256?: string | null;
-  failure_code?: string; failure_message?: string; failure_details?: UnknownRecord;
+  failure_code?: string|null; failure_message?: string|null; failure_details?: UnknownRecord|null;
   updated_at?: string; valid_at?: string|null; landed_at?: string; integration_snapshot_id?: string|null;
   dispatched_at?: string; repair_started_at?: string; integration_commit?: string;
   transition_ids?: string[]; previous_thread_ids?: string[]; previous_worktree_paths?: string[];
@@ -145,8 +145,8 @@ export function errorCode(error: unknown): unknown { return field(error, 'code')
 export function json(textValue: string): unknown { const value: unknown = JSON.parse(textValue); return value; }
 export function jsonRecord(textValue: string): UnknownRecord { return record(json(textValue)); }
 
-const taskStrings = ['goal_id','cpc_code','pcr_path','queue_action','product_name_en','author_base_commit','author_content_base_commit','author_model','author_reasoning_effort','failure_code','failure_message','updated_at','landed_at','dispatched_at','repair_started_at','integration_commit'];
-const taskNullableStrings = ['valid_at','integration_snapshot_id','pcr_id','product_name_zh','thread_id','turn_id','worktree_path','author_branch','author_commit','last_author_commit','report_path','report_sha256','submission_path','submission_sha256'];
+const taskStrings = ['goal_id','cpc_code','pcr_path','queue_action','product_name_en','author_base_commit','author_content_base_commit','updated_at','landed_at','dispatched_at','repair_started_at','integration_commit'];
+const taskNullableStrings = ['author_model','author_reasoning_effort','failure_code','failure_message','valid_at','integration_snapshot_id','pcr_id','product_name_zh','thread_id','turn_id','worktree_path','author_branch','author_commit','last_author_commit','report_path','report_sha256','submission_path','submission_sha256'];
 const taskNumbers = ['queue_order','attempt','repair_count','repair_resume_count','infrastructure_resume_count','execution_continue_count','execution_recheck_count','evidence_recheck_count','uuid_enrichment_generation','uuid_search_contract_version','authoring_contract_version','author_draft_schema_version','author_report_schema_version'];
 const taskBooleans = ['report_complete','infrastructure_resume_pending','execution_continue_pending','repair_resume_pending','execution_recheck_pending','evidence_recheck_pending'];
 const taskStringArrays = ['allowed_files','transition_ids','previous_thread_ids','previous_worktree_paths'];
@@ -177,7 +177,7 @@ function isUsage(value: unknown): value is TrialUsage {
     && optionalFields(value,['tokens'],entry=>entry===null||isRecord(entry)&&Object.values(entry).every(counter=>typeof counter==='number'));
 }
 function isTrialTurn(value: unknown): value is GoalTrialTurn {
-  return isRecord(value) && optionalFields(value,['thread_id','turn_id'],entry=>entry===null||typeof entry==='string') && optionalFields(value,['model','effort'],entry=>typeof entry==='string') && optionalFields(value,['usage'],isUsage);
+  return isRecord(value) && optionalFields(value,['thread_id','turn_id'],entry=>entry===null||typeof entry==='string') && optionalFields(value,['model','effort'],entry=>entry===null||typeof entry==='string') && optionalFields(value,['usage'],isUsage);
 }
 function isTrialReview(value: unknown): value is GoalTrialReview {
   return isRecord(value) && typeof value.key==='string' && typeof value.ok==='boolean' && typeof value.category==='string' && Array.isArray(value.findings) && value.findings.every(isGoalFinding);
@@ -188,7 +188,8 @@ export function isGoalTask(value: unknown): value is GoalTask {
     && optionalFields(value,taskNullableStrings,entry=>entry===null||typeof entry==='string')
     && optionalFields(value,taskNumbers,entry=>typeof entry==='number'&&Number.isFinite(entry)) && optionalFields(value,taskBooleans,entry=>typeof entry==='boolean')
     && optionalFields(value,taskStringArrays,isStrings) && optionalFields(value,taskRecordArrays,isRecords)
-    && optionalFields(value,['author_start_intent','failure_details','trial_semantic_review','review_assessment'],isRecord)
+    && optionalFields(value,['author_start_intent','trial_semantic_review','review_assessment'],isRecord)
+    && optionalFields(value,['failure_details'],entry=>entry===null||isRecord(entry))
     && optionalFields(value,['coordinator_hold'],entry=>entry===null||isRecord(entry))
     && optionalFields(value,['author_turn_contracts'],entry=>Array.isArray(entry)&&entry.every(isAuthorTurnContract))
     && optionalFields(value,['model_trial'],isTaskTrial) && optionalFields(value,['trial_turns'],entry=>Array.isArray(entry)&&entry.every(isTrialTurn))
