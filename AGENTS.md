@@ -29,7 +29,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 9d166fdf1e78a207fd8475e7e4e560edc2d23b8c
+lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
 lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 ---
 
