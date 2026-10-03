@@ -29,7 +29,7 @@ import {
   writeCatalogArtifacts,
 } from "./build-catalog.mjs";
 import { readClassificationCoverage } from "../../packages/pcr-core/src/classification-coverage.mjs";
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   buildOrCheckPcrIdAliases,
   CPC_3_LEAF_SLUGS_PATH,

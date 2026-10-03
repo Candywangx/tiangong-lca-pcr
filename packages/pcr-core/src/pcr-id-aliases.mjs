@@ -17,7 +17,7 @@ import {
   CONTENT_MATURITY_VALUES,
   PCR_STATUS_VALUES,
 } from "./generated/controlled-vocabulary.mjs";
-import { parseYaml } from "./yaml-lite.mjs";
+import { parseYaml } from "./yaml-lite.ts";
 
 export const PCR_ID_ALIAS_DIRECTORY = "classifications/aliases";
 export const PCR_ID_ALIAS_REGISTRY_PATH =

@@ -4,7 +4,7 @@ import { existsSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from "n
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
 import { withGoalLock } from "./lock.mjs";

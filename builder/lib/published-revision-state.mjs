@@ -17,7 +17,7 @@ import {
   REQUIRED_PCR_LANGUAGES,
   declaredPcrLanguages,
 } from "../../packages/pcr-core/src/languages.mjs";
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   byteSha256,
   releaseArtifactHashes,

@@ -15,7 +15,7 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { declaredPcrLanguages } from "../../packages/pcr-core/src/languages.mjs";
 import {
   CONTENT_MATURITY_VALUES,

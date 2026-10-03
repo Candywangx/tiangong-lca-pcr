@@ -99,7 +99,7 @@ export async function buildPackageArtifact(root, spec, output, { identity = null
   output = realpathSync(output);
   const stage = path.join(output, spec.name);
   if (spec.kind === "tool") {
-    const { buildOfflineTool } = await import("./build-offline-packages.mjs");
+    const { buildOfflineTool } = await import("./build-offline-packages.ts");
     (builders.tool ?? buildOfflineTool)({ root, output: stage, version: spec.version });
   } else {
     const { buildOfflineLibrary } = await import("./build-offline-library.mjs");

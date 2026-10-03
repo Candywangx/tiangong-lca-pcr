@@ -19,7 +19,7 @@ import {
   revise,
   syncStructured,
 } from "../../../builder/lib/manifest-lifecycle.mjs";
-import { parseYaml, renderYaml } from "../../pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../pcr-core/src/yaml-lite.ts";
 const script = fileURLToPath(new URL("./generate.mjs", import.meta.url));
 const hash = (bytes) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");

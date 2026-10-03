@@ -7,7 +7,7 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { DEFAULT_VOCABULARY_REGISTRY } from "../lib/vocabulary-registry.mjs";
+import { DEFAULT_VOCABULARY_REGISTRY } from "../lib/vocabulary-registry.ts";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(scriptPath), "../..");

@@ -11,7 +11,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   validateManifest,
   validateMarkdownFrontmatter,

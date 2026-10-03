@@ -16,7 +16,7 @@ import {
   pcrIdAliasSourcePcrPathStates,
   readPcrIdAliases,
 } from "./pcr-id-aliases.mjs";
-import { parseYaml } from "./yaml-lite.mjs";
+import { parseYaml } from "./yaml-lite.ts";
 
 const CATALOG_PATH = "library/catalog.yaml";
 const MANAGED_READ_FLAGS =

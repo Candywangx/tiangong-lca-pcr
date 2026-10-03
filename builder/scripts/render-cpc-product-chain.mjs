@@ -20,7 +20,7 @@ import {
   getVerifiedPcrProjection,
   resolveClassification,
 } from "../../packages/pcr-core/src/index.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   analyzeCpcProductChain,
   renderCpcProductChainReport,

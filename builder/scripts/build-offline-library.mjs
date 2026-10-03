@@ -6,7 +6,7 @@ import { deflateRawSync } from "node:zlib";
 import { execFileSync } from "node:child_process";
 import { createPcrReadContext, withPcrReadContextSession, readPcrDistributionCatalog, readPcrDistributionSnapshot, readClassificationCoverageSnapshot, verifyDistributionCoverage } from "../../packages/pcr-core/src/index.mjs";
 import { pcrIdAliasValidationDependencies, readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { LIBRARY_FORMAT_VERSION, sqliteDatabase, sha256, hashFile, metadataDigest } from "../../packages/pcr-core/src/offline-library.mjs";
 
 export function buildOfflineLibrary({ root, output, version, sourceCommit = null }) {

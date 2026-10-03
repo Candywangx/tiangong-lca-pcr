@@ -16,7 +16,7 @@ import {
   findPcrIdAlias,
   readPcrIdAliases,
 } from "./src/pcr-id-aliases.mjs";
-import { renderYaml } from "./src/yaml-lite.mjs";
+import { renderYaml } from "./src/yaml-lite.ts";
 
 const decisionRef = "docs/migrations/alias-decision.md#approved-aliases";
 const materialPcrId = "pcr.example.products.material";
