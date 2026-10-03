@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
+lastReviewedCommit: 73d125a68c356e3967d9962162143e6e1975d3de
+lastReviewedNote: "Reviewed PCR #64 unified product version/tag, sealed npm and web identity, Git-provider artifact import, OIDC channel permissions, first activation and failure recovery. Methodology lifecycle and offline format compatibility are unchanged; low-level development packages are distinguished from sealed product releases."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -130,3 +130,13 @@ Package ownership is unchanged: the tool contains CLI/Skill/adapter/report suppo
 the library contains English methodology. Both operate without network access.
 Fully offline semantic review additionally requires an offline-capable Agent/model
 provided by the caller.
+
+## Product release selection
+
+From the unified 0.3.0 product release onward, provision the tool and SQLite package
+from the same complete product release. Both packages carry `product-release.json`,
+matching the website identity at `/generated/product-release.json`. Preserve that
+product version, source commit and full-source fingerprint alongside the existing
+PCR/readiness and SQLite payload hashes. Historical independently versioned packages
+remain readable under their existing compatibility contracts; installing a package
+does not activate its Skill or approve methodology.

@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
-lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
+lastReviewedNote: "Reviewed PCR #64 unified product version/tag, sealed npm and web identity, Git-provider artifact import, OIDC channel permissions, first activation and failure recovery. Methodology lifecycle and offline format compatibility are unchanged; low-level development packages are distinguished from sealed product releases."
+lastReviewedCommit: 73d125a68c356e3967d9962162143e6e1975d3de
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -178,8 +178,13 @@ that the provider applied its rules.
 Measure the real full corpus and largest records. Enforce provider limits on
 individual files, total file count and build resources, and partition search and
 source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
-and `main`; preview auto deployment remains disabled. Failed generation or builds
-leave the previous verified deployment intact.
+and the `release/production` deployment pointer; `main` remains the sole code trunk.
+Unified tag qualification builds and seals the complete web export. The provider runs
+`product-web-materialize.mjs` to verify and atomically import that exact artifact; it
+does not rebuild it. Preview auto deployment remains disabled. Failed import or
+builds leave the previous verified deployment intact. The product identity endpoint
+and per-route hashes bind live acceptance to the two paired npm artifacts; see
+[the unified release contract](offline-distribution.md#npm-release-automation).
 
 ### Measured output and build resources
 

@@ -25,7 +25,7 @@ The CLI requires **Node.js 24.19 or later**, on Linux x64, Windows x64, or macOS
 ARM64. In a project directory:
 
 ```sh
-npm install @tiangong-lca/pcr @tiangong-lca/pcr-library
+npm install @tiangong-lca/pcr@0.3.0 @tiangong-lca/pcr-library@0.3.0
 ./node_modules/.bin/tiangong-pcr library info --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
@@ -41,15 +41,15 @@ content package.
 Download the required versions on a connected machine:
 
 ```sh
-npm pack @tiangong-lca/pcr@0.1.2
-npm pack @tiangong-lca/pcr-library@0.1.2
+npm pack @tiangong-lca/pcr@0.3.0
+npm pack @tiangong-lca/pcr-library@0.3.0
 ```
 
 Transfer both tarballs and a suitable Node.js runtime. Then install without
 registry access:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.1.2.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.0.tgz ./tiangong-lca-pcr-library-0.3.0.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 
@@ -59,8 +59,9 @@ together to any directory. Keep the pair intact and select the database with
 
 ## Pinning and updates
 
-The content version is independent of the CLI version; compatibility is checked
-through the snapshot format version. Keep old snapshots when reproducibility
+Unified releases pair the same content and CLI product version; the bundled
+`product-release.json` binds the source commit and complete source fingerprint.
+Historical snapshots retain their existing format-version compatibility. Keep old snapshots when reproducibility
 matters, install a new version alongside them, verify it, and explicitly select
 it for new work. Do not edit the database or its sidecar in place.
 

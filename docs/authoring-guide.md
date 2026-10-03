@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 7a214c41504d9c51f9a41684d47c481e01e05cc1
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged. Also reviewed the bounded source-timer correction: scheduling-time limit identity controls request versus review-window classification without changing recovery or cache eligibility."
+lastReviewedCommit: 73d125a68c356e3967d9962162143e6e1975d3de
+lastReviewedNote: "Reviewed PCR #64 unified product version/tag, sealed npm and web identity, Git-provider artifact import, OIDC channel permissions, first activation and failure recovery. Methodology lifecycle and offline format compatibility are unchanged; low-level development packages are distinguished from sealed product releases."
 ---
 
 # Authoring Guide
@@ -229,6 +229,6 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
