@@ -7,7 +7,7 @@ import test from "node:test";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { PRODUCT_MIRRORS, productSha256, readProductIdentity } from "./product-identity.mjs";
 import { bootstrapProductTag, buildProductRelease, detectProductRelease, productReleaseContext, productReleaseSpec, readProductArchive, tagAndDispatchProduct, validateProductManifest, verifyProductArtifacts, verifyProductWebTree, writeProductWebArchive } from "./product-release.mjs";
-import { releaseSpec } from "./npm-release.mjs";
+import { parseNpmPackOutput, releaseSpec } from "./npm-release.mjs";
 
 const identityEnv = { GITHUB_REPOSITORY: "tiangong-lca/pcr", GITHUB_REPOSITORY_ID: "1277836444", GITHUB_REPOSITORY_OWNER_ID: "327771381" };
 const put = (file, value) => { mkdirSync(path.dirname(file), { recursive: true }); writeFileSync(file, value); };
@@ -56,9 +56,9 @@ function fixture(t, { product = true } = {}) {
         snapshot: { source_commit: sourceCommit, content_version: version, source_sha256: productSha256("English-only payload fixture") } });
     },
   };
-  const pack = ({ stage, output }) => JSON.parse(execFileSync(process.execPath, [npmCli,
-    "pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }))[0];
-  return { root, container, git, head, setVersion, commit, prepareWeb, builders, pack, actualNpm,
+  const pack = ({ stage, output, spec }) => parseNpmPackOutput(execFileSync(process.execPath, [npmCli,
+    "pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }), spec.name);
+  return { root, container, git, head, setVersion, commit, prepareWeb, builders, pack, actualNpm, npmCli,
     build: (output, extra = {}) => buildProductRelease(root, "v0.3.0", path.join(container, output), { webDir: prepareWeb(), builders, pack, getNpmVersion: () => actualNpm, ...extra }) };
 }
 
@@ -135,7 +135,12 @@ test("explicit initial product tag binds main dispatch and retries only the same
 });
 
 test("both real npm tarballs and the sealed web archive bind one identity; reproducible builds retain exact bytes", async t => {
-  const f = fixture(t), first = await f.build("release-1"), second = await f.build("release-2");
+  const f = fixture(t), previousNpm = process.env.npm_execpath;
+  let first, second;
+  // Exercise the production pack transport, including its real CLI output parser.
+  process.env.npm_execpath = f.npmCli;
+  try { first = await f.build("release-1", { pack: null }); second = await f.build("release-2", { pack: null }); }
+  finally { if (previousNpm === undefined) delete process.env.npm_execpath; else process.env.npm_execpath = previousNpm; }
   assert.deepEqual(second, first);
   const verified = await verifyProductArtifacts(path.join(f.container, "release-1"), { expectedIdentity: readProductIdentity(f.root) });
   assert.deepEqual(verified.identity, first.identity); assert.equal(first.packages.tool.version, "0.3.0"); assert.equal(first.packages.library.version, "0.3.0");

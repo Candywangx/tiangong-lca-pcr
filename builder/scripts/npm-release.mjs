@@ -71,6 +71,17 @@ function npm(args, cwd) {
   return execFileSync(process.execPath, [process.env.npm_execpath, ...args], { cwd, encoding: "utf8", maxBuffer: 20 * 1024 * 1024 });
 }
 
+/** npm 11 reports an array; npm 12 keys pack JSON by the package name. */
+export function parseNpmPackOutput(output, expectedName) {
+  const report = JSON.parse(output);
+  const entries = Array.isArray(report) ? report
+    : report && typeof report === "object" && Object.keys(report).length === 1 && Object.hasOwn(report, expectedName)
+      ? [report[expectedName]] : [];
+  if (entries.length !== 1 || !entries[0] || typeof entries[0] !== "object" || Array.isArray(entries[0]) || entries[0].name !== expectedName)
+    throw new Error("npm pack must report exactly the expected package.");
+  return entries[0];
+}
+
 export async function buildRelease(root, tag, output) {
   const spec = releaseSpec(tag);
   return buildPackageArtifact(root, spec, output);
@@ -107,7 +118,7 @@ export async function buildPackageArtifact(root, spec, output, { identity = null
     manifest.files = [...new Set([...manifest.files, "product-release.json"])];
   }
   writeJson(manifestPath, manifest);
-  const packed = pack ? await pack({ root, stage, output, spec }) : JSON.parse(npm(["pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], root))[0];
+  const packed = pack ? await pack({ root, stage, output, spec }) : parseNpmPackOutput(npm(["pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], root), spec.name);
   if (packed.name !== spec.name || packed.version !== spec.version || (spec.kind === "tool" && !packed.bundled?.includes("ajv"))) throw new Error("Packed artifact identity or bundled dependencies are invalid");
   const filename = `${spec.name}-${spec.version}.tgz`.replace(/^@/u, "").replaceAll("/", "-");
   if (packed.filename !== filename) throw new Error("Unexpected npm pack filename");

@@ -126,12 +126,13 @@ jobs:
             package-lock.json
             packages/pcr-docs/package-lock.json
       - name: Select the pinned product packaging toolchain
-        if: inputs.product_tag != ''
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install locked dependencies
         run: npm ci && npm --prefix packages/pcr-docs ci
       - name: Verify document transformations
         run: npm --prefix packages/pcr-docs test
+      - name: Verify real product packing with the release npm version
+        run: npm run product:test
       - name: Build and verify the full static library
         env:
           NEXT_TELEMETRY_DISABLED: '1'
