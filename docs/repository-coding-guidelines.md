@@ -14,8 +14,8 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
 lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 related:
   - docs/coding-principles.md

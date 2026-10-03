@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-03
+lastReviewedAt: 2026-10-04
 lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
