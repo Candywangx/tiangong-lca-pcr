@@ -1,14 +1,13 @@
 import { isDeepStrictEqual } from 'node:util';
-import { compileNormativeProjection } from './normative-projection.ts';
+import { compileNormativeProjection, type NormativeProjectionContext } from './normative-projection.ts';
 
 export interface NormativeIntegrityIssue {
   readonly code: string;
   readonly message: string;
 }
-export interface NormativeIntegrityState {
-  readonly valid: boolean;
-  readonly issues: readonly NormativeIntegrityIssue[];
-}
+export type NormativeIntegrityState =
+  | { readonly valid: true; readonly issues: readonly NormativeIntegrityIssue[]; readonly verified_context: NormativeProjectionContext }
+  | { readonly valid: false; readonly issues: readonly NormativeIntegrityIssue[]; readonly verified_context?: never };
 
 function record(value: unknown): Record<string, unknown> | null {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -31,19 +30,19 @@ export function inspectNormativeIntegrity({ sourceMarkdown, structuredProjection
 }): NormativeIntegrityState {
   const issues: NormativeIntegrityIssue[] = [];
   function fail(code: string, message: string): void { issues.push({ code, message }); }
-  function result(): NormativeIntegrityState { return { valid: issues.length === 0, issues }; }
+  function invalid(): NormativeIntegrityState { return { valid: false, issues }; }
   const structured = record(structuredProjection);
   const context = record(structured?.normative_context);
   if (!structured || !context) {
     fail('normative_context_missing', 'Contract 2 requires a complete normative_context and structured normative arrays.');
-    return result();
+    return invalid();
   }
   let regenerated: ReturnType<typeof compileNormativeProjection>;
   try {
     regenerated = compileNormativeProjection(sourceMarkdown);
   } catch (error: unknown) {
     fail('normative_source_invalid', error instanceof Error ? error.message : 'Canonical normative source compilation failed.');
-    return result();
+    return invalid();
   }
   const expected = regenerated.context;
   if (context.normalization !== expected.normalization) {
@@ -81,5 +80,5 @@ export function inspectNormativeIntegrity({ sourceMarkdown, structuredProjection
   if (issues.length === 0 && !isDeepStrictEqual(context, expected)) {
     fail('normative_context_invalid', 'Normative context contains fields absent from the canonical compiler contract.');
   }
-  return result();
+  return issues.length === 0 ? { valid: true, issues, verified_context: expected } : invalid();
 }

@@ -4,6 +4,17 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import oracle from './fixtures/normative-context/independent-oracle.json' with { type: 'json' };
 import { compileNormativeProjection, NormativeProjectionError } from './src/compiler/normative-projection.ts';
+import { compileMarkdownSourceDocument } from './src/compiler/source-context.ts';
+
+test('production compilation never accepts or reuses a caller-mutated AST', () => {
+  const source = '# Method\n\n## Allocation\n\nOnly when outputs share inputs:\n\n1. Subdivide.\n';
+  const expected = compileNormativeProjection(source);
+  const separate = compileMarkdownSourceDocument(source);
+  separate.tree.children.length = 0;
+  assert.deepEqual(compileNormativeProjection(source), expected);
+  const changed = source.replace('outputs share inputs', 'joint saleable outputs are present');
+  assert.notDeepEqual(compileNormativeProjection(changed), expected);
+});
 
 const intro = 'Reject or return when any of the following applies:';
 const items = '1. Missing reference basis.\n2. Undisclosed proxy.';

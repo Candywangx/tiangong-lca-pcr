@@ -154,7 +154,47 @@
           "pattern": "^sha256:[0-9a-f]{64}$"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "stored_projection"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "stored_projection_schema_version": {
+                "const": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "derived_legacy_source"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "stored_projection_schema_version": {
+                "const": 1
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "additionalProperties": false,

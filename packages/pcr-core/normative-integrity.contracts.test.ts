@@ -16,11 +16,25 @@ function fixture(markdown = source) {
     allocation_rules: projection.allocationRules, validation_rules: projection.validationRules };
 }
 function check(structuredProjection: unknown, sourceMarkdown = source) {
-  return inspectNormativeIntegrity({ sourceMarkdown, structuredProjection });
+  const result = inspectNormativeIntegrity({ sourceMarkdown, structuredProjection });
+  if (!result.valid) assert.equal(Object.hasOwn(result, 'verified_context'), false, 'Invalid results must never expose a trusted context.');
+  return result;
 }
+test('successful verification returns newly regenerated context without trusting or retaining stored objects', () => {
+  const f = fixture();
+  const result = check(f);
+  assert.ok(result.valid);
+  assert.deepEqual(result.verified_context, f.normative_context);
+  assert.notStrictEqual(result.verified_context, f.normative_context);
+  assert.notStrictEqual(result.verified_context.units, f.normative_context.units);
+  const original = JSON.stringify(result.verified_context);
+  const rule = f.system_boundary.rules[0]; assert.ok(rule); rule.rule = 'Invented applicability.';
+  assert.equal(check(f).valid, false, 'A previous successful verification never caches acceptance.');
+  assert.equal(JSON.stringify(result.verified_context), original);
+});
 test('complete normative fidelity accepts all families and BOM/CRLF normalization', () => {
   const f = fixture();
-  assert.deepEqual(check(f), { valid: true, issues: [] });
+  assert.deepEqual(check(f), { valid: true, issues: [], verified_context: f.normative_context });
   assert.equal(check(f, '\uFEFF' + source.replace(/\n/g, '\r\n')).valid, true);
   assert.equal(f.normative_context.units.length, 3);
   assert.ok(f.normative_context.bindings.some(binding => binding.identity_kind === 'explicit'));

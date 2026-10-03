@@ -5,11 +5,27 @@ import { test } from 'node:test';
 import oracle from './fixtures/normative-context/independent-oracle.json' with { type: 'json' };
 import {
   compileMarkdownSourceContext,
+  compileMarkdownSourceDocument,
   contextForSpan,
   sectionForSpan,
   type MarkdownSourceContextIndex,
   type NormativeSourceContext,
 } from './src/compiler/source-context.ts';
+
+test('owned source document uses one normalized AST and retains the index-only contract', () => {
+  const source = '\uFEFF# Method\r\n\r\nApply:\r\n\r\n1. Keep the complete rule.\r\n';
+  const document = compileMarkdownSourceDocument(source);
+  const normalized = source.replace(/^\uFEFF/u, '').replace(/\r\n?/gu, '\n');
+  assert.equal(document.index.source, normalized);
+  assert.equal(document.tree.position?.start.offset, 0);
+  assert.equal(document.tree.position?.end.offset, normalized.length);
+  assert.deepEqual(selectedText(document.index, '1. Keep'), selectedText(compileMarkdownSourceContext(source), '1. Keep'));
+  assert.deepEqual(Object.keys(compileMarkdownSourceContext(source)), ['source', 'normalization', 'contextForSpan', 'sectionForSpan']);
+  const second = compileMarkdownSourceDocument(source);
+  assert.notStrictEqual(document.tree, second.tree);
+  assert.notStrictEqual(document.index, second.index);
+  assert.throws(() => compileMarkdownSourceDocument('x'.repeat(8_000_001)), RangeError);
+});
 
 function selectedText(index: MarkdownSourceContextIndex, text: string): NormativeSourceContext {
   const offset = index.source.indexOf(text);

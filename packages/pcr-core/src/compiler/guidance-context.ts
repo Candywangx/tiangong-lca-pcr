@@ -48,16 +48,17 @@ export function deriveGuidanceContext(structured: unknown, sourceMarkdown: strin
   const metadata = field(structured, 'projection_metadata');
   const storedHash = string(field(metadata, 'generated_content_sha256'), 'stored projection fingerprint');
   const sourceHash = string(field(field(metadata, 'canonical_markdown'), 'sha256'), 'canonical source fingerprint');
-  const projected = compileNormativeProjection(sourceMarkdown);
-  if (projected.context.source_sha256 !== sourceHash) throw new GuidanceContextError('Canonical source differs from verified projection fingerprint.');
   let context: NormativeProjectionContext;
   if (schema === 2) {
     const integrity = inspectNormativeIntegrity({ sourceMarkdown, structuredProjection: structured });
     if (!integrity.valid) throw new GuidanceContextError('Stored normative context does not match canonical source and rules.');
     // Recomputed context is identical to the verified stored context; retaining the
     // typed value avoids a cast from untrusted data.
-    context = projected.context;
+    context = integrity.verified_context;
+    if (context.source_sha256 !== sourceHash) throw new GuidanceContextError('Canonical source differs from verified projection fingerprint.');
   } else {
+    const projected = compileNormativeProjection(sourceMarkdown);
+    if (projected.context.source_sha256 !== sourceHash) throw new GuidanceContextError('Canonical source differs from verified projection fingerprint.');
     const expected = [projected.systemBoundaryRules, projected.allocationRules, projected.validationRules];
     const stored = arrays(structured);
     for (let family = 0; family < expected.length; family += 1) {

@@ -1,10 +1,7 @@
 import { createHash } from 'node:crypto';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
 import type { Nodes, Table, TableCell } from 'mdast';
 import {
-  compileMarkdownSourceContext, contextForSpan, sectionForSpan,
+  compileMarkdownSourceDocument, contextForSpan, sectionForSpan,
   type SourceHeading, type SourceSpan,
 } from './source-context.ts';
 
@@ -124,10 +121,8 @@ const familyOptions = {
  * sections; extraction and identity remain scoped to the original H2.
  * The flattened display strings make no assertion of scientific applicability. */
 export function compileNormativeProjection(markdown: string): NormativeProjection {
-  const index = compileMarkdownSourceContext(markdown);
+  const { index, tree } = compileMarkdownSourceDocument(markdown);
   const source = index.source;
-  // Bounds are enforced by the shared index before this second, typed AST parse.
-  const tree = unified().use(remarkParse).use(remarkGfm).parse(source);
   const arrays: Record<NormativeFamily, NormativeRule[]> = { system_boundary: [], allocation: [], validation: [] };
   const authoredIds: Record<NormativeFamily, Map<string, SourceSpan>> = {
     system_boundary: new Map(), allocation: new Map(), validation: new Map(),

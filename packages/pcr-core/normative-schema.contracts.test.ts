@@ -198,3 +198,12 @@ test('shape contracts leave reference and source fidelity to runtime integrity v
   result(validateContext, changed(projection.context, ['source_sha256'], `sha256:${'0'.repeat(64)}`), true);
   result(validateContext, changed(projection.context, ['units', 0, 'span', 'end', 'offset'], 0), true);
 });
+
+
+test('guidance provenance rejects contradictory stored and derived format identities', () => {
+  result(validateGuidance, changed(guidanceV2(), ['normative_context_provenance', 'stored_projection_schema_version'], 1), false);
+  result(validateGuidance, changed(guidanceV2(), ['normative_context_provenance', 'kind'], 'derived_legacy_source'), false);
+  const derived = changed(changed(guidanceV2(), ['normative_context_provenance', 'kind'], 'derived_legacy_source'), ['normative_context_provenance', 'stored_projection_schema_version'], 1);
+  result(validateGuidance, derived, true);
+  result(validateGuidance, without(guidanceV2(), 'normative_context_provenance'), false);
+});

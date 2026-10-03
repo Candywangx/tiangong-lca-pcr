@@ -49,6 +49,10 @@ test('v2 guidance requires valid stored context and reports the stored contract 
   assert.equal(envelope.normative_context_provenance.kind, 'stored_projection');
   assert.equal(envelope.normative_context_provenance.stored_projection_schema_version, 2);
   assert.deepEqual(envelope.normative_context, stored.normative_context);
+  assert.notStrictEqual(envelope.normative_context, stored.normative_context, 'Use the regenerated typed value, not the unknown stored object.');
+  assert.notStrictEqual(envelope.normative_context.units, stored.normative_context?.units);
+  const originalEnvelope = JSON.stringify(envelope);
   assert.ok(stored.normative_context); stored.normative_context = { ...stored.normative_context, bindings: [] };
   assert.throws(() => deriveGuidanceContext(stored, source), GuidanceContextError);
+  assert.equal(JSON.stringify(envelope), originalEnvelope, 'Later invalid operations cannot mutate previously returned context.');
 });

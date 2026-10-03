@@ -1,7 +1,7 @@
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
-import type { Nodes } from 'mdast';
+import type { Nodes, Root } from 'mdast';
 
 /** All locations refer to BOM-free, LF-normalized source. Offsets are zero-based
  * UTF-16 code units, start inclusive/end exclusive; lines/columns are one-based.
@@ -81,6 +81,17 @@ const MAX_DEPTH = 256;
 
 /** Pure parse/index operation. Resource bounds fail explicitly, never truncate. */
 export function compileMarkdownSourceContext(input: string): MarkdownSourceContextIndex {
+  return compileMarkdownSourceDocument(input).index;
+}
+
+/** One newly parsed, operation-owned source and AST. Production compilers call
+ * this factory from canonical text; no caller-supplied tree can bypass parsing or
+ * source/AST resource bounds. The document is neither cached nor shared across
+ * operations. Existing index-only callers retain their original public shape. */
+export function compileMarkdownSourceDocument(input: string): {
+  readonly tree: Root;
+  readonly index: MarkdownSourceContextIndex;
+} {
   const source = input.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
   if (source.length > MAX_SOURCE_CODE_UNITS) throw new RangeError('Markdown exceeds source-context source limit');
   const tree = unified().use(remarkParse).use(remarkGfm).parse(source);
@@ -264,7 +275,7 @@ export function compileMarkdownSourceContext(input: string): MarkdownSourceConte
     const { start, end } = offsets(selection);
     return section(start, end, depth);
   }
-  return { source, normalization: 'utf8-lf-v1', contextForSpan: query, sectionForSpan: sectionQuery };
+  return { tree, index: { source, normalization: 'utf8-lf-v1', contextForSpan: query, sectionForSpan: sectionQuery } };
 }
 
 export function contextForSpan(index: MarkdownSourceContextIndex, selection: SourceSelection): NormativeSourceContext {
