@@ -45,7 +45,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
       - name: Refresh main and tags
         run: |
           git fetch origin +refs/heads/main:refs/remotes/origin/main
@@ -93,10 +93,12 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
       - name: Select the pinned OIDC publishing toolchain
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Verify the pinned product toolchain
+        run: npm run runtime:release
       - name: Revalidate exact product tag after qualification and environment admission
         env:
           PRODUCT_TAG: ${{ needs.release-context.outputs.tag }}
@@ -149,7 +151,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
       - name: Recheck tag after validation and environment approval
         run: |

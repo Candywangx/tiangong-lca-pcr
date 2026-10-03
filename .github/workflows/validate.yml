@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Initialize validation evidence
         run: |
@@ -37,11 +39,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npm --prefix packages/pcr-docs ci
+
+      - name: Verify emitted TypeScript tests and source-mapped coverage
+        run: npm run test:coverage
+
+      - name: Preserve engineering coverage baseline
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-engineering-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .reports/coverage/engineering/
+          if-no-files-found: error
 
       - name: Install PDF text extractor
         run: |
@@ -120,7 +133,7 @@ jobs:
       - name: Set up production documentation runtime
         uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: |
             package-lock.json
@@ -180,7 +193,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-15]
+        include:
+          - os: ubuntu-latest
+            arch: x64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+          - os: windows-latest
+            arch: x64
+          - os: macos-latest
+            arch: arm64
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
@@ -192,9 +213,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.19.0
+          node-version-file: .nvmrc
           cache: npm
       - name: Install locked build dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify the native platform and engineering boundaries
+        env:
+          PCR_EXPECTED_ARCH: ${{ matrix.arch }}
+        run: |
+          node -e "if(process.arch!==process.env.PCR_EXPECTED_ARCH)process.exit(1)"
+          npm run runtime:check
+          npm run typecheck
+          npm run test:engineering
       - name: Verify complete offline distribution and reproducibility
-        run: npm run offline:test
+        run: npm run test:offline

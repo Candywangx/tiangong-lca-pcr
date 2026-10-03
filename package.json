@@ -6,8 +6,8 @@
   "scripts": {
     "init": "node builder/cli/index.mjs init",
     "lint": "npm run vocab:check && npm run aliases:check && npm run catalog:check && npm run cpc-chains:check && node builder/cli/index.mjs lint --report .reports/pcr-lint.json",
-    "test": "node --test builder/cli/*.test.mjs builder/goal-harness/*.test.mjs builder/lib/*.test.mjs builder/scripts/*.test.mjs packages/pcr-core/*.test.mjs packages/tiangong-pcr-cli/*.test.mjs packages/pcr-viewer/*.test.mjs",
-    "validate": "npm run lint && npm test",
+    "test": "node scripts/engineering/suites.ts run all",
+    "validate": "npm run runtime:check && npm run migration:check && npm run typecheck:all && npm run lint && npm test",
     "vocab:generate": "node builder/scripts/generate-controlled-vocabulary.mjs",
     "vocab:check": "node builder/scripts/generate-controlled-vocabulary.mjs --check",
     "aliases:build": "node builder/scripts/build-pcr-id-aliases.mjs",
@@ -57,10 +57,36 @@
     "product:build": "node builder/scripts/product-release.mjs build",
     "product:verify": "node builder/scripts/product-release.mjs verify",
     "product:publish": "node builder/scripts/product-publish.mjs",
-    "product:test": "node --test builder/scripts/product-*.test.mjs"
+    "product:test": "node --test builder/scripts/product-*.test.mjs",
+    "runtime:check": "node scripts/engineering/runtime.ts",
+    "runtime:release": "node scripts/engineering/runtime.ts --release",
+    "migration:check": "node scripts/engineering/migration.ts",
+    "typecheck": "tsc --noEmit",
+    "typecheck:all": "npm run typecheck && npm --prefix packages/pcr-docs run typecheck",
+    "build:engineering": "tsc -p tsconfig.build.json",
+    "build:tests": "tsc -p tsconfig.test.json",
+    "test:list": "node scripts/engineering/suites.ts list --json",
+    "test:unit": "node scripts/engineering/suites.ts run unit",
+    "test:contracts": "node scripts/engineering/suites.ts run contracts",
+    "test:integration": "node scripts/engineering/suites.ts run integration",
+    "test:recovery": "node scripts/engineering/suites.ts run recovery",
+    "test:docs": "node scripts/engineering/suites.ts run docs",
+    "test:offline": "node scripts/engineering/suites.ts run offline",
+    "test:product": "node scripts/engineering/suites.ts run product",
+    "test:engineering": "node scripts/engineering/suites.ts run engineering",
+    "test:coverage": "npm run build:tests && c8 --all --src scripts/engineering --include \"scripts/engineering/**/*.ts\" --exclude \"**/*.test.ts\" --exclude-after-remap --reporter=text --reporter=lcov --reporter=json-summary --reports-dir .reports/coverage/engineering node --test \"dist/test-engineering/scripts/engineering/*.test.js\""
   },
   "dependencies": {
     "ajv": "8.20.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "24.19.1",
+    "c8": "12.0.0",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=24.19.0 <25"
+  },
+  "packageManager": "npm@12.2.0"
 }
