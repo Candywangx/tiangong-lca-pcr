@@ -279,3 +279,10 @@ test("readYamlFile reads strict UTF-8 and reports path with parser diagnostics",
     rmSync(directory, { recursive: true, force: true });
   }
 });
+
+
+test("PCR leading-zero identifiers retain spelling while ordinary numeric values stay numeric", () => {
+  const parsed = parseYaml('schema_version: 2\ncode: 01111\nnegative: -001\nratio: -1.25\nscientific: 2e3\nexplicit: !!int 01111\nquoted: "1"\n');
+  assert.deepEqual(parsed, { schema_version: 2, code: "01111", negative: "-001", ratio: -1.25, scientific: 2000, explicit: 1111, quoted: "1" });
+  assert.deepEqual(parseYaml(renderYaml(parsed)), parsed);
+});

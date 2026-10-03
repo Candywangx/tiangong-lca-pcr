@@ -183,7 +183,7 @@ a clean dependency-absent import probe verifies that boundary.
 ## YAML boundary
 
 `packages/pcr-core/src/yaml-lite.ts` retains the API names but uses pinned `yaml`
-2.9.1 to read one complete YAML 1.2 document into JSON-compatible data. Folded
+2.9.1 to read one complete YAML 1.2 document into JSON-compatible data, with one explicit PCR compatibility rule: untagged leading-zero scalar spellings remain identifier strings; explicit numeric tags opt into numeric conversion. Folded
 plain continuations, quoted escapes/newlines, block scalars and collections are
 preserved. Duplicate keys, unresolved/unsupported tags, multiple documents,
 complex keys and nonfinite values fail with positioned diagnostics; no partial

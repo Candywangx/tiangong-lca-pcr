@@ -92,6 +92,10 @@ function parseYamlDocument(text: string, sourcePath?: string): YamlValue {
       fail("YAML_TAG_UNSUPPORTED", `Unsupported tag ${node.tag}`, offset);
     }
     if (isScalar(node)) {
+      // PCR classification and other identifiers historically preserve leading
+      // zero spellings. Keep that explicit compatibility rule while other plain
+      // scalars follow YAML 1.2; an explicit numeric tag opts into YAML typing.
+      if (!node.tag && node.type === "PLAIN" && /^[-+]?0\d/u.test(node.source ?? "")) return node.source ?? "";
       const value: unknown = node.value;
       if (value === null || typeof value === "string" || typeof value === "boolean") return value;
       if (typeof value === "number" && Number.isFinite(value)) return value;

@@ -3,21 +3,85 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import test from "node:test";
+import test, { type TestContext } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
-import {
-  buildReleaseRecord,
-  byteSha256,
-  inspectPublishedRevisionState,
-  manifestReleaseArtifacts,
-} from "./published-revision-state.mjs";
+import type { YamlObject, YamlValue } from "../../packages/pcr-core/src/yaml-lite.ts";
+
+// Validate the exact API and observed result fields of the untyped module.
+const stateModule: unknown = await import(new URL("./published-revision-state.mjs", import.meta.url).href);
+interface Fixture { root: string; pcrDir: string; manifest: YamlObject; }
+interface Inspection {
+  problems: string[]; warnings: string[];
+  history: Record<string, unknown> | null;
+  revision: { revision: Record<string, unknown>; nextManifest: Record<string, unknown> } | null;
+  releases: { version: string }[];
+}
+interface ReleaseInput {
+  pcrId: string; version: string; publishedAtUtc: string; predecessorVersion: string | null;
+  manifestText: string; englishText: string; chineseText: string; structuredText: string;
+}
+function record(value: unknown): Record<string, unknown> {
+  assert.ok(value !== null && typeof value === "object" && !Array.isArray(value));
+  return value as Record<string, unknown>;
+}
+function strings(value: unknown): string[] {
+  assert.ok(Array.isArray(value) && value.every((entry: unknown) => typeof entry === "string"));
+  return value as string[];
+}
+function string(value: unknown): string {
+  assert.equal(typeof value, "string");
+  return value as string;
+}
+function callable(value: unknown): value is (...args: unknown[]) => unknown { return typeof value === "function"; }
+type LegacyExport = "buildReleaseRecord" | "byteSha256" | "manifestReleaseArtifacts" | "inspectPublishedRevisionState";
+function call(name: LegacyExport, ...args: unknown[]): unknown {
+  const fn = record(stateModule)[name];
+  assert.ok(callable(fn), `legacy export ${name} must be callable`);
+  return fn(...args);
+}
+function yamlObject(value: YamlValue | undefined): YamlObject {
+  assert.ok(value !== null && value !== undefined && typeof value === "object" && !Array.isArray(value));
+  return value;
+}
+function yamlArray(value: YamlValue | undefined): YamlValue[] { assert.ok(Array.isArray(value)); return value; }
+function buildReleaseRecord(input: ReleaseInput): { releaseText: string; historyEntry: YamlObject } {
+  const result = record(call("buildReleaseRecord", input));
+  const releaseText = string(result["releaseText"]);
+  const history = record(result["historyEntry"]);
+  const predecessor = history["predecessor_version"];
+  assert.ok(predecessor === null || typeof predecessor === "string");
+  const historyEntry: YamlObject = {
+    version: string(history["version"]),
+    published_at_utc: string(history["published_at_utc"]),
+    predecessor_version: predecessor,
+    path: string(history["path"]),
+    release_sha256: string(history["release_sha256"]),
+  };
+  return { releaseText, historyEntry };
+}
+function byteSha256(input: string | Uint8Array): string { return string(call("byteSha256", input)); }
+function manifestReleaseArtifacts(input: { englishText: string; chineseText: string; structuredText: string }): YamlObject {
+  const result = record(call("manifestReleaseArtifacts", input));
+  return {
+    pcr_en_us_sha256: string(result["pcr_en_us_sha256"]),
+    pcr_zh_cn_sha256: string(result["pcr_zh_cn_sha256"]),
+    structured_sha256: string(result["structured_sha256"]),
+  };
+}
+function assertAuditRejected(result: Inspection, fixture: Fixture, filename: string, code: string): void {
+  const relative = path.relative(fixture.root, filename).replaceAll(path.sep, "/");
+  assert.ok(result.problems.some(problem =>
+    problem.startsWith(`${relative}: invalid YAML (${code}:`) && /\(\d+:\d+\)\)$/u.test(problem)),
+    result.problems.join("\n"));
+}
 
 const PCR_ID =
   "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-seed";
@@ -40,9 +104,9 @@ test("accepts an immutable first release whose current files match the snapshot"
   const result = inspect(fixture);
 
   assert.deepEqual(result.problems, []);
-  assert.equal(result.history.current_version, "1.0.0");
+  assert.equal(result.history?.current_version, "1.0.0");
   assert.equal(result.releases.length, 1);
-  assert.equal(result.releases[0].version, "1.0.0");
+  assert.equal(result.releases[0]?.version, "1.0.0");
   assert.equal(result.revision, null);
 });
 
@@ -94,7 +158,7 @@ test("binds snapshot manifest release_artifacts to the same exact bytes as relea
     "manifest.snapshot.yaml",
   );
   const snapshot = readYaml(snapshotPath);
-  snapshot.release_artifacts.pcr_en_us_sha256 = `sha256:${"0".repeat(64)}`;
+  yamlObject(snapshot.release_artifacts).pcr_en_us_sha256 = `sha256:${"0".repeat(64)}`;
   writeFileSync(snapshotPath, renderYaml(snapshot));
 
   const result = inspect(fixture);
@@ -117,7 +181,7 @@ test("detects a current release_artifacts hash mismatch", (t) => {
   const fixture = createPublishedFixture(t);
   const manifestPath = path.join(fixture.pcrDir, "manifest.yaml");
   const manifest = readYaml(manifestPath);
-  manifest.release_artifacts.structured_sha256 = `sha256:${"0".repeat(64)}`;
+  yamlObject(manifest.release_artifacts).structured_sha256 = `sha256:${"0".repeat(64)}`;
   writeFileSync(manifestPath, renderYaml(manifest));
 
   const result = inspect(fixture);
@@ -155,7 +219,7 @@ test("enforces release-history predecessor links", (t) => {
   const fixture = createPublishedFixture(t, { versions: ["1.0.0", "1.1.0"] });
   const historyPath = path.join(fixture.pcrDir, "release-history.yaml");
   const history = readYaml(historyPath);
-  history.releases[1].predecessor_version = null;
+  yamlObject(yamlArray(history.releases)[1]).predecessor_version = null;
   writeFileSync(historyPath, renderYaml(history));
 
   const result = inspect(fixture);
@@ -185,7 +249,7 @@ test("rejects calendar-normalized audit timestamps such as February 31", (t) => 
   const fixture = createPublishedFixture(t);
   const historyPath = path.join(fixture.pcrDir, "release-history.yaml");
   const history = readYaml(historyPath);
-  history.releases[0].published_at_utc = "2026-02-31T00:00:00Z";
+  yamlObject(yamlArray(history.releases)[0]).published_at_utc = "2026-02-31T00:00:00Z";
   writeFileSync(historyPath, renderYaml(history));
 
   const result = inspect(fixture);
@@ -203,8 +267,8 @@ test("reports malformed release versions without resolving paths outside release
   const historyPath = path.join(fixture.pcrDir, "release-history.yaml");
   const history = readYaml(historyPath);
   history.current_version = "../../outside";
-  history.releases[0].version = "../../outside";
-  history.releases[0].path = "releases/../../outside";
+  yamlObject(yamlArray(history.releases)[0]).version = "../../outside";
+  yamlObject(yamlArray(history.releases)[0]).path = "releases/../../outside";
   writeFileSync(historyPath, renderYaml(history));
 
   const result = inspect(fixture);
@@ -242,12 +306,8 @@ test("rejects non-canonical audit YAML so duplicate keys and trailing content fa
 
     const result = inspect(fixture);
 
-    assert.ok(
-      result.problems.some((problem) =>
-        problem.includes("release.yaml: audit YAML must use canonical builder rendering"),
-      ),
-      result.problems.join("\n"),
-    );
+    assertAuditRejected(result, fixture, releasePath, "YAML_DUPLICATE_KEY");
+    assert.equal(result.releases.length, 0);
   });
 
   await t.test("release history trailing content", (subtest) => {
@@ -257,12 +317,8 @@ test("rejects non-canonical audit YAML so duplicate keys and trailing content fa
 
     const result = inspect(fixture);
 
-    assert.ok(
-      result.problems.some((problem) =>
-        problem.includes("release-history.yaml: audit YAML must use canonical builder rendering"),
-      ),
-      result.problems.join("\n"),
-    );
+    assertAuditRejected(result, fixture, historyPath, "YAML_MISSING_CHAR");
+    assert.equal(result.history, null);
   });
 
   await t.test("snapshot manifest duplicate key", (subtest) => {
@@ -277,12 +333,8 @@ test("rejects non-canonical audit YAML so duplicate keys and trailing content fa
 
     const result = inspect(fixture);
 
-    assert.ok(
-      result.problems.some((problem) =>
-        problem.includes("manifest.snapshot.yaml: audit YAML must use canonical builder rendering"),
-      ),
-      result.problems.join("\n"),
-    );
+    assertAuditRejected(result, fixture, snapshotPath, "YAML_DUPLICATE_KEY");
+    assert.equal(result.releases.length, 0);
   });
 
   await t.test("revision metadata duplicate key", (subtest) => {
@@ -296,12 +348,8 @@ test("rejects non-canonical audit YAML so duplicate keys and trailing content fa
 
     const result = inspect(fixture);
 
-    assert.ok(
-      result.problems.some((problem) =>
-        problem.includes("revision.yaml: audit YAML must use canonical builder rendering"),
-      ),
-      result.problems.join("\n"),
-    );
+    assertAuditRejected(result, fixture, revisionPath, "YAML_DUPLICATE_KEY");
+    assert.equal(result.revision, null);
   });
 
   await t.test("next manifest trailing content", (subtest) => {
@@ -315,12 +363,8 @@ test("rejects non-canonical audit YAML so duplicate keys and trailing content fa
 
     const result = inspect(fixture);
 
-    assert.ok(
-      result.problems.some((problem) =>
-        problem.includes("manifest.next.yaml: audit YAML must use canonical builder rendering"),
-      ),
-      result.problems.join("\n"),
-    );
+    assertAuditRejected(result, fixture, nextManifestPath, "YAML_MISSING_CHAR");
+    assert.equal(result.revision, null);
   });
 });
 
@@ -331,10 +375,12 @@ test("reports a schema-invalid release history without throwing during semantic 
   history.releases = { invalid: "not-an-array" };
   writeFileSync(historyPath, renderYaml(history));
 
-  let result;
+  const observed: { result: Inspection | null } = { result: null };
   assert.doesNotThrow(() => {
-    result = inspect(fixture);
+    observed.result = inspect(fixture);
   });
+  const result = observed.result;
+  assert.ok(result, "semantic inspection must return its fail-closed report");
   assert.equal(result.releases.length, 0);
   assert.ok(
     result.problems.some((problem) =>
@@ -368,9 +414,9 @@ test("accepts a revision whose base, target, identity, and exact file set are va
   const result = inspect(fixture);
 
   assert.deepEqual(result.problems, []);
-  assert.equal(result.revision.revision.base_version, "1.0.0");
-  assert.equal(result.revision.revision.target_version, "1.1.0");
-  assert.equal(result.revision.nextManifest.status, "candidate");
+  assert.equal(result.revision?.revision.base_version, "1.0.0");
+  assert.equal(result.revision?.revision.target_version, "1.1.0");
+  assert.equal(result.revision?.nextManifest.status, "candidate");
 });
 
 test("rejects revision base and target versions that break release lineage", async (t) => {
@@ -444,27 +490,28 @@ test("rejects reopening a revision from deprecated current state", (t) => {
   );
 });
 
-function createPublishedFixture(t, { versions = ["1.0.0"] } = {}) {
-  const root = mkdtempSync(path.join(tmpdir(), "pcr-published-state-"));
+function createPublishedFixture(t: TestContext, { versions = ["1.0.0"] }: { versions?: string[] } = {}): Fixture {
+  assert.ok(versions.length > 0, "published fixture requires a release");
+  const root = realpathSync(mkdtempSync(path.join(tmpdir(), "pcr-published-state-")));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const pcrDir = path.join(root, "library", "pcrs", "example", "product", "wheat-seed");
   mkdirSync(pcrDir, { recursive: true });
   mkdirSync(path.join(pcrDir, "releases"));
 
   const baseManifest = readYaml(path.join(MATERIAL_FIXTURE_DIR, "manifest.yaml"));
-  const releases = [];
-  let latestManifest = null;
-  let latestManifestText = null;
+  const releases: YamlObject[] = [];
+  let latestManifest: YamlObject | null = null;
+  let latestManifestText: string | null = null;
   for (const [index, version] of versions.entries()) {
     const publishedAtUtc = `2026-07-${String(index + 1).padStart(2, "0")}T00:00:00Z`;
-    const manifest = {
+    const manifest: YamlObject = {
       ...baseManifest,
       version,
       updated_at_utc: publishedAtUtc,
       published_at_utc: publishedAtUtc,
       status: "published",
       content_maturity: "published_methodology",
-      translation_status: { ...baseManifest.translation_status, "zh-CN": "reviewed" },
+      translation_status: { ...yamlObject(baseManifest.translation_status), "zh-CN": "reviewed" },
       release_artifacts: manifestReleaseArtifacts(MATERIAL_FILES),
     };
     const manifestText = renderYaml(manifest);
@@ -489,6 +536,7 @@ function createPublishedFixture(t, { versions = ["1.0.0"] } = {}) {
     latestManifestText = manifestText;
   }
 
+  assert.ok(latestManifest && latestManifestText !== null);
   writeFileSync(path.join(pcrDir, "manifest.yaml"), latestManifestText);
   writeFileSync(path.join(pcrDir, "pcr.en-US.md"), MATERIAL_FILES.englishText);
   writeFileSync(path.join(pcrDir, "pcr.zh-CN.md"), MATERIAL_FILES.chineseText);
@@ -498,7 +546,7 @@ function createPublishedFixture(t, { versions = ["1.0.0"] } = {}) {
     renderYaml({
       schema_version: 1,
       pcr_id: PCR_ID,
-      current_version: versions.at(-1),
+      current_version: versions.at(-1) ?? "",
       releases,
     }),
   );
@@ -507,8 +555,8 @@ function createPublishedFixture(t, { versions = ["1.0.0"] } = {}) {
 }
 
 function createRevision(
-  fixture,
-  { revision: revisionOverrides = {}, nextManifest: nextManifestOverrides = {} } = {},
+  fixture: Fixture,
+  { revision: revisionOverrides = {}, nextManifest: nextManifestOverrides = {} }: { revision?: YamlObject; nextManifest?: YamlObject } = {},
 ) {
   const revisionDir = path.join(fixture.pcrDir, "revision");
   mkdirSync(revisionDir);
@@ -520,13 +568,13 @@ function createRevision(
     opened_at_utc: "2026-07-14T12:34:56Z",
     ...revisionOverrides,
   };
-  const nextManifest = {
+  const nextManifest: YamlObject = {
     ...fixture.manifest,
     version: revision.target_version,
     updated_at_utc: revision.opened_at_utc,
     status: "candidate",
     content_maturity: "authored_methodology",
-    translation_status: { ...fixture.manifest.translation_status, "zh-CN": "out_of_sync" },
+    translation_status: { ...yamlObject(fixture.manifest.translation_status), "zh-CN": "out_of_sync" },
     ...nextManifestOverrides,
   };
   delete nextManifest.published_at_utc;
@@ -540,10 +588,21 @@ function createRevision(
   return revisionDir;
 }
 
-function inspect(fixture) {
-  return inspectPublishedRevisionState({ root: fixture.root, pcrDir: fixture.pcrDir });
+function inspect(fixture: Fixture): Inspection {
+  const result = record(call("inspectPublishedRevisionState", { root: fixture.root, pcrDir: fixture.pcrDir }));
+  const rawRevision = result["revision"];
+  const revision = rawRevision === null ? null : record(rawRevision);
+  const rawHistory = result["history"];
+  const releases = result["releases"];
+  assert.ok(Array.isArray(releases));
+  return {
+    problems: strings(result["problems"]), warnings: strings(result["warnings"]),
+    history: rawHistory === null ? null : record(rawHistory),
+    revision: revision === null ? null : { revision: record(revision["revision"]), nextManifest: record(revision["nextManifest"]) },
+    releases: releases.map((entry: unknown) => ({ version: string(record(entry)["version"]) })),
+  };
 }
 
-function readYaml(filePath) {
-  return parseYaml(readFileSync(filePath, "utf8"));
+function readYaml(filePath: string): YamlObject {
+  return yamlObject(parseYaml(readFileSync(filePath, "utf8")));
 }
