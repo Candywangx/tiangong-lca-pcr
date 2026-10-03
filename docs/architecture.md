@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 ---
 
 # PCR 资料库架构
@@ -552,3 +552,5 @@ YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解�
 受限无环别名展开为独立 JSON 值。解析错误不产生部分对象；具体边界见 TypeScript 工程契约。
 离线工具从 TypeScript 与清单内遗留源编译出运行产物，调用者无需 TypeScript 编译器。
 该阶段保留方法学原文、发布状态和版本；Markdown 条件/动作保真仍由 PCR #63 单独交付。
+
+规范投影 v2 由严格 TypeScript Markdown 编译器生成，保留 H2 完整原文、根/一级标题前言、来源位置及规则绑定。core 在消费时重新生成并验证，防止仅修改哈希掩盖上下文丢失。旧 v1 快照保留原始字节和哈希，消费层以独立 provenance 补齐来源上下文。完整要求见 [语义投影契约](semantic-projection-contract.md)。网站与 AI 消费继续作为独立派生出口；正式上线由统一产品发布验收。

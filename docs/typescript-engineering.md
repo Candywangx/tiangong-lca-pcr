@@ -20,8 +20,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -202,3 +202,7 @@ keys roundtrip correctly. Functions, exotic objects, accessors, symbols, sparse
 arrays, cycles and nonfinite output values fail instead of silently losing data.
 The vocabulary registry retains its richer filename/key-path duplicate report
 and aggregates parser failures; valid registry data remains deeply frozen.
+
+## Normative migration boundary
+
+The typed Markdown parser, serializer, projection integrity, source-context compiler and guidance selection replace their inventoried legacy modules. `tsconfig.semantic.json` checks these implementations and their independent contracts. Remaining core APIs are still legacy; the typed selection module uses one fixed-URL, unknown-data adapter until the core port replaces it. Runtime shape/provenance checks do not count that legacy core as migrated. New generated source context is governed by [the semantic contract](semantic-projection-contract.md).
