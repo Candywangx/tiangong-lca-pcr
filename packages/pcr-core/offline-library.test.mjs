@@ -6,7 +6,7 @@ import path from "node:path";
 import { deflateRawSync } from "node:zlib";
 import test from "node:test";
 import { buildOfflineLibrary } from "../../builder/scripts/build-offline-library.mjs";
-import { buildOfflineTool } from "../../builder/scripts/build-offline-packages.mjs";
+import { buildOfflineTool } from "../../builder/scripts/build-offline-packages.ts";
 import { buildRelease, parseNpmPackOutput } from "../../builder/scripts/npm-release.mjs";
 import { OfflineLibrary, sqliteDatabase, sha256, hashFile, metadataDigest } from "./src/offline-library.mjs";
 import { withPcrSource } from "./src/source-context.mjs";

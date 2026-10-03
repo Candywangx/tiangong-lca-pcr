@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { GoalHarnessError } from "./errors.mjs";
 
 const schemaPath = fileURLToPath(new URL("../schemas/goal-harness-config.schema.json", import.meta.url));

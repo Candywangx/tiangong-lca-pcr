@@ -22,7 +22,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   DEFAULT_REPORT_PATH,
   DEFAULT_SOURCE_PATH,

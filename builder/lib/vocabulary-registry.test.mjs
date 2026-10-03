@@ -15,10 +15,10 @@ import {
   DEFAULT_VOCABULARY_DIRECTORY,
   VocabularyRegistryError,
   loadVocabularyRegistry,
-} from "./vocabulary-registry.mjs";
+} from "./vocabulary-registry.ts";
 import { CONTROLLED_VOCABULARY } from "../../packages/pcr-core/src/generated/controlled-vocabulary.mjs";
 import { buildControlledVocabularyArtifacts } from "../scripts/generate-controlled-vocabulary.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 function withVocabularyDirectory(files, callback) {
   const directory = mkdtempSync(path.join(os.tmpdir(), "pcr-vocab-"));

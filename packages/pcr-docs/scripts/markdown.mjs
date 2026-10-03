@@ -8,7 +8,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import GithubSlugger from "github-slugger";
 import { parseHTML } from "linkedom";
-import { parseYaml } from "../../pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
 
 const parser = unified().use(remarkParse).use(remarkGfm);
 const sanitizer = {

@@ -32,7 +32,7 @@ import {
   assertStructured as assertCoreStructured,
   assertValidationReport,
 } from "../../packages/pcr-core/src/contracts.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");
 const pcrId =

@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
-lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 ---
 
 # PCR 资料库架构
@@ -547,3 +547,8 @@ for setup, first publication and retries. Npm release does not approve PCR metho
 Markdown、方法学审核、历史快照或统一产品发布身份。Python SEO 检查器按用户要求保留。
 共享语义编译与消费逻辑仍属于 pcr-core；Builder 保持写入和恢复边界。优先修复 #63 中的条件、
 动作和上下文丢失，然后实现批量读取和受验证快照会话。基础设施通过不等于全部迁移或语义修复完成。
+
+YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解析单文档、保留续行和转义，
+受限无环别名展开为独立 JSON 值。解析错误不产生部分对象；具体边界见 TypeScript 工程契约。
+离线工具从 TypeScript 与清单内遗留源编译出运行产物，调用者无需 TypeScript 编译器。
+该阶段保留方法学原文、发布状态和版本；Markdown 条件/动作保真仍由 PCR #63 单独交付。

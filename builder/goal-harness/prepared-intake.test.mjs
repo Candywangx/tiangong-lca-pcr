@@ -14,7 +14,7 @@ import { resolveAuthorSubmission } from "./author-submission.mjs";
 import { runHybridSearchWithReceipt, recordHybridCandidateDirectRead, finalizeHybridSearchReceipt } from "./uuid-search-receipts.mjs";
 import { flattenProcessInventory } from "./author-gates.mjs";
 import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "../lib/markdown-projection.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { inspectPcrDirectory } from "../lib/lint-rules.mjs";
 
 const evidence = JSON.parse(readFileSync(new URL("./fixtures/44125-rejection-differences.json", import.meta.url)));

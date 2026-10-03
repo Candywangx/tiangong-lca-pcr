@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { readPcrDocumentBundle, readPcrMarkdown } from "./src/index.mjs";
-import { parseYaml, renderYaml } from "./src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "./src/yaml-lite.ts";
 
 const relative = "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";
 const id = "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-seed";
