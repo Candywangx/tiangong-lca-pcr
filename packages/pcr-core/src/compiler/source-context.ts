@@ -249,7 +249,7 @@ export function compileMarkdownSourceContext(input: string): MarkdownSourceConte
       const lastIntro = introductions.at(-1);
       if (lastIntro) {
         unit = block(introductions[0]?.start ?? primary.start, primary.end, primary.node.type === 'list' ? 'list_group' : 'table_group');
-        if (!source.slice(lastIntro.start, lastIntro.end).trimEnd().endsWith(':')) {
+        if (!/[:：]$/u.test(source.slice(lastIntro.start, lastIntro.end).trimEnd())) {
           uncertain('AMBIGUOUS_PROSE_ATTACHMENT', 'Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained.');
         }
       }

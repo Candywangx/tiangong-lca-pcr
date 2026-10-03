@@ -98,6 +98,7 @@ function guidanceV2() {
   return { ...guidanceV1(), schema_version: 2,
     system_boundary: { rules: projection.systemBoundaryRules }, allocation_rules: projection.allocationRules,
     validation_rules: projection.validationRules, normative_context: projection.context,
+    normative_context_provenance: { kind: "stored_projection", compiler_contract_version: "2", stored_projection_schema_version: 2, stored_projection_sha256: legacyStructured.projection_metadata.generated_content_sha256, source_sha256: projection.context.source_sha256, context_sha256: projection.context.source_sha256 },
   };
 }
 

@@ -15,12 +15,19 @@ export interface NormativeRule {
   rule: string;
   source_ids: string[];
 }
+export interface NormativeAncestorContext {
+  readonly span: SourceSpan;
+  readonly markdown: string;
+}
 export interface NormativeUnit {
   readonly unit_id: string;
   readonly family: NormativeFamily;
   readonly span: SourceSpan;
   readonly markdown: string;
   readonly headings: readonly SourceHeading[];
+  /** Exact document/H1 preambles in outer-to-inner structural order. Their
+   * semantic applicability is not inferred; H2 source remains separately bounded. */
+  readonly ancestor_context: readonly NormativeAncestorContext[];
 }
 export interface NormativeBinding {
   readonly pointer: string;
@@ -113,6 +120,8 @@ const familyOptions = {
 
 /** Project only the three reviewed legacy families. Source association is structural:
  * whole actual H2 sections remain exact, including preambles and following notes.
+ * Exact ancestor preambles remain separately bound without copying unrelated
+ * sections; extraction and identity remain scoped to the original H2.
  * The flattened display strings make no assertion of scientific applicability. */
 export function compileNormativeProjection(markdown: string): NormativeProjection {
   const index = compileMarkdownSourceContext(markdown);
@@ -129,6 +138,13 @@ export function compileNormativeProjection(markdown: string): NormativeProjectio
   const diagnostics: NormativeDiagnostic[] = [];
   const diagnosticKeys = new Set<string>();
   let active: NormativeUnit | null = null;
+  let ancestorHeading: Nodes | null = null;
+  let hasAncestorPreamble = false;
+  let ancestorHasH2 = false;
+  let hasDocumentPreamble = false;
+  let documentHasScopeHeading = false;
+  let documentPreamble: NormativeAncestorContext | null = null;
+  let ancestorPreamble: NormativeAncestorContext | null = null;
 
   function selection(node: Nodes): { startOffset: number; endOffset: number } {
     const startOffset = node.position?.start.offset;
@@ -142,6 +158,10 @@ export function compileNormativeProjection(markdown: string): NormativeProjectio
   }
   function span(node: Nodes): SourceSpan {
     return contextForSpan(index, selection(node)).selected.span;
+  }
+  function preamble(startOffset: number, endOffset: number): NormativeAncestorContext {
+    const selected = contextForSpan(index, { startOffset, endOffset }).selected;
+    return { span: selected.span, markdown: selected.text };
   }
   function diagnose(unit: NormativeUnit, node: Nodes, code: NormativeDiagnostic['code'], message: string): void {
     const sourceSpan = span(node);
@@ -209,17 +229,43 @@ export function compileNormativeProjection(markdown: string): NormativeProjectio
     const node = tree.children[position];
     if (!node) continue;
     if (node.type === 'heading' && node.depth <= 2) {
+      if (!documentHasScopeHeading && hasDocumentPreamble) {
+        documentPreamble = preamble(0, selection(node).startOffset);
+      }
+      documentHasScopeHeading = true;
       active = null;
-      if (node.depth !== 2) continue;
+      if (node.depth === 1) {
+        ancestorHeading = node;
+        hasAncestorPreamble = false;
+        ancestorHasH2 = false;
+        ancestorPreamble = null;
+        continue;
+      }
+      if (!ancestorHasH2 && ancestorHeading && hasAncestorPreamble) {
+        ancestorPreamble = preamble(selection(ancestorHeading).startOffset, selection(node).startOffset);
+      }
+      ancestorHasH2 = true;
       const family = sectionFamily(headingText(node));
       if (!family) continue;
       const selected = selection(node);
-      const section = sectionForSpan(index, selected, 2);
-      active = { unit_id: `normative_${section.span.start.offset}`, family, span: section.span,
-        markdown: section.text, headings: contextForSpan(index, selected).headings };
+      const h2Section = sectionForSpan(index, selected, 2);
+      const ancestorContext = [documentPreamble, ancestorPreamble].filter((entry): entry is NormativeAncestorContext => entry !== null);
+      active = { unit_id: `normative_${h2Section.span.start.offset}`, family, span: h2Section.span,
+        markdown: h2Section.text, headings: contextForSpan(index, selected).headings,
+        ancestor_context: ancestorContext };
       units.push(active);
+      if (ancestorContext.length > 0) {
+        diagnose(active, node, 'AMBIGUOUS_PROSE_ATTACHMENT',
+          'Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2.');
+      }
       continue;
     }
+    // Keep the first ancestor preamble in scope across all sibling H2 sections.
+    // Later H2 body blocks cannot become a preamble for the next family.
+    // Document preambles also survive sibling H1 boundaries; initial source
+    // blocks are retained conservatively rather than classified as irrelevant.
+    if (!documentHasScopeHeading && node.type !== 'heading') hasDocumentPreamble = true;
+    if (!ancestorHasH2 && node.type !== 'heading') hasAncestorPreamble = true;
     if (!active) continue;
     if (node.type === 'heading') continue;
     if (node.type === 'paragraph') {

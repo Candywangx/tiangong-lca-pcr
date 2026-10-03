@@ -40,6 +40,137 @@ test('ancestor preamble, nested heading condition and following notes survive co
   assert.notEqual(changed.context.units[0]?.markdown, unit.markdown);
 });
 
+test('exact H1 preamble stays bound across earlier H2 sections without duplicating unrelated sections or crossing sibling H1', () => {
+  const source = '# Method\n\nOnly apply the following requirements to multi-output systems.\n\n## Overview\n\nRetain this overview.\n\n## Allocation\n\n| id | rule |\n| --- | --- |\n| A-1 | Subdivide. |\n\n## Validation Rules\n\n1. Review the basis.\n\n# Other method\n\n## Allocation\n\n1. Separate rule.';
+  const result = compileNormativeProjection(source);
+  const ancestorEnd = source.indexOf('## Overview');
+  const allocation = result.context.units[0];
+  const validation = result.context.units[1];
+  const sibling = result.context.units[2];
+  assert.ok(allocation && validation && sibling);
+  for (const unit of [allocation, validation]) {
+    const ancestor = unit.ancestor_context[0];
+    assert.ok(ancestor);
+    assert.equal(ancestor.markdown, source.slice(0, ancestorEnd));
+    assert.equal(ancestor.span.start.offset, 0);
+    assert.equal(ancestor.span.end.offset, ancestorEnd);
+    assert.equal(ancestor.span.start.line, 1);
+    assert.equal(ancestor.span.end.line, 5);
+    assert.equal(ancestor.span.end.column, 1);
+    assert.equal(unit.markdown, source.slice(unit.span.start.offset, unit.span.end.offset));
+    assert.ok(!unit.markdown.includes('Retain this overview.'));
+  }
+  assert.equal(allocation.markdown, source.slice(source.indexOf('## Allocation'), source.indexOf('## Validation Rules')));
+  assert.equal(validation.markdown, source.slice(source.indexOf('## Validation Rules'), source.indexOf('# Other method')));
+  assert.equal(allocation.unit_id, `normative_${source.indexOf('## Allocation')}`);
+  assert.equal(validation.unit_id, `normative_${source.indexOf('## Validation Rules')}`);
+  assert.equal(sibling.markdown, source.slice(source.lastIndexOf('## Allocation')));
+  assert.ok(!sibling.markdown.includes('multi-output'));
+  assert.deepEqual(sibling.ancestor_context, []);
+  assert.deepEqual(result.allocationRules.map(rule => rule.rule), ['Subdivide.', 'Separate rule.']);
+  assert.deepEqual(result.validationRules.map(rule => rule.rule), ['Review the basis.']);
+  assert.equal(result.allocationRules[0]?.rule_id, 'a_1');
+  assert.deepEqual(result.context.bindings.map(binding => binding.pointer), ['/allocation_rules/0', '/validation_rules/0', '/allocation_rules/1']);
+  assert.equal(result.context.bindings[0]?.identity_kind, 'explicit');
+  for (const binding of result.context.bindings) {
+    const unit = result.context.units.find(candidate => candidate.unit_id === binding.unit_id);
+    assert.ok(unit);
+    assert.ok(binding.source_span.start.offset >= unit.span.start.offset);
+    assert.ok(binding.source_span.end.offset <= unit.span.end.offset);
+  }
+  assert.equal(result.context.diagnostics.filter(diagnostic => diagnostic.message.includes('Ancestor preamble')).length, 2);
+  const changed = compileNormativeProjection(source.replace('multi-output systems', 'all systems'));
+  assert.deepEqual(changed.allocationRules, result.allocationRules);
+  assert.deepEqual(changed.validationRules, result.validationRules);
+  assert.notEqual(changed.context.units[0]?.ancestor_context[0]?.markdown, allocation.ancestor_context[0]?.markdown);
+});
+
+test('exact root prose without H1 stays bound while each original H2 is extracted once', () => {
+  const source = 'Only apply all following requirements when outputs share a system.\n\n## Overview\n\nOverview body.\n\n## Allocation\n\n1. Subdivide.\n\n## Validation Rules\n\n1. Review.';
+  const result = compileNormativeProjection(source);
+  assert.deepEqual(result.allocationRules.map(rule => rule.rule), ['Subdivide.']);
+  assert.deepEqual(result.validationRules.map(rule => rule.rule), ['Review.']);
+  for (const unit of result.context.units) {
+    assert.equal(unit.markdown, source.slice(unit.span.start.offset, unit.span.end.offset));
+    const ancestor = unit.ancestor_context[0];
+    assert.ok(ancestor);
+    assert.equal(ancestor.markdown, source.slice(0, source.indexOf('## Overview')));
+    assert.equal(ancestor.span.start.offset, 0);
+    assert.equal(ancestor.span.end.offset, source.indexOf('## Overview'));
+    assert.ok(!unit.markdown.includes('Overview body.'));
+  }
+  assert.equal(result.context.diagnostics.filter(diagnostic => diagnostic.message.includes('Ancestor preamble')).length, 2);
+});
+
+test('document preamble before the first H1 stays bound across sibling H1s', () => {
+  const source = 'Only apply the following requirements to multi-output systems.\n\n# First method\n\n## Allocation\n\n- Subdivide.\n\n# Second method\n\n## Validation Rules\n\n- Review.';
+  const result = compileNormativeProjection(source);
+  assert.deepEqual(result.allocationRules.map(rule => rule.rule), ['Subdivide.']);
+  assert.deepEqual(result.validationRules.map(rule => rule.rule), ['Review.']);
+  assert.equal(result.context.units.length, 2);
+  for (const unit of result.context.units) {
+    assert.equal(unit.markdown, source.slice(unit.span.start.offset, unit.span.end.offset));
+    const ancestor = unit.ancestor_context[0];
+    assert.ok(ancestor);
+    assert.equal(ancestor.markdown, source.slice(0, source.indexOf('# First method')));
+    assert.equal(ancestor.span.start.offset, 0);
+    assert.equal(ancestor.span.end.offset, source.indexOf('# First method'));
+    assert.equal(ancestor.span.start.line, 1);
+    assert.equal(ancestor.span.end.line, 3);
+    assert.equal(ancestor.span.end.column, 1);
+  }
+  assert.equal(result.context.units[0]?.unit_id, `normative_${source.indexOf('## Allocation')}`);
+  assert.equal(result.context.units[1]?.unit_id, `normative_${source.indexOf('## Validation Rules')}`);
+  assert.equal(result.context.diagnostics.filter(diagnostic => diagnostic.message.includes('Ancestor preamble')).length, 2);
+  const changed = compileNormativeProjection(source.replace('multi-output systems', 'all systems'));
+  assert.deepEqual(changed.allocationRules, result.allocationRules);
+  assert.deepEqual(changed.validationRules, result.validationRules);
+  assert.notEqual(changed.context.units[1]?.ancestor_context[0]?.markdown, result.context.units[1]?.ancestor_context[0]?.markdown);
+});
+
+test('combined root and H1 preambles preserve normalized exact positions in outer-to-inner order', () => {
+  const source = 'Only apply when 🦞 outputs share a system.\n\n# Method\n\nKeep the declared reporting basis.\n\n## Overview\n\nSeparate overview content.\n\n## Allocation\n\n1. Subdivide.';
+  const result = compileNormativeProjection(`\uFEFF${source.replaceAll('\n', '\r\n')}`);
+  const unit = result.context.units[0];
+  assert.ok(unit);
+  assert.deepEqual(unit.ancestor_context.map(context => context.markdown), [
+    source.slice(0, source.indexOf('# Method')),
+    source.slice(source.indexOf('# Method'), source.indexOf('## Overview')),
+  ]);
+  assert.deepEqual(unit.ancestor_context.map(context => context.span.start.line), [1, 3]);
+  assert.deepEqual(unit.ancestor_context.map(context => context.span.end.line), [3, 7]);
+  for (const context of unit.ancestor_context) {
+    assert.equal(context.markdown, source.slice(context.span.start.offset, context.span.end.offset));
+    assert.equal(context.span.start.column, 1);
+    assert.equal(context.span.end.column, 1);
+    assert.ok(context.span.end.offset <= unit.span.start.offset);
+    assert.ok(!context.markdown.includes('Separate overview content.'));
+  }
+  assert.equal(unit.markdown, source.slice(source.indexOf('## Allocation')));
+  assert.deepEqual(result.allocationRules.map(rule => rule.rule), ['Subdivide.']);
+  assert.deepEqual(compileNormativeProjection(source), result);
+});
+
+test('absence of ancestor preamble preserves bounded H2 context and does not inherit earlier H2 body prose', () => {
+  for (const prefix of ['', '# Method\n\n']) {
+    const source = `${prefix}## Overview\n\nThis prose belongs to the earlier H2.\n\n## Allocation\n\n1. Subdivide.\n\n## Validation Rules\n\n1. Review.`;
+    const result = compileNormativeProjection(source);
+    assert.equal(result.context.units[0]?.markdown, source.slice(source.indexOf('## Allocation'), source.indexOf('## Validation Rules')));
+    assert.equal(result.context.units[1]?.markdown, source.slice(source.indexOf('## Validation Rules')));
+    assert.ok(result.context.units.every(unit => !unit.markdown.includes('earlier H2')));
+    assert.ok(result.context.units.every(unit => unit.ancestor_context.length === 0));
+    assert.deepEqual(result.context.diagnostics, []);
+  }
+});
+
+test('Chinese fullwidth-colon introduction retains full context without false ambiguity', () => {
+  const source = '## 分配\n\n满足条件时执行：\n\n1. 细分。';
+  const result = compileNormativeProjection(source);
+  assert.equal(result.allocationRules[0]?.rule, '细分。');
+  assert.equal(result.context.units[0]?.markdown, source);
+  assert.deepEqual(result.context.diagnostics, []);
+});
+
 test('AST list grouping flattens continuation and nested exception only in legacy display', () => {
   const source = '## Allocation\n\nApply:\n\n1. Use `basis`.\n   Continue the record.\n\n   Except when unavailable:\n\n   - Disclose uncertainty.\n     Keep complete evidence.\n   - Seek records.\n2. Other rule.';
   const result = compileNormativeProjection(source);

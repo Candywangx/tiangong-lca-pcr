@@ -77,6 +77,19 @@ test('both introductory paragraphs remain exact and ordered', () => {
   assert.notEqual(changed.unit.text, context.unit.text);
 });
 
+test('Chinese fullwidth colon attaches introductory prose with the same structural certainty', () => {
+  for (const colon of [':', '：']) {
+    const source = `## 分配\n\n满足条件时执行${colon}\n\n1. 细分。\n2. 保留依据。`;
+    const index = compileMarkdownSourceContext(source);
+    const context = selectedText(index, '1. 细分。');
+    assert.equal(context.attribution, 'structural');
+    assert.deepEqual(context.diagnostics, []);
+    assert.equal(context.unit.kind, 'list_group');
+    assert.equal(context.unit.text, source.slice(source.indexOf('满足')));
+    assert.equal(context.introductions[0]?.text, `满足条件时执行${colon}`);
+  }
+});
+
 test('heading condition preserved without interpretation; sibling headings reset ancestry and introduction', () => {
   const source = `# Method\n\n## When multiple products are saleable\n\n### Required hierarchy\n\nApply:\n\n1. Subdivide.\n\n### Separate scope\n\n1. Review waste.\n\n## Other\n\n1. Disclose.`;
   const index = compileMarkdownSourceContext(source);
