@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
-lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
+lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
+lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -229,6 +229,13 @@ resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
 not proof of total process memory.
 
 ### Build workspace storage
+
+The sealed-product importer reads the checkout's actual filesystem facts directly
+before scratch selection. Its integration tests exercise the shared selector and
+atomic handoff on both native and explicitly forced memory-backed origins. A
+memory-backed origin automatically uses hardlinked provider assets even under
+forced relocation; only an ordinary disk checkout needs the explicit opt-in flag.
+
 
 The provider's temporary build filesystem is separate from its deployed-asset
 allowance. The first EdgeOne production build at source `9fe6486d` generated every

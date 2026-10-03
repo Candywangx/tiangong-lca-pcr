@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
-lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
+lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
+lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -133,8 +133,8 @@ provided by the caller.
 
 ## Product release selection
 
-From the unified 0.3.0 product release onward, provision the tool and SQLite package
-from the same complete product release. Both packages carry `product-release.json`,
+For unified product releases, provision the tool and SQLite package from the same
+complete product release. Both packages carry `product-release.json`,
 matching the website identity at `/generated/product-release.json`. Preserve that
 product version, source commit and full-source fingerprint alongside the existing
 PCR/readiness and SQLite payload hashes. Historical independently versioned packages
