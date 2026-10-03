@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
-lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
+lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
+lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -180,7 +180,7 @@ individual files, total file count and build resources, and partition search and
 source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
 and the `release/production` deployment pointer; `main` remains the sole code trunk.
 Unified tag qualification builds and seals the complete web export. The provider runs
-`product-web-materialize.mjs` to verify and atomically import that exact artifact; it
+`product-web-materialize.ts` to verify and atomically import that exact artifact; it
 does not rebuild it. Preview auto deployment remains disabled. Failed import or
 builds leave the previous verified deployment intact. The product identity endpoint
 and per-route hashes bind live acceptance to the two paired npm artifacts; see
@@ -291,7 +291,7 @@ live checks are required after its processing.
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
 indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
 current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
-Worker and tokenization module are ordinary browser modules copied with the pinned
+Worker and tokenization module are compiled TypeScript browser modules shipped with the pinned
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
 

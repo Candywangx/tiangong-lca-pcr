@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { createHash, type BinaryLike } from "node:crypto";
 import test from "node:test";
+import {mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync} from "node:fs";
+import {tmpdir} from "node:os";
+import path from "node:path";
 import { checkRegistryMetadata, coordinateProductPublication, publishProduct, PublisherError, validateBuildProof } from "./product-publish.ts";
 import { createProductionPublisherIO, type PublisherFetch } from "./product-publish-io.ts";
 
@@ -493,4 +496,25 @@ test("npm and hook transport failures do not expose raw text or invent a deploym
     fetcher: async (_url, options) => { assert.equal(options.method, "POST"); assert.equal(options.redirect, "error"); assert.equal(field(options.headers, "Authorization"), undefined); return Response.json({ deploymentId: "unproven" }, { status: 202 }); } });
   await assert.rejects(io.publishNpm(fixture().manifest.packages.tool, "/unused", "candidate-v0.3.0"), (error: unknown) => field(error, "code") === "PCR_PRODUCT_NPM_COMMAND_UNCERTAIN" && !String(field(error, "message")).includes("SECRET"));
   assert.deepEqual(await io.triggerHook(), { accepted: true });
+});
+
+
+test("appending an accepted attempt journal preserves extension audit metadata", async t => {
+  const directory = mkdtempSync(path.join(realpathSync(tmpdir()), "pcr-attempt-audit-"));
+  t.after(() => rmSync(directory, {recursive: true, force: true}));
+  const receipt: AttemptReceipt = {schema: 1, identity, manifestSha256: "c".repeat(64), runId: "20", attempt: "1", sequence: 2, target: "github", operation: "prepare", state: "intent", details: {}};
+  const previous = {...receipt, sequence: 1, state: "checked"};
+  const saved = {schema: 1, identity, runId: "20", attempt: "1", events: [previous], operator_note: {reason: "Retained audit extension", reviewed: false}, trace: null};
+  const filename = path.join(directory, "attempt-20-1.json");
+  writeFileSync(filename, JSON.stringify(saved));
+  const io = createProductionPublisherIO({root: "/unused", env: {}, toolchain: {}});
+  assert.ok(io.saveAttemptReceipt);
+  const save = io.saveAttemptReceipt.bind(io);
+  await save(directory, receipt);
+  const expected = {...saved, events: [previous, receipt]};
+  assert.equal(readFileSync(filename, "utf8"), JSON.stringify(expected, null, 2) + "\n");
+  const invalid = {...saved, identity: {...identity, sourceCommit: "d".repeat(40)}};
+  const before = JSON.stringify(invalid); writeFileSync(filename, before);
+  await assert.rejects(save(directory, receipt), {code: "PCR_PRODUCT_LOCAL_JOURNAL_INVALID"});
+  assert.equal(readFileSync(filename, "utf8"), before);
 });

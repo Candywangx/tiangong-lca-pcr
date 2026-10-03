@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
-lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
+lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
+lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
 ---
 
 # PCR 资料库架构
@@ -556,7 +556,7 @@ Markdown、方法学审核、历史快照或统一产品发布身份。Python SE
 
 YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解析单文档、保留续行和转义，
 受限无环别名展开为独立 JSON 值。解析错误不产生部分对象；具体边界见 TypeScript 工程契约。
-离线工具从 TypeScript 与清单内遗留源编译出运行产物，调用者无需 TypeScript 编译器。
+离线工具仅从严格 TypeScript 源编译出运行产物，调用者无需 TypeScript 编译器。
 该阶段保留方法学原文、发布状态和版本；Markdown 条件/动作保真仍由 PCR #63 单独交付。
 
 规范投影 v2 由严格 TypeScript Markdown 编译器生成，保留 H2 完整原文、根/一级标题前言、来源位置及规则绑定。core 在消费时重新生成并验证，防止仅修改哈希掩盖上下文丢失。旧 v1 快照保留原始字节和哈希，消费层以独立 provenance 补齐来源上下文。完整要求见 [语义投影契约](semantic-projection-contract.md)。网站与 AI 消费继续作为独立派生出口；正式上线由统一产品发布验收。

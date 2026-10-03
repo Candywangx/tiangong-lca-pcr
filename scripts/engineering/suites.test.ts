@@ -69,7 +69,7 @@ test("all/root retain 89 existing root tests, nine docs tests, and every enginee
 test("registered baseline tests cannot disappear silently, while explicitly classified additions remain valid", () => {
   const files = discoverTestFiles(REPOSITORY_ROOT);
   assert.doesNotThrow(() => validateRegisteredTests(files));
-  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.mjs"]) {
+  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.ts"]) {
     assert.throws(() => validateRegisteredTests(files.filter(file => file !== missing)), /Registered tests are missing/);
   }
   const expanded = [...files, "builder/lib/new.unit.test.ts"];

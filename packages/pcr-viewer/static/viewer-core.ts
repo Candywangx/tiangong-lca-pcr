@@ -7,7 +7,7 @@ export interface HistoryEntry extends ViewerRecord {sequence: number; manifest_r
 export interface SnapshotRoute extends ViewerRecord {snapshot_id: string; manifest_ref: string; ui_bundle_ref: string; ui_bundle_id: string; ui_bundle_url: string}
 export interface ViewerActive extends ViewerRecord {snapshot_id: string; sequence: number; manifest_ref: string; ui_bundle_ref: string; snapshot_url: string}
 export interface ViewerSnapshot {manifestRef: string; manifest: ViewerManifest; catalog: CatalogEntry[] | null; active?: ViewerActive}
-export interface FetchOptions {cache?: RequestCache; optional?: boolean}
+export interface FetchOptions {cache?: "force-cache" | "no-cache"; optional?: boolean}
 export type FetchJson = (url: string, options: FetchOptions) => unknown | Promise<unknown>;
 export function isRecord(value: unknown): value is ViewerRecord {return value !== null && typeof value === "object" && !Array.isArray(value);}
 export function field(value: unknown, key: string): unknown {return isRecord(value) ? value[key] : undefined;}
@@ -43,7 +43,8 @@ export function artifactRootFromModuleUrl(moduleUrl: string) {
 }
 
 export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJson }: {baseUrl?: string; fetchJson?: FetchJson} = {}) {
-  const root = new URL(ensureTrailingSlash(baseUrl ?? globalThis.location?.href ?? "http://localhost/"));
+  const locationHref = field(field(globalThis, "location"), "href");
+  const root = new URL(ensureTrailingSlash(baseUrl ?? (typeof locationHref === "string" ? locationHref : "http://localhost/")));
   const objectCache = new Map<string, Promise<ViewerObject>>();
   const manifestCache = new Map<string, Promise<ViewerManifest>>();
 

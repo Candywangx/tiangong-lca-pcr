@@ -171,6 +171,18 @@ jobs:
           PCR_GOOGLE_SITE_VERIFICATION: 4W5GYY5tOwicaRGTZr7AdfJ4VB8KB87r2ex-rZxP-fM
           PCR_BAIDU_SITE_VERIFICATION: codeva-IJKQ9SxWkZ
         run: npm --prefix packages/pcr-docs run build
+      - name: Install exported-site browser runtimes
+        run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
+      - name: Verify the actual full export in three browsers
+        run: npm run docs:browser -- --root packages/pcr-docs/out --report "${{ runner.temp }}/pcr-site-browser"
+      - name: Preserve exported-site browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-site-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-site-browser/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Verify shared SEO invariants without rebuilding
         run: |
           python3 scripts/vendor/workspace-seo/check.py --root packages/pcr-docs/out --origin https://pcr.tiangong.earth --output "${{ runner.temp }}/pcr-seo-report.json"
@@ -241,8 +253,8 @@ jobs:
         run: node -e "if(process.arch!==process.env.PCR_EXPECTED_ARCH)process.exit(1)"
       - name: Verify the pinned runtime
         run: npm run runtime:release
-      - name: Typecheck the engineering project
-        run: npm run typecheck
+      - name: Typecheck portable Node and Viewer projects
+        run: npm run typecheck:node
       - name: Verify native engineering boundaries
         run: npm run test:engineering
       - name: Verify complete offline distribution and reproducibility

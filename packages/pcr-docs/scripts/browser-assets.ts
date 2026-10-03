@@ -2,7 +2,7 @@ import {spawnSync} from "node:child_process";
 import {readFileSync,lstatSync,mkdirSync,mkdtempSync,realpathSync,rmSync,writeFileSync} from "node:fs";
 import {tmpdir} from "node:os";
 import path from "node:path";
-import {fileURLToPath} from "node:url";
+import {fileURLToPath,pathToFileURL} from "node:url";
 import {unknownField} from "../../pcr-core/src/types.ts";
 const repositoryRoot=path.resolve(fileURLToPath(new URL("../../..",import.meta.url)));
 /** Emit browser code from owned TypeScript; source files are never browser assets. */
@@ -27,4 +27,20 @@ export function compileDocsBrowserAssets({root=repositoryRoot,outputRoot}:{root?
   writeFileSync(path.join(outputRoot,"search-worker.mjs"),workerText);writeFileSync(path.join(outputRoot,"search-terms.mjs"),terms);
   return {compilerVersion:expected,files:["search-worker.mjs","search-terms.mjs"]};
  }finally{rmSync(temporary,{recursive:true,force:true});}
+}
+
+/** Read-only check used when a generated worker is deliberately present in source discovery. */
+export function checkDocsBrowserAssets({root=repositoryRoot}:{root?:string}={}) {
+ const temporary=mkdtempSync(path.join(realpathSync(tmpdir()),"pcr-browser-check-"));
+ try {
+  compileDocsBrowserAssets({root,outputRoot:temporary});
+  const output=path.join(root,"packages/pcr-docs/public/generated/search-worker.mjs");
+  const stat=lstatSync(output);
+  if(!stat.isFile()||stat.isSymbolicLink()||realpathSync(output)!==path.resolve(output))throw new Error("Generated search worker must be a regular file.");
+  if(!readFileSync(output).equals(readFileSync(path.join(temporary,"search-worker.mjs"))))throw new Error("Generated search worker differs from pinned TypeScript compilation.");
+ }finally{rmSync(temporary,{recursive:true,force:true});}
+}
+if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href){
+ if(process.argv.length!==3||process.argv[2]!=="--check")throw new Error("Usage: node browser-assets.ts --check");
+ checkDocsBrowserAssets();
 }

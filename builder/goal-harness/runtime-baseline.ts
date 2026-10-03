@@ -61,8 +61,11 @@ const EXACT_RUNTIME_PATHS = new Set([
   "builder/schemas/goal-author-report.schema.json",
   "builder/schemas/goal-harness-config.schema.json",
   "package.json",
+  "package-lock.json",
+  "tsconfig.json",
+  "tsconfig.viewer-browser.json",
   "packages/pcr-core/src/projection-completeness.ts",
-  "packages/pcr-viewer/viewer-build.test.mjs",
+  "packages/pcr-viewer/viewer-build.test.ts",
 ]);
 
 export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, goalId, now = () => new Date().toISOString() }: RuntimeBaselineOptions): GoalRuntimeBaseline {
@@ -167,7 +170,7 @@ export function isApprovedRuntimePath(file: string): boolean {
     /^builder\/(?:cli|lib|scripts)\/[\w.-]+\.(?:ts|mjs)$/u.test(file) ||
     /^builder\/schemas\/[\w.-]+\.json$/u.test(file) ||
     /^packages\/pcr-core\/(?:src\/(?:(?:compiler|generated)\/)?[\w.-]+\.(?:ts|mjs|json)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.(?:ts|mjs))$/u.test(file) ||
-    /^packages\/pcr-viewer\/(?:(?:scripts|static)\/[\w.-]+\.(?:mjs|js|css|html)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.mjs)$/u.test(file);
+    /^packages\/pcr-viewer\/(?:(?:scripts|static)\/[\w.-]+\.(?:ts|mjs|js|css|html)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.(?:ts|mjs))$/u.test(file);
 }
 
 function hashGitPath(root: string, commit: string, file: string): string | null {

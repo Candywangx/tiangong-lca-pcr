@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 56782712f5ac3e423ab80efaef7c7e35316461f8
-lastReviewedNote: "Reviewed strict Builder/Goal source and test cutover, retained consumer/package contracts, corrected physical source routing and preserved scientific gates; site/release qualification and formal publication remain in #77/#69."
+lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
+lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -16,8 +16,8 @@ whenToUpdate:
 checkPaths:
   - .github/workflows/publish.yml
   - .github/workflows/tag-release-from-merge.yml
-  - builder/scripts/npm-release*.mjs
-  - builder/scripts/product-*.mjs
+  - builder/scripts/npm-release*.ts
+  - builder/scripts/product-*.ts
   - product-release.json
   - packages/tiangong-pcr-library/package.json
   - builder/scripts/build-offline-*.ts
@@ -234,7 +234,7 @@ qualified product tag's exact `main` commit. No code is authored on that pointer
 `main` remains the sole development trunk and workspace integration input.
 
 The EdgeOne build command runs the dependency-free
-`builder/scripts/product-web-materialize.mjs`. It reads the checkout's product
+`builder/scripts/product-web-materialize.ts`. It reads the checkout's product
 identity, downloads only that canonical GitHub Release's manifest and web archive,
 checks hashes and identity, safely extracts to owned disk scratch and atomically
 hands the verified export to the provider. Routing headers/redirects are retained.
@@ -374,9 +374,9 @@ Upstream contracts: [npm trusted publishing and dist-tags](https://docs.npmjs.co
 
 The TypeScript offline-tool builder compiles core and CLI sources with the pinned
 local compiler before atomic staging. The consumer runtime graph now consists of strict TypeScript; source TS
-imports become runtime JS imports without an allowJs bridge. Remaining repository
-Site/release migration is tracked separately and this does not
-claim final full-project qualification.
+imports become runtime JS imports without an allowJs bridge. Site, Viewer and release
+source also use TypeScript; final coverage and sealed-product qualification remain
+tracked by #79 before the formal cutover in #69.
 Schemas, Skill and license assets retain their relative locations; executable
 bins follow the emitted extension. Only locked runtime dependencies are bundled,
 including the YAML reader; development/compiler packages are excluded. Inline

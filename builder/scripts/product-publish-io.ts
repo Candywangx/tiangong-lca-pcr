@@ -136,7 +136,7 @@ export function createProductionPublisherIO({ env, root, toolchain, fetcher = na
         const saved = remoteObject(parse(readFileSync(filename)));
         if (saved.schema !== 1 || JSON.stringify(saved.identity) !== JSON.stringify(receipt.identity)
           || saved.runId !== receipt.runId || saved.attempt !== receipt.attempt || !Array.isArray(saved.events)) fail("PCR_PRODUCT_LOCAL_JOURNAL_INVALID", "Attempt journal belongs to another publication.");
-        document = { schema: 1, identity: saved.identity, runId: receipt.runId, attempt: receipt.attempt, events: saved.events };
+        document = { ...saved, schema: 1, identity: saved.identity, runId: receipt.runId, attempt: receipt.attempt, events: saved.events };
       }
       document.events.push(receipt);
       const bytes = Buffer.from(`${JSON.stringify(document, null, 2)}\n`);

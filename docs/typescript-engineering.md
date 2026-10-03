@@ -20,8 +20,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
-lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
+lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
+lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -60,17 +60,16 @@ and macOS ARM64. macOS Intel is unsupported. CI asserts the actual architecture,
 rather than inferring it from a runner label. This does not restrict public web
 browsers by CPU.
 
-The root strict TypeScript project initially covers `scripts/engineering/**`.
-Its scope expands with each reviewed migration. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The existing site keeps its own
-Next TypeScript project during the transition; `typecheck:all` checks both.
+The root strict TypeScript project covers `scripts/engineering/**`. Separate strict projects cover the remaining runtime boundaries. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The site has its own Next TypeScript project; `typecheck:all` checks every project.
+`typecheck:node` checks portable Node/Viewer projects using only root dependencies;
+web tools and Worker checks additionally use the locked site dependency graph.
 Do not use `allowJs`, broad explicit `any`, `@ts-ignore` or `@ts-nocheck` to declare
 an implementation migrated. Unknown external data must be validated and narrowed.
 
 Engineering scripts run directly under Node's erasable-TypeScript support; `tsc`
 remains a separate mandatory check. `build:engineering` emits the scripts and
 declarations; `build:tests` emits both source and tests for compiled-output checks.
-Relative imports retain `.ts` in source and are rewritten by the compiler. Future
-public-package migration must test the actual compiled tarballs, including bins,
+Relative imports retain `.ts` in source and are rewritten by the compiler. Public-package qualification must test the actual compiled tarballs, including bins,
 schemas, workers, relocation and asset paths. Consumers do not need a compiler.
 
 ## Migration inventory
@@ -88,9 +87,10 @@ fetches full history. The checker uses TypeScript 7.0.2's pinned parser API sole
 as development tooling. Its unstable API is not a public PCR dependency. Compiler
 upgrades must rerun parser-boundary and negative fixtures before changing the pin.
 
-Ignored build/review artifacts are not authored source. The final source gate
-will require zero remaining authored JS/MJS/CJS entries, while reviewed generated
-outputs and the Python SEO exception remain explicitly classified.
+Ignored build/review artifacts are not authored source. The source gate requires
+zero remaining authored JS/MJS/CJS entries. Generated assets and the Python SEO
+exception remain explicitly classified. An existing generated search Worker is
+checked against fresh pinned-compiler output without modifying the artifact.
 
 ## Validation commands
 
@@ -107,7 +107,7 @@ npm run browser:install
 npm run validate
 ```
 
-Root `validate` checks runtime, migration inventory, both TypeScript projects,
+Root `validate` checks runtime, migration inventory, all scoped TypeScript projects,
 whole-library lint and the complete test selection. Root `npm test` includes the
 site transformation tests previously invoked separately. `test:list` reports
 deterministic suite membership; every discovered test belongs to exactly one base
@@ -125,6 +125,7 @@ test files. New test placement/names must satisfy the suite contract.
 | `test:browser` | Compiled Viewer interaction in Chromium, Firefox and WebKit |
 | `test:coverage` | Emitted engineering tests and source-mapped engineering coverage |
 | `docs:build` | Full static export/source/provider validation |
+| `docs:browser -- --root <export> --report <new-dir>` | Actual full export in three browsers at desktop/mobile widths |
 
 The test runner gives subprocesses one owned canonical temporary root and cleans
 it after completion or failure. This avoids macOS `/var` aliases confusing
@@ -172,7 +173,7 @@ an owned package stage. The core, semantic and consumer projects check their
 implementation and tests independently. Final refactor completion still requires
 zero authored legacy entries across the remaining repository surfaces.
 
-Relative TS imports in legacy callers are rewritten to emitted JavaScript; the
+Relative TS imports are rewritten to emitted JavaScript; the
 public tool has executable bins, original schemas/Skill/licenses, runtime-only
 locked dependencies and deterministic inline source maps rooted at `pcr://source/`.
 No caller needs TypeScript in `node_modules`, and installed tests explicitly disable
@@ -209,7 +210,7 @@ The typed Markdown parser, serializer, projection integrity, source-context comp
 
 ## Consumer runtime cutover
 
-The consumer core, SQLite reader, CLI and offline-library builder use strict TypeScript. The runtime compiler now includes only TypeScript sources and no longer enables the legacy `allowJs` transport bridge. Generated npm bins are `.js`; consumers run them without a compiler or Node type stripping. Remaining site/release JavaScript stays in the shrinking migration inventory for subsequent phases.
+The consumer core, SQLite reader, CLI and offline-library builder use strict TypeScript. The runtime compiler now includes only TypeScript sources and no longer enables the legacy `allowJs` transport bridge. Generated npm bins are `.js`; consumers run them without a compiler or Node type stripping. Site, Viewer and release sources have also migrated; the inventory now contains zero authored JavaScript entries.
 
 Read sessions own their source scope and handles. Repository sessions bind selected current-artifact bytes and recheck before returning; SQLite sessions retain one readonly transaction. Bounded caches belong to one synchronous callback and cannot escape as reusable validation receipts. Session tests cover source isolation, mutated inputs, eviction, closure, and ordered all-or-error batches.
 
@@ -261,3 +262,31 @@ allocation uses Node filesystem enumeration instead of GNU-specific `find`.
 The synthetic recovery replay compares a fixed archived pre-recovery runtime to
 the current runtime without production tasks or network evidence, writing a new
 owned report rather than replacing the retained historical receipt.
+
+## Site and release runtime cutover
+
+The documentation generator, verifier, resource/storage checks, Viewer publisher,
+unified release publisher and dependency-free provider importer are TypeScript.
+The provider executes erasable TypeScript on pinned Node 24 and imports the sealed
+archive; it never installs a compiler or rebuilds the frontend. Browser entrypoints
+are compiled before export. PostCSS uses declarative JSON configuration.
+
+Pinned Goal Viewer publication resolves one coherent module pair from its captured
+source: current `.ts`, historical `.mjs`, or emitted `.js`. It never mixes formats.
+Historical source remains executable without rewriting its captured commit. Runtime
+overlays include the pinned compiler configuration and dependency lock. Publisher
+attempt receipts preserve existing additional audit fields while rejecting identity
+conflicts.
+
+Chinese search handles Han text even when a browser segmenter marks it non-wordlike;
+other punctuation/non-word segments keep their previous exclusion. Ordered tokens
+for the complete existing Node-built index remain unchanged. Browser acceptance
+must use a freshly built export with exact source provenance; a worker-only diagnostic
+overlay is not release evidence.
+
+`docs:browser` reads an existing export and never rebuilds it. Its new evidence
+directory must be outside the export. The receipt records exact file-tree hashes,
+source identity, browser versions, all selected routes and screenshots, and checks
+that export bytes remain unchanged. All available planned route cases are recorded
+even after a failure; missing engines or required input fail rather than skip.
+The documentation CI runs it against its complete export before product sealing.
