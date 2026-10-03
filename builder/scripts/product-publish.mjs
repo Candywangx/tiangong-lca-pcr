@@ -22,6 +22,12 @@ export class PublisherError extends Error {
 }
 const fail = (code, message, options) => { throw new PublisherError(code, message, options); };
 const safeCode = error => /^(?:PCR_PRODUCT|PCR_WEB)_[A-Z_]{1,70}$/u.test(error?.code ?? "") ? error.code : "PCR_PRODUCT_OPERATION_UNCERTAIN";
+function npmRetryChoice(value, eventName) {
+  const choice = value === undefined ? "none" : value;
+  if (!["none", "tool", "library"].includes(choice)) fail("PCR_PRODUCT_NPM_RETRY_INVALID", "Choose exactly none, tool or library for explicit npm recovery.");
+  if (choice !== "none" && eventName !== "workflow_dispatch") fail("PCR_PRODUCT_NPM_RETRY_INVALID", "Explicit npm recovery requires a new operator workflow dispatch.");
+  return choice;
+}
 
 export function validateBuildProof(proof, identity) {
   if (!proof || typeof proof !== "object" || Array.isArray(proof)
@@ -49,6 +55,7 @@ function embeddedProof(body) {
 export async function coordinateProductPublication({ bundleDir, manifest, buildProof, context, io }) {
   assertProductIdentity(context.identity); validateProductManifest(manifest, { identity: context.identity, toolchain: context.toolchain });
   const identity = context.identity;
+  const retryNpm = npmRetryChoice(context.retryNpm, context.eventName);
   validateBuildProof(buildProof, identity);
   if (!numeric(context.runId) || !numeric(context.attempt)) fail("PCR_PRODUCT_CONTEXT_INVALID", "Publication needs a concrete Actions run and attempt.");
   let release = null, assets = [], receipts = [], sequence = 0, selectedProof = buildProof, activeBundle = bundleDir;
@@ -102,7 +109,7 @@ export async function coordinateProductPublication({ bundleDir, manifest, buildP
   };
   const mutate = async (target, operation, work, { requireRef = false, requireLive = false, accepted = {} } = {}) => {
     await guard({ requireRef, requireLive }); await record(target, operation, "intent");
-    try { const result = await work(); await record(target, operation, "accepted", accepted); return result; }
+    try { const result = await work(); await record(target, operation, "accepted", typeof accepted === "function" ? accepted(result) : accepted); return result; }
     catch (error) { await record(target, operation, "uncertain", { code: safeCode(error) }); throw error; }
   };
   const pending = async (target, code) => {
@@ -241,9 +248,31 @@ export async function coordinateProductPublication({ bundleDir, manifest, buildP
       if (state.state === "present") checkRegistryMetadata(state.metadata, receipt);
       else if (state.state !== "missing") fail("PCR_PRODUCT_REGISTRY_UNCERTAIN", "Package lookup is uncertain.", { target, retryable: true });
       else {
-        const priorPublish = receipts.some(item => item.target === target && item.operation === "publish" && ["intent", "accepted", "uncertain"].includes(item.state));
+        const uploadOperations = ["publish", "operator-retry-publish"], uploadStates = ["intent", "accepted", "uncertain"];
+        const priorPublish = receipts.some(item => item.target === target && uploadOperations.includes(item.operation) && uploadStates.includes(item.state));
         if (priorPublish) {
-          if (!(await visibility(receipt))) return pending(target, "PCR_PRODUCT_NPM_VISIBILITY_PENDING");
+          if (!(await visibility(receipt))) {
+            const uploadInThisRun = receipts.some(item => item.target === target && uploadOperations.includes(item.operation)
+              && item.runId === context.runId && uploadStates.includes(item.state));
+            if (retryNpm !== kind || uploadInThisRun) return pending(target, "PCR_PRODUCT_NPM_VISIBILITY_PENDING");
+            // A previously verified immutable package cannot be described as an
+            // upload that was rejected. A transient 404 must not invite replacement.
+            if (receipts.some(item => item.target === target && item.operation === "package" && item.state === "verified")) {
+              fail("PCR_PRODUCT_NPM_RETRY_CONFLICT", "The selected package was already verified in the registry; it cannot be republished as rejected.", { target });
+            }
+            try {
+              await mutate(target, "operator-retry-publish", async () => {
+                // Visibility may change while guards/intent storage execute.
+                const current = await io.registry(receipt.name, receipt.version);
+                if (current.state === "present") { checkRegistryMetadata(current.metadata, receipt); await verifyPackage(receipt); return { reused: true }; }
+                if (current.state !== "missing") fail("PCR_PRODUCT_REGISTRY_UNCERTAIN", "Explicit npm recovery cannot treat an unknown registry result as absent.", { target, retryable: true });
+                await io.publishNpm(receipt, activeBundle, `candidate-v${identity.version}`); return { reused: false };
+              }, { accepted: result => ({ operatorConfirmedRejected: true, reusedExisting: result.reused }) });
+            } catch (error) {
+              if (!(await visibility(receipt))) return pending(target, safeCode(error));
+            }
+            if (!(await visibility(receipt))) return pending(target, "PCR_PRODUCT_NPM_VISIBILITY_PENDING");
+          }
         } else {
           try { await mutate(target, "publish", () => io.publishNpm(receipt, activeBundle, `candidate-v${identity.version}`)); }
           catch (error) {
@@ -317,6 +346,7 @@ export async function coordinateProductPublication({ bundleDir, manifest, buildP
 
 /** Production preflight; no remote mutation is available without exact Actions context. */
 export async function publishProduct({ root = process.cwd(), bundleDir, env = process.env }) {
+  const retryNpm = npmRetryChoice(env.PCR_RETRY_NPM, env.GITHUB_EVENT_NAME);
   if (process.platform !== "linux" || process.version !== "v24.19.0" || env.GITHUB_ACTIONS !== "true"
     || env.RUNNER_ENVIRONMENT !== "github-hosted" || env.GITHUB_SERVER_URL !== "https://github.com" || env.GITHUB_API_URL !== "https://api.github.com"
     || !numeric(env.GITHUB_RUN_ID) || !numeric(env.GITHUB_RUN_ATTEMPT) || !numeric(env.PCR_PRODUCT_BUILD_ARTIFACT_ID)
@@ -339,7 +369,7 @@ export async function publishProduct({ root = process.cwd(), bundleDir, env = pr
   return coordinateProductPublication({ bundleDir: realpathSync(directory), manifest,
     buildProof: { schema: 1, identity: source.identity, manifestSha256: hex(bytes), artifactId: env.PCR_PRODUCT_BUILD_ARTIFACT_ID, runId: env.GITHUB_RUN_ID },
     context: { ...source, runId: env.GITHUB_RUN_ID, attempt: env.GITHUB_RUN_ATTEMPT, projectId: env.PCR_EDGEONE_PROJECT_ID ?? null,
-      retryWeb: env.PCR_RETRY_WEB === "true" }, io });
+      retryWeb: env.PCR_RETRY_WEB === "true", retryNpm, eventName: env.GITHUB_EVENT_NAME }, io });
 }
 
 async function main() {

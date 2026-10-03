@@ -17,6 +17,11 @@ on:
         description: Retry a same-source Webhook only after confirming the prior provider deployment is terminal.
         type: boolean
         default: false
+      retry_npm:
+        description: Retry one package only after confirming its prior upload was rejected or never accepted.
+        type: choice
+        default: none
+        options: [none, tool, library]
 
 permissions:
   contents: read
@@ -114,6 +119,7 @@ jobs:
           PCR_EDGEONE_PROJECT_ID: makers-5hadzwjpsblu
           PCR_EDGEONE_DEPLOY_HOOK_URL: ${{ secrets.PCR_EDGEONE_DEPLOY_HOOK_URL }}
           PCR_RETRY_WEB: ${{ inputs.retry_web }}
+          PCR_RETRY_NPM: ${{ inputs.retry_npm || 'none' }}
         run: node builder/scripts/product-publish.mjs dist/product-release
       - name: Preserve the attempt journal even when a target remains pending
         if: always()

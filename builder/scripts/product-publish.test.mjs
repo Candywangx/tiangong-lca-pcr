@@ -34,10 +34,10 @@ function fixture() {
   const manifests = new Map([["current", manifest], ["original", structuredClone(manifest)]]);
   const files = directory => new Map([["release.json", encode(manifests.get(directory))], ["SHA256SUMS", Buffer.from("sealed checksums\n")], ...manifests.get(directory).artifacts.map(item => [item.filename, content])]);
   const buildProof = { schema: 1, identity, manifestSha256: hash(files("current").get("release.json")), artifactId: "99", runId: "10" };
-  const context = { identity, toolchain: manifest.toolchain, runId: "10", attempt: "1", projectId: "makers-5hadzwjpsblu", retryWeb: false };
+  const context = { identity, toolchain: manifest.toolchain, runId: "10", attempt: "1", projectId: "makers-5hadzwjpsblu", retryWeb: false, eventName: "workflow_dispatch" };
   const state = { release: null, stable: null, assets: new Map(), published: new Map(), hidden: new Set(), latest: new Map(),
     ref: { sha: "d".repeat(40), version: "0.2.0" }, mutations: [], local: [], waits: [], webValid: true, liveOverride: null, tagMoved: false, artifactAvailable: true, restored: 0, releaseRestored: 0,
-    failPublish: null, failPromotion: null, unknown: null };
+    failPublish: null, rejectPublish: null, failPromotion: null, unknown: null };
   const receiptValues = () => [...state.assets.entries()].filter(([name]) => name.startsWith("receipt-")).map(([, bytes]) => JSON.parse(bytes));
   const assertIntent = (target, operation) => assert.ok(receiptValues().some(item => item.target === target && item.operation === operation && item.state === "intent"), `missing intent for ${target}/${operation}`);
   const findKind = name => Object.keys(packages).find(kind => packages[kind].name === name);
@@ -78,8 +78,11 @@ function fixture() {
     fileDescriptor: async (directory, name) => { const bytes = files(directory).get(name); return { bytes, size: bytes.length, sha256: hash(bytes) }; },
     pause: async milliseconds => { state.waits.push(milliseconds); },
     publishNpm: async (receipt, _directory, tag) => {
-      const kind = findKind(receipt.name); assertIntent(`npm-${kind}`, "publish"); assert.equal(tag, "candidate-v0.3.0");
-      state.mutations.push(`publish:${kind}`); state.published.set(kind, metadata(receipt));
+      const kind = findKind(receipt.name);
+      assert.ok(receiptValues().some(item => item.target === `npm-${kind}` && ["publish", "operator-retry-publish"].includes(item.operation) && item.state === "intent"));
+      assert.equal(tag, "candidate-v0.3.0"); state.mutations.push(`publish:${kind}`);
+      if (state.rejectPublish === kind) { state.rejectPublish = null; fail("PCR_PRODUCT_NPM_COMMAND_UNCERTAIN"); }
+      state.published.set(kind, metadata(receipt));
       if (state.failPublish === kind) { state.failPublish = null; state.hidden.add(kind); fail("PCR_PRODUCT_NPM_COMMAND_UNCERTAIN"); }
     },
     verifyTarball: async receipt => ({ bytes: receipt.bytes, sha256: receipt.sha256, integrity: receipt.integrity }),
@@ -128,6 +131,123 @@ test("accepted npm upload temporarily returning 404 stays pending and is never b
   assert.equal(f.state.mutations.includes("advance-ref"), false);
   f.state.hidden.delete("tool"); assert.equal((await f.publish()).status, "complete");
   assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 1);
+});
+
+test("an unaccepted upload intent defaults to pending until a new explicit target dispatch recovers once", async () => {
+  for (const kind of ["tool", "library"]) {
+    const f = fixture(); f.state.rejectPublish = kind;
+    assert.equal((await f.publish()).status, "pending");
+    assert.equal(f.state.published.has(kind), false);
+    const count = () => f.state.mutations.filter(call => call === `publish:${kind}`).length;
+    assert.equal((await f.publish()).status, "pending"); assert.equal(count(), 1);
+    const sameRun = { ...f.context, attempt: "2", retryNpm: kind };
+    assert.equal((await f.publish({ context: sameRun })).status, "pending"); assert.equal(count(), 1);
+    const newRun = { ...sameRun, runId: "11", attempt: "1" };
+    assert.equal((await f.publish({ context: newRun })).status, "complete"); assert.equal(count(), 2);
+    const accepted = f.receipts().find(item => item.target === `npm-${kind}` && item.operation === "operator-retry-publish" && item.state === "accepted");
+    assert.equal(accepted.runId, "11"); assert.deepEqual(accepted.details, { operatorConfirmedRejected: true, reusedExisting: false });
+  }
+});
+
+test("a rejected explicit retry cannot repeat across attempts in that run, but a new confirmed run can recover", async () => {
+  const f = fixture(); f.state.rejectPublish = "tool"; await f.publish();
+  f.state.rejectPublish = "tool";
+  const recovery = { ...f.context, runId: "11", retryNpm: "tool" };
+  assert.equal((await f.publish({ context: recovery })).status, "pending");
+  assert.equal((await f.publish({ context: { ...recovery, attempt: "2" } })).status, "pending");
+  assert.equal((await f.publish()).status, "pending", "operator-retry intent also blocks default automatic publication");
+  assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 2);
+  assert.equal((await f.publish({ context: { ...recovery, runId: "12" } })).status, "complete");
+  assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 3);
+});
+
+test("explicit npm recovery cannot select the other pending target", async () => {
+  for (const [pending, selected] of [["tool", "library"], ["library", "tool"]]) {
+    const f = fixture(); f.state.rejectPublish = pending; await f.publish();
+    const result = await f.publish({ context: { ...f.context, runId: "11", retryNpm: selected } });
+    assert.equal(result.status, "pending"); assert.equal(result.target, `npm-${pending}`);
+    assert.equal(f.state.mutations.filter(call => call === `publish:${pending}`).length, 1);
+    assert.equal(f.receipts().some(item => item.operation === "operator-retry-publish"), false);
+  }
+});
+
+test("an already visible version is verified and reused even with explicit rejected-upload recovery", async () => {
+  const f = fixture(); f.state.rejectPublish = "tool"; await f.publish();
+  f.state.published.set("tool", metadata(f.manifest.packages.tool));
+  assert.equal((await f.publish({ context: { ...f.context, runId: "11", retryNpm: "tool" } })).status, "complete");
+  assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 1);
+  assert.equal(f.receipts().some(item => item.operation === "operator-retry-publish"), false);
+});
+
+test("registry visibility changing while the retry intent is stored prevents a duplicate upload", async () => {
+  const f = fixture(); f.state.rejectPublish = "tool"; await f.publish();
+  const putAsset = f.io.putAsset;
+  f.io.putAsset = async (...args) => {
+    const result = await putAsset(...args);
+    if (args[1].startsWith("receipt-")) {
+      const receipt = JSON.parse(args[2].bytes);
+      if (receipt.target === "npm-tool" && receipt.operation === "operator-retry-publish" && receipt.state === "intent") f.state.published.set("tool", metadata(f.manifest.packages.tool));
+    }
+    return result;
+  };
+  assert.equal((await f.publish({ context: { ...f.context, runId: "11", retryNpm: "tool" } })).status, "complete");
+  assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 1);
+  const accepted = f.receipts().find(item => item.operation === "operator-retry-publish" && item.state === "accepted");
+  assert.deepEqual(accepted.details, { operatorConfirmedRejected: true, reusedExisting: true });
+});
+
+test("conflicting metadata, unknown registry state and invalid tarball bytes never permit explicit reupload", async () => {
+  for (const [alter, expected] of [
+    [f => f.state.published.set("tool", { ...metadata(f.manifest.packages.tool), gitHead: "f".repeat(40) }), "PCR_PRODUCT_REGISTRY_CONFLICT"],
+    [f => { f.state.unknown = "tool/0.3.0"; }, "PCR_PRODUCT_REGISTRY_UNCERTAIN"],
+    [f => { f.state.published.set("tool", metadata(f.manifest.packages.tool)); f.io.verifyTarball = async () => ({ bytes: 8, sha256: "wrong", integrity: "wrong" }); }, "PCR_PRODUCT_TARBALL_CONFLICT"],
+  ]) {
+    const f = fixture(); f.state.rejectPublish = "tool"; await f.publish(); alter(f);
+    const result = await f.publish({ context: { ...f.context, runId: "11", retryNpm: "tool" } });
+    assert.equal(result.code, expected); assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 1);
+    assert.equal(f.state.mutations.includes("advance-ref"), false);
+  }
+});
+
+test("explicit rejected-upload declarations cannot replace a previously byte-verified package after a 404", async () => {
+  const f = fixture(); await f.publish(); f.state.published.delete("tool");
+  const result = await f.publish({ context: { ...f.context, runId: "11", retryNpm: "tool" } });
+  assert.equal(result.code, "PCR_PRODUCT_NPM_RETRY_CONFLICT"); assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 1);
+});
+
+test("npm recovery choices fail closed and are exclusive to explicit workflow dispatch", async () => {
+  for (const choice of ["both", "Tool", "", null, true]) {
+    const f = fixture(); await assert.rejects(f.publish({ context: { ...f.context, retryNpm: choice } }), { code: "PCR_PRODUCT_NPM_RETRY_INVALID" });
+    assert.deepEqual(f.state.mutations, []);
+  }
+  const f = fixture(); await assert.rejects(f.publish({ context: { ...f.context, retryNpm: "tool", eventName: "push" } }), { code: "PCR_PRODUCT_NPM_RETRY_INVALID" });
+  assert.deepEqual(f.state.mutations, []);
+  await assert.rejects(publishProduct({ root: "/unused", bundleDir: "/unused", env: { PCR_RETRY_NPM: "both", GITHUB_EVENT_NAME: "workflow_dispatch" } }), { code: "PCR_PRODUCT_NPM_RETRY_INVALID" });
+});
+
+test("explicit npm recovery preserves immutable tag, live downgrade and sealed-asset guards", async () => {
+  for (const [alter, expected] of [
+    [f => { f.state.tagMoved = true; }, "PCR_PRODUCT_TAG_MOVED"],
+    [f => { f.state.liveOverride = { state: "product", identity: { ...identity, version: "0.4.0", tag: "v0.4.0", sourceCommit: "f".repeat(40) } }; }, "PCR_PRODUCT_DOWNGRADE"],
+    [f => { f.state.assets.set("library.sqlite", Buffer.from("conflicting sealed bytes")); }, "PCR_PRODUCT_ASSET_CONFLICT"],
+  ]) {
+    const f = fixture(); f.state.rejectPublish = "tool"; await f.publish(); alter(f);
+    try {
+      const result = await f.publish({ context: { ...f.context, runId: "11", retryNpm: "tool" } });
+      assert.equal(result.code, expected);
+    } catch (error) { assert.equal(error.code, expected); }
+    assert.equal(f.state.mutations.filter(call => call === "publish:tool").length, 1);
+  }
+  const race = fixture(); race.state.rejectPublish = "tool"; await race.publish();
+  race.io.pause = async milliseconds => { race.state.waits.push(milliseconds); race.state.ref.version = "0.4.0"; };
+  const result = await race.publish({ context: { ...race.context, runId: "11", retryNpm: "tool" } });
+  assert.equal(result.code, "PCR_PRODUCT_DOWNGRADE"); assert.equal(race.state.mutations.filter(call => call === "publish:tool").length, 1);
+});
+
+test("default none recovery leaves normal stable tag-push publication unchanged", async () => {
+  const f = fixture(); assert.equal((await f.publish({ context: { ...f.context, eventName: "push", retryNpm: "none" } })).status, "complete");
+  assert.equal(f.state.mutations.filter(call => call.startsWith("publish:")).length, 2);
+  assert.equal(f.receipts().some(item => item.operation === "operator-retry-publish"), false);
 });
 
 test("partial pair visibility recovers forward using the already published tool and library", async () => {
