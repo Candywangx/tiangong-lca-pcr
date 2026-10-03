@@ -6,6 +6,7 @@ import oracle from './fixtures/normative-context/independent-oracle.json' with {
 import {
   compileMarkdownSourceContext,
   contextForSpan,
+  sectionForSpan,
   type MarkdownSourceContextIndex,
   type NormativeSourceContext,
 } from './src/compiler/source-context.ts';
@@ -258,4 +259,44 @@ test('setext headings, inline formatting, hard breaks and multiline list attachm
   assert.equal(context.selectedBlock?.text, '1. First line  \n   continued with `basis` and [evidence](https://example.test).\n\n   Attached second paragraph.');
   assert.equal(context.introductions[0]?.text, 'When **shared**, use:');
   assert.equal(context.unit.text, source.slice(source.indexOf('When')));
+});
+
+
+test('ancestor heading scope preserves H2 preamble across H3 while nearest section stays bounded', () => {
+  const source = '# Method\n\nAll requirements use the declared gate.\n\n## Allocation\n\nWhen multiple outputs share the system, apply the following hierarchy.\n\n### Primary hierarchy\n\n1. Subdivide.\n2. Use measured causality.\n\n### Economic fallback\n\n1. Disclose prices.\n\n## Validation\n\n1. Validate the package.';
+  const index = compileMarkdownSourceContext(source);
+  const itemStart = source.indexOf('1. Subdivide.');
+  const selection = { startOffset: itemStart, endOffset: itemStart + '1. Subdivide.'.length };
+  const context = contextForSpan(index, selection);
+  const nearest = sectionForSpan(index, selection);
+  const h2 = sectionForSpan(index, selection, 2);
+  const h1 = index.sectionForSpan(selection, 1);
+  assert.deepEqual(nearest, context.section);
+  assert.equal(nearest.text, source.slice(source.indexOf('### Primary'), source.indexOf('### Economic')));
+  assert.equal(h2.text, source.slice(source.indexOf('## Allocation'), source.indexOf('## Validation')));
+  assert.ok(h2.text.includes('When multiple outputs share the system'));
+  assert.ok(h2.text.includes('### Economic fallback'));
+  assert.equal(h2.span.start.line, 5);
+  assert.equal(h2.span.end.line, 18);
+  assert.equal(h2.text, index.source.slice(h2.span.start.offset, h2.span.end.offset));
+  assert.equal(h1.text, source);
+  assert.ok(h1.text.includes('All requirements use the declared gate.'));
+  assert.equal(context.attribution, 'structural');
+  assert.deepEqual(context.introductions, []);
+  assert.equal(context.unit.text, '1. Subdivide.\n2. Use measured causality.');
+  const sibling = selectedText(index, '1. Disclose prices.');
+  assert.deepEqual(sectionForSpan(index, { startOffset: sibling.selected.span.start.offset, endOffset: sibling.selected.span.end.offset }, 2), h2);
+});
+
+test('ancestor section depth queries reject absent depth and crossing scope instead of inventing ancestry', () => {
+  const source = '# Method\n\n## Rules\n\n### First\n\n1. First rule.\n\n## Next\n\n1. Next rule.\n\n# Other method\n\nOther.';
+  const index = compileMarkdownSourceContext(source);
+  const first = selectedText(index, '1. First rule.').selected.span;
+  const selection = { startOffset: first.start.offset, endOffset: first.end.offset };
+  for (const depth of [0, 4, 7, 1.5]) assert.throws(() => sectionForSpan(index, selection, depth), RangeError);
+  assert.throws(() => sectionForSpan(index, { startLine: 7, endLine: 11 }, 2), RangeError);
+  const h1 = sectionForSpan(index, selection, 1);
+  assert.equal(h1.text, source.slice(0, source.indexOf('# Other method')));
+  const noHeading = compileMarkdownSourceContext('Ordinary preamble.\n\n1. Rule.');
+  assert.throws(() => sectionForSpan(noHeading, { startLine: 3, endLine: 3 }, 1), RangeError);
 });

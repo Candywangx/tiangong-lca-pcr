@@ -24,7 +24,7 @@
     "validation_notes"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "enum": [1, 2] },
     "guidance_kind": { "const": "tiangong-pcr-agent-guidance" },
     "pcr": { "type": "object" },
     "readiness": {
@@ -62,7 +62,8 @@
     "validation_notes": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
-    }
+    },
+    "normative_context": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/structured-projection.schema.json#/$defs/normativeContext" }
   },
   "additionalProperties": false,
   "$defs": {
@@ -93,5 +94,41 @@
       },
       "additionalProperties": false
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "properties": {
+          "normative_context": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "required": [
+          "normative_context"
+        ]
+      }
+    }
+  ]
 }

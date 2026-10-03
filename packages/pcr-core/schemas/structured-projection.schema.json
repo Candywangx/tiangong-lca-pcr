@@ -52,7 +52,7 @@
       "type": "object",
       "required": ["contract_version", "generator", "canonical_markdown", "generated_content_sha256"],
       "properties": {
-        "contract_version": { "const": "1" },
+        "contract_version": { "enum": ["1", "2"] },
         "generator": { "const": "tiangong-pcr-builder/markdown-projection" },
         "canonical_markdown": {
           "type": "object",
@@ -217,10 +217,218 @@
         "used_for": { "type": "string" }
       },
       "additionalProperties": false
+    },
+    "sourcePoint": {
+      "type": "object",
+      "required": [
+        "offset",
+        "line",
+        "column"
+      ],
+      "properties": {
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false,
+      "$comment": "Normalized source coordinates: zero-based UTF-16 offsets and one-based lines/columns. Source correspondence is checked at runtime."
+    },
+    "sourceSpan": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/sourcePoint"
+        },
+        "end": {
+          "$ref": "#/$defs/sourcePoint"
+        }
+      },
+      "additionalProperties": false,
+      "$comment": "Start is inclusive and end exclusive. Ordering and containment require runtime checks."
+    },
+    "sourceHeading": {
+      "type": "object",
+      "required": [
+        "kind",
+        "span",
+        "text",
+        "depth"
+      ],
+      "properties": {
+        "kind": {
+          "const": "heading"
+        },
+        "span": {
+          "$ref": "#/$defs/sourceSpan"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        }
+      },
+      "additionalProperties": false
+    },
+    "normativeUnit": {
+      "type": "object",
+      "required": [
+        "unit_id",
+        "family",
+        "span",
+        "markdown",
+        "headings"
+      ],
+      "properties": {
+        "unit_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "family": {
+          "enum": [
+            "system_boundary",
+            "allocation",
+            "validation"
+          ]
+        },
+        "span": {
+          "$ref": "#/$defs/sourceSpan"
+        },
+        "markdown": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "headings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceHeading"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "normativeBinding": {
+      "type": "object",
+      "required": [
+        "pointer",
+        "rule_id",
+        "identity_kind",
+        "unit_id",
+        "source_span"
+      ],
+      "properties": {
+        "pointer": {
+          "type": "string",
+          "pattern": "^/(?:system_boundary/rules|allocation_rules|validation_rules)/(?:0|[1-9][0-9]*)$"
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "identity_kind": {
+          "enum": [
+            "explicit",
+            "snapshot_local"
+          ]
+        },
+        "unit_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_span": {
+          "$ref": "#/$defs/sourceSpan"
+        }
+      },
+      "additionalProperties": false
+    },
+    "normativeDiagnostic": {
+      "type": "object",
+      "required": [
+        "code",
+        "message",
+        "unit_id",
+        "source_span"
+      ],
+      "properties": {
+        "code": {
+          "enum": [
+            "UNSUPPORTED_NORMATIVE_BLOCK",
+            "NON_RULE_TABLE",
+            "AMBIGUOUS_PROSE_ATTACHMENT",
+            "SNAPSHOT_RULE_ID_DISAMBIGUATED"
+          ]
+        },
+        "message": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "unit_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_span": {
+          "$ref": "#/$defs/sourceSpan"
+        }
+      },
+      "additionalProperties": false
+    },
+    "normativeContext": {
+      "type": "object",
+      "required": [
+        "normalization",
+        "source_sha256",
+        "identity_scope",
+        "units",
+        "bindings",
+        "diagnostics"
+      ],
+      "properties": {
+        "normalization": {
+          "const": "utf8-lf-v1"
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "identity_scope": {
+          "const": "projection_snapshot"
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/normativeUnit"
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/normativeBinding"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/normativeDiagnostic"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "$comment": "Structural source context preserves authored Markdown without asserting scientific applicability. Reference uniqueness, binding coverage, source bytes and hash agreement require runtime integrity checks; material completeness remains a separate policy."
     }
   },
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "enum": [1, 2] },
     "generated_from": { "const": "markdown" },
     "source_markdown": { "const": "pcr.en-US.md" },
     "product_category_identity": {
@@ -263,7 +471,62 @@
     "validation_rules": { "$ref": "#/$defs/normativeRuleArray" },
     "published_dataset_profile": { "type": "object" },
     "data_sources": { "type": "array", "items": { "$ref": "#/$defs/dataSource" } },
-    "projection_metadata": { "$ref": "#/$defs/projectionMetadata" }
+    "projection_metadata": { "$ref": "#/$defs/projectionMetadata" },
+    "normative_context": { "$ref": "#/$defs/normativeContext" }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "properties": {
+          "normative_context": false,
+          "projection_metadata": {
+            "properties": {
+              "contract_version": {
+                "const": "1"
+              }
+            },
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "required": [
+          "normative_context"
+        ],
+        "properties": {
+          "projection_metadata": {
+            "properties": {
+              "contract_version": {
+                "const": "2"
+              }
+            },
+            "type": "object"
+          }
+        }
+      }
+    }
+  ]
 }

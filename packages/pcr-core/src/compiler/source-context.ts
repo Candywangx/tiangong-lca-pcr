@@ -61,6 +61,11 @@ export interface MarkdownSourceContextIndex {
   readonly source: string;
   readonly normalization: 'utf8-lf-v1';
   readonly contextForSpan: (selection: SourceSelection) => NormativeSourceContext;
+  /** Exact enclosing heading scope at the requested depth, or the nearest section
+   * when omitted. This retains ancestor preambles without serializing every
+   * ancestor section into every rule context. Depth is structural, not semantic.
+   * Missing depths or selections crossing that requested scope fail explicitly. */
+  readonly sectionForSpan: (selection: SourceSelection, depth?: number) => SourceBlock;
 }
 
 interface Entry {
@@ -125,9 +130,15 @@ export function compileMarkdownSourceContext(input: string): MarkdownSourceConte
     }
     return headings;
   }
-  function section(start: number, end: number): SourceBlock {
+  function section(start: number, end: number, depth?: number): SourceBlock {
+    if (depth !== undefined && (!Number.isInteger(depth) || depth < 1 || depth > 6)) {
+      throw new RangeError('Source section depth must be an integer from 1 to 6');
+    }
     const headings = headingContext(start);
-    const current = headings.at(-1);
+    const current = depth === undefined ? headings.at(-1) : headings.find(heading => heading.depth === depth);
+    if (depth !== undefined && !current) {
+      throw new RangeError('Requested heading depth does not enclose the source selection');
+    }
     let sectionStart = current?.span.start.offset ?? 0;
     let sectionEnd = source.length;
     for (const entry of root.children) {
@@ -137,7 +148,11 @@ export function compileMarkdownSourceContext(input: string): MarkdownSourceConte
       }
     }
     // A selection spanning sections cannot be assigned to either one safely.
-    if (end > sectionEnd) { sectionStart = 0; sectionEnd = source.length; }
+    if (end > sectionEnd) {
+      if (depth !== undefined) throw new RangeError('Source selection crosses the requested heading scope');
+      sectionStart = 0;
+      sectionEnd = source.length;
+    }
     return block(sectionStart, sectionEnd, 'section');
   }
   function offsets(selection: SourceSelection): { start: number; end: number } {
@@ -245,9 +260,18 @@ export function compileMarkdownSourceContext(input: string): MarkdownSourceConte
       attribution: diagnostics.length === 0 ? 'structural' : 'uncertain', diagnostics,
     };
   }
-  return { source, normalization: 'utf8-lf-v1', contextForSpan: query };
+  function sectionQuery(selection: SourceSelection, depth?: number): SourceBlock {
+    const { start, end } = offsets(selection);
+    return section(start, end, depth);
+  }
+  return { source, normalization: 'utf8-lf-v1', contextForSpan: query, sectionForSpan: sectionQuery };
 }
 
 export function contextForSpan(index: MarkdownSourceContextIndex, selection: SourceSelection): NormativeSourceContext {
   return index.contextForSpan(selection);
+}
+
+/** Read a complete enclosing section without copying ancestor text into the index. */
+export function sectionForSpan(index: MarkdownSourceContextIndex, selection: SourceSelection, depth?: number): SourceBlock {
+  return index.sectionForSpan(selection, depth);
 }
