@@ -1,0 +1,1344 @@
+import { isUnknownRecord, unknownField, errorMessage, type UnknownRecord } from '../../packages/pcr-core/src/types.ts';
+import type { BuilderOptions } from './types.ts';
+import type { PcrWorkspace, PcrWorkspacePaths } from './pcr-paths.ts';
+import type { ResolvedPcrLanguages } from './pcr-language-files.ts';
+interface PublicationPlan { problems: string[]; currentManifest: UnknownRecord; nextManifest: UnknownRecord; nextManifestText: string; schemaVersion: number;
+ languages: string[]; publishedFiles: Map<string, {bytes: Buffer; text: string}>; structuredText: string; version: string; now: string }
+type PublicationAttempt = PublicationPlan | {problems: string[]};
+import {
+  closeSync,
+  constants as fsConstants,
+  existsSync,
+  fstatSync,
+  lstatSync,
+  mkdirSync,
+  openSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
+import { declaredPcrLanguages } from "../../packages/pcr-core/src/languages.ts";
+import {
+  CONTENT_MATURITY_VALUES,
+  PCR_STATUS_VALUES,
+  TRANSLATION_STATUS_VALUES,
+  formatOneOf,
+} from "./lifecycle-vocab.ts";
+import { inspectPcrDirectory } from "./lint-rules.ts";
+import {
+  compareSemver,
+  isValidSemver,
+  lifecycleTransitionProblems,
+  manifestLifecycleProblems,
+  manifestReviewBlockers,
+} from "./lifecycle-policy.ts";
+import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "./markdown-projection.ts";
+import {
+  recoverPcrDirectoryTransaction,
+  runPcrDirectoryTransaction,
+} from "./pcr-directory-transaction.ts";
+import {
+  PCR_WORKSPACES,
+  repoRelativePcrPath,
+  resolvePcrWorkspacePaths,
+} from "./pcr-paths.ts";
+import {
+  buildReleaseRecord,
+  inspectPublishedRevisionState,
+} from "./published-revision-state.ts";
+import {
+  currentReleaseArtifacts,
+  outOfSyncTranslationStatus,
+  resolvePcrLanguageFiles,
+} from "./pcr-language-files.ts";
+import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.ts";
+import { validateManifest, validateStructured } from "./schema-contracts.ts";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const defaultRoot = path.resolve(__dirname, "../..");
+const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
+
+function rootFromOptions(options: BuilderOptions): string {
+  return path.resolve(String(options.root ?? defaultRoot));
+}
+
+function toRepoRelative(root: string, absolutePath: string): string {
+  return path.relative(root, absolutePath).replaceAll(path.sep, "/");
+}
+
+function isStrictDescendant(parent: string, candidate: string): boolean {
+  const relative = path.relative(parent, candidate);
+  return relative !== "" && relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+}
+
+// Preserve the established actionable errors, then apply the stricter canonical-leaf resolver.
+function pcrDirectoryFromOptions(root: string, options: BuilderOptions): string {
+  const pcr = options.pcr ? String(options.pcr).trim() : null;
+  if (!pcr) {
+    throw new Error("Missing required --pcr <library/pcrs/...> option.");
+  }
+  const candidate = path.resolve(root, pcr);
+  const pcrRoot = path.resolve(root, "library/pcrs");
+  const lexicallyContained = isStrictDescendant(pcrRoot, candidate);
+  if (!existsSync(candidate)) {
+    if (!lexicallyContained) {
+      throw new Error(
+        `PCR path must be inside ${toRepoRelative(root, pcrRoot)}/; received ${pcr}.`,
+      );
+    }
+    throw new Error(`PCR directory not found: ${candidate}`);
+  }
+  if (!statSync(candidate).isDirectory()) {
+    throw new Error(`PCR path is not a directory: ${candidate}`);
+  }
+  const realRoot = realpathSync(root);
+  const realPcrRoot = realpathSync(pcrRoot);
+  if (!isStrictDescendant(realRoot, realPcrRoot)) {
+    throw new Error(
+      `PCR root must resolve inside repository root; ${toRepoRelative(root, pcrRoot)} resolves to ${realPcrRoot}.`,
+    );
+  }
+  const realCandidate = realpathSync(candidate);
+  if (!isStrictDescendant(realPcrRoot, realCandidate)) {
+    if (!lexicallyContained) {
+      throw new Error(
+        `PCR path must be inside ${toRepoRelative(root, pcrRoot)}/; received ${pcr}.`,
+      );
+    }
+    throw new Error(`PCR directory resolves outside ${toRepoRelative(root, pcrRoot)}/: ${candidate}`);
+  }
+  return candidate;
+}
+
+function workspaceFromOptions(options: BuilderOptions): PcrWorkspace {
+  const workspace = String(options.workspace ?? "current");
+  if (!(PCR_WORKSPACES as readonly string[]).includes(workspace)) {
+    throw new Error(`--workspace must be one of ${formatOneOf(PCR_WORKSPACES)}.`);
+  }
+  return workspace as PcrWorkspace;
+}
+
+function workspacePathsFromOptions(root: string, options: BuilderOptions, workspace: PcrWorkspace = workspaceFromOptions(options)): PcrWorkspacePaths {
+  const pcrDir = pcrDirectoryFromOptions(root, options);
+  return resolvePcrWorkspacePaths({ root, pcr: pcrDir, workspace });
+}
+
+function publicationPreflightError(root: string, pcrDir: string, problems: readonly string[]): Error {
+  return new Error(
+    [
+      `PCR publication preflight failed for ${toRepoRelative(root, pcrDir)}.`,
+      ...[...new Set(problems)].map((problem) => `- ${problem}`),
+      "",
+      "Next:",
+      "- Resolve every finding, run `npm run validate`, then retry the publish command.",
+    ].join("\n"),
+  );
+}
+
+function operationError(label: string, root: string, pcrDir: string, problems: readonly string[], next: readonly string[] = []): Error {
+  return new Error(
+    [
+      `${label} for ${toRepoRelative(root, pcrDir)}.`,
+      ...[...new Set(problems)].map((problem) => `- ${problem}`),
+      ...(next.length > 0 ? ["", "Next:", ...next.map((entry) => `- ${entry}`)] : []),
+    ].join("\n"),
+  );
+}
+
+function readRequiredText(filePath: string, label: string): string {
+  if (!existsSync(filePath)) {
+    throw new Error(`Missing ${label}: ${filePath}`);
+  }
+  const stats = lstatSync(filePath);
+  if (stats.isSymbolicLink() || !stats.isFile()) {
+    throw new Error(`${label} must be a regular file and must not be a symbolic link: ${filePath}`);
+  }
+  const descriptor = openSync(
+    filePath,
+    fsConstants.O_RDONLY | (fsConstants.O_NOFOLLOW ?? 0),
+  );
+  try {
+    if (!fstatSync(descriptor).isFile()) {
+      throw new Error(`${label} must be a regular file: ${filePath}`);
+    }
+    const bytes = readFileSync(descriptor);
+    try {
+      return UTF8_DECODER.decode(bytes);
+    } catch {
+      throw new Error(`${label} must contain valid UTF-8: ${filePath}`);
+    }
+  } finally {
+    closeSync(descriptor);
+  }
+}
+
+function requireAllowedOption(options: BuilderOptions, key: string, values: readonly string[]): string | null {
+  const value = options[key];
+  if (value === undefined) {
+    return null;
+  }
+  const normalized = String(value);
+  if (!values.includes(normalized)) {
+    throw new Error(`--${key} must be one of ${formatOneOf(values)}.`);
+  }
+  return normalized;
+}
+
+function parseTranslationOption(value: unknown): {language: string; status: string} | null {
+  if (value === undefined) {
+    return null;
+  }
+  const raw = String(value);
+  const separatorIndex = raw.indexOf("=");
+  if (separatorIndex <= 0 || separatorIndex === raw.length - 1) {
+    throw new Error("--translation must use <language>=<status>, for example zh-CN=aligned.");
+  }
+  const language = raw.slice(0, separatorIndex).trim();
+  const status = raw.slice(separatorIndex + 1).trim();
+  if (!language) {
+    throw new Error("--translation language must not be empty.");
+  }
+  if (!TRANSLATION_STATUS_VALUES.includes(status)) {
+    throw new Error(`--translation status must be one of ${formatOneOf(TRANSLATION_STATUS_VALUES)}.`);
+  }
+  return { language, status };
+}
+
+function translationTargetProblems(manifest: unknown, translation: {language: string; status: string} | null): string[] {
+  if (!translation) {
+    return [];
+  }
+  const canonical = unknownField(unknownField(manifest, "languages"), "canonical");
+  const available = declaredValues(manifest);
+  const problems: string[] = [];
+  if (translation.language === canonical) {
+    problems.push(
+      `--translation cannot target canonical language ${translation.language}; update canonical Markdown instead`,
+    );
+  }
+  if (!available.includes(translation.language)) {
+    problems.push(
+      `--translation language ${translation.language} is not declared in manifest.languages.available`,
+    );
+  }
+  return problems;
+}
+
+function incrementVersion(current: unknown, level: string): string {
+  if (current !== null && current !== undefined && !isValidSemver(current)) {
+    throw new Error(
+      `Cannot bump invalid manifest version "${current}"; use a valid semver version before retrying.`,
+    );
+  }
+  const match = String(current ?? "0.0.0").match(/^(\d+)\.(\d+)\.(\d+)/u);
+  if (!match?.[1] || !match[2] || !match[3]) throw new Error("SemVer increment invariant failed.");
+  let major = BigInt(match[1]), minor = BigInt(match[2]), patch = BigInt(match[3]);
+  if (level === "major") {
+    major += 1n;
+    minor = 0n;
+    patch = 0n;
+  } else if (level === "minor") {
+    minor += 1n;
+    patch = 0n;
+  } else {
+    patch += 1n;
+  }
+  return `${major}.${minor}.${patch}`;
+}
+
+function updateMarkdownFrontmatter(markdown: string, updates: UnknownRecord): string {
+  const lines = String(markdown).replace(/^\uFEFF/u, "").split(/\r?\n/u);
+  if (lines[0]?.trim() !== "---") {
+    throw new Error("PCR Markdown must start with YAML frontmatter.");
+  }
+  const closingIndex = lines.findIndex((line, index) => index > 0 && line.trim() === "---");
+  if (closingIndex < 0) {
+    throw new Error("PCR Markdown has unclosed YAML frontmatter.");
+  }
+  const frontmatter = parseRecord(lines.slice(1, closingIndex).join("\n"));
+  for (const [key, value] of Object.entries(updates)) {
+    if (value === undefined) {
+      delete frontmatter[key];
+    } else {
+      frontmatter[key] = value;
+    }
+  }
+  return `---\n${renderYaml(frontmatter)}---\n${lines.slice(closingIndex + 1).join("\n")}`;
+}
+
+function manifestSchemaProblems(manifest: unknown, context: string): string[] {
+  return validateManifest(manifest).errors.map(
+    (error) => `${context} schema ${error.instance_path} ${error.message}`,
+  );
+}
+
+/**
+ * Reads every declared language file of a workspace and reports the structural
+ * findings of an undeclared, unreadable, or non-regular language file.
+ */
+function readWorkspaceLanguageFiles({ manifest, workspaceDir, root, problems }: {manifest: unknown; workspaceDir: string; root: string; problems: string[]}): ResolvedPcrLanguages | null {
+  let resolved;
+  try {
+    resolved = resolvePcrLanguageFiles({ manifest, directory: workspaceDir, displayRoot: root });
+  } catch (error) {
+    problems.push(errorMessage(error));
+    return null;
+  }
+  problems.push(...resolved.problems);
+  return resolved;
+}
+
+/**
+ * The release gate for the declared optional languages. `languages.available`
+ * is the exact declared set and every declared language has a validated file, so
+ * each declared optional translation must be reviewed before it can enter the
+ * snapshot; a declared language without a file has already failed the language
+ * resolution preflight.
+ */
+function releaseLanguageGateProblems(manifest: unknown, resolved: ResolvedPcrLanguages | null): string[] {
+  const translationStatus = unknownField(manifest, "translation_status") ?? {};
+  return (resolved?.optional ?? [])
+    .map((entry) => entry.language)
+    .filter((language) => unknownField(translationStatus, language) !== "reviewed")
+    .map(
+      (language) =>
+        `released language ${language} requires translation_status.${language} to be reviewed; ` +
+        "review the translation before publishing",
+    );
+}
+
+/** A language file beyond the two required languages needs the v2 artifact contract. */
+function optionalLanguageSchemaProblems(manifest: UnknownRecord, resolved: ResolvedPcrLanguages | null): string[] {
+  if ((resolved?.optional?.length ?? 0) === 0 || manifest.schema_version === 2) {
+    return [];
+  }
+  return [
+    "the published/release contract for optional languages requires manifest schema_version 2; " +
+      `set schema_version: 2 and retry (language files: ${(resolved?.optional ?? [])
+        .map((entry) => entry.fileName)
+        .join(", ")})`,
+  ];
+}
+
+/**
+/**
+ * Rewrites the workspace manifest for publication. `languages.available` is the
+ * declared included set and every declared language has a validated file, so the
+ * declaration, the titles, and the translation status map are carried through
+ * byte-for-byte; only the release fingerprints are added.
+ *
+ * The map is deliberately not extended with an `en-US: canonical` entry: the
+ * legacy publisher preserved the author's map verbatim, so adding one would
+ * change every v1 snapshot's bytes. The canonical rendering stays recorded in
+ * the English Markdown frontmatter, which the publication plan writes.
+ */
+function publishedManifestFrom({ manifest: sourceManifest, resolved, structuredText }: {manifest: UnknownRecord; resolved: {languageFiles: ReadonlyMap<string, {bytes?: Buffer; text?: string}>}; structuredText: string | null}) {
+  const result: {manifest: UnknownRecord | null; artifacts: ReturnType<typeof currentReleaseArtifacts> | null; problems: string[]} = { manifest: null, artifacts: null, problems: [] };
+  const manifest = structuredClone(sourceManifest);
+  delete manifest.release_artifacts;
+  const availableLanguages = declaredPcrLanguages(manifest);
+  for (const language of availableLanguages) {
+    if (language === unknownField(unknownField(manifest, "languages"), "canonical")) {
+      continue;
+    }
+    if (!has(TRANSLATION_STATUS_VALUES, unknownField(manifest.translation_status, language))) {
+      result.problems.push(
+        `published language ${language} requires a translation_status value in ` +
+          `${TRANSLATION_STATUS_VALUES.join(", ")}`,
+      );
+    }
+  }
+  result.manifest = manifest;
+  result.artifacts = structuredText === null
+    ? null
+    : currentReleaseArtifacts({
+        languages: availableLanguages,
+        languageFiles: resolved.languageFiles,
+        structuredText,
+      });
+  return result;
+}
+
+function structuredSchemaProblems(structuredText: string, context: string): string[] {
+  return validateStructured(parseYaml(structuredText)).errors.map(
+    (error) => `${context} schema ${error.instance_path} ${error.message}`,
+  );
+}
+
+function inspectManagedState(root: string, pcrDir: string) {
+  return inspectPublishedRevisionState({ root, pcrDir });
+}
+
+function completeInspectionProblems(root: string, pcrDir: string): string[] {
+  const problems: string[] = [];
+  const primary = inspectPcrDirectory({ root, pcrDir });
+  problems.push(...primary.problems);
+  const state = inspectManagedState(root, pcrDir);
+  problems.push(...state.problems);
+  if (state.revision) {
+    const revision = inspectPcrDirectory({
+      root,
+      pcrDir: state.revision.revisionDir,
+      manifestFileName: "manifest.next.yaml",
+    });
+    problems.push(...revision.problems);
+  }
+  return [...new Set(problems)];
+}
+
+function transactionMessages(result: {warnings: readonly string[]}, relativePcrPath: string): string[] {
+  if (result.warnings.length === 0) {
+    return [];
+  }
+  return [
+    "",
+    "Warnings:",
+    ...result.warnings.map((warning) => `- ${warning}`),
+    "",
+    "Next:",
+    `- Run \`npm run pcr:recover -- --pcr ${relativePcrPath}\` to finish committed-state cleanup.`,
+  ];
+}
+
+function publicationPlan({ workspaceDir, manifestFileName, version, now, root = null }: {workspaceDir: string; manifestFileName: string; version: string; now: string; root?: string | null}): PublicationAttempt {
+  const manifestPath = path.join(workspaceDir, manifestFileName);
+  const currentManifestText = readRequiredText(manifestPath, "PCR manifest");
+  const currentManifest = parseRecord(currentManifestText);
+  const problems: string[] = [];
+  if (!isValidSemver(version)) {
+    problems.push(
+      `--version must be valid semver (for example 1.0.0); received "${version || "(missing)"}"`,
+    );
+  }
+  for (const blocker of manifestReviewBlockers(currentManifest)) {
+    problems.push(`unresolved review blocker at ${blocker}`);
+  }
+
+  const resolved = readWorkspaceLanguageFiles({
+    manifest: currentManifest,
+    workspaceDir,
+    root: root ?? workspaceDir,
+    problems,
+  });
+  // `languages.available` is the exact declared included set. Every declared
+  // language must have a validated file, so a declared-but-missing optional
+  // language fails here instead of being dropped from the release.
+  const languages = resolved?.present ?? [];
+  problems.push(...optionalLanguageSchemaProblems(currentManifest, resolved));
+  problems.push(...releaseLanguageGateProblems(currentManifest, resolved));
+
+  const proposedManifest: UnknownRecord = {
+    ...currentManifest,
+    status: "published",
+    content_maturity: "published_methodology",
+    version,
+    published_at_utc: now,
+    updated_at_utc: now,
+  };
+  delete proposedManifest.release_artifacts;
+  problems.push(...lifecycleTransitionProblems(currentManifest, proposedManifest, "publish"));
+  if (problems.length > 0) {
+    return { problems };
+  }
+
+  if (!resolved) throw new Error("Published language preflight invariant failed.");
+  const publishedFiles = new Map<string, {bytes: Buffer; text: string}>();
+  let structuredText;
+  try {
+    for (const language of languages) {
+      const artifact = resolved.languageFiles.get(language);
+      const text = updateMarkdownFrontmatter(requiredLanguageText(artifact), {
+        status: "published",
+        content_maturity: "published_methodology",
+        translation_status:
+          language === stringField(unknownField(currentManifest, "languages"), "canonical")
+            ? "canonical"
+            : unknownField(currentManifest.translation_status, language),
+      });
+      publishedFiles.set(language, { bytes: Buffer.from(text, "utf8"), text });
+    }
+    const englishText = requiredPublished(publishedFiles, stringField(currentManifest.languages, "canonical")).text;
+    const projection = parsePcrMarkdownToStructured(englishText);
+    structuredText = structuredProjectionYaml(projection, { sourceMarkdown: englishText });
+  } catch (error) {
+    problems.push(errorMessage(error));
+    return { problems };
+  }
+
+  const publishedManifest = publishedManifestFrom({
+    manifest: proposedManifest,
+    resolved: { ...resolved, languageFiles: publishedFiles },
+    structuredText,
+  });
+  problems.push(...publishedManifest.problems);
+  if (problems.length > 0) {
+    return { problems };
+  }
+  const schemaVersion = languages.length > 2 ? 2 : 1;
+  const nextManifest = {
+    ...publishedManifest.manifest,
+    schema_version: schemaVersion,
+    release_artifacts: publishedManifest.artifacts,
+  };
+  problems.push(...manifestSchemaProblems(nextManifest, "published manifest"));
+  return {
+    problems,
+    currentManifest,
+    nextManifest,
+    nextManifestText: renderYaml(nextManifest),
+    schemaVersion,
+    languages,
+    publishedFiles,
+    structuredText,
+    version,
+    now,
+  };
+}
+
+function assertPublicationPlan(root: string, pcrDir: string, plan: PublicationAttempt): asserts plan is PublicationPlan {
+  if (plan.problems.length > 0) {
+    throw publicationPreflightError(root, pcrDir, plan.problems);
+  }
+}
+
+function writePublishedRelease({ stageDir, sourceWorkspaceDir, plan, predecessorVersion, history }: {stageDir: string; sourceWorkspaceDir: string; plan: PublicationPlan; predecessorVersion: string | null; history: UnknownRecord | null}): void {
+  const releaseRoot = path.join(stageDir, "releases");
+  if (!existsSync(releaseRoot)) {
+    mkdirSync(releaseRoot);
+  }
+  const releaseDir = path.join(releaseRoot, plan.version);
+  if (existsSync(releaseDir)) {
+    throw new Error(`Release directory already exists: ${releaseDir}`);
+  }
+  mkdirSync(releaseDir);
+
+  const releaseRecord = buildReleaseRecord({
+    pcrId: stringField(plan.nextManifest, "id"),
+    version: plan.version,
+    publishedAtUtc: plan.now,
+    predecessorVersion,
+    manifestText: plan.nextManifestText,
+    ...(plan.schemaVersion === 2 ? {languages: plan.languages} : {}),
+    languageFiles: plan.publishedFiles,
+    englishText: requiredPublished(plan.publishedFiles, "en-US").text,
+    chineseText: requiredPublished(plan.publishedFiles, "zh-CN").text,
+    structuredText: plan.structuredText,
+  });
+
+  writeFileSync(path.join(releaseDir, "manifest.snapshot.yaml"), plan.nextManifestText);
+  for (const language of plan.languages) {
+    writeFileSync(path.join(releaseDir, `pcr.${language}.md`), requiredPublished(plan.publishedFiles, language).text);
+  }
+  writeFileSync(path.join(releaseDir, "structured.yaml"), plan.structuredText);
+  writeFileSync(path.join(releaseDir, "release.yaml"), releaseRecord.releaseText);
+
+  const nextHistory = history
+    ? {
+        ...history,
+        current_version: plan.version,
+        releases: [...recordArray(history.releases), releaseRecord.historyEntry],
+      }
+    : {
+        schema_version: 1,
+        pcr_id: plan.nextManifest.id,
+        current_version: plan.version,
+        releases: [releaseRecord.historyEntry],
+      };
+
+  // The transaction stage still contains the previous current workspace. A
+  // translation intentionally omitted by this revision survives in its immutable
+  // release, but must not remain as an undeclared current-language artifact.
+  const previousLanguages = declaredPcrLanguages(parseRecord(readRequiredText(path.join(stageDir, "manifest.yaml"), "current manifest")));
+  for (const language of previousLanguages) {
+    if (!plan.languages.includes(language)) rmSync(path.join(stageDir, `pcr.${language}.md`));
+  }
+  writeFileSync(path.join(stageDir, "manifest.yaml"), plan.nextManifestText);
+  for (const language of plan.languages) {
+    writeFileSync(path.join(stageDir, `pcr.${language}.md`), requiredPublished(plan.publishedFiles, language).text);
+  }
+  writeFileSync(path.join(stageDir, "structured.yaml"), plan.structuredText);
+  writeFileSync(path.join(stageDir, "release-history.yaml"), renderYaml(nextHistory));
+
+  if (sourceWorkspaceDir !== stageDir) {
+    rmSync(sourceWorkspaceDir, { recursive: true, force: false });
+  }
+}
+
+function revisionWorkspaceAt(rootDir: string): string {
+  return path.join(rootDir, "revision");
+}
+
+export function syncStructured(options: BuilderOptions): string[] {
+  const root = rootFromOptions(options);
+  const workspace = workspaceFromOptions(options);
+  const paths = workspacePathsFromOptions(root, options, workspace);
+  function assertSyncPreflight() {
+    const state = inspectManagedState(root, paths.pcrDir);
+    if (state.problems.length > 0) {
+      throw operationError("PCR sync preflight failed", root, paths.pcrDir, state.problems);
+    }
+    const selectedManifest = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+    if (workspace === "current" && has(["published", "deprecated"], selectedManifest.status)) {
+      throw operationError(
+        "PCR sync rejected",
+        root,
+        paths.pcrDir,
+        [`current ${selectedManifest.status} PCR content is immutable`],
+        ["Open a new revision with `npm run pcr:revise -- --pcr <path> --version <semver>`."],
+      );
+    }
+  }
+  assertSyncPreflight();
+
+  let syncedMarkdownPath: string | undefined;
+  const result = runPcrDirectoryTransaction({
+    root,
+    pcr: paths.pcrDir,
+    command: `sync-structured:${workspace}`,
+    preflight: assertSyncPreflight,
+    prepareStage({ stageDir }) {
+      const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
+      const manifestName = workspace === "current" ? "manifest.yaml" : "manifest.next.yaml";
+      const manifest = parseRecord(
+        readRequiredText(path.join(workspaceDir, manifestName), "PCR manifest"),
+      );
+      if (workspace === "current" && has(["published", "deprecated"], manifest.status)) {
+        throw new Error(`Cannot sync immutable current ${manifest.status} PCR content.`);
+      }
+      const markdownPath = path.join(workspaceDir, PCR_EN_FILE);
+      const markdown = readRequiredText(markdownPath, "canonical Markdown file");
+      const projection = parsePcrMarkdownToStructured(markdown);
+      const structuredText = structuredProjectionYaml(projection, { sourceMarkdown: markdown });
+      const schemaProblems = structuredSchemaProblems(structuredText, "generated structured projection");
+      if (schemaProblems.length > 0) {
+        throw operationError(
+          "PCR sync generated projection validation failed",
+          root,
+          paths.pcrDir,
+          schemaProblems,
+        );
+      }
+      writeFileSync(path.join(workspaceDir, "structured.yaml"), structuredText);
+      syncedMarkdownPath = workspace === "current"
+        ? path.join(paths.pcrDir, PCR_EN_FILE)
+        : path.join(paths.pcrDir, "revision", PCR_EN_FILE);
+    },
+    validateStage({ stageDir }) {
+      const managed = inspectManagedState(root, stageDir);
+      if (managed.problems.length > 0) {
+        throw operationError("PCR sync staged-state validation failed", root, paths.pcrDir, managed.problems);
+      }
+      const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
+      const inspection = inspectPcrDirectory({
+        root,
+        pcrDir: workspaceDir,
+        manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
+      });
+      if (!inspection.managedInputsSafe) {
+        throw operationError(
+          "PCR sync staged managed-input validation failed",
+          root,
+          paths.pcrDir,
+          inspection.problems,
+        );
+      }
+      const staleOnlyProblems = inspection.problems.filter((problem) => /stale structured projection/u.test(problem));
+      if (staleOnlyProblems.length > 0) {
+        throw operationError("PCR sync staged projection validation failed", root, paths.pcrDir, staleOnlyProblems);
+      }
+    },
+  });
+
+  return [
+    `Synced structured PCR from ${toRepoRelative(root, syncedMarkdownPath ?? "")}.`,
+    ...transactionMessages(result, repoRelativePcrPath(paths)),
+  ];
+}
+
+export function bump(options: BuilderOptions): string[] {
+  const level = String(options.level ?? "patch");
+  if (!["major", "minor", "patch"].includes(level)) {
+    throw new Error("--level must be one of major, minor, or patch.");
+  }
+  if (options.workspace !== undefined && String(options.workspace) !== "current") {
+    throw new Error("pcr:bump operates only on unpublished current workspaces; revision target versions are locked.");
+  }
+  const root = rootFromOptions(options);
+  const paths = workspacePathsFromOptions(root, options, "current");
+  const state = inspectManagedState(root, paths.pcrDir);
+  if (state.problems.length > 0) {
+    throw operationError("PCR bump managed-state preflight failed", root, paths.pcrDir, state.problems);
+  }
+  const current = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+  if (
+    has(["published", "deprecated"], current.status) ||
+    has(["published_methodology", "deprecated_methodology"], current.content_maturity)
+  ) {
+    throw new Error(
+      [
+        `Cannot bump ${current.status}/${current.content_maturity} PCR in place at ${toRepoRelative(root, paths.manifestPath)}.`,
+        "",
+        "Next:",
+        "- Open a published PCR revision with `npm run pcr:revise -- --pcr <path> --version <semver>`.",
+        "- The revision target version is fixed when the workspace opens.",
+      ].join("\n"),
+    );
+  }
+  if (state.revision || existsSync(path.join(paths.pcrDir, "revision"))) {
+    throw new Error("Cannot bump current PCR while a revision workspace is open.");
+  }
+
+  let nextVersion;
+  const result = runPcrDirectoryTransaction({
+    root,
+    pcr: paths.pcrDir,
+    command: `bump:${level}`,
+    preflight() {
+      const lockedState = inspectManagedState(root, paths.pcrDir);
+      if (lockedState.problems.length > 0) {
+        throw operationError(
+          "PCR bump managed-state preflight failed",
+          root,
+          paths.pcrDir,
+          lockedState.problems,
+        );
+      }
+      const locked = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+      if (
+        has(["published", "deprecated"], locked.status) ||
+        has(["published_methodology", "deprecated_methodology"], locked.content_maturity)
+      ) {
+        throw new Error(`Cannot bump ${locked.status}/${locked.content_maturity} PCR in place.`);
+      }
+      if (lockedState.revision || existsSync(path.join(paths.pcrDir, "revision"))) {
+        throw new Error("Cannot bump current PCR while a revision workspace is open.");
+      }
+      incrementVersion(locked.version, level);
+    },
+    prepareStage({ stageDir }) {
+      const manifestPath = path.join(stageDir, "manifest.yaml");
+      const manifest = parseRecord(readRequiredText(manifestPath, "PCR manifest"));
+      if (has(["published", "deprecated"], manifest.status)) {
+        throw new Error(`Cannot bump ${manifest.status} PCR in place.`);
+      }
+      nextVersion = incrementVersion(manifest.version, level);
+      manifest.version = nextVersion;
+      manifest.updated_at_utc = new Date().toISOString();
+      writeFileSync(manifestPath, renderYaml(manifest));
+    },
+    validateStage({ stageDir }) {
+      const manifest = parseRecord(
+        readRequiredText(path.join(stageDir, "manifest.yaml"), "PCR manifest"),
+      );
+      const managed = inspectManagedState(root, stageDir);
+      const problems = [
+        ...manifestSchemaProblems(manifest, "PCR manifest"),
+        ...manifestLifecycleProblems(manifest),
+        ...managed.problems,
+      ];
+      if (problems.length > 0) {
+        throw operationError("PCR bump staged-state validation failed", root, paths.pcrDir, problems);
+      }
+    },
+  });
+  return [
+    `Updated PCR manifest version at ${toRepoRelative(root, paths.manifestPath)} (new version: ${nextVersion}).`,
+    ...transactionMessages(result, repoRelativePcrPath(paths)),
+  ];
+}
+
+export function lifecycle(options: BuilderOptions): string[] {
+  const status = requireAllowedOption(options, "status", PCR_STATUS_VALUES);
+  const contentMaturity = requireAllowedOption(options, "content-maturity", CONTENT_MATURITY_VALUES);
+  const translation = parseTranslationOption(options.translation);
+  if (!status && !contentMaturity && !translation) {
+    throw new Error("Provide at least one lifecycle change: --status, --content-maturity, or --translation.");
+  }
+
+  const root = rootFromOptions(options);
+  const workspace = workspaceFromOptions(options);
+  const paths = workspacePathsFromOptions(root, options, workspace);
+  const state = inspectManagedState(root, paths.pcrDir);
+  if (state.problems.length > 0) {
+    throw operationError("PCR lifecycle state preflight failed", root, paths.pcrDir, state.problems);
+  }
+  if (workspace === "current" && state.revision) {
+    throw new Error("Cannot change current lifecycle while a revision workspace is open.");
+  }
+
+  const currentManifest = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+  const translationProblems = translationTargetProblems(currentManifest, translation);
+  if (translationProblems.length > 0) {
+    throw operationError("PCR lifecycle translation target rejected", root, paths.pcrDir, translationProblems);
+  }
+  if (workspace === "current" && currentManifest.status === "published") {
+    const exactDeprecation = status === "deprecated" && contentMaturity === "deprecated_methodology" && !translation;
+    if (!exactDeprecation) {
+      throw new Error(
+        "Published current state is immutable; lifecycle may only apply status=deprecated and content_maturity=deprecated_methodology together.",
+      );
+    }
+  }
+  if (workspace === "current" && currentManifest.status === "deprecated") {
+    throw new Error("Deprecated current state is immutable.");
+  }
+  if (workspace === "revision" && status && !["candidate", "active"].includes(status)) {
+    throw new Error("Revision lifecycle status must remain candidate or active until pcr:publish promotes it.");
+  }
+
+  const changed: string[] = [];
+  let now;
+  const result = runPcrDirectoryTransaction({
+    root,
+    pcr: paths.pcrDir,
+    command: `lifecycle:${workspace}`,
+    preflight() {
+      const lockedState = inspectManagedState(root, paths.pcrDir);
+      if (lockedState.problems.length > 0) {
+        throw operationError("PCR lifecycle state preflight failed", root, paths.pcrDir, lockedState.problems);
+      }
+      if (workspace === "current" && lockedState.revision) {
+        throw new Error("Cannot change current lifecycle while a revision workspace is open.");
+      }
+      const locked = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+      if (workspace === "current" && locked.status === "published") {
+        const exactDeprecation = status === "deprecated" && contentMaturity === "deprecated_methodology" && !translation;
+        if (!exactDeprecation) {
+          throw new Error(
+            "Published current state is immutable; lifecycle may only apply status=deprecated and content_maturity=deprecated_methodology together.",
+          );
+        }
+      }
+      if (workspace === "current" && locked.status === "deprecated") {
+        throw new Error("Deprecated current state is immutable.");
+      }
+      if (workspace === "revision" && status && !["candidate", "active"].includes(status)) {
+        throw new Error("Revision lifecycle status must remain candidate or active until pcr:publish promotes it.");
+      }
+      const lockedTranslationProblems = translationTargetProblems(locked, translation);
+      if (lockedTranslationProblems.length > 0) {
+        throw operationError(
+          "PCR lifecycle translation target rejected",
+          root,
+          paths.pcrDir,
+          lockedTranslationProblems,
+        );
+      }
+      const proposed = structuredClone(locked);
+      if (status) proposed.status = status;
+      if (contentMaturity) proposed.content_maturity = contentMaturity;
+      if (translation) {
+        proposed.translation_status = proposed.translation_status && typeof proposed.translation_status === "object"
+          ? proposed.translation_status
+          : {};
+        Reflect.set(Object(proposed.translation_status), translation.language, translation.status);
+      }
+      const problems = lifecycleTransitionProblems(locked, proposed);
+      if (problems.length > 0) {
+        throw operationError("PCR lifecycle update rejected", root, paths.pcrDir, problems);
+      }
+    },
+    prepareStage({ stageDir }) {
+      const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
+      const manifestName = workspace === "current" ? "manifest.yaml" : "manifest.next.yaml";
+      const manifestPath = path.join(workspaceDir, manifestName);
+      const current = parseRecord(readRequiredText(manifestPath, "PCR manifest"));
+      const stagedTranslationProblems = translationTargetProblems(current, translation);
+      if (stagedTranslationProblems.length > 0) {
+        throw operationError(
+          "PCR lifecycle translation target rejected",
+          root,
+          paths.pcrDir,
+          stagedTranslationProblems,
+        );
+      }
+      const next = structuredClone(current);
+      changed.length = 0;
+      if (status) {
+        next.status = status;
+        changed.push(`status: ${status}`);
+      }
+      if (contentMaturity) {
+        next.content_maturity = contentMaturity;
+        changed.push(`content_maturity: ${contentMaturity}`);
+      }
+      if (translation) {
+        next.translation_status = next.translation_status && typeof next.translation_status === "object"
+          ? next.translation_status
+          : {};
+        Reflect.set(Object(next.translation_status), translation.language, translation.status);
+        changed.push(`translation_status.${translation.language}: ${translation.status}`);
+      }
+      now = new Date().toISOString();
+      next.updated_at_utc = now;
+      const problems = lifecycleTransitionProblems(current, next);
+      if (problems.length > 0) {
+        throw operationError("PCR lifecycle update rejected", root, paths.pcrDir, problems);
+      }
+      writeFileSync(manifestPath, renderYaml(next));
+    },
+    validateStage({ stageDir }) {
+      const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
+      const manifestName = workspace === "current" ? "manifest.yaml" : "manifest.next.yaml";
+      const manifestPath = path.join(workspaceDir, manifestName);
+      const manifest = parseRecord(readRequiredText(manifestPath, "PCR manifest"));
+      const schemaProblems = manifestSchemaProblems(manifest, "PCR manifest");
+      if (schemaProblems.length > 0) {
+        throw operationError("PCR lifecycle staged-state validation failed", root, paths.pcrDir, schemaProblems);
+      }
+      if (manifest.status === "active") {
+        const inspection = inspectPcrDirectory({
+          root,
+          pcrDir: workspaceDir,
+          manifestFileName: manifestName,
+        });
+        if (inspection.problems.length > 0) {
+          throw operationError(
+            "PCR lifecycle review preflight failed",
+            root,
+            paths.pcrDir,
+            inspection.problems,
+            ["Resolve every finding and sync structured.yaml before marking the PCR active."],
+          );
+        }
+      }
+      const managed = inspectManagedState(root, stageDir);
+      if (managed.problems.length > 0) {
+        throw operationError("PCR lifecycle managed-state validation failed", root, paths.pcrDir, managed.problems);
+      }
+    },
+  });
+
+  const manifestPath = workspace === "current"
+    ? paths.currentManifestPath
+    : path.join(paths.pcrDir, "revision", "manifest.next.yaml");
+  const publishCommand = workspace === "revision"
+    ? `npm run pcr:publish -- --pcr ${repoRelativePcrPath(paths)} --workspace revision`
+    : `npm run pcr:publish -- --pcr ${repoRelativePcrPath(paths)} --version <semver>`;
+  return [
+    `Updated PCR lifecycle at ${toRepoRelative(root, manifestPath)}.`,
+    "",
+    "Summary:",
+    ...changed.map((entry) => `- ${entry}`),
+    `- updated_at_utc: ${now}`,
+    "",
+    "Next:",
+    "- Run `npm run validate` before committing lifecycle changes.",
+    `- If publication-ready, run \`${publishCommand}\`.`,
+    ...transactionMessages(result, repoRelativePcrPath(paths)),
+  ];
+}
+
+export function revise(options: BuilderOptions): string[] {
+  const root = rootFromOptions(options);
+  const paths = workspacePathsFromOptions(root, options, "current");
+  const targetVersion = String(options.version ?? "");
+  const now = new Date().toISOString();
+  const state = inspectManagedState(root, paths.pcrDir);
+  const problems = [...state.problems];
+  const currentManifest = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+  if (currentManifest.status !== "published") {
+    problems.push(`pcr:revise requires current status published; found ${currentManifest.status}`);
+  }
+  if (!state.history) {
+    problems.push("pcr:revise requires managed release-history.yaml; legacy publication must be adopted explicitly");
+  }
+  if (state.revision || existsSync(path.join(paths.pcrDir, "revision"))) {
+    problems.push("a revision workspace is already open");
+  }
+  if (!isValidSemver(targetVersion)) {
+    problems.push(`--version must be valid semver; received "${targetVersion || "(missing)"}"`);
+  } else if (isValidSemver(currentManifest.version) && compareSemver(targetVersion, currentManifest.version) <= 0) {
+    problems.push(`target version ${targetVersion} must be greater than current ${currentManifest.version}`);
+  }
+  if (recordArray(state.history?.releases).some((entry) => entry.version === targetVersion)) {
+    problems.push(`target version ${targetVersion} already exists in release history`);
+  }
+  if (existsSync(path.join(paths.pcrDir, "releases", targetVersion))) {
+    problems.push(`target release directory already exists for ${targetVersion}`);
+  }
+  if (problems.length > 0) {
+    throw operationError("PCR revision preflight failed", root, paths.pcrDir, problems);
+  }
+
+  const result = runPcrDirectoryTransaction({
+    root,
+    pcr: paths.pcrDir,
+    command: `revise:${targetVersion}`,
+    preflight() {
+      const lockedState = inspectManagedState(root, paths.pcrDir);
+      const lockedProblems = [...lockedState.problems];
+      const lockedManifest = parseRecord(readRequiredText(paths.manifestPath, "PCR manifest"));
+      if (lockedManifest.status !== "published") {
+        lockedProblems.push(`pcr:revise requires current status published; found ${lockedManifest.status}`);
+      }
+      if (!lockedState.history) {
+        lockedProblems.push("pcr:revise requires managed release-history.yaml; legacy publication must be adopted explicitly");
+      }
+      if (lockedState.revision || existsSync(path.join(paths.pcrDir, "revision"))) {
+        lockedProblems.push("a revision workspace is already open");
+      }
+      if (!isValidSemver(targetVersion)) {
+        lockedProblems.push(`--version must be valid semver; received "${targetVersion || "(missing)"}"`);
+      } else if (isValidSemver(lockedManifest.version) && compareSemver(targetVersion, lockedManifest.version) <= 0) {
+        lockedProblems.push(`target version ${targetVersion} must be greater than current ${lockedManifest.version}`);
+      }
+      if (recordArray(lockedState.history?.releases).some((entry) => entry.version === targetVersion)) {
+        lockedProblems.push(`target version ${targetVersion} already exists in release history`);
+      }
+      if (existsSync(path.join(paths.pcrDir, "releases", targetVersion))) {
+        lockedProblems.push(`target release directory already exists for ${targetVersion}`);
+      }
+      if (lockedProblems.length > 0) {
+        throw operationError("PCR revision preflight failed", root, paths.pcrDir, lockedProblems);
+      }
+    },
+    prepareStage({ stageDir }) {
+      const stageState = inspectManagedState(root, stageDir);
+      if (stageState.problems.length > 0 || stageState.revision) {
+        throw operationError(
+          "PCR revision staged-source validation failed",
+          root,
+          paths.pcrDir,
+          [...stageState.problems, ...(stageState.revision ? ["a revision workspace is already open"] : [])],
+        );
+      }
+      const manifest = parseRecord(
+        readRequiredText(path.join(stageDir, "manifest.yaml"), "PCR manifest"),
+      );
+      if (manifest.status !== "published" || manifest.version !== currentManifest.version) {
+        throw new Error("Published current state changed before the revision transaction acquired its lock.");
+      }
+      const revisionDir = path.join(stageDir, "revision");
+      mkdirSync(revisionDir);
+      const nextManifest = structuredClone(manifest);
+      nextManifest.version = targetVersion;
+      nextManifest.status = "candidate";
+      nextManifest.content_maturity = "authored_methodology";
+      // The canonical source is being revised: every dependent translation that
+      // this revision carries must be aligned and reviewed again.
+      nextManifest.translation_status = outOfSyncTranslationStatus(manifest);
+      nextManifest.updated_at_utc = now;
+      delete nextManifest.published_at_utc;
+      delete nextManifest.release_artifacts;
+
+      const canonicalLanguage = unknownField(unknownField(manifest, "languages"), "canonical");
+      const englishText = updateMarkdownFrontmatter(
+        readRequiredText(path.join(stageDir, PCR_EN_FILE), "canonical Markdown file"),
+        {
+          status: "candidate",
+          content_maturity: "authored_methodology",
+          translation_status: "canonical",
+        },
+      );
+      const optionalLanguageEntries = [];
+      for (const language of declaredPcrLanguages(manifest)) {
+        if (language === canonicalLanguage) {
+          continue;
+        }
+        const fileName = `pcr.${language}.md`;
+        const filePath = path.join(stageDir, fileName);
+        if (language === "zh-CN") {
+          continue;
+        }
+        if (!existsSync(filePath)) {
+          continue;
+        }
+        optionalLanguageEntries.push({
+          fileName,
+          text: updateMarkdownFrontmatter(
+            readRequiredText(filePath, `${language} Markdown file`),
+            {
+              status: "candidate",
+              content_maturity: "authored_methodology",
+              translation_status: "out_of_sync",
+            },
+          ),
+        });
+      }
+      const chineseText = updateMarkdownFrontmatter(
+        readRequiredText(path.join(stageDir, PCR_ZH_FILE), "translated Markdown file"),
+        {
+          status: "candidate",
+          content_maturity: "authored_methodology",
+          translation_status: "out_of_sync",
+        },
+      );
+      const projection = parsePcrMarkdownToStructured(englishText);
+      writeFileSync(path.join(revisionDir, "manifest.next.yaml"), renderYaml(nextManifest));
+      writeFileSync(path.join(revisionDir, PCR_EN_FILE), englishText);
+      writeFileSync(path.join(revisionDir, PCR_ZH_FILE), chineseText);
+      for (const entry of optionalLanguageEntries) {
+        writeFileSync(path.join(revisionDir, entry.fileName), entry.text);
+      }
+      writeFileSync(
+        path.join(revisionDir, "structured.yaml"),
+        structuredProjectionYaml(projection, { sourceMarkdown: englishText }),
+      );
+      writeFileSync(
+        path.join(revisionDir, "revision.yaml"),
+        renderYaml({
+          schema_version: 1,
+          pcr_id: manifest.id,
+          base_version: manifest.version,
+          target_version: targetVersion,
+          opened_at_utc: now,
+        }),
+      );
+    },
+    validateStage({ stageDir }) {
+      const stagedProblems = completeInspectionProblems(root, stageDir);
+      if (stagedProblems.length > 0) {
+        throw operationError("PCR revision staged-state validation failed", root, paths.pcrDir, stagedProblems);
+      }
+    },
+    postValidate({ pcrDir }) {
+      const installedProblems = completeInspectionProblems(root, pcrDir);
+      if (installedProblems.length > 0) {
+        throw operationError("PCR revision installed-state validation failed", root, paths.pcrDir, installedProblems);
+      }
+    },
+  });
+
+  return [
+    `Opened PCR revision ${currentManifest.version} -> ${targetVersion} at ${toRepoRelative(root, path.join(paths.pcrDir, "revision"))}.`,
+    "",
+    "Next:",
+    `- Edit revision files, then run \`npm run pcr:sync-structured -- --pcr ${repoRelativePcrPath(paths)} --workspace revision\`.`,
+    `- Review with \`npm run pcr:lifecycle -- --pcr ${repoRelativePcrPath(paths)} --workspace revision --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed\`.`,
+    ...transactionMessages(result, repoRelativePcrPath(paths)),
+  ];
+}
+
+export function publish(options: BuilderOptions): string[] {
+  const root = rootFromOptions(options);
+  const workspace = workspaceFromOptions(options);
+  const paths = workspacePathsFromOptions(root, options, workspace);
+  const now = new Date().toISOString();
+  const state = inspectManagedState(root, paths.pcrDir);
+  if (state.problems.length > 0) {
+    throw publicationPreflightError(root, paths.pcrDir, state.problems);
+  }
+
+  let version;
+  let history: UnknownRecord | null = null;
+  let predecessorVersion = null;
+  const sourceWorkspace = paths.workspaceDir;
+  if (workspace === "current") {
+    if (options.version === undefined) {
+      throw publicationPreflightError(root, paths.pcrDir, [
+        "first publication requires an explicit --version <semver>; manifest.version is not used implicitly",
+      ]);
+    }
+    if (state.history || state.revision || existsSync(path.join(paths.pcrDir, "releases"))) {
+      throw publicationPreflightError(root, paths.pcrDir, [
+        "current publication is only for the first managed release; use --workspace revision for later versions",
+      ]);
+    }
+    version = String(options.version ?? "");
+  } else {
+    if (options.version !== undefined) {
+      throw publicationPreflightError(root, paths.pcrDir, [
+        "revision publication uses the target version locked in revision.yaml; omit --version",
+      ]);
+    }
+    if (!state.history || !state.revision) {
+      throw publicationPreflightError(root, paths.pcrDir, ["no managed revision workspace is open"]);
+    }
+    version = String(state.revision.revision.target_version);
+    predecessorVersion = String(state.history.current_version);
+    history = state.history;
+  }
+
+  const initialPlan = publicationPlan({
+    workspaceDir: sourceWorkspace,
+    manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
+    version,
+    now,
+    root,
+  });
+  assertPublicationPlan(root, paths.pcrDir, initialPlan);
+  const sourceMarkdown = readRequiredText(
+    path.join(sourceWorkspace, PCR_EN_FILE),
+    "canonical Markdown file",
+  );
+  const sourceInspection = inspectPcrDirectory({
+    root,
+    pcrDir: sourceWorkspace,
+    manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
+    structuredText: structuredProjectionYaml(
+      parsePcrMarkdownToStructured(sourceMarkdown),
+      { sourceMarkdown },
+    ),
+    checkBilingualRuleAlignment: true,
+  });
+  if (sourceInspection.problems.length > 0) {
+    throw publicationPreflightError(root, paths.pcrDir, sourceInspection.problems);
+  }
+
+  let publishedPlan;
+  const result = runPcrDirectoryTransaction({
+    root,
+    pcr: paths.pcrDir,
+    command: `publish:${workspace}:${version}`,
+    preflight() {
+      const lockedState = inspectManagedState(root, paths.pcrDir);
+      if (lockedState.problems.length > 0) {
+        throw publicationPreflightError(root, paths.pcrDir, lockedState.problems);
+      }
+      if (
+        workspace === "current" &&
+        (lockedState.history || lockedState.revision || existsSync(path.join(paths.pcrDir, "releases")))
+      ) {
+        throw publicationPreflightError(root, paths.pcrDir, [
+          "current publication is only for the first managed release; use --workspace revision for later versions",
+        ]);
+      }
+      if (workspace === "revision") {
+        if (!lockedState.history || !lockedState.revision) {
+          throw publicationPreflightError(root, paths.pcrDir, ["no managed revision workspace is open"]);
+        }
+        if (
+          lockedState.history.current_version !== predecessorVersion ||
+          lockedState.revision.revision.target_version !== version
+        ) {
+          throw publicationPreflightError(root, paths.pcrDir, [
+            "revision lineage changed before publication acquired its lock",
+          ]);
+        }
+      }
+      const lockedWorkspace = workspace === "current"
+        ? paths.pcrDir
+        : revisionWorkspaceAt(paths.pcrDir);
+      const lockedPlan = publicationPlan({
+        workspaceDir: lockedWorkspace,
+        manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
+        version,
+        now,
+        root,
+      });
+      assertPublicationPlan(root, paths.pcrDir, lockedPlan);
+      const lockedMarkdown = readRequiredText(
+        path.join(lockedWorkspace, PCR_EN_FILE),
+        "canonical Markdown file",
+      );
+      const lockedInspection = inspectPcrDirectory({
+        root,
+        pcrDir: lockedWorkspace,
+        manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
+        structuredText: structuredProjectionYaml(
+          parsePcrMarkdownToStructured(lockedMarkdown),
+          { sourceMarkdown: lockedMarkdown },
+        ),
+        checkBilingualRuleAlignment: true,
+      });
+      if (lockedInspection.problems.length > 0) {
+        throw publicationPreflightError(root, paths.pcrDir, lockedInspection.problems);
+      }
+    },
+    prepareStage({ stageDir }) {
+      const stageState = inspectManagedState(root, stageDir);
+      if (stageState.problems.length > 0) {
+        throw publicationPreflightError(root, paths.pcrDir, stageState.problems);
+      }
+      const stageWorkspace = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
+      if (workspace === "current" && (stageState.history || stageState.revision)) {
+        throw publicationPreflightError(root, paths.pcrDir, ["managed release state appeared before first publication"]);
+      }
+      if (workspace === "revision") {
+        if (!stageState.history || !stageState.revision) {
+          throw publicationPreflightError(root, paths.pcrDir, ["revision state disappeared before publication"]);
+        }
+        if (
+          stageState.history.current_version !== predecessorVersion ||
+          stageState.revision.revision.target_version !== version
+        ) {
+          throw publicationPreflightError(root, paths.pcrDir, ["revision lineage changed before publication"]);
+        }
+        history = stageState.history;
+      }
+      publishedPlan = publicationPlan({
+        workspaceDir: stageWorkspace,
+        manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
+        version,
+        now,
+        root,
+      });
+      assertPublicationPlan(root, paths.pcrDir, publishedPlan);
+      writePublishedRelease({
+        stageDir,
+        sourceWorkspaceDir: stageWorkspace,
+        plan: publishedPlan,
+        predecessorVersion,
+        history,
+      });
+    },
+    validateStage({ stageDir }) {
+      const problems = completeInspectionProblems(root, stageDir);
+      if (problems.length > 0) {
+        throw publicationPreflightError(root, paths.pcrDir, problems);
+      }
+    },
+    postValidate({ pcrDir }) {
+      const problems = completeInspectionProblems(root, pcrDir);
+      if (problems.length > 0) {
+        throw publicationPreflightError(root, paths.pcrDir, problems);
+      }
+    },
+  });
+
+  return [
+    `Published PCR manifest at ${toRepoRelative(root, path.join(paths.pcrDir, "manifest.yaml"))} (version ${version}).`,
+    `Archived immutable release at ${toRepoRelative(root, path.join(paths.pcrDir, "releases", version))}.`,
+    ...transactionMessages(result, repoRelativePcrPath(paths)),
+  ];
+}
+
+export function recover(options: BuilderOptions): string[] {
+  const root = rootFromOptions(options);
+  const pcr = options.pcr ? String(options.pcr).trim() : "";
+  if (!pcr) {
+    throw new Error("Missing required --pcr <library/pcrs/...> option.");
+  }
+  const result = recoverPcrDirectoryTransaction({
+    root,
+    pcr,
+    command: "pcr:recover",
+    force: options["force-stale-lock"] === true,
+    validateRecovered({ pcrDir }) {
+      const problems = completeInspectionProblems(root, pcrDir);
+      if (problems.length > 0) {
+        throw operationError(
+          "PCR recovered-tree validation failed",
+          root,
+          pcrDir,
+          problems,
+          ["Recovery state was preserved; resolve the validation findings before retrying pcr:recover."],
+        );
+      }
+    },
+  });
+  return [
+    `PCR transaction recovery result: ${result.action}.`,
+    ...(result.phase ? [`Recovered recorded phase: ${result.phase}.`] : []),
+    ...(result.forced ? ["Recovery used explicit stale-state force."] : []),
+    "",
+    "Next:",
+    "- Run `npm run validate` before continuing PCR mutation work.",
+  ];
+}
+
+function parseRecord(text: string): UnknownRecord { const value = parseYaml(text); if (!isUnknownRecord(value)) throw new TypeError('Expected a YAML object map.'); return value; }
+function stringField(value: unknown, key: string): string { const field = unknownField(value, key); if (typeof field !== 'string') throw new TypeError(`Expected string field ${key}.`); return field; }
+function has(values: readonly string[], value: unknown): boolean { return typeof value === 'string' && values.includes(value); }
+function recordArray(value: unknown): UnknownRecord[] { return Array.isArray(value) ? value.filter(isUnknownRecord) : []; }
+function declaredValues(value: unknown): readonly unknown[] { const available = unknownField(unknownField(value, 'languages'), 'available'); return Array.isArray(available) ? available : []; }
+function requiredPublished(files: ReadonlyMap<string, {bytes: Buffer; text: string}>, language: string): {bytes: Buffer; text: string} { const file = files.get(language); if (!file) throw new TypeError(`Missing published language ${language}.`); return file; }
+
+function requiredLanguageText(file: {text?: string} | undefined): string { if (file?.text === undefined) throw new TypeError('Missing language text after publication preflight.'); return file.text; }

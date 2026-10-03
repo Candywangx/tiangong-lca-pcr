@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { lstatSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
-import { compareSemver } from "../lib/lifecycle-policy.mjs";
+import { compareSemver } from "../lib/lifecycle-policy.ts";
 
 export const PRODUCT_VERSION_FILE = "product-release.json";
 export const PRODUCT_MIRRORS = [

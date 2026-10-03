@@ -20,8 +20,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
+lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -207,6 +207,33 @@ The typed Markdown parser, serializer, projection integrity, source-context comp
 
 ## Consumer runtime cutover
 
-The consumer core, SQLite reader, CLI and offline-library builder use strict TypeScript. The runtime compiler now includes only TypeScript sources and no longer enables the legacy `allowJs` transport bridge. Generated npm bins are `.js`; consumers run them without a compiler or Node type stripping. Remaining Builder/Harness/site/release JavaScript stays in the shrinking migration inventory for subsequent phases.
+The consumer core, SQLite reader, CLI and offline-library builder use strict TypeScript. The runtime compiler now includes only TypeScript sources and no longer enables the legacy `allowJs` transport bridge. Generated npm bins are `.js`; consumers run them without a compiler or Node type stripping. Remaining site/release JavaScript stays in the shrinking migration inventory for subsequent phases.
 
 Read sessions own their source scope and handles. Repository sessions bind selected current-artifact bytes and recheck before returning; SQLite sessions retain one readonly transaction. Bounded caches belong to one synchronous callback and cannot escape as reusable validation receipts. Session tests cover source isolation, mutated inputs, eviction, closure, and ordered all-or-error batches.
+
+
+## Builder and Goal runtime cutover
+
+Builder and Goal implementations, command entrypoints, fixtures and tests now use
+strict TypeScript. `tsconfig.builder.json` covers the complete Builder graph and
+the retained synthetic recovery replay. Package commands invoke `.ts` source;
+Node type stripping does not replace the mandatory compiler gate. The generated
+controlled vocabulary is `.ts`, checked against the same authored YAML and JSON
+schema. Stable serialized generator identities remain unchanged even where the
+physical command filename changed.
+
+Persisted Goal records keep their original hashes, optional fields and legal null
+absence markers. In particular, cleared failure/model metadata and failed review
+nodes must remain readable without turning a content or measurement failure into
+a generic error. A null review node never certifies a passed check. Historical
+unavailable telemetry remains unavailable; it is not converted to zero. Trial
+control fingerprints follow the executing TypeScript/emitted format, so changed
+runtime bytes require normal protocol-drift review before further dispatch.
+
+Whole Harness qualification remains Linux because evidence sealing requires
+its descriptor-anchored filesystem operations. Portable Git planning, report
+assembly, CLI and recovery subsets also run on supported developer hosts; ADR
+allocation uses Node filesystem enumeration instead of GNU-specific `find`.
+The synthetic recovery replay compares a fixed archived pre-recovery runtime to
+the current runtime without production tasks or network evidence, writing a new
+owned report rather than replacing the retained historical receipt.

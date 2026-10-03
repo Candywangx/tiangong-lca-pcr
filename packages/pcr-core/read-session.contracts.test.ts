@@ -8,6 +8,7 @@ import { OfflineLibrary } from './src/offline-library.ts';
 import { parseYaml, renderYaml } from './src/yaml-lite.ts';
 import { isUnknownRecord } from './src/types.ts';
 import { validateGuidance } from './src/contracts.ts';
+import { createAuthoringPcr } from '../../builder/lib/pcr-authoring-fixture.ts';
 import { parsePcrMarkdownToStructured } from '../../builder/lib/markdown-projection.ts';
 import { structuredProjectionYaml } from '../../builder/lib/structured-yaml-projection.ts';
 
@@ -193,13 +194,8 @@ test('same-root nested library A/B and repository sessions retain explicit sourc
 
 test('LRU eviction retains exact record bindings and rejects a changed evicted manifest on reload', async t => {
   const root = temporary(t);
-  // Narrow, test-only phase-D interop: the existing Builder fixture writes one
-  // small valid source. All session operations themselves use typed production APIs.
-  const fixtureModule: unknown = await import(new URL('../../builder/lib/pcr-authoring-fixture.mjs', import.meta.url).href);
-  assert.ok(isUnknownRecord(fixtureModule)); const create = fixtureModule.createAuthoringPcr; assert.equal(typeof create, 'function');
-  const result: unknown = Reflect.apply(create as (...args: unknown[]) => unknown, undefined, [root]);
-  assert.ok(isUnknownRecord(result)); assert.equal(typeof result.libraryPath, 'string');
-  const templatePath = String(result.libraryPath), templateId = 'pcr.agriculture.crops.wheat-seed';
+  const result = createAuthoringPcr(root);
+  const templatePath = result.libraryPath, templateId = 'pcr.agriculture.crops.wheat-seed';
   const templateManifest = readFileSync(path.join(root, templatePath, 'manifest.yaml'), 'utf8');
   const english = readFileSync(path.join(root, templatePath, 'pcr.en-US.md'), 'utf8');
   const chinese = readFileSync(path.join(root, templatePath, 'pcr.zh-CN.md'), 'utf8');

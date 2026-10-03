@@ -89,7 +89,7 @@ test('explicit repository selection shadows a same-root library and restores eve
 test('typed vocabulary arrays exactly match both generated schema and generated data and remain frozen', async () => {
   const schema: unknown = JSON.parse(readFileSync(new URL('./schemas/controlled-vocabulary.schema.json', import.meta.url), 'utf8'));
   const definitions = unknownField(schema, '$defs'); assert.ok(isUnknownRecord(definitions));
-  const generated: unknown = await import(new URL('./src/generated/controlled-vocabulary.mjs', import.meta.url).href);
+  const generated: unknown = await import(new URL('./src/generated/controlled-vocabulary.ts', import.meta.url).href);
   assert.deepEqual(CONTROLLED_VOCABULARY, unknownField(generated, 'CONTROLLED_VOCABULARY'));
   assert.deepEqual(Object.keys(CONTROLLED_VOCABULARY), Object.keys(definitions));
   assert.ok(Object.isFrozen(CONTROLLED_VOCABULARY));

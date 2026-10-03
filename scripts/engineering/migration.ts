@@ -13,7 +13,7 @@ const legacyPattern = /\.(?:[cm]?js|jsx)$/iu;
 const tsPattern = /\.(?:[cm]?ts|tsx)$/iu;
 const pythonPath = 'scripts/vendor/workspace-seo/check.py';
 const generatedDefinitions = [
-  { path: 'packages/pcr-core/src/generated/controlled-vocabulary.mjs', kind: 'controlled-vocabulary', generator: 'builder/scripts/generate-controlled-vocabulary.mjs', source: 'builder/vocab', optional: false },
+  { path: 'packages/pcr-core/src/generated/controlled-vocabulary.ts', kind: 'controlled-vocabulary', generator: 'builder/scripts/generate-controlled-vocabulary.ts', source: 'builder/vocab', optional: false },
   { path: 'packages/pcr-docs/public/generated/search-worker.mjs', kind: 'copy', generator: 'packages/pcr-docs/scripts/generate.mjs', source: 'packages/pcr-docs/lib/search-worker.mjs', optional: true },
 ] as const;
 

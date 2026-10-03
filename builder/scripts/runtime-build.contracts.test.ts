@@ -31,8 +31,8 @@ test("the sealed provider importer still loads without installed package depende
   for (const relative of [
     "builder/scripts/product-web-materialize.mjs", "builder/scripts/product-release.mjs",
     "builder/scripts/product-identity.mjs", "builder/scripts/product-web.mjs", "builder/scripts/npm-release.mjs",
-    "builder/lib/lifecycle-policy.mjs", "builder/lib/lifecycle-vocab.mjs",
-    "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/generated/controlled-vocabulary.mjs",
+    "builder/lib/lifecycle-policy.ts", "builder/lib/lifecycle-vocab.ts",
+    "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/vocabulary.ts", "packages/pcr-core/schemas/controlled-vocabulary.schema.json",
     "packages/pcr-docs/scripts/build-storage.mjs",
   ]) {
     mkdirSync(path.dirname(path.join(temp, relative)), { recursive: true });

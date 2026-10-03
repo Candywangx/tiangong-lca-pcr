@@ -204,7 +204,7 @@ Create workflows may use common sense to initialize candidate processes and like
 The direct CLI entry point is:
 
 ```bash
-node builder/cli/index.mjs <command>
+node builder/cli/index.ts <command>
 ```
 
 
@@ -215,7 +215,7 @@ vocabulary, alias, catalog, CPC-chain and library checks. Its final library scan
 uses explicit report mode:
 
 ```bash
-node builder/cli/index.mjs lint --report .reports/pcr-lint.json
+node builder/cli/index.ts lint --report .reports/pcr-lint.json
 ```
 
 The terminal shows exact error/warning totals and at most 20 abbreviated samples.
@@ -234,7 +234,7 @@ Treat a previous report as historical until the current command prints its new
 successful report location; an earlier vocabulary/catalog failure can stop the
 pipeline before the library report is generated.
 
-Direct `node builder/cli/index.mjs lint` keeps its existing complete human output;
+Direct `node builder/cli/index.ts lint` keeps its existing complete human output;
 `pcr:check --format json` keeps its separate single-PCR validation contract.
 No validation result is cached and no publishing/recovery command is invoked.
 
