@@ -166,7 +166,7 @@ export function filesystemFacts(target, { mounts = mountEntries() } = {}) {
   };
 }
 
-function isMemoryBacked(facts) {
+export function isMemoryBacked(facts) {
   if (facts.fileSystemType && MEMORY_FILESYSTEMS.has(String(facts.fileSystemType).toLowerCase()))
     return true;
   const resolved = facts.path.endsWith("/") ? facts.path : facts.path + "/";

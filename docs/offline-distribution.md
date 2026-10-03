@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
+lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -36,7 +36,9 @@ related:
 runtime dependencies and the thin consumer Skill. `@tiangong-lca/pcr-library` contains
 `library.sqlite`, its adjacent `library.sqlite.json` manifest and notices. Each
 package includes its own consumer README and the repository MIT `LICENSE`. The tool
-has no dependency on the data package. From product release 0.3.0 onward, both use the same product SemVer as the website. The packages remain separate installation units.
+has no dependency on the data package. Completed unified product releases give
+both packages the same product SemVer as the website. They remain separate
+installation units.
 The source package directories are development inputs; publish only generated packages.
 
 Starting with 0.1.2, npm distribution uses the `@tiangong-lca` organization scope.
@@ -71,8 +73,8 @@ output must not be published as the complete product. Run them from a validated
 source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.3.0
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.3.0
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.3.1
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.3.1
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -91,7 +93,7 @@ Transfer both verified product tarballs and a suitable Node runtime to the offli
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.0.tgz ./tiangong-lca-pcr-library-0.3.0.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -299,6 +301,22 @@ It first checks registry visibility; matching existing bytes are reused and
 uncertain responses remain blocked. An accepted upload awaiting processing is
 not eligible. Keep prior receipts; never delete them to force a publish.
 
+### Memory-backed provider import and patch recovery
+
+The importer obtains the origin filesystem facts directly and passes that snapshot
+into the shared scratch selector. Memory-backed and explicitly forced relocation
+must not rely on an optional field of a relocation-decision object. A real
+memory-backed origin always receives the provider hardlink handoff, including
+when relocation is explicitly forced; ordinary disk checkouts require the explicit
+provider-assets flag for that handoff. Source identity, streamed archive integrity,
+capacity, final deadline, atomic rollback and owned cleanup remain mandatory.
+
+The initial `v0.3.0` attempt exposed a missing filesystem constraint on the provider's
+memory-backed clone. Its two npm candidate packages and sealed assets remain
+unchanged and the release remains incomplete. The reviewed repair uses product
+`0.3.1`; the examples below target that patch. Never repair this by moving the old
+tag, replacing sealed assets, or overriding source guards in the provider console.
+
 ### Build and operator commands
 
 Use the pinned Node/npm versions from `product-release.json`. On a clean reviewed
@@ -308,7 +326,7 @@ checkout, prepare artifacts without any remote publication:
 npm ci --ignore-scripts --no-audit --no-fund
 npm --prefix packages/pcr-docs ci
 npm run docs:build
-npm run product:build -- v0.3.0 dist/product-release packages/pcr-docs/out
+npm run product:build -- v0.3.1 dist/product-release packages/pcr-docs/out
 npm run product:verify -- dist/product-release
 ```
 
@@ -323,13 +341,13 @@ After activation, create/resume the first product tag from the exact current mai
 version through the guarded workflow:
 
 ```sh
-gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.3.0
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.3.1
 ```
 
 Retry an existing unified release without moving its tag:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.3.0 -f tag_name=v0.3.0
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.3.1 -f tag_name=v0.3.1
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
