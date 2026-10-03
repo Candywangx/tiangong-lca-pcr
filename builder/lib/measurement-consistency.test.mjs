@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
+import { withCurrentMeasurementFixture } from "./measurement-fixture.ts";
 import { inspectPcrDirectory } from "./lint-rules.mjs";
 import { checkMeasurementConsistency } from "./measurement-consistency.mjs";
 import { parsePcrMarkdownToStructured } from "./markdown-projection.ts";
@@ -21,7 +22,7 @@ test("44125 fixture retains exact source bytes and commit provenance", () => {
 });
 
 test("44125 default inspection reports the 1 kg versus per-baler mismatch without failing legacy lint", () => {
-  const result = inspectPcrDirectory({ root, pcrDir: fixture });
+  const result = withCurrentMeasurementFixture(fixture, (current) => inspectPcrDirectory({ root: current, pcrDir: current }));
   assert.deepEqual(result.problems, []);
   assert.equal(result.measurement?.status, "error");
   assert.ok(result.measurement.findings.some((finding) => finding.code === "MEASUREMENT_CONVERSION_MISSING" && finding.row_id === "steel_plate"));
