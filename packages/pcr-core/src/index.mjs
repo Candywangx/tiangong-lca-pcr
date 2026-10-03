@@ -37,7 +37,7 @@ import {
   pcrReadContextAliasInputFingerprint,
   withPcrReadContextSession,
 } from "./read-context.mjs";
-import { parseYaml } from "./yaml-lite.mjs";
+import { parseYaml } from "./yaml-lite.ts";
 import {
   declaredPcrLanguages,
   expectedPcrArtifactHashes,

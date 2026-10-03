@@ -20,8 +20,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
-lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
+lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -61,7 +61,7 @@ rather than inferring it from a runner label. This does not restrict public web
 browsers by CPU.
 
 The root strict TypeScript project initially covers `scripts/engineering/**`.
-Its scope expands with each reviewed migration. The existing site keeps its own
+Its scope expands with each reviewed migration. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The existing site keeps its own
 Next TypeScript project during the transition; `typecheck:all` checks both.
 Do not use `allowJs`, broad explicit `any`, `@ts-ignore` or `@ts-nocheck` to declare
 an implementation migrated. Unknown external data must be validated and narrowed.
@@ -160,3 +160,45 @@ history. Existing receipt, lock and recovery state compatibility is explicit in
 each affected phase. The final unified product release builds once and publishes
 the same verified artifacts through the existing npm/EdgeOne workflow; no product
 version is bumped merely to establish this foundation.
+
+## Compiled runtime transition
+
+The first runtime migration replaces the core YAML parser, vocabulary registry
+and offline-tool builder with TypeScript. `tsconfig.runtime.json` emits both those
+strictly checked TS modules and the remaining inventoried legacy JS into an owned
+package stage. Its temporary `allowJs: true` / `checkJs: false` is a **transport
+bridge for declared legacy source**, not evidence that those files were migrated.
+The separate strict core project checks all migrated implementation and tests.
+Final refactor completion still requires zero authored legacy entries and removal
+of this bridge.
+
+Relative TS imports in legacy callers are rewritten to emitted JavaScript; the
+public tool has executable bins, original schemas/Skill/licenses, runtime-only
+locked dependencies and deterministic inline source maps rooted at `pcr://source/`.
+No caller needs TypeScript in `node_modules`, and installed tests explicitly disable
+Node's type stripping. Compiler/staging failure removes only owned staging files.
+The Git-connected provider importer retains its dependency-free module graph;
+a clean dependency-absent import probe verifies that boundary.
+
+## YAML boundary
+
+`packages/pcr-core/src/yaml-lite.ts` retains the API names but uses pinned `yaml`
+2.9.1 to read one complete YAML 1.2 document into JSON-compatible data, with one explicit PCR compatibility rule: untagged leading-zero scalar spellings remain identifier strings; explicit numeric tags opt into numeric conversion. Folded
+plain continuations, quoted escapes/newlines, block scalars and collections are
+preserved. Duplicate keys, unresolved/unsupported tags, multiple documents,
+complex keys and nonfinite values fail with positioned diagnostics; no partial
+mapping is returned. UTF-8 file decoding is strict. Empty documents retain the
+legacy empty-object result; explicit null remains null.
+
+Acyclic aliases become independent JSON value copies. Cycles, more than 100
+expanded alias visits and collection nesting beyond 100 are rejected at a source
+position. These are parser expansion guards, not aggregate build-size budgets.
+Existing anchored manifests require no source rewrite. Prototype-related keys
+are data properties and cannot change an object's prototype.
+
+The renderer preserves existing deterministic formatting for ordinary data,
+including legacy undefined-to-null encoding. Nested empty collections and unusual
+keys roundtrip correctly. Functions, exotic objects, accessors, symbols, sparse
+arrays, cycles and nonfinite output values fail instead of silently losing data.
+The vocabulary registry retains its richer filename/key-path duplicate report
+and aggregates parser failures; valid registry data remains deeply frozen.

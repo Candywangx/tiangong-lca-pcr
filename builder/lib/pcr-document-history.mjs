@@ -33,7 +33,7 @@ import {
   declaredPcrLanguages,
   pcrMarkdownFile,
 } from "../../packages/pcr-core/src/languages.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { byteSha256 } from "./artifact-hashes.mjs";
 import { inspectPublishedRevisionState } from "./published-revision-state.mjs";
 

@@ -27,7 +27,7 @@ import { REQUIRED_DIRS } from "./builder-constants.mjs";
 import { findCoverageSourceDescriptor } from "./classification-coverage-sources.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE, enPcrBody, zhPcrBody } from "./scaffold-templates.mjs";
 import { assertClassificationMapping } from "./schema-contracts.mjs";
-import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.resolve(__dirname, "../..");

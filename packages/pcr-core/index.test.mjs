@@ -36,7 +36,7 @@ import {
 } from "./src/index.mjs";
 import { findPcrIdAlias, readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
 import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.mjs";
-import { parseYaml, renderYaml } from "./src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "./src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");
 const wheatSeedPcrId =

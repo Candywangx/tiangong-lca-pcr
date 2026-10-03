@@ -24,7 +24,7 @@ import {
   validateValidationReport,
 } from "./src/contracts.mjs";
 import { createSchemaRegistry } from "./src/schema-validation.mjs";
-import { parseYaml } from "./src/yaml-lite.mjs";
+import { parseYaml } from "./src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");
 const wheatSeedPcrId =

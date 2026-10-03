@@ -1,10 +1,43 @@
 import assert from "node:assert/strict";
-import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import test from "node:test";
+import test, { type TestContext } from "node:test";
 
-import { inspectPcrDirectory } from "./lint-rules.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
+import type { YamlObject, YamlValue } from "../../packages/pcr-core/src/yaml-lite.ts";
+
+// Legacy implementation stays an unknown boundary until its separate migration.
+const lintModule: unknown = await import(new URL("./lint-rules.mjs", import.meta.url).href);
+interface Inspection { problems: string[]; warnings: string[]; }
+function object(value: unknown): Record<string, unknown> {
+  assert.ok(value !== null && typeof value === "object" && !Array.isArray(value));
+  return value as Record<string, unknown>;
+}
+function strings(value: unknown): string[] {
+  assert.ok(Array.isArray(value) && value.every((entry: unknown) => typeof entry === "string"));
+  return value as string[];
+}
+function callable(value: unknown): value is (options: { root: string; pcrDir: string }) => unknown {
+  return typeof value === "function";
+}
+function inspectPcrDirectory(options: { root: string; pcrDir: string }): Inspection {
+  const inspect = object(lintModule)["inspectPcrDirectory"];
+  assert.ok(callable(inspect));
+  const result = object(inspect(options));
+  return { problems: strings(result["problems"]), warnings: strings(result["warnings"]) };
+}
+function yamlObject(value: YamlValue | undefined): YamlObject {
+  assert.ok(value !== null && value !== undefined && typeof value === "object" && !Array.isArray(value));
+  return value;
+}
+function editManifest(filename: string, edit: (manifest: YamlObject) => void): void {
+  const manifest = yamlObject(parseYaml(readFileSync(filename, "utf8")));
+  edit(manifest);
+  const rendered = renderYaml(manifest);
+  assert.deepEqual(parseYaml(rendered), manifest, "fixture edits must produce complete valid YAML");
+  writeFileSync(filename, rendered);
+}
 
 const repoRoot = path.resolve(".");
 const sourcePcr = path.join(
@@ -14,8 +47,8 @@ const sourcePcr = path.join(
   "octopus-frozen-smoked-dried-salted-or-in-brine",
 );
 
-function inspectWithFirstSelectedFlow(t, selectedFlow, { enforce = true } = {}) {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-atomic-flow-"));
+function inspectWithFirstSelectedFlow(t: TestContext, selectedFlow: string, { enforce = true }: { enforce?: boolean } = {}): Inspection {
+  const root = realpathSync(mkdtempSync(path.join(tmpdir(), "tiangong-pcr-atomic-flow-")));
   t.after(() => rmSync(root, { recursive: true, force: true }));
 
   const pcrDir = path.join(root, "library/pcrs/food/seafood/example");
@@ -29,17 +62,17 @@ function inspectWithFirstSelectedFlow(t, selectedFlow, { enforce = true } = {}) 
   writeFileSync(markdownPath, markdown);
 
   const manifestPath = path.join(pcrDir, "manifest.yaml");
-  let manifest = readFileSync(manifestPath, "utf8").replace(
-    /  inventory_contract:\n    atomic_flows: v1\n/u,
-    "",
-  );
-  if (enforce) {
-    manifest = manifest.replace(
-      "review_metadata:\n",
-      "review_metadata:\n  inventory_contract:\n    atomic_flows: v1\n",
-    );
-  }
-  writeFileSync(manifestPath, manifest);
+  editManifest(manifestPath, (manifest) => {
+    const review = yamlObject(manifest.review_metadata);
+    if (enforce) {
+      const contract = yamlObject(review.inventory_contract);
+      contract.atomic_flows = "v1";
+    } else {
+      // Remove the complete contract, including localization fields. Deleting a
+      // text prefix left an orphaned child and stopped the intended lint gate.
+      delete review.inventory_contract;
+    }
+  });
 
   return inspectPcrDirectory({ root, pcrDir });
 }
@@ -66,7 +99,7 @@ test("legacy material PCR reports collection flows as migration warnings without
 });
 
 test("atomic-flow PCR rejects a Chinese inventory row that does not match canonical English", (t) => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-atomic-bilingual-"));
+  const root = realpathSync(mkdtempSync(path.join(tmpdir(), "tiangong-pcr-atomic-bilingual-")));
   t.after(() => rmSync(root, { recursive: true, force: true }));
 
   const pcrDir = path.join(root, "library/pcrs/food/seafood/example");
@@ -90,7 +123,7 @@ test("atomic-flow PCR rejects a Chinese inventory row that does not match canoni
 });
 
 test("atomic-flow PCR rejects an untranslated English selected-flow display in Chinese", (t) => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-flow-localization-"));
+  const root = realpathSync(mkdtempSync(path.join(tmpdir(), "tiangong-pcr-flow-localization-")));
   t.after(() => rmSync(root, { recursive: true, force: true }));
 
   const pcrDir = path.join(root, "library/pcrs/food/seafood/example");
@@ -98,13 +131,12 @@ test("atomic-flow PCR rejects an untranslated English selected-flow display in C
   const englishPath = path.join(pcrDir, "pcr.en-US.md");
   const chinesePath = path.join(pcrDir, "pcr.zh-CN.md");
   const manifestPath = path.join(pcrDir, "manifest.yaml");
-  writeFileSync(
-    manifestPath,
-    readFileSync(manifestPath, "utf8").replace(
-      "  inventory_contract:\n    atomic_flows: v1\n",
-      "  inventory_contract:\n    atomic_flows: v1\n    localized_flow_names: tiangong_zh_v1\n",
-    ),
-  );
+  editManifest(manifestPath, (manifest) => {
+    const review = yamlObject(manifest.review_metadata);
+    const contract = yamlObject(review.inventory_contract);
+    contract.atomic_flows = "v1";
+    contract.localized_flow_names = "tiangong_zh_v1";
+  });
   const untranslatedName = "Electricity, medium voltage";
   writeFileSync(
     englishPath,
@@ -131,7 +163,7 @@ test("atomic-flow PCR rejects an untranslated English selected-flow display in C
 });
 
 test("PCR without the localization contract reports one migration warning instead of blocking", (t) => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-flow-localization-legacy-"));
+  const root = realpathSync(mkdtempSync(path.join(tmpdir(), "tiangong-pcr-flow-localization-legacy-")));
   t.after(() => rmSync(root, { recursive: true, force: true }));
 
   const pcrDir = path.join(root, "library/pcrs/food/seafood/example");
@@ -139,13 +171,11 @@ test("PCR without the localization contract reports one migration warning instea
   const englishPath = path.join(pcrDir, "pcr.en-US.md");
   const chinesePath = path.join(pcrDir, "pcr.zh-CN.md");
   const manifestPath = path.join(pcrDir, "manifest.yaml");
-  writeFileSync(
-    manifestPath,
-    readFileSync(manifestPath, "utf8").replace(
-      "    localized_flow_names: tiangong_zh_v1\n",
-      "",
-    ),
-  );
+  editManifest(manifestPath, (manifest) => {
+    const review = yamlObject(manifest.review_metadata);
+    const contract = yamlObject(review.inventory_contract);
+    delete contract.localized_flow_names;
+  });
   const untranslatedName = "Electricity, medium voltage";
   writeFileSync(
     englishPath,

@@ -50,7 +50,7 @@
     "docs:dev": "npm --prefix packages/pcr-docs run dev",
     "docs:verify": "npm --prefix packages/pcr-docs run verify",
     "offline:library": "node builder/scripts/build-offline-library.mjs",
-    "offline:tool": "node builder/scripts/build-offline-packages.mjs",
+    "offline:tool": "node builder/scripts/build-offline-packages.ts",
     "offline:test": "node --test packages/pcr-core/offline-library.test.mjs",
     "release:build": "node builder/scripts/npm-release.mjs build",
     "release:test": "node --test builder/scripts/npm-release.test.mjs",
@@ -61,7 +61,7 @@
     "runtime:check": "node scripts/engineering/runtime.ts",
     "runtime:release": "node scripts/engineering/runtime.ts --release",
     "migration:check": "node scripts/engineering/migration.ts",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.semantic.json --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.core.json --noEmit && tsc -p tsconfig.semantic.json --noEmit",
     "typecheck:all": "npm run typecheck && npm --prefix packages/pcr-docs run typecheck",
     "build:engineering": "tsc -p tsconfig.build.json",
     "build:tests": "tsc -p tsconfig.test.json",
@@ -74,20 +74,22 @@
     "test:offline": "node scripts/engineering/suites.ts run offline",
     "test:product": "node scripts/engineering/suites.ts run product",
     "test:engineering": "node scripts/engineering/suites.ts run engineering",
-    "test:coverage": "npm run build:tests && c8 --all --src scripts/engineering --include \"scripts/engineering/**/*.ts\" --exclude \"**/*.test.ts\" --exclude-after-remap --reporter=text --reporter=lcov --reporter=json-summary --reports-dir .reports/coverage/engineering node --test \"dist/test-engineering/scripts/engineering/*.test.js\""
+    "test:coverage": "npm run build:tests && c8 --all --src scripts/engineering --include \"scripts/engineering/**/*.ts\" --exclude \"**/*.test.ts\" --exclude-after-remap --reporter=text --reporter=lcov --reporter=json-summary --reports-dir .reports/coverage/engineering node --test \"dist/test-engineering/scripts/engineering/*.test.js\"",
+    "build:runtime": "tsc -p tsconfig.runtime.json"
   },
   "dependencies": {
     "ajv": "8.20.0",
+    "yaml": "2.9.1",
     "remark-gfm": "4.0.1",
     "remark-parse": "11.0.0",
     "unified": "11.0.5"
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/mdast": "4.0.4",
     "@types/node": "24.19.1",
     "c8": "12.0.0",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "@types/mdast": "4.0.4"
   },
   "engines": {
     "node": ">=24.19.0 <25"

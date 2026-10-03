@@ -15,7 +15,7 @@ import {
   hasDeclaredUnresolvedReferenceProductFlow,
   materialProjectionCompletenessIssues,
 } from "../../packages/pcr-core/src/projection-completeness.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   AMOUNT_RANGE_ROLE_VALUES as AMOUNT_RANGE_ROLE_VALUE_LIST,
   AMOUNT_SPECIFICITY_VALUES as AMOUNT_SPECIFICITY_VALUE_LIST,

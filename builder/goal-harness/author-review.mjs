@@ -5,7 +5,7 @@ import path from "node:path";
 
 import { inspectPcrDirectory } from "../lib/lint-rules.mjs";
 import { parsePcrMarkdownToStructured } from "../lib/markdown-projection.mjs";
-import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { assertAuthorQuality, flattenProcessInventory, pcrSourceIds, referenceProductRows } from "./author-gates.mjs";
 import { reviewTimeRemaining } from "./review-assessment.mjs";
 import { GoalHarnessError } from "./errors.mjs";
