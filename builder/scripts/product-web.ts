@@ -10,7 +10,8 @@ import { isRecord, field, type JsonObject } from "./release-types.ts";
 export interface WebCounts extends Record<string, number> { pcrs: number; pages: number; languages: number; sourceBytes: number }
 export interface WebProbe { path: string; bytes: number; sha256: string }
 export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe }
-export type WebFetch = (url: string, options: RequestInit) => Promise<Response>;
+export interface WebRequestOptions { method: "GET"; redirect: "manual"; credentials: "omit"; headers: Record<string, string>; signal: AbortSignal }
+export type WebFetch = (url: string, options: WebRequestOptions) => Promise<Response>;
 export interface LiveWebsiteOptions { origin: string; identity: unknown; counts: unknown; probes: unknown; fetcher?: WebFetch; timeoutMs?: number; maxBytes?: number }
 function identityFields(value: ProductIdentity): ProductIdentity {
   return { schema: value.schema, version: value.version, tag: value.tag, sourceCommit: value.sourceCommit, sourceFingerprint: value.sourceFingerprint };
