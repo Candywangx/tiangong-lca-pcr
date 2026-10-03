@@ -1,6 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
+lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo

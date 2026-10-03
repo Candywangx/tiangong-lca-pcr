@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
-lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
+lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 ---
 
 # PCR 资料库架构
@@ -539,3 +539,11 @@ Use explicit snapshot selection and verification for offline consumption.
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+## TypeScript 工程化迁移
+
+全量迁移由 PCR #69 分阶段交付；Node 24、严格类型检查、受审查的遗留代码清单和完整测试入口
+以 [TypeScript engineering](typescript-engineering.md) 为准。当前基础层不会改变 canonical
+Markdown、方法学审核、历史快照或统一产品发布身份。Python SEO 检查器按用户要求保留。
+共享语义编译与消费逻辑仍属于 pcr-core；Builder 保持写入和恢复边界。优先修复 #63 中的条件、
+动作和上下文丢失，然后实现批量读取和受验证快照会话。基础设施通过不等于全部迁移或语义修复完成。

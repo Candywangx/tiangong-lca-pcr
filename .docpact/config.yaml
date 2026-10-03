@@ -1,8 +1,8 @@
 version: 1
 layout: repo
 lastReviewedAt: "2026-10-03"
-lastReviewedCommit: "bf9d89fe43d0c2b12b2dfb13154e816a59519c64"
-lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
+lastReviewedCommit: "339378ea2b4fa0b9d275e049e87556c3b34e2c2f"
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 
 catalog:
   repos:
@@ -19,6 +19,7 @@ catalog:
         - docs/pcr-documentation-site-contract.md
         - docs/offline-distribution.md
         - docs/agentic-consumption.md
+        - docs/typescript-engineering.md
       workspaceIntegrationRequired: true
 
 ownership:
@@ -34,6 +35,11 @@ ownership:
           - .gitattributes
           - edgeone.json
           - product-release.json
+          - .nvmrc
+          - tsconfig*.json
+          - config/typescript-migration.json
+          - scripts/engineering/**
+          - package-lock.json
           - .github/workflows/**
           - docs/**
       ownerRepo: pcr
@@ -75,6 +81,11 @@ coverage:
     - .gitignore
     - docs/**
     - package.json
+    - package-lock.json
+    - .nvmrc
+    - tsconfig*.json
+    - config/typescript-migration.json
+    - scripts/engineering/**
     - edgeone.json
     - builder/**
     - classifications/**
@@ -154,6 +165,7 @@ docInventory:
     - docs/pcr-documentation-site-contract.md
     - docs/offline-distribution.md
     - docs/agentic-consumption.md
+    - docs/typescript-engineering.md
 
 repo:
   id: pcr
@@ -342,3 +354,32 @@ rules:
       - path: docs/offline-distribution.md
         mode: review_or_update
     reason: Offline package layout, integrity, language availability and compatibility are one public contract.
+
+  - id: typescript-engineering
+    scope: repo
+    repo: pcr
+    triggers:
+      - path: .nvmrc
+        kind: runtime-pin
+      - path: tsconfig*.json
+        kind: typescript-project
+      - path: config/typescript-migration.json
+        kind: migration-inventory
+      - path: scripts/engineering/**
+        kind: engineering-command
+      - path: package.json
+        kind: validation-entrypoint
+      - path: package-lock.json
+        kind: toolchain-dependencies
+      - path: .github/workflows/**
+        kind: engineering-qualification
+    requiredDocs:
+      - path: docs/typescript-engineering.md
+        mode: review_or_update
+      - path: docs/repository-coding-guidelines.md
+        mode: review_or_update
+      - path: AGENTS.md
+        mode: review_or_update
+      - path: README.md
+        mode: review_or_update
+    reason: Runtime pins, strict source migration, complete test discovery and artifact qualification must remain explicit during the TypeScript refactor.

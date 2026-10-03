@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
-lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
+lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 ---
 
 # TianGong LCA PCR Library
@@ -102,6 +102,18 @@ Material PCR content should use this authoring shape:
 - validation rules
 - selected Tiangong UUIDs without dataset versions
 - external data sources for ranges, factors, official guidance, and non-default evidence
+
+## Development and verification
+
+Use `nvm install && nvm use` for the exact Node 24 version in `.nvmrc`, then
+`npm ci && npm --prefix packages/pcr-docs ci`. `npm run validate` checks the runtime,
+reviewed migration inventory, both TypeScript projects, library contracts and all
+source tests, including documentation tests. Full validation currently runs on Linux because the Goal Harness requires descriptor-anchored `/proc` access; portable suites remain available separately. `npm run test:list` shows suite
+membership; `npm run test:coverage` records the initial engineering coverage.
+Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
+migration boundaries and final qualification requirements. The Python SEO checker
+is retained. This foundation does not resolve the separately tracked semantic
+projection defect or claim the legacy implementation is already TypeScript.
 
 ## Builder CLI
 

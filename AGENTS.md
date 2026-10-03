@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: bf9d89fe43d0c2b12b2dfb13154e816a59519c64
-lastReviewedNote: "Reviewed PCR #67 provider importer repair: direct origin filesystem snapshot, native/forced tmpfs hardlink handoff, real selector/rollback regressions and product 0.3.1 mirrors. The incomplete 0.3.0 artifacts remain unchanged; canonical methodology, consumer ownership and integrity gates are preserved."
+lastReviewedCommit: 339378ea2b4fa0b9d275e049e87556c3b34e2c2f
+lastReviewedNote: "Reviewed PCR #70 strict TypeScript foundation, exact Node 24 pin, complete test discovery, source-mapped engineering coverage and retained Python SEO. Legacy source and Linux-specific Harness capabilities remain explicit; semantic repair and final cutover stay in #63/#69."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -290,6 +290,16 @@ Read only the context needed for the current task.
 - For builder CLI, schema, script, template, or vocab changes, use `builder/README.md`, then inspect only the affected implementation files.
 - For public PCR consumption CLI, Agent skill, or feedback issue template changes, inspect `packages/**`, `skills/tiangong-pcr/**`, `.github/ISSUE_TEMPLATE/**`, `README.md`, and `docs/architecture.md`.
 - For create, update, translate, review, or publish PCR workflows, start at `builder/AGENTS.md` and `builder/docs/index.md`.
+
+## TypeScript engineering
+
+New first-party implementation, tests and scripts use TypeScript/TSX under the
+strict [engineering contract](docs/typescript-engineering.md). Existing authored
+JavaScript is an explicit shrinking migration inventory, not permission to add
+new JavaScript. Generated runtime artifacts and the approved manifest-bound Python
+SEO checker remain classified separately. Native Node execution does not replace
+`tsc` checking. Preserve complete semantic context; reproducible old projections
+are not semantic goldens for the known conditions/actions defect.
 
 ## Validation
 
