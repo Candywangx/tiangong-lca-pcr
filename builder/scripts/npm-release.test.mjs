@@ -4,9 +4,15 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { assertBootstrap, assertChannelAdvance, assertIdentity, checkPublished, detectReleases, packages, registryState, releaseContext, releaseSpec, tagAndDispatch } from "./npm-release.mjs";
+import { assertBootstrap, assertChannelAdvance, assertIdentity, checkPublished, detectReleases, packages, parseNpmPackOutput, registryState, releaseContext, releaseSpec, tagAndDispatch } from "./npm-release.mjs";
 
 const identity = { GITHUB_REPOSITORY: "tiangong-lca/pcr", GITHUB_REPOSITORY_ID: "1277836444", GITHUB_REPOSITORY_OWNER_ID: "327771381" };
+test("npm 11 array and npm 12 keyed pack reports preserve exact package selection", () => {
+  const name = "@tiangong-lca/pcr", item = { name, version: "0.3.0", filename: "tiangong-lca-pcr-0.3.0.tgz", bundled: ["ajv"] };
+  for (const report of [[item], { [name]: item }]) assert.deepEqual(parseNpmPackOutput(JSON.stringify(report), name), item);
+  for (const report of [null, [], {}, [item, item], { wrong: item }, { [name]: item, extra: item }, { [name]: [item] }, { [name]: { ...item, name: "another-package" } }])
+    assert.throws(() => parseNpmPackOutput(JSON.stringify(report), name), /exactly the expected package/u);
+});
 function fixture(t) {
   const root = mkdtempSync(path.join(tmpdir(), "pcr-release-test-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));

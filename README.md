@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 7a214c41504d9c51f9a41684d47c481e01e05cc1
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged. Also reviewed the bounded source-timer correction: scheduling-time limit identity controls request versus review-window classification without changing recovery or cache eligibility."
+lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
+lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -273,8 +273,9 @@ Formats are enforced per command: `resolve`, `guidance`, and validation are JSON
 The public site in `packages/pcr-docs/` reads the canonical library through the core
 consistent document API and the shared immutable-history verifier. It renders
 ordinary Markdown as complete semantic HTML in a Next.js static export. Fumadocs
-provides the documentation layout, navigation and search dialog. EdgeOne builds
-production from `main`; there is no request-time SSR or preview deployment.
+provides the documentation layout, navigation and search dialog. Unified tag qualification
+builds the web artifact once; the existing EdgeOne Git project imports it from the
+`release/production` deployment pointer. There is no request-time SSR or preview deployment.
 
 ```bash
 npm ci
@@ -348,8 +349,8 @@ Package-specific installation and usage instructions live in the
 [content library README](packages/tiangong-pcr-library/README.md). Each generated
 npm package includes its own README and the full MIT license.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
 
 ## License

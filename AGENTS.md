@@ -19,6 +19,7 @@ checkPaths:
   - README.md
   - .docpact/config.yaml
   - package.json
+  - product-release.json
   - builder/**
   - packages/**
   - skills/**
@@ -28,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 7a214c41504d9c51f9a41684d47c481e01e05cc1
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged. Also reviewed the bounded source-timer correction: scheduling-time limit identity controls request versus review-window classification without changing recovery or cache eligibility."
+lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
+lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -217,7 +218,7 @@ Generated PCR leaf scaffolds under `library/pcrs/**` are intentionally excluded 
 ## Public PCR Consumption CLI and Skill
 
 Offline packaging is governed by `docs/offline-distribution.md`. Build the tool and
-English-only SQLite content package independently; never promote methodology status
+English-only SQLite content package as separate artifacts of one product version; never promote methodology status
 or alter source language declarations merely to package content.
 
 The public Agent-facing CLI lives under `packages/tiangong-pcr-cli/` and uses shared logic from `packages/pcr-core/`.
@@ -276,8 +277,9 @@ required; declared optional language artifacts are verified and preserved.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
 not authoring sources. Use `npm run docs:build` for the complete static publication
-gate. Production uses the configured EdgeOne project and PCR `main`; preview
-remains disabled. Root owns exact workspace gitlink integration after child merge.
+gate. Production uses the existing EdgeOne Git project and the `release/production` deployment
+pointer advanced only to qualified product tags on `main`; preview remains disabled. The provider
+imports the sealed web artifact instead of rebuilding it. This pointer is not another development trunk. Root owns exact workspace gitlink integration after child merge.
 
 ## Context Routing
 
@@ -300,6 +302,6 @@ npm run validate
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.

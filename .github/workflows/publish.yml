@@ -1,8 +1,8 @@
-name: Publish offline npm packages
+name: Publish PCR product release
 
 on:
   push:
-    tags: ['pcr-v*', 'library-v*']
+    tags: ['v*', 'pcr-v*', 'library-v*']
   workflow_dispatch:
     inputs:
       tag_name:
@@ -13,21 +13,31 @@ on:
         description: First publication of an unregistered npm name using the temporary environment secret.
         type: boolean
         default: false
+      retry_web:
+        description: Retry a same-source Webhook only after confirming the prior provider deployment is terminal.
+        type: boolean
+        default: false
+      retry_npm:
+        description: Retry one package only after confirming its prior upload was rejected or never accepted.
+        type: choice
+        default: none
+        options: [none, tool, library]
 
 permissions:
   contents: read
 
 concurrency:
-  group: npm-publish-${{ startsWith(github.ref, 'refs/tags/library-v') && 'library' || 'tool' }}
+  group: pcr-product-release
   cancel-in-progress: false
 
 jobs:
   release-context:
-    if: vars.PCR_NPM_RELEASE_ENABLED == 'true' && github.repository == 'tiangong-lca/pcr' && github.repository_id == '1277836444' && github.repository_owner_id == '327771381'
+    if: (vars.PCR_PRODUCT_RELEASE_ENABLED == 'true' || vars.PCR_NPM_RELEASE_ENABLED == 'true') && github.repository == 'tiangong-lca/pcr' && github.repository_id == '1277836444' && github.repository_owner_id == '327771381'
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.context.outputs.tag }}
       dist_tag: ${{ steps.context.outputs.dist_tag }}
+      product: ${{ steps.context.outputs.product }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,13 +54,84 @@ jobs:
         id: context
         env:
           RELEASE_TAG: ${{ inputs.tag_name || github.ref_name }}
-        run: node builder/scripts/npm-release.mjs context "$RELEASE_TAG"
+          PRODUCT_ENABLED: ${{ vars.PCR_PRODUCT_RELEASE_ENABLED }}
+          LEGACY_ENABLED: ${{ vars.PCR_NPM_RELEASE_ENABLED }}
+          LEGACY_BOOTSTRAP: ${{ inputs.bootstrap }}
+        run: |
+          if [[ "$RELEASE_TAG" == v* ]]; then
+            test "$PRODUCT_ENABLED" = true
+            test "$LEGACY_BOOTSTRAP" != true
+            node builder/scripts/product-release.mjs context "$RELEASE_TAG"
+            echo 'product=true' >> "$GITHUB_OUTPUT"
+          else
+            test "$LEGACY_ENABLED" = true
+            test ! -f product-release.json
+            node builder/scripts/npm-release.mjs context "$RELEASE_TAG"
+            echo 'product=false' >> "$GITHUB_OUTPUT"
+          fi
 
   quality-gate:
     needs: release-context
     uses: ./.github/workflows/validate.yml
+    with:
+      product_tag: ${{ needs.release-context.outputs.product == 'true' && needs.release-context.outputs.tag || '' }}
+
+  product-publish:
+    if: needs.release-context.outputs.product == 'true'
+    needs: [release-context, quality-gate]
+    runs-on: ubuntu-latest
+    environment: npm-release
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          registry-url: https://registry.npmjs.org
+      - name: Select the pinned OIDC publishing toolchain
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Revalidate exact product tag after qualification and environment admission
+        env:
+          PRODUCT_TAG: ${{ needs.release-context.outputs.tag }}
+        run: |
+          git fetch origin +refs/heads/main:refs/remotes/origin/main
+          git fetch --force origin '+refs/tags/*:refs/tags/*'
+          node builder/scripts/product-release.mjs context "$PRODUCT_TAG"
+      - name: Download only the qualified product bundle
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.quality-gate.outputs.product_artifact_id }}
+          path: dist/product-release
+          merge-multiple: true
+          digest-mismatch: error
+      - name: Verify, resume and publish the coordinated release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PCR_PRODUCT_BUILD_ARTIFACT_ID: ${{ needs.quality-gate.outputs.product_artifact_id }}
+          PCR_NPM_DIST_TAG_OIDC_ENABLED: ${{ vars.PCR_NPM_DIST_TAG_OIDC_ENABLED }}
+          PCR_EDGEONE_PROJECT_ID: makers-5hadzwjpsblu
+          PCR_EDGEONE_DEPLOY_HOOK_URL: ${{ secrets.PCR_EDGEONE_DEPLOY_HOOK_URL }}
+          PCR_RETRY_WEB: ${{ inputs.retry_web }}
+          PCR_RETRY_NPM: ${{ inputs.retry_npm || 'none' }}
+        run: node builder/scripts/product-publish.mjs dist/product-release
+      - name: Preserve the attempt journal even when a target remains pending
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pcr-product-attempt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/product-release/attempt*.json
+          if-no-files-found: warn
+          retention-days: 30
 
   npm-publish:
+    if: needs.release-context.outputs.product != 'true'
     needs: [release-context, quality-gate]
     runs-on: ubuntu-latest
     environment: npm-release

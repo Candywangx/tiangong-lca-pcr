@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
-lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
+lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
+lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -178,8 +178,13 @@ that the provider applied its rules.
 Measure the real full corpus and largest records. Enforce provider limits on
 individual files, total file count and build resources, and partition search and
 source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
-and `main`; preview auto deployment remains disabled. Failed generation or builds
-leave the previous verified deployment intact.
+and the `release/production` deployment pointer; `main` remains the sole code trunk.
+Unified tag qualification builds and seals the complete web export. The provider runs
+`product-web-materialize.mjs` to verify and atomically import that exact artifact; it
+does not rebuild it. Preview auto deployment remains disabled. Failed import or
+builds leave the previous verified deployment intact. The product identity endpoint
+and per-route hashes bind live acceptance to the two paired npm artifacts; see
+[the unified release contract](offline-distribution.md#npm-release-automation).
 
 ### Measured output and build resources
 
@@ -239,6 +244,12 @@ failure with diagnostics, not permission to trim source text or remove supported
 Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
 Temporary cleanup is confined to directories created by the current build.
+
+After the scratch copy passes byte-fidelity checks, a relative worktree/submodule
+gitfile is rebound to its resolved Git directory. Scratch commands explicitly
+select the copied working tree and a private index, so clean-source checks inspect
+the copied files without refreshing the original index or changing repository
+configuration. Both source and scratch HEAD are still resolved and rechecked by Git.
 
 Relocation retains `out/` as the standalone export and writes small build metrics in the original
 checkout. Its original `.generated/` is not the relocated generation metadata;

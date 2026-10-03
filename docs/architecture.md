@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 7a214c41504d9c51f9a41684d47c481e01e05cc1
-lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged. Also reviewed the bounded source-timer correction: scheduling-time limit identity controls request versus review-window classification without changing recovery or cache eligibility."
+lastReviewedCommit: 826246ae813e4e9582bb145b9c7ff04e3354a161
+lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
 ---
 
 # PCR 资料库架构
@@ -523,7 +523,9 @@ Web Worker 中按语言加载。特别长的正文按章节拆页，并保留完
 构建记录总字节、文件数及产物分类，用实测评估重复序列化与内容增长；不设置固定的
 总字节门槛。服务商单文件/文件数限制、构建磁盘和原子交付检查仍由构建契约负责，
 实际账号存储及历史部署保留量在发布阶段核对。网站输出与 AI 使用的不可变 SQLite
-快照是独立交付物，各自保留精确源身份和验证证据。
+快照是同一产品版本的不同交付物，共用不可变 tag、源提交与完整规范源指纹，
+并各自保留 payload/输出树哈希。统一发布流程只在两份 npm 包可安装且网站
+实际身份一致后完成；部分失败保留回执、原产物及安全重试路径。
 部署配置、无损检查、语言及索引边界以
 [公共文档站契约](pcr-documentation-site-contract.md) 为准。
 
@@ -534,6 +536,6 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-Npm artifact releases use independent version sources and tags, main-bound validation,
-OIDC publication and offline transport assets. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
+Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
+main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.

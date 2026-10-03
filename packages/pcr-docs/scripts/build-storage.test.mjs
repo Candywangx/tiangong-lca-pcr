@@ -4,6 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { readProductIdentity, PRODUCT_MIRRORS } from "../../../builder/scripts/product-identity.mjs";
 import {
   HEADROOM_BYTES,
   RELOCATE_ENV,
@@ -65,6 +66,22 @@ function worktreeFixture() {
   const worktree = path.join(base, "worktree");
   git(["worktree", "add", "--quiet", "--detach", worktree, head], main);
   return { base, main, worktree, head };
+}
+
+function addProductFixture(root) {
+  write(path.join(root, "product-release.json"), JSON.stringify({ schema: 1, version: "0.3.0", node: "24.19.0", npm: "12.2.0", web: { origin: "https://pcr.tiangong.earth", site: "global" } }));
+  for (const [relative, name] of PRODUCT_MIRRORS) write(path.join(root, relative), JSON.stringify({ name, private: true, version: "0.3.0" }));
+  write(path.join(root, "library/pcrs/example/pcr.en-US.md"), "English source\n");
+  write(path.join(root, "library/pcrs/example/pcr.zh-CN.md"), "中文源文件\n");
+  return commit(root, "product fixture");
+}
+
+function scratchProductIdentity(root, copied) {
+  const module = new URL("../../../builder/scripts/product-identity.mjs", import.meta.url).href;
+  return JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e",
+    `import { readProductIdentity } from ${JSON.stringify(module)}; console.log(JSON.stringify(readProductIdentity(process.argv[1])));`, root], {
+    cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: scratchEnvironment(process.env, copied.gitEnvironment),
+  }));
 }
 
 function fakeFacts(overrides = {}) {
@@ -322,6 +339,42 @@ test("an incomplete copy is refused rather than built on", () => {
     fs.rmSync(fixture.base, { recursive: true, force: true });
   }
 });
+
+for (const shape of ["regular", "relative-worktree", "submodule"]) {
+  test(`relocated ${shape} Git metadata preserves true product identity with an independent index`, () => {
+    const fixture = worktreeFixture(), scratch = tempRoot(`git-${shape}`);
+    try {
+      let source = shape === "relative-worktree" ? fixture.worktree : fixture.main;
+      if (shape === "submodule") {
+        const parent = path.join(fixture.base, "parent"); fs.mkdirSync(parent);
+        git(["init", "--quiet", "."], parent);
+        addProductFixture(fixture.main);
+        git(["-c", "protocol.file.allow=always", "submodule", "add", "--quiet", fixture.main, "pcr"], parent);
+        commit(parent, "submodule fixture"); source = path.join(parent, "pcr");
+      } else addProductFixture(source);
+      if (shape === "relative-worktree") {
+        const directory = git(["rev-parse", "--absolute-git-dir"], source);
+        write(path.join(source, ".git"), `gitdir: ${path.relative(fs.realpathSync(source), directory)}\n`);
+      }
+      const identity = readProductIdentity(source), sourceGitfile = fs.lstatSync(path.join(source, ".git")).isFile()
+        ? fs.readFileSync(path.join(source, ".git")) : null;
+      const sourceIndex = git(["rev-parse", "--path-format=absolute", "--git-path", "index"], source);
+      const sourceIndexBytes = fs.readFileSync(sourceIndex), sourceConfig = git(["config", "--local", "--list"], source);
+      const target = path.join(scratch, "repo"), copied = copySourceTree({ from: source, to: target });
+      assert.equal(gitHead(target), identity.sourceCommit);
+      assert.deepEqual(scratchProductIdentity(target, copied), identity);
+      assert.equal(copied.gitEnvironment.GIT_WORK_TREE, fs.realpathSync(target));
+      assert.notEqual(copied.gitEnvironment.GIT_INDEX_FILE, sourceIndex);
+      // A clean check must inspect copied bytes, never core.worktree's original directory.
+      write(path.join(target, "library/pcrs/example/pcr.zh-CN.md"), "scratch-only mutation\n");
+      assert.throws(() => scratchProductIdentity(target, copied), /clean source checkout/u);
+      assert.deepEqual(fs.readFileSync(sourceIndex), sourceIndexBytes, "scratch Git reads never refresh the source index");
+      assert.equal(git(["config", "--local", "--list"], source), sourceConfig);
+      if (sourceGitfile) assert.deepEqual(fs.readFileSync(path.join(source, ".git")), sourceGitfile);
+      assert.equal(fs.readFileSync(path.join(source, "library/pcrs/example/pcr.zh-CN.md"), "utf8"), "中文源文件\n");
+    } finally { fs.rmSync(scratch, { recursive: true, force: true }); fs.rmSync(fixture.base, { recursive: true, force: true }); }
+  });
+}
 
 /* ------------------------------------------------------------------ publishing */
 
