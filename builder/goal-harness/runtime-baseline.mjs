@@ -148,7 +148,7 @@ export function selectGoalRuntimeBaseCommit(state, { projectRoot = null } = {}) 
 
 function isApprovedRuntimePath(file) {
   return EXACT_RUNTIME_PATHS.has(file) || file.startsWith("builder/goal-harness/") ||
-    /^packages\/pcr-core\/(?:src\/[\w.-]+\.mjs|[\w.-]+\.test\.mjs)$/u.test(file) ||
+    /^packages\/pcr-core\/(?:src\/(?:compiler\/|generated\/)?[\w.-]+\.(?:mjs|ts|json)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.(?:mjs|ts))$/u.test(file) ||
     /^packages\/pcr-viewer\/(?:(?:scripts|static)\/[\w.-]+\.(?:mjs|js|css|html)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.mjs)$/u.test(file);
 }
 
