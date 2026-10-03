@@ -27,7 +27,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedCommit: e807fce800d49f1a4ef2ea835b85b06a36e450bf
 lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
 ---
 
@@ -560,3 +560,7 @@ YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解�
 该阶段保留方法学原文、发布状态和版本；Markdown 条件/动作保真仍由 PCR #63 单独交付。
 
 规范投影 v2 由严格 TypeScript Markdown 编译器生成，保留 H2 完整原文、根/一级标题前言、来源位置及规则绑定。core 在消费时重新生成并验证，防止仅修改哈希掩盖上下文丢失。旧 v1 快照保留原始字节和哈希，消费层以独立 provenance 补齐来源上下文。完整要求见 [语义投影契约](semantic-projection-contract.md)。网站与 AI 消费继续作为独立派生出口；正式上线由统一产品发布验收。
+
+### Typed consumer dependencies in installed Goal runtimes
+
+Verified Goal runtime overlays include the consumer core TypeScript modules, its compiler/generated dependencies and schemas. Installing a new runtime on an older task baseline must transfer the complete approved dependency graph; a file extension change must not silently omit a module. Canonical PCR content remains outside the runtime overlay and comes from the selected task/integration baseline.
