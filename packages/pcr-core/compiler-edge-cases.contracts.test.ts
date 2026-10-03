@@ -272,3 +272,14 @@ test('a correct content digest cannot compensate for a non-final or repeated met
     assert.ok(result.issues.some(issue => issue.code === 'projection_fingerprint_invalid'));
   }
 });
+
+
+test('complete guidance rejects each missing normative family instead of synthesizing empty rules', () => {
+  for (const family of ['system_boundary', 'allocation_rules', 'validation_rules']) {
+    for (const invalid of [undefined, null, false, 0, 'absent']) {
+      const current = snapshot();
+      assert.throws(() => buildCompleteGuidance({ ...current, structured: { ...current.structured, [family]: invalid } }, 'structured.yaml'),
+        { code: 'PCR_NORMATIVE_CONTEXT_INVALID' });
+    }
+  }
+});
