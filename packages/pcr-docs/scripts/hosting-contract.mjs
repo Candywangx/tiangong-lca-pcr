@@ -25,11 +25,8 @@ export function headersFor(config, pathname, { firstMatch = false } = {}) {
 }
 export function verifyHostingContract(config, downloads) {
   assert.equal(config.outputDirectory, "packages/pcr-docs/out");
-  assert.equal(
-    config.installCommand,
-    "npm ci && npm --prefix packages/pcr-docs ci",
-  );
-  assert.equal(config.buildCommand, "npm --prefix packages/pcr-docs run build");
+  assert.equal(config.installCommand, "node --version");
+  assert.equal(config.buildCommand, "node builder/scripts/product-web-materialize.mjs");
   assert.equal(config.nodeVersion, "24.18.0");
   for (const source of ["/zh", "/zh/"])
     assert.ok(

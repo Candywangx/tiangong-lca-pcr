@@ -12,6 +12,7 @@ import {
 } from "./markdown.mjs";
 import { SUMMARY_LIMIT } from "./summaries.mjs";
 import { summarizeExportFiles } from "./export-size.mjs";
+import { readProductIdentity } from "../../../builder/scripts/product-identity.mjs";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
   out = path.join(app, "out");
@@ -42,6 +43,23 @@ function readPage(url) {
 }
 function requireThat(condition, message) {
   if (!condition) throw new Error(message);
+}
+if (fs.existsSync(path.join(root, "product-release.json"))) {
+  const expected = readProductIdentity(root, { requireClean: false });
+  const actual = JSON.parse(fs.readFileSync(path.join(out, "generated/product-release.json"), "utf8"));
+  const version = JSON.parse(fs.readFileSync(path.join(out, "generated/version.json"), "utf8"));
+  requireThat(
+    Object.keys(expected).length === Object.keys(actual).length &&
+      Object.entries(expected).every(([key, value]) => actual[key] === value),
+    "Exported product release identity does not match the source snapshot",
+  );
+  requireThat(
+    version.sourceCommit === expected.sourceCommit &&
+      version.releaseVersion === expected.version &&
+      version.releaseTag === expected.tag &&
+      version.sourceFingerprint === expected.sourceFingerprint,
+    "Exported version metadata does not match the product release identity",
+  );
 }
 const rawBySource = new Map(report.downloads.map((d) => [d.sourcePath, d]));
 for (const raw of report.downloads) {

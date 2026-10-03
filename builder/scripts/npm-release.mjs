@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { compareSemver } from "../lib/lifecycle-policy.mjs";
+import { assertProductIdentity } from "./product-identity.mjs";
 
 export const packages = {
   tool: { name: "@tiangong-lca/pcr", prefix: "pcr-v", manifest: "packages/tiangong-pcr-cli/package.json" },
@@ -72,6 +73,13 @@ function npm(args, cwd) {
 
 export async function buildRelease(root, tag, output) {
   const spec = releaseSpec(tag);
+  return buildPackageArtifact(root, spec, output);
+}
+
+/** Shared pack-once primitive. Legacy callers retain their original tag/version semantics. */
+export async function buildPackageArtifact(root, spec, output, { identity = null, builders = {}, pack = null, npmVersion = null } = {}) {
+  const source = packages[spec.kind];
+  if (!source || source.name !== spec.name || source.manifest !== spec.manifest) throw new Error("Unknown package artifact kind or source.");
   const head = git(root, "rev-parse", "HEAD");
   if (readVersion(root, head, spec) !== spec.version) throw new Error("Build tag/version mismatch");
   if (git(root, "status", "--porcelain", "--untracked-files=normal")) throw new Error("Release builds require a clean checkout");
@@ -81,23 +89,30 @@ export async function buildRelease(root, tag, output) {
   const stage = path.join(output, spec.name);
   if (spec.kind === "tool") {
     const { buildOfflineTool } = await import("./build-offline-packages.mjs");
-    buildOfflineTool({ root, output: stage, version: spec.version });
+    (builders.tool ?? buildOfflineTool)({ root, output: stage, version: spec.version });
   } else {
     const { buildOfflineLibrary } = await import("./build-offline-library.mjs");
-    buildOfflineLibrary({ root, output: stage, version: spec.version, sourceCommit: head });
+    (builders.library ?? buildOfflineLibrary)({ root, output: stage, version: spec.version, sourceCommit: head });
   }
   const manifestPath = path.join(stage, "package.json");
   const manifest = json(manifestPath);
   manifest.repository = { type: "git", url: `git+https://github.com/${repository}.git` };
   manifest.gitHead = head;
   manifest.publishConfig = { access: "public", registry };
+  if (identity) {
+    assertProductIdentity(identity);
+    if (identity.sourceCommit !== head || identity.version !== spec.version || identity.tag !== spec.tag) throw new Error("Package product identity differs from its source build.");
+    writeJson(path.join(stage, "product-release.json"), identity);
+    if (!Array.isArray(manifest.files)) throw new Error("Generated package must explicitly declare its published files.");
+    manifest.files = [...new Set([...manifest.files, "product-release.json"])];
+  }
   writeJson(manifestPath, manifest);
-  const [packed] = JSON.parse(npm(["pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], root));
+  const packed = pack ? await pack({ root, stage, output, spec }) : JSON.parse(npm(["pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], root))[0];
   if (packed.name !== spec.name || packed.version !== spec.version || (spec.kind === "tool" && !packed.bundled?.includes("ajv"))) throw new Error("Packed artifact identity or bundled dependencies are invalid");
   const filename = `${spec.name}-${spec.version}.tgz`.replace(/^@/u, "").replaceAll("/", "-");
   if (packed.filename !== filename) throw new Error("Unexpected npm pack filename");
   const bytes = readFileSync(path.join(output, filename));
-  const receipt = { ...spec, source_commit: head, node: process.version, npm: npm(["--version"], root).trim(), filename, bytes: bytes.length, sha256: digest(bytes, "sha256"), integrity: `sha512-${digest(bytes, "sha512", "base64")}` };
+  const receipt = { ...spec, source_commit: head, node: process.version, npm: npmVersion ?? npm(["--version"], root).trim(), filename, bytes: bytes.length, sha256: digest(bytes, "sha256"), integrity: `sha512-${digest(bytes, "sha512", "base64")}` };
   const assets = [filename];
   if (spec.kind === "library") {
     for (const file of ["library.sqlite", "library.sqlite.json"]) {
@@ -156,7 +171,7 @@ export async function tagAndDispatch(spec, head, request) {
   if (dispatch.status !== 204) throw new Error(`Publish dispatch failed: HTTP ${dispatch.status}; retry the tag workflow without moving the tag`);
 }
 
-async function githubRequest(endpoint, method, body) {
+export async function githubRequest(endpoint, method, body) {
   if (!process.env.GH_TOKEN) throw new Error("Missing job-scoped GH_TOKEN");
   const response = await fetch(`https://api.github.com${endpoint}`, {
     method, headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: "application/vnd.github+json", "Content-Type": "application/json" },
