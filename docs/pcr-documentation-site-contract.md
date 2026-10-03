@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedNote: "Reviewed PCR #64 unified product version/tag, sealed npm and web identity, Git-provider artifact import, OIDC channel permissions, first activation and failure recovery. Methodology lifecycle and offline format compatibility are unchanged; low-level development packages are distinguished from sealed product releases."
-lastReviewedCommit: 73d125a68c356e3967d9962162143e6e1975d3de
+lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
+lastReviewedCommit: 72d9a8067d1aa9b742c03cb5eab65ed27174ec0d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -244,6 +244,12 @@ failure with diagnostics, not permission to trim source text or remove supported
 Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
 Temporary cleanup is confined to directories created by the current build.
+
+After the scratch copy passes byte-fidelity checks, a relative worktree/submodule
+gitfile is rebound to its resolved Git directory. Scratch commands explicitly
+select the copied working tree and a private index, so clean-source checks inspect
+the copied files without refreshing the original index or changing repository
+configuration. Both source and scratch HEAD are still resolved and rechecked by Git.
 
 Relocation retains `out/` as the standalone export and writes small build metrics in the original
 checkout. Its original `.generated/` is not the relocated generation metadata;

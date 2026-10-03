@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 73d125a68c356e3967d9962162143e6e1975d3de
+lastReviewedCommit: 72d9a8067d1aa9b742c03cb5eab65ed27174ec0d
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -289,6 +289,16 @@ that failure and prepare a new reviewed version. Do not delete the prior stable
 provider deployment as part of retry. Product release never approves a candidate
 methodology or replaces a PCR's own immutable scientific release lineage.
 
+An npm intent can also survive a crash before the upload was sent, or a rejected
+upload. Ordinary retries still cannot infer non-acceptance from HTTP 404. After
+confirming that the previous upload was rejected or never accepted and fixing
+its cause, an operator may explicitly dispatch with `retry_npm=tool` or
+`retry_npm=library`. This permits at most one retry for that package in the new
+Actions run, using the original sealed tarball and all source/channel guards.
+It first checks registry visibility; matching existing bytes are reused and
+uncertain responses remain blocked. An accepted upload awaiting processing is
+not eligible. Keep prior receipts; never delete them to force a publish.
+
 ### Build and operator commands
 
 Use the pinned Node/npm versions from `product-release.json`. On a clean reviewed
@@ -323,7 +333,14 @@ gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.3.0 -f tag_name=v0.
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
-automatic reaction to a timeout. Historical package releases retain their original tag/workflow and recorded
+automatic reaction to a timeout. Both recovery inputs require a new explicit
+workflow dispatch when a new operation is intended: GitHub's “Re-run jobs” keeps
+the same run ID and cannot authorize another hook or npm upload. If an incomplete
+preparing release loses its original Actions artifact before all sealed files
+exist, preserve that public release and its evidence and prepare a new version;
+do not recreate different bytes under its existing tag.
+
+Historical package releases retain their original tag/workflow and recorded
 artifact versions. A necessary historical repair uses an explicit maintenance
 window: suspend unified publication, confirm no product publisher is running,
 then enable the legacy switch only for that repair and restore the switches

@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-03
-lastReviewedCommit: 73d125a68c356e3967d9962162143e6e1975d3de
-lastReviewedNote: "Reviewed PCR #64 unified product version/tag, sealed npm and web identity, Git-provider artifact import, OIDC channel permissions, first activation and failure recovery. Methodology lifecycle and offline format compatibility are unchanged; low-level development packages are distinguished from sealed product releases."
+lastReviewedCommit: 72d9a8067d1aa9b742c03cb5eab65ed27174ec0d
+lastReviewedNote: "Reviewed PCR #64 unified identity, sealed artifacts, coordinated publication and legacy boundaries; follow-up review covers scratch Git/index isolation and explicit per-package recovery after confirmed npm rejection. Methodology lifecycle and offline format compatibility remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
