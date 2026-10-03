@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -21,8 +21,8 @@ checkPaths:
   - product-release.json
   - packages/tiangong-pcr-library/package.json
   - builder/scripts/build-offline-*.mjs
-  - packages/pcr-core/src/offline-library.mjs
-  - packages/pcr-core/src/source-context.mjs
+  - packages/pcr-core/src/offline-library.ts
+  - packages/pcr-core/src/source-context.ts
   - packages/tiangong-pcr-cli/**
   - skills/tiangong-pcr/**
   - docs/offline-distribution.md
@@ -373,9 +373,10 @@ Upstream contracts: [npm trusted publishing and dist-tags](https://docs.npmjs.co
 ## Compiled runtime staging
 
 The TypeScript offline-tool builder compiles core and CLI sources with the pinned
-local compiler before atomic staging. During the staged refactor, explicitly
-inventoried legacy JavaScript is emitted alongside strict TypeScript; source TS
-imports become runtime JS imports. This is not full-migration qualification.
+local compiler before atomic staging. The consumer runtime graph now consists of strict TypeScript; source TS
+imports become runtime JS imports without an allowJs bridge. Remaining repository
+Builder/Harness/site/release migration is tracked separately and this does not
+claim final full-project qualification.
 Schemas, Skill and license assets retain their relative locations; executable
 bins follow the emitted extension. Only locked runtime dependencies are bundled,
 including the YAML reader; development/compiler packages are excluded. Inline
@@ -390,3 +391,9 @@ published artifacts are unchanged.
 ## Normative context compatibility
 
 SQLite storage format stays unchanged. The reader accepts both historical projection v1 and generated v2. Guidance schema 2 adds complete normative units and ancestor context; legacy enrichment carries its own provenance instead of changing the stored projection digest. Actual npm library 0.3.1 is a compatibility input, never a migration output. See [the semantic projection contract](semantic-projection-contract.md).
+
+## Owned consumer read sessions
+
+`withPcrReadSession` selects an explicit repository or immutable SQLite source for one synchronous callback. Its complete `guidanceMany` and `projectionMany` methods preserve order and duplicates, with at most 100 requested IDs. A private bounded cache reuses verified projections only within that lifetime. Repository sessions retain exact artifact bindings even after cache eviction and recheck selected records before returning; library sessions own and close one readonly transaction. No callback Promise or cross-session validation receipt is accepted.
+
+Library sessions verify the complete file by default; an explicit boolean `verify: false` retains mandatory metadata/selected-artifact checks, and an expected SHA-256 pin still requires full verification. Source identity records the actual verification choice. CLI `guidance batch` always uses the verified default and carries source identity, input hash, ordered items and statistics. Existing single-command indexed reads retain their established verification contract.

@@ -20,7 +20,7 @@ import path from "node:path";
 import test from "node:test";
 import { pathToFileURL } from "node:url";
 
-import { buildGuidance } from "../pcr-core/src/index.mjs";
+import { buildGuidance } from "../pcr-core/src/index.ts";
 import {
   buildViewer,
   buildViewerData,

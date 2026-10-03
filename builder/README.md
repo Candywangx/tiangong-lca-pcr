@@ -1,3 +1,8 @@
+---
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+---
+
 # PCR Library Builder
 
 This directory contains CLI tools, schemas, templates, fixtures, controlled vocabularies, and authoring documentation for maintaining the PCR library.

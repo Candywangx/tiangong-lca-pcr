@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import {
   ContractSchemaError,
   createSchemaRegistry,
-} from "../../packages/pcr-core/src/schema-validation.mjs";
+} from "../../packages/pcr-core/src/schema-validation.ts";
 import { isValidUtcTimestamp } from "./lifecycle-policy.mjs";
 
 const BUILDER_SCHEMA_FILES = [

@@ -17,8 +17,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { TextDecoder } from "node:util";
 
 import { assertClassificationMapping } from "../lib/schema-contracts.mjs";
-import { assertPcrIdAliases } from "../../packages/pcr-core/src/contracts.mjs";
-import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.mjs";
+import { assertPcrIdAliases } from "../../packages/pcr-core/src/contracts.ts";
+import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.ts";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");

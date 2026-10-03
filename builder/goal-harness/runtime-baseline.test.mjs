@@ -25,7 +25,7 @@ test("installed author runtime includes the working shared-materials CLI and aut
     "builder/docs/workflows/create-pcr.md",
     "builder/docs/prompts/codex-create-pcr.md",
     "builder/docs/prompts/claude-create-pcr.md",
-    "packages/pcr-core/src/read-context.mjs",
+    "packages/pcr-core/src/read-context.ts",
     "packages/pcr-viewer/scripts/snapshot-store.mjs",
     "packages/pcr-viewer/schemas/viewer-active.schema.json",
     "packages/pcr-viewer/viewer-snapshot.test.mjs",
@@ -71,7 +71,7 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     mkdirSync(path.join(root, "library/pcrs/example"), { recursive: true });
     writeFileSync(path.join(root, "builder/goal-harness/runtime.mjs"), "old runtime\n");
     writeFileSync(path.join(root, "builder/lib/schema-contracts.test.mjs"), "old contract test\n");
-    writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.mjs"), "old completeness\n");
+    writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.ts"), "old completeness\n");
     writeFileSync(path.join(root, "library/pcrs/example/manifest.yaml"), "baseline PCR\n");
     git(root, ["add", "."]);
     git(root, ["commit", "-qm", "baseline"]);
@@ -84,7 +84,7 @@ test("runtime baseline overlays only approved Harness files on the latest landed
 
     writeFileSync(path.join(root, "builder/goal-harness/runtime.mjs"), "optimized runtime\n");
     writeFileSync(path.join(root, "builder/lib/schema-contracts.test.mjs"), "updated contract test\n");
-    writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.mjs"), "updated completeness\n");
+    writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.ts"), "updated completeness\n");
     writeFileSync(path.join(root, "library/pcrs/example/manifest.yaml"), "source branch must not leak\n");
     git(root, ["add", "."]);
     git(root, ["commit", "-qm", "runtime source"]);
@@ -101,12 +101,12 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     assert.equal(git(root, ["rev-parse", `${result.commit}^`]), landed);
     assert.equal(git(root, ["show", `${result.commit}:builder/goal-harness/runtime.mjs`]), "optimized runtime");
     assert.equal(git(root, ["show", `${result.commit}:builder/lib/schema-contracts.test.mjs`]), "updated contract test");
-    assert.equal(git(root, ["show", `${result.commit}:packages/pcr-core/src/projection-completeness.mjs`]), "updated completeness");
+    assert.equal(git(root, ["show", `${result.commit}:packages/pcr-core/src/projection-completeness.ts`]), "updated completeness");
     assert.equal(git(root, ["show", `${result.commit}:library/pcrs/example/manifest.yaml`]), "integrated PCR");
     assert.deepEqual(result.paths, [
       "builder/goal-harness/runtime.mjs",
       "builder/lib/schema-contracts.test.mjs",
-      "packages/pcr-core/src/projection-completeness.mjs",
+      "packages/pcr-core/src/projection-completeness.ts",
     ]);
     assert.equal(selectGoalRuntimeBaseCommit(new GoalEventStore({ stateDir }).rebuild(), { projectRoot: root }), result.commit);
 
@@ -210,6 +210,9 @@ test("installed runtime contains the complete measurement and preparation comman
     "builder/schemas/goal-author-draft.schema.json", "builder/schemas/goal-author-submission.schema.json",
     "builder/goal-harness/report-preparation.mjs", "builder/goal-harness/receipt-integrity.mjs",
     "builder/goal-harness/artifact-io.mjs", "builder/goal-harness/author-submission.mjs", "package.json",
+    "packages/pcr-core/src/read-session.ts", "packages/pcr-core/src/types.ts",
+    "packages/pcr-core/src/compiler/guidance-context.ts",
+    "packages/pcr-core/schemas/guidance-batch-request.schema.json",
   ];
   cpSync(new URL("../", import.meta.url), path.join(root,"builder"), {recursive:true});
   cpSync(new URL("../../packages/pcr-core", import.meta.url), path.join(root,"packages/pcr-core"), {recursive:true});

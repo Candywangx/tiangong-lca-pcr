@@ -50,6 +50,11 @@ text, applicability and source references. Guidance values are complete, with no
 `guidance --pcr <id> --pointer <source.pointer> --format json`; use `--output <new-file>`
 for large results. Full `guidance` remains available for a saved complete view. Preserve stored projection hashes separately from derived legacy context provenance; fallback IDs and pointers are snapshot-local.
 
+For several known PCRs, save `{ "schema_version": 1, "pcr_ids": ["<id>"] }`
+and use `guidance batch --input <request.json> --format json` with the same library
+selector. At most 100 IDs share one verified session; order is preserved and a
+failed item rejects the whole batch. Use `--output` for complete large results.
+
 ## Choose the task route
 
 | Task | Read when needed | Produce |

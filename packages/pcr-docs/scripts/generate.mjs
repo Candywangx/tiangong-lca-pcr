@@ -14,7 +14,7 @@ import {
   readPcrDocumentBundle,
   readPcrModuleDocumentBundle,
   readClassificationCoverageSnapshot,
-} from "../../pcr-core/src/index.mjs";
+} from "../../pcr-core/src/index.ts";
 import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
 import { readPcrDocumentHistory } from "../../../builder/lib/pcr-document-history.mjs";
 import { readProductIdentity } from "../../../builder/scripts/product-identity.mjs";

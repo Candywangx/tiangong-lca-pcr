@@ -61,7 +61,7 @@ test("all/root retain 89 existing root tests, nine docs tests, and every enginee
   assert.ok(inventory.unit.includes("builder/lib/markdown-table.test.mjs"));
   assert.ok(inventory.integration.includes("builder/cli/goal.test.mjs"));
   assert.ok(inventory.recovery.includes("builder/lib/pcr-directory-transaction.test.mjs"));
-  assert.ok(inventory.offline.includes("packages/pcr-core/offline-library.test.mjs"));
+  assert.ok(inventory.offline.includes("packages/pcr-core/offline-library.test.ts"));
   assert.ok(Object.isFrozen(inventory));
   for (const suite of SUITE_NAMES) assert.ok(Object.isFrozen(inventory[suite]));
 });

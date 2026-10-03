@@ -1,7 +1,7 @@
 import {
   assertPcrLanguageCode,
   REQUIRED_PCR_LANGUAGES,
-} from "../../pcr-core/src/languages.mjs";
+} from "../../pcr-core/src/languages.ts";
 /** Source identities and URL aliases are separate, including optional bare en/zh. */
 export function routeFor(code) {
   assertPcrLanguageCode(code);

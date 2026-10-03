@@ -30,9 +30,9 @@ import {
   CLASSIFICATION_COVERAGE_GENERATOR,
   CLASSIFICATION_COVERAGE_GENERATOR_VERSION,
   CLASSIFICATION_COVERAGE_STATUSES,
-} from "../../packages/pcr-core/src/classification-coverage.mjs";
-import { createSchemaRegistry } from "../../packages/pcr-core/src/schema-validation.mjs";
-import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.mjs";
+} from "../../packages/pcr-core/src/classification-coverage.ts";
+import { createSchemaRegistry } from "../../packages/pcr-core/src/schema-validation.ts";
+import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.ts";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   CPC_3_COVERAGE_PATH,

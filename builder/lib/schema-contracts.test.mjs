@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   hasDeclaredUnresolvedReferenceProductFlow,
   materialProjectionCompletenessIssues,
-} from "../../packages/pcr-core/src/projection-completeness.mjs";
+} from "../../packages/pcr-core/src/projection-completeness.ts";
 import { manifestIdentityProblems } from "./lifecycle-policy.mjs";
 import {
   assertClassificationMapping,
@@ -18,7 +18,7 @@ import {
   validateRevision,
   validateStructured,
 } from "./schema-contracts.mjs";
-import { ContractSchemaError } from "../../packages/pcr-core/src/schema-validation.mjs";
+import { ContractSchemaError } from "../../packages/pcr-core/src/schema-validation.ts";
 
 const validCpcProductChain = {
   schema_version: 1,

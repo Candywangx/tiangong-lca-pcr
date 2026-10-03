@@ -19,7 +19,7 @@ import { TextDecoder } from "node:util";
 import {
   getVerifiedPcrProjection,
   resolveClassification,
-} from "../../packages/pcr-core/src/index.mjs";
+} from "../../packages/pcr-core/src/index.ts";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   analyzeCpcProductChain,

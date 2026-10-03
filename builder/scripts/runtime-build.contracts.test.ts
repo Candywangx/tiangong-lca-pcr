@@ -32,7 +32,7 @@ test("the sealed provider importer still loads without installed package depende
     "builder/scripts/product-web-materialize.mjs", "builder/scripts/product-release.mjs",
     "builder/scripts/product-identity.mjs", "builder/scripts/product-web.mjs", "builder/scripts/npm-release.mjs",
     "builder/lib/lifecycle-policy.mjs", "builder/lib/lifecycle-vocab.mjs",
-    "packages/pcr-core/src/languages.mjs", "packages/pcr-core/src/generated/controlled-vocabulary.mjs",
+    "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/generated/controlled-vocabulary.mjs",
     "packages/pcr-docs/scripts/build-storage.mjs",
   ]) {
     mkdirSync(path.dirname(path.join(temp, relative)), { recursive: true });
@@ -79,6 +79,7 @@ function fixture(t: TestContext, binExtension = "ts"): { root: string; temp: str
     name: "fixture-runtime", version: "1.0.0", type: "module", main: "index.js", dependencies: { "@fixture/nested": "2.0.0" },
   });
   write(root, "node_modules/fixture-runtime/index.js", "import nested from '@fixture/nested'; export default `runtime:${nested}`;\n");
+  write(root, "node_modules/fixture-runtime/index.d.ts", "declare const value: string; export default value;\n");
   write(root, "node_modules/fixture-runtime/LICENSE", "Runtime dependency license\n");
   write(root, "node_modules/fixture-runtime/node_modules/@fixture/nested/package.json", {
     name: "@fixture/nested", version: "2.0.0", type: "module", main: "index.js",
@@ -94,7 +95,8 @@ function fixture(t: TestContext, binExtension = "ts"): { root: string; temp: str
       target: "ES2023", module: "NodeNext", moduleResolution: "NodeNext", types: ["node"],
       strict: true, noUncheckedIndexedAccess: true, exactOptionalPropertyTypes: true,
       verbatimModuleSyntax: true, erasableSyntaxOnly: true, rewriteRelativeImportExtensions: true,
-      allowJs: true, checkJs: false, noEmit: false, noEmitOnError: true, rootDir: ".",
+      ...(binExtension === "mjs" ? { allowJs: true, checkJs: false } : {}),
+      noEmit: false, noEmitOnError: true, rootDir: ".",
       sourceMap: true, sourceRoot: "pcr://source/", inlineSources: true,
     },
     include: ["packages/pcr-core/src/**/*", "packages/tiangong-pcr-cli/src/**/*", "packages/tiangong-pcr-cli/bin/**/*"],
@@ -106,15 +108,15 @@ function fixture(t: TestContext, binExtension = "ts"): { root: string; temp: str
     "export function readSchema(): string { return `${value}:${readFileSync(new URL('../schemas/fixture.json', import.meta.url), 'utf8').trim()}`; }",
     "",
   ].join("\n"));
-  write(root, "packages/tiangong-pcr-cli/src/commands.mjs", [
+  write(root, "packages/tiangong-pcr-cli/src/commands.ts", [
     "import { readSchema } from '../../pcr-core/src/reader.ts';",
     "import runtime from 'fixture-runtime';",
     "export function run() { return `${readSchema()}:${runtime}`; }",
     "",
   ].join("\n"));
   write(root, `packages/tiangong-pcr-cli/bin/tiangong-pcr.${binExtension}`, binExtension === "cts"
-    ? "#!/usr/bin/env node\nvoid import('../src/commands.mjs').then(({ run }) => console.log(run()));\n"
-    : "#!/usr/bin/env node\nimport { run } from '../src/commands.mjs';\nconsole.log(run());\n");
+    ? "#!/usr/bin/env node\nvoid import('../src/commands.ts').then(({ run }) => console.log(run()));\n"
+    : "#!/usr/bin/env node\nimport { run } from '../src/commands.ts';\nconsole.log(run());\n");
   chmodSync(path.join(root, `packages/tiangong-pcr-cli/bin/tiangong-pcr.${binExtension}`), 0o644);
   write(root, "packages/pcr-core/schemas/fixture.json", "{\"asset\":true}\n");
   write(root, "skills/tiangong-pcr/SKILL.md", "# Skill fixture\n");
@@ -158,7 +160,7 @@ test("real compilation stages relocatable emitted runtime, assets, bin and locke
   assert.match(readFileSync(path.join(output, "NOTICE.md"), "utf8"), /Bundled dependencies retain their own licenses/u);
   const bin = path.join(output, "packages/tiangong-pcr-cli/bin/tiangong-pcr.js");
   assert.equal(statSync(bin).mode & 0o111, 0o111);
-  assert.match(readFileSync(path.join(output, "packages/tiangong-pcr-cli/src/commands.mjs"), "utf8"), /reader\.js/u);
+  assert.match(readFileSync(path.join(output, "packages/tiangong-pcr-cli/src/commands.js"), "utf8"), /reader\.js/u);
   assert.equal(execFileSync(process.execPath, ["--no-strip-types", bin], { cwd: temp, encoding: "utf8" }).trim(), 'typed:{"asset":true}:runtime:nested');
   const second = path.join(temp, "second compilation");
   buildOfflineTool({ root, output: second });
