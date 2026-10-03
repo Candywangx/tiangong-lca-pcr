@@ -13,8 +13,8 @@ export interface ReviewNode extends UnknownRecord {
   findings?: GoalFinding[]; checks?: ReviewNode[]; required_checks?: ReviewNode[]; results?: ReviewNode[]; depends_on?: ReviewNode[];
   uuid_audits?: ReviewNode[]; rejected_uuid_candidates?: ReviewNode[]; sources?: ReviewNode[]; unresolved?: ReviewNode[]; candidate_decisions?: ReviewNode[];
   problems?: string[]; uuid_reads?: ReviewNode[]; hybrid_search_receipts?: ReviewNode[]; source_reads?: ReviewNode[];
-  commit?: ReviewNode; builder?: ReviewNode; quality?: ReviewNode; sync?: ReviewNode; subjects?: ReviewNode|null; inventory?: ReviewNode; measurement?: ReviewNode;
-  assessment?: ReviewNode; validation_result?: ReviewNode; evidence_audit?: ReviewNode; direct_read?: ReviewNode;
+  commit?: ReviewNode; builder?: ReviewNode|null; quality?: ReviewNode|null; sync?: ReviewNode|null; subjects?: ReviewNode|null; inventory?: ReviewNode; measurement?: ReviewNode|null;
+  assessment?: ReviewNode; validation_result?: ReviewNode|null; evidence_audit?: ReviewNode|null; direct_read?: ReviewNode;
   legacy?: boolean; missing?: boolean;
 }
 export interface RequiredReviewOptions { phase: string; task: unknown; report: unknown; review: unknown; uuidAudit?: unknown; receiptAudit?: unknown; sourceAudit?: unknown; enrichment?: unknown; semantic?: unknown }
@@ -26,12 +26,15 @@ const numericFields=['authoring_contract_version','uuid_enrichment_generation','
 const boolFields=['valid','is_descendant','first_run_clean','second_run_clean','applicable','original_identity_verified','discovery_only','authenticated','measurementReviewRequired','legacy','missing'];
 const stringArrays=['allowed_files','changed_files','uuid_ids','receipt_ids','source_ids','hybrid_search_receipt_ids','candidate_uuids','problems'];
 const nodeArrays=['checks','required_checks','results','depends_on','uuid_audits','rejected_uuid_candidates','sources','unresolved','candidate_decisions','uuid_reads','hybrid_search_receipts','source_reads'];
-const nodeFields=['commit','builder','quality','sync','inventory','measurement','assessment','validation_result','evidence_audit','direct_read'];
+const nodeFields=['commit','inventory','assessment','direct_read'];
+// Real reviewers return null for unavailable checks; enrichment clears saved
+// proof nodes to null. These are absence markers, never successful evidence.
+const nullableNodeFields=['subjects','builder','quality','sync','measurement','validation_result','evidence_audit'];
 function optionalProperties(value: UnknownRecord,names: readonly string[],guard:(value:unknown)=>boolean):boolean { return names.every(key=>value[key]===undefined||guard(value[key])); }
 function isReviewNode(value: unknown): value is ReviewNode {
   return isRecord(value) && optionalProperties(value,stringFields,item=>typeof item==='string') && optionalProperties(value,numericFields,item=>typeof item==='number')
     && optionalProperties(value,boolFields,item=>typeof item==='boolean') && optionalProperties(value,stringArrays,item=>Array.isArray(item)&&item.every(entry=>typeof entry==='string'))
-    && optionalProperties(value,['subjects'],item=>item===null||isReviewNode(item))
+    && optionalProperties(value,nullableNodeFields,item=>item===null||isReviewNode(item))
     && optionalProperties(value,nodeArrays,item=>Array.isArray(item)&&item.every(isReviewNode)) && optionalProperties(value,nodeFields,isReviewNode)
     && optionalProperties(value,['findings'],item=>Array.isArray(item)&&item.every(isGoalFinding));
 }

@@ -214,3 +214,27 @@ test("a thrown review failure explains unavailable dependent checks without cert
   assert.equal(failed.subjects, null);
   assert.equal(selectRecovery(assessRequiredReview({ ...options, review: {} }).findings).action, "hold");
 });
+
+
+test("nullable failed reviewer nodes preserve content and measurement classifications without certifying checks", () => {
+ for(const category of ["content","measurement"]){
+  const options=fixture("harvest");
+  const failure={code:category === "measurement"?"GOAL_MEASUREMENT_REVIEW_REQUIRED":"GOAL_AUTHOR_PCR_INVALID",message:"Original independent reviewer finding.",details:{phase:"harvest",origin:"harness_review",failure_kind:category === "measurement"?"measurement":"author_claim"}};
+  const review={...options.review,valid:false,sync:null,findings:[failure],checks:options.review.checks.map(check=>check.check_id === "structured_sync"?{...check,status:"failed",findings:[failure]}:check)};
+  const assessment=assessRequiredReview({...options,review});
+  assert.equal(assessment.valid,false);assert.equal(selectRecovery(assessment.findings).category,category);
+  assert.ok(assessment.findings.some(finding=>finding.code === failure.code));
+  assert.throws(()=>assertRequiredReview({...options,review}),error=>goalError(error).code === "GOAL_AUTHOR_REVIEW_INCOMPLETE" && selectRecovery(error).category === category);
+ }
+ for(const field of ["builder","quality","sync","measurement"]){
+  const options=fixture();
+  const review=field === "measurement"?{...options.review,builder:{...options.review.builder,measurement:null}}:{...options.review,[field]:null};
+  assert.equal(assessRequiredReview({...options,review}).valid,false,`${field}:null remains unavailable`);
+  for(const scalar of [false,1,"passed"]){
+   const bad=field === "measurement"?{...options.review,builder:{...options.review.builder,measurement:scalar}}:{...options.review,[field]:scalar};
+   assert.throws(()=>assessRequiredReview({...options,review:bad}),TypeError,`${field} cannot become arbitrary scalar evidence`);
+  }
+ }
+ const cleared=fixture();
+ assert.equal(assessRequiredReview({...cleared,task:{...cleared.task,validation_result:null,evidence_audit:null}}).valid,true,"enrichment absence markers do not replace the new independent review");
+});
