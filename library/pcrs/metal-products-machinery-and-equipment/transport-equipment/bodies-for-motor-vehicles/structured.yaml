@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -501,12 +501,341 @@ data_sources:
     type: "official_guidance"
     reference: "U.S. EPA, *Regulatory Impact Analysis for the Automobile and Light Duty Vehicle NESHAP, Final Report* (EPA-452/R-04-007, February 2004), https://www.epa.gov/sites/default/files/2020-07/documents/transport-mfg_ria_final-neshap_2004-02.pdf, § 2.1 (accessed 2026-09-27)"
     used_for: "Coating sequence after body assembly, surface preparation, paint-booth water and coating inputs; no general body material quantities or allocation factors"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0e4eed15bb3703d0a5915bf407d82160f8ea1ab7f42305775638d25ab533ab79"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_3975"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 3975
+          line: 55
+          column: 1
+        end:
+          offset: 5725
+          line: 74
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased body-grade sheet at the plant gate, plus other purchased process inputs; declare the accepted body configuration and coating state |\n| starting_condition_role | Foreground manufacturing starts with purchased inputs; upstream manufacture remains linked by product datasets |\n| product_classification_scope | A motor-vehicle body product under CPC 49210; chassis, body parts and complete vehicles remain separate products |\n| recursive_input_rule | If a purchased input is itself a completed body, model its upstream body dataset once and record only additional foreground transformation; do not count its manufacture twice |\n| upstream_dataset_requirement | Link supplier datasets for purchased sheet, electricity, coating materials, fuel and water at the declared geography and technology |\n| disclosure | Declare supplied versus on-site formed panels, coating state, rework, scrap treatment, site, period, and any missing upstream data |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_body_only` | product boundary | Stop at the released body; exclude complete-vehicle assembly, use, service and end-of-life. | `un-cpc3-notes-2025`; `edag-silverado-body-lca-2018` |\n| `boundary_coating` | coated body route | Include surface preparation, coating, curing, direct wastes and attributable energy only when coating is part of the delivered body. | `epa-auto-ria-2004` |\n| `boundary_purchased_inputs` | upstream inputs | Record purchased inputs at the foreground gate and link suitable upstream datasets; avoid double counting on-site and purchased forming. | `edag-silverado-body-lca-2018` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 164
+              line: 8
+              column: 1
+            end:
+              offset: 191
+              line: 8
+              column: 28
+          text: "# Bodies for motor vehicles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 3975
+              line: 55
+              column: 1
+            end:
+              offset: 3996
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_13936"
+      family: "allocation"
+      span:
+        start:
+          offset: 13936
+          line: 275
+          column: 1
+        end:
+          offset: 14772
+          line: 283
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocate_subdivide` | shared body and vehicle operations | Subdivide body-forming, joining and coating records from downstream vehicle assembly where measured records allow. | `edag-silverado-body-lca-2018` |\n| `allocate_metered` | shared meters and batches | Assign shared electricity, gas, water and material issues to accepted bodies using the documented meter period, line or batch counts and configuration mix; disclose the allocation key and reject untraceable assignment. | `edag-silverado-body-lca-2018` |\n| `allocate_scrap` | recovered steel offcuts | Record steel offcuts once as waste to their actual treatment route; do not give an undocumented avoided-production credit. | `edag-silverado-body-lca-2018` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 164
+              line: 8
+              column: 1
+            end:
+              offset: 191
+              line: 8
+              column: 28
+          text: "# Bodies for motor vehicles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 13936
+              line: 275
+              column: 1
+            end:
+              offset: 13976
+              line: 275
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_19309"
+      family: "validation"
+      span:
+        start:
+          offset: 19309
+          line: 312
+          column: 1
+        end:
+          offset: 20281
+          line: 321
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | `body_output` | Confirm one accepted body with measured M kg and the same configuration and coating state across reference and inventory. | `edag-silverado-body-lca-2018` |\n| `validate_boundary` | body versus vehicle | Reject datasets that include complete-vehicle assembly, chassis, engine or downstream use inside the body reference. | `un-cpc3-notes-2025`; `edag-silverado-body-lca-2018` |\n| `validate_conditions` | conditional rows | Require route evidence for aluminium sheet, coating water, basecoat, oven gas and effluent when those rows are included; absent routes are disclosed. | `edag-silverado-body-lca-2018`; `epa-auto-ria-2004` |\n| `validate_records` | all rows | Match each amount to a dated protocol record, check unit and direction, and disclose unresolved flow UUIDs and missing upstream datasets. | `edag-silverado-body-lca-2018` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 164
+              line: 8
+              column: 1
+            end:
+              offset: 191
+              line: 8
+              column: 28
+          text: "# Bodies for motor vehicles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 19309
+              line: 312
+              column: 1
+            end:
+              offset: 19331
+              line: 312
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_body_only"
+      identity_kind: "explicit"
+      unit_id: "normative_3975"
+      source_span:
+        start:
+          offset: 5109
+          line: 70
+          column: 1
+        end:
+          offset: 5301
+          line: 70
+          column: 193
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_coating"
+      identity_kind: "explicit"
+      unit_id: "normative_3975"
+      source_span:
+        start:
+          offset: 5302
+          line: 71
+          column: 1
+        end:
+          offset: 5501
+          line: 71
+          column: 200
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_purchased_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_3975"
+      source_span:
+        start:
+          offset: 5502
+          line: 72
+          column: 1
+        end:
+          offset: 5723
+          line: 72
+          column: 222
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_13936"
+      source_span:
+        start:
+          offset: 14049
+          line: 279
+          column: 1
+        end:
+          offset: 14260
+          line: 279
+          column: 212
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_metered"
+      identity_kind: "explicit"
+      unit_id: "normative_13936"
+      source_span:
+        start:
+          offset: 14261
+          line: 280
+          column: 1
+        end:
+          offset: 14565
+          line: 280
+          column: 305
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_13936"
+      source_span:
+        start:
+          offset: 14566
+          line: 281
+          column: 1
+        end:
+          offset: 14770
+          line: 281
+          column: 205
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_19309"
+      source_span:
+        start:
+          offset: 19404
+          line: 316
+          column: 1
+        end:
+          offset: 19601
+          line: 316
+          column: 198
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_19309"
+      source_span:
+        start:
+          offset: 19602
+          line: 317
+          column: 1
+        end:
+          offset: 19821
+          line: 317
+          column: 220
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_conditions"
+      identity_kind: "explicit"
+      unit_id: "normative_19309"
+      source_span:
+        start:
+          offset: 19822
+          line: 318
+          column: 1
+        end:
+          offset: 20072
+          line: 318
+          column: 251
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_records"
+      identity_kind: "explicit"
+      unit_id: "normative_19309"
+      source_span:
+        start:
+          offset: 20073
+          line: 319
+          column: 1
+        end:
+          offset: 20279
+          line: 319
+          column: 207
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_3975"
+      source_span:
+        start:
+          offset: 3975
+          line: 55
+          column: 1
+        end:
+          offset: 3996
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_3975"
+      source_span:
+        start:
+          offset: 4024
+          line: 59
+          column: 1
+        end:
+          offset: 5036
+          line: 66
+          column: 148
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_13936"
+      source_span:
+        start:
+          offset: 13936
+          line: 275
+          column: 1
+        end:
+          offset: 13976
+          line: 275
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_19309"
+      source_span:
+        start:
+          offset: 19309
+          line: 312
+          column: 1
+        end:
+          offset: 19331
+          line: 312
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:0e4eed15bb3703d0a5915bf407d82160f8ea1ab7f42305775638d25ab533ab79"
-  generated_content_sha256: "sha256:f89d4dafada49e2b679e0b50a53944c15d3d94fc7b4b841b7f2fc100011322d8"
+  generated_content_sha256: "sha256:1ee4e71d7101714eaeec27b50e5c534b307f16427304c2880193df62a5218245"

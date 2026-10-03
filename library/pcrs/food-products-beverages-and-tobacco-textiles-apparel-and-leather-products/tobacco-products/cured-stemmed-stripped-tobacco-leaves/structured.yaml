@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1227,12 +1227,484 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission Recommendation (EU) 2021/2279 on the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32021H2279, retrieved 2026-08-20"
     used_for: "Company-specific data, completeness, allocation hierarchy and disclosure, data quality, robustness, and downstream dataset use."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f6c8cc6102102e6144bf041e84727a4e221f5ed0e58f6dee8e5dcadff4bc2ca4"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6731"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6731
+          line: 64
+          column: 1
+        end:
+          offset: 10317
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Traceable cured unstemmed tobacco leaves accepted at the stemming/redrying facility, with tobacco type, origin, crop year, curing method and location, grade, received mass, moisture basis, and upstream cultivation-curing dataset reference declared. |\n| starting_condition_role | Foreground gate input; cultivation, harvesting, initial curing, and inbound transport are linked upstream systems unless separately added to an extended study. |\n| product_classification_scope | Cured stemmed/stripped tobacco leaves represented by CPC 3.0 code 25010 and restricted to unmanufactured leaf tobacco with the main stems or midribs removed. |\n| recursive_input_rule | Purchased or transferred cured stemmed/stripped tobacco already in this category is recorded once as a distinct input with its upstream dataset; do not reconstruct its stemming/redrying inventory recursively. |\n| upstream_dataset_requirement | Link cultivation, harvesting, curing, and inbound transport for received cured unstemmed leaf; link purchased electricity, steam, water, each fuel, packaging component, and off-site treatment actually used. |\n| disclosure | Declare facility and geography, tobacco type, origin and crop year, curing method and location, received-leaf state, process configuration, moisture targets, stem and scrap disposition, fuel and emission calculation, packaging, allocation, exclusions, data gaps, and the unresolved Tiangong route-metadata conflict. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_cured_leaf_start` | Foreground entry | Start the normal foreground boundary at accepted cured unstemmed leaf; represent cultivation, harvest, curing, and inbound transport with linked upstream datasets and declare whether curing was flue-, fire-, or air-curing. | `usda-7cfr-leaf-tobacco`; `fao-rwedp-32` |\n| `boundary_complete_stemming_redrying` | Covered route | Include conditioning, foreign-matter removal, threshing or stemming, lamina/stem separation, screening, redrying, moisture equilibration or cooling, and packing as explicit foreground operations when performed. | `wise-reaves-1997`; `usepa-2006-tobacco-processing` |\n| `boundary_product_state` | Product identity | The reference output must remain unmanufactured cured leaf tobacco in stemmed/stripped form; exclude unstemmed leaf sold as such and all downstream cutting, flavoring, expansion, reconstitution, extraction, and consumer-product manufacture. | `unsd-cpc3-25010`; `usda-7cfr-leaf-tobacco` |\n| `boundary_actual_inputs` | Utilities and materials | Record each actually used water input, electricity supply, steam supply, fuel, cleaning chemical, and packaging component as its own atomic exchange; add a specific card when an actual item is not represented below. | `eu-2021-2279-environmental-footprint` |\n| `boundary_outputs_emissions` | Outputs | Record stems, strip scrap, tobacco dust, rejects, wastewater, and each directly emitted substance separately by destination; do not hide direct emissions in a treatment-service input or net co-products from inputs. | `usepa-2006-tobacco-processing`; `eu-2021-2279-environmental-footprint` |\n| `boundary_tiangong_route_conflict` | Tiangong metadata | Do not use `Fresh, unprocessed produce` / `鲜品，未加工` as route evidence because it contradicts the cured title and CPC identity; disclose the conflict and require resolution or formal review acceptance before publication. | `unsd-cpc3-25010`; `usda-7cfr-leaf-tobacco` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 277
+              line: 10
+              column: 1
+            end:
+              offset: 316
+              line: 10
+              column: 40
+          text: "# Cured stemmed/stripped tobacco leaves"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6731
+              line: 64
+              column: 1
+            end:
+              offset: 6752
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39534"
+      family: "allocation"
+      span:
+        start:
+          offset: 39534
+          line: 740
+          column: 1
+        end:
+          offset: 41231
+          line: 750
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_first` | Every multi-output operation | Prefer subdivision, line-specific measurement, or system expansion that preserves separately measured lamina, stems, strip scrap, dust, rejects, and energy recovery before applying allocation. | `eu-2021-2279-environmental-footprint` |\n| `allocation_output_classification` | Stems and strip scrap | Classify each stream by its actual destination: a saleable or internally used material with an upstream-substitution claim is a co-product; a discarded stream is waste. Do not change classification merely to improve results. | `usda-7cfr-leaf-tobacco`; `eu-2021-2279-environmental-footprint` |\n| `allocation_residual_physical` | Unavoidable shared burdens | When subdivision and system expansion are not applicable, allocate shared conditioning, separation, and redrying burdens by measured dry mass of saleable outputs on a consistent moisture basis. | `eu-2021-2279-environmental-footprint` |\n| `allocation_economic_sensitivity` | Material co-products | When stems or strip scrap have materially different value from lamina, report an economic-allocation sensitivity using period-matched net revenues and disclose the result alongside the primary physical allocation. | `eu-2021-2279-environmental-footprint` |\n| `allocation_no_invisible_credit` | Waste and recovered energy | Do not subtract waste treatment, exported material, recovered heat, or recovered energy directly from an input. Represent the outgoing stream and any substitution or credit as an explicit model choice. | `eu-2021-2279-environmental-footprint` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 277
+              line: 10
+              column: 1
+            end:
+              offset: 316
+              line: 10
+              column: 40
+          text: "# Cured stemmed/stripped tobacco leaves"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39534
+              line: 740
+              column: 1
+            end:
+              offset: 39574
+              line: 740
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_51485"
+      family: "validation"
+      span:
+        start:
+          offset: 51485
+          line: 787
+          column: 1
+        end:
+          offset: 54568
+          line: 802
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_reference_identity` | Reference flow | Fail conformance if the product UUID, Mass UUID, unit-group UUID, reference unit, reference amount, English display, or Chinese display differs from the verified reference object without an approved PCR revision. | `unsd-cpc3-25010` |\n| `val_tiangong_route_conflict` | Publication readiness | Fail publication readiness while the conflicting `Fresh, unprocessed produce` / `鲜品，未加工` route metadata remains unresolved or lacks formal review acceptance; never treat that value as support for a fresh-product boundary. | `unsd-cpc3-25010`; `usda-7cfr-leaf-tobacco` |\n| `val_required_qualifiers` | Dataset metadata | Fail conformance when any required qualifier is absent or product, laboratory, and process records disagree on tobacco type, curing route, moisture, residual stem content, strip specification, or package. | `usda-7cfr-leaf-tobacco` |\n| `val_process_coverage` | Process inventory | Require all four processes and an applicability decision for every conditional utility, fuel, wastewater, packaging, and emission card; an active card must carry amount, basis, protocol, and destination or compartment. | `wise-reaves-1997`; `usepa-2006-tobacco-processing` |\n| `val_atomic_flows` | Inventory exchanges | Fail conformance when a row combines fuels, utilities, packaging materials, wastes, or emitted substances; each card must represent one exchange and unresolved UUIDs must remain blank. | `eu-2021-2279-environmental-footprint` |\n| `val_moisture_mass_balance` | Every process and facility total | Calculate and report material balance on consistent moisture bases; investigate gaps against a documented site tolerance and do not force-close the balance by changing product mass or merging stems, scrap, dust, or evaporation. | `eu-2021-2279-environmental-footprint` |\n| `val_allocation` | Multi-output processes | Verify destination classification, avoidance rationale, allocation driver and period, fractions summing to 1 within reported rounding precision, and economic sensitivity when co-product value differences are material. | `eu-2021-2279-environmental-footprint` |\n| `val_energy_emissions` | Utilities, fuel, and direct emissions | Reconcile meters, invoices, stocks, heating values, operating periods, controls, and substance-specific calculations; do not combine NO and NO2 or fossil and biogenic carbon dioxide. | `zhu-2025-curing-emissions`; `eu-2021-2279-environmental-footprint` |\n| `val_no_inferred_ranges` | Quantitative metadata | Verify that the structured projection contains zero quantity ranges; reject any lower-equals-upper case value or range inferred without two independent boundary-compatible original sources. | `eu-2021-2279-environmental-footprint` |\n| `val_source_resolution` | Evidence register | Verify that every cited source id resolves in Data Sources and that each external factor or rule retains an applicability statement and calculation record. | `eu-2021-2279-environmental-footprint` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 277
+              line: 10
+              column: 1
+            end:
+              offset: 316
+              line: 10
+              column: 40
+          text: "# Cured stemmed/stripped tobacco leaves"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 51485
+              line: 787
+              column: 1
+            end:
+              offset: 51507
+              line: 787
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_cured_leaf_start"
+      identity_kind: "explicit"
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 8361
+          line: 79
+          column: 1
+        end:
+          offset: 8679
+          line: 79
+          column: 319
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_complete_stemming_redrying"
+      identity_kind: "explicit"
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 8680
+          line: 80
+          column: 1
+        end:
+          offset: 9004
+          line: 80
+          column: 325
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_product_state"
+      identity_kind: "explicit"
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 9005
+          line: 81
+          column: 1
+        end:
+          offset: 9341
+          line: 81
+          column: 337
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_actual_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 9342
+          line: 82
+          column: 1
+        end:
+          offset: 9655
+          line: 82
+          column: 314
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_outputs_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 9656
+          line: 83
+          column: 1
+        end:
+          offset: 9989
+          line: 83
+          column: 334
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_tiangong_route_conflict"
+      identity_kind: "explicit"
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 9990
+          line: 84
+          column: 1
+        end:
+          offset: 10315
+          line: 84
+          column: 326
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid_first"
+      identity_kind: "explicit"
+      unit_id: "normative_39534"
+      source_span:
+        start:
+          offset: 39647
+          line: 744
+          column: 1
+        end:
+          offset: 39942
+          line: 744
+          column: 296
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_output_classification"
+      identity_kind: "explicit"
+      unit_id: "normative_39534"
+      source_span:
+        start:
+          offset: 39943
+          line: 745
+          column: 1
+        end:
+          offset: 40299
+          line: 745
+          column: 357
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_39534"
+      source_span:
+        start:
+          offset: 40300
+          line: 746
+          column: 1
+        end:
+          offset: 40600
+          line: 746
+          column: 301
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_economic_sensitivity"
+      identity_kind: "explicit"
+      unit_id: "normative_39534"
+      source_span:
+        start:
+          offset: 40601
+          line: 747
+          column: 1
+        end:
+          offset: 40918
+          line: 747
+          column: 318
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_no_invisible_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_39534"
+      source_span:
+        start:
+          offset: 40919
+          line: 748
+          column: 1
+        end:
+          offset: 41229
+          line: 748
+          column: 311
+    - pointer: "/validation_rules/0"
+      rule_id: "val_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 51580
+          line: 791
+          column: 1
+        end:
+          offset: 51860
+          line: 791
+          column: 281
+    - pointer: "/validation_rules/1"
+      rule_id: "val_tiangong_route_conflict"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 51861
+          line: 792
+          column: 1
+        end:
+          offset: 52188
+          line: 792
+          column: 328
+    - pointer: "/validation_rules/2"
+      rule_id: "val_required_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 52189
+          line: 793
+          column: 1
+        end:
+          offset: 52471
+          line: 793
+          column: 283
+    - pointer: "/validation_rules/3"
+      rule_id: "val_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 52472
+          line: 794
+          column: 1
+        end:
+          offset: 52793
+          line: 794
+          column: 322
+    - pointer: "/validation_rules/4"
+      rule_id: "val_atomic_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 52794
+          line: 795
+          column: 1
+        end:
+          offset: 53066
+          line: 795
+          column: 273
+    - pointer: "/validation_rules/5"
+      rule_id: "val_moisture_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 53067
+          line: 796
+          column: 1
+        end:
+          offset: 53404
+          line: 796
+          column: 338
+    - pointer: "/validation_rules/6"
+      rule_id: "val_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 53405
+          line: 797
+          column: 1
+        end:
+          offset: 53711
+          line: 797
+          column: 307
+    - pointer: "/validation_rules/7"
+      rule_id: "val_energy_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 53712
+          line: 798
+          column: 1
+        end:
+          offset: 54033
+          line: 798
+          column: 322
+    - pointer: "/validation_rules/8"
+      rule_id: "val_no_inferred_ranges"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 54034
+          line: 799
+          column: 1
+        end:
+          offset: 54319
+          line: 799
+          column: 286
+    - pointer: "/validation_rules/9"
+      rule_id: "val_source_resolution"
+      identity_kind: "explicit"
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 54320
+          line: 800
+          column: 1
+        end:
+          offset: 54566
+          line: 800
+          column: 247
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 6731
+          line: 64
+          column: 1
+        end:
+          offset: 6752
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6731"
+      source_span:
+        start:
+          offset: 6780
+          line: 68
+          column: 1
+        end:
+          offset: 8288
+          line: 75
+          column: 333
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39534"
+      source_span:
+        start:
+          offset: 39534
+          line: 740
+          column: 1
+        end:
+          offset: 39574
+          line: 740
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51485"
+      source_span:
+        start:
+          offset: 51485
+          line: 787
+          column: 1
+        end:
+          offset: 51507
+          line: 787
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:f6c8cc6102102e6144bf041e84727a4e221f5ed0e58f6dee8e5dcadff4bc2ca4"
-  generated_content_sha256: "sha256:12c3673db20afedf09e7b64543fa18d59938e88fcd9c3ec5c9eab32977037a41"
+  generated_content_sha256: "sha256:33fdd115d8ad619571f786f05c9461b322c0a6cf16d79d1f9146e9b7fc14699c"

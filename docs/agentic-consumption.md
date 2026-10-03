@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -80,15 +80,14 @@ performs TIDAS structural or agentic methodology review.
 
 | Command | Contract |
 | --- | --- |
-| `guidance --topic <topic>` | Paged projection values with hashes, existing rule IDs and applicability; legacy unfiltered guidance is unchanged |
+| `guidance --topic <topic>` | Paged complete projection values with stored hashes, rule IDs and complete source context |
 | `guidance --pointer <pointer>` | Complete value at a verified projection location |
 | `inspect --input <file> [--related <directory>]` | Native TIDAS summary, exchanges/instances, local references or original pointer values; no schema-validity claim |
 | `calculate --input <request.json>` | Explicit-basis normalization, conversion or balance arithmetic with the source request hash |
 | `review prepare --pcr <id> --input <file>` | An unreviewed report with input/PCR bindings and open coverage |
 | `review check --pcr <id> --input <file> --report <review.json>` | Shape, binding and source-pointer checks with `methodology_approval: false` |
 
-New read views default to bounded previews/pages with explicit truncation and
-continuations. Exact pointer reads preserve original values; use `--output` when
+Inspection views retain their explicit preview/page contracts. Guidance schema 2 paginates complete values without character truncation, retaining source units and ancestor preambles. Exact pointer reads preserve original values; use `--output` when
 the complete result exceeds the stdout budget. Output files are created exclusively.
 Reference resolution uses dataset kind, UUID and the requested version. A unique
 match without a requested version is labeled unspecified; duplicates and mismatched
@@ -140,3 +139,7 @@ product version, source commit and full-source fingerprint alongside the existin
 PCR/readiness and SQLite payload hashes. Historical independently versioned packages
 remain readable under their existing compatibility contracts; installing a package
 does not activate its Skill or approve methodology.
+
+## Normative source context
+
+Follow the [semantic projection contract](semantic-projection-contract.md) for v2 source units, normalized positions, snapshot-local IDs and legacy enrichment provenance. Read a selected rule together with its complete unit and `ancestor_context`; the flat display and generic `applies_to` do not determine scientific applicability. Old immutable v1 snapshots remain readable with separately identified source-derived context.

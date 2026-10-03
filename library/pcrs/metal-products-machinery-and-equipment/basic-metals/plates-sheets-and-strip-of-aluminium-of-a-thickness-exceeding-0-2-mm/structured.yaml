@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -997,12 +997,471 @@ data_sources:
     type: "official_guidance"
     reference: "International Aluminium Institute, How to Treat Scrap Flows in Carbon Footprint Calculations for Aluminium Products, October 2025, https://international-aluminium.org/wp-content/uploads/2025/10/Carbon-Footprint-of-Recycled-Aluminium-IAI-Document-Final.pdf (retrieved 2026-08-09)"
     used_for: "Internal versus process scrap definitions, recycled-content disclosure, dross treatment and consistent cut-off/substitution/co-product modelling"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:290c45c2a5d2096998dea8574deff8b019622a6033db05ad2aaa935837c300e7"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6357"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6357
+          line: 64
+          column: 1
+        end:
+          offset: 9907
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins with receipt of the declared metallic feedstock at the reporting plant, or with molten metal receipt when casting is controlled by the same product system, and ends with net saleable plate, sheet or strip in its declared delivery state at the producer gate. Include all selected route operations, utilities, consumables, direct releases, treatment of on-site wastes and internal scrap-remelting operations controlled within this boundary. Upstream primary aluminium, recycled ingot, alloying material, electricity, fuel, chemicals, water, packaging and off-site treatment remain linked product or waste inputs with appropriate upstream datasets.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of identified ingot, rolling slab, molten aluminium, continuous-cast strip feedstock or purchased reroll stock at the reporting plant |\n| starting_condition_role | Upstream product input whose primary/recycled origin, alloy family, geography and supplier dataset are disclosed; on-site casting is foreground when controlled by the reporting system |\n| product_classification_scope | CPC 3.0 41534 plate, sheet and strip with finished thickness > 0.2 mm; foil ≤ 0.2 mm and other aluminium product forms are outside scope |\n| recursive_input_rule | Purchased plate, sheet, strip or reroll stock in the same category remains an explicit product input; model only the downstream transformations performed in the foreground and link the purchased input to its upstream dataset instead of recreating the same category recursively |\n| upstream_dataset_requirement | Use supplier-specific or otherwise representative datasets for primary aluminium, recycled wrought-alloy ingot, cast stock, alloying additions, energy, chemicals, water, packaging and off-site waste treatment; disclose geography, technology and temporal mismatch |\n| disclosure | Declare route, cast-stock source, alloy/temper, gauge, annealing, surface treatment, primary/recycled shares, internal and exported scrap routes, delivery state, cut-offs and any operation performed outside the reporting plant |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route_complete` | Foreground production route | Include every controlled operation needed to reach the declared delivery state: feedstock preparation or on-site casting where applicable, hot or continuous casting/rolling route, cold rolling where used, annealing/heat treatment, surface treatment, trimming/slitting, internal scrap handling and packaging. | `european-aluminium-epr-2024` |\n| `boundary_upstream_visible` | Purchased metallic feedstock | Keep primary aluminium, recycled wrought-alloy ingot, slab, molten metal and reroll stock visible as upstream product inputs with source-specific datasets and disclosed primary/recycled shares. | `european-aluminium-epr-2024` |\n| `boundary_recursive_input` | Same-category purchased input | Do not recursively model purchased same-category plate, sheet or strip as if produced by the reporting plant; link it to an upstream dataset and include only the actual downstream transformation. | `iso-14044-2006` |\n| `boundary_downstream_excluded` | Downstream application | Exclude fabrication into battery cases, photovoltaic supports, vehicles, building products or other components, and exclude distribution beyond the producer gate, installation, use and end-of-life unless a separately declared study extends the system. | `unsd-cpc-3-0-41534` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 10
+              column: 1
+            end:
+              offset: 342
+              line: 10
+              column: 74
+          text: "# Plates, sheets and strip, of aluminium, of a thickness exceeding 0.2 mm"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6357
+              line: 64
+              column: 1
+            end:
+              offset: 6378
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32716"
+      family: "allocation"
+      span:
+        start:
+          offset: 32716
+          line: 574
+          column: 1
+        end:
+          offset: 34680
+          line: 585
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide` | Multiple alloys, gauges, tempers, routes or surface states | Prefer campaign, line and process subdivision and direct metering. A single-alloy, single-coating or single-application dataset shall not be extrapolated to the category. | `iso-14044-2006` |\n| `allocation_shared_operations` | Shared utilities and finishing operations | Use a physical relationship that reflects causality, such as metered energy, furnace occupancy, line time or processed mass; disclose the basis and test sensitivity when the choice materially changes results. | `iso-14044-2006` |\n| `allocation_internal_scrap` | Edge, crop and trim scrap returned inside the same product system | Keep the return loop visible through gross scrap generation and remelting/return records, include controlled remelting burdens, and do not count the same internal scrap as both avoided primary aluminium and external recycled-content input. | `iai-aluminium-scrap-2025` |\n| `allocation_boundary_scrap` | Process scrap entering or leaving the product-system boundary | State whether cut-off, substitution or co-product treatment is used and apply it consistently to both scrap generation and scrap use; do not combine credits from more than one approach. | `iai-aluminium-scrap-2025` |\n| `allocation_recycled_content` | Primary and recycled aluminium shares | Calculate shares from traceable metallic charge after separately identifying internal return, pre-consumer and post-consumer scrap; disclose the product-system boundary and recycled-content definition. | `iai-aluminium-scrap-2025` |\n| `allocation_dross` | Dross and skimmings | Record treatment and recovered metal explicitly; model residues and recovery operations according to their actual boundary and destination rather than assuming all dross is saleable co-product. | `iai-aluminium-scrap-2025` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 10
+              column: 1
+            end:
+              offset: 342
+              line: 10
+              column: 74
+          text: "# Plates, sheets and strip, of aluminium, of a thickness exceeding 0.2 mm"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32716
+              line: 574
+              column: 1
+            end:
+              offset: 32756
+              line: 574
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43730"
+      family: "validation"
+      span:
+        start:
+          offset: 43730
+          line: 620
+          column: 1
+        end:
+          offset: 46251
+          line: 634
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Require product flow `4f197be4-7b3b-11dd-ad8b-0800200c9a66`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass group `93a60a57-a4c8-11da-a746-0800200c9a66`, kg and exactly 1,000 kg net unpackaged product. | `unsd-cpc-3-0-41534` |\n| `validate_thickness_scope` | Product scope | Reject any represented product with finished nominal thickness not greater than 0.2 mm and reject foil, extrusion, casting or fabricated-component outputs. | `unsd-cpc-3-0-41534` |\n| `validate_required_qualifiers` | Dataset metadata | Reject a package missing alloy/temper, thickness, route, cast-stock source, annealing, surface treatment, primary/recycled shares, scrap-return route or delivery-state declarations; explicit not-applicable values require justification. | `iso-6361-1-2011`; `iso-2107-2023` |\n| `validate_no_narrow_proxy` | Representativeness claim | Reject a category-average claim based only on one alloy, temper, coating, gauge, application or narrow Tiangong candidate unless the dataset is labelled product-specific and makes no category-average claim. | `iso-14044-2006` |\n| `validate_route_sequence` | Process map | Require one declared cast-stock starting condition and the complete applicable sequence of hot rolling or continuous casting/rolling, cold rolling, heat treatment, surface treatment and finishing; exclude inapplicable steps explicitly. | `european-aluminium-epr-2024` |\n| `validate_metal_balance` | Aluminium-bearing flows | Require a disclosed metal-balance equation, stock change and reconciliation difference; internal return scrap must not be double-counted as external input or net output. | `iai-aluminium-scrap-2025` |\n| `validate_scrap_method` | Scrap and recycled content | Require separate internal, pre-consumer and post-consumer quantities and one consistently applied, disclosed cut-off, substitution or co-product approach for boundary-crossing process scrap. | `iai-aluminium-scrap-2025` |\n| `validate_surface_mass` | Surface-treated products | Require treatment identity and retained coating/cladding mass; do not use a coated product dataset as an untreated or whole-category default. | `iso-6361-1-2011` |\n| `validate_data_period` | Foreground data quality | Require declared geography, plants/lines, reference period, product-mix coverage, allocation drivers and evidence for outsourced operations. | `iso-14044-2006` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 10
+              column: 1
+            end:
+              offset: 342
+              line: 10
+              column: 74
+          text: "# Plates, sheets and strip, of aluminium, of a thickness exceeding 0.2 mm"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43730
+              line: 620
+              column: 1
+            end:
+              offset: 43752
+              line: 620
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 6380
+          line: 66
+          column: 1
+        end:
+          offset: 7056
+          line: 66
+          column: 677
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_route_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 8596
+          line: 81
+          column: 1
+        end:
+          offset: 8997
+          line: 81
+          column: 402
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream_visible"
+      identity_kind: "explicit"
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 8998
+          line: 82
+          column: 1
+        end:
+          offset: 9288
+          line: 82
+          column: 291
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_recursive_input"
+      identity_kind: "explicit"
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 9289
+          line: 83
+          column: 1
+        end:
+          offset: 9568
+          line: 83
+          column: 280
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_downstream_excluded"
+      identity_kind: "explicit"
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 9569
+          line: 84
+          column: 1
+        end:
+          offset: 9905
+          line: 84
+          column: 337
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 32829
+          line: 578
+          column: 1
+        end:
+          offset: 33108
+          line: 578
+          column: 280
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 33109
+          line: 579
+          column: 1
+        end:
+          offset: 33417
+          line: 579
+          column: 309
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_internal_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 33418
+          line: 580
+          column: 1
+        end:
+          offset: 33788
+          line: 580
+          column: 371
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_boundary_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 33789
+          line: 581
+          column: 1
+        end:
+          offset: 34101
+          line: 581
+          column: 313
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_recycled_content"
+      identity_kind: "explicit"
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 34102
+          line: 582
+          column: 1
+        end:
+          offset: 34408
+          line: 582
+          column: 307
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_dross"
+      identity_kind: "explicit"
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 34409
+          line: 583
+          column: 1
+        end:
+          offset: 34678
+          line: 583
+          column: 270
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 43825
+          line: 624
+          column: 1
+        end:
+          offset: 44123
+          line: 624
+          column: 299
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_thickness_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 44124
+          line: 625
+          column: 1
+        end:
+          offset: 44351
+          line: 625
+          column: 228
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_required_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 44352
+          line: 626
+          column: 1
+        end:
+          offset: 44680
+          line: 626
+          column: 329
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_no_narrow_proxy"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 44681
+          line: 627
+          column: 1
+        end:
+          offset: 44966
+          line: 627
+          column: 286
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_route_sequence"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 44967
+          line: 628
+          column: 1
+        end:
+          offset: 45280
+          line: 628
+          column: 314
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_metal_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 45281
+          line: 629
+          column: 1
+        end:
+          offset: 45536
+          line: 629
+          column: 256
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_scrap_method"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 45537
+          line: 630
+          column: 1
+        end:
+          offset: 45815
+          line: 630
+          column: 279
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_surface_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 45816
+          line: 631
+          column: 1
+        end:
+          offset: 46034
+          line: 631
+          column: 219
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_data_period"
+      identity_kind: "explicit"
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 46035
+          line: 632
+          column: 1
+        end:
+          offset: 46249
+          line: 632
+          column: 215
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 6357
+          line: 64
+          column: 1
+        end:
+          offset: 6378
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6357"
+      source_span:
+        start:
+          offset: 7084
+          line: 70
+          column: 1
+        end:
+          offset: 8523
+          line: 77
+          column: 244
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32716"
+      source_span:
+        start:
+          offset: 32716
+          line: 574
+          column: 1
+        end:
+          offset: 32756
+          line: 574
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43730"
+      source_span:
+        start:
+          offset: 43730
+          line: 620
+          column: 1
+        end:
+          offset: 43752
+          line: 620
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:290c45c2a5d2096998dea8574deff8b019622a6033db05ad2aaa935837c300e7"
-  generated_content_sha256: "sha256:298a2a7ec97ed2be1399f17ab0a5bab267e3bbabab5bb6dd294f2369b0af07be"
+  generated_content_sha256: "sha256:090c329689dfa011849064a1cc85d66f6f274bbfbc7cd77460363bf3bc69dfed"

@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 ---
 
 # TianGong LCA PCR Library
@@ -112,8 +112,7 @@ source tests, including documentation tests. Full validation currently runs on L
 membership; `npm run test:coverage` records the initial engineering coverage.
 The shared YAML boundary and offline-tool builder now use TypeScript; installed packages contain compiled runtime code. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
 migration boundaries and final qualification requirements. The Python SEO checker
-is retained. This foundation does not resolve the separately tracked semantic
-projection defect or claim the legacy implementation is already TypeScript.
+is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Remaining authored JavaScript and final production qualification are still tracked under #69.
 
 ## Builder CLI
 

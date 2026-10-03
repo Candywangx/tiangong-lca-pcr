@@ -4,7 +4,7 @@ import { createHash, randomUUID } from "node:crypto";
 import path from "node:path";
 
 import { inspectPcrDirectory } from "../lib/lint-rules.mjs";
-import { parsePcrMarkdownToStructured } from "../lib/markdown-projection.mjs";
+import { parsePcrMarkdownToStructured } from "../lib/markdown-projection.ts";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import { assertAuthorQuality, flattenProcessInventory, pcrSourceIds, referenceProductRows } from "./author-gates.mjs";
 import { reviewTimeRemaining } from "./review-assessment.mjs";

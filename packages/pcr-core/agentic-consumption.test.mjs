@@ -3,9 +3,9 @@ import { cpSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync }
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { atPointer, readJsonDocument, strictNumber } from "./src/consumption-data.mjs";
+import { atPointer, readJsonDocument, strictNumber } from "./src/consumption-data.ts";
 import { calculate } from "./src/consumption-calculation.mjs";
-import { selectGuidance } from "./src/consumption-guidance.mjs";
+import { selectGuidance } from "./src/consumption-guidance.ts";
 import { checkReview, prepareReview } from "./src/consumption-review.mjs";
 import { inspectTidas } from "./src/tidas-inspection.mjs";
 

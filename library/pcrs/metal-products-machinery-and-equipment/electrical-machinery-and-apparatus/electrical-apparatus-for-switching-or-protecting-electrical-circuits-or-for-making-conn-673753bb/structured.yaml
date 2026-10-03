@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -945,12 +945,543 @@ data_sources:
     type: "standard"
     reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines. https://www.iso.org/standard/38498.html (retrieved 2026-08-09)"
     used_for: "Goal/scope, inventory, allocation, interpretation, reporting, and critical-review framework"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b965a3d403f17d86f7f66c222bbef22cb42af971868e232727d6788e3c37c0b6"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8443"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8443
+          line: 79
+          column: 1
+        end:
+          offset: 12945
+          line: 107
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe reference system includes foreground operations from receipt of materials, components, insulating or interruption\nmedia, and utilities at the manufacturing site through component preparation performed by the manufacturer,\nassembly, sealing or filling, routine factory testing, packing, and release of the finished apparatus at the plant gate.\nUpstream production of purchased metals, contact materials, conductors, ceramics, polymers, composites, electronics,\nmechanisms, media, utilities, and packaging remains linked through supplier- and technology-specific background\ndatasets. Capital goods are included only when required by the declared study framework and shall then be disclosed.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_cradle_to_gate` | Reference production dataset | Include all manufacturer-controlled preparation, assembly, sealing or medium charging, factory testing, packing, rejects, wastes, and direct releases up to plant-gate release. Link purchased inputs to upstream datasets rather than treating them as burden-free. | `iec-ts-62271-320-2025`; `iso-14044-2006` |\n| `boundary_category_identity` | Product scope | Include only individual apparatus rated above 1 000 V that performs the declared switching, protection, isolation, earthing, voltage-limiting, or connection function. Exclude complete equipped switchgear/controlgear assemblies and cabinets. | `iec-62271-1-2017-amd1-2021`; `iec-62271-200-2021-amd1-2024` |\n| `boundary_medium_accounting` | Gas- or liquid-insulated/interrupted apparatus | Include medium acquisition, charging, recovery, recycling or destruction transfers, releases during filling and factory tests, and medium contained in the delivered apparatus. Keep each medium or mixture chemically distinct. | `iec-62271-4-2022`; `us-epa-40-cfr-98-subpart-ss` |\n| `boundary_downstream_scenarios` | Installation, use, maintenance, refurbishment, and end-of-life | Exclude downstream stages from the reference production result, but retain the product-specific service life, endurance, maintenance, replacement, contained-medium, leakage-performance, recovery, and material-disassembly facts needed to model them separately. | `iec-ts-62271-320-2025`; `iec-62271-4-2022` |\n| `boundary_market_regulation` | Jurisdiction-specific downstream use | Apply current market rules only when the declared geography makes them applicable. For an EU scenario, disclose the insulating or breaking medium, GWP information, charge, leakage label or monitoring basis, commissioning date, voltage/current class, and any documented derogation; do not generalize EU restrictions as global default values. | `eu-regulation-2024-573` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt at the manufacturing site of supplier-specific metals, contact and conductor materials, insulation components, mechanisms, electronics, terminals, insulating or interruption media, utilities, and packaging, each with quantity and upstream dataset reference. |\n| starting_condition_role | Foreground entry condition for manufacturer-controlled production; upstream extraction, refining, component production, and utility generation are represented by linked background datasets. |\n| product_classification_scope | Individual apparatus within CPC 3.0 code 46211 and rated above 1 000 V; not complete equipped boards, cabinets, switchgear assemblies, or substations. |\n| recursive_input_rule | A purchased input that itself falls within this product category shall use a supplier-specific upstream dataset or an explicitly separated earlier manufacturing process; the finished reference product flow shall never be reused as its own undifferentiated input. |\n| upstream_dataset_requirement | Use geography-, technology-, and material-specific datasets for contact and conductor metals, structural metals, ceramics, polymers or composites, electronic/mechanical subassemblies, insulating or interruption media, electricity and fuels, and packaging. Disclose proxies and aggregation. |\n| disclosure | Declare apparatus type, applicable standard, rated voltage/current and duty, insulation/interruption medium and sealing, contact/conductor and other BOM masses, net mass, production route, factory tests, medium balance and releases, service life/endurance, maintenance and replacement profile, packaging scope, geography, reporting period, allocation, and all excluded operations. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 337
+              line: 11
+              column: 1
+            end:
+              offset: 422
+              line: 11
+              column: 86
+          text: "# Electrical Apparatus for Switching, Protecting, or Connecting Circuits Above 1000 V"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8443
+              line: 79
+              column: 1
+            end:
+              offset: 8464
+              line: 79
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36999"
+      family: "allocation"
+      span:
+        start:
+          offset: 36999
+          line: 592
+          column: 1
+        end:
+          offset: 38423
+          line: 601
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | Multi-product production lines | First avoid allocation by subdividing metered processes and tracing model-, line-, batch-, test-cell-, and medium-handling records. | `iso-14044-2006` |\n| `allocation_physical_then_other` | Unavoidable shared utilities and operations | When subdivision is not possible, use a documented causal physical driver such as machine time, test duration, processed mass, number of operations, or measured medium throughput. Use another relationship only when a physical relationship is not defensible, and disclose the rationale and sensitivity. | `iso-14044-2006` |\n| `allocation_recycling` | Scrap, recovered medium, returned parts, and recycling credits | Keep gross input, internal return, external recovery, treatment transfer, and any substitution credit separate. State the selected recycling or end-of-life method and do not credit the same recovered material or medium twice. | `iso-14044-2006`; `iec-62271-4-2022` |\n| `allocation_medium_losses` | Insulating or interruption medium balance | Attribute measured and residual medium releases to the operation and reporting period in which they occur. Do not allocate an unexplained mass-balance residual away from the foreground system or to the delivered product. | `us-epa-40-cfr-98-subpart-ss` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 337
+              line: 11
+              column: 1
+            end:
+              offset: 422
+              line: 11
+              column: 86
+          text: "# Electrical Apparatus for Switching, Protecting, or Connecting Circuits Above 1000 V"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36999
+              line: 592
+              column: 1
+            end:
+              offset: 37039
+              line: 592
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50525"
+      family: "validation"
+      span:
+        start:
+          offset: 50525
+          line: 637
+          column: 1
+        end:
+          offset: 54240
+          line: 652
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_category_boundary` | Product identity | Confirm that the product is individual switching/protection/connection apparatus rated above 1 000 V. Reject complete equipped switchgear/controlgear assemblies, cabinets, low-voltage apparatus, empty housings, conductors/cables, transformers, and installation services. | `iec-62271-1-2017-amd1-2021`; `iec-62271-200-2021-amd1-2024` |\n| `validate_reference_identity` | Reference flow | Require product flow UUID `cf33015b-81bb-4bdf-8080-72e23c262f73`, Mass property UUID `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass UUID `93a60a57-a4c8-11da-a746-0800200c9a66`, unit kg, and exactly 1 kg normalized net product output. |  |\n| `validate_rated_characteristics` | Required qualifiers | Require rated voltage above 1 000 V and the apparatus-applicable current, making/breaking, short-circuit withstand, insulation, frequency, and endurance declarations. A missing applicable rating is an error; an inapplicable field requires a reason. | `iec-62271-1-2017-amd1-2021`; `iec-62271-100-2021-amd1-2024`; `iec-62271-102-2018-amd1-2022` |\n| `validate_material_disclosure` | BOM and mass balance | Require separate contact and conductor material identities and masses, insulation/interruption medium, structural material families, electronics/mechanisms, net product mass, wastes, returns, and stock changes. Reject an unspecified single total as complete BOM evidence. | `iec-ts-62271-320-2025` |\n| `validate_medium_and_leakage` | Gas- or liquid-filled technology | Require medium identity/composition, opening and closing stock, acquisitions, charge, contained delivered mass, transfers to supplier/recycling/destruction, measured releases, residual calculation, seal design, and leak-test or monitoring basis. For non-fillable technology require an explicit `not_applicable` reason. | `iec-62271-4-2022`; `us-epa-40-cfr-98-subpart-ss` |\n| `validate_life_and_maintenance` | Downstream scenario readiness | Require designed service life, mechanical/electrical endurance or operating-cycle basis, maintenance schedule and scope, replaceable parts, medium top-up and leakage basis where applicable, and recovery/disassembly instruction. Reject performance comparisons that use mass alone while these descriptors differ or are missing. | `iec-ts-62271-320-2025`; `iec-62271-4-2022` |\n| `validate_process_completeness` | Foreground inventory | Require assembly/sealing, factory testing, packing/dispatch, any controlled parts preparation, all measured utilities, rejects/wastes, direct releases, and linked upstream datasets. Reconcile product, BOM, waste, medium, and stock records for the declared period. | `iso-14044-2006`; `us-epa-40-cfr-98-subpart-ss` |\n| `validate_allocation` | Shared processes and recycling | Require subdivision or a documented causal allocation driver, separately reported recycling/recovery transfers, and no double credit. Report any non-physical allocation and sensitivity. | `iso-14044-2006` |\n| `validate_market_rules` | Jurisdiction-specific use | When the dataset claims EU market applicability, validate current Regulation (EU) 2024/573 medium identity/GWP, charge, leakage label or monitoring, commissioning class/date, and derogation documentation. Otherwise label the check skipped rather than applying EU rules globally. | `eu-regulation-2024-573` |\n| `validate_source_traceability` | Evidence and data quality | Require source ids for external method rules and retain calibration, BOM, test, medium-balance, maintenance, allocation, proxy, and dataset-version evidence sufficient for independent reproduction. | `iso-14044-2006` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 337
+              line: 11
+              column: 1
+            end:
+              offset: 422
+              line: 11
+              column: 86
+          text: "# Electrical Apparatus for Switching, Protecting, or Connecting Circuits Above 1000 V"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50525
+              line: 637
+              column: 1
+            end:
+              offset: 50547
+              line: 637
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 8466
+          line: 81
+          column: 1
+        end:
+          offset: 9158
+          line: 86
+          column: 117
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_cradle_to_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 9231
+          line: 90
+          column: 1
+        end:
+          offset: 9598
+          line: 90
+          column: 368
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_category_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 9599
+          line: 91
+          column: 1
+        end:
+          offset: 9953
+          line: 91
+          column: 355
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_medium_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 9954
+          line: 92
+          column: 1
+        end:
+          offset: 10314
+          line: 92
+          column: 361
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_downstream_scenarios"
+      identity_kind: "explicit"
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 10315
+          line: 93
+          column: 1
+        end:
+          offset: 10723
+          line: 93
+          column: 409
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_market_regulation"
+      identity_kind: "explicit"
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 10724
+          line: 94
+          column: 1
+        end:
+          offset: 11165
+          line: 94
+          column: 442
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_36999"
+      source_span:
+        start:
+          offset: 37112
+          line: 596
+          column: 1
+        end:
+          offset: 37326
+          line: 596
+          column: 215
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_then_other"
+      identity_kind: "explicit"
+      unit_id: "normative_36999"
+      source_span:
+        start:
+          offset: 37327
+          line: 597
+          column: 1
+        end:
+          offset: 37732
+          line: 597
+          column: 406
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_36999"
+      source_span:
+        start:
+          offset: 37733
+          line: 598
+          column: 1
+        end:
+          offset: 38091
+          line: 598
+          column: 359
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_medium_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_36999"
+      source_span:
+        start:
+          offset: 38092
+          line: 599
+          column: 1
+        end:
+          offset: 38421
+          line: 599
+          column: 330
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_category_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 50620
+          line: 641
+          column: 1
+        end:
+          offset: 51007
+          line: 641
+          column: 388
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 51008
+          line: 642
+          column: 1
+        end:
+          offset: 51304
+          line: 642
+          column: 297
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_rated_characteristics"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 51305
+          line: 643
+          column: 1
+        end:
+          offset: 51709
+          line: 643
+          column: 405
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_material_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 51710
+          line: 644
+          column: 1
+        end:
+          offset: 52067
+          line: 644
+          column: 358
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_medium_and_leakage"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 52068
+          line: 645
+          column: 1
+        end:
+          offset: 52509
+          line: 645
+          column: 442
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_life_and_maintenance"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 52510
+          line: 646
+          column: 1
+        end:
+          offset: 52951
+          line: 646
+          column: 442
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_process_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 52952
+          line: 647
+          column: 1
+        end:
+          offset: 53326
+          line: 647
+          column: 375
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 53327
+          line: 648
+          column: 1
+        end:
+          offset: 53592
+          line: 648
+          column: 266
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_market_rules"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 53593
+          line: 649
+          column: 1
+        end:
+          offset: 53956
+          line: 649
+          column: 364
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_source_traceability"
+      identity_kind: "explicit"
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 53957
+          line: 650
+          column: 1
+        end:
+          offset: 54238
+          line: 650
+          column: 282
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 8443
+          line: 79
+          column: 1
+        end:
+          offset: 8464
+          line: 79
+          column: 22
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 8466
+          line: 81
+          column: 1
+        end:
+          offset: 9158
+          line: 86
+          column: 117
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 9231
+          line: 90
+          column: 1
+        end:
+          offset: 9598
+          line: 90
+          column: 368
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 9599
+          line: 91
+          column: 1
+        end:
+          offset: 9953
+          line: 91
+          column: 355
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 9954
+          line: 92
+          column: 1
+        end:
+          offset: 10314
+          line: 92
+          column: 361
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 10315
+          line: 93
+          column: 1
+        end:
+          offset: 10723
+          line: 93
+          column: 409
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 10724
+          line: 94
+          column: 1
+        end:
+          offset: 11165
+          line: 94
+          column: 442
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8443"
+      source_span:
+        start:
+          offset: 11193
+          line: 98
+          column: 1
+        end:
+          offset: 12943
+          line: 105
+          column: 398
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36999"
+      source_span:
+        start:
+          offset: 36999
+          line: 592
+          column: 1
+        end:
+          offset: 37039
+          line: 592
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50525"
+      source_span:
+        start:
+          offset: 50525
+          line: 637
+          column: 1
+        end:
+          offset: 50547
+          line: 637
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:b965a3d403f17d86f7f66c222bbef22cb42af971868e232727d6788e3c37c0b6"
-  generated_content_sha256: "sha256:7756c12039eb713dc0d9825f0ce2d03468a4bffd577da1da3e73e6d4b9241418"
+  generated_content_sha256: "sha256:637da5e7d2e0d3ab5624395dbc90c2ad8130c8f37a34b6061b63905fc8e527ee"

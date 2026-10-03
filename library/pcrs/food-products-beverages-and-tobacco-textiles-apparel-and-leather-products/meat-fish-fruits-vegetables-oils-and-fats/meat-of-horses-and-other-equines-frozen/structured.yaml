@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -3705,12 +3705,575 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission. Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, consolidated text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
     used_for: "Product-specific bill of materials, company-specific foreground data, complete life-cycle inventory, allocation hierarchy, data quality, transparency, and verification"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:027690e3a7c897de6178a58c260af7f9267146be61542195312a8b5c2b17a319"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5900"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5900
+          line: 68
+          column: 1
+        end:
+          offset: 9363
+          line: 93
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Live equine animals received at the slaughter-facility gate, with species, supplier lot, net live weight, and reception time declared |\n| starting_condition_role | Foreground product input; raising and inbound transport remain linked upstream activities |\n| product_classification_scope | CPC 3.0 subclass 21138 frozen meat of horses and other equines; fresh or chilled equine meat and edible offal excluded |\n| recursive_input_rule | Record any same-category frozen equine meat input once as an explicit product input with its upstream dataset; do not re-enter this PCR recursively inside the foreground system |\n| upstream_dataset_requirement | Link transparent upstream datasets for animal raising, feed, veterinary inputs, mortality, and inbound transport when the study extends upstream |\n| disclosure | Declare gate location, equine species, incoming condition, lot basis, foreground start time, upstream links, exclusions, and data gaps |\n\n### Normative Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_foreground_gate_to_gate` | foreground_system_boundary | Begin at receipt of live equine animals at the slaughter-facility gate and end at release of 1 kg net conforming frozen equine meat from frozen storage; include reception, slaughter, dressing, cutting, prechilling, freezing, packaging, frozen storage, sanitation, and conditional on-site wastewater treatment. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `sb_upstream_exclusions` | upstream_boundary | Equine raising and inbound transport remain outside the foreground boundary; a cradle-to-gate study links transparent upstream datasets without folding those activities into these foreground process records. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `sb_downstream_exclusions` | downstream_boundary | Outbound distribution, retail, thawing, cooking, use, and end-of-life activities remain outside the foreground boundary. | `un-cpc-3-0`; `eu-recommendation-2021-2279-pef` |\n| `sb_product_scope` | product_classification_scope | The reference product is CPC 3.0 subclass 21138 frozen meat of horses and other equines; fresh or chilled equine meat and edible offal are excluded as reference products. | `un-cpc-3-0` |\n| `sb_same_category_recursion` | recursive_product_input | If a frozen equine meat input within this same category enters the foreground system, record it once as an explicit product input and link its upstream dataset; do not recursively reapply this PCR to that input inside the same foreground boundary. | `eu-recommendation-2021-2279-pef` |\n| `sb_inventory_completeness` | foreground_inventory | Collect every known raw-material, utility, product, co-product, waste, and elementary exchange for each included process; retain electricity, steam, hot water, each fuel, each refrigerant, each chemical, each packaging material, each waste, and each emission as separate records. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `sb_conditional_treatment` | onsite_wastewater_treatment | Include on-site wastewater treatment only when operated by the reporting facility for in-scope wastewater; otherwise keep each wastewater stream as a transfer leaving the foreground system and disclose its destination. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 304
+              line: 10
+              column: 1
+            end:
+              offset: 346
+              line: 10
+              column: 43
+          text: "# Meat of horses and other equines, frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5900
+              line: 68
+              column: 1
+            end:
+              offset: 5921
+              line: 68
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_135331"
+      family: "allocation"
+      span:
+        start:
+          offset: 135331
+          line: 2499
+          column: 1
+        end:
+          offset: 137257
+          line: 2510
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `alloc_subdivision_first` | separable_processes | Avoid allocation first by subdividing metered operations and directly assigning stage utilities, packaging, chemicals, wastes, and emissions to the process output that causes them. | `eu-recommendation-2021-2279-pef` |\n| `alloc_product_waste_status` | all_non_reference_outputs | Classify every blood, hide, organ, fat, bone, trimming, condemned-material, digestive-content, sludge, screening, and packaging output as a product, co-product, or waste from documented legal, technical, and destination evidence; do not infer saleable status. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `alloc_physical_relation` | joint_products | When subdivision cannot avoid burden sharing and a causal physical relation can be demonstrated, allocate the residual burden with that documented physical relation and report the driver values. | `eu-recommendation-2021-2279-pef` |\n| `alloc_economic_fallback` | joint_products | When no defensible physical relation exists, use a documented economic relation for the same representative period and disclose prices, currency, geography, period, and sensitivity; this PCR supplies no default shares. | `eu-recommendation-2021-2279-pef` |\n| `alloc_waste_no_credit` | waste_outputs | Assign no co-product credit to a waste output unless the foreground record demonstrates recovered product status and a receiving product use; preserve treatment burdens and destination records otherwise. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `alloc_reference_consistency` | reference_product | Normalize only after applying one consistently documented allocation method across the reporting period, and reconcile allocated burdens to the unallocated foreground total. | `eu-recommendation-2021-2279-pef` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 304
+              line: 10
+              column: 1
+            end:
+              offset: 346
+              line: 10
+              column: 43
+          text: "# Meat of horses and other equines, frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 135331
+              line: 2499
+              column: 1
+            end:
+              offset: 135371
+              line: 2499
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_149084"
+      family: "validation"
+      span:
+        start:
+          offset: 149084
+          line: 2556
+          column: 1
+        end:
+          offset: 153357
+          line: 2576
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_identity` | reference_flow | The sole reference flow UUID shall be b1d61fc0-90f2-4ef0-959b-b62596caca1a, public state 100, version 01.01.000, Product, exact CPC 21138, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg. | `un-cpc-3-0` |\n| `val_reference_mass` | reference_quantity | The quantitative reference shall equal exactly 1 kg net conforming frozen product, and every packaging-component mass shall be excluded from that net mass. | `un-cpc-3-0`; `eu-recommendation-2021-2279-pef` |\n| `val_scope_state` | product_scope | Dataset metadata shall identify frozen equine meat and shall not present fresh or chilled meat or edible offal as the reference product. | `un-cpc-3-0` |\n| `val_process_coverage` | process_map | All six required processes shall contain records; on-site wastewater treatment shall be present when its inclusion condition is met and explicitly marked not applicable with evidence otherwise. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_atomic_inventory` | process_inventory | Every inventory card shall contain one named atomic exchange; no utility, refrigerant, chemical, packaging, waste, or emission selector may replace a flow identity. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_uuid_integrity` | inventory_flow_identity | Only the verified reference UUID may be populated from the supplied evidence; every non-reference UUID remains blank until hybrid discovery and public state-100 direct read independently confirm exact semantics, type, property, unit group, and unit, with unresolved row metadata updated together. | `eu-recommendation-2021-2279-pef` |\n| `val_value_mode` | inventory_amounts | The reference output alone uses fixed_value; measured records use foreground_record, derived balances use calculated_value, and no author-estimated range or default amount is permitted. | `eu-recommendation-2021-2279-pef` |\n| `val_card_completeness` | process_inventory | Every card shall have a non-empty description, selected flow, property and unit, amount rule, controlled value mode, specificity, basis, basis kind, evidence kind, collection protocol, and source ids. | `eu-recommendation-2021-2279-pef` |\n| `val_mass_balance` | foreground_mass_flows | Reception, slaughter, cutting, freezing, packaging, and wastewater volume or mass balances shall be reconciled and residuals explained without inserting a default yield. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_stage_energy` | energy_inventory | Electricity, purchased steam, purchased hot water, natural gas, diesel, and LPG shall remain separate by stage, with shared-meter allocation drivers documented. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_refrigerants` | refrigeration_inventory | Make-up and air emission shall be separately balanced for each named refrigerant at freezing and frozen storage; any additional site-used refrigerant requires its own atomic input and emission records before release. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_wastewater` | wastewater_inventory | Each originating wastewater stream, treated wastewater, sludge, screenings, and each water emission shall be separately reconciled to flow and analytical records with destination disclosed. | `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_allocation` | allocation | Every joint-output burden decision shall follow the declared hierarchy, disclose data and period, preserve waste status evidence, and reconcile allocated totals. | `eu-recommendation-2021-2279-pef` |\n| `val_sources` | evidence | Method claims shall cite only the three declared sources; foreground quantities shall trace to facility records rather than a source-derived default. | `un-cpc-3-0`; `ec-jrc-sa-bref-2024`; `eu-recommendation-2021-2279-pef` |\n| `val_bilingual_alignment` | localized_markdown | English and Chinese files shall preserve identical ordered process_id, row_id, direction, flow_type, UUID, controlled amount fields, collection protocol, and source-id sequences. | `eu-recommendation-2021-2279-pef` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 304
+              line: 10
+              column: 1
+            end:
+              offset: 346
+              line: 10
+              column: 43
+          text: "# Meat of horses and other equines, frozen"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 149084
+              line: 2556
+              column: 1
+            end:
+              offset: 149106
+              line: 2556
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_foreground_gate_to_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 7061
+          line: 85
+          column: 1
+        end:
+          offset: 7493
+          line: 85
+          column: 433
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_upstream_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 7494
+          line: 86
+          column: 1
+        end:
+          offset: 7811
+          line: 86
+          column: 318
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_downstream_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 7812
+          line: 87
+          column: 1
+        end:
+          offset: 8037
+          line: 87
+          column: 226
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_product_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 8038
+          line: 88
+          column: 1
+        end:
+          offset: 8279
+          line: 88
+          column: 242
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_same_category_recursion"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 8280
+          line: 89
+          column: 1
+        end:
+          offset: 8624
+          line: 89
+          column: 345
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sb_inventory_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 8625
+          line: 90
+          column: 1
+        end:
+          offset: 9020
+          line: 90
+          column: 396
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "sb_conditional_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 9021
+          line: 91
+          column: 1
+        end:
+          offset: 9361
+          line: 91
+          column: 341
+    - pointer: "/allocation_rules/0"
+      rule_id: "alloc_subdivision_first"
+      identity_kind: "explicit"
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 135444
+          line: 2503
+          column: 1
+        end:
+          offset: 135714
+          line: 2503
+          column: 271
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_product_waste_status"
+      identity_kind: "explicit"
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 135715
+          line: 2504
+          column: 1
+        end:
+          offset: 136096
+          line: 2504
+          column: 382
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_physical_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 136097
+          line: 2505
+          column: 1
+        end:
+          offset: 136376
+          line: 2505
+          column: 280
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_economic_fallback"
+      identity_kind: "explicit"
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 136377
+          line: 2506
+          column: 1
+        end:
+          offset: 136680
+          line: 2506
+          column: 304
+    - pointer: "/allocation_rules/4"
+      rule_id: "alloc_waste_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 136681
+          line: 2507
+          column: 1
+        end:
+          offset: 136989
+          line: 2507
+          column: 309
+    - pointer: "/allocation_rules/5"
+      rule_id: "alloc_reference_consistency"
+      identity_kind: "explicit"
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 136990
+          line: 2508
+          column: 1
+        end:
+          offset: 137255
+          line: 2508
+          column: 266
+    - pointer: "/validation_rules/0"
+      rule_id: "val_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 149179
+          line: 2560
+          column: 1
+        end:
+          offset: 149482
+          line: 2560
+          column: 304
+    - pointer: "/validation_rules/1"
+      rule_id: "val_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 149483
+          line: 2561
+          column: 1
+        end:
+          offset: 149736
+          line: 2561
+          column: 254
+    - pointer: "/validation_rules/2"
+      rule_id: "val_scope_state"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 149737
+          line: 2562
+          column: 1
+        end:
+          offset: 149928
+          line: 2562
+          column: 192
+    - pointer: "/validation_rules/3"
+      rule_id: "val_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 149929
+          line: 2563
+          column: 1
+        end:
+          offset: 150224
+          line: 2563
+          column: 296
+    - pointer: "/validation_rules/4"
+      rule_id: "val_atomic_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 150225
+          line: 2564
+          column: 1
+        end:
+          offset: 150497
+          line: 2564
+          column: 273
+    - pointer: "/validation_rules/5"
+      rule_id: "val_uuid_integrity"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 150498
+          line: 2565
+          column: 1
+        end:
+          offset: 150883
+          line: 2565
+          column: 386
+    - pointer: "/validation_rules/6"
+      rule_id: "val_value_mode"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 150884
+          line: 2566
+          column: 1
+        end:
+          offset: 151148
+          line: 2566
+          column: 265
+    - pointer: "/validation_rules/7"
+      rule_id: "val_card_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 151149
+          line: 2567
+          column: 1
+        end:
+          offset: 151435
+          line: 2567
+          column: 287
+    - pointer: "/validation_rules/8"
+      rule_id: "val_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 151436
+          line: 2568
+          column: 1
+        end:
+          offset: 151713
+          line: 2568
+          column: 278
+    - pointer: "/validation_rules/9"
+      rule_id: "val_stage_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 151714
+          line: 2569
+          column: 1
+        end:
+          offset: 151977
+          line: 2569
+          column: 264
+    - pointer: "/validation_rules/10"
+      rule_id: "val_refrigerants"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 151978
+          line: 2570
+          column: 1
+        end:
+          offset: 152304
+          line: 2570
+          column: 327
+    - pointer: "/validation_rules/11"
+      rule_id: "val_wastewater"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 152305
+          line: 2571
+          column: 1
+        end:
+          offset: 152599
+          line: 2571
+          column: 295
+    - pointer: "/validation_rules/12"
+      rule_id: "val_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 152600
+          line: 2572
+          column: 1
+        end:
+          offset: 152833
+          line: 2572
+          column: 234
+    - pointer: "/validation_rules/13"
+      rule_id: "val_sources"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 152834
+          line: 2573
+          column: 1
+        end:
+          offset: 153087
+          line: 2573
+          column: 254
+    - pointer: "/validation_rules/14"
+      rule_id: "val_bilingual_alignment"
+      identity_kind: "explicit"
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 153088
+          line: 2574
+          column: 1
+        end:
+          offset: 153355
+          line: 2574
+          column: 268
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 5900
+          line: 68
+          column: 1
+        end:
+          offset: 5921
+          line: 68
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5900"
+      source_span:
+        start:
+          offset: 5949
+          line: 72
+          column: 1
+        end:
+          offset: 6958
+          line: 79
+          column: 152
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_135331"
+      source_span:
+        start:
+          offset: 135331
+          line: 2499
+          column: 1
+        end:
+          offset: 135371
+          line: 2499
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_149084"
+      source_span:
+        start:
+          offset: 149084
+          line: 2556
+          column: 1
+        end:
+          offset: 149106
+          line: 2556
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:027690e3a7c897de6178a58c260af7f9267146be61542195312a8b5c2b17a319"
-  generated_content_sha256: "sha256:3613fb1da118468a520aef351dc2d7dbb4eafefc3963bc90ad9f3063316c1643"
+  generated_content_sha256: "sha256:4d63ad3ba99851f4f61a4f455782aec676e09aa37a046ff5e1d72a302bb1907a"

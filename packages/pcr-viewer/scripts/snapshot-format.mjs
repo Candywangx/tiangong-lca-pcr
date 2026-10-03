@@ -15,6 +15,7 @@ const coreSchemaFiles = [
   new URL("../../pcr-core/schemas/controlled-vocabulary.schema.json", import.meta.url),
   new URL("../../pcr-core/schemas/classification-coverage.schema.json", import.meta.url),
   new URL("../../pcr-core/schemas/readiness.schema.json", import.meta.url),
+  new URL("../../pcr-core/schemas/structured-projection.schema.json", import.meta.url),
   new URL("../../pcr-core/schemas/guidance-output.schema.json", import.meta.url),
 ];
 

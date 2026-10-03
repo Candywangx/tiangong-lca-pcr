@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1006,12 +1006,445 @@ data_sources:
     type: "method_factor"
     reference: "Conservation-of-mass identity applied to milk, feed, herd, and manure reconciliation"
     used_for: "Internal-flow cancellation, milk disposition balance, and QA bounds"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b181117e277be6dc967752150f9ab9f540c7a8e2e6b3b0fb9792d556192c275f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5237"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5237
+          line: 72
+          column: 1
+        end:
+          offset: 9121
+          line: 94
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_farm_gate` | Product system to farm gate | Include dairy herd maintenance and replacements, feed and bedding supply, enteric fermentation, manure collection/storage/treatment, directly managed feed production, input energy and water, milking, cleaning, cooling, refrigerant losses, and on-farm raw-milk storage up to milk ready to leave the farm. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `boundary_whole_herd` | Reporting herd | Represent lactating and dry cows, replacement animals, calves, culls, mortality, herd inventory change, and animal movements supporting reported milk output; do not model only lactating cows when other herd classes share burdens. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `boundary_upstream_inputs` | Purchased inputs | Link purchased feed, bedding, replacement animals, fuels, electricity, fertilizers, crop-protection products, cleaning agents, refrigerants, and other material inputs to geographically and technologically appropriate upstream datasets. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `boundary_feed_land` | Feed production and land | Include directly managed feed-crop and pasture inputs, yields, soil emissions, irrigation, and relevant land-use-change treatment; for externally supplied feed, retain origin and composition records and link upstream burdens without duplicating them on farm. | `idf-dairy-carbon-footprint-2022`; `fao-leap-animal-feed-2016` |\n| `boundary_direct_emissions` | Cattle, manure, and managed soils | Calculate enteric CH4, manure-management CH4 and N2O, and relevant managed-soil emissions with methods and factors appropriate to the declared region, animal category, productivity, diet, climate, and manure system; preserve activity data and factor sources. | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |\n| `boundary_exclusions` | Downstream life-cycle stages | Exclude transport after the farm gate, dairy processing, packaging, distribution, retail, consumption, and end of life; disclose any study-specific extension separately from the PCR result. | `idf-dairy-carbon-footprint-2022` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | A dairy production system with the reporting herd, managed land, and production assets in service at the opening of the reporting period; herd replacement burdens and inventory changes are represented through period records and annualized calculations. |\n| starting_condition_role | Establishes a reproducible farm-accounting condition for a biologically continuous dairy system without treating the opening herd as burden-free. |\n| product_classification_scope | Raw cattle milk covered by CPC 3.0 code 02211; other animal milk and processed dairy products are outside the category. |\n| recursive_input_rule | Raw cattle milk produced and used internally, including milk fed to calves, is recorded as internal use and deducted from saleable farm-gate output rather than linked as an upstream raw-milk dataset. Externally purchased raw cattle milk is a separate product input with an upstream dataset and cannot be netted against output. |\n| upstream_dataset_requirement | Every purchased feed, animal, energy carrier, material, and externally provided service crossing the boundary requires a representative upstream dataset or an explicit documented data gap; supplier-specific data are preferred when material. |\n| disclosure | Declare farm geography, production system, reporting period, herd classes and inventory change, milk sold and internal use, milk composition, feed origins, manure systems, land management, allocation factors, excluded processes, data gaps, and any non-steady operational change. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 275
+              line: 11
+              column: 1
+            end:
+              offset: 295
+              line: 11
+              column: 21
+          text: "# Raw Milk of Cattle"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5237
+              line: 72
+              column: 1
+            end:
+              offset: 5258
+              line: 72
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_30885"
+      family: "allocation"
+      span:
+        start:
+          offset: 30885
+          line: 609
+          column: 1
+        end:
+          offset: 32576
+          line: 618
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision_first` | Separable farm activities and outputs | Subdivide directly attributable activities before allocation. Assign milking, milk cooling, and milk-storage burdens entirely to milk; separately accounted animal-rearing or exported crop/energy activities do not enter the shared dairy allocation pool. | `idf-dairy-carbon-footprint-2022` |\n| `allocation_milk_live_animals` | Shared dairy-herd burdens between milk and live cattle | Apply the IDF 2022 biophysical net-energy method: `AF_milk = (NE_L × M_FPCM) / ((NE_L × M_FPCM) + Σ(NE_G,i × M_liveweight,i))`; use consistent period FPCM and live-weight sales, class-specific net energy for growth when available, and disclose every factor. The remaining fraction is assigned to live animals. | `idf-dairy-carbon-footprint-2022` |\n| `allocation_manure` | Manure leaving the farm | Classify manure explicitly. Treat manure with essentially no value at the boundary as a residue using cut-off; if it is a co-product, use disclosed economic allocation; if it is waste, assign its treatment burdens to the dairy system without an avoided-product credit. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `allocation_internal_flows` | Internal milk, feed, and manure transfers | Cancel internal product transfers only after preserving their quantities and characteristics. Internal raw milk fed to calves reduces saleable output; internally produced feed and manure shall not receive duplicated upstream burdens. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 275
+              line: 11
+              column: 1
+            end:
+              offset: 295
+              line: 11
+              column: 21
+          text: "# Raw Milk of Cattle"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 30885
+              line: 609
+              column: 1
+            end:
+              offset: 30925
+              line: 609
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43524"
+      family: "validation"
+      span:
+        start:
+          offset: 43524
+          line: 655
+          column: 1
+        end:
+          offset: 46104
+          line: 668
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity_scope` | Product identity | Fail when the reference product is not cattle milk, is processed beyond raw on-farm cooling/storage, lacks the declared farm gate, or does not use the confirmed reference-flow identity. | `idf-dairy-carbon-footprint-2022` |\n| `validate_reference_flow` | Functional unit and reference flow | Fail when physical milk mass, fat percentage, true-protein percentage, FPCM calculation, saleable status, or normalization to exactly 1 kg FPCM is missing or inconsistent. | `idf-dairy-carbon-footprint-2022` |\n| `validate_period_herd` | Temporal and herd coverage | Fail when herd classes, animal movements, milk output, feed, manure, and resource records do not share a representative period or opening and closing herd inventories cannot be reconciled. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `validate_boundary` | Boundary completeness | Fail when material feed supply, directly managed feed production, enteric emissions, manure routes, managed-soil emissions, milking, cooling, water, energy, or milk losses are omitted without an applicability reason and data-gap disclosure. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `validate_emissions` | Direct emissions | Fail when enteric or manure methods omit region, cattle category, productivity, diet or feed-energy basis, manure system, climate, factor source, or calculation tier needed by the method. | `ipcc-2019-livestock-manure` |\n| `validate_allocation` | Co-products and residues | Fail when directly attributable activities are allocated, live-animal outputs are omitted, IDF net-energy allocation inputs or factors are missing, manure classification is undeclared, or fractions do not sum to one within tolerance. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n| `validate_internal_flows` | Internal milk, feed, and manure | Fail when internal flows are omitted before reconciliation, counted as both purchased and internally produced, or left in the aggregated inventory without cancellation. | `mass-balance-identity` |\n| `validate_quality_disclosure` | Dataset publication readiness | Fail when the package lacks geography, production system, period, herd structure, milk composition, feed origin, manure systems, allocation, source/factor versions, proxy disclosure, important QA-range exceptions, or material data gaps. | `idf-dairy-carbon-footprint-2022`; `fao-leap-large-ruminants-2016` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 275
+              line: 11
+              column: 1
+            end:
+              offset: 295
+              line: 11
+              column: 21
+          text: "# Raw Milk of Cattle"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43524
+              line: 655
+              column: 1
+            end:
+              offset: 43546
+              line: 655
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_farm_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 5331
+          line: 76
+          column: 1
+        end:
+          offset: 5760
+          line: 76
+          column: 430
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_whole_herd"
+      identity_kind: "explicit"
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 5761
+          line: 77
+          column: 1
+        end:
+          offset: 6104
+          line: 77
+          column: 344
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 6105
+          line: 78
+          column: 1
+        end:
+          offset: 6461
+          line: 78
+          column: 357
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_feed_land"
+      identity_kind: "explicit"
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 6462
+          line: 79
+          column: 1
+        end:
+          offset: 6839
+          line: 79
+          column: 378
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_direct_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 6840
+          line: 80
+          column: 1
+        end:
+          offset: 7231
+          line: 80
+          column: 392
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 7232
+          line: 81
+          column: 1
+        end:
+          offset: 7516
+          line: 81
+          column: 285
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivision_first"
+      identity_kind: "explicit"
+      unit_id: "normative_30885"
+      source_span:
+        start:
+          offset: 30998
+          line: 613
+          column: 1
+        end:
+          offset: 31363
+          line: 613
+          column: 366
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_milk_live_animals"
+      identity_kind: "explicit"
+      unit_id: "normative_30885"
+      source_span:
+        start:
+          offset: 31364
+          line: 614
+          column: 1
+        end:
+          offset: 31803
+          line: 614
+          column: 440
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_manure"
+      identity_kind: "explicit"
+      unit_id: "normative_30885"
+      source_span:
+        start:
+          offset: 31804
+          line: 615
+          column: 1
+        end:
+          offset: 32193
+          line: 615
+          column: 390
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_internal_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_30885"
+      source_span:
+        start:
+          offset: 32194
+          line: 616
+          column: 1
+        end:
+          offset: 32574
+          line: 616
+          column: 381
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 43619
+          line: 659
+          column: 1
+        end:
+          offset: 43891
+          line: 659
+          column: 273
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 43892
+          line: 660
+          column: 1
+        end:
+          offset: 44168
+          line: 660
+          column: 277
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_period_herd"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 44169
+          line: 661
+          column: 1
+        end:
+          offset: 44484
+          line: 661
+          column: 316
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 44485
+          line: 662
+          column: 1
+        end:
+          offset: 44844
+          line: 662
+          column: 360
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 44845
+          line: 663
+          column: 1
+        end:
+          offset: 45109
+          line: 663
+          column: 265
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 45110
+          line: 664
+          column: 1
+        end:
+          offset: 45467
+          line: 664
+          column: 358
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_internal_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 45468
+          line: 665
+          column: 1
+        end:
+          offset: 45728
+          line: 665
+          column: 261
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_quality_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 45729
+          line: 666
+          column: 1
+        end:
+          offset: 46102
+          line: 666
+          column: 374
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 5237
+          line: 72
+          column: 1
+        end:
+          offset: 5258
+          line: 72
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5237"
+      source_span:
+        start:
+          offset: 7544
+          line: 85
+          column: 1
+        end:
+          offset: 9119
+          line: 92
+          column: 296
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_30885"
+      source_span:
+        start:
+          offset: 30885
+          line: 609
+          column: 1
+        end:
+          offset: 30925
+          line: 609
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43524"
+      source_span:
+        start:
+          offset: 43524
+          line: 655
+          column: 1
+        end:
+          offset: 43546
+          line: 655
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:b181117e277be6dc967752150f9ab9f540c7a8e2e6b3b0fb9792d556192c275f"
-  generated_content_sha256: "sha256:234c32f5994cb832dbabf3d7d05ef976257a6c1423f1325f184bf74133898004"
+  generated_content_sha256: "sha256:85839987fd589da5e746d76dfc4a7120cb86d9c62b5e93edc9ba08be7575cad9"

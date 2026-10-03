@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-03
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
+lastReviewedAt: 2026-10-04
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -400,3 +400,5 @@ contains English bodies only. This does not change the site exporter: repository
 continues to export and verify every declared language through complete core bundles.
 The offline storage context is scoped to explicit consumer calls and is never enabled
 by the documentation build.
+
+Projection v2 adds source units and ancestor context to exact structured downloads and complete record JSON. Canonical language bodies remain the displayed methodological source; flat structured summaries do not independently establish applicability. Historical projection v1 remains readable and is not rewritten by export. The [semantic projection contract](semantic-projection-contract.md) governs these fields; publication and translation approval remain separate.

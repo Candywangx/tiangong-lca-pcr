@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -942,12 +942,492 @@ data_sources:
     type: "method_factor"
     reference: "Conservation-of-mass identity applied to measured foreground inputs, outputs, stock change, rework, waste, and direct releases"
     used_for: "Normalization, process reconciliation, reject calculation, and reference-flow identity"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:05c626156b19163546c3c810640bd79149f11dddadc4c9b714bfa5a976dc134c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5778"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5778
+          line: 58
+          column: 1
+        end:
+          offset: 9351
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins with purchased metals, finished movement components, electronic components, lubricants, cleaning media, electricity, water, batteries supplied with the movement, and packaging at the manufacturing site gate. It includes in-house component fabrication when performed, precision cleaning or finishing when performed, movement assembly, adjustment and functional testing, reject handling up to the first waste-treatment handoff, and dispatch packaging. Upstream production is represented by supplier-specific or geographically and technologically representative datasets. Capital equipment, employee travel, retail, installation into complete watches or clocks, use, repair, and end of life are outside the default foreground boundary unless the study goal explicitly includes them.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_product_boundary` | product identity | Include only the time-counting movement or complete movement set; exclude finished watches or clocks, cases, separately marketed external parts, and time-recording apparatus. Declare watch-versus-clock class and assembly state. | `usitc-hts-chapter-91-2013`; `un-cpc-3-0-structure-2025` |\n| `sb_route_boundary` | foreground manufacturing | Include the actual in-house component, cleaning, assembly, testing, and packaging operations; mark a conditional operation not applicable only with site records showing it was not performed for the reported product. | `eta-movement-production-sites`; `us-epa-snap-precision-cleaning`; `eta-quartz-overview-2017` |\n| `sb_upstream_boundary` | purchased inputs | Link every purchased atomic input to a supplier-specific or representative upstream dataset that matches material grade or component specification, geography, technology, and delivered state. | `eu-pef-recommendation-2021-2279` |\n| `sb_no_silent_cutoff` | inventory completeness | Record every measured material, energy, water, waste, and direct elementary exchange within the declared foreground processes. Any exclusion requires a quantitative materiality check and disclosure; absence of a UUID is not a cut-off reason. | `eu-pef-recommendation-2021-2279` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased raw metals and components at the factory gate, with supplier, material or component specification, delivered mass, geography, and upstream dataset identity declared |\n| starting_condition_role | upstream product inputs to the movement-manufacturing foreground system |\n| product_classification_scope | Watch or clock movements and complete movement sets; individual parts and finished watches or clocks are outside the canonical product boundary |\n| recursive_input_rule | If a purchased complete movement or complete movement set in this same product category crosses the boundary, record it once as a supplied product input with its upstream dataset and do not recursively decompose it; disclose the mass share and role in the final output. |\n| upstream_dataset_requirement | Use supplier-specific datasets when available; otherwise use geographically, technologically, compositionally, and temporally representative datasets for every purchased input. |\n| disclosure | Declare component make-or-buy share; movement class; regulating system; calibre; assembly and completeness state; battery, display, dial, and hands inclusion; in-house cleaning or finishing; test specification; reject treatment; packaging; geography; technology; and reporting period. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 215
+              line: 8
+              column: 1
+            end:
+              offset: 241
+              line: 8
+              column: 27
+          text: "# Watch or clock movements"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5778
+              line: 58
+              column: 1
+            end:
+              offset: 5799
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_31303"
+      family: "allocation"
+      span:
+        start:
+          offset: 31303
+          line: 549
+          column: 1
+        end:
+          offset: 32768
+          line: 558
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `al_subdivide_first` | shared fabrication, cleaning, assembly, testing, and site services | Avoid allocation by separately metering or otherwise subdividing product-specific work centres and lots. If subdivision is not feasible, document why before selecting another relationship. | `eu-pef-recommendation-2021-2279` |\n| `al_physical_relation` | shared processes producing several movement families | Allocate remaining shared exchanges using a causal physical relationship such as machine time, cleaning load, tested unit time, or net processed mass that matches the exchange driver; document the factor and source records. | `eu-pef-recommendation-2021-2279` |\n| `al_other_relation` | shared processes lacking a defensible physical relation | Economic or another relationship may be used only after subdivision, system expansion, and physical allocation are shown infeasible; disclose prices, period, currency, factor, and sensitivity. | `eu-pef-recommendation-2021-2279` |\n| `al_scrap_treatment` | machining scrap and rejected movements | Keep scrap and rejected movements as waste outputs through the first treatment handoff. Do not add an avoided-primary-material credit inside the foreground inventory unless the downstream study explicitly applies and discloses a consistent recycling allocation method. | `eu-pef-recommendation-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 215
+              line: 8
+              column: 1
+            end:
+              offset: 241
+              line: 8
+              column: 27
+          text: "# Watch or clock movements"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 31303
+              line: 549
+              column: 1
+            end:
+              offset: 31343
+              line: 549
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41101"
+      family: "validation"
+      span:
+        start:
+          offset: 41101
+          line: 591
+          column: 1
+        end:
+          offset: 43219
+          line: 604
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `vr_reference_identity` | reference flow | Confirm that the reference output is a movement or complete movement set, not a complete watch or clock, case, individual part, time switch, or time-recording apparatus; verify every required qualifier. | `usitc-hts-chapter-91-2013`; `un-cpc-3-0-structure-2025` |\n| `vr_reference_amount` | reference amount | Confirm that the normalized output equals 1 kg net conforming movement mass and that packaging mass is reported separately. | `mass-balance-identity` |\n| `vr_process_coverage` | process map | Confirm that every performed in-house process is included, every omitted conditional process has route evidence, and each required process has a detailed inventory section. | `eta-movement-production-sites`; `us-epa-snap-precision-cleaning` |\n| `vr_inventory_atomicity` | process inventory | Confirm each row is one atomic physical, chemical, energy, waste, or elementary exchange; reject umbrella utility, material, packaging, waste, or emission labels. | `eu-pef-recommendation-2021-2279` |\n| `vr_uuid_semantics` | UUID-bearing rows | Confirm state-100 flow name, Chinese name, flow type, classification, property, unit group, product state, geography, technology, and generalComment remain compatible with the declared exchange. |  |\n| `vr_mass_balance` | foreground processes | Confirm input, output, waste, stock, rework, and direct-release reconciliation; disclose unresolved residuals and do not use missing UUIDs as cut-offs. | `mass-balance-identity` |\n| `vr_allocation` | shared and multifunctional processes | Confirm subdivision was attempted first and any physical or other allocation factor has a documented driver, period, and sensitivity. | `eu-pef-recommendation-2021-2279` |\n| `vr_source_and_range` | quantitative constraints | Confirm no external empirical range is used unless at least two independent, original-text-verified, boundary-compatible sources support the synthesis; otherwise retain foreground collection and the unresolved evidence need. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 215
+              line: 8
+              column: 1
+            end:
+              offset: 241
+              line: 8
+              column: 27
+          text: "# Watch or clock movements"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41101
+              line: 591
+              column: 1
+            end:
+              offset: 41123
+              line: 591
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 5801
+          line: 60
+          column: 1
+        end:
+          offset: 6611
+          line: 60
+          column: 811
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_product_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 6684
+          line: 64
+          column: 1
+        end:
+          offset: 7017
+          line: 64
+          column: 334
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_route_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 7018
+          line: 65
+          column: 1
+        end:
+          offset: 7382
+          line: 65
+          column: 365
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_upstream_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 7383
+          line: 66
+          column: 1
+        end:
+          offset: 7658
+          line: 66
+          column: 276
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_no_silent_cutoff"
+      identity_kind: "explicit"
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 7659
+          line: 67
+          column: 1
+        end:
+          offset: 7989
+          line: 67
+          column: 331
+    - pointer: "/allocation_rules/0"
+      rule_id: "al_subdivide_first"
+      identity_kind: "explicit"
+      unit_id: "normative_31303"
+      source_span:
+        start:
+          offset: 31416
+          line: 553
+          column: 1
+        end:
+          offset: 31736
+          line: 553
+          column: 321
+    - pointer: "/allocation_rules/1"
+      rule_id: "al_physical_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_31303"
+      source_span:
+        start:
+          offset: 31737
+          line: 554
+          column: 1
+        end:
+          offset: 32080
+          line: 554
+          column: 344
+    - pointer: "/allocation_rules/2"
+      rule_id: "al_other_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_31303"
+      source_span:
+        start:
+          offset: 32081
+          line: 555
+          column: 1
+        end:
+          offset: 32393
+          line: 555
+          column: 313
+    - pointer: "/allocation_rules/3"
+      rule_id: "al_scrap_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_31303"
+      source_span:
+        start:
+          offset: 32394
+          line: 556
+          column: 1
+        end:
+          offset: 32766
+          line: 556
+          column: 373
+    - pointer: "/validation_rules/0"
+      rule_id: "vr_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 41196
+          line: 595
+          column: 1
+        end:
+          offset: 41504
+          line: 595
+          column: 309
+    - pointer: "/validation_rules/1"
+      rule_id: "vr_reference_amount"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 41505
+          line: 596
+          column: 1
+        end:
+          offset: 41701
+          line: 596
+          column: 197
+    - pointer: "/validation_rules/2"
+      rule_id: "vr_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 41702
+          line: 597
+          column: 1
+        end:
+          offset: 41984
+          line: 597
+          column: 283
+    - pointer: "/validation_rules/3"
+      rule_id: "vr_inventory_atomicity"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 41985
+          line: 598
+          column: 1
+        end:
+          offset: 42234
+          line: 598
+          column: 250
+    - pointer: "/validation_rules/4"
+      rule_id: "vr_uuid_semantics"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 42235
+          line: 599
+          column: 1
+        end:
+          offset: 42478
+          line: 599
+          column: 244
+    - pointer: "/validation_rules/5"
+      rule_id: "vr_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 42479
+          line: 600
+          column: 1
+        end:
+          offset: 42703
+          line: 600
+          column: 225
+    - pointer: "/validation_rules/6"
+      rule_id: "vr_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 42704
+          line: 601
+          column: 1
+        end:
+          offset: 42934
+          line: 601
+          column: 231
+    - pointer: "/validation_rules/7"
+      rule_id: "vr_source_and_range"
+      identity_kind: "explicit"
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 42935
+          line: 602
+          column: 1
+        end:
+          offset: 43217
+          line: 602
+          column: 283
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 5778
+          line: 58
+          column: 1
+        end:
+          offset: 5799
+          line: 58
+          column: 22
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 5801
+          line: 60
+          column: 1
+        end:
+          offset: 6611
+          line: 60
+          column: 811
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 6684
+          line: 64
+          column: 1
+        end:
+          offset: 7017
+          line: 64
+          column: 334
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 7018
+          line: 65
+          column: 1
+        end:
+          offset: 7382
+          line: 65
+          column: 365
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 7383
+          line: 66
+          column: 1
+        end:
+          offset: 7658
+          line: 66
+          column: 276
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 7659
+          line: 67
+          column: 1
+        end:
+          offset: 7989
+          line: 67
+          column: 331
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5778"
+      source_span:
+        start:
+          offset: 8017
+          line: 71
+          column: 1
+        end:
+          offset: 9349
+          line: 78
+          column: 302
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_31303"
+      source_span:
+        start:
+          offset: 31303
+          line: 549
+          column: 1
+        end:
+          offset: 31343
+          line: 549
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41101"
+      source_span:
+        start:
+          offset: 41101
+          line: 591
+          column: 1
+        end:
+          offset: 41123
+          line: 591
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:05c626156b19163546c3c810640bd79149f11dddadc4c9b714bfa5a976dc134c"
-  generated_content_sha256: "sha256:1cde7c725d60b1ca97d8ac72bfb33bf197dbd8bdba0f5baa06577bba04df7f69"
+  generated_content_sha256: "sha256:c6681c142a3b89134b82ff7a6759ec40d3c701ea0367382b16f1cb2840f76970"

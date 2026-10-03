@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1032,12 +1032,497 @@ data_sources:
     type: "literature"
     reference: "Proske, M. et al. (2024), Investigation of Semiconductor Die Area as a Reference Variable for LCA, DOI: 10.23919/EGG62010.2024.10631237, https://doi.org/10.23919/EGG62010.2024.10631237"
     used_for: "Die area and technology node as representativeness, allocation and data-quality parameters"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8400b828715b4efc19a642fc7a6e14cba51acf99dc7e751b5597e442ce39d4eb"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7931"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7931
+          line: 63
+          column: 1
+        end:
+          offset: 12309
+          line: 89
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe dataset is cradle-to-manufacturing-gate for the declared IC production mix. Foreground records shall include cleanroom and production-tool utilities, process materials and gases, yield losses, internal material transfers, direct emissions, wastewater, wastes, and on-site abatement or treatment. Upstream datasets shall cover every purchased product or service that crosses the boundary. Shipping from the manufacturing gate, downstream board assembly, device use, and end-of-life are excluded unless a wider study scope is explicitly declared.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Incoming semiconductor substrate or wafer and all purchased materials, utilities and services at the first foreground manufacturing gate, with supplier identity, physical state, production geography and upstream dataset reference declared |\n| starting_condition_role | Traceable upstream input to wafer fabrication; substrate or wafer production may be foreground only when the reporting organization operates and measures that stage |\n| product_classification_scope | Electronic integrated circuits across logic/micro, memory, analog and mixed-signal families; the concrete dataset is restricted to its declared family, process generation and delivery-state mix |\n| recursive_input_rule | An internally transferred fabricated wafer, known-good die or packaged IC is recorded once as an intermediate product flow between foreground processes and carries no duplicated upstream burden. A purchased IC of the same category is an upstream product dataset and shall not be treated as self-produced reference output. |\n| upstream_dataset_requirement | Require geographically and technologically appropriate datasets for semiconductor substrates or wafers, electricity, fuels, ultrapure-water supply, chemicals, bulk and specialty gases, packaging materials, transport to the first foreground gate, and external waste or wastewater treatment |\n| disclosure | Declare included sites and operations; IC-family shares; process nodes; substrate and wafer diameter; package and tested-bare-die shares; yields; cut-offs; upstream dataset versions; allocation drivers; electricity mixes; abatement technologies, uptime and destruction or removal evidence; and any departure from this boundary |\n\n### Normative Boundary Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_complete_route` | foreground_process_chain | Include wafer fabrication, wafer sort and dicing, assembly and packaging, final electrical test, yield losses, direct emissions, and preparation of accepted product for delivery for every route represented in the reference product. | `us-epa-semiconductor-neshap`; `epd-international-pcr-2024-06` |\n| `boundary_upstream_inputs` | purchased_inputs | Link every purchased substrate, wafer, chemical, gas, utility, packaging material and treatment service to an upstream dataset or a documented foreground operation; do not omit a major input because no generic IC quantity is available. | `iso-14044-2006`; `iec-63366-2025` |\n| `boundary_family_strata` | category_mix | Keep logic/micro, memory, analog and mixed-signal strata and materially different node, substrate, die-area, package and geography routes separate until production-weighted aggregation. | `wsts-product-classification-2021`; `proske-et-al-2024-die-area` |\n| `boundary_no_proxy` | representativeness | Do not use one device, one wafer, one package technology, one application, or one manufacturing route as an undeclared proxy for this broad category. | `wsts-product-classification-2021`; `proske-et-al-2024-die-area` |\n| `boundary_direct_gases` | wafer_fabrication_and_test | Include fluorinated process gases, fluorinated heat-transfer fluids, N2O, their by-products, and abatement-system operation and downtime whenever applicable; preserve substance-level emissions. | `us-epa-semiconductor-industry`; `us-epa-ghgrp-subpart-i` |\n| `boundary_excluded_stages` | downstream_and_capital | Exclude downstream board assembly, product use, distribution after the manufacturing gate and end-of-life from this dataset. Disclose and justify treatment of design, R&D, buildings and capital equipment, and include them only under an explicitly extended scope. | `epd-international-pcr-2024-06`; `iec-63366-2025` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 208
+              line: 8
+              column: 1
+            end:
+              offset: 240
+              line: 8
+              column: 33
+          text: "# Electronic integrated circuits"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7931
+              line: 63
+              column: 1
+            end:
+              offset: 7952
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33258"
+      family: "allocation"
+      span:
+        start:
+          offset: 33258
+          line: 496
+          column: 1
+        end:
+          offset: 35431
+          line: 507
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide_first` | shared_manufacturing | First subdivide records by site, reporting period, IC family or dominant function, technology node or process generation, substrate and wafer diameter, die-area class, package route and delivery state whenever separately measured. | `iso-14044-2006`; `proske-et-al-2024-die-area` |\n| `allocation_wafer_fab_driver` | shared_wafer_fabrication | Allocate shared wafer-fabrication inputs and emissions using a documented causal engineering driver such as processed wafer area combined with route-specific process steps, mask layers, tool time or measured chamber consumption. Do not allocate a broad fab mix from one wafer or one device. | `iso-14044-2006`; `proske-et-al-2024-die-area` |\n| `allocation_assembly_test_driver` | shared_assembly_and_test | Allocate package, assembly and test burdens using route-specific measured material issue, equipment time, test time, energy or another demonstrated causal driver; accepted-unit count is allowed only for materially equivalent routes. | `iso-14044-2006` |\n| `allocation_yield_losses` | sequential_yield | Assign substrate, materials, utilities, direct emissions and treatment burdens of rejected wafers, die and packages to the accepted outputs of the same production stratum through sequential yield reconciliation. | `iso-14044-2006`; `proske-et-al-2024-die-area` |\n| `allocation_category_aggregation` | reference_product_mix | Aggregate strata only with accepted-output mass for the declared reporting period after each stratum is normalized. Report family shares and do not infer unrepresented families from a narrow product dataset. | `wsts-product-classification-2021`; `proske-et-al-2024-die-area` |\n| `allocation_recovery` | recovered_materials_and_energy | Report recovered materials, exported energy and external recycling consistently with the declared LCA method; disclose the substitution or cut-off convention and prevent double counting between avoided burdens, waste treatment and co-product credit. | `iso-14044-2006`; `iec-63366-2025` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 208
+              line: 8
+              column: 1
+            end:
+              offset: 240
+              line: 8
+              column: 33
+          text: "# Electronic integrated circuits"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33258
+              line: 496
+              column: 1
+            end:
+              offset: 33298
+              line: 496
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48772"
+      family: "validation"
+      span:
+        start:
+          offset: 48772
+          line: 551
+          column: 1
+        end:
+          offset: 51706
+          line: 565
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference_flow | Reference output shall be exactly 1 kg of accepted `bc98e461-2434-4229-8788-7ffb5c4b9a2e` using Mass `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`, and unit kg. |  |\n| `validate_required_qualifiers` | dataset_metadata | Reject a package missing any required family, function, node, substrate, wafer, die, package or bare-die state, test, geography, reporting-period, electricity-mix or abatement qualifier. | `wsts-product-classification-2021`; `proske-et-al-2024-die-area` |\n| `validate_delivery_state` | reference_product | Verify that reference output is a saleable electrically tested IC and that packaged or tested-bare-die delivery state is explicit; reject an untested wafer, intermediate die, smart-card module, leadframe, PCB or complete equipment proxy. | `us-epa-semiconductor-neshap`; `wsts-product-classification-2021` |\n| `validate_no_narrow_proxy` | representativeness | Reject a category-average claim derived from one chip, one wafer, one family, one package, one application or one route unless the dataset claim is explicitly narrowed to that stratum. | `proske-et-al-2024-die-area`; `wsts-product-classification-2021` |\n| `validate_process_coverage` | process_inventory | Verify route coverage for wafer fabrication, sort and dicing, assembly and packaging or declared tested-bare-die handling, final test, delivery preparation, wastes, wastewater and direct emissions. | `us-epa-semiconductor-neshap`; `epd-international-pcr-2024-06` |\n| `validate_yield_and_mass` | calculation_results | Require sequential yield reconciliation and process mass reconciliation; investigate unexplained differences and prohibit zero-loss assumptions without measured evidence. | `iso-14044-2006`; `proske-et-al-2024-die-area` |\n| `validate_direct_gases` | fab_and_test_emissions | When fluorinated gases, N2O or HTFs are used, require substance-specific input and emission records, by-product treatment, abatement DRE and downtime; reject purchased-gas-equals-emission shortcuts unless the cited method explicitly requires that conservative case. | `us-epa-semiconductor-industry`; `us-epa-ghgrp-subpart-i` |\n| `validate_allocation` | shared_burdens | Require subdivision or a documented causal allocation driver for shared fab, assembly and test burdens and require accepted-output mass weights for final aggregation; reject an undocumented mass, revenue or single-wafer proxy. | `iso-14044-2006`; `proske-et-al-2024-die-area` |\n| `validate_foreground_evidence` | quantitative_inventory | Require foreground records for all quantities in this PCR. Do not substitute uncited generic values or provisional estimates for missing product-family, node, site, yield, utility, material or emission data. | `iso-14044-2006`; `iec-63366-2025` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 208
+              line: 8
+              column: 1
+            end:
+              offset: 240
+              line: 8
+              column: 33
+          text: "# Electronic integrated circuits"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48772
+              line: 551
+              column: 1
+            end:
+              offset: 48794
+              line: 551
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 7954
+          line: 65
+          column: 1
+        end:
+          offset: 8502
+          line: 65
+          column: 549
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_complete_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 10378
+          line: 82
+          column: 1
+        end:
+          offset: 10733
+          line: 82
+          column: 356
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream_inputs"
+      identity_kind: "explicit"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 10734
+          line: 83
+          column: 1
+        end:
+          offset: 11058
+          line: 83
+          column: 325
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_family_strata"
+      identity_kind: "explicit"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 11059
+          line: 84
+          column: 1
+        end:
+          offset: 11357
+          line: 84
+          column: 299
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_no_proxy"
+      identity_kind: "explicit"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 11358
+          line: 85
+          column: 1
+        end:
+          offset: 11621
+          line: 85
+          column: 264
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_direct_gases"
+      identity_kind: "explicit"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 11622
+          line: 86
+          column: 1
+        end:
+          offset: 11934
+          line: 86
+          column: 313
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_excluded_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 11935
+          line: 87
+          column: 1
+        end:
+          offset: 12307
+          line: 87
+          column: 373
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide_first"
+      identity_kind: "explicit"
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 33371
+          line: 500
+          column: 1
+        end:
+          offset: 33708
+          line: 500
+          column: 338
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_wafer_fab_driver"
+      identity_kind: "explicit"
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 33709
+          line: 501
+          column: 1
+        end:
+          offset: 34111
+          line: 501
+          column: 403
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_assembly_test_driver"
+      identity_kind: "explicit"
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 34112
+          line: 502
+          column: 1
+        end:
+          offset: 34430
+          line: 502
+          column: 319
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_yield_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 34431
+          line: 503
+          column: 1
+        end:
+          offset: 34742
+          line: 503
+          column: 312
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_category_aggregation"
+      identity_kind: "explicit"
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 34743
+          line: 504
+          column: 1
+        end:
+          offset: 35081
+          line: 504
+          column: 339
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 35082
+          line: 505
+          column: 1
+        end:
+          offset: 35429
+          line: 505
+          column: 348
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 48867
+          line: 555
+          column: 1
+        end:
+          offset: 49130
+          line: 555
+          column: 264
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_required_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 49131
+          line: 556
+          column: 1
+        end:
+          offset: 49440
+          line: 556
+          column: 310
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_delivery_state"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 49441
+          line: 557
+          column: 1
+        end:
+          offset: 49798
+          line: 557
+          column: 358
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_no_narrow_proxy"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 49799
+          line: 558
+          column: 1
+        end:
+          offset: 50104
+          line: 558
+          column: 306
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 50105
+          line: 559
+          column: 1
+        end:
+          offset: 50421
+          line: 559
+          column: 317
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_yield_and_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 50422
+          line: 560
+          column: 1
+        end:
+          offset: 50695
+          line: 560
+          column: 274
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_direct_gases"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 50696
+          line: 561
+          column: 1
+        end:
+          offset: 51076
+          line: 561
+          column: 381
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 51077
+          line: 562
+          column: 1
+        end:
+          offset: 51397
+          line: 562
+          column: 321
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_foreground_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 51398
+          line: 563
+          column: 1
+        end:
+          offset: 51704
+          line: 563
+          column: 307
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 7931
+          line: 63
+          column: 1
+        end:
+          offset: 7952
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7931"
+      source_span:
+        start:
+          offset: 8530
+          line: 69
+          column: 1
+        end:
+          offset: 10275
+          line: 76
+          column: 344
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33258"
+      source_span:
+        start:
+          offset: 33258
+          line: 496
+          column: 1
+        end:
+          offset: 33298
+          line: 496
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48772"
+      source_span:
+        start:
+          offset: 48772
+          line: 551
+          column: 1
+        end:
+          offset: 48794
+          line: 551
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:8400b828715b4efc19a642fc7a6e14cba51acf99dc7e751b5597e442ce39d4eb"
-  generated_content_sha256: "sha256:bffc0c7c22d9ca13094b4c21126babfaec62fd2be0b335a03f32fe0571f8b4a8"
+  generated_content_sha256: "sha256:af99db3d8ba01a7ee03d353cb1a988f0159d16b1d6cf8bcbb298c7a517bfad46"

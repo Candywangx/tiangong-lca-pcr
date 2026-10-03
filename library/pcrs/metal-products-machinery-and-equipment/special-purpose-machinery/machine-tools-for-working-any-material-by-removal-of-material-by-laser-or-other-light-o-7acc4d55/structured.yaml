@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -414,12 +414,367 @@ data_sources:
     type: "official_guidance"
     reference: "United Nations Statistics Division, Central Product Classification Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
     used_for: "CPC 44211 identity and adjacent subclass exclusions"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:7f014a600e01ee7de61066f5fc84d3e51b74ed200b6cadb65bd0b7436a13a19a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4645"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4645
+          line: 57
+          column: 1
+        end:
+          offset: 6870
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins when purchased components and materials enter the reporting manufacturing site and ends when the complete machine passes acceptance and is released at the factory gate. Include attributable receipt, internal handling, frame preparation, coating, assembly, wiring, software loading required for acceptance, functional testing, rework, and waste handling. Upstream production of purchased inputs shall be represented by linked datasets. Distribution, customer-site installation, operation, maintenance, consumable use during customer operation, and end-of-life are outside this PCR.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased components and materials received at the reporting manufacturing site |\n| starting_condition_role | Foreground manufacturing entry point |\n| product_classification_scope | Complete machines within the semantic boundary of CPC 3.0 subclass 44211 |\n| recursive_input_rule | A purchased complete machine in the same category shall be recorded as one upstream product input with its own dataset and shall not be decomposed again in the foreground process. |\n| upstream_dataset_requirement | Use supplier-specific or representative upstream datasets for each purchased input and disclose geography, technology, and data age. |\n| disclosure | Declare the technology route, included factory operations, purchased-versus-in-house components, acceptance state, and all excluded stages. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_factory_gate` | foreground manufacturing | Include only attributable manufacturing through accepted factory-gate release and disclose every omitted factory operation. |  |\n| `boundary_route_specificity` | technology-specific exchanges | Record each present route-specific material, gas, electrode, abrasive, dielectric, electrolyte, water, vacuum-system input, and resulting waste or emission as a separate concrete exchange. |  |\n| `boundary_upstream_components` | purchased components | Link upstream product datasets and avoid double counting their embedded manufacturing burdens in site records. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 473
+              line: 8
+              column: 233
+          text: "# Machine-tools for working any material by removal of material, by laser or other light or photon beam, ultra-sonic, electro-discharge, electro-chemical, electron beam, ionic beam or plasma arc processes, water-jet cutting machines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4645
+              line: 57
+              column: 1
+            end:
+              offset: 4666
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_13802"
+      family: "allocation"
+      span:
+        start:
+          offset: 13802
+          line: 226
+          column: 1
+        end:
+          offset: 14573
+          line: 234
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct` | all foreground exchanges | Attribute BOM masses, meters, work orders, and waste tickets directly to the accepted machine configuration before using allocation. |  |\n| `allocation_shared` | shared site records | Subdivide by process or meter. If subdivision is unavailable, use a documented causal driver such as machine-hours or measured equipment load; disclose the driver and sensitivity. |  |\n| `allocation_scrap` | steel scrap and coating waste | Report the waste exchange at the foreground boundary without subtracting an unverified recycling credit. Model any downstream recovery in the receiving waste-treatment dataset. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 473
+              line: 8
+              column: 233
+          text: "# Machine-tools for working any material by removal of material, by laser or other light or photon beam, ultra-sonic, electro-discharge, electro-chemical, electron beam, ionic beam or plasma arc processes, water-jet cutting machines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 13802
+              line: 226
+              column: 1
+            end:
+              offset: 13842
+              line: 226
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_19459"
+      family: "validation"
+      span:
+        start:
+          offset: 19459
+          line: 263
+          column: 1
+        end:
+          offset: 20404
+          line: 273
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference flow | Verify one accepted configuration, M in kg, the packaging exclusion, and the exact 1 kg output normalization. |  |\n| `validate_inventory` | inventory | Reject combined or selector flows, missing collection protocols, unconverted per-machine amounts, and route-specific exchanges hidden in notes. |  |\n| `validate_bom` | component inputs | Reconcile installed quantities and masses to the as-built BOM and explain substitutions, rework, and rejected components. |  |\n| `validate_waste` | waste outputs | Verify waste identity, tare removal, attribution, destination, and absence of unverified avoided-burden credits. |  |\n| `validate_completeness` | data package | Fail completion when the declared technology route or included factory operation lacks its concrete inputs, wastes, and direct emissions. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 473
+              line: 8
+              column: 233
+          text: "# Machine-tools for working any material by removal of material, by laser or other light or photon beam, ultra-sonic, electro-discharge, electro-chemical, electron beam, ionic beam or plasma arc processes, water-jet cutting machines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 19459
+              line: 263
+              column: 1
+            end:
+              offset: 19481
+              line: 263
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_4645"
+      source_span:
+        start:
+          offset: 4668
+          line: 59
+          column: 1
+        end:
+          offset: 5279
+          line: 59
+          column: 612
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_factory_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4645"
+      source_span:
+        start:
+          offset: 6252
+          line: 76
+          column: 1
+        end:
+          offset: 6435
+          line: 76
+          column: 184
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_route_specificity"
+      identity_kind: "explicit"
+      unit_id: "normative_4645"
+      source_span:
+        start:
+          offset: 6436
+          line: 77
+          column: 1
+        end:
+          offset: 6694
+          line: 77
+          column: 259
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_upstream_components"
+      identity_kind: "explicit"
+      unit_id: "normative_4645"
+      source_span:
+        start:
+          offset: 6695
+          line: 78
+          column: 1
+        end:
+          offset: 6868
+          line: 78
+          column: 174
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_13802"
+      source_span:
+        start:
+          offset: 13915
+          line: 230
+          column: 1
+        end:
+          offset: 14103
+          line: 230
+          column: 189
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_13802"
+      source_span:
+        start:
+          offset: 14104
+          line: 231
+          column: 1
+        end:
+          offset: 14334
+          line: 231
+          column: 231
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_13802"
+      source_span:
+        start:
+          offset: 14335
+          line: 232
+          column: 1
+        end:
+          offset: 14571
+          line: 232
+          column: 237
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_19459"
+      source_span:
+        start:
+          offset: 19554
+          line: 267
+          column: 1
+        end:
+          offset: 19710
+          line: 267
+          column: 157
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_19459"
+      source_span:
+        start:
+          offset: 19711
+          line: 268
+          column: 1
+        end:
+          offset: 19896
+          line: 268
+          column: 186
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_bom"
+      identity_kind: "explicit"
+      unit_id: "normative_19459"
+      source_span:
+        start:
+          offset: 19897
+          line: 269
+          column: 1
+        end:
+          offset: 20061
+          line: 269
+          column: 165
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_19459"
+      source_span:
+        start:
+          offset: 20062
+          line: 270
+          column: 1
+        end:
+          offset: 20216
+          line: 270
+          column: 155
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_19459"
+      source_span:
+        start:
+          offset: 20217
+          line: 271
+          column: 1
+        end:
+          offset: 20402
+          line: 271
+          column: 186
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4645"
+      source_span:
+        start:
+          offset: 4645
+          line: 57
+          column: 1
+        end:
+          offset: 4666
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4645"
+      source_span:
+        start:
+          offset: 5307
+          line: 63
+          column: 1
+        end:
+          offset: 6159
+          line: 70
+          column: 157
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_13802"
+      source_span:
+        start:
+          offset: 13802
+          line: 226
+          column: 1
+        end:
+          offset: 13842
+          line: 226
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_19459"
+      source_span:
+        start:
+          offset: 19459
+          line: 263
+          column: 1
+        end:
+          offset: 19481
+          line: 263
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:7f014a600e01ee7de61066f5fc84d3e51b74ed200b6cadb65bd0b7436a13a19a"
-  generated_content_sha256: "sha256:e94c5a3f7c441e8754316f704cd6acc0939e8d54d275859ce19d55fbf7c6baa4"
+  generated_content_sha256: "sha256:a42e05b2d60568a41fd1746af0cf1da86a3b61358355e7cc5fe83988c892d4de"

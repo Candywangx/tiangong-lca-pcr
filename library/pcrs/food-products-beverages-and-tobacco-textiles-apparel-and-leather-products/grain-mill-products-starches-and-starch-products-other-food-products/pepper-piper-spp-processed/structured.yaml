@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -3406,12 +3406,588 @@ data_sources:
     type: "method_factor"
     reference: "IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2, Chapter 2: Stationary Combustion. https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf"
     used_for: "Fuel-separated CO2, CH4, and N2O calculation structure and factor traceability"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:5e919555e6e83226a6ecaafd42996621f88f1b0faf03f835c416a1a3e133129a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8739"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8739
+          line: 87
+          column: 1
+        end:
+          offset: 12608
+          line: 113
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground starts at receipt of the declared pepper material state and ends when packaged processed pepper is released at the factory gate. Receiving, separation, wet-route steps, drying, dry cleaning and grading, size reduction, sanitization, equipment cleaning, packaging, finished-goods storage, on-site utilities, direct emissions, wastes, and wastewater are included when they occur. Cultivation, supplier processing, purchased energy, purchased materials, treatment of exported waste, and inbound transport require upstream datasets but are not silently absorbed into foreground measurements.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Physical state, product class, species or cultivar, moisture, cleanliness, supplier processing, packaging, location, and time of the pepper material received at the reporting facility |\n| starting_condition_role | Foreground gate input whose upstream cultivation, preprocessing, and inbound transport are represented by linked supplier or secondary datasets |\n| product_classification_scope | Processed *Piper* pepper associated with CPC 3.0 code 23921; classification is mapping context and does not replace product and route qualifiers |\n| recursive_input_rule | If already processed pepper in this same category is received for cleaning, milling, sanitization, repacking, or storage, record it once as `same_category_processed_pepper_input`, link its upstream dataset, and model only the additional foreground operations; do not recursively reconstruct or double count its earlier processing |\n| upstream_dataset_requirement | A geographically, temporally, technologically, product-class-, presentation-, moisture-, and route-matched dataset is required for each received pepper material, energy carrier, water supply, chemical, and packaging material |\n| disclosure | Disclose gate vector, supplier starting state, excluded operations, allocation, cut-offs, route shares, mass and moisture balance, energy carriers, wastewater destination, direct emissions, packaging, refrigerants, and data gaps |\n\n### Normative system-boundary rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `sb_route_gate` | All foreground records | Apply the product and route selection gate before aggregation; mutually exclusive product classes, presentations, wet treatments, depericarping routes, and drying routes shall not be averaged implicitly. | `codex-cxs-326-2017`; `ipc-pepper-standard-2015`; `fao-gi-control-plan-2009` |\n| `sb_required_operations` | Unit-process coverage | Include every listed required process and every conditional process whose gate condition is met; document a zero or not-applicable result rather than deleting an occurring route. | `ipc-pepper-standard-2015`; `fao-spice-quality-assurance` |\n| `sb_recursive_input` | Same-category processed pepper input | Link the upstream processed-pepper dataset and model only added foreground conversion; prevent recursion and double counting. | `eu-pef-method-2021` |\n| `sb_upstream_linkage` | Purchased inputs and exported treatments | Link upstream datasets for received pepper, utilities, chemicals, packaging, inbound transport, and treatment of wastes or wastewater outside the site. | `eu-pef-method-2021` |\n| `sb_factory_gate` | Reference product | End the foreground after final release and storage at the reporting facility; exclude outbound distribution, retail, use, and end-of-life unless a broader study adds them transparently. | `eu-pef-method-2021` |\n| `sb_atomic_flows` | All inventory exchanges | Use one row per identified carrier, material, chemical, packaging material, waste stream, wastewater stream, refrigerant, and elementary emission; grouped placeholders do not conform. | `fao-spice-quality-assurance`; `ipcc-stationary-combustion-2006` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 318
+              line: 10
+              column: 1
+            end:
+              offset: 350
+              line: 10
+              column: 33
+          text: "# Pepper (Piper spp.), processed"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8739
+              line: 87
+              column: 1
+            end:
+              offset: 8760
+              line: 87
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_139356"
+      family: "allocation"
+      span:
+        start:
+          offset: 139356
+          line: 2397
+          column: 1
+        end:
+          offset: 141183
+          line: 2409
+          column: 1
+      markdown: "## 7. Allocation Rules\n\n| rule_id | Priority | Rule | Required disclosure | source_ids |\n| --- | --- | --- | --- | --- |\n| `alloc_avoid_by_subdivision` | 1 | Avoid allocation by separating product class, presentation, wet route, depericarping route, drying route, sanitization route, and packaging-format records. | Subprocess split, meters or causal records, and lot links | `eu-pef-method-2021` |\n| `alloc_route_specific_records` | 2 | Do not allocate or average across mutually exclusive route-gate values; calculate an intentional mix only from independently modelled routes and disclosed production weights. | Gate values, route outputs, weights, period, and calculation | `codex-cxs-326-2017`; `ipc-pepper-standard-2015` |\n| `alloc_residue_classification` | 3 | Treat removed stalks, pericarp, dust, off-grade pepper, and rejected product as waste unless sale, specification, and a receiving market demonstrate a co-product. | Classification basis, destination, revenue or specification, and mass | `eu-pef-method-2021` |\n| `alloc_physical_relationship` | 4 | When subdivision is impossible and a causal physical relationship exists, allocate shared inputs by the measured driver, such as pepper dry matter, equipment runtime, occupied mass-time, or treated volume. | Driver, measurements, formula, and sensitivity | `eu-pef-method-2021` |\n| `alloc_economic_fallback` | 5 | Use economic allocation only when no defensible physical relationship exists; use a representative price period and test price sensitivity. | Prices, currency, period, source, shares, and sensitivity | `eu-pef-method-2021` |\n\nNo avoided-burden credit is allowed inside the foreground inventory without an explicitly declared consequential study. Exported waste treatment and any substitution claim shall remain separate linked modelling choices.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 318
+              line: 10
+              column: 1
+            end:
+              offset: 350
+              line: 10
+              column: 33
+          text: "# Pepper (Piper spp.), processed"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 139356
+              line: 2397
+              column: 1
+            end:
+              offset: 139378
+              line: 2397
+              column: 23
+          text: "## 7. Allocation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_155200"
+      family: "validation"
+      span:
+        start:
+          offset: 155200
+          line: 2463
+          column: 1
+        end:
+          offset: 159083
+          line: 2484
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_identity_gate` | Product identity and route selection | Error: Every required gate has one declared value and the dataset scope matches CPC 3.0 23921 processed *Piper* pepper. | `un-cpc-v3`; `codex-cxs-326-2017` |\n| `val_reference_flow` | Reference product object | Error: `processed_pepper_reference_output` is exactly 1 kg net product with UUID `99d5d3c5-870f-458f-b492-a610d37c8034`, Product flow, and Mass; packaging is excluded. | `un-cpc-v3` |\n| `val_no_implicit_averaging` | Mutually exclusive routes and forms | Error: Product classes, presentations, wet treatments, depericarping, drying, sanitization, and packaging formats are separate or combined only with disclosed route datasets and weights. | `codex-cxs-326-2017`; `ipc-pepper-standard-2015` |\n| `val_process_gate` | Required and conditional processes | Error: All required processes and every triggered conditional process are present; map tokens are only `required` or `conditional`. | `ipc-pepper-standard-2015`; `fao-spice-quality-assurance` |\n| `val_atomic_flows` | Atomic inventory | Error: Every actual carrier, material, chemical, packaging material, waste, wastewater, refrigerant, and elementary emission has its own flow card; no grouped placeholder is used. | `fao-spice-quality-assurance`; `ipcc-stationary-combustion-2006` |\n| `val_only_reference_uuid` | UUID ownership | Error: The reference product flow is the only flow card with a UUID; all other flow UUIDs remain blank for author mapping. | `un-cpc-v3` |\n| `val_mass_moisture_balance` | Wet- and dry-matter closure | Error: Process input, product, waste, and moisture records support reviewed wet-mass and dry-matter balances, with deviations explained. | `fao-spice-quality-assurance`; `codex-cxs-326-2017` |\n| `val_final_moisture` | Released-product moisture | Error: Final moisture is measured by a declared method and meets the declared applicable grade or buyer specification. | `codex-cxs-326-2017`; `ipc-pepper-standard-2015` |\n| `val_energy_separation` | Energy carrier identity | Error: Electricity, steam, hot water, natural gas, LPG, diesel, biomass, and any other actual carrier are separate and route-specific. | `eu-pef-method-2021` |\n| `val_wastewater` | Wet-route wastewater | Error: Every wet-process and cleaning wastewater stream has separate volume, destination, and matched pollutant results when tested. | `azman-retting-water-2020`; `fao-spice-quality-assurance` |\n| `val_combustion_emissions` | Fuel emissions | Error: Each used on-site fuel has separate CO2, CH4, and N2O measurement or transparent fuel-specific calculation. | `ipcc-stationary-combustion-2006` |\n| `val_packaging` | Package layers and scrap | Error: Every actual primary, secondary, and tertiary packaging material and its scrap is recorded separately and mass-reconciled. | `fao-spice-quality-assurance` |\n| `val_refrigerants` | Refrigerant identity and loss | Error: Each actual refrigerant chemical has separate addition and air-emission cards with an equipment-level charge balance; ambient storage records zero and not applicable. | `eu-pef-method-2021` |\n| `val_allocation` | Allocation hierarchy | Error: Subdivision is attempted first; any remaining physical or economic allocation has complete driver, formula, source, and sensitivity disclosure. | `eu-pef-method-2021` |\n| `val_temporal_completeness` | Period reconciliation | Error: Input, output, utility, waste, wastewater, emission, packaging, and storage records cover the same representative production period. | `eu-pef-method-2021` |\n| `val_source_closure` | Evidence traceability | Error: Every external method or number resolves to a listed Data Sources entry; each reasoned estimate is labelled with rationale, range, sensitivity, and provisional status. | `eu-pef-method-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 318
+              line: 10
+              column: 1
+            end:
+              offset: 350
+              line: 10
+              column: 33
+          text: "# Pepper (Piper spp.), processed"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 155200
+              line: 2463
+              column: 1
+            end:
+              offset: 155222
+              line: 2463
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 8762
+          line: 89
+          column: 1
+        end:
+          offset: 9364
+          line: 89
+          column: 603
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_route_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 10968
+          line: 106
+          column: 1
+        end:
+          offset: 11297
+          line: 106
+          column: 330
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_required_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 11298
+          line: 107
+          column: 1
+        end:
+          offset: 11591
+          line: 107
+          column: 294
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_recursive_input"
+      identity_kind: "explicit"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 11592
+          line: 108
+          column: 1
+        end:
+          offset: 11806
+          line: 108
+          column: 215
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_upstream_linkage"
+      identity_kind: "explicit"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 11807
+          line: 109
+          column: 1
+        end:
+          offset: 12052
+          line: 109
+          column: 246
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sb_factory_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 12053
+          line: 110
+          column: 1
+        end:
+          offset: 12305
+          line: 110
+          column: 253
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "sb_atomic_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 12306
+          line: 111
+          column: 1
+        end:
+          offset: 12606
+          line: 111
+          column: 301
+    - pointer: "/allocation_rules/0"
+      rule_id: "alloc_avoid_by_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 139477
+          line: 2401
+          column: 1
+        end:
+          offset: 139754
+          line: 2401
+          column: 278
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_route_specific_records"
+      identity_kind: "explicit"
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 139755
+          line: 2402
+          column: 1
+        end:
+          offset: 140084
+          line: 2402
+          column: 330
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_residue_classification"
+      identity_kind: "explicit"
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 140085
+          line: 2403
+          column: 1
+        end:
+          offset: 140383
+          line: 2403
+          column: 299
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_physical_relationship"
+      identity_kind: "explicit"
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 140384
+          line: 2404
+          column: 1
+        end:
+          offset: 140701
+          line: 2404
+          column: 318
+    - pointer: "/allocation_rules/4"
+      rule_id: "alloc_economic_fallback"
+      identity_kind: "explicit"
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 140702
+          line: 2405
+          column: 1
+        end:
+          offset: 140960
+          line: 2405
+          column: 259
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_rule_6"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 140962
+          line: 2407
+          column: 1
+        end:
+          offset: 141181
+          line: 2407
+          column: 220
+    - pointer: "/validation_rules/0"
+      rule_id: "val_identity_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 155295
+          line: 2467
+          column: 1
+        end:
+          offset: 155515
+          line: 2467
+          column: 221
+    - pointer: "/validation_rules/1"
+      rule_id: "val_reference_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 155516
+          line: 2468
+          column: 1
+        end:
+          offset: 155751
+          line: 2468
+          column: 236
+    - pointer: "/validation_rules/2"
+      rule_id: "val_no_implicit_averaging"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 155752
+          line: 2469
+          column: 1
+        end:
+          offset: 156061
+          line: 2469
+          column: 310
+    - pointer: "/validation_rules/3"
+      rule_id: "val_process_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 156062
+          line: 2470
+          column: 1
+        end:
+          offset: 156315
+          line: 2470
+          column: 254
+    - pointer: "/validation_rules/4"
+      rule_id: "val_atomic_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 156316
+          line: 2471
+          column: 1
+        end:
+          offset: 156606
+          line: 2471
+          column: 291
+    - pointer: "/validation_rules/5"
+      rule_id: "val_only_reference_uuid"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 156607
+          line: 2472
+          column: 1
+        end:
+          offset: 156792
+          line: 2472
+          column: 186
+    - pointer: "/validation_rules/6"
+      rule_id: "val_mass_moisture_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 156793
+          line: 2473
+          column: 1
+        end:
+          offset: 157047
+          line: 2473
+          column: 255
+    - pointer: "/validation_rules/7"
+      rule_id: "val_final_moisture"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 157048
+          line: 2474
+          column: 1
+        end:
+          offset: 157272
+          line: 2474
+          column: 225
+    - pointer: "/validation_rules/8"
+      rule_id: "val_energy_separation"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 157273
+          line: 2475
+          column: 1
+        end:
+          offset: 157486
+          line: 2475
+          column: 214
+    - pointer: "/validation_rules/9"
+      rule_id: "val_wastewater"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 157487
+          line: 2476
+          column: 1
+        end:
+          offset: 157725
+          line: 2476
+          column: 239
+    - pointer: "/validation_rules/10"
+      rule_id: "val_combustion_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 157726
+          line: 2477
+          column: 1
+        end:
+          offset: 157926
+          line: 2477
+          column: 201
+    - pointer: "/validation_rules/11"
+      rule_id: "val_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 157927
+          line: 2478
+          column: 1
+        end:
+          offset: 158137
+          line: 2478
+          column: 211
+    - pointer: "/validation_rules/12"
+      rule_id: "val_refrigerants"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 158138
+          line: 2479
+          column: 1
+        end:
+          offset: 158391
+          line: 2479
+          column: 254
+    - pointer: "/validation_rules/13"
+      rule_id: "val_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 158392
+          line: 2480
+          column: 1
+        end:
+          offset: 158611
+          line: 2480
+          column: 220
+    - pointer: "/validation_rules/14"
+      rule_id: "val_temporal_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 158612
+          line: 2481
+          column: 1
+        end:
+          offset: 158832
+          line: 2481
+          column: 221
+    - pointer: "/validation_rules/15"
+      rule_id: "val_source_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 158833
+          line: 2482
+          column: 1
+        end:
+          offset: 159081
+          line: 2482
+          column: 249
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 8739
+          line: 87
+          column: 1
+        end:
+          offset: 8760
+          line: 87
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8739"
+      source_span:
+        start:
+          offset: 9392
+          line: 93
+          column: 1
+        end:
+          offset: 10858
+          line: 100
+          column: 246
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_139356"
+      source_span:
+        start:
+          offset: 139356
+          line: 2397
+          column: 1
+        end:
+          offset: 139378
+          line: 2397
+          column: 23
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_155200"
+      source_span:
+        start:
+          offset: 155200
+          line: 2463
+          column: 1
+        end:
+          offset: 155222
+          line: 2463
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:5e919555e6e83226a6ecaafd42996621f88f1b0faf03f835c416a1a3e133129a"
-  generated_content_sha256: "sha256:6e41f25a53baa0ab5bb51d2b49d443dbc621036be836410c16a49ccfbdec92bf"
+  generated_content_sha256: "sha256:8ada519844fbdd7fb5dde8f2c30c96398438e4bfac1376f1b4b44830ddd60e1d"

@@ -15,8 +15,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.mjs";
-import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.mjs";
+import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.ts";
+import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.ts";
 import {
   buildGuidance,
   buildPcrTree,
@@ -35,7 +35,7 @@ import {
   withPcrReadContextSession,
 } from "./src/index.mjs";
 import { findPcrIdAlias, readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
-import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.mjs";
+import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.ts";
 import { parseYaml, renderYaml } from "./src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");
@@ -571,8 +571,8 @@ test("readiness reports schema blockers even when projection fingerprints are cu
     const split = splitProjectionDocument(original);
     assert.equal(split.valid, true);
     const changedContent = split.generatedContent.replace(
-      "schema_version: 1\n",
-      "schema_version: 1\nruntime_only: true\n",
+      /^(schema_version: [12])\n/u,
+      "$1\nruntime_only: true\n",
     );
     const changed = `${changedContent}${original.slice(split.generatedContent.length)}`.replace(
       /(  generated_content_sha256: )"sha256:[0-9a-f]{64}"/u,
@@ -762,7 +762,7 @@ test("getVerifiedPcrProjection rejects stale, substituted, invalid, and unusable
       mutate(pcrDir) {
         const structuredPath = path.join(pcrDir, "structured.yaml");
         const structured = readFileSync(structuredPath, "utf8").replace(
-          "schema_version: 1",
+          /^schema_version: [12]$/mu,
           "schema_version: invalid",
         );
         writeFileSync(structuredPath, structured);

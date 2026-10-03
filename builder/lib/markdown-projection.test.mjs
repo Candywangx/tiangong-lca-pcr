@@ -9,7 +9,7 @@ import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import {
   parsePcrMarkdownToStructured,
   structuredProjectionYaml,
-} from "./markdown-projection.mjs";
+} from "./markdown-projection.ts";
 
 const repoRoot = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
 

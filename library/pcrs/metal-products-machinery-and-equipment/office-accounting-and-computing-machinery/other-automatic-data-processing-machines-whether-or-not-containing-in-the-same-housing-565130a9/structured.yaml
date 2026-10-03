@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -895,12 +895,510 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Official Journal L 471, http://data.europa.eu/eli/reco/2021/2279/oj, retrieved 2026-08-09"
     used_for: "General lifecycle data quality, verifiability, completeness, multifunctionality, allocation, and disclosure rules"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:59edcefdafadf8ab2fe86481d47a72583cf49b5e8fbe0bced8a42d299249af84"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8126"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8126
+          line: 62
+          column: 1
+        end:
+          offset: 12089
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe default deliverable is a producer-gate foreground manufacturing data package. A downstream `lifecyclemodel` may extend it to raw-material acquisition, use, maintenance, refurbishment, and end-of-life, but shall keep the declared configuration and prevent overlap with linked component or treatment datasets.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased electronic, electromechanical, mechanical, power, thermal-management, housing, storage, input, output, packaging, and software-bearing components or subassemblies received at the declared manufacturing site |\n| starting_condition_role | Upstream product inputs to the first foreground receiving, kitting, board-integration, or system-assembly operation |\n| product_classification_scope | Residual CPC 45250 automatic data processing machines represented only by the declared architecture, housing-unit combination, configuration, and intended use |\n| recursive_input_rule | An input that is already a finished in-scope CPC 45250 machine shall be recorded as an upstream product flow and shall not be decomposed again inside the receiving foreground process; disclose its configuration and upstream dataset. |\n| upstream_dataset_requirement | Link supplier- and technology-appropriate datasets for semiconductors, printed circuit assemblies, memory, storage, power supplies, cooling, chassis, cables, batteries, displays or input devices when included, packaging, electricity, transport, and waste treatment; disclose every proxy and mismatch. |\n| disclosure | Declare architecture, processor arrangement, housing form, exact in-housing storage/input/output combination, bill of materials, configuration identifier, intended use, site, reporting period, included assembly and test operations, upstream datasets, packaging treatment, and exact producer-gate terminal condition. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_foreground_operations` | Producer-gate manufacturing | Include receiving and kitting, board mounting when performed on site, system integration, firmware or software loading, configuration, testing and burn-in when performed, rework, cleaning, final finishing, packaging, utilities, direct releases, rejects, and manufacturing wastes. | itu-l1410-2024 |\n| `boundary_upstream_components` | Purchased inputs | Represent every material component and subassembly with an upstream dataset or a disclosed unresolved proxy; do not treat a purchased populated board, storage unit, power supply, housing, or cooling assembly as burden-free. | itu-l1410-2024; ec-pef-method-2021 |\n| `boundary_configuration_specificity` | Product category coverage | Preserve architecture, housing-unit combination, installed components, firmware or operating environment, intended use, and configuration identity. Never extrapolate one server, workstation, thin client, appliance, embedded device, or other narrow design to the whole residual leaf. | un-cpc-3-2025; energy-star-computers-9-2025 |\n| `boundary_software_and_test` | Software-bearing product and testing | Include on-site loading, configuration, update, and test energy and materials. Model software development, remote services, and use-phase operation only when the declared lifecycle boundary includes them, and disclose their allocation separately. | itu-l1410-2024 |\n| `boundary_downstream_extension` | Lifecycle model | When use, maintenance, refurbishment, or end-of-life is claimed, add configuration-specific scenarios and datasets without duplicating producer-gate or upstream component burdens. | itu-l1410-2024 |\n| `boundary_no_silent_cutoff` | All foreground operations | A known input, output, waste, or direct release shall not be omitted solely because a matching dataset is unavailable; record it, select a disclosed proxy, or document the exclusion and expected effect. | itu-l1410-2024; ec-pef-method-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 256
+              line: 8
+              column: 1
+            end:
+              offset: 429
+              line: 8
+              column: 174
+          text: "# Other automatic data processing machines whether or not containing in the same housing one or two of the following types of units: storage units, input units, output units"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8126
+              line: 62
+              column: 1
+            end:
+              offset: 8147
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_31886"
+      family: "allocation"
+      span:
+        start:
+          offset: 31886
+          line: 483
+          column: 1
+        end:
+          offset: 33727
+          line: 493
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_by_subdivision` | All shared manufacturing operations | First subdivide by line, work order, configuration, test profile, and process time and use direct measurements. Allocate only residual shared inputs or releases. | ec-pef-method-2021; itu-l1410-2024 |\n| `allocation_shared_utilities` | Shared facility electricity and utilities | Use configuration-specific sub-metering where available; otherwise allocate by a documented causal driver such as equipment runtime multiplied by measured power, machine time, or occupied test-cell time. Use output mass only when no better causal driver exists and disclose the limitation. | itu-l1410-2024; ec-pef-method-2021 |\n| `allocation_rework_and_rejects` | Rework and nonconforming output | Retain initial processing burdens, added rework inputs, and final disposal or recovery burdens in the production batch that generated the conforming output; do not remove reject burdens by treating scrap revenue as a co-product without an explicit reviewed method. | ec-pef-method-2021 |\n| `allocation_configuration_family` | Multi-configuration dataset | Calculate each configuration separately, then combine only with audited production mass for the declared site and period. Report included configurations, weights, dispersion, and exclusions; never substitute one server or embedded-device profile for the CPC leaf. | energy-star-computers-9-2025 |\n| `allocation_recovered_material` | Recovered manufacturing material | Report recovered material quantity and treatment route separately. Apply substitution or recycling credit only in a downstream lifecycle model with the method, quality, and avoided product explicitly declared. | ec-pef-method-2021; itu-l1410-2024 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 256
+              line: 8
+              column: 1
+            end:
+              offset: 429
+              line: 8
+              column: 174
+          text: "# Other automatic data processing machines whether or not containing in the same housing one or two of the following types of units: storage units, input units, output units"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 31886
+              line: 483
+              column: 1
+            end:
+              offset: 31926
+              line: 483
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45092"
+      family: "validation"
+      span:
+        start:
+          offset: 45092
+          line: 531
+          column: 1
+        end:
+          offset: 48718
+          line: 547
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_product_identity` | Reference product | Fail conformance when architecture, processor arrangement, housing form, exact in-housing storage/input/output combination including explicit absence, configuration id, intended use, included accessories, or net unit mass is missing. | un-cpc-3-2025; energy-star-computers-9-2025 |\n| `validate_residual_class_scope` | CPC classification | Reject portable machines, machines containing CPU plus input and output in the same housing, machines presented as systems, separately supplied input/output or storage units, other ADP units, parts, and more specifically classified telecommunications, consumer-electronics, or industrial-control products. | un-cpc-3-2025 |\n| `validate_no_leaf_extrapolation` | Dataset representativeness | Reject an unqualified CPC-leaf result derived from one server, workstation, thin client, appliance, embedded device, or other narrow design. A family result requires separate configuration results and audited production-mass weights. | energy-star-computers-9-2025 |\n| `validate_reference_flow` | Quantitative reference | Require exactly 1 kg net finished product using flow `ea5779a6-4214-400c-b380-155efbd5b98e`, Mass `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`, and kg; require corresponding measured machine count and exclude packaging and separately supplied accessories from net mass. |  |\n| `validate_process_coverage` | Foreground inventory | Require component receipt and kitting, board and system integration, configuration and testing, and finishing and gate-release inventories, with explicit non-applicability only for conditional board mounting, burn-in, rework, and direct-release rows. | itu-l1410-2024 |\n| `validate_housing_unit_combination` | Configuration BOM | Require separate storage, input, and output unit fields with installed count, specification, mass, and explicit absence; reject a generic statement that does not identify the same-housing combination. | un-cpc-3-2025 |\n| `validate_transfer_and_mass_balance` | Foreground processes | Require configuration-specific unit-transfer reconciliation and material mass balance within documented uncertainty; investigate and disclose every residual and stock change. | itu-l1410-2024 |\n| `validate_test_records` | Configuration and testing | Require version-controlled test profile, firmware or operating environment, test duration, energy method, pass/fail result, failures, and rework. ENERGY STAR or ECMA procedures may support only products within their stated scope and shall not be treated as leaf-wide energy factors. | energy-star-computers-9-2025; ecma-383-2010 |\n| `validate_allocation` | Shared operations | Require direct subdivision or a documented causal allocation driver; require separate configuration calculations before family aggregation and reject unexplained mass or economic allocation. | ec-pef-method-2021; itu-l1410-2024 |\n| `validate_source_and_proxy_traceability` | Upstream and calculated rows | Require every non-default method, factor, or scenario to reference a listed source id; require every calculated foreground row to link to a collection protocol; disclose each proxy and mismatch. | ec-pef-method-2021; itu-l1410-2024 |\n| `validate_data_quality` | Dataset profile | Require temporal, site, configuration, technology, geography, measurement, completeness, uncertainty, and production-mass coverage disclosures sufficient for independent verification. | ec-pef-method-2021; itu-l1410-2024 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 256
+              line: 8
+              column: 1
+            end:
+              offset: 429
+              line: 8
+              column: 174
+          text: "# Other automatic data processing machines whether or not containing in the same housing one or two of the following types of units: storage units, input units, output units"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45092
+              line: 531
+              column: 1
+            end:
+              offset: 45114
+              line: 531
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 8149
+          line: 64
+          column: 1
+        end:
+          offset: 8460
+          line: 64
+          column: 312
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_foreground_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 10112
+          line: 79
+          column: 1
+        end:
+          offset: 10477
+          line: 79
+          column: 366
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream_components"
+      identity_kind: "explicit"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 10478
+          line: 80
+          column: 1
+        end:
+          offset: 10794
+          line: 80
+          column: 317
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_configuration_specificity"
+      identity_kind: "explicit"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 10795
+          line: 81
+          column: 1
+        end:
+          offset: 11194
+          line: 81
+          column: 400
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_software_and_test"
+      identity_kind: "explicit"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 11195
+          line: 82
+          column: 1
+        end:
+          offset: 11532
+          line: 82
+          column: 338
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_downstream_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 11533
+          line: 83
+          column: 1
+        end:
+          offset: 11785
+          line: 83
+          column: 253
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_no_silent_cutoff"
+      identity_kind: "explicit"
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 11786
+          line: 84
+          column: 1
+        end:
+          offset: 12087
+          line: 84
+          column: 302
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid_by_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_31886"
+      source_span:
+        start:
+          offset: 31999
+          line: 487
+          column: 1
+        end:
+          offset: 32275
+          line: 487
+          column: 277
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_31886"
+      source_span:
+        start:
+          offset: 32276
+          line: 488
+          column: 1
+        end:
+          offset: 32682
+          line: 488
+          column: 407
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rework_and_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_31886"
+      source_span:
+        start:
+          offset: 32683
+          line: 489
+          column: 1
+        end:
+          offset: 33040
+          line: 489
+          column: 358
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_configuration_family"
+      identity_kind: "explicit"
+      unit_id: "normative_31886"
+      source_span:
+        start:
+          offset: 33041
+          line: 490
+          column: 1
+        end:
+          offset: 33405
+          line: 490
+          column: 365
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_recovered_material"
+      identity_kind: "explicit"
+      unit_id: "normative_31886"
+      source_span:
+        start:
+          offset: 33406
+          line: 491
+          column: 1
+        end:
+          offset: 33725
+          line: 491
+          column: 320
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_product_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 45187
+          line: 535
+          column: 1
+        end:
+          offset: 45520
+          line: 535
+          column: 334
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_residual_class_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 45521
+          line: 536
+          column: 1
+        end:
+          offset: 45901
+          line: 536
+          column: 381
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_no_leaf_extrapolation"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 45902
+          line: 537
+          column: 1
+        end:
+          offset: 46234
+          line: 537
+          column: 333
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_reference_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 46235
+          line: 538
+          column: 1
+        end:
+          offset: 46612
+          line: 538
+          column: 378
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 46613
+          line: 539
+          column: 1
+        end:
+          offset: 46937
+          line: 539
+          column: 325
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_housing_unit_combination"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 46938
+          line: 540
+          column: 1
+        end:
+          offset: 47216
+          line: 540
+          column: 279
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_transfer_and_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 47217
+          line: 541
+          column: 1
+        end:
+          offset: 47474
+          line: 541
+          column: 258
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_test_records"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 47475
+          line: 542
+          column: 1
+        end:
+          offset: 47861
+          line: 542
+          column: 387
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 47862
+          line: 543
+          column: 1
+        end:
+          offset: 48137
+          line: 543
+          column: 276
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_source_and_proxy_traceability"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 48138
+          line: 544
+          column: 1
+        end:
+          offset: 48447
+          line: 544
+          column: 310
+    - pointer: "/validation_rules/10"
+      rule_id: "validate_data_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 48448
+          line: 545
+          column: 1
+        end:
+          offset: 48716
+          line: 545
+          column: 269
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 8126
+          line: 62
+          column: 1
+        end:
+          offset: 8147
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8126"
+      source_span:
+        start:
+          offset: 8488
+          line: 68
+          column: 1
+        end:
+          offset: 10039
+          line: 75
+          column: 333
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_31886"
+      source_span:
+        start:
+          offset: 31886
+          line: 483
+          column: 1
+        end:
+          offset: 31926
+          line: 483
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45092"
+      source_span:
+        start:
+          offset: 45092
+          line: 531
+          column: 1
+        end:
+          offset: 45114
+          line: 531
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:59edcefdafadf8ab2fe86481d47a72583cf49b5e8fbe0bced8a42d299249af84"
-  generated_content_sha256: "sha256:6175064e7ae23b44517b122d6ccc02496d948e3a52fa2653b9f576429186b135"
+  generated_content_sha256: "sha256:e57d091872ef83c58ed454b3ed4ceeaa0c1d61dbe5c488581f6261ba5067f754"

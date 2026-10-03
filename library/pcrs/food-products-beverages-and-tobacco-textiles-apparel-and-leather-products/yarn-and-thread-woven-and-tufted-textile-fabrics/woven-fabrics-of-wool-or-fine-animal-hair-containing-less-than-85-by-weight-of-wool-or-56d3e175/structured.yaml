@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -516,12 +516,406 @@ data_sources:
     type: "official_guidance"
     reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2508 (accessed 2026-08-12)"
     used_for: "Foreground input/output inventory, weaving energy, water balance, chemical inventory, wastewater, route disclosure, and validation rules"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c9c87318849f1bef9ad75a36236910058444272920dd3e2d4feb88bc8db763f9"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4873"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4873
+          line: 57
+          column: 1
+        end:
+          offset: 7221
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_factory_gate` | foreground manufacturing | Include purchased-yarn receipt and preparation, weaving, in-process inspection, and factory-gate dispatch; include on-site wet processing, finishing, and packaging when performed for the reported lot. | `jrc-textiles-bref-2023`; `eu-bat-textiles-2022` |\n| `boundary_upstream_links` | purchased inputs | Represent upstream production of yarn, water, electricity, steam, process chemicals, and packaging with linked upstream datasets; do not reproduce those upstream processes in the foreground inventory. |  |\n| `boundary_route_disclosure` | route-dependent operations | Declare whether wet processing, dyeing, finishing, and packaging occur on site, are purchased as services, or are absent; include only exchanges that cross the selected foreground boundary and prevent double counting with linked datasets. | `eu-bat-textiles-2022` |\n| `boundary_atomic_inventory` | all foreground exchanges | Record every actually used material, process chemical, energy carrier, packaging component, waste stream, and elementary emission as its own exchange with an exact identity; do not use grouped or selector flows. | `eu-bat-textiles-2022` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased yarns with declared fibre composition, yarn form, mass, supplier, and upstream dataset references at receipt to the reporting site |\n| starting_condition_role | Foreground boundary entry for fabric manufacture |\n| product_classification_scope | Woven fabrics containing less than 85% by mass of wool and/or fine animal hair |\n| recursive_input_rule | If an input already belongs to this same woven-fabric category, record it once as a linked upstream product dataset and exclude its internal manufacture from this foreground process. |\n| upstream_dataset_requirement | Link each purchased yarn, utility, chemical, packaging component, and outsourced treatment to a geographically and temporally appropriate upstream dataset or disclose the unresolved gap. |\n| disclosure | Declare yarn composition, supplier state, included on-site operations, outsourced operations, allocation choices, packaging state, production period, geography, and any excluded exchange. |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 298
+              line: 8
+              column: 1
+            end:
+              offset: 405
+              line: 8
+              column: 108
+          text: "# Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4873
+              line: 57
+              column: 1
+            end:
+              offset: 4894
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_15888"
+      family: "allocation"
+      span:
+        start:
+          offset: 15888
+          line: 253
+          column: 1
+        end:
+          offset: 16714
+          line: 261
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | shared foreground operations | Avoid allocation by separately metering or subdividing yarn preparation, weaving, wet processing, finishing, and packaging whenever records permit. |  |\n| `allocation_lot_linkage` | multiple fabric lots | Assign inputs and outputs directly to the production lot using machine, batch, recipe, meter, and dispatch records before applying any allocation. |  |\n| `allocation_residual` | unavoidable shared inputs and outputs | When subdivision and direct assignment are not possible, disclose the chosen physical relationship and calculation; do not treat waste as a co-product unless it leaves as a separately documented product with an intended function. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 298
+              line: 8
+              column: 1
+            end:
+              offset: 405
+              line: 8
+              column: 108
+          text: "# Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 15888
+              line: 253
+              column: 1
+            end:
+              offset: 15928
+              line: 253
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_23972"
+      family: "validation"
+      span:
+        start:
+          offset: 23972
+          line: 293
+          column: 1
+        end:
+          offset: 25971
+          line: 306
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Require the exact reference-product UUID, Product flow type, CPC 26540 identity, Mass flow property UUID, kg unit, and all required qualifiers. | `unsd-cpc-v3-26540` |\n| `validate_composition_threshold` | reference product | Reject a dataset if the declared wool and fine-animal-hair mass share is missing or is not less than 85% of the fabric mass. | `unsd-cpc-v3-26540` |\n| `validate_reference_mass` | reference amount | Confirm that the denominator is 1 kg net compliant fabric at the declared conditioning or moisture state and excludes dispatch packaging. |  |\n| `validate_process_boundary` | foreground process | Confirm that weaving is included, every on-site route step is declared, upstream purchased-input production is linked rather than duplicated, and outsourced operations are disclosed. | `jrc-textiles-bref-2023`; `eu-bat-textiles-2022` |\n| `validate_atomic_exchanges` | process inventory | Reject grouped, plural, selector, or placeholder exchanges; each material, chemical, energy supply, packaging component, waste stream, and elementary emission must have its own row and exact identity. | `eu-bat-textiles-2022` |\n| `validate_foreground_evidence` | inventory amounts | Require foreground meter, transaction, batch, mass-balance, or dispatch evidence for every reported amount; do not substitute an AI-authored quantity or range. |  |\n| `validate_wet_route` | on-site wet processing | If wet processing is present, require process-water and wastewater records, exact chemical rows, energy records, treatment destination, and prevention of double counting for reused water. | `eu-bat-textiles-2022` |\n| `validate_mass_reconciliation` | textile materials | Require a documented reconciliation of yarn inputs, compliant fabric output, each textile waste/output, and inventory change, with any residual investigated and disclosed. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 298
+              line: 8
+              column: 1
+            end:
+              offset: 405
+              line: 8
+              column: 108
+          text: "# Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 23972
+              line: 293
+              column: 1
+            end:
+              offset: 23994
+              line: 293
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_factory_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4873"
+      source_span:
+        start:
+          offset: 4967
+          line: 61
+          column: 1
+        end:
+          offset: 5275
+          line: 61
+          column: 309
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream_links"
+      identity_kind: "explicit"
+      unit_id: "normative_4873"
+      source_span:
+        start:
+          offset: 5276
+          line: 62
+          column: 1
+        end:
+          offset: 5530
+          line: 62
+          column: 255
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_route_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_4873"
+      source_span:
+        start:
+          offset: 5531
+          line: 63
+          column: 1
+        end:
+          offset: 5857
+          line: 63
+          column: 327
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_atomic_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_4873"
+      source_span:
+        start:
+          offset: 5858
+          line: 64
+          column: 1
+        end:
+          offset: 6155
+          line: 64
+          column: 298
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_15888"
+      source_span:
+        start:
+          offset: 16001
+          line: 257
+          column: 1
+        end:
+          offset: 16207
+          line: 257
+          column: 207
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_lot_linkage"
+      identity_kind: "explicit"
+      unit_id: "normative_15888"
+      source_span:
+        start:
+          offset: 16208
+          line: 258
+          column: 1
+        end:
+          offset: 16411
+          line: 258
+          column: 204
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_15888"
+      source_span:
+        start:
+          offset: 16412
+          line: 259
+          column: 1
+        end:
+          offset: 16712
+          line: 259
+          column: 301
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 24067
+          line: 297
+          column: 1
+        end:
+          offset: 24285
+          line: 297
+          column: 219
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_composition_threshold"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 24286
+          line: 298
+          column: 1
+        end:
+          offset: 24491
+          line: 298
+          column: 206
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 24492
+          line: 299
+          column: 1
+        end:
+          offset: 24683
+          line: 299
+          column: 192
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_process_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 24684
+          line: 300
+          column: 1
+        end:
+          offset: 24972
+          line: 300
+          column: 289
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_atomic_exchanges"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 24973
+          line: 301
+          column: 1
+        end:
+          offset: 25252
+          line: 301
+          column: 280
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_foreground_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 25253
+          line: 302
+          column: 1
+        end:
+          offset: 25472
+          line: 302
+          column: 220
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_wet_route"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 25473
+          line: 303
+          column: 1
+        end:
+          offset: 25737
+          line: 303
+          column: 265
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_mass_reconciliation"
+      identity_kind: "explicit"
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 25738
+          line: 304
+          column: 1
+        end:
+          offset: 25969
+          line: 304
+          column: 232
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4873"
+      source_span:
+        start:
+          offset: 4873
+          line: 57
+          column: 1
+        end:
+          offset: 4894
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4873"
+      source_span:
+        start:
+          offset: 6183
+          line: 68
+          column: 1
+        end:
+          offset: 7219
+          line: 75
+          column: 205
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_15888"
+      source_span:
+        start:
+          offset: 15888
+          line: 253
+          column: 1
+        end:
+          offset: 15928
+          line: 253
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_23972"
+      source_span:
+        start:
+          offset: 23972
+          line: 293
+          column: 1
+        end:
+          offset: 23994
+          line: 293
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:c9c87318849f1bef9ad75a36236910058444272920dd3e2d4feb88bc8db763f9"
-  generated_content_sha256: "sha256:94f52fe50c0da4af9d9e163445fbfc9d8f099858b39ae6dc2b76eb7fd398a021"
+  generated_content_sha256: "sha256:b3e774832d7f434c37e1d48267b8e0497baa8de665d4408381e1e69f137469a2"

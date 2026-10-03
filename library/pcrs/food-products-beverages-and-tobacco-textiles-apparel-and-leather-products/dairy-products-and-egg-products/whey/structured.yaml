@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -1720,12 +1720,510 @@ data_sources:
     type: "standard"
     reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-10)"
     used_for: "complete foreground inventory of raw materials, energy, products, wastes, and emissions, plus multifunctionality hierarchy, subdivision, system expansion, physical allocation, and documented fallback relationships"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:12e25730837a3baf15505f1585ef29ebf3e37a536883d72cf885f83c36ef1703"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6074"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6074
+          line: 60
+          column: 1
+        end:
+          offset: 9565
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe dataset shall represent the declared fluid-whey route without silently importing upstream cheese burdens, downstream powder manufacture, or disposal credits.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | separated wet whey entering the recovery line, or purchased fluid whey received at the facility |\n| starting_condition_role | product identity and upstream-burden hand-off for the fluid-whey foreground system |\n| product_classification_scope | CPC 3.0 `22130` Whey, interpreted as fluid whey rather than the separately classified powder product |\n| recursive_input_rule | an input already classified as fluid whey is recorded as a product input with the Whey flow UUID, its wet mass and qualifiers, and a linked upstream dataset; do not recreate its upstream whey-production burdens inside the receiving process |\n| upstream_dataset_requirement | link milk, cheese or casein production and shared coagulation/separation burdens through reviewed upstream datasets and the declared allocation treatment; link purchased whey when the foreground starts at receipt |\n| disclosure | disclose whey origin, sweet/acid status, source dairy product, species, solids and composition basis, treatment state, receipt or separation point, included operations, allocation method, losses, co-products, effluent route, geography, period, and plant gate |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_product_identity` | product inclusion | Include only fluid whey separated from curd after coagulation in cheese, casein, or similar dairy manufacture and preserve sweet/acid and source-process identity. | `codex-cxs-289-1995-whey-powders`; `fao-2013-milk-dairy-human-nutrition` |\n| `boundary_start_and_end` | foreground gate | Start at whey separation into the recovery line or at purchased-fluid-whey receipt; end at conforming fluid whey ready for dispatch at the declared plant gate. | `codex-cxs-289-1995-whey-powders`; `us-epa-ap42-9-6-1-cheese` |\n| `boundary_included_operations` | on-site whey handling | Include collection, transfer, clarification, cooling, pasteurisation, liquid concentration, storage, cleaning, packaging, and on-site effluent handling when performed for the declared product. | `eu-2019-2031-fdm-bat`; `us-epa-ap42-9-6-1-cheese` |\n| `boundary_acid_whey_timing` | acid whey route | Record the time from separation to conditioning and avoid unreported holding that changes acidity; acid whey should be processed promptly and the actual residence time shall be disclosed. | `eu-2019-2031-fdm-bat` |\n| `boundary_downstream_exclusions` | powders and derived ingredients | Exclude drying and downstream manufacture of whey powder, protein concentrates or isolates, lactose, permeate powder, whey cheese, and formulated beverages from the fluid-whey foreground gate. | `codex-cxs-289-1995-whey-powders`; `fao-2013-milk-dairy-human-nutrition` |\n| `boundary_recursive_whey_input` | purchased or transferred fluid whey | Record same-category whey as an input with an upstream dataset and do not double-count its upstream dairy or recovery burdens. |  |\n| `boundary_emissions_and_waste` | direct releases and treatment | Include measured on-site wastewater, product losses, residues, refrigerant losses, combustion releases, and treatment outputs attributable to included operations; disclose off-site treatment links. | `eu-2019-2031-fdm-bat`; `us-epa-ap42-9-6-1-cheese` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 190
+              line: 8
+              column: 1
+            end:
+              offset: 196
+              line: 8
+              column: 7
+          text: "# Whey"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6074
+              line: 60
+              column: 1
+            end:
+              offset: 6095
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_99479"
+      family: "allocation"
+      span:
+        start:
+          offset: 99479
+          line: 1365
+          column: 1
+        end:
+          offset: 101748
+          line: 1376
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | separately measurable whey recovery, conditioning, storage, cleaning, and treatment operations | Avoid allocation by subdividing metered processes and assigning directly attributable inputs, emissions, and wastes to whey operations. | `eu-2021-2279-environmental-footprint` |\n| `allocation_system_expansion` | explicitly expanded product systems | Use system expansion only when the additional co-product function and substituted product are explicitly modelled and empirically justified; report the expanded-system result rather than silently crediting whey. | `eu-2021-2279-environmental-footprint` |\n| `allocation_physical_relation` | inseparable shared dairy or treatment operations | When subdivision or justified system expansion is not possible, use a documented causal physical relationship relevant to the functions of whey and the other outputs; wet mass alone is not sufficient unless its functional relevance is demonstrated. | `eu-2021-2279-environmental-footprint` |\n| `allocation_other_relation` | multifunctional operations lacking a defensible physical relation | Use another documented relationship, such as route-specific economic value at the co-product production stage, only after explaining why subdivision, system expansion, and physical allocation were rejected; disclose prices, period, geography, factors, and sensitivity. | `eu-2021-2279-environmental-footprint` |\n| `allocation_upstream_whey` | shared coagulation, curd separation, and upstream dairy operations | Do not assign zero upstream burden to marketable whey by default. Link the reviewed upstream dataset and disclose whether whey entered as co-product, product, or waste under the actual route and destination. | `eu-2021-2279-environmental-footprint`; `eu-2019-2031-fdm-bat` |\n| `allocation_recovered_outputs` | recovered cream, solids, biogas, reusable water, and other outputs | Classify an output as a co-product only when quantity, quality, further use, and destination are documented; otherwise record it as waste or an emission according to the actual handling route. | `eu-2019-2031-fdm-bat`; `eu-2021-2279-environmental-footprint` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 190
+              line: 8
+              column: 1
+            end:
+              offset: 196
+              line: 8
+              column: 7
+          text: "# Whey"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 99479
+              line: 1365
+              column: 1
+            end:
+              offset: 99519
+              line: 1365
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_111783"
+      family: "validation"
+      span:
+        start:
+          offset: 111783
+          line: 1412
+          column: 1
+        end:
+          offset: 114922
+          line: 1426
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity_and_scope` | reference product | Require the Whey UUID, Product flow type, CPC 3.0 code `22130`, sweet/acid and source-process identity, wet-product state, composition basis, treatment, temperature, geography, and plant gate; reject powder and derived-ingredient products. | `codex-cxs-289-1995-whey-powders`; `fao-2013-milk-dairy-human-nutrition` |\n| `validate_reference_support` | quantitative reference | Require 1 kg wet whey, Mass UUID `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass UUID `93a60a57-a4c8-11da-a746-0800200c9a66`, and reference unit kg. |  |\n| `validate_process_coverage` | foreground process map | Require recovery/receipt and storage/dispatch; require conditioning and on-site effluent management when those operations occurred; prohibit silent inclusion of drying or downstream powder manufacture. | `eu-2019-2031-fdm-bat`; `us-epa-ap42-9-6-1-cheese` |\n| `validate_mass_and_solids_balance` | whey feedstock, product, co-products, stocks, and losses | Require wet-mass closure and, for concentrated routes, solids closure; investigate unexplained differences and prohibit double-counting the same whey as product and wastewater. | `codex-cxs-289-1995-whey-powders`; `fao-2013-milk-dairy-human-nutrition` |\n| `validate_acid_whey_timing` | acid whey route | Require separation-to-conditioning time, holding conditions, and acidity or pH records sufficient to identify material change during storage. | `eu-2019-2031-fdm-bat` |\n| `validate_utilities_and_cleaning` | electricity, steam, hot water, natural gas, diesel, LPG, water, refrigerants, and cleaning substances | Require source records, unit conversions, allocation of shared services, temporal alignment, and cleaning-cycle coverage for each separately named exchange; no PCR default or numeric range substitutes for foreground data. | `eu-2019-2031-fdm-bat`; `eu-2021-2279-environmental-footprint` |\n| `validate_atomic_inventory_flows` | all foreground exchanges | Require one card per actual stage-specific electricity exchange, thermal carrier, fuel, refrigerant species, water supply, processing aid, cleaning or disinfection substance, packaging material, product, co-product, waste stream, and elementary emission; reject collection labels and require a new specific card for any actual exchange not enumerated here. | `eu-2019-2031-fdm-bat`; `eu-2021-2279-environmental-footprint` |\n| `validate_allocation` | multifunctional processes | Require the allocation hierarchy decision, direct assignments, selected driver, factors summing to one, source period/geography, and sensitivity where an economic or other fallback relation is used; reject undocumented zero-burden whey. | `eu-2021-2279-environmental-footprint` |\n| `validate_wastewater_and_emissions` | wastes and direct releases | Require stream amount, destination, treatment link, representative sampling, calculation method, and exact elementary-flow identity before publication; do not accept pollutant concentrations without corresponding flow. | `eu-2019-2031-fdm-bat` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 190
+              line: 8
+              column: 1
+            end:
+              offset: 196
+              line: 8
+              column: 7
+          text: "# Whey"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 111783
+              line: 1412
+              column: 1
+            end:
+              offset: 111805
+              line: 1412
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 6097
+          line: 62
+          column: 1
+        end:
+          offset: 6258
+          line: 62
+          column: 162
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_product_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 7560
+          line: 77
+          column: 1
+        end:
+          offset: 7851
+          line: 77
+          column: 292
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_start_and_end"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 7852
+          line: 78
+          column: 1
+        end:
+          offset: 8124
+          line: 78
+          column: 273
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_included_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 8125
+          line: 79
+          column: 1
+        end:
+          offset: 8431
+          line: 79
+          column: 307
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_acid_whey_timing"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 8432
+          line: 80
+          column: 1
+        end:
+          offset: 8696
+          line: 80
+          column: 265
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_downstream_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 8697
+          line: 81
+          column: 1
+        end:
+          offset: 9037
+          line: 81
+          column: 341
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_recursive_whey_input"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 9038
+          line: 82
+          column: 1
+        end:
+          offset: 9243
+          line: 82
+          column: 206
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_emissions_and_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 9244
+          line: 83
+          column: 1
+        end:
+          offset: 9563
+          line: 83
+          column: 320
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_avoid"
+      identity_kind: "explicit"
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 99592
+          line: 1369
+          column: 1
+        end:
+          offset: 99890
+          line: 1369
+          column: 299
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_system_expansion"
+      identity_kind: "explicit"
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 99891
+          line: 1370
+          column: 1
+        end:
+          offset: 100217
+          line: 1370
+          column: 327
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 100218
+          line: 1371
+          column: 1
+        end:
+          offset: 100595
+          line: 1371
+          column: 378
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_other_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 100596
+          line: 1372
+          column: 1
+        end:
+          offset: 101007
+          line: 1372
+          column: 412
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_upstream_whey"
+      identity_kind: "explicit"
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 101008
+          line: 1373
+          column: 1
+        end:
+          offset: 101382
+          line: 1373
+          column: 375
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_recovered_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 101383
+          line: 1374
+          column: 1
+        end:
+          offset: 101746
+          line: 1374
+          column: 364
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity_and_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 111878
+          line: 1416
+          column: 1
+        end:
+          offset: 112248
+          line: 1416
+          column: 371
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference_support"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 112249
+          line: 1417
+          column: 1
+        end:
+          offset: 112466
+          line: 1417
+          column: 218
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_process_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 112467
+          line: 1418
+          column: 1
+        end:
+          offset: 112780
+          line: 1418
+          column: 314
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_mass_and_solids_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 112781
+          line: 1419
+          column: 1
+        end:
+          offset: 113132
+          line: 1419
+          column: 352
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_acid_whey_timing"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 113133
+          line: 1420
+          column: 1
+        end:
+          offset: 113351
+          line: 1420
+          column: 219
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_utilities_and_cleaning"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 113352
+          line: 1421
+          column: 1
+        end:
+          offset: 113782
+          line: 1421
+          column: 431
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_atomic_inventory_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 113783
+          line: 1422
+          column: 1
+        end:
+          offset: 114271
+          line: 1422
+          column: 489
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 114272
+          line: 1423
+          column: 1
+        end:
+          offset: 114605
+          line: 1423
+          column: 334
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_wastewater_and_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 114606
+          line: 1424
+          column: 1
+        end:
+          offset: 114920
+          line: 1424
+          column: 315
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 6074
+          line: 60
+          column: 1
+        end:
+          offset: 6095
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6074"
+      source_span:
+        start:
+          offset: 6286
+          line: 66
+          column: 1
+        end:
+          offset: 7487
+          line: 73
+          column: 276
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_99479"
+      source_span:
+        start:
+          offset: 99479
+          line: 1365
+          column: 1
+        end:
+          offset: 99519
+          line: 1365
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_111783"
+      source_span:
+        start:
+          offset: 111783
+          line: 1412
+          column: 1
+        end:
+          offset: 111805
+          line: 1412
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:12e25730837a3baf15505f1585ef29ebf3e37a536883d72cf885f83c36ef1703"
-  generated_content_sha256: "sha256:0dcae0d94a932662e4a18a989bf83e4701052843b90f35b6e13ddb381abdff7d"
+  generated_content_sha256: "sha256:a2b38cdc14af5c8425259affd66319b00e59d23c9345008c2a90fcd2fed01047"

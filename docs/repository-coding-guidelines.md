@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: b1954ba08d0e3e8141934edb670f739729a29ca2
-lastReviewedNote: "Reviewed PCR #31 typed YAML parsing, identifier compatibility, strict audit fixtures and compiled package boundaries. Canonical content, methodology approval and immutable release rules remain unchanged; semantic repair and formal cutover remain in #63/#69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
+lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

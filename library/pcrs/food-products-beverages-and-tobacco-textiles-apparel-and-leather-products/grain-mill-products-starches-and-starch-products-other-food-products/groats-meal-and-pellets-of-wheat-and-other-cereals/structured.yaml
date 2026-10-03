@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
@@ -8920,12 +8920,757 @@ data_sources:
     type: "standard"
     reference: "Codex Alimentarius CXS 199-1995, Standard for Wheat and Durum Wheat, https://www.fao.org/input/download/standards/62/CXS_199e.pdf (retrieved 2026-08-13)."
     used_for: "Wheat and durum wheat identity, moisture and extraneous-matter records, cleaning and sorting, hygiene, lot identity, and packaging."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:e31fb38986a35245aa4672cadcbb5fed3ca5cbb7a71e26a0a196c833889d20de"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7089"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7089
+          line: 68
+          column: 1
+        end:
+          offset: 11009
+          line: 96
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Exact cereal species, supplier lot, moisture condition, contamination or screening status, mass, and storage state at the manufacturing facility gate. |\n| starting_condition_role | Foreground receipt of one identified cereal grain; upstream cultivation, prior drying, and inbound transport remain separate datasets. |\n| product_classification_scope | CPC 3.0 code 23130 only; each package represents one species and one of groats, meal, or pellets. |\n| recursive_input_rule | A purchased CPC 23130 intermediate is recorded once as an upstream product input with its exact species and form; do not recursively reproduce its manufacturing inventory. |\n| upstream_dataset_requirement | Use separate upstream datasets for cereal cultivation, prior post-harvest operations, inbound transport, purchased energy, water, chemicals, packaging, and waste treatment outside the facility. |\n| disclosure | Declare geography, technology, batch period, species, form, grain condition, route, packaging, co-products, waste destinations, dust controls, onsite utilities, and wastewater boundary. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_start` | foreground system | Begin at the manufacturing facility gate when the exact cereal grain and purchased utilities are received. | `un-cpc-3-2025`, `eu-pef-2021-2279` |\n| `boundary_end` | foreground system | End after one exact conforming product is stored, released, and measured at the facility gate. | `eu-pef-2021-2279` |\n| `scope_lock` | product identity | Lock one botanical species, one groats or meal or pellets form, and one actual route; cross-species and cross-form averages are non-conforming. | `un-cpc-3-2025`, `codex-cxs-155-1985`, `codex-cxs-178-1991` |\n| `upstream_exclusion` | upstream stages | Keep cultivation, pre-receipt post-harvest operations, and inbound transport outside the foreground boundary and link separate upstream datasets. | `eu-pef-2021-2279` |\n| `cleaning_inclusion` | grain preparation | Include the actual screening, aspiration, magnetic separation, de-stoning, scouring, washing, and grading steps used by the locked route. | `fao-grain-milling-quality-1995`, `us-epa-ap42-grain-2003` |\n| `conditioning_inclusion` | conditioning | Include water, purchased steam, purchased hot water, holding time, and moisture change only when physically applied. | `fao-grain-milling-quality-1995`, `us-epa-ap42-grain-2003` |\n| `pellet_route` | pellet products | Include meal conditioning, die pressing, cooling, screening, fines handling, and storage only for a pellet product. | `us-epa-ap42-grain-2003` |\n| `dust_boundary` | air emissions | Include captured dust, spent control media, dust-control utilities, and residual PM releases for every applicable source and control device. | `us-epa-ap42-grain-2003`, `eu-fdm-bat-2019-2031` |\n| `heat_boundary` | heat supply | Record purchased steam or hot water when heat crosses the facility boundary; record fuel and feedwater when heat is generated onsite; never count both for the same heat quantity. | `ec-jrc-fdm-bref-2019`, `eu-pef-2021-2279` |\n| `wastewater_boundary` | wastewater | Include onsite treatment only when physically operated in the foreground facility; otherwise record each named untreated wastewater stream at the facility boundary. | `ec-jrc-fdm-bref-2019`, `eu-fdm-bat-2019-2031` |\n| `downstream_exclusion` | downstream stages | Exclude distribution beyond the facility gate, retail, use, and end-of-life from the foreground boundary. | `eu-pef-2021-2279` |\n| `unlisted_species_rule` | unlisted valid cereal | Before validation, add one exact atomic row for every in-scope cereal species, material, package, waste, pollutant, or emission not already listed; never use an “other cereal” selector. | `un-cpc-3-2025`, `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 273
+              line: 8
+              column: 1
+            end:
+              offset: 326
+              line: 8
+              column: 54
+          text: "# Groats, meal and pellets of wheat and other cereals"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7089
+              line: 68
+              column: 1
+            end:
+              offset: 7110
+              line: 68
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_514279"
+      family: "allocation"
+      span:
+        start:
+          offset: 514279
+          line: 7101
+          column: 1
+        end:
+          offset: 516230
+          line: 7115
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `avoid_allocation` | all processes | Use product-specific recipes, batch mass records, submeters, production time, and equipment state to avoid allocation wherever possible. | `eu-pef-2021-2279` |\n| `no_species_average` | all outputs | Never allocate or average one cereal species to another species or one product form to another form. | `un-cpc-3-2025`, `eu-pef-2021-2279` |\n| `internal_transfer` | internal intermediates | Record an internal intermediate once as an output and once as the matching downstream input; do not add an upstream burden twice. | `eu-pef-2021-2279` |\n| `fines_rework` | pellet fines | Keep fines returned within the same locked batch inside its mass balance; record exported fines as a separate species-specific product output. | `us-epa-ap42-grain-2003`, `eu-pef-2021-2279` |\n| `co_product_identity` | bran, hulls, and germ | Keep every named species-specific bran, hull, and germ output separate with measured mass, destination, and economic or physical function. | `codex-cxs-155-1985`, `codex-cxs-178-1991`, `eu-pef-2021-2279` |\n| `physical_relation` | co-products | If allocation cannot be avoided, use a documented physical relationship only when it represents the causal production relationship. | `eu-pef-2021-2279` |\n| `economic_fallback` | co-products | Use economic allocation only when the study method requires it and a physical relation is not representative; retain prices, period, currency, and sensitivity. | `eu-pef-2021-2279` |\n| `waste_treatment` | wastes | Do not assign avoided burdens or credits without an explicit downstream treatment model and disclosed method. | `eu-pef-2021-2279` |\n| `allocation_disclosure` | published dataset | Disclose the allocation hierarchy, quantities, factors, co-product destinations, internal recycling, and unresolved choices. | `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 273
+              line: 8
+              column: 1
+            end:
+              offset: 326
+              line: 8
+              column: 54
+          text: "# Groats, meal and pellets of wheat and other cereals"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 514279
+              line: 7101
+              column: 1
+            end:
+              offset: 514319
+              line: 7101
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_538907"
+      family: "validation"
+      span:
+        start:
+          offset: 538907
+          line: 7175
+          column: 1
+        end:
+          offset: 542810
+          line: 7201
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `val_reference_identity` | reference flow | Reference flow shall match the verified CPC 23130 Product flow, Mass property, Units of mass group, and kg unit declared in section 3. | `un-cpc-3-2025` |\n| `val_reference_mass` | reference amount | Reference amount shall be 1 kg net conforming product and exclude packaging. | `eu-pef-2021-2279` |\n| `val_species` | product identity | Botanical cereal species shall be explicit; “other cereal” is not a valid species identity. | `un-cpc-3-2025` |\n| `val_form` | product identity | Exactly one of groats, meal, or pellets shall be declared for the reference product. | `un-cpc-3-2025` |\n| `val_one_final_row` | final product | Exactly one `final_<species>_<form>` row shall carry the normalized 1 kg reference amount. | `un-cpc-3-2025`, `eu-pef-2021-2279` |\n| `val_process_map` | process inventory | Every process section shall match one process-map id and every required process-map row shall have one process section. | `us-epa-ap42-grain-2003` |\n| `val_atomic_flow` | inventory cards | Every selected flow shall be one concrete exchange; plural categories, carrier lists, and selector instructions are invalid. | `eu-pef-2021-2279` |\n| `val_unlisted_flow` | valid unlisted exchange | Add an exact atomic row before validation when an in-scope species, input, package, co-product, waste, pollutant, or emission is absent. | `un-cpc-3-2025`, `eu-pef-2021-2279` |\n| `val_uuid_policy` | non-reference UUIDs | Keep a non-reference UUID blank unless exact atomic semantics are confirmed by flow-hybrid-search and public state-100 direct read. | `eu-pef-2021-2279` |\n| `val_modes` | inventory amounts | Use only `foreground_record` or `calculated_value`; no fixed default, modelled estimate, or reasoned range is permitted here. | `eu-pef-2021-2279` |\n| `val_protocols` | inventory cards | Every collected or calculated card shall link to an existing collection protocol. | `eu-pef-2021-2279` |\n| `val_mass_balance` | every process | Complete a species-specific and form-specific process mass balance and disclose the reconciliation difference. | `eu-pef-2021-2279` |\n| `val_conditioning` | conditioning | Conditioning water, steam, hot water, and holding shall appear only when physically used and measured. | `fao-grain-milling-quality-1995`, `us-epa-ap42-grain-2003` |\n| `val_pellet_route` | pellets | Pellet data shall include conditioning, die pressing, cooling, screening, fines, and off-spec pellet routing. | `us-epa-ap42-grain-2003` |\n| `val_packaging` | packaging | Each physical packaging material shall be separate and excluded from reference mass. | `codex-cxs-155-1985`, `codex-cxs-178-1991`, `eu-pef-2021-2279` |\n| `val_heat_double_count` | heat | Purchased heat and onsite fuel shall not represent the same heat quantity. | `ec-jrc-fdm-bref-2019`, `eu-pef-2021-2279` |\n| `val_dust` | dust | Record source-specific captured dust, control inputs, spent media, and residual PM releases without netting different species. | `us-epa-ap42-grain-2003`, `eu-fdm-bat-2019-2031` |\n| `val_wastewater` | wastewater | Keep each wastewater stream and each discharged pollutant separate; treatment inputs and sludge shall be explicit when onsite treatment applies. | `ec-jrc-fdm-bref-2019`, `eu-fdm-bat-2019-2031` |\n| `val_allocation` | co-products | Disclose allocation avoidance, internal recycling, co-product quantities, allocation basis, and sensitivity without a default factor. | `eu-pef-2021-2279` |\n| `val_bilingual` | bilingual PCR | English and Chinese process ids, row ids, controlled tokens, protocol ids, rule ids, source ids, UUIDs, and order shall match. | `eu-pef-2021-2279` |\n| `val_completeness` | published dataset | No applicable card, data source, calculation, uncertainty note, or destination evidence may be omitted. | `eu-pef-2021-2279` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 273
+              line: 8
+              column: 1
+            end:
+              offset: 326
+              line: 8
+              column: 54
+          text: "# Groats, meal and pellets of wheat and other cereals"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 538907
+              line: 7175
+              column: 1
+            end:
+              offset: 538929
+              line: 7175
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_start"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 8356
+          line: 83
+          column: 1
+        end:
+          offset: 8543
+          line: 83
+          column: 188
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_end"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 8544
+          line: 84
+          column: 1
+        end:
+          offset: 8700
+          line: 84
+          column: 157
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "scope_lock"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 8701
+          line: 85
+          column: 1
+        end:
+          offset: 8944
+          line: 85
+          column: 244
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "upstream_exclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 8945
+          line: 86
+          column: 1
+        end:
+          offset: 9156
+          line: 86
+          column: 212
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "cleaning_inclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 9157
+          line: 87
+          column: 1
+        end:
+          offset: 9402
+          line: 87
+          column: 246
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "conditioning_inclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 9403
+          line: 88
+          column: 1
+        end:
+          offset: 9626
+          line: 88
+          column: 224
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "pellet_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 9627
+          line: 89
+          column: 1
+        end:
+          offset: 9808
+          line: 89
+          column: 182
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "dust_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 9809
+          line: 90
+          column: 1
+        end:
+          offset: 10038
+          line: 90
+          column: 230
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "heat_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 10039
+          line: 91
+          column: 1
+        end:
+          offset: 10298
+          line: 91
+          column: 260
+    - pointer: "/system_boundary/rules/9"
+      rule_id: "wastewater_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 10299
+          line: 92
+          column: 1
+        end:
+          offset: 10553
+          line: 92
+          column: 255
+    - pointer: "/system_boundary/rules/10"
+      rule_id: "downstream_exclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 10554
+          line: 93
+          column: 1
+        end:
+          offset: 10729
+          line: 93
+          column: 176
+    - pointer: "/system_boundary/rules/11"
+      rule_id: "unlisted_species_rule"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 10730
+          line: 94
+          column: 1
+        end:
+          offset: 11007
+          line: 94
+          column: 278
+    - pointer: "/allocation_rules/0"
+      rule_id: "avoid_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 514392
+          line: 7105
+          column: 1
+        end:
+          offset: 514590
+          line: 7105
+          column: 199
+    - pointer: "/allocation_rules/1"
+      rule_id: "no_species_average"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 514591
+          line: 7106
+          column: 1
+        end:
+          offset: 514770
+          line: 7106
+          column: 180
+    - pointer: "/allocation_rules/2"
+      rule_id: "internal_transfer"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 514771
+          line: 7107
+          column: 1
+        end:
+          offset: 514972
+          line: 7107
+          column: 202
+    - pointer: "/allocation_rules/3"
+      rule_id: "fines_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 514973
+          line: 7108
+          column: 1
+        end:
+          offset: 515198
+          line: 7108
+          column: 226
+    - pointer: "/allocation_rules/4"
+      rule_id: "co_product_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 515199
+          line: 7109
+          column: 1
+        end:
+          offset: 515454
+          line: 7109
+          column: 256
+    - pointer: "/allocation_rules/5"
+      rule_id: "physical_relation"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 515455
+          line: 7110
+          column: 1
+        end:
+          offset: 515647
+          line: 7110
+          column: 193
+    - pointer: "/allocation_rules/6"
+      rule_id: "economic_fallback"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 515648
+          line: 7111
+          column: 1
+        end:
+          offset: 515868
+          line: 7111
+          column: 221
+    - pointer: "/allocation_rules/7"
+      rule_id: "waste_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 515869
+          line: 7112
+          column: 1
+        end:
+          offset: 516032
+          line: 7112
+          column: 164
+    - pointer: "/allocation_rules/8"
+      rule_id: "allocation_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 516033
+          line: 7113
+          column: 1
+        end:
+          offset: 516228
+          line: 7113
+          column: 196
+    - pointer: "/validation_rules/0"
+      rule_id: "val_reference_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539002
+          line: 7179
+          column: 1
+        end:
+          offset: 539202
+          line: 7179
+          column: 201
+    - pointer: "/validation_rules/1"
+      rule_id: "val_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539203
+          line: 7180
+          column: 1
+        end:
+          offset: 539346
+          line: 7180
+          column: 144
+    - pointer: "/validation_rules/2"
+      rule_id: "val_species"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539347
+          line: 7181
+          column: 1
+        end:
+          offset: 539495
+          line: 7181
+          column: 149
+    - pointer: "/validation_rules/3"
+      rule_id: "val_form"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539496
+          line: 7182
+          column: 1
+        end:
+          offset: 539634
+          line: 7182
+          column: 139
+    - pointer: "/validation_rules/4"
+      rule_id: "val_one_final_row"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539635
+          line: 7183
+          column: 1
+        end:
+          offset: 539805
+          line: 7183
+          column: 171
+    - pointer: "/validation_rules/5"
+      rule_id: "val_process_map"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539806
+          line: 7184
+          column: 1
+        end:
+          offset: 539996
+          line: 7184
+          column: 191
+    - pointer: "/validation_rules/6"
+      rule_id: "val_atomic_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 539997
+          line: 7185
+          column: 1
+        end:
+          offset: 540184
+          line: 7185
+          column: 188
+    - pointer: "/validation_rules/7"
+      rule_id: "val_unlisted_flow"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 540185
+          line: 7186
+          column: 1
+        end:
+          offset: 540411
+          line: 7186
+          column: 227
+    - pointer: "/validation_rules/8"
+      rule_id: "val_uuid_policy"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 540412
+          line: 7187
+          column: 1
+        end:
+          offset: 540610
+          line: 7187
+          column: 199
+    - pointer: "/validation_rules/9"
+      rule_id: "val_modes"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 540611
+          line: 7188
+          column: 1
+        end:
+          offset: 540795
+          line: 7188
+          column: 185
+    - pointer: "/validation_rules/10"
+      rule_id: "val_protocols"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 540796
+          line: 7189
+          column: 1
+        end:
+          offset: 540938
+          line: 7189
+          column: 143
+    - pointer: "/validation_rules/11"
+      rule_id: "val_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 540939
+          line: 7190
+          column: 1
+        end:
+          offset: 541111
+          line: 7190
+          column: 173
+    - pointer: "/validation_rules/12"
+      rule_id: "val_conditioning"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 541112
+          line: 7191
+          column: 1
+        end:
+          offset: 541315
+          line: 7191
+          column: 204
+    - pointer: "/validation_rules/13"
+      rule_id: "val_pellet_route"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 541316
+          line: 7192
+          column: 1
+        end:
+          offset: 541487
+          line: 7192
+          column: 172
+    - pointer: "/validation_rules/14"
+      rule_id: "val_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 541488
+          line: 7193
+          column: 1
+        end:
+          offset: 541671
+          line: 7193
+          column: 184
+    - pointer: "/validation_rules/15"
+      rule_id: "val_heat_double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 541672
+          line: 7194
+          column: 1
+        end:
+          offset: 541828
+          line: 7194
+          column: 157
+    - pointer: "/validation_rules/16"
+      rule_id: "val_dust"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 541829
+          line: 7195
+          column: 1
+        end:
+          offset: 542030
+          line: 7195
+          column: 202
+    - pointer: "/validation_rules/17"
+      rule_id: "val_wastewater"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 542031
+          line: 7196
+          column: 1
+        end:
+          offset: 542260
+          line: 7196
+          column: 230
+    - pointer: "/validation_rules/18"
+      rule_id: "val_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 542261
+          line: 7197
+          column: 1
+        end:
+          offset: 542452
+          line: 7197
+          column: 192
+    - pointer: "/validation_rules/19"
+      rule_id: "val_bilingual"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 542453
+          line: 7198
+          column: 1
+        end:
+          offset: 542638
+          line: 7198
+          column: 186
+    - pointer: "/validation_rules/20"
+      rule_id: "val_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 542639
+          line: 7199
+          column: 1
+        end:
+          offset: 542808
+          line: 7199
+          column: 170
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 7089
+          line: 68
+          column: 1
+        end:
+          offset: 7110
+          line: 68
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 7138
+          line: 72
+          column: 1
+        end:
+          offset: 8283
+          line: 79
+          column: 203
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_514279"
+      source_span:
+        start:
+          offset: 514279
+          line: 7101
+          column: 1
+        end:
+          offset: 514319
+          line: 7101
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_538907"
+      source_span:
+        start:
+          offset: 538907
+          line: 7175
+          column: 1
+        end:
+          offset: 538929
+          line: 7175
+          column: 23
 projection_metadata:
-  contract_version: "1"
+  contract_version: "2"
   generator: "tiangong-pcr-builder/markdown-projection"
   canonical_markdown:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
     sha256: "sha256:e31fb38986a35245aa4672cadcbb5fed3ca5cbb7a71e26a0a196c833889d20de"
-  generated_content_sha256: "sha256:3ca7b17f53441914242d7df8bdd3bae1d1ec55a5917774c254834548f7bf2df1"
+  generated_content_sha256: "sha256:e7db49c83f6fc266f97cc0a38723427764880666a9290ccb36eebda2840b7b39"

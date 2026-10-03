@@ -1,14 +1,16 @@
-import { PCR_EN_FILE } from "./scaffold-templates.mjs";
-import { buildProjectionMetadata } from "../../packages/pcr-core/src/projection-integrity.mjs";
+import type { PcrMarkdownProjection, InventoryRange } from "./markdown-projection.ts";
+import type { NormativeRule } from "../../packages/pcr-core/src/compiler/normative-projection.ts";
+import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
+import { buildProjectionMetadata, PROJECTION_SOURCE_PATH, sha256Fingerprint } from "../../packages/pcr-core/src/projection-integrity.ts";
 
-function yamlScalar(value) {
+function yamlScalar(value: unknown): string {
   if (value === null || value === undefined || value === "") {
     return "\"\"";
   }
   return JSON.stringify(String(value));
 }
 
-function yamlPlainOrQuoted(value) {
+function yamlPlainOrQuoted(value: unknown): string {
   const normalized = String(value ?? "");
   if (/^[A-Za-z0-9_.-]+$/u.test(normalized)) {
     return normalized;
@@ -16,11 +18,11 @@ function yamlPlainOrQuoted(value) {
   return yamlScalar(normalized);
 }
 
-function yamlKeyValue(lines, indent, key, value) {
+function yamlKeyValue(lines: string[], indent: number, key: string, value: unknown): void {
   lines.push(`${" ".repeat(indent)}${key}: ${yamlScalar(value)}`);
 }
 
-function yamlStringArray(lines, indent, key, values) {
+function yamlStringArray(lines: string[], indent: number, key: string, values: readonly string[] | undefined): void {
   if (!values || values.length === 0) {
     lines.push(`${" ".repeat(indent)}${key}: []`);
     return;
@@ -31,7 +33,7 @@ function yamlStringArray(lines, indent, key, values) {
   }
 }
 
-function yamlRangeArray(lines, indent, ranges) {
+function yamlRangeArray(lines: string[], indent: number, ranges: readonly InventoryRange[] | undefined): void {
   if (!ranges || ranges.length === 0) {
     lines.push(`${" ".repeat(indent)}ranges: []`);
     return;
@@ -49,7 +51,7 @@ function yamlRangeArray(lines, indent, ranges) {
   }
 }
 
-function yamlFlatObject(lines, indent, object) {
+function yamlFlatObject(lines: string[], indent: number, object: Readonly<Record<string, string>> | null): void {
   const entries = Object.entries(object ?? {}).filter(([, value]) => value !== "");
   if (entries.length === 0) {
     lines.push(`${" ".repeat(indent)}{}`);
@@ -60,7 +62,7 @@ function yamlFlatObject(lines, indent, object) {
   }
 }
 
-function yamlNormativeRules(lines, indent, rules) {
+function yamlNormativeRules(lines: string[], indent: number, rules: readonly NormativeRule[] | undefined): void {
   if (!rules || rules.length === 0) {
     lines.push(`${" ".repeat(indent)}[]`);
     return;
@@ -73,14 +75,17 @@ function yamlNormativeRules(lines, indent, rules) {
   }
 }
 
-export function structuredProjectionYaml(projection, { sourceMarkdown } = {}) {
+export function structuredProjectionYaml(projection: PcrMarkdownProjection, { sourceMarkdown }: { sourceMarkdown?: string } = {}): string {
   if (typeof sourceMarkdown !== "string") {
     throw new TypeError("structuredProjectionYaml requires canonical sourceMarkdown.");
   }
+  if (projection.normativeContext.source_sha256 !== sha256Fingerprint(sourceMarkdown)) {
+    throw new TypeError("Normative context does not belong to canonical sourceMarkdown.");
+  }
   const lines = [
-    "schema_version: 1",
+    "schema_version: 2",
     "generated_from: markdown",
-    `source_markdown: ${PCR_EN_FILE}`,
+    `source_markdown: ${PROJECTION_SOURCE_PATH}`,
   ];
 
   lines.push("product_category_identity:");
@@ -167,9 +172,9 @@ export function structuredProjectionYaml(projection, { sourceMarkdown } = {}) {
     for (const processEntry of projection.processInventory) {
       lines.push("  - id: " + processEntry.id);
       yamlKeyValue(lines, 4, "label", processEntry.label);
-      for (const direction of ["inputs", "outputs"]) {
+      for (const direction of ["inputs", "outputs"] as const) {
         lines.push(`    ${direction}:`);
-        for (const flowType of ["product", "waste", "elementary"]) {
+        for (const flowType of ["product", "waste", "elementary"] as const) {
           lines.push(`      ${flowType}:`);
           const rows = processEntry[direction][flowType];
           if (rows.length === 0) {
@@ -278,8 +283,10 @@ export function structuredProjectionYaml(projection, { sourceMarkdown } = {}) {
     }
   }
 
+  // Context is serialized before metadata so its exact bytes are fingerprinted.
+  lines.push(renderYaml({ normative_context: projection.normativeContext }).trimEnd());
   const generatedContent = `${lines.join("\n")}\n`;
-  const metadata = buildProjectionMetadata({ sourceMarkdown, generatedContent });
+  const metadata = buildProjectionMetadata({ sourceMarkdown, generatedContent, contractVersion: "2" });
   lines.push("projection_metadata:");
   yamlKeyValue(lines, 2, "contract_version", metadata.contract_version);
   yamlKeyValue(lines, 2, "generator", metadata.generator);

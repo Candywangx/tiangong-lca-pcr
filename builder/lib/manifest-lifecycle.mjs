@@ -31,7 +31,7 @@ import {
   manifestLifecycleProblems,
   manifestReviewBlockers,
 } from "./lifecycle-policy.mjs";
-import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "./markdown-projection.mjs";
+import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "./markdown-projection.ts";
 import {
   recoverPcrDirectoryTransaction,
   runPcrDirectoryTransaction,

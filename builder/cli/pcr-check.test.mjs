@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "../lib/markdown-projection.mjs";
+import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "../lib/markdown-projection.ts";
 
 const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 const cli = path.join(repoRoot, "builder/cli/index.mjs");
