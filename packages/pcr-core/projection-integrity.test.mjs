@@ -7,7 +7,7 @@ import {
   normalizeFingerprintText,
   sha256Fingerprint,
   splitProjectionDocument,
-} from "./src/projection-integrity.mjs";
+} from "./src/projection-integrity.ts";
 
 function documentFor(sourceMarkdown, generatedContent = "schema_version: 1\n") {
   const metadata = buildProjectionMetadata({ sourceMarkdown, generatedContent });

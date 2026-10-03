@@ -3,7 +3,7 @@ import { Ajv2020 } from 'ajv/dist/2020.js';
 import structuredSchema from '../schemas/structured-projection.schema.json' with { type: 'json' };
 import vocabularySchema from '../schemas/controlled-vocabulary.schema.json' with { type: 'json' };
 import type { NormativeProjectionContext } from './compiler/normative-projection.ts';
-import type { GuidanceContextProvenance } from './compiler/guidance-context.ts';
+import { assertGuidanceContextConsistency, type GuidanceContextProvenance } from './compiler/guidance-context.ts';
 import type { GuidanceContextEnvelope } from './compiler/guidance-context.ts';
 
 // Transitional boundary to the explicitly inventoried legacy core. Its result is
@@ -45,26 +45,39 @@ function verified(value: unknown): VerifiedSnapshot {
     || !provenance(value.normative_context_provenance)) {
     throw new ConsumptionError('PCR_INTERNAL_CONTRACT_INVALID', 'Verified projection lacks complete normative source context.');
   }
-  return { pcr: value.pcr, readiness: value.readiness, structured: value.structured,
+  const snapshot = { pcr: value.pcr, readiness: value.readiness, structured: value.structured,
     source_structured: value.source_structured, normative_context: value.normative_context,
     normative_context_provenance: value.normative_context_provenance };
+  assertGuidanceContextConsistency(snapshot.structured, snapshot);
+  return snapshot;
 }
 export function projectionBinding(value: unknown) {
   if (!object(value) || !object(value.pcr) || !object(value.readiness) || !object(value.structured)) {
     throw new ConsumptionError('PCR_INTERNAL_CONTRACT_INVALID', 'Invalid verified projection binding.');
   }
   const metadata = value.structured.projection_metadata;
-  if (!object(metadata) || !object(metadata.canonical_markdown)) throw new ConsumptionError('PCR_INTERNAL_CONTRACT_INVALID', 'Projection fingerprint is missing.');
+  if (!object(metadata) || !object(metadata.canonical_markdown)
+    || typeof value.pcr.id !== 'string' || !value.pcr.id || (value.pcr.version !== null && (typeof value.pcr.version !== 'string' || !value.pcr.version))
+    || typeof value.readiness.methodology_status !== 'string' || !value.readiness.methodology_status
+    || typeof metadata.generated_content_sha256 !== 'string' || !/^sha256:[0-9a-f]{64}$/u.test(metadata.generated_content_sha256)
+    || typeof metadata.canonical_markdown.sha256 !== 'string' || !/^sha256:[0-9a-f]{64}$/u.test(metadata.canonical_markdown.sha256)) {
+    throw new ConsumptionError('PCR_INTERNAL_CONTRACT_INVALID', 'Projection identity and fingerprint fields are invalid.');
+  }
   return { pcr_id: value.pcr.id, version: value.pcr.version,
     projection_sha256: metadata.generated_content_sha256, markdown_sha256: metadata.canonical_markdown.sha256,
     methodology_status: value.readiness.methodology_status };
 }
 export function pcrEvidence(snapshot: unknown, pointer: string) { return { ...projectionBinding(snapshot), pointer }; }
-function contextSelection(snapshot: VerifiedSnapshot, pointers: readonly string[]) {
+function contextSelection(snapshot: VerifiedSnapshot, pointers: readonly string[], requested: readonly string[] = pointers) {
   const context = snapshot.normative_context;
   const bindings = context.bindings.filter(binding => pointers.some(pointer =>
     pointer === '' || pointer === binding.pointer || pointer.startsWith(`${binding.pointer}/`) || binding.pointer.startsWith(`${pointer}/`)));
   const ids = new Set(bindings.map(binding => binding.unit_id));
+  const boundUnits = new Set(context.bindings.map(binding => binding.unit_id));
+  for (const unit of context.units) {
+    const familyPointer = unit.family === 'system_boundary' ? '/system_boundary/rules' : unit.family === 'allocation' ? '/allocation_rules' : '/validation_rules';
+    if (!boundUnits.has(unit.unit_id) && requested.some(pointer => pointer === '' || familyPointer.startsWith(pointer) || pointer.startsWith(familyPointer))) ids.add(unit.unit_id);
+  }
   return {
     normalization: context.normalization, source_sha256: context.source_sha256,
     parent_context_sha256: snapshot.normative_context_provenance.context_sha256,
@@ -100,6 +113,6 @@ export function selectGuidanceFromSnapshot(value: unknown, { topic = 'overview',
     }
   }
   const selected = paginate(entries, page, pageSize);
-  return { ...base, topic, ...selected, normative_context_selection: contextSelection(snapshot, selected.items.map(item => item.source.pointer)) };
+  return { ...base, topic, ...selected, normative_context_selection: contextSelection(snapshot, selected.items.map(item => item.source.pointer), names.map(name => `/${name}`)) };
 }
 export function selectGuidance(options: GuidanceOptions) { return selectGuidanceFromSnapshot(snapshotReader(options), options); }

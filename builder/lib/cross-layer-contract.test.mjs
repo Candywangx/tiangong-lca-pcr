@@ -17,8 +17,8 @@ import {
   assertMarkdownFrontmatter,
   assertStructured as assertBuilderStructured,
 } from "./schema-contracts.mjs";
-import { parsePcrMarkdownToStructured } from "./markdown-projection.mjs";
-import { structuredProjectionYaml } from "./structured-yaml-projection.mjs";
+import { parsePcrMarkdownToStructured } from "./markdown-projection.ts";
+import { structuredProjectionYaml } from "./structured-yaml-projection.ts";
 import { inspectPcrDirectory } from "./lint-rules.mjs";
 import {
   buildGuidance,

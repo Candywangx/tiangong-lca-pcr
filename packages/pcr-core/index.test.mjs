@@ -15,8 +15,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.mjs";
-import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.mjs";
+import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.ts";
+import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.ts";
 import {
   buildGuidance,
   buildPcrTree,
@@ -35,7 +35,7 @@ import {
   withPcrReadContextSession,
 } from "./src/index.mjs";
 import { findPcrIdAlias, readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
-import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.mjs";
+import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.ts";
 import { parseYaml, renderYaml } from "./src/yaml-lite.ts";
 
 const repoRoot = path.resolve(".");

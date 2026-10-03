@@ -1,3 +1,4 @@
+export { structuredProjectionYaml } from "./structured-yaml-projection.ts";
 import { isTableLine, normalizeHeader, parseTable, stripInlineCode, tableCell } from "./markdown-table.ts";
 import { normalizeFingerprintText } from "../../packages/pcr-core/src/projection-integrity.ts";
 

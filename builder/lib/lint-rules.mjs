@@ -35,7 +35,7 @@ import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
   parsePcrMarkdownToStructured,
   structuredProjectionYaml,
-} from "./markdown-projection.mjs";
+} from "./markdown-projection.ts";
 import { inspectPublishedRevisionState } from "./published-revision-state.mjs";
 import {
   PCR_MARKDOWN_FILE_PATTERN,

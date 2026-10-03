@@ -1,4 +1,4 @@
-import { parsePcrMarkdownToStructured } from "./markdown-projection.mjs";
+import { parsePcrMarkdownToStructured } from "./markdown-projection.ts";
 
 /**
  * Builder-only, finite measurement recognizers; this is not a mathematics engine.

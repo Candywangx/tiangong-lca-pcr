@@ -7,7 +7,7 @@ import test from "node:test";
 
 import { inspectPcrDirectory } from "./lint-rules.mjs";
 import { checkMeasurementConsistency } from "./measurement-consistency.mjs";
-import { parsePcrMarkdownToStructured } from "./markdown-projection.mjs";
+import { parsePcrMarkdownToStructured } from "./markdown-projection.ts";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const fixture = path.join(root, "builder/fixtures/measurement-44125");

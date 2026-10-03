@@ -95,3 +95,42 @@ export function deriveGuidanceContext(structured: unknown, sourceMarkdown: strin
     },
   };
 }
+
+/** Selection receives a source-verified core envelope. Check its internal
+ * consistency again after defensive copying; this does not replace source
+ * regeneration, which requires the canonical bytes held by the core snapshot. */
+export function assertGuidanceContextConsistency(structured: unknown, envelope: GuidanceContextEnvelope): void {
+  const context = envelope.normative_context;
+  const provenance = envelope.normative_context_provenance;
+  const schema = field(structured, 'schema_version');
+  const metadata = field(structured, 'projection_metadata');
+  const storedHash = field(metadata, 'generated_content_sha256');
+  const sourceHash = field(field(metadata, 'canonical_markdown'), 'sha256');
+  const contextHash = `sha256:${createHash('sha256').update(JSON.stringify(context), 'utf8').digest('hex')}`;
+  if (schema !== provenance.stored_projection_schema_version || storedHash !== provenance.stored_projection_sha256
+    || sourceHash !== provenance.source_sha256 || sourceHash !== context.source_sha256
+    || contextHash !== provenance.context_sha256 || provenance.kind !== (schema === 2 ? 'stored_projection' : 'derived_legacy_source')) {
+    throw new GuidanceContextError('Guidance context provenance does not agree with the verified stored snapshot.');
+  }
+  const groups = arrays(structured);
+  const prefixes = ['/system_boundary/rules', '/allocation_rules', '/validation_rules'];
+  const expected: { pointer: string; id: string }[] = [];
+  for (let index = 0; index < groups.length; index += 1) {
+    const rules = groups[index]; const prefix = prefixes[index];
+    if (!Array.isArray(rules) || prefix === undefined) throw new GuidanceContextError('Normative arrays are incomplete.');
+    for (let row = 0; row < rules.length; row += 1) {
+      expected.push({ pointer: `${prefix}/${row}`, id: string(field(rules[row], 'rule_id'), 'stored normative rule identity') });
+    }
+  }
+  const units = new Map(context.units.map(unit => [unit.unit_id, unit]));
+  const bindings = new Map(context.bindings.map(binding => [binding.pointer, binding]));
+  if (units.size !== context.units.length || bindings.size !== context.bindings.length || bindings.size !== expected.length) {
+    throw new GuidanceContextError('Normative context has duplicate or incomplete unit/binding coverage.');
+  }
+  for (const row of expected) {
+    const binding = bindings.get(row.pointer);
+    const unit = binding ? units.get(binding.unit_id) : undefined;
+    const family = row.pointer.startsWith('/system_boundary/') ? 'system_boundary' : row.pointer.startsWith('/allocation_rules/') ? 'allocation' : 'validation';
+    if (!binding || !unit || binding.rule_id !== row.id || unit.family !== family) throw new GuidanceContextError('Normative context bindings do not address every stored rule in its source family.');
+  }
+}

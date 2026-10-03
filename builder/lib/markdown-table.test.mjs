@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { normalizeHeader, parseTable, tableCell } from "./markdown-table.mjs";
+import { normalizeHeader, parseTable, tableCell } from "./markdown-table.ts";
 
 test("parseTable removes separator rows and empty data rows", () => {
   const lines = [
