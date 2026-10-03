@@ -22,7 +22,7 @@ type QualityContext=Pick<AuthorQualityOptions,"inventoryRows"|"referenceRows"|"s
 export interface AuthorReviewBase extends UnknownRecord {phase:string;checks:ReviewCheck[];checkpoint_binding:string;checkpoints:Record<string,UnknownRecord>;commit:CommitInspection;quality_context:QualityContext|null;subjects:UnknownRecord|null;report_available:boolean}
 export interface AuthorReviewResult extends AuthorReviewBase {valid:boolean;findings:UnknownRecord[]}
 interface SyncOptions {projectRoot:string;commit:string;pcrPath:string;reviewRoot:string;syncRunner?:(worktree:string,pcrPath:string,run:number,window:ReviewWindow)=>unknown;deadline?:number;phase?:string}
-export interface AuthorReviewOptions {projectRoot:string;baselineCommit:string;worktreePath:string;task:AuthorReviewTask;report:unknown;stateDir?:string;runSync?:boolean;priorReview?:AuthorReviewResult|null;reportAvailable?:boolean;verifiedUuidReads?:readonly UnknownRecord[];deadline?:number;phase?:string;inspectFn?:(options:PcrInspectionOptions)=>unknown;parseMarkdownFn?:(text:string)=>unknown;parseManifestFn?:(text:string)=>unknown;qualityFn?:(options:AuthorQualityOptions)=>unknown;syncFn?:(options:SyncOptions)=>unknown}
+export interface AuthorReviewOptions {projectRoot:string;baselineCommit:string;worktreePath:string;task:AuthorReviewTask;report:unknown;stateDir?:string;runSync?:boolean;priorReview?:unknown;reportAvailable?:boolean;verifiedUuidReads?:readonly UnknownRecord[];deadline?:number;phase?:string;inspectFn?:(options:PcrInspectionOptions)=>unknown;parseMarkdownFn?:(text:string)=>unknown;parseManifestFn?:(text:string)=>unknown;qualityFn?:(options:AuthorQualityOptions)=>unknown;syncFn?:(options:SyncOptions)=>unknown}
 export function extractCompletedTurnReport(response: unknown, turnId: string) {
   const turns=field(field(response,"thread"),"turns");
   const turn = turns===undefined ? undefined : records(turns).find(entry=>entry.id===turnId);
@@ -128,7 +128,7 @@ export function reviewAuthorWorktree({
   const checkpointBinding = createHash("sha256").update(JSON.stringify({ policy: 1, phase, projectRoot, baselineCommit, worktreePath,
     task: { id: task.id, goal_id: task.goal_id, thread_id: task.thread_id, turn_id: task.turn_id, pcr_path: pcrPath,
       allowed_files: allowedFiles, authoring_contract_version: task.authoring_contract_version }, report })).digest("hex");
-  const prior = priorReview?.checkpoint_binding === checkpointBinding ? priorReview : null;
+  const prior=field(priorReview,"checkpoint_binding")===checkpointBinding?readAuthorReviewResult(priorReview):null;
   const checkpoints: Record<string,UnknownRecord> = {};
   const run = (id: string, action: ()=>unknown, options: {fallbackCode?:string;failureKind?:string} = {}): UnknownRecord | null => {
     // Safety is always checked above; quality depends on this window's UUID reads.

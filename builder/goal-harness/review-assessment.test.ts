@@ -6,7 +6,7 @@ import * as assessmentApi from "./review-assessment.ts";
 
 import type {ReviewNode} from "./review-assessment.ts";
 import type {GoalFinding,UnknownRecord} from "./domain.ts";
-import {item,goalError} from "./fixtures/test-guards.ts";
+import {item,goalError} from "./fixtures/assertions.ts";
 const UUID = "11111111-1111-4111-8111-111111111111";
 const HASH = `sha256:${"a".repeat(64)}`;
 function fixture(phase = "preparation") {

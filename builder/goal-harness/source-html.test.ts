@@ -1,4 +1,4 @@
-import {item,goalError} from "./fixtures/test-guards.ts";
+import {item,goalError} from "./fixtures/assertions.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 

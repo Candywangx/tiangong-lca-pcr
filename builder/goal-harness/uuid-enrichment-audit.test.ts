@@ -1,4 +1,4 @@
-import {item,goalError} from "./fixtures/test-guards.ts";
+import {item,goalError} from "./fixtures/assertions.ts";
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";

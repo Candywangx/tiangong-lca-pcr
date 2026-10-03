@@ -1,4 +1,5 @@
 import path from "node:path";
+import type { GoalConfig } from "./domain.ts";
 
 import { GoalHarnessError } from "./errors.ts";
 
@@ -33,4 +34,8 @@ export function resolveRepoPath(root: string, repoPath: unknown, options?: {allo
     throw new GoalHarnessError("GOAL_PATH_INVALID", `Path escapes repository: ${repoPath}`);
   }
   return resolved;
+}
+
+export function goalStateDir(config: Pick<GoalConfig, "project_root" | "goal_id">): string {
+  return path.join(config.project_root, "library", ".pcr-builder-state", "goals", config.goal_id);
 }

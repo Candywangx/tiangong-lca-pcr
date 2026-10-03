@@ -201,8 +201,8 @@ Human and agent documentation lives under \`builder/docs/\`. Machine-facing buil
 ## Builder CLI
 
 \`\`\`bash
-node builder/cli/index.mjs init
-node builder/cli/index.mjs lint
+node builder/cli/index.ts init
+node builder/cli/index.ts lint
 \`\`\`
 
 \`init\` creates the expected scaffold directories and optional PCR scaffold records. \`lint\` validates the repository structure.

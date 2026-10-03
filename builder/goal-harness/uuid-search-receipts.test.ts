@@ -1,5 +1,5 @@
 import type {TestContext} from "node:test";
-import {item,goalError,object,string} from "./fixtures/test-guards.ts";
+import {item,goalError,object,string} from "./fixtures/assertions.ts";
 import {records,jsonRecord,goalTasks} from "./domain.ts";
 import {nested} from "./evidence-types.ts";
 import assert from "node:assert/strict";

@@ -32,7 +32,7 @@ export interface GoalModelTrial extends UnknownRecord {
 export interface TrialUsage extends UnknownRecord {
   status?: string; reason?: string | null; tokens?: Record<string, number> | null;
   observed_model?: string | null; observed_reasoning_effort?: string | null; source_sha256?: string | null;
-  started_at?: string | null; completed_at?: string | null;
+  started_at?: unknown; completed_at?: unknown;
 }
 export interface GoalTrialTurn extends UnknownRecord {
   thread_id?: string | null | undefined; turn_id?: string | null | undefined;
@@ -173,7 +173,7 @@ function isTaskTrial(value: unknown): value is GoalTaskTrial {
 }
 function isUsage(value: unknown): value is TrialUsage {
   return isRecord(value) && optionalFields(value,['status'],entry=>typeof entry==='string')
-    && optionalFields(value,['reason','observed_model','observed_reasoning_effort','source_sha256','started_at','completed_at'],entry=>entry===null||typeof entry==='string')
+    && optionalFields(value,['reason','observed_model','observed_reasoning_effort','source_sha256'],entry=>entry===null||typeof entry==='string')
     && optionalFields(value,['tokens'],entry=>entry===null||isRecord(entry)&&Object.values(entry).every(counter=>typeof counter==='number'));
 }
 function isTrialTurn(value: unknown): value is GoalTrialTurn {

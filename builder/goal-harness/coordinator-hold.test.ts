@@ -1,5 +1,5 @@
 import type {TestContext} from "node:test";
-import {item,object} from "./fixtures/test-guards.ts";
+import {item,object} from "./fixtures/assertions.ts";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import fs from "node:fs";

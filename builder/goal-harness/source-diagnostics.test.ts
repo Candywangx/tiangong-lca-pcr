@@ -1,6 +1,6 @@
 import type {TestContext} from "node:test";
 import type {BinaryLike} from "node:crypto";
-import {item,goalError,object} from "./fixtures/test-guards.ts";
+import {item,goalError,object} from "./fixtures/assertions.ts";
 import {number} from "./domain.ts";
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';

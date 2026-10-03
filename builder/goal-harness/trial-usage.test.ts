@@ -1,5 +1,5 @@
 import type {UnknownRecord} from "./domain.ts";
-import {item} from "./fixtures/test-guards.ts";
+import {item} from "./fixtures/assertions.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtempSync, realpathSync, writeFileSync, symlinkSync, rmSync } from "node:fs";

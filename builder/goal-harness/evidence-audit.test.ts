@@ -1,5 +1,5 @@
 import type {CollectedEvidence,EvidenceProgress} from "./evidence-audit.ts";
-import {item,goalError,string} from "./fixtures/test-guards.ts";
+import {item,goalError,string} from "./fixtures/assertions.ts";
 import {records,strings} from "./domain.ts";
 import {nested} from "./evidence-types.ts";
 import assert from "node:assert/strict";

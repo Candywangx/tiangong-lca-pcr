@@ -719,7 +719,7 @@ test("writer lock rejects a competing writer and compare-and-swap preserves chan
 
 test("CLI builds and checks successfully from a temporary fixture working directory", () => {
   const root = createRealRepositoryFixture();
-  const scriptPath = path.join(repoRoot, "builder/scripts/render-cpc-product-chain.mjs");
+  const scriptPath = path.join(repoRoot, "builder/scripts/render-cpc-product-chain.ts");
   try {
     const protectedBefore = protectedDigest(root);
     const built = spawnSync(process.execPath, [scriptPath], {
@@ -750,7 +750,7 @@ test("CLI rejects every argument vector except no args and exactly --check", () 
   for (const args of [["unexpected"], ["--check", "--check"], ["--check", "unexpected"]]) {
     const result = spawnSync(
       process.execPath,
-      [path.join(repoRoot, "builder/scripts/render-cpc-product-chain.mjs"), ...args],
+      [path.join(repoRoot, "builder/scripts/render-cpc-product-chain.ts"), ...args],
       { cwd: repoRoot, encoding: "utf8" },
     );
     assert.notEqual(result.status, 0, args.join(" "));
@@ -768,15 +768,15 @@ test("package scripts expose CPC chain build/check and lint checks the report be
   const packageJson=rawPackage;
   assert.equal(
     unknownField(packageJson.scripts,"cpc-chains:build"),
-    "node builder/scripts/render-cpc-product-chain.mjs",
+    "node builder/scripts/render-cpc-product-chain.ts",
   );
   assert.equal(
     unknownField(packageJson.scripts,"cpc-chains:check"),
-    "node builder/scripts/render-cpc-product-chain.mjs --check",
+    "node builder/scripts/render-cpc-product-chain.ts --check",
   );
   assert.match(
     String(unknownField(packageJson.scripts,"lint")),
-    /npm run cpc-chains:check.*node builder\/cli\/index\.mjs lint/u,
+    /npm run cpc-chains:check.*node builder\/cli\/index\.ts lint/u,
   );
 });
 

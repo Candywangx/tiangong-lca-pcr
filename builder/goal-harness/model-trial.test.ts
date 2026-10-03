@@ -1,6 +1,6 @@
 import type {GoalTask} from "./domain.ts";
-import {record} from "./domain.ts";
-import {item} from "./fixtures/test-guards.ts";
+import {record,goalTask} from "./domain.ts";
+import {item} from "./fixtures/assertions.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtempSync, rmSync, copyFileSync, writeFileSync, appendFileSync } from "node:fs";
@@ -136,4 +136,14 @@ test("native runtime fingerprint follows executing source bytes and ignores test
   appendFileSync(path.join(root,"domain.ts"),"\n// selected runtime byte change\n");
   assert.notEqual(capture().harness_sha256,before.harness_sha256);
   assert.equal(capture().policy_sha256,before.policy_sha256);
+});
+
+
+test("unavailable review duration and raw session times remain diagnostics without invented zero duration", () => {
+ const task:GoalTask={id:"raw-time",state:"retryable_failure",thread_id:"thread",turn_id:"turn",model_trial:{model:"gpt-5.6-terra",trial_id:"time-trial"},trial_turns:[{model:"gpt-5.6-terra",effort:"high",usage:{status:"available",tokens:{input_tokens:1,cached_input_tokens:0,output_tokens:1,total_tokens:2},started_at:{unavailable:true},completed_at:null}}]};
+ const observed=observeTrialReview(goalTask(task),{ok:false,findings:[{code:"GOAL_CODEX_USAGE_LIMIT_EXCEEDED"}],at:"2026-09-14T00:00:00.000Z",durationMs:"unavailable"});
+ assert.equal(item(item(observed.trial_reviews)[0]).duration_ms,"unavailable");
+ const summary=summarizeTrial({tasks:[observed]},"time-trial");
+ assert.equal(item(summary.samples[0]).author_ms,"unavailable");assert.equal(item(summary.samples[0]).end_to_end_ms,"unavailable");
+ assert.deepEqual(item(item(item(observed.trial_turns)[0]).usage).started_at,{unavailable:true});
 });

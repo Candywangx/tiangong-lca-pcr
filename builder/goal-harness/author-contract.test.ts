@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { Ajv2020 } from "ajv/dist/2020.js";
 import * as api from "./author-contract.ts";
-import {goalError,item,object} from "./fixtures/test-guards.ts";
+import {goalError,item,object} from "./fixtures/assertions.ts";
 import type {UnknownRecord} from "./domain.ts";
 const legacy = { authoring_contract_version: 1, author_draft_schema_version: 1, author_report_schema_version: 1 } as const;
 const modern = { authoring_contract_version: 2, author_draft_schema_version: 2, author_report_schema_version: 1 } as const;

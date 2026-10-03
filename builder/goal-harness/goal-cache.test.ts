@@ -1,5 +1,5 @@
 import {createHash} from "node:crypto";
-import {item,object} from "./fixtures/test-guards.ts";
+import {item,object} from "./fixtures/assertions.ts";
 import {jsonRecord} from "./domain.ts";
 import assert from "node:assert/strict";
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";

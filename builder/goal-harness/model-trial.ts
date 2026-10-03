@@ -92,7 +92,7 @@ export function observeTrialTurn(task: GoalTask, observation: UnknownRecord): Go
     repair_count: task.repair_count ?? 0, tokens: "unavailable", verified_cost: "unavailable", query_wait_ms: "unavailable" }] };
 }
 
-export function observeTrialReview<T extends Partial<GoalTask>>(task: T, { ok, findings = [], at, durationMs }: {ok: boolean; findings?: GoalFinding[]; at: string; durationMs: number}): T & Pick<GoalTask,"trial_reviews"|"trial_safety_incidents"> {
+export function observeTrialReview<T extends Partial<GoalTask>>(task: T, { ok, findings = [], at, durationMs }: {ok: boolean; findings?: GoalFinding[]; at: string; durationMs: number | "unavailable"}): T & Pick<GoalTask,"trial_reviews"|"trial_safety_incidents"> {
   if (!task.model_trial) return task;
   const key = `${task.thread_id}:${task.turn_id}`;
   const reviews = task.trial_reviews ?? [];

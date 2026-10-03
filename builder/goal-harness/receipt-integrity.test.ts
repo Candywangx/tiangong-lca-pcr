@@ -1,6 +1,6 @@
 import {receiptDocument} from "./receipt-integrity.ts";
 import type {TestContext} from "node:test";
-import {item,goalError,object,string} from "./fixtures/test-guards.ts";
+import {item,goalError,object,string} from "./fixtures/assertions.ts";
 import {jsonRecord,records} from "./domain.ts";
 import assert from "node:assert/strict";
 import {

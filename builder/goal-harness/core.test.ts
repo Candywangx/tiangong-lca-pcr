@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import {goalError,item} from "./fixtures/test-guards.ts";
+import {goalError,item} from "./fixtures/assertions.ts";
 import type {GoalTask} from "./domain.ts";
 import { loadGoalConfig } from "./config.ts";
 import { GoalEventStore } from "./event-store.ts";
