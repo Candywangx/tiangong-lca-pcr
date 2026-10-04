@@ -223,10 +223,14 @@ is assessed from measured composition and useful rendering behavior rather than
 an arbitrary aggregate-size rejection. Supported Next navigation payloads and
 complete source artifacts remain subject to the existing fidelity contract.
 
-The build has an 18-minute task budget within the 20-minute provider limit and
-uses four workers with a 4 GB Node heap ceiling per build process. Measure total
-resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
-not proof of total process memory.
+The complete export runs locally or in GitHub qualification and has no project-owned
+elapsed-time acceptance budget. CI bounds its instrumented documentation job to
+60 minutes; stage and total durations remain reported. The old 18-minute full-build
+cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
+only the sealed-product importer, whose separate 15-minute download/materialization
+deadline, cleanup and atomic handoff remain enforced. The export uses four workers
+with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
+guard; a heap ceiling is not proof of total resident memory.
 
 ### Build workspace storage
 

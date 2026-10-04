@@ -64,17 +64,14 @@ export function measureProcessTree({
   if (bytes <= 0) throw new Error("Process memory measurement returned zero.");
   return bytes;
 }
-export function assertBuildBudget({
-  buildMs,
+export function assertBuildResources({
   peakResidentBytes,
   memoryMeasurement,
-}: {buildMs:number;peakResidentBytes:number;memoryMeasurement:string}) {
+}: {peakResidentBytes:number;memoryMeasurement:string}) {
   if (memoryMeasurement !== "process-tree-rss" || !(peakResidentBytes > 0))
     throw new Error(
       "Production build requires working process-memory measurement.",
     );
   if (peakResidentBytes > 6_000_000_000)
     throw new Error("PCR build exceeded the 6 GB process memory budget.");
-  if (buildMs > 18 * 60 * 1000)
-    throw new Error("PCR build exceeded its 18-minute budget.");
 }
