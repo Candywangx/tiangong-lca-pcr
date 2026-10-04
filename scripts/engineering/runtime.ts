@@ -28,10 +28,13 @@ export function readToolchainPins(root: string): ToolchainPins {
   return { node, npm: product.npm };
 }
 
-export function verifyRuntime(pins: ToolchainPins, actual: RuntimeIdentity, release = false): void {
+export function verifyRuntime(pins: ToolchainPins, actual: RuntimeIdentity, release = false, expectedArchitecture?: string): void {
   const supported = new Set(["linux-x64", "linux-arm64", "darwin-arm64", "win32-x64"]);
   if (!supported.has(`${actual.platform}-${actual.arch}`)) {
     throw new Error("PCR_PLATFORM_UNSUPPORTED: use Linux x64/arm64, Windows x64, or macOS Apple Silicon (arm64).");
+  }
+  if (expectedArchitecture !== undefined && actual.arch !== expectedArchitecture) {
+    throw new Error("PCR_RUNNER_ARCH_MISMATCH: Runner architecture differs from the required qualification target.");
   }
   if (actual.node.replace(/^v/u, "") !== pins.node) {
     throw new Error(`PCR_NODE_VERSION_MISMATCH: expected ${pins.node}; run nvm install && nvm use.`);
@@ -49,7 +52,7 @@ export function main(args: string[], root = process.cwd()): number {
     const pins = readToolchainPins(root);
     const npm = /^npm\/(\S+)/u.exec(process.env.npm_config_user_agent ?? "")?.[1];
     verifyRuntime(pins, { node: process.versions.node, platform: process.platform, arch: process.arch,
-      ...(npm === undefined ? {} : { npm }) }, args.includes("--release"));
+      ...(npm === undefined ? {} : { npm }) }, args.includes("--release"), process.env.PCR_EXPECTED_ARCH);
     process.stdout.write(`${JSON.stringify({ verified: true, node: pins.node, npm: pins.npm,
       npmChecked: args.includes("--release"), platform: `${process.platform}-${process.arch}` })}\n`);
     return 0;

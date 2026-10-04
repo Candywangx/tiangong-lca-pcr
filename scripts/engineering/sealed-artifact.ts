@@ -111,9 +111,8 @@ export async function qualifySealedArtifacts(options: SealedArtifactOptions): Pr
     requireCondition(version.code === 0, `Cannot read actual npm version: ${version.stderr}`);
     receipt.runtime.npm = version.stdout.trim();
     await check('runtime', () => {
-      if (options.expectedArchitecture !== undefined) requireCondition(process.arch === options.expectedArchitecture, 'Runner architecture differs from the required qualification target.');
       requireCondition(/^12\./u.test(receipt.runtime.npm ?? ''), 'Offline qualification requires actual npm 12.');
-      verifyRuntime(manifest.toolchain, { node: process.versions.node, npm: receipt.runtime.npm ?? '', platform: process.platform, arch: process.arch }, true);
+      verifyRuntime(manifest.toolchain, { node: process.versions.node, npm: receipt.runtime.npm ?? '', platform: process.platform, arch: process.arch }, true, options.expectedArchitecture);
     }, () => ({ ...receipt.runtime }));
     temporary = mkdtempSync(path.join(realpathSync(tmpdir()), 'pcr-sealed-install-'));
     receipt.installation.directory = temporary;

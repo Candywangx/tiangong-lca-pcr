@@ -231,3 +231,16 @@ test("archive deadlines cover streaming body and end-padding reads", async t => 
   assert.equal(ended, false);
   await assert.rejects(readProductArchive(archive, { signal: AbortSignal.abort(new Error("Already exhausted.")) }), /Already exhausted/u);
 });
+
+
+test("candidate identity CLI reads the clean version/source without creating a release tag", t => {
+  const f = fixture(t); const output = path.join(f.container, "identity-output");
+  const script = path.resolve(import.meta.dirname, "product-release.ts");
+  const before = f.git("status", "--porcelain");
+  const value: unknown = JSON.parse(execFileSync(process.execPath, [script, "identity"], {
+    cwd: f.root, encoding: "utf8", env: {...process.env, GITHUB_OUTPUT: output}, stdio: ["ignore", "pipe", "pipe"],
+  }));
+  assert.deepEqual(value, readProductIdentity(f.root));
+  assert.match(readFileSync(output, "utf8"), /^tag=v0\.3\.0$/mu);
+  assert.equal(f.git("tag", "--list"), ""); assert.equal(f.git("status", "--porcelain"), before);
+});
