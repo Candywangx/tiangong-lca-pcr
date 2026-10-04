@@ -15,7 +15,7 @@ x64, and macOS ARM64.
 In a project directory:
 
 ```sh
-npm install @tiangong-lca/pcr@0.3.1 @tiangong-lca/pcr-library@0.3.1
+npm install @tiangong-lca/pcr@0.4.0 @tiangong-lca/pcr-library@0.4.0
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ./node_modules/.bin/tiangong-pcr list --format json
 ```
@@ -72,15 +72,15 @@ package is optional; legacy `validate-model` only checks qualifier text and
 On a connected machine, download both packages:
 
 ```sh
-npm pack @tiangong-lca/pcr@0.3.1
-npm pack @tiangong-lca/pcr-library@0.3.1
+npm pack @tiangong-lca/pcr@0.4.0
+npm pack @tiangong-lca/pcr-library@0.4.0
 ```
 
 Transfer the two tarballs and a suitable Node.js runtime to the offline machine.
 In the destination directory:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.0.tgz ./tiangong-lca-pcr-library-0.4.0.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 

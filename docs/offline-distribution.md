@@ -74,8 +74,8 @@ output must not be published as the complete product. Run them from a validated
 source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.3.1
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.3.1
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.0
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.0
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -94,7 +94,7 @@ Transfer both verified product tarballs and a suitable Node runtime to the offli
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.0.tgz ./tiangong-lca-pcr-library-0.4.0.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -315,7 +315,8 @@ capacity, final deadline, atomic rollback and owned cleanup remain mandatory.
 The initial `v0.3.0` attempt exposed a missing filesystem constraint on the provider's
 memory-backed clone. Its two npm candidate packages and sealed assets remain
 unchanged and the release remains incomplete. The reviewed repair uses product
-`0.3.1`; the examples below target that patch. Never repair this by moving the old
+`0.3.1`; that recovery remains immutable. The current TypeScript release examples
+below target `0.4.0`. Never repair this by moving the old
 tag, replacing sealed assets, or overriding source guards in the provider console.
 
 ### Build and operator commands
@@ -327,7 +328,7 @@ checkout, prepare artifacts without any remote publication:
 npm ci --ignore-scripts --no-audit --no-fund
 npm --prefix packages/pcr-docs ci
 npm run docs:build
-npm run product:build -- v0.3.1 dist/product-release packages/pcr-docs/out
+npm run product:build -- v0.4.0 dist/product-release packages/pcr-docs/out
 npm run product:verify -- dist/product-release
 ```
 
@@ -342,13 +343,13 @@ After activation, create/resume the first product tag from the exact current mai
 version through the guarded workflow:
 
 ```sh
-gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.3.1
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.0
 ```
 
 Retry an existing unified release without moving its tag:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.3.1 -f tag_name=v0.3.1
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.0 -f tag_name=v0.4.0
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
