@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
-lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
+lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -146,6 +146,6 @@ Follow the [semantic projection contract](semantic-projection-contract.md) for v
 
 ## Complete batch reads
 
-Use `guidance batch --input request.json --library <snapshot> --format json` for several known PCR IDs. The request is `{ "schema_version": 1, "pcr_ids": ["<id>"] }` with one to 100 IDs. Input order and duplicates are preserved. The entire batch succeeds or fails; an unavailable item never produces a partial output file. Optional topic/pointer/page selection retains complete normative units and ancestor context for each result. Large results require an exclusive `--output` file, rather than truncation.
+Use `guidance batch --input request.json --output <new-result.json> --library <snapshot> --format json` for several known PCR IDs. The request is `{ "schema_version": 1, "pcr_ids": ["<id>"] }` with one to 100 IDs. Input order and duplicates are preserved. The entire batch succeeds or fails; an unavailable item never produces a partial output file. Optional topic/pointer/page selection retains complete normative units and ancestor context for each result. Large results require an exclusive `--output` file, rather than truncation.
 
 One owned synchronous session opens the immutable library once and reuses verified selected projections. It returns source identity and operation statistics. Repository sessions recheck selected bytes before return; SQLite sessions use one readonly transaction, verify the full file by default, and still verify selected artifacts. The public session API does not accept cached validation receipts. Callback Promises are rejected, source scopes remain isolated when nested, and reads after closure fail. Statistics remain inspectable after closure.

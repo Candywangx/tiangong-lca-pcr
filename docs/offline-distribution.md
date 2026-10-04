@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
-lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
+lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -397,3 +397,23 @@ SQLite storage format stays unchanged. The reader accepts both historical projec
 `withPcrReadSession` selects an explicit repository or immutable SQLite source for one synchronous callback. Its complete `guidanceMany` and `projectionMany` methods preserve order and duplicates, with at most 100 requested IDs. A private bounded cache reuses verified projections only within that lifetime. Repository sessions retain exact artifact bindings even after cache eviction and recheck selected records before returning; library sessions own and close one readonly transaction. No callback Promise or cross-session validation receipt is accepted.
 
 Library sessions verify the complete file by default; an explicit boolean `verify: false` retains mandatory metadata/selected-artifact checks, and an expected SHA-256 pin still requires full verification. Source identity records the actual verification choice. CLI `guidance batch` always uses the verified default and carries source identity, input hash, ordered items and statistics. Existing single-command indexed reads retain their established verification contract.
+
+
+## Sealed candidate qualification
+
+Every candidate validation build seals the two npm packages, SQLite assets and
+complete website once, binding them to the exact tested source commit. PR artifacts
+are development qualification inputs even when their version matches an existing
+release; they never authorize publishing replacement registry/tag bytes. The formal
+workflow uses the immutable product tag and the same verified artifact ID for
+publication only after all reusable qualification jobs succeed.
+
+`qualify:sealed` verifies the existing bundle before empty-cache offline installation
+on Linux x64/ARM64, Windows x64 and macOS ARM64. It checks installed identities,
+compiled bins with type stripping disabled, complete SQLite integrity, real catalog,
+resolve/guidance/batch behavior and invalid-source rejection. `qualify:web` extracts
+the same sealed archive, verifies its complete file tree and runs actual browser
+acceptance. Both require an expected source commit and a new external report
+directory; neither builds, repacks or publishes. Reports preserve failures and
+owned-scratch cleanup. Registry bytes, npm latest and actual EdgeOne responses
+still require post-publication verification.

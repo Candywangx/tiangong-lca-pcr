@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
-lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
+lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
 ---
 
 # PCR 资料库架构

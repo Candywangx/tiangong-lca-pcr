@@ -20,7 +20,7 @@ checkPaths:
   - builder/lib/markdown-projection.ts
   - builder/lib/structured-yaml-projection.ts
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 8382cc5075c6544ce525fc3e86586289217d9670
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
 related:
   - agentic-consumption.md
   - authoring-guide.md
