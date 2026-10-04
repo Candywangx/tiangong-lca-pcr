@@ -1,5 +1,5 @@
 "use client";
-import type { SearchResult } from "./types";
+import type { SearchResult } from "./types.ts";
 let worker: Worker | undefined;
 let locale: string | undefined;
 let sequence = 0;

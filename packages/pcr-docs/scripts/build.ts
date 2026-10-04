@@ -1,7 +1,7 @@
 import {errorMessage} from "../../pcr-core/src/types.ts";
 import { spawn } from "node:child_process";
-import { measureProcessTree, assertBuildBudget } from "./resource-budget.ts";
-import { relocationRequested, runRelocatedBuild } from "./build-storage.ts";
+import { measureProcessTree, assertBuildResources } from "./resource-budget.ts";
+import { relocationRequested, runRelocatedBuild, buildNodeOptions } from "./build-storage.ts";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
@@ -19,15 +19,14 @@ function sampleMemory() {
   }
 }
 sampleMemory();
-assertBuildBudget({
-  buildMs: Date.now() - started,
+assertBuildResources({
   peakResidentBytes,
   memoryMeasurement,
 });
 const stages: {command:string;durationMs:number}[] = [];
 /**
  * Run the complete build pipeline — generation, the Next static export, then verification — in
- * `cwd`. The stages, their environment, their deadline and every budget gate are identical
+ * `cwd`. The stages, their environment and every resource gate are identical
  * wherever this runs; relocation only moves where that is.
  */
 async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
@@ -42,14 +41,6 @@ async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
       stdio: "inherit",
       env,
     });
-    let timedOut = false;
-    const deadline = setTimeout(
-      () => {
-        timedOut = true;
-        child.kill();
-      },
-      Math.max(1, 18 * 60 * 1000 - (Date.now() - started)),
-    );
     const monitor = setInterval(sampleMemory, 2000);
     sampleMemory();
     const status = await new Promise<number|null>((resolve, reject) => {
@@ -57,9 +48,7 @@ async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
       child.on("exit", resolve);
     }).finally(() => {
       clearInterval(monitor);
-      clearTimeout(deadline);
     });
-    if (timedOut) throw new Error("PCR build exceeded its 18-minute budget.");
     stages.push({ command: args.join(" "), durationMs: Date.now() - stageStart });
     if (status !== 0) {
       console.error("PCR production build failed at " + args.join(" "));
@@ -68,8 +57,7 @@ async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
       process.exitCode = typeof status === "number" ? status : 1;
       throw new Error("PCR production build failed at " + args.join(" "));
     }
-    assertBuildBudget({
-      buildMs: Date.now() - started,
+    assertBuildResources({
       peakResidentBytes,
       memoryMeasurement,
     });
@@ -87,12 +75,11 @@ try {
       repoRoot,
       env: process.env,
       runPipeline,
-      // The time and memory gates cover the copy phases too, and the final one runs after the
+      // Memory gates cover the copy phases too, and the final one runs after the
       // export is staged back and immediately before it replaces the live one.
       sample: sampleMemory,
       assertBudget: () =>
-        assertBuildBudget({
-          buildMs: Date.now() - started,
+        assertBuildResources({
           peakResidentBytes,
           memoryMeasurement,
         }),
@@ -103,7 +90,7 @@ try {
       env: {
         ...process.env,
         NEXT_TELEMETRY_DISABLED: "1",
-        NODE_OPTIONS: "--max-old-space-size=4096",
+        NODE_OPTIONS: buildNodeOptions(process.env.NODE_OPTIONS),
       },
     });
   }

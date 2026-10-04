@@ -122,7 +122,8 @@ export function compileMarkdownSourceDocument(input: string): {
       if (value !== undefined && value <= offset) low = middle;
       else high = middle;
     }
-    return { offset, line: low + 1, column: offset - (lineStarts[low] ?? 0) + 1 };
+    // The dense local index begins at zero; binary search keeps low in range.
+    return { offset, line: low + 1, column: offset - lineStarts[low]! + 1 };
   }
   function block(start: number, end: number, kind: string): SourceBlock {
     return { kind, span: { start: point(start), end: point(end) }, text: source.slice(start, end) };
@@ -135,7 +136,7 @@ export function compileMarkdownSourceDocument(input: string): {
     for (const entry of root.children) {
       if (entry.start > start) break;
       if (entry.node.type === 'heading') {
-        while (headings.length > 0 && (headings.at(-1)?.depth ?? 0) >= entry.node.depth) headings.pop();
+        while (headings.length > 0 && headings[headings.length - 1]!.depth >= entry.node.depth) headings.pop();
         headings.push({ ...entryBlock(entry), depth: entry.node.depth });
       }
     }
@@ -174,7 +175,8 @@ export function compileMarkdownSourceDocument(input: string): {
       if (!Number.isInteger(startLine) || !Number.isInteger(endLine) || startLine < 1 || endLine < startLine || endLine > lineStarts.length) {
         throw new RangeError('Source line selection is outside normalized Markdown');
       }
-      start = lineStarts[startLine - 1] ?? 0;
+      // The integer bounds above establish this dense local array entry.
+      start = lineStarts[startLine - 1]!;
       const next = lineStarts[endLine];
       end = next === undefined ? source.length : next - 1;
     } else {

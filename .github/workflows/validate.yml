@@ -22,9 +22,11 @@ permissions:
 
 jobs:
   validate:
+    outputs:
+      coverage_artifact_id: ${{ steps.validation-coverage.outputs.artifact-id }}
     runs-on: ubuntu-latest
     # Full source-fidelity qualification includes corpus, recovery and real package tests.
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Check out repository
@@ -52,16 +54,8 @@ jobs:
       - name: Install browser qualification runtimes
         run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
 
-      - name: Verify emitted TypeScript tests and source-mapped coverage
-        run: npm run test:coverage
-
-      - name: Preserve engineering coverage baseline
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: pcr-engineering-coverage-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .reports/coverage/engineering/
-          if-no-files-found: error
+      - name: Verify emitted TypeScript engineering tests
+        run: npm run test:engineering:compiled
 
       - name: Install PDF text extractor
         run: |
@@ -78,7 +72,7 @@ jobs:
             exit 1
           fi
           set +e
-          npm run validate > "$evidence/validation.log" 2>&1
+          node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-coverage/validation" -- npm run validate > "$evidence/validation.log" 2>&1
           validation_status=$?
           set -e
           cat "$evidence/validation.log"
@@ -89,6 +83,16 @@ jobs:
             if [ "$validation_status" -eq 0 ]; then validation_status=1; fi
           fi
           exit "$validation_status"
+
+      - name: Preserve exact test coverage inputs
+        id: validation-coverage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-coverage-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/validation/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Preserve browser evidence
         if: always()
@@ -110,9 +114,11 @@ jobs:
 
   documentation:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Instrumented full export runs here; EdgeOne only imports the sealed archive.
+    timeout-minutes: 60
     outputs:
       product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
+      coverage_artifact_id: ${{ steps.documentation-coverage.outputs.artifact-id }}
     steps:
       - name: Check out complete source history
         uses: actions/checkout@v4
@@ -162,6 +168,9 @@ jobs:
         run: npm --prefix packages/pcr-docs test
       - name: Verify real product packing with the release npm version
         run: npm run product:test
+      - name: Identify the clean artifact candidate
+        id: candidate
+        run: node builder/scripts/product-release.ts identity
       - name: Build and verify the full static library
         env:
           NEXT_TELEMETRY_DISABLED: '1'
@@ -170,18 +179,15 @@ jobs:
           # Public ownership markers already served by the production site.
           PCR_GOOGLE_SITE_VERIFICATION: 4W5GYY5tOwicaRGTZr7AdfJ4VB8KB87r2ex-rZxP-fM
           PCR_BAIDU_SITE_VERIFICATION: codeva-IJKQ9SxWkZ
-        run: npm --prefix packages/pcr-docs run build
-      - name: Install exported-site browser runtimes
-        run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
-      - name: Verify the actual full export in three browsers
-        run: npm run docs:browser -- --root packages/pcr-docs/out --report "${{ runner.temp }}/pcr-site-browser"
-      - name: Preserve exported-site browser evidence
+        run: node scripts/engineering/coverage.ts collect "${{ runner.temp }}/pcr-coverage/documentation" -- npm --prefix packages/pcr-docs run build
+      - name: Preserve exact full-build coverage inputs
+        id: documentation-coverage
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: pcr-site-browser-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pcr-site-browser/
-          if-no-files-found: warn
+          name: pcr-coverage-documentation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/documentation/
+          if-no-files-found: error
           retention-days: 14
       - name: Verify shared SEO invariants without rebuilding
         run: |
@@ -196,17 +202,15 @@ jobs:
           retention-days: 14
 
       - name: Build and verify the two packages and sealed web artifact
-        if: inputs.product_tag != ''
         env:
-          PRODUCT_TAG: ${{ inputs.product_tag }}
+          PRODUCT_TAG: ${{ inputs.product_tag || steps.candidate.outputs.tag }}
         run: npm run product:build -- "$PRODUCT_TAG" dist/product-release packages/pcr-docs/out
 
-      - name: Preserve the exact product bundle for publication and retries
-        if: inputs.product_tag != ''
+      - name: Preserve the exact product bundle for qualification and publication
         id: product-upload
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: pcr-product-${{ inputs.product_tag }}-${{ github.sha }}
+          name: pcr-product-${{ steps.candidate.outputs.tag }}-${{ github.sha }}
           path: |
             dist/product-release/release.json
             dist/product-release/SHA256SUMS
@@ -215,7 +219,7 @@ jobs:
             dist/product-release/*.sqlite
             dist/product-release/*.sqlite.json
           if-no-files-found: error
-          retention-days: 30
+          retention-days: ${{ inputs.product_tag != '' && 30 || 7 }}
 
   offline-distribution:
     strategy:
@@ -247,11 +251,9 @@ jobs:
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install locked build dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Verify the runner architecture
+      - name: Verify pinned runtime and runner architecture
         env:
           PCR_EXPECTED_ARCH: ${{ matrix.arch }}
-        run: node -e "if(process.arch!==process.env.PCR_EXPECTED_ARCH)process.exit(1)"
-      - name: Verify the pinned runtime
         run: npm run runtime:release
       - name: Typecheck portable Node and Viewer projects
         run: npm run typecheck:node
@@ -259,3 +261,127 @@ jobs:
         run: npm run test:engineering
       - name: Verify complete offline distribution and reproducibility
         run: npm run test:offline
+
+
+  sealed-distribution:
+    needs: documentation
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+          - os: windows-latest
+            arch: x64
+          - os: macos-latest
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Configure exact Windows source checkout
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.longpaths true
+          git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Select pinned package manager
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Install qualification tools
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Download the one sealed candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.documentation.outputs.product_artifact_id }}
+          path: ${{ runner.temp }}/pcr-sealed-product
+          merge-multiple: true
+      - name: Qualify real offline installation of the sealed packages
+        env:
+          PCR_EXPECTED_ARCH: ${{ matrix.arch }}
+        run: npm run qualify:sealed -- --bundle "${{ runner.temp }}/pcr-sealed-product" --expected-source "${{ github.sha }}" --report "${{ runner.temp }}/pcr-sealed-consumer"
+      - name: Preserve installed artifact evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-sealed-${{ matrix.os }}-${{ matrix.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-sealed-consumer/
+          if-no-files-found: warn
+          retention-days: 14
+
+  sealed-web:
+    needs: documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install pinned qualification tools
+        run: |
+          npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+          npm ci --ignore-scripts --no-audit --no-fund
+          node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
+      - name: Download the same sealed candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.documentation.outputs.product_artifact_id }}
+          path: ${{ runner.temp }}/pcr-sealed-product
+          merge-multiple: true
+      - name: Qualify browsers against extracted sealed bytes
+        run: npm run qualify:web -- --bundle "${{ runner.temp }}/pcr-sealed-product" --expected-source "${{ github.sha }}" --report "${{ runner.temp }}/pcr-sealed-web"
+      - name: Preserve extracted web and browser evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-sealed-web-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-sealed-web/
+          if-no-files-found: warn
+          retention-days: 14
+
+
+  source-coverage:
+    needs: [validate, documentation]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install pinned measurement dependencies
+        run: |
+          npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm --prefix packages/pcr-docs ci --ignore-scripts --no-audit --no-fund
+      - name: Download the exact test measurement
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.validate.outputs.coverage_artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/pcr-coverage/validation
+      - name: Download the exact full-build measurement
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.documentation.outputs.coverage_artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/pcr-coverage/documentation
+      - name: Enforce complete source and critical-file coverage
+        run: npm run coverage:report -- "${{ runner.temp }}/pcr-coverage/report" "${{ runner.temp }}/pcr-coverage/validation" "${{ runner.temp }}/pcr-coverage/documentation"
+      - name: Preserve source-accounted coverage and rejection ledger
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-source-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/report/
+          if-no-files-found: error
+          retention-days: 30

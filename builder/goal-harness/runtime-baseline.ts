@@ -68,6 +68,9 @@ const EXACT_RUNTIME_PATHS = new Set([
   "packages/pcr-core/src/projection-completeness.ts",
   "packages/pcr-viewer/viewer-build.test.ts",
 ]);
+// Prune canonical corpus differences in Git before buffering filenames. The exact
+// approval predicate below remains the authority for every copied/removed path.
+const RUNTIME_QUERY_PATHS = [...EXACT_RUNTIME_PATHS, "builder/goal-harness", "builder/cli", "builder/lib", "builder/scripts", "builder/schemas", "packages/pcr-core", "packages/pcr-viewer"];
 
 export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, goalId, now = () => new Date().toISOString() }: RuntimeBaselineOptions): GoalRuntimeBaseline {
   return withGoalLock(stateDir, "runtime-baseline", () => {
@@ -76,8 +79,8 @@ export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, g
     const sourceCommit = git(sourceRoot, ["rev-parse", "HEAD"]);
     const baseCommit = selectGoalRuntimeBaseCommit(state, { projectRoot });
     const dirty = [...new Set([
-      ...gitZ(sourceRoot, ["diff", "--name-only", "-z", "HEAD", "--"]),
-      ...gitZ(sourceRoot, ["ls-files", "--others", "--exclude-standard", "-z", "--"]),
+      ...gitZ(sourceRoot, ["diff", "--name-only", "-z", "HEAD", "--", ...RUNTIME_QUERY_PATHS]),
+      ...gitZ(sourceRoot, ["ls-files", "--others", "--exclude-standard", "-z", "--", ...RUNTIME_QUERY_PATHS]),
     ].filter(isApprovedRuntimePath))].sort();
     if (dirty.length > 0) {
       throw new GoalHarnessError("GOAL_RUNTIME_SOURCE_DIRTY", "Harness runtime source has uncommitted approved-path changes; commit and verify them before installing a Goal runtime baseline.", { paths: dirty });
@@ -89,8 +92,8 @@ export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, g
     // Preserve original-baseline installation receipts while also synchronizing
     // additions/deletions introduced in the tree receiving this overlay.
     const paths = [...new Set([
-      ...gitZ(projectRoot, ["diff", "--name-only", "-z", text(field(state.baseline,"commit")), sourceCommit, "--"]),
-      ...gitZ(projectRoot, ["diff", "--name-only", "-z", baseCommit, sourceCommit, "--"]),
+      ...gitZ(projectRoot, ["diff", "--name-only", "-z", text(field(state.baseline,"commit")), sourceCommit, "--", ...RUNTIME_QUERY_PATHS]),
+      ...gitZ(projectRoot, ["diff", "--name-only", "-z", baseCommit, sourceCommit, "--", ...RUNTIME_QUERY_PATHS]),
     ].filter(isApprovedRuntimePath))].sort();
     if (paths.length === 0) {
       return { schema_version: 1, commit: baseCommit, base_commit: baseCommit, source_commit: sourceCommit, paths: [], path_sha256: {}, created_at: now() };
@@ -192,7 +195,7 @@ function isAncestor(root: string, ancestor: string, descendant: string): boolean
 }
 
 function gitZ(root: string, args: string[]): string[] {
-  const output = execFileSync("git", args, { cwd: root, encoding: "buffer", stdio: ["ignore", "pipe", "pipe"] });
+  const output = execFileSync("git", args, { cwd: root, encoding: "buffer", maxBuffer: 16 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] });
   return output.toString("utf8").split("\0").filter(Boolean);
 }
 

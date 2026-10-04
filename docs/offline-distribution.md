@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
-lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
+lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -74,8 +74,8 @@ output must not be published as the complete product. Run them from a validated
 source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.3.1
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.3.1
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.0
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.0
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -94,7 +94,7 @@ Transfer both verified product tarballs and a suitable Node runtime to the offli
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.0.tgz ./tiangong-lca-pcr-library-0.4.0.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -315,7 +315,8 @@ capacity, final deadline, atomic rollback and owned cleanup remain mandatory.
 The initial `v0.3.0` attempt exposed a missing filesystem constraint on the provider's
 memory-backed clone. Its two npm candidate packages and sealed assets remain
 unchanged and the release remains incomplete. The reviewed repair uses product
-`0.3.1`; the examples below target that patch. Never repair this by moving the old
+`0.3.1`; that recovery remains immutable. The current TypeScript release examples
+below target `0.4.0`. Never repair this by moving the old
 tag, replacing sealed assets, or overriding source guards in the provider console.
 
 ### Build and operator commands
@@ -327,7 +328,7 @@ checkout, prepare artifacts without any remote publication:
 npm ci --ignore-scripts --no-audit --no-fund
 npm --prefix packages/pcr-docs ci
 npm run docs:build
-npm run product:build -- v0.3.1 dist/product-release packages/pcr-docs/out
+npm run product:build -- v0.4.0 dist/product-release packages/pcr-docs/out
 npm run product:verify -- dist/product-release
 ```
 
@@ -342,13 +343,13 @@ After activation, create/resume the first product tag from the exact current mai
 version through the guarded workflow:
 
 ```sh
-gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.3.1
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.0
 ```
 
 Retry an existing unified release without moving its tag:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.3.1 -f tag_name=v0.3.1
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.0 -f tag_name=v0.4.0
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
@@ -379,8 +380,7 @@ source also use TypeScript; final coverage and sealed-product qualification rema
 tracked by #79 before the formal cutover in #69.
 Schemas, Skill and license assets retain their relative locations; executable
 bins follow the emitted extension. Only locked runtime dependencies are bundled,
-including the YAML reader; development/compiler packages are excluded. Inline
-source maps use a fixed logical source root, so temporary/host paths do not leak
+including the YAML reader; development/compiler packages are excluded. Source maps embed original source content and use a fixed logical source root, so temporary/host paths do not leak
 into tarball bytes. Actual installed-package probes use `--no-strip-types`.
 
 The publisher/provider validation path continues to load without node_modules;
@@ -397,3 +397,23 @@ SQLite storage format stays unchanged. The reader accepts both historical projec
 `withPcrReadSession` selects an explicit repository or immutable SQLite source for one synchronous callback. Its complete `guidanceMany` and `projectionMany` methods preserve order and duplicates, with at most 100 requested IDs. A private bounded cache reuses verified projections only within that lifetime. Repository sessions retain exact artifact bindings even after cache eviction and recheck selected records before returning; library sessions own and close one readonly transaction. No callback Promise or cross-session validation receipt is accepted.
 
 Library sessions verify the complete file by default; an explicit boolean `verify: false` retains mandatory metadata/selected-artifact checks, and an expected SHA-256 pin still requires full verification. Source identity records the actual verification choice. CLI `guidance batch` always uses the verified default and carries source identity, input hash, ordered items and statistics. Existing single-command indexed reads retain their established verification contract.
+
+
+## Sealed candidate qualification
+
+Every candidate validation build seals the two npm packages, SQLite assets and
+complete website once, binding them to the exact tested source commit. PR artifacts
+are development qualification inputs even when their version matches an existing
+release; they never authorize publishing replacement registry/tag bytes. The formal
+workflow uses the immutable product tag and the same verified artifact ID for
+publication only after all reusable qualification jobs succeed.
+
+`qualify:sealed` verifies the existing bundle before empty-cache offline installation
+on Linux x64/ARM64, Windows x64 and macOS ARM64. It checks installed identities,
+compiled bins with type stripping disabled, complete SQLite integrity, real catalog,
+resolve/guidance/batch behavior and invalid-source rejection. `qualify:web` extracts
+the same sealed archive, verifies its complete file tree and runs actual browser
+acceptance. Both require an expected source commit and a new external report
+directory; neither builds, repacks or publishes. Reports preserve failures and
+owned-scratch cleanup. Registry bytes, npm latest and actual EdgeOne responses
+still require post-publication verification.

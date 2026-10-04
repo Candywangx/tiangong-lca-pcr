@@ -681,9 +681,10 @@ function classificationClaimMatches(claim:unknown, classifications:{id:string;la
   const text = String(claim ?? "").trim();
   if (classifications.length > 0) {
     const normalized = normalizeComparableText(text);
-    return Boolean(text) && classifications.some((value) =>
-      text.includes(value.id) || (value.label && normalized.includes(normalizeComparableText(value.label))),
-    );
+    return Boolean(text) && classifications.some((value) => {
+      const id = value.id.trim(), label = normalizeComparableText(value.label);
+      return Boolean((id && text.includes(id)) || (label && normalized.includes(label)));
+    });
   }
   if (flowType !== "elementary") return false;
   return !text || /no (?:product )?classification|not applicable|elementary[- ]flow compartment/iu.test(text);

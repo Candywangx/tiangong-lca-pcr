@@ -463,6 +463,7 @@ function emit(value: object) {
 async function main() {
   const [command, ...args] = process.argv.slice(2), root = process.cwd();
   if (command === "detect" && !args.length) { const release = detectProductRelease(root, text(process.env.BASE_REF, "BASE_REF"), text(process.env.HEAD_REF, "HEAD_REF")); emit({ any_changed: release !== null, release }); }
+  else if (command === "identity" && !args.length) emit(readProductIdentity(root));
   else if (command === "context" && args.length === 1) emit(productReleaseContext(root, text(args[0], "command argument"), process.env));
   else if (command === "build" && args.length === 3) emit(await buildProductRelease(root, text(args[0], "command argument"), text(args[1], "output path"), { webDir: text(args[2], "web path") }));
   else if (command === "verify" && args.length === 1) emit(await verifyProductArtifacts(text(args[0], "command argument")));
@@ -475,6 +476,6 @@ async function main() {
     const release = detectProductRelease(root, text(process.env.BASE_REF, "BASE_REF"), head);
     if (release) await tagAndDispatchProduct(release, head, githubRequest);
   }
-  else throw new Error("Usage: product-release.ts detect | tag [explicit-v-tag] | context <tag> | build <tag> <new-output-directory> <verified-web-directory> | verify <artifact-directory>");
+  else throw new Error("Usage: product-release.ts identity | detect | tag [explicit-v-tag] | context <tag> | build <tag> <new-output-directory> <verified-web-directory> | verify <artifact-directory>");
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) main().catch(error => { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; });

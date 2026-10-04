@@ -528,10 +528,10 @@ export class ViewerSnapshotStore {
   }
 
   #normalizeInput(value:unknown):NormalizedInput {
-    if (!value || typeof value !== "object") throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot input must be an object.");
+    if (!value || typeof value !== "object" || Array.isArray(value)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot input must be an object.");
     const input=object(value,"snapshot input");
+    if (!input.source || typeof input.source !== "object" || Array.isArray(input.source)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot source is required.");
     const source=object(input.source,"snapshot source");
-    if (!source || typeof source !== "object") throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot source is required.");
     const coverage = normalizeCoverageSources(source.coverage);
     const phaseCallback=input.onPhase;
     const normalized:NormalizedInput = {

@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync, mkdtempSync, readdirSync, realpathSync, rmSync, statSync } from "node:fs";
+import { existsSync, lstatSync, mkdtempSync, readdirSync, realpathSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -250,6 +250,25 @@ export interface SuiteRunResult {
 export async function runSuite(root: string, selector: string): Promise<SuiteRunResult> {
   const files = selectSuite(discoverSuites(root), selector);
   if (files.length === 0) throw new Error(`Suite contains no tests: ${selector}`);
+  return runTestFiles(root, files.map(file => path.resolve(root, file)));
+}
+
+/** Execute only current authored engineering members after the separate compiler step. */
+export async function runEmittedSuite(root: string, selector: string): Promise<SuiteRunResult> {
+  if (selector !== "engineering") throw new Error("Emitted suite supports engineering only.");
+  const authored = selectSuite(discoverSuites(root), selector);
+  if (authored.length === 0) throw new Error(`Suite contains no tests: ${selector}`);
+  const files = authored.map(source => {
+    if (!source.endsWith(".ts")) throw new Error(`Emitted engineering test requires authored .ts source: ${source}`);
+    const file = path.resolve(root, "dist/test-engineering", source.replace(/\.ts$/u, ".js"));
+    const stat = lstatSync(file, { throwIfNoEntry: false });
+    if (!stat?.isFile() || stat.isSymbolicLink()) throw new Error(`Required emitted test is missing or not regular: ${file}`);
+    return file;
+  });
+  return runTestFiles(root, files, ["--no-strip-types"]);
+}
+
+async function runTestFiles(root: string, files: readonly string[], flags: readonly string[] = []): Promise<SuiteRunResult> {
   // macOS exposes /var as an OS alias. Canonicalize only this runner-owned
   // temporary root; application inputs must still satisfy their no-follow rules.
   const temporaryRoot = mkdtempSync(path.join(realpathSync(tmpdir()), "pcr-test-suite-"));
@@ -258,7 +277,7 @@ export async function runSuite(root: string, selector: string): Promise<SuiteRun
     // A suite invoked by a test must launch an independent runner. Inherited
     // Node test context otherwise makes --test skip execution and report success.
     delete environment.NODE_TEST_CONTEXT;
-    const child = spawn(process.execPath, ["--test", "--", ...files.map(file => path.resolve(root, file))], {
+    const child = spawn(process.execPath, [...flags, "--test", "--", ...files], {
       cwd: root,
       stdio: "inherit",
       env: environment,
@@ -295,7 +314,7 @@ function findRepositoryRoot(): string {
 }
 
 export const REPOSITORY_ROOT = findRepositoryRoot();
-const USAGE = "Usage: node scripts/engineering/suites.ts list [--json] | run <suite|all|root>";
+const USAGE = "Usage: node scripts/engineering/suites.ts list [--json] | run <suite|all|root> | run-emitted engineering";
 
 export async function main(argv: readonly string[], root = REPOSITORY_ROOT): Promise<SuiteRunResult> {
   try {
@@ -314,6 +333,7 @@ export async function main(argv: readonly string[], root = REPOSITORY_ROOT): Pro
       return { exitCode: 0, signal: null };
     }
     if (argv[0] === "run" && argv.length === 2 && argv[1] !== undefined) return await runSuite(root, argv[1]);
+    if (argv[0] === "run-emitted" && argv.length === 2 && argv[1] !== undefined) return await runEmittedSuite(root, argv[1]);
     throw new Error(USAGE);
   } catch (error: unknown) {
     console.error(error instanceof Error ? error.message : String(error));

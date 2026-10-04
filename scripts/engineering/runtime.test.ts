@@ -45,8 +45,8 @@ test("runtime CLI validates the invoking release npm and emits failures on stder
   writeFileSync(path.join(root, "product-release.json"), JSON.stringify({ node: process.versions.node, npm: "12.2.0" }));
   const extension = import.meta.url.endsWith(".ts") ? "ts" : "js";
   const entry = fileURLToPath(new URL(`./runtime.${extension}`, import.meta.url));
-  const run = (args: string[], npm: string) => spawnSync(process.execPath, [entry, ...args], {
-    cwd: root, encoding: "utf8", env: { ...process.env, npm_config_user_agent: `npm/${npm} node/${process.versions.node}` },
+  const run = (args: string[], npm: string, expectedArchitecture = process.arch) => spawnSync(process.execPath, [entry, ...args], {
+    cwd: root, encoding: "utf8", env: { ...process.env, npm_config_user_agent: `npm/${npm} node/${process.versions.node}`, PCR_EXPECTED_ARCH: expectedArchitecture },
   });
   const development = run([], "11.17.0");
   assert.equal(development.status, 0, development.stderr);
@@ -58,6 +58,9 @@ test("runtime CLI validates the invoking release npm and emits failures on stder
   assert.equal(mismatch.status, 1);
   assert.equal(mismatch.stdout, "");
   assert.match(mismatch.stderr, /PCR_NPM_VERSION_MISMATCH/u);
+  const wrongArchitecture = run(["--release"], "12.2.0", process.arch === "arm64" ? "x64" : "arm64");
+  assert.equal(wrongArchitecture.status, 1); assert.equal(wrongArchitecture.stdout, "");
+  assert.match(wrongArchitecture.stderr, /PCR_RUNNER_ARCH_MISMATCH/u);
   const usage = run(["--unknown"], "12.2.0");
   assert.equal(usage.status, 1);
   assert.equal(usage.stdout, "");

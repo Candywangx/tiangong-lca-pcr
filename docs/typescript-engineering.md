@@ -17,11 +17,13 @@ checkPaths:
   - package.json
   - package-lock.json
   - config/typescript-migration.json
+  - config/coverage.json
+  - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
-lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
+lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -60,7 +62,7 @@ and macOS ARM64. macOS Intel is unsupported. CI asserts the actual architecture,
 rather than inferring it from a runner label. This does not restrict public web
 browsers by CPU.
 
-The root strict TypeScript project covers `scripts/engineering/**`. Separate strict projects cover the remaining runtime boundaries. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The site has its own Next TypeScript project; `typecheck:all` checks every project.
+The root strict TypeScript project covers `scripts/engineering/**`. Separate strict projects cover the remaining runtime boundaries. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The site has its own Next TypeScript project. `typecheck:all` generates route types, checks every project with the exact pinned compiler and all strict subflags explicitly enabled, then compares successful compiler file inventories with every tracked and nonignored untracked TypeScript source. Unimported subprocess fixtures and new files cannot silently escape the gate.
 `typecheck:node` checks portable Node/Viewer projects using only root dependencies;
 web tools and Worker checks additionally use the locked site dependency graph.
 Do not use `allowJs`, broad explicit `any`, `@ts-ignore` or `@ts-nocheck` to declare
@@ -69,6 +71,9 @@ an implementation migrated. Unknown external data must be validated and narrowed
 Engineering scripts run directly under Node's erasable-TypeScript support; `tsc`
 remains a separate mandatory check. `build:engineering` emits the scripts and
 declarations; `build:tests` emits both source and tests for compiled-output checks.
+The emitted engineering runner selects only the current authored test inventory,
+requires each compiled file and disables type stripping. Stale emitted tests are
+never discovered by glob, and the schema staging helper is not a test entrypoint.
 Relative imports retain `.ts` in source and are rewritten by the compiler. Public-package qualification must test the actual compiled tarballs, including bins,
 schemas, workers, relocation and asset paths. Consumers do not need a compiler.
 
@@ -94,16 +99,17 @@ checked against fresh pinned-compiler output without modifying the artifact.
 
 ## Validation commands
 
-Full validation currently requires Linux: existing Goal Harness artifact operations use descriptor-anchored `/proc/self/fd` traversal and intentionally fail closed on other hosts. Preserve this boundary during foundation work; the Harness phase must qualify and document its platform capabilities. Portable engineering, documentation and installed-package suites are separately available on the supported consumer platforms. Do not silently skip Linux-required tests and report a complete local run.
+Full validation currently requires Linux: existing Goal Harness artifact operations use descriptor-anchored `/proc/self/fd` traversal and intentionally fail closed on other hosts. The Harness retains this qualified platform capability boundary. Portable engineering, documentation and installed-package suites are separately available on the supported consumer platforms. Do not silently skip Linux-required tests and report a complete local run.
 
 From a clean Linux source checkout install both currently separate dependency graphs:
 
 ```sh
 nvm install
 nvm use
+npm install --global npm@12.2.0
 npm ci
 npm --prefix packages/pcr-docs ci
-npm run browser:install
+node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
 npm run validate
 ```
 
@@ -123,7 +129,8 @@ test files. New test placement/names must satisfy the suite contract.
 | `test:product` | Product sealing, publication and importer contracts |
 | `test:engineering` | Runtime, migration and test-discovery boundaries |
 | `test:browser` | Compiled Viewer interaction in Chromium, Firefox and WebKit |
-| `test:coverage` | Emitted engineering tests and source-mapped engineering coverage |
+| `test:engineering:compiled` | Complete emitted engineering tests with type stripping disabled |
+| `test:coverage` | Fresh full test/build collection and complete source-accounted coverage gate |
 | `docs:build` | Full static export/source/provider validation |
 | `docs:browser -- --root <export> --report <new-dir>` | Actual full export in three browsers at desktop/mobile widths |
 
@@ -140,19 +147,66 @@ failure/status propagation and temporary-root cleanup still run on Windows.
 Forced termination on any platform can prevent cleanup; preserve the owned path
 for explicit recovery instead of claiming that a finally block always ran.
 
-Coverage in this foundation is an **engineering baseline**, not whole-product
-coverage. c8 maps emitted code back to TypeScript and includes unexecuted source;
-tests and generated output are excluded from the denominator. Reports are retained
-under `.reports/coverage/engineering`. As modules migrate, expand coverage to all
-first-party surfaces and enforce the approved final targets: lines/functions 90%,
-branches 85%, critical compiler/integrity/transaction branches 95%. Every declared
-critical semantic and failure scenario is mandatory regardless of percentage.
+The complete source-accounted coverage command inventories every first-party
+runtime TS/TSX module through `config/coverage.json`. Tests, generated vocabulary
+and parser-proven type-only modules have explicit exclusions; unknown authored
+extensions fail discovery. Ordinary Node execution and actual compiled package
+execution receive credit only when executed bytes, source maps and canonical
+source hashes agree. Unknown or modified relocated fixtures receive no credit
+and remain in the rejection ledger; a claimed canonical source mismatch fails.
+Unobserved browser/Next/TSX modules stay in the denominator at zero.
 
-Current offline tests already pack and install real artifacts. Full refactor
-completion additionally requires cross-platform consumption of the exact unified
-sealed release bundle, browser/visual acceptance of its actual extracted web
-archive, fault/recovery cases and bounded agent-task evaluation. These follow-up
-gates must not be represented as implemented by the foundation alone.
+The gate uses pinned c8/v8-to-Istanbul/Istanbul semantics: lines/functions 90%,
+branches 85%, and every declared critical compiler/integrity/transaction file 95%
+branches. These are runtime named-function and block-range metrics, not a census
+of every source-level conditional or anonymous callback. Unobserved modules use
+the standard zero-hit empty-report function/root-branch placeholder. An AST
+function census is reported separately, never mixed into the gate denominator.
+Type/comment-only lines are filtered through a reviewed parser/emission census.
+Authenticated V8 process ranges are merged before conversion. Converting each
+process first lets an import-only module's positive enclosing range inflate
+nested branch hits during Istanbul merging. Each file uses one authenticated
+measurement surface, preferring native TS when present; separately verified
+emitted execution remains functional evidence, not a second merged branch score.
+All declared critical semantic and recovery scenarios remain mandatory regardless
+of percentages. A passing metric does not certify methodology or all product
+behavior.
+
+The collector retains script bytes/maps before temporary fixtures are deleted,
+and leaves its inspector session attached until Node's native coverage flush.
+Disconnecting in an exit handler loses detailed untaken branches on pinned Node24;
+a real one-branch execution regression must reject a false 100% result. Reports
+bind source commit, content inventory, configuration and runtime before and after
+the run. Collect only from a frozen clean checkout. `test:coverage` requires fresh
+`.reports/coverage/tests` and `.reports/coverage/docs` paths; use explicit
+`coverage:collect`/`coverage:report` paths when retaining previous runs. `inspect` preserves incomplete
+results without claiming threshold success; `report` enforces the gates. Keep raw
+V8/capture evidence and the explicit rejection/unobserved-file ledgers.
+
+PR and formal release qualification build one sealed product bundle in the
+documentation job. Four platform jobs download that same immutable artifact ID,
+verify its identity and checksums, install both tarballs with an empty cache and
+no network, then execute compiled bins with type stripping disabled against the
+pinned SQLite. A separate job extracts the same sealed web archive and runs the
+three-browser desktop/mobile matrix. Neither helper rebuilds or repacks its
+inputs. Candidate bundles carry the exact tested source commit; only the guarded
+formal tag workflow may publish. Artifact qualification is separate from live
+npm/EdgeOne acceptance.
+
+`qualify:sealed` and `qualify:web` require `--bundle <existing-dir>`,
+`--expected-source <full-commit>` and `--report <new-external-directory>`.
+Their receipts preserve source/artifact identities, observed checks and cleanup;
+failed checks never replace prior evidence. The sealed-consumer report also records
+actual Node/npm/platform/architecture and command timing/bytes. An explicitly
+expected CI architecture must match the actual process, not just its runner label.
+
+Bounded agent workflow scenarios live in `tests/agent/scenarios.json`. The retained
+`evaluation-5ce04eae.json` records one installed development-candidate trial and
+independent source-span review: authoring, conditional allocation, unmapped
+classification and complete batch/failure output. Fourteen actual CLI calls
+include failures/retries; saved complete output avoids truncation. This is neither
+a blind model evaluation nor a statistical accuracy or general speedup claim.
+Formal sealed artifact and live publication evidence remain separate.
 
 ## Delivery and scientific boundaries
 
@@ -175,7 +229,7 @@ zero authored legacy entries across the remaining repository surfaces.
 
 Relative TS imports are rewritten to emitted JavaScript; the
 public tool has executable bins, original schemas/Skill/licenses, runtime-only
-locked dependencies and deterministic inline source maps rooted at `pcr://source/`.
+locked dependencies and deterministic source maps with embedded source content rooted at `pcr://source/`.
 No caller needs TypeScript in `node_modules`, and installed tests explicitly disable
 Node's type stripping. Compiler/staging failure removes only owned staging files.
 The Git-connected provider importer retains its dependency-free module graph;
@@ -293,7 +347,7 @@ directory must be outside the export. The receipt records exact file-tree hashes
 source identity, browser versions, all selected routes and screenshots, and checks
 that export bytes remain unchanged. All available planned route cases are recorded
 even after a failure; missing engines or required input fail rather than skip.
-The documentation CI runs it against its complete export before product sealing.
+The final CI uses this browser engine through `qualify:web` on the extracted sealed archive, after verifying the exact candidate tree.
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
 actual receiving runtime tree. They retain the original receipt behavior while

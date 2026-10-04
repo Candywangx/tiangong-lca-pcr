@@ -138,9 +138,9 @@ export function buildViewer({
     let uiBundle:{ref:string;url:string};
     try {uiBundle=installUiBundle({artifactStore:tempDir,preparedDirectory:prepared.directory});cpSync(prepared.directory,tempDir,{recursive:true});}finally{prepared.cleanup();}
     const published = publishViewerSnapshot({
+      ...source,
       root: resolvedRoot,
       artifactStore: tempDir,
-      ...source,
       bootstrap: true,
       sourceVerifier,
       uiBundleRef: uiBundle.ref,
@@ -667,7 +667,11 @@ function requireAcceptedIntegrationHead(value: unknown) {
       "Viewer bootstrap requires passed validation evidence with at least one completed check.",
     );
   }
-  return structuredClone(value);
+  // Accepted source metadata is evidence, not publication configuration. Do not
+  // let extra fields redirect the owned store/root or inject publication hooks.
+  return structuredClone(Object.fromEntries(
+    [...required, "validationSummary"].map(key => [key, value[key]]),
+  ));
 }
 
 /** Full semantic audit of the active split snapshot without changing pointers. */

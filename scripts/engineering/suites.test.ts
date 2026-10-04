@@ -35,6 +35,18 @@ function runFixture(root: string, selector: string, environment: NodeJS.ProcessE
   });
 }
 
+function runEmittedFixture(root: string, selector = "engineering") {
+  const source = `
+    const { main } = await import(${JSON.stringify(toolUrl.href)});
+    const result = await main(["run-emitted", process.argv[2]], process.argv[1]);
+    console.log("SUITE_RESULT " + JSON.stringify(result));
+    process.exitCode = result.exitCode ?? 1;
+  `;
+  return spawnSync(process.execPath, ["--input-type=module", "-e", source, root, selector], {
+    encoding: "utf8", env: process.env, timeout: 20_000,
+  });
+}
+
 function readRunResult(stdout: string): SuiteRunResult {
   const line = stdout.split("\n").find(value => value.startsWith("SUITE_RESULT "));
   assert.ok(line, stdout);
@@ -238,4 +250,60 @@ test("browser contracts remain explicit members of all/root and use their own ba
   assert.deepEqual(selectSuite(inventory, "browser"), [filename]);
   assert.deepEqual(selectSuite(inventory, "all"), ["sample.unit.test.ts", filename]);
   assert.deepEqual(selectSuite(inventory, "root"), selectSuite(inventory, "all"));
+});
+
+
+test("emitted engineering runs exactly current authored members with no type stripping and ignores stale output", t => {
+  const root = fixture(t);
+  writeFixture(root, "scripts/engineering/current with spaces.test.ts", 'throw new Error("Authored source must not execute in the emitted lane.");');
+  writeFixture(root, "dist/test-engineering/scripts/engineering/current with spaces.test.js", `
+    import assert from "node:assert/strict";
+    import test from "node:test";
+    test("current emitted engineering", () => {
+      assert.ok(process.execArgv.includes("--no-strip-types"));
+      assert.equal(process.cwd(), ${JSON.stringify(root)});
+    });
+  `);
+  writeFixture(root, "dist/test-engineering/scripts/engineering/stale.test.js", 'throw new Error("Stale emitted output must not execute.");');
+  const result = runEmittedFixture(root);
+  assert.ifError(result.error);assert.equal(result.status, 0, result.stderr + result.stdout);
+  assert.deepEqual(readRunResult(result.stdout), { exitCode: 0, signal: null });
+  assert.match(result.stdout, /current emitted engineering/);
+  assert.equal(existsSync(path.join(root, "dist/test-engineering/scripts/engineering/stale.test.js")), true);
+});
+
+test("emitted engineering requires every current output and rejects unsupported suite selection before launching", t => {
+  const root = fixture(t);
+  writeFixture(root, "scripts/engineering/current.test.ts");
+  writeFixture(root, "dist/test-engineering/scripts/engineering/stale.test.js", 'throw new Error("Must not run stale tests in place of missing output.");');
+  const missing = runEmittedFixture(root);
+  assert.ifError(missing.error);assert.equal(missing.status, 2, missing.stderr + missing.stdout);
+  assert.match(missing.stderr, /Required emitted test is missing or not regular/);
+  assert.deepEqual(readRunResult(missing.stdout), { exitCode: 2, signal: null });
+  const unsupported = runEmittedFixture(root, "all");
+  assert.ifError(unsupported.error);assert.equal(unsupported.status, 2);
+  assert.match(unsupported.stderr, /supports engineering only/);
+});
+
+test("emitted child failure propagates and removes only its owned temporary evidence", t => {
+  const root = fixture(t), observation = path.join(root, "emitted-temp-observation.json");
+  writeFixture(root, "scripts/engineering/failing.test.ts");
+  writeFixture(root, "dist/test-engineering/scripts/engineering/failing.test.js", `
+    import assert from "node:assert/strict";
+    import { writeFileSync } from "node:fs";
+    import { tmpdir } from "node:os";
+    import path from "node:path";
+    import test from "node:test";
+    const temporaryRoot = tmpdir();
+    writeFileSync(${JSON.stringify(observation)}, JSON.stringify({ temporaryRoot }));
+    writeFileSync(path.join(temporaryRoot, "owned evidence"), "emitted subprocess output");
+    test("emitted observable failure", () => assert.fail("emitted failure fixture"));
+  `);
+  const result = runEmittedFixture(root);
+  assert.ifError(result.error);assert.equal(result.status, 1, result.stderr + result.stdout);
+  assert.deepEqual(readRunResult(result.stdout), { exitCode: 1, signal: null });
+  const observed: unknown = JSON.parse(readFileSync(observation, "utf8"));
+  assert.ok(observed !== null && typeof observed === "object" && "temporaryRoot" in observed && typeof observed.temporaryRoot === "string");
+  assert.equal(existsSync(observed.temporaryRoot), false);
+  assert.equal(existsSync(path.join(root, "dist/test-engineering/scripts/engineering/failing.test.js")), true);
 });

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { measureProcessTree, assertBuildBudget } from "./resource-budget.ts";
+import { measureProcessTree, assertBuildResources } from "./resource-budget.ts";
 test("resource accounting includes descendants and works with native Windows statistics", () => {
   assert.equal(
     measureProcessTree({
@@ -43,10 +43,9 @@ test("missing measurements cannot become a zero-memory successful production bui
     { peakResidentBytes: 123, memoryMeasurement: "unavailable" },
     { peakResidentBytes: 6_000_000_001, memoryMeasurement: "process-tree-rss" },
   ])
-    assert.throws(() => assertBuildBudget({ buildMs: 1, ...metrics }));
+    assert.throws(() => assertBuildResources({ ...metrics }));
   assert.doesNotThrow(() =>
-    assertBuildBudget({
-      buildMs: 100,
+    assertBuildResources({
       peakResidentBytes: 1000,
       memoryMeasurement: "process-tree-rss",
     }),
