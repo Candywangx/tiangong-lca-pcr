@@ -1,7 +1,7 @@
 import {errorMessage} from "../../pcr-core/src/types.ts";
 import { spawn } from "node:child_process";
 import { measureProcessTree, assertBuildBudget } from "./resource-budget.ts";
-import { relocationRequested, runRelocatedBuild } from "./build-storage.ts";
+import { relocationRequested, runRelocatedBuild, buildNodeOptions } from "./build-storage.ts";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
@@ -103,7 +103,7 @@ try {
       env: {
         ...process.env,
         NEXT_TELEMETRY_DISABLED: "1",
-        NODE_OPTIONS: "--max-old-space-size=4096",
+        NODE_OPTIONS: buildNodeOptions(process.env.NODE_OPTIONS),
       },
     });
   }

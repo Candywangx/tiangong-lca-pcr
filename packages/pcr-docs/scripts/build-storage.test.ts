@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 import { readProductIdentity, PRODUCT_MIRRORS } from "../../../builder/scripts/product-identity.ts";
 import {
@@ -1088,4 +1089,21 @@ test("dangling provider targets remain untouched when handoff is refused", () =>
       assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
     } finally { fs.rmSync(fixture.root, { recursive: true, force: true }); }
   }
+});
+
+
+test("scratch child keeps a real preload while the final heap cap overrides an inherited value", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-build-options-"));
+  try {
+    const marker = path.join(root, "preload-ran");
+    const preload = path.join(root, "preload.ts");
+    fs.writeFileSync(preload, `import { writeFileSync } from "node:fs"; writeFileSync(${JSON.stringify(marker)}, "loaded");\n`);
+    const inherited = `--import ${JSON.stringify(pathToFileURL(preload).href)} --max-old-space-size=1024`;
+    const environment = scratchEnvironment({...process.env, NODE_OPTIONS: inherited});
+    const output = execFileSync(process.execPath, ["--input-type=module", "--eval", 'import v8 from "node:v8"; console.log(v8.getHeapStatistics().heap_size_limit);'], {env: environment, encoding: "utf8"});
+    assert.equal(fs.readFileSync(marker, "utf8"), "loaded");
+    assert.ok(Number(output) > 4_000_000_000 && Number(output) < 5_000_000_000);
+    assert.ok(environment.NODE_OPTIONS?.startsWith(inherited));
+    assert.equal(scratchEnvironment({}).NODE_OPTIONS, "--max-old-space-size=4096");
+  } finally { fs.rmSync(root, {recursive: true, force: true}); }
 });

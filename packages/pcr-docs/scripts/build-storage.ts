@@ -377,12 +377,17 @@ export function gitHead(root: string, { run = execFileSync }: { run?: (command: 
  * including the Search Console verification marker the export verifies — and only the recursion
  * guard and the build's own telemetry/heap settings are added. Values are never logged.
  */
+/** Retain caller instrumentation/runtime options while enforcing the build heap cap. */
+export function buildNodeOptions(existing: string | undefined): string {
+  return [existing?.trim(), "--max-old-space-size=4096"].filter(Boolean).join(" ");
+}
+
 export function scratchEnvironment(env: NodeJS.ProcessEnv = {}, gitEnvironment: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
     ...env,
     ...gitEnvironment,
     NEXT_TELEMETRY_DISABLED: "1",
-    NODE_OPTIONS: "--max-old-space-size=4096",
+    NODE_OPTIONS: buildNodeOptions(env.NODE_OPTIONS),
     [IN_SCRATCH_ENV]: "1",
   };
 }
