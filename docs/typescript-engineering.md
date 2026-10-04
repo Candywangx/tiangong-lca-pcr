@@ -125,7 +125,8 @@ test files. New test placement/names must satisfy the suite contract.
 | `test:product` | Product sealing, publication and importer contracts |
 | `test:engineering` | Runtime, migration and test-discovery boundaries |
 | `test:browser` | Compiled Viewer interaction in Chromium, Firefox and WebKit |
-| `test:coverage` | Emitted engineering tests and source-mapped engineering coverage |
+| `test:engineering:compiled` | Complete emitted engineering tests with type stripping disabled |
+| `test:coverage` | Fresh full test/build collection and complete source-accounted coverage gate |
 | `docs:build` | Full static export/source/provider validation |
 | `docs:browser -- --root <export> --report <new-dir>` | Actual full export in three browsers at desktop/mobile widths |
 
@@ -158,6 +159,11 @@ of every source-level conditional or anonymous callback. Unobserved modules use
 the standard zero-hit empty-report function/root-branch placeholder. An AST
 function census is reported separately, never mixed into the gate denominator.
 Type/comment-only lines are filtered through a reviewed parser/emission census.
+Authenticated V8 process ranges are merged before conversion. Converting each
+process first lets an import-only module's positive enclosing range inflate
+nested branch hits during Istanbul merging. Each file uses one authenticated
+measurement surface, preferring native TS when present; separately verified
+emitted execution remains functional evidence, not a second merged branch score.
 All declared critical semantic and recovery scenarios remain mandatory regardless
 of percentages. A passing metric does not certify methodology or all product
 behavior.
@@ -167,7 +173,9 @@ and leaves its inspector session attached until Node's native coverage flush.
 Disconnecting in an exit handler loses detailed untaken branches on pinned Node24;
 a real one-branch execution regression must reject a false 100% result. Reports
 bind source commit, content inventory, configuration and runtime before and after
-the run. Collect only from a frozen clean checkout. `inspect` preserves incomplete
+the run. Collect only from a frozen clean checkout. `test:coverage` requires fresh
+`.reports/coverage/tests` and `.reports/coverage/docs` paths; use explicit
+`coverage:collect`/`coverage:report` paths when retaining previous runs. `inspect` preserves incomplete
 results without claiming threshold success; `report` enforces the gates. Keep raw
 V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 

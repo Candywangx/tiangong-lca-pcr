@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
 lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
-lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
+lastReviewedCommit: 7b354ead81d588716e1402c75f31cdf5b78d02ec
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -406,3 +406,9 @@ Projection v2 adds source units and ancestor context to exact structured downloa
 Chinese catalog presentation labels cover every domain and subdomain in the
 material index. A corpus-backed contract rejects missing Chinese category labels;
 this presentation dictionary never rewrites canonical titles, IDs or source files.
+
+The child build environment preserves existing Node runtime/instrumentation
+options and appends the required 4096 MiB heap setting last. The same rule applies
+to ordinary and relocated builds. A real subprocess test proves both preload
+execution and the effective heap bound; environment diagnostics still log presence
+only. Coverage never substitutes for the actual build time/RSS/provider gates.

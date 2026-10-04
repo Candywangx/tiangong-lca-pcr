@@ -74,14 +74,18 @@
     "test:offline": "node scripts/engineering/suites.ts run offline",
     "test:product": "node scripts/engineering/suites.ts run product",
     "test:engineering": "node scripts/engineering/suites.ts run engineering",
-    "test:coverage": "npm run build:tests && c8 --all --src scripts/engineering --include \"scripts/engineering/**/*.ts\" --exclude \"**/*.test.ts\" --exclude-after-remap --reporter=text --reporter=lcov --reporter=json-summary --reports-dir .reports/coverage/engineering node --test \"dist/test-engineering/scripts/engineering/*.test.js\"",
+    "test:coverage": "node scripts/engineering/coverage.ts collect .reports/coverage/tests -- node scripts/engineering/suites.ts run all && node scripts/engineering/coverage.ts collect .reports/coverage/docs -- npm run docs:build && node scripts/engineering/coverage.ts report .reports/coverage/report .reports/coverage/tests .reports/coverage/docs",
     "build:runtime": "tsc -p tsconfig.runtime.json",
     "test:browser": "node scripts/engineering/suites.ts run browser",
     "browser:install": "playwright install chromium firefox webkit",
     "typecheck:node": "tsc --noEmit && tsc -p tsconfig.core.json --noEmit && tsc -p tsconfig.semantic.json --noEmit && tsc -p tsconfig.consumer.json --noEmit && tsc -p tsconfig.builder.json --noEmit && tsc -p tsconfig.browser-tests.json --noEmit && tsc -p tsconfig.release.json --noEmit && tsc -p tsconfig.viewer-browser.json --noEmit",
     "docs:browser": "node scripts/engineering/site-browser.ts",
     "qualify:sealed": "node scripts/engineering/sealed-artifact.ts",
-    "qualify:web": "node scripts/engineering/sealed-web.ts"
+    "qualify:web": "node scripts/engineering/sealed-web.ts",
+    "test:engineering:compiled": "npm run build:tests && node --no-strip-types --test \"dist/test-engineering/scripts/engineering/*.test.js\"",
+    "coverage:collect": "node scripts/engineering/coverage.ts collect",
+    "coverage:report": "node scripts/engineering/coverage.ts report",
+    "coverage:inspect": "node scripts/engineering/coverage.ts inspect"
   },
   "dependencies": {
     "ajv": "8.20.0",

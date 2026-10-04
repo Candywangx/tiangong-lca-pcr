@@ -22,9 +22,11 @@ permissions:
 
 jobs:
   validate:
+    outputs:
+      coverage_artifact_id: ${{ steps.validation-coverage.outputs.artifact-id }}
     runs-on: ubuntu-latest
     # Full source-fidelity qualification includes corpus, recovery and real package tests.
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Check out repository
@@ -52,16 +54,8 @@ jobs:
       - name: Install browser qualification runtimes
         run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
 
-      - name: Verify emitted TypeScript tests and source-mapped coverage
-        run: npm run test:coverage
-
-      - name: Preserve engineering coverage baseline
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: pcr-engineering-coverage-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .reports/coverage/engineering/
-          if-no-files-found: error
+      - name: Verify emitted TypeScript engineering tests
+        run: npm run test:engineering:compiled
 
       - name: Install PDF text extractor
         run: |
@@ -78,7 +72,7 @@ jobs:
             exit 1
           fi
           set +e
-          npm run validate > "$evidence/validation.log" 2>&1
+          node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-coverage/validation" -- npm run validate > "$evidence/validation.log" 2>&1
           validation_status=$?
           set -e
           cat "$evidence/validation.log"
@@ -89,6 +83,16 @@ jobs:
             if [ "$validation_status" -eq 0 ]; then validation_status=1; fi
           fi
           exit "$validation_status"
+
+      - name: Preserve exact test coverage inputs
+        id: validation-coverage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-coverage-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/validation/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Preserve browser evidence
         if: always()
@@ -113,6 +117,7 @@ jobs:
     timeout-minutes: 30
     outputs:
       product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
+      coverage_artifact_id: ${{ steps.documentation-coverage.outputs.artifact-id }}
     steps:
       - name: Check out complete source history
         uses: actions/checkout@v4
@@ -173,7 +178,16 @@ jobs:
           # Public ownership markers already served by the production site.
           PCR_GOOGLE_SITE_VERIFICATION: 4W5GYY5tOwicaRGTZr7AdfJ4VB8KB87r2ex-rZxP-fM
           PCR_BAIDU_SITE_VERIFICATION: codeva-IJKQ9SxWkZ
-        run: npm --prefix packages/pcr-docs run build
+        run: node scripts/engineering/coverage.ts collect "${{ runner.temp }}/pcr-coverage/documentation" -- npm --prefix packages/pcr-docs run build
+      - name: Preserve exact full-build coverage inputs
+        id: documentation-coverage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-coverage-documentation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/documentation/
+          if-no-files-found: error
+          retention-days: 14
       - name: Verify shared SEO invariants without rebuilding
         run: |
           python3 scripts/vendor/workspace-seo/check.py --root packages/pcr-docs/out --origin https://pcr.tiangong.earth --output "${{ runner.temp }}/pcr-seo-report.json"
@@ -329,3 +343,44 @@ jobs:
           path: ${{ runner.temp }}/pcr-sealed-web/
           if-no-files-found: warn
           retention-days: 14
+
+
+  source-coverage:
+    needs: [validate, documentation]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install pinned measurement dependencies
+        run: |
+          npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm --prefix packages/pcr-docs ci --ignore-scripts --no-audit --no-fund
+      - name: Download the exact test measurement
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.validate.outputs.coverage_artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/pcr-coverage/validation
+      - name: Download the exact full-build measurement
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.documentation.outputs.coverage_artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/pcr-coverage/documentation
+      - name: Enforce complete source and critical-file coverage
+        run: npm run coverage:report -- "${{ runner.temp }}/pcr-coverage/report" "${{ runner.temp }}/pcr-coverage/validation" "${{ runner.temp }}/pcr-coverage/documentation"
+      - name: Preserve source-accounted coverage and rejection ledger
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-source-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/report/
+          if-no-files-found: error
+          retention-days: 30
