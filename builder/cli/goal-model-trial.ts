@@ -16,7 +16,7 @@ const option = (name: string): string => {
   if (!value || value.startsWith("--")) throw Object.assign(new Error(`${name} requires a value.`), {code: "GOAL_TRIAL_ARGUMENT_INVALID"});
   return value;
 };
-if (!command || args.includes("--help")) {
+if (!command || command === "--help" || command === "-h" || args.includes("--help") || args.includes("-h")) {
   console.log("Usage: node builder/cli/goal-model-trial.ts register --config <yaml> --plan <json> [--dry-run]\n       node builder/cli/goal-model-trial.ts report --config <yaml> --trial <id>\nRegistration runs authenticated doctor and never dispatches/interupts authors. JSON output; errors use stable codes. Resume with the existing Goal entry.");
 } else {
   try {
