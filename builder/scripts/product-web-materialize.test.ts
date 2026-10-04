@@ -25,13 +25,14 @@ function write(file: string, value: string | Uint8Array): void { fs.mkdirSync(pa
 const writeJson = (file: string, value: unknown) => write(file, JSON.stringify(value));
 const git = (root: string, ...args: string[]) => execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 
-async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; identity: ProductIdentity }) => void = () => {}) {
+async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; identity: ProductIdentity }) => void = () => {},
+  { producerNode = process.versions.node, producerNpm = "11.17.0" }: { producerNode?: string; producerNpm?: string } = {}) {
   const owned = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), "pcr-materializer-test-"));
   t.after(() => fs.rmSync(owned, { recursive: true, force: true }));
   const root = path.join(owned, "source"); fs.mkdirSync(root);
   git(root, "init", "--quiet");
   write(path.join(root, ".gitignore"), ".edgeone/\npackages/pcr-docs/out/\npackages/pcr-docs/out.stage-*/\npackages/pcr-docs/out.prev-*/\n");
-  const config = { schema: 1, version: "0.3.0", node: process.versions.node, npm: "11.17.0",
+  const config = { schema: 1, version: "0.3.0", node: producerNode, npm: producerNpm,
     web: { origin: "https://pcr.tiangong.earth", site: "global" } };
   writeJson(path.join(root, "product-release.json"), config);
   for (const [relative, name] of [
@@ -91,7 +92,7 @@ async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; id
     const scratchRoot = fs.mkdtempSync(path.join(scratchBase, "pcr-build-")); scratchRoots.push(scratchRoot);
     return { scratchBase, scratchRoot };
   };
-  return { root, owned, manifest, identity, archive, calls, scratchRoots, scratchBase,
+  return { root, owned, webDir, manifest, identity, archive, calls, scratchRoots, scratchBase,
     options: { root, fetchImpl, facts, selectScratch, env: { PCR_EDGEONE_PREBUILT_ASSETS: "1" }, log: silent } };
 }
 
@@ -190,6 +191,73 @@ test("materialization imports the exact sealed web and atomically hands off prov
     assert.equal(field(call.options.headers, "authorization"), undefined);
     assert.ok(call.url.startsWith(`https://github.com${releasePath}`));
   }
+});
+
+async function crossRuntimeFixture(t: TestContext) {
+  const producerNode = "24.19.0", producerNpm = "12.2.0";
+  const producerExec = process.env.PCR_TEST_PRODUCER_NODE_EXEC ?? process.execPath;
+  let actualProducer: string;
+  try { actualProducer = execFileSync(producerExec, ["--version"], { encoding: "utf8", timeout: 10_000 }).trim(); }
+  catch (error) { throw new Error("Cross-runtime import requires an actual Node 24.19.0 producer; set PCR_TEST_PRODUCER_NODE_EXEC.", { cause: error }); }
+  assert.equal(actualProducer, `v${producerNode}`, "Set PCR_TEST_PRODUCER_NODE_EXEC to the actual retained Node 24.19.0 binary.");
+  const f = await fixture(t, () => {}, { producerNode, producerNpm });
+  const draftFile = path.join(f.owned, "producer-draft.json"), manifestFile = path.join(f.owned, "producer-release.json"), archiveFile = path.join(f.owned, "producer-web.tar.gz");
+  writeJson(draftFile, f.manifest);
+  const helper = path.resolve("scripts/engineering/fixtures/provider-importer-producer.ts");
+  const producerOutput = execFileSync(producerExec, [helper, f.root, f.webDir, archiveFile, draftFile, manifestFile],
+    { encoding: "utf8", timeout: 30_000, maxBuffer: 2 * 1024 * 1024 });
+  const receipt = record(JSON.parse(producerOutput) as unknown);
+  assert.equal(receipt.actualNode, producerNode); assert.equal(receipt.declaredNode, producerNode);
+  assert.deepEqual(receipt.identity, f.identity);
+  const manifest = validateProductManifest(JSON.parse(fs.readFileSync(manifestFile, "utf8")) as unknown);
+  const archive = fs.readFileSync(archiveFile), manifestBytes = fs.readFileSync(manifestFile);
+  assert.equal(manifest.toolchain.node, producerNode); assert.equal(manifest.toolchain.npm, producerNpm);
+  assert.equal(sha256(archive), manifest.web.sha256);
+  assert.equal(receipt.archiveSha256, manifest.web.sha256); assert.equal(receipt.archiveBytes, manifest.web.bytes);
+  assert.equal(receipt.treeSha256, manifest.web.treeSha256);
+  t.diagnostic(`Actual producer Node ${String(receipt.actualNode)}; consumer Node ${process.versions.node}; sealed sha256 ${manifest.web.sha256}.`);
+  const fetchImpl = async (url: string, options: RequestInit) => {
+    f.calls.push({ url, options });
+    if (url === manifestUrl) return new Response(JSON.stringify(manifest));
+    if (url === `https://github.com${releasePath}${manifest.web.filename}`) return new Response(archive);
+    throw new Error("Unexpected cross-runtime fixture URL");
+  };
+  return { f, manifest, archive, manifestBytes, archiveFile, manifestFile, receipt, fetchImpl };
+}
+
+test("Node 24.19 produced manifest and exact sealed bytes import unchanged on the provider runtime", async t => {
+  const { f, manifest, archive, archiveFile, manifestFile, manifestBytes, fetchImpl } = await crossRuntimeFixture(t);
+  const beforeSource = readProductIdentity(f.root);
+  const run = await materializeProductWeb({ ...f.options, fetchImpl });
+  assert.deepEqual(run.identity, manifest.identity); assert.deepEqual(readProductIdentity(f.root), beforeSource);
+  assert.equal(run.web.treeSha256, manifest.web.treeSha256); assert.equal(run.web.bytes, manifest.web.bytes);
+  const out = path.join(f.root, "packages/pcr-docs/out"), assets = path.join(f.root, ".edgeone/assets");
+  for (const relative of fs.readdirSync(f.webDir, { recursive: true, withFileTypes: true }).filter(entry => entry.isFile())
+    .map(entry => path.relative(f.webDir, path.join(entry.parentPath, entry.name)))) {
+    assert.ok(fs.readFileSync(path.join(out, relative)).equals(fs.readFileSync(path.join(f.webDir, relative))), `changed sealed bytes: ${relative}`);
+  }
+  assert.equal(fs.statSync(path.join(out, "index.html")).ino, fs.statSync(path.join(assets, "index.html")).ino);
+  assert.equal(record(record(run.published).providerAssets).mode, "hardlink");
+  assert.deepEqual(fs.readdirSync(f.scratchBase), []);
+  assert.ok(fs.readFileSync(archiveFile).equals(archive)); assert.ok(fs.readFileSync(manifestFile).equals(manifestBytes));
+  assert.equal(f.calls.length, 2);
+  for (const call of f.calls) { assert.equal(call.options.credentials, "omit"); assert.equal(call.options.redirect, "manual"); assert.equal(field(call.options.headers, "authorization"), undefined); }
+});
+
+test("cross-runtime import retains the producer-toolchain guard and final deadline rollback", async t => {
+  const { f, manifest, archive, archiveFile, manifestFile, manifestBytes, fetchImpl } = await crossRuntimeFixture(t);
+  manifest.toolchain.node = "24.18.0";
+  await assert.rejects(materializeProductWeb({ ...f.options, fetchImpl }), /toolchain|Node\/npm/u);
+  assert.equal(f.calls.length, 1, "A consumer runtime cannot replace declared producer identity to accept a mismatched manifest.");
+  previousIsIntact(f);
+  manifest.toolchain.node = "24.19.0"; f.calls.length = 0;
+  let clock = 0;
+  await assert.rejects(materializeProductWeb({ ...f.options, fetchImpl, timeoutMs: 1000, now: () => clock,
+    publish(options) { clock = 1000; return publishOutput(options); },
+  }), /timed out/u);
+  assert.equal(f.calls.length, 2); previousIsIntact(f);
+  assert.deepEqual(readProductIdentity(f.root), f.identity);
+  assert.ok(fs.readFileSync(archiveFile).equals(archive)); assert.ok(fs.readFileSync(manifestFile).equals(manifestBytes));
 });
 
 for (const [label, mutate] of [

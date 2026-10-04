@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
-lastReviewedCommit: 7b354ead81d588716e1402c75f31cdf5b78d02ec
+lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
+lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -185,6 +185,15 @@ does not rebuild it. Preview auto deployment remains disabled. Failed import or
 builds leave the previous verified deployment intact. The product identity endpoint
 and per-route hashes bind live acceptance to the two paired npm artifacts; see
 [the unified release contract](offline-distribution.md#npm-release-automation).
+
+Provider execution uses the preinstalled Node 24.18.0 selected by `edgeone.json`.
+Development, CI and artifact construction retain `.nvmrc` / product Node 24.19.0;
+provider imports do not construct artifacts. The separate provider-importer CI lane
+qualifies this runtime boundary. Real provider logs must additionally establish
+runtime selection and importer entry; local configuration assertions cannot prove
+the service's `nodeVersion` versus `.nvmrc` precedence. A bounded manual preview
+may verify that boundary without enabling preview auto deployment or moving the
+production pointer. Its incomplete/missing release must still fail source guards.
 
 ### Measured output and build resources
 

@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
-lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 public workflow and deployment boundary; automatic previews remain disabled while bounded manual runtime qualification is explicit. CLI, nvm development pin and scientific approval remain unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -289,7 +289,9 @@ consistent document API and the shared immutable-history verifier. It renders
 ordinary Markdown as complete semantic HTML in a Next.js static export. Fumadocs
 provides the documentation layout, navigation and search dialog. Unified tag qualification
 builds the web artifact once; the existing EdgeOne Git project imports it from the
-`release/production` deployment pointer. There is no request-time SSR or preview deployment.
+`release/production` deployment pointer. There is no request-time SSR; preview auto
+deployment remains disabled. A bounded manual preview may qualify provider runtime
+selection under the site contract without moving the production pointer.
 
 ```bash
 npm ci

@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
-lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
+lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
+lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -56,6 +56,16 @@ supported platform; `runtime:release` additionally requires npm's actual invokin
 version to match the release pin. Local package-manager defaults do not establish
 release qualification. Windows can provision the same exact runtime without the
 POSIX nvm shell; CI uses `setup-node` with `.nvmrc`.
+
+EdgeOne's prebuilt-artifact importer is a separate deployment runtime. Its
+`edgeone.json` pins the provider-preinstalled Node 24.18.0; it only verifies and
+imports bytes built and qualified with the product's Node 24.19.0 toolchain.
+The provider-importer CI lane executes the real import contracts on that exact
+runtime, including a manifest produced under the different construction pin.
+Do not copy a newer development pin into provider configuration without checking
+the provider's available runtimes and a real deployment log. The v0.4.0 attempt
+failed before any importer code because the provider could not select 24.19.0.
+This separation does not permit rebuilding or changing a sealed artifact.
 
 Native/local targets follow the workspace contract: Linux x64/arm64, Windows x64
 and macOS ARM64. macOS Intel is unsupported. CI asserts the actual architecture,

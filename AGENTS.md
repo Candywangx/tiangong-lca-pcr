@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
-lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 provider-runtime recovery; repository ownership, canonical PCR identities, scientific/translation gates and immutable release boundaries are unchanged. Runtime separation is governed by the updated linked contracts."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
