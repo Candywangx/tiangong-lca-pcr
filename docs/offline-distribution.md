@@ -379,8 +379,7 @@ source also use TypeScript; final coverage and sealed-product qualification rema
 tracked by #79 before the formal cutover in #69.
 Schemas, Skill and license assets retain their relative locations; executable
 bins follow the emitted extension. Only locked runtime dependencies are bundled,
-including the YAML reader; development/compiler packages are excluded. Inline
-source maps use a fixed logical source root, so temporary/host paths do not leak
+including the YAML reader; development/compiler packages are excluded. Source maps embed original source content and use a fixed logical source root, so temporary/host paths do not leak
 into tarball bytes. Actual installed-package probes use `--no-strip-types`.
 
 The publisher/provider validation path continues to load without node_modules;

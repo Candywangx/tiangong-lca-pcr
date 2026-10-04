@@ -25,7 +25,12 @@ export function proveMapping(root:string,capture:Capture,inventory:readonly Sour
  const paths=sources.map((source,index)=>{
   let relative:string;
   if(source.startsWith('pcr://source/'))relative=decodeURIComponent(source.slice('pcr://source/'.length));
-  else{const url=new URL(source,new URL(typeof map.sourceRoot==='string'?map.sourceRoot:'',capture.url));if(url.protocol!=='file:')throw new Error('Unrecognized source map root.');relative=path.relative(root,fileURLToPath(url)).split(path.sep).join('/');}
+  else{
+   const url=new URL(source,new URL(typeof map.sourceRoot==='string'?map.sourceRoot:'',capture.url));
+   if(url.protocol==='pcr:'&&url.hostname==='source'&&!url.search&&!url.hash)relative=decodeURIComponent(url.pathname).slice(1);
+   else if(url.protocol==='file:')relative=path.relative(root,fileURLToPath(url)).split(path.sep).join('/');
+   else throw new Error('Unrecognized source map root.');
+  }
   const sourceContent=contents[index];if(sourceContent===undefined)throw new Error('Missing source content.');const entry=current(relative,sourceContent);if(entry.lane!=='node'&&!allowPending)throw new Error('Emitted coverage targets pending browser/Next source.');return path.join(root,relative);
  });
  if(new Set(paths).size!==paths.length)throw new Error('Duplicate source map targets.');

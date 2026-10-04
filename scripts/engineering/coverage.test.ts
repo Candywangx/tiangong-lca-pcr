@@ -51,6 +51,9 @@ test('emitted proof rejects forged JS/mappings even with genuine production sour
  const {root,base}=fixture(t),sources=inventory(root,readConfig(root)),native=nativeCapture(root),emissions=emissionProofs(root,sources);const expected=emissions.get('src/a.ts');assert.ok(expected);
  const source=expected.code;const value={...native,url:pathToFileURL(path.join(base,'output.js')).href,source,fileSource:source,sourceMap:{version:3,sources:['pcr://source/src/a.ts'],sourcesContent:[native.fileSource],names:expected.names,mappings:expected.mappings}};
  assert.equal(proveMapping(root,value,sources,emissions).kind,'emitted');
+ const installedMap={...value.sourceMap,sourceRoot:'pcr://source/',sources:['src/a.ts']};
+ assert.equal(proveMapping(root,{...value,sourceMap:installedMap},sources,emissions).kind,'emitted');
+ assert.throws(()=>proveMapping(root,{...value,sourceMap:{...installedMap,sourceRoot:'pcr://foreign/'}},sources,emissions),/Unrecognized source map root/u);
  assert.throws(()=>proveMapping(root,{...value,sourceMap:{...value.sourceMap,sourcesContent:['export const choose = () => 1;']}},sources,emissions),/hash differs/u);
  assert.throws(()=>proveMapping(root,{...value,sourceMap:{...value.sourceMap,sourcesContent:[]}},sources,emissions),/every original/u);
  assert.throws(()=>proveMapping(root,{...value,sourceMap:{...value.sourceMap,sources:['pcr://source/src/unknown.ts']}},sources,emissions),/uninventoried/u);

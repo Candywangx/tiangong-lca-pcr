@@ -217,7 +217,7 @@ zero authored legacy entries across the remaining repository surfaces.
 
 Relative TS imports are rewritten to emitted JavaScript; the
 public tool has executable bins, original schemas/Skill/licenses, runtime-only
-locked dependencies and deterministic inline source maps rooted at `pcr://source/`.
+locked dependencies and deterministic source maps with embedded source content rooted at `pcr://source/`.
 No caller needs TypeScript in `node_modules`, and installed tests explicitly disable
 Node's type stripping. Compiler/staging failure removes only owned staging files.
 The Git-connected provider importer retains its dependency-free module graph;
