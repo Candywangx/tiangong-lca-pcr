@@ -172,3 +172,41 @@ test('unsupported TypeScript module extensions cannot disappear from the source 
   rmSync(path.join(root,file));
  }
 });
+
+
+test('real native exit preserves untaken blocks and rejects a false critical coverage pass',async t=>{
+ const {root,base}=fixture(t);
+ put(root,'src/a.ts','export function choose(value: boolean): number {\n  if (value) {\n    return 1;\n  }\n  throw new Error("untaken false branch");\n}\n');
+ rmSync(path.join(root,'src/unused.ts'));rmSync(path.join(root,'src/browser/widget.ts'));
+ const settings=readConfig(root);put(root,'config/coverage.json',JSON.stringify({...settings,thresholds:{lines:90,functions:90,branches:85},critical:[{prefix:'src/a.ts',branches:95}]}));
+ execFileSync('git',['add','-A'],{cwd:root});execFileSync('git',['commit','-qm','real branch precision fixture'],{cwd:root});
+ const run=path.join(base,'precise-run'),output=path.join(base,'precise-report'),url=pathToFileURL(path.join(root,'src/a.ts')).href;
+ const program=`import {choose} from ${JSON.stringify(url)}; if(choose(true)!==1)throw new Error('wrong chosen branch');`;
+ assert.equal(await collect(root,run,[process.execPath,'--input-type=module','--eval',program]),0);
+ const scripts=readdirSync(path.join(run,'raw')).flatMap(file=>{const data=object(parse(readFileSync(path.join(run,'raw',file),'utf8')));assert.ok(Array.isArray(data.result));return data.result.map(object);});
+ const script=scripts.find(entry=>entry.url===url);assert.ok(script);assert.ok(Array.isArray(script.functions));
+ const chosen=script.functions.map(object).find(entry=>entry.functionName==='choose');assert.ok(chosen);assert.equal(chosen.isBlockCoverage,true);
+ assert.ok(Array.isArray(chosen.ranges));assert.ok(chosen.ranges.map(object).some(range=>range.count===0),'Actual untaken branch must remain a zero range.');
+ await assert.rejects(report(root,output,[run]),/Coverage gates failed/u);
+ const receipt=object(parse(readFileSync(path.join(output,'report.json'),'utf8')));assert.equal(receipt.coverageGatePassed,false);
+ const coverage=object(object(parse(readFileSync(path.join(output,'coverage-final.json'),'utf8')))[path.join(root,'src/a.ts')]);
+ const statements=object(coverage.statementMap),hits=object(coverage.s);
+ assert.ok(Object.entries(statements).some(([key,span])=>object(object(span).start).line===5&&hits[key]===0),'The never executed throw line must not receive coverage.');
+});
+
+
+test('declared critical scopes enforce every included file even when unobserved TSX is globally small',async t=>{
+ const {root,base}=fixture(t);
+ put(root,'src/critical/logic.ts',Array.from({length:100},(_,index)=>`export function choose${index}(value: boolean) { return value ? 1 : 0; }`).join('\n')+'\n');
+ put(root,'src/critical/widget.tsx','export function Widget() { return <span>Unobserved critical view</span>; }\n');
+ const settings={...readConfig(root),thresholds:{lines:90,functions:90,branches:85},critical:[{prefix:'src/critical/',branches:95}]};
+ put(root,'config/coverage.json',JSON.stringify(settings));execFileSync('git',['add','-A'],{cwd:root});execFileSync('git',['commit','-qm','critical external source fixture'],{cwd:root});
+ const url=pathToFileURL(path.join(root,'src/critical/logic.ts')).href,run=path.join(base,'critical-run'),output=path.join(base,'critical-report');
+ const program=`import * as routines from ${JSON.stringify(url)}; for(const call of Object.values(routines)) { call(true); call(false); }`;
+ assert.equal(await collect(root,run,[process.execPath,'--input-type=module','--eval',program]),0);
+ const observed=await report(root,output,[run],false);
+ assert.deepEqual(thresholdFailures(observed.summary,settings.thresholds),[],'Ordinary aggregate targets must pass in this reproduction.');
+ assert.ok(observed.failures.some(failure=>failure.startsWith('src/critical/widget.tsx: branches 0')));
+ assert.equal(observed.coverageGatePassed,false);
+ await assert.rejects(report(root,path.join(base,'enforced-critical'),[run]),/Coverage gates failed/u);
+});

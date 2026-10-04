@@ -32,5 +32,8 @@ if(directory&&initialized!==true){
    writeFileSync(path.join(directory,filename),JSON.stringify(value),{flag:'wx'});
   });
  });
- session.post('Debugger.enable');process.once('exit',()=>session.disconnect());
+ // Keep the local inspector session alive until process teardown. Disconnecting
+ // in an exit listener downgrades Node's later native coverage flush to
+ // function-only ranges and loses untaken branches (pinned Node 24 regression).
+ session.post('Debugger.enable');
 }
