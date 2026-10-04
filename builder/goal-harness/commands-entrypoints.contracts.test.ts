@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -15,6 +15,7 @@ import { field, record, records, errorCode, type GoalTask } from './domain.ts';
 import { commitRepositoryValidation, listCommittedRepositoryValidations, reserveRepositoryCandidate } from './repository-coordinator.ts';
 import { createPublisherFixture } from './viewer-test-fixture.ts';
 import { isApprovedRuntimePath } from './runtime-baseline.ts';
+import { createSyntheticBaseline } from './synthetic-baseline.ts';
 
 const linux = { skip: process.platform !== 'linux' ? 'Goal descriptor-backed command lifecycle requires Linux' : false };
 const rootSource = path.resolve('.');
@@ -57,6 +58,10 @@ function fixture(t: TestContext, count = 1) {
   const tool = tools(t, base, root);
   git(root, ['init', '-q']); git(root, ['config', 'user.name', 'Owned Goal Fixture']); git(root, ['config', 'user.email', 'fixture@example.invalid']);
   put(root, '.gitignore', 'node_modules/\n.worktrees/\nlibrary/.pcr-builder-state/\n');
+  // Even an empty selected category belongs to a repository with tracked library
+  // metadata. Git does not track the empty directory itself; add -u correctly
+  // refuses a declared tracked root with no known files on current Git versions.
+  put(root, 'library/.gitkeep', 'Owned fixture library metadata; no methodology records are implied.\n');
   put(root, 'policy.txt', 'Fixture scope policy; do not widen author or landing authority.\n');
   put(root, 'package.json', JSON.stringify({ scripts: Object.fromEntries(['validate', 'pcr:sync-structured', 'aliases:build', 'aliases:check', 'catalog:build', 'catalog:check', 'viewer:build', 'goal:viewer-publish', 'goal:viewer-recover', 'tiangong-pcr'].map(name => [name, 'fixture command'])) }));
   symlinkSync(path.join(rootSource, 'node_modules'), path.join(root, 'node_modules'), 'dir');
@@ -77,6 +82,27 @@ function fixture(t: TestContext, count = 1) {
 function events(f: ReturnType<typeof fixture>): string { return existsSync(path.join(f.stateDir, 'events.jsonl')) ? readFileSync(path.join(f.stateDir, 'events.jsonl'), 'utf8') : ''; }
 function toolEvents(f: ReturnType<typeof fixture>) { return existsSync(f.tool.log) ? readFileSync(f.tool.log, 'utf8').trim().split('\n').filter(Boolean).map(line => record(JSON.parse(line) as unknown)) : []; }
 function check(result: unknown, name: string) { const item = records(field(result, 'checks')).find(item => item.name === name); assert.ok(item, `Missing diagnostic ${name}`); return item; }
+
+test('an empty selected category retains tracked library scope without widening the synthetic baseline or changing the real index', t => {
+  const f = fixture(t, 0);
+  assert.deepEqual(readdirSync(f.target), []);
+  assert.deepEqual(records(field(record(JSON.parse(readFileSync(path.join(f.root, 'classifications/indexes/cpc-3.0-coverage.json'), 'utf8')) as unknown), 'entries')), []);
+  assert.equal(git(f.root, ['ls-files', '--', 'library']), 'library/.gitkeep');
+  const policyBefore = git(f.root, ['show', 'HEAD:policy.txt']);
+  put(f.root, 'library/.gitkeep', 'Dirty metadata inside the explicitly tracked library root.\n');
+  put(f.root, 'policy.txt', 'Operator staged change outside the declared tracked roots.\n');
+  git(f.root, ['add', '--', 'policy.txt']);
+  const status = git(f.root, ['status', '--porcelain', '--untracked-files=all']);
+  const before = { head: git(f.root, ['rev-parse', 'HEAD']), index: readFileSync(path.join(f.root, '.git/index')), cached: git(f.root, ['diff', '--cached', '--name-only']) };
+  const baseline = createSyntheticBaseline({ projectRoot: f.root, goalId: f.document.goal_id, trackedRoots: f.document.baseline.tracked_roots, untrackedAllowlist: [], stateDir: f.stateDir, dryRun: true });
+  assert.deepEqual(baseline.staged_paths, ['library/.gitkeep']);
+  assert.equal(git(f.root, ['show', `${baseline.tree}:library/.gitkeep`]), 'Dirty metadata inside the explicitly tracked library root.');
+  assert.equal(git(f.root, ['show', `${baseline.tree}:policy.txt`]), policyBefore);
+  assert.deepEqual(readFileSync(path.join(f.root, '.git/index')), before.index);
+  assert.equal(git(f.root, ['rev-parse', 'HEAD']), before.head); assert.equal(git(f.root, ['diff', '--cached', '--name-only']), before.cached);
+  assert.equal(git(f.root, ['status', '--porcelain', '--untracked-files=all']), status);
+  assert.deepEqual(readdirSync(f.target), []); assert.equal(baseline.commit, null);
+});
 
 async function cleanRuntime(f: ReturnType<typeof fixture>) {
   // Working-source tests must not relax the real startup cleanliness guard.
