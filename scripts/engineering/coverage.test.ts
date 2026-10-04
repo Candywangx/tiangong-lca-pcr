@@ -210,3 +210,43 @@ test('declared critical scopes enforce every included file even when unobserved 
  assert.equal(observed.coverageGatePassed,false);
  await assert.rejects(report(root,path.join(base,'enforced-critical'),[run]),/Coverage gates failed/u);
 });
+
+test('actual import-only subprocess cannot erase untaken branches when merging measured runs',async t=>{
+ const {root,base}=fixture(t);
+ put(root,'src/a.ts','export function choose(value: boolean): number {\n  if (value) {\n    return 1;\n  }\n  return 2;\n}\n');
+ rmSync(path.join(root,'src/unused.ts'));rmSync(path.join(root,'src/browser/widget.ts'));
+ const settings=readConfig(root);put(root,'config/coverage.json',JSON.stringify({...settings,critical:[{prefix:'src/a.ts',branches:95}]}));
+ execFileSync('git',['add','-A'],{cwd:root});execFileSync('git',['commit','-qm','independent process branch fixture'],{cwd:root});
+ const url=pathToFileURL(path.join(root,'src/a.ts')).href,importRun=path.join(base,'import-only'),partialRun=path.join(base,'partial');
+ assert.equal(await collect(root,importRun,[process.execPath,'--input-type=module','--eval',`await import(${JSON.stringify(url)});`]),0);
+ assert.equal(await collect(root,partialRun,[process.execPath,'--input-type=module','--eval',`const m=await import(${JSON.stringify(url)});if(m.choose(true)!==1)throw new Error('wrong chosen branch');`]),0);
+ const output=path.join(base,'merged');const result=await report(root,output,[importRun,partialRun],false);
+ assert.ok(result.failures.some(failure=>failure.startsWith('src/a.ts: branches ')),'Importing the module must not execute its untaken branch.');
+ const coverage=object(object(parse(readFileSync(path.join(output,'coverage-final.json'),'utf8')))[path.join(root,'src/a.ts')]);
+ assert.ok(Object.values(object(coverage.b)).some(value=>Array.isArray(value)&&value.some(count=>count===0)));
+ const reverse=await report(root,path.join(base,'reverse'),[partialRun,importRun],false);assert.deepEqual(reverse.summary,result.summary);
+ await assert.rejects(report(root,path.join(base,'gate'),[importRun,partialRun]),/Coverage gates failed/u);
+ // A separately executed installed-style compiler surface has different
+ // offsets. It is functional evidence, not permission to merge enclosing
+ // Istanbul branches into the selected native measurement surface.
+ const emitted=path.join(base,'emitted');emit(root,emitted,['src/a.ts']);
+ const emittedRun=path.join(base,'emitted-run'),emittedUrl=pathToFileURL(path.join(emitted,'src/a.js')).href;
+ assert.equal(await collect(root,emittedRun,[process.execPath,'--no-strip-types','--input-type=module','--eval',`const m=await import(${JSON.stringify(emittedUrl)});if(m.choose(false)!==2)throw new Error('wrong emitted branch');`]),0);
+ const mixed=await report(root,path.join(base,'mixed'),[importRun,partialRun,emittedRun],false);
+ assert.deepEqual(mixed.summary,result.summary);assert.equal(mixed.omittedMeasurementLanes.length,1);assert.equal(mixed.omittedMeasurementLanes[0]?.kind,'emitted');
+ assert.equal(mixed.coverageGatePassed,false);
+});
+
+
+test('actual Node-executed TSX receives credit only through exact compiler emission proof',async t=>{
+ const {root,base}=fixture(t);rmSync(path.join(root,'src/browser/widget.ts'));const code='export function Widget(value: boolean) { return value ? "present" : "absent"; }\n';
+ put(root,'src/browser/widget.tsx',code);execFileSync('git',['add','-A'],{cwd:root});execFileSync('git',['commit','-qm','actual JSX runtime fixture'],{cwd:root});
+ const emitted=path.join(base,'emitted');emit(root,emitted,['src/browser/widget.tsx']);
+ put(emitted,'package.json','{"type":"module"}');
+ const url=pathToFileURL(path.join(emitted,'src/browser/widget.js')).href,run=path.join(base,'jsx-run'),output=path.join(base,'jsx-report');
+ assert.equal(await collect(root,run,[process.execPath,'--no-strip-types','--input-type=module','--eval',`import {Widget} from ${JSON.stringify(url)}; if(Widget(true)!=="present")throw new Error("render mismatch");`]),0);
+ const result=await report(root,output,[run],false);assert.ok(!result.pending.includes('src/browser/widget.tsx'));
+ const full=object(parse(readFileSync(path.join(output,'coverage-final.json'),'utf8')));const measured=object(full[path.join(root,'src/browser/widget.tsx')]);
+ assert.ok(Object.values(object(measured.s)).some(value=>typeof value==='number'&&value>0));
+ assert.ok(Object.values(object(measured.b)).some(value=>Array.isArray(value)&&value.includes(0)),'Unselected JSX branch must retain zero credit.');
+});
