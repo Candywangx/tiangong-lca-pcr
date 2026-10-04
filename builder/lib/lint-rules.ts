@@ -5,7 +5,7 @@ import type { MeasurementReport } from './measurement-consistency.ts';
 interface InputState { exists: boolean; safe: boolean }
 interface ContractProblemOptions {contract: string; value: unknown; sourcePath: string; root: string; problems: string[]; entityKind: string}
 interface InventoryEntry {processEntry: ProcessInventoryEntry; direction: string; flowType: string; row: InventoryFlow}
-interface LanguageInspection {optional: PcrLanguageFile[]; problems?: string[]}
+interface LanguageInspection {optional: PcrLanguageFile[]; managedInputsSafe: boolean}
 export interface PcrInspectionOptions {root?: unknown; pcrDir?: unknown; manifestFileName?: string; manifestText?: string; structuredText?: string; checkManifestLifecycle?: boolean; checkBilingualRuleAlignment?: boolean; measurementPolicy?: string}
 export interface PcrInspection {problems: string[]; warnings: string[]; projection: PcrMarkdownProjection | null; measurement: MeasurementReport | null; expectedStructuredText: string | null; managedInputsSafe: boolean; measurementReviewRequired?: boolean}
 import {
@@ -48,9 +48,6 @@ import {
   structuredProjectionYaml,
 } from "./markdown-projection.ts";
 import { inspectPublishedRevisionState } from "./published-revision-state.ts";
-import {
-  resolvePcrLanguageFiles,
-} from "./pcr-language-files.ts";
 import { checkMeasurementConsistency } from "./measurement-consistency.ts";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.ts";
 import { REQUIRED_DIRS } from "./builder-constants.ts";
@@ -741,56 +738,53 @@ function languageFromMarkdownFileName(fileName: unknown): string | null {
 }
 
 /**
- * When a caller injects manifest text instead of a manifest file, the language
- * file set must still be derived from that declaration. Undeclared language
- * files fail closed; every declared language requires its file.
+ * The included optional file set is derived from the same manifest declaration
+ * for disk and proposed-manifest inspections. Unsafe or unreadable artifacts
+ * invalidate the entire inspection; missing declarations remain explicit errors.
  */
-function resolveOverriddenLanguageArtifacts({ manifestText, directory, inputTexts, inputStates, root, problems }: {manifestText: string; directory: string; inputTexts: Map<string,string>; inputStates: Map<string,InputState>; root: string; problems: string[]}): LanguageInspection {
+function inspectLanguageArtifacts({ manifestText, manifestPath, directory, inputTexts, inputStates, root, problems }: {manifestText: string; manifestPath: string; directory: string; inputTexts: Map<string,string>; inputStates: Map<string,InputState>; root: string; problems: string[]}): LanguageInspection {
   let declaredLanguages;
   try {
     declaredLanguages = declaredPcrLanguages(parseYaml(manifestText));
-  } catch {
+  } catch (error) {
+    problems.push(`${toRepoRelative(root, manifestPath)}: ${errorMessage(error)}`);
     declaredLanguages = [...REQUIRED_PCR_LANGUAGES];
   }
   const optional: PcrLanguageFile[] = [];
+  let managedInputsSafe = true;
+  // The safe manifest is the bootstrap needed to discover this exact included set.
+  // Complete optional type preflight before opening any other language body.
   for (const language of declaredLanguages) {
-    if (REQUIRED_PCR_LANGUAGES.includes(language)) {
-      continue;
-    }
-    const fileName = pcrMarkdownFile(language);
-    const filePath = path.join(directory, fileName);
-    const state = inputStates.get(fileName) ?? canonicalRegularFileState(filePath, root, problems, {
-      missingMessage: `${toRepoRelative(root, filePath)}: required file is missing`,
+    if (REQUIRED_PCR_LANGUAGES.includes(language)) continue;
+    const fileName = pcrMarkdownFile(language), filePath = path.join(directory, fileName);
+    const state = canonicalRegularFileState(filePath, root, problems, {
+      missingMessage: `${toRepoRelative(root, filePath)}: declared language Markdown file is missing; ` +
+        `manifest.languages.available declares ${language}, so its file is required, or remove the declaration`,
     });
-    if (!state.exists || !state.safe) {
-      if (!state.exists) {
-        problems.push(
-          `${toRepoRelative(root, filePath)}: declared language Markdown file is missing; ` +
-            `manifest.languages.available declares ${language}, so its file is required, or remove the declaration`,
-        );
-      }
-      continue;
-    }
-    const text = inputTexts.get(fileName) ?? readCanonicalRegularFile(filePath, root, problems);
-    if (text === null) {
-      continue;
-    }
-    optional.push({ language, fileName, filePath, text });
+    inputStates.set(fileName, state);
+    if (!state.safe) managedInputsSafe = false;
   }
   for (const fileName of readdirSync(directory).sort()) {
     const language = languageFromMarkdownFileName(fileName);
-    if (language === null || declaredLanguages.includes(language)) {
+    if (language === null) {
+      if (/^pcr\..*\.md$/u.test(fileName)) problems.push(`${toRepoRelative(root, path.join(directory, fileName))}: malformed PCR language filename`);
       continue;
     }
-    const state = inputStates.get(fileName);
-    if (state && !state.exists) {
-      continue;
-    }
-    problems.push(
+    if (!declaredLanguages.includes(language)) problems.push(
       `${toRepoRelative(root, path.join(directory, fileName))}: language Markdown file is not declared in manifest.languages.available`,
     );
   }
-  return { optional };
+  if (!managedInputsSafe) return { optional, managedInputsSafe: false };
+  for (const language of declaredLanguages) {
+    if (REQUIRED_PCR_LANGUAGES.includes(language)) continue;
+    const fileName = pcrMarkdownFile(language), filePath = path.join(directory, fileName);
+    if (!inputStates.get(fileName)?.exists) continue;
+    const text = inputTexts.get(fileName) ?? readCanonicalRegularFile(filePath, root, problems);
+    if (text === null) return { optional, managedInputsSafe: false };
+    inputTexts.set(fileName, text);
+    optional.push({ language, fileName, filePath, text });
+  }
+  return { optional, managedInputsSafe: true };
 }
 
 /**
@@ -883,8 +877,9 @@ export function inspectPcrDirectory({
   const inputStates = new Map<string, InputState>();
   let managedInputsSafe = true;
 
-  // Complete the type preflight before opening any managed input. A single symlink or
-  // special file invalidates the inspection boundary, so no other leaf content is read.
+  // Complete required type preflight before opening any managed input. A single
+  // symlink or special file invalidates the inspection boundary. The safe manifest
+  // then bootstraps optional type preflight before any language body is opened.
   for (const specification of inputSpecifications) {
     const state = specification.override !== undefined
       ? { exists: true, safe: true }
@@ -914,77 +909,34 @@ export function inspectPcrDirectory({
   }
 
   const inputTexts = new Map<string, string>();
-  for (const specification of inputSpecifications) {
-    if (specification.override !== undefined) {
-      inputTexts.set(specification.fileName, specification.override);
-      continue;
-    }
-    if (!inputStates.get(specification.fileName)?.exists) {
-      continue;
-    }
-    const text = readCanonicalRegularFile(
-      specification.filePath,
-      resolvedRoot,
-      problems,
-    );
-    if (text === null) {
-      managedInputsSafe = false;
-      break;
-    }
-    inputTexts.set(specification.fileName, text);
+  if (manifestTextOverride !== undefined) inputTexts.set(manifestFileName, manifestTextOverride);
+  else if (inputStates.get(manifestFileName)?.exists) {
+    const text = readCanonicalRegularFile(manifestPath, resolvedRoot, problems);
+    if (text === null) managedInputsSafe = false;
+    else inputTexts.set(manifestFileName, text);
   }
-
-  if (!managedInputsSafe) {
-    return {
-      problems,
-      warnings,
-      projection: null,
-      measurement,
-      expectedStructuredText: null,
-      managedInputsSafe: false,
-    };
-  }
-
-  // Every language file present in this workspace must be declared, and every
-  // declared language file that is present is validated below.
-  let languageInspection: LanguageInspection = { optional: [] };
-  if (manifestTextOverride !== undefined) {
-    languageInspection = resolveOverriddenLanguageArtifacts({
-      manifestText: manifestTextOverride,
-      directory,
-      inputTexts,
-      inputStates,
-      root: resolvedRoot,
-      problems,
+  let languageInspection: LanguageInspection = { optional: [], managedInputsSafe: true };
+  if (managedInputsSafe && inputTexts.has(manifestFileName)) {
+    languageInspection = inspectLanguageArtifacts({
+      manifestText: requiredText(inputTexts, manifestFileName), manifestPath,
+      directory, inputTexts, inputStates, root: resolvedRoot, problems,
     });
-  } else if (inputTexts.has(manifestFileName)) {
-    try {
-      languageInspection = resolvePcrLanguageFiles({
-        manifest: parseYaml(requiredText(inputTexts, manifestFileName)),
-        directory,
-        displayRoot: resolvedRoot,
-      });
-      problems.push(...(languageInspection.problems ?? []));
-    } catch (error) {
-      // A malformed declaration is reported by the manifest checks; the
-      // language files must not turn it into an unhandled failure.
-      problems.push(`${toRepoRelative(resolvedRoot, manifestPath)}: ${errorMessage(error)}`);
+    managedInputsSafe = languageInspection.managedInputsSafe;
+  }
+  // Required input types have already passed. Optional input types and readable
+  // bytes must pass too before any required methodology body is opened.
+  if (managedInputsSafe && inputTexts.has(manifestFileName)) {
+    for (const specification of inputSpecifications.slice(1)) {
+      if (specification.override !== undefined) { inputTexts.set(specification.fileName, specification.override); continue; }
+      if (!inputStates.get(specification.fileName)?.exists) continue;
+      const text = readCanonicalRegularFile(specification.filePath, resolvedRoot, problems);
+      if (text === null) { managedInputsSafe = false; break; }
+      inputTexts.set(specification.fileName, text);
     }
   }
-
-  for (const entry of languageInspection.optional ?? []) {
-    if (entry.text !== undefined) inputTexts.set(entry.fileName, entry.text);
-  }
-
-  if (!inputTexts.has(manifestFileName)) {
-    return {
-      problems,
-      warnings,
-      projection: null,
-      measurement,
-      expectedStructuredText: null,
-      managedInputsSafe: true,
-    };
+  if (!managedInputsSafe || !inputTexts.has(manifestFileName)) {
+    return { problems, warnings, projection: null, measurement,
+      expectedStructuredText: null, managedInputsSafe };
   }
 
   const manifestText = requiredText(inputTexts, manifestFileName);
