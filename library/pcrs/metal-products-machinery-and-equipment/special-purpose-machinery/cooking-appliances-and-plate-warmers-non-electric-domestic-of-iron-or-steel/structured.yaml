@@ -3,144 +3,269 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.cooking-appliances-and-plate-warmers-non-electric-domestic-of-iron-or-steel"
-  classification_refs: "CPC 3.0 44821, classification context only; no accepted mapping is asserted"
-  covered_products: "Complete non-electric domestic iron or steel cooking appliances and plate warmers, including gas-fired domestic hobs and cookers"
-  excluded_products: "Electric cooking appliances; non-cooking space heaters of CPC 44822; separately sold parts of CPC 44832; copper-bodied cooking or heating appliances of CPC 42912; commercial cooking equipment"
-  representative_product: "Accepted, complete iron or steel domestic gas hob with installed burner and controls"
-  production_route: "Steel housing fabrication, route-specific surface finishing, purchased functional component assembly, acceptance testing and factory-gate packaging"
-  market_state: "Finished and accepted appliance at factory gate, with declared sales packaging; transport packaging is excluded from net product mass"
+  classification_refs: "CPC 3.0 44821; parent 4482 is non-electric"
+  covered_products: "Actual domestic cooking appliances and plate warmers of iron or steel, non-electric principal heat"
+  excluded_products: "Heating-only 44822; electric-principal thermal 44817; non-domestic 44515; parts; unresolved hybrids until reviewed"
+  representative_product: "Declared actual gas hob, wood cooker, oil cooker or plate warmer configuration; no universal representative SKU"
+  production_route: "Actual make/buy combination of casting, sheet fabrication, finishing, assembly and factory testing"
+  market_state: "Accepted complete factory-gate product; thermal source, fuel interface and auxiliary power declared"
 functional_unit:
-  what: "A complete domestic appliance that cooks food or warms plates without electric heat"
-  how_much: "One accepted finished appliance of the declared model and configuration"
-  how_well: "Meets the manufacturer's declared cooking or warming performance and applicable acceptance test; fuel and installed components are identified"
-  how_long_or_cycle: "At factory acceptance; no assumed service life or cooking cycle is embedded in this production reference"
-  reference_flow_link: "finished_appliance"
+  what: "Supply one declared cooking/plate-warming equipment configuration for downstream dataset production"
+  how_much: "1 kg accepted complete net product"
+  how_well: "Meets actual declared cooking or plate-warming acceptance specification, fuel interface and safety test"
+  how_long_or_cycle: "One factory supply event; use life and cooking service belong to a separately defined downstream comparison"
+  reference_flow_link: "reference_product"
 system_boundary:
   rules:
-    - rule_id: boundary_gate
-      applies_to: "factory-gate foreground package"
-      rule: "Include fabrication, route-specific finishing, final assembly, acceptance testing, attributable factory energy, scrap and packaging up to release of the accepted appliance."
+    - rule_id: gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual factory operations, supplier inputs, cleaning, finishes, acceptance repeat tests, rejects/rework, residues and packing. Exclude installation, user cooking fuel, customer food and lifetime heat service; incidental heat does not change product identity without review."
       source_ids:
-        - eu-jrc-cooking-appliances-2020
-        - us-epa-metal-fabrication-2007
-    - rule_id: boundary_exclusions
-      applies_to: "downstream stages"
-      rule: "Exclude customer cooking fuel, distribution, installation and end-of-life from this factory-gate inventory; disclose any separately modelled downstream scenarios."
+        - esse-cookers
+        - aga-rayburn
+    - rule_id: make_buy
+      applies_to: "foreground_system_boundary"
+      rule: "For every body/hotplate/support/burner/valve/control item, record whether fabricated here or purchased at the actual completion state. Bought enamelled body includes casting and enamel once; bought burner includes motor/pump/metals once; bought valve includes its alloy once. Do not combine finished purchase with its embedded in-house recipe. A partly processed bought item receives only remaining operations."
       source_ids:
-        - eu-jrc-cooking-appliances-2020
+        - rangemaster-manufacture
+        - aga-sustainability
+    - rule_id: conditional_routes
+      applies_to: "foreground_system_boundary"
+      rule: "Do not force casting, enamelling, solvents, electric heaters or one fuel on every product. Add atomic grade/chemistry/component/fuel/waste/emission cards for actual unlisted exchanges and recheck; evidence-backed absence is not_applicable, unknown is not zero."
+      source_ids:
+        - esse-cookers
+        - rangemaster-gas
+        - aga-rayburn
 boundary_abstraction:
-  declared_starting_condition: "Iron or steel sheet and purchased burner components enter the foreground factory; their upstream production is linked as separate background datasets"
-  starting_condition_role: "Purchased product inputs at the gate of the first included factory process"
-  product_classification_scope: "Finished CPC 44821 appliance; separately supplied CPC 44832 parts remain input components"
-  recursive_input_rule: "If a complete same-category appliance is purchased as an input, disclose and link its upstream dataset rather than recursively modelling it as fresh factory output"
-  upstream_dataset_requirement: "Link upstream datasets for purchased metal, functional components, coating material, gas, electricity and packaging, with geography and technology recorded"
-  disclosure: "Declare site, period, model, configuration, fuel, process route, purchased-versus-in-house components, mass M and all exclusions"
+  declared_starting_condition: "Actual received grade-specific metal, completed casting/body or component and supplier completion state"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Domestic non-electric cooking/plate-warming; accepted classification relation requires semantic review"
+  recursive_input_rule: "Purchased same-category complete appliance is one input with upstream product dataset, not repeated hidden manufacture"
+  upstream_dataset_requirement: "Actual grade/composition, supplier technology/geography, treatment completion and delivery interface; no generic basket substitutions"
+  disclosure: "Declare make/buy, route absence and unknowns; factory testing separated from later cooking/plate-warming fuel"
 reference_flow_definition:
-  reference_amount: "M"
+  reference_amount: "1"
   product_flow_ref:
-    name: "Cooking appliances and plate warmers, non-electric, domestic, of iron or steel"
-    uuid: "6cc6000a-58ba-4ba3-bfa1-94ee239070ff"
+    name: "Domestic non-electric iron or steel cooking appliances and plate warmers"
+    uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
     uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
   reference_unit: "kg"
   required_qualifiers:
-    - model
+    - Model
     - configuration
-    - "fuel or heat source"
-    - "iron or steel body grade"
-    - "installed burner or warming assembly"
-    - "coating route"
-    - "sales packaging state"
-    - "manufacturing site and period"
+    - "domestic cooking/plate-warming function"
+    - "principal thermal source"
+    - "actual fuel and nozzle"
+    - "auxiliary electric functions"
+    - "material grades"
+    - finish
+    - "make/buy matrix"
+    - geography
+    - factory
+    - period
+    - "net BOM"
+    - acceptance
 reference_flows:
   []
 measurement_rules:
   - id: reference_mass
-    applies_to: "reference product"
+    applies_to: "reference_product"
     required_property_ref:
       name: "Mass"
-      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+      uuid: ""
     required_unit: "kg"
-    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
-  - id: electricity_energy
-    applies_to: "fabrication_electricity"
+    rule: "cp_mass measures positive D and accepted N; retain the same period/configuration BOM and calibrated net scope."
+  - id: physical_species
+    applies_to: "physical material and species records"
     required_property_ref:
-      name: "Net calorific value"
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Distinguish wet mass, dry solids and contained element; every stream has its OWN matched assay, including product, scrap, slag, sludge, wastewater and releases."
+  - id: fuel_energy
+    applies_to: "test_gas, test_propane, test_oil, test_wood, firing_gas"
+    required_property_ref:
+      name: "Energy"
       uuid: ""
     required_unit: "MJ"
-    rule: "Record alternating-current electricity consumed by the declared fabrication and assembly processes in MJ; convert a metered kWh record using 1 kWh = 3.6 MJ, and retain the original reading."
+    rule: "Preserve actual fuel composition, moisture and net calorific value; volume conversion requires actual pressure/temperature/density. No brochure output or user consumption is factory energy."
 process_map:
-  - id: housing_fabrication
-    name: "Steel housing fabrication"
+  - id: casting
+    name: "In-house iron casting"
     inclusion: "conditional"
-    inclusion_condition: "Include when sheet-metal housing cutting and forming occur at the declared factory"
-    role: "Foreground cutting, forming and joining"
-    quantitative_reference: "per one accepted finished unit"
-  - id: surface_coating
-    name: "Powder coating"
+    inclusion_condition: "Only actual melting, moulding, casting, shakeout and finishing; bought castings bypass this route"
+    role: "foreground"
+    quantitative_reference: "1 kg"
+  - id: fabrication
+    name: "Sheet and frame fabrication"
     inclusion: "conditional"
-    inclusion_condition: "Include when powder coating is applied to the housing at the declared factory"
-    role: "Foreground finishing"
-    quantitative_reference: "per one accepted finished unit"
-  - id: final_assembly_test
-    name: "Final assembly and acceptance test"
+    inclusion_condition: "Only actual cutting, pressing/forming, welding and machining"
+    role: "foreground"
+    quantitative_reference: "1 kg"
+  - id: finish
+    name: "Cleaning and surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual washing, polishing, vitreous enamelling or specified alternative coating; bought finished body bypasses this route"
+    role: "foreground"
+    quantitative_reference: "1 kg"
+  - id: assembly
+    name: "Configuration assembly"
     inclusion: "required"
-    inclusion_condition: "Every accepted complete appliance is assembled and tested"
-    role: "Foreground assembly and test"
-    quantitative_reference: "per one accepted finished unit"
-  - id: sales_packaging
-    name: "Corrugated-box packaging"
-    inclusion: "conditional"
-    inclusion_condition: "Include when a corrugated board box is supplied with the factory-gate sale unit"
-    role: "Foreground packaging"
-    quantitative_reference: "per one accepted finished unit"
+    inclusion_condition: "Required assembly of actual cooking or plate-warming architecture and purchased components"
+    role: "foreground"
+    quantitative_reference: "1 kg"
+  - id: test
+    name: "Factory acceptance"
+    inclusion: "required"
+    inclusion_condition: "Actual leak, ignition, controls, combustion/function or plate-warming checks; only performed tests consume fuel"
+    role: "foreground"
+    quantitative_reference: "1 kg"
+  - id: dispatch
+    name: "Packing and residual shared services"
+    inclusion: "required"
+    inclusion_condition: "Actual dispatch packaging and unassigned residual utility loads"
+    role: "foreground"
+    quantitative_reference: "1 kg"
 process_inventory:
-  - id: housing_fabrication
-    label: "Steel housing fabrication"
+  - id: casting
+    label: "In-house iron casting"
     inputs:
       product:
-        - row_id: steel_sheet_input
-          role: "Cold-rolled steel sheet for housing"
-          name: "Cold-rolled non-alloy steel sheet"
+        - row_id: iron_charge
+          role: "Foundry pig iron, declared grade"
+          name: "Foundry pig iron, declared grade"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "For the sheet-fabrication route, record the mass of non-alloy cold-rolled steel sheet entering the housing line, including sheet that becomes measured offcut. Supplier grade and coating state must be declared; its Tiangong flow identity remains unresolved."
+          description: "Only externally purchased actual foundry charge; record own assay."
           amount:
-            expression: "Measured sheet issued per one accepted finished unit; record supplier mass and reconcile stock changes."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_materials
-              source_ids:
-                - eu-jrc-cooking-appliances-2020
-                - us-epa-metal-fabrication-2007
-            ranges: []
-        - row_id: fabrication_electricity
-          role: "Alternating-current fabrication electricity"
-          name: "Alternating current"
-          flow_type: "product"
-          flow_ref:
-            uuid: "949661a5-2af6-4e66-adf8-74f5fca306a9"
-          property_unit: "Net calorific value / MJ"
-          description: "Meter or allocate the electricity used by cutting, forming, joining and installed finishing and assembly equipment; avoid double counting shared meters."
-          amount:
-            expression: "Measured attributable alternating-current electricity in MJ per one accepted finished unit; convert recorded kWh using electricity_energy."
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_iron_charge."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
+              text: "per 1 kg reference flow"
+              kind: "process_output"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_electricity
+              collection_protocol_id: cp_iron_charge
               source_ids:
-                - us-epa-metal-fabrication-2007
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: iron_scrap
+          role: "Segregated iron scrap charge, declared composition"
+          name: "Segregated iron scrap charge, declared composition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "External scrap only; paired internal sprues are not a second upstream purchase."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_iron_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_iron_scrap
+              source_ids:
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: silica_sand
+          role: "Silica moulding sand"
+          name: "Silica moulding sand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual sand-mould route with measured makeup and reclaimed stock."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_silica_sand."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_silica_sand
+              source_ids:
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: bentonite
+          role: "Bentonite mould binder"
+          name: "Bentonite mould binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual green-sand binder; other actual binders need individual cards, not this assumed recipe."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_bentonite."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bentonite
+              source_ids:
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: coke
+          role: "Foundry coke"
+          name: "Foundry coke"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual coke-fired furnace; induction is not assigned coke."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_coke."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coke
+              source_ids:
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: casting_power
+          role: "Purchased electricity at factory delivery interface"
+          name: "Purchased electricity at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual melting and finishing submeter load; separate onsite generation."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_casting_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_power
+              source_ids:
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: casting_water
+          role: "Industrial process water"
+          name: "Industrial process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual cooling makeup; internal circulation is not repeated supply."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_casting_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_water
+              source_ids:
+                - jrc-foundry-2024
             ranges: []
       waste:
         []
@@ -150,53 +275,727 @@ process_inventory:
       product:
         []
       waste:
-        - row_id: steel_scrap_output
-          role: "Steel sheet offcut scrap"
-          name: "Steel scrap"
+        - row_id: slag
+          role: "Iron-foundry slag"
+          name: "Iron-foundry slag"
           flow_type: "waste"
-          flow_ref:
-            uuid: "37997e0e-e34b-4ab9-a642-5d86f4333919"
           property_unit: "Mass / kg"
-          description: "Weigh clean steel offcuts leaving the fabrication line. Record contaminated swarf separately in the produced dataset if present; the selected flow here is only steel scrap."
+          description: "Only actual outgoing stream, own composition and destination."
           amount:
-            expression: "Measured steel scrap dispatched or stock-adjusted per one accepted finished unit."
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_slag."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
+              text: "per 1 kg reference flow"
+              kind: "process_output"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_scrap
+              collection_protocol_id: cp_slag
               source_ids:
-                - us-epa-metal-fabrication-2007
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: spent_sand
+          role: "Spent silica moulding sand"
+          name: "Spent silica moulding sand"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual outgoing stream, own composition and destination."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_spent_sand."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_sand
+              source_ids:
+                - jrc-foundry-2024
+            ranges: []
+        - row_id: foundry_dust
+          role: "Captured iron-foundry filter dust"
+          name: "Captured iron-foundry filter dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual outgoing stream, own composition and destination."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_foundry_dust."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_dust
+              source_ids:
+                - jrc-foundry-2024
             ranges: []
       elementary:
         []
-  - id: surface_coating
-    label: "Powder coating"
+  - id: fabrication
+    label: "Sheet and frame fabrication"
     inputs:
       product:
-        - row_id: powder_coating_input
-          role: "Powder paint applied to housing"
-          name: "Powder Coating"
+        - row_id: carbon_sheet
+          role: "Cold-rolled low-carbon steel sheet, declared supplier grade"
+          name: "Cold-rolled low-carbon steel sheet, declared supplier grade"
           flow_type: "product"
-          flow_ref:
-            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
           property_unit: "Mass / kg"
-          description: "Include only when the declared factory uses powder paint; record purchased and consumed coating powder, with losses assigned to this line."
+          description: "Only actual fabricated casing/frame or enamel substrate; no universal grade assigned."
           amount:
-            expression: "Measured powder paint consumed per one accepted finished unit when powder coating is used."
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_carbon_sheet."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
+              text: "per 1 kg reference flow"
+              kind: "process_output"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_coating
+              collection_protocol_id: cp_carbon_sheet
               source_ids:
-                - us-epa-metal-fabrication-2007
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: stainless_sheet
+          role: "Stainless-steel sheet, declared supplier grade"
+          name: "Stainless-steel sheet, declared supplier grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual stainless hob/body route; declare chromium/nickel assay and finish."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_stainless_sheet."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_sheet
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: weld_wire
+          role: "Steel welding wire, declared alloy grade"
+          name: "Steel welding wire, declared alloy grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual welded joints; separately specify any other filler alloy."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_weld_wire."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weld_wire
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: argon
+          role: "Argon shielding gas"
+          name: "Argon shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual argon-shielded welding; other shielding species are separate rows."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_argon."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_argon
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: cutting_oil
+          role: "Mineral straight cutting oil, declared formulation"
+          name: "Mineral straight cutting oil, declared formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual neat-oil machining; water-emulsion concentrate is a separate supplied formulation."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_cutting_oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_oil
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: fabrication_power
+          role: "Purchased electricity at factory delivery interface"
+          name: "Purchased electricity at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual cutting/forming/welding submeter load."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_fabrication_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_power
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: carbon_offcut
+          role: "Low-carbon steel offcuts"
+          name: "Low-carbon steel offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Segregated actual stream; wet/dry basis, oil contamination and own assay."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_carbon_offcut."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_offcut
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: stainless_offcut
+          role: "Stainless-steel offcuts"
+          name: "Stainless-steel offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Segregated actual stream; wet/dry basis, oil contamination and own assay."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_stainless_offcut."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_offcut
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent mineral cutting oil"
+          name: "Spent mineral cutting oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Segregated actual stream; wet/dry basis, oil contamination and own assay."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_spent_oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_oil
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+      elementary:
+        []
+  - id: finish
+    label: "Cleaning and surface finishing"
+    inputs:
+      product:
+        - row_id: wash_water
+          role: "Industrial process water"
+          name: "Industrial process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual washing and enamel-slurry makeup water; separate recirculation."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_wash_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wash_water
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide, declared concentration"
+          name: "Sodium hydroxide, declared concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only site-verified alkaline bath chemical; not a default cleaning recipe."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_sodium_hydroxide."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sodium_hydroxide
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: enamel_frit
+          role: "Silicate vitreous-enamel frit, declared supplier formulation"
+          name: "Silicate vitreous-enamel frit, declared supplier formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual enamel formulation; supplier oxide composition and retained coating mass required."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_enamel_frit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_enamel_frit
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: polyester_powder
+          role: "Polyester powder coating, declared supplier formulation"
+          name: "Polyester powder coating, declared supplier formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual alternative powder coating; never automatically add to vitreous enamel."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_polyester_powder."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polyester_powder
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: xylene
+          role: "Xylene, declared isomer composition"
+          name: "Xylene, declared isomer composition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual solvent-containing formulation; no solvent assumed for water-based enamel or powder."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_xylene."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_xylene
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: finish_power
+          role: "Purchased electricity at factory delivery interface"
+          name: "Purchased electricity at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual polishing, pumps or electric firing load."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_finish_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish_power
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: firing_gas
+          role: "Natural gas at factory delivery interface"
+          name: "Natural gas at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual gas-fired enamelling/curing; composition and net calorific value measured."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_firing_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_firing_gas
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: enamel_sludge
+          role: "Vitreous-enamel wastewater treatment sludge"
+          name: "Vitreous-enamel wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual outgoing stream; its own water/solids/species assays and treatment interface."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_enamel_sludge."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_enamel_sludge
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: finish_wastewater
+          role: "Metal-finishing wastewater to treatment"
+          name: "Metal-finishing wastewater to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual outgoing stream; its own water/solids/species assays and treatment interface."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_finish_wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish_wastewater
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: solvent_media
+          role: "Xylene-bearing spent capture medium"
+          name: "Xylene-bearing spent capture medium"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual outgoing stream; its own water/solids/species assays and treatment interface."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_solvent_media."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solvent_media
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+      elementary:
+        - row_id: xylene_air
+          role: "Xylene to air, declared compartment"
+          name: "Xylene to air, declared compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual measured/specifically evidenced release; capture is not destruction."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_xylene_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_xylene_air
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+  - id: assembly
+    label: "Configuration assembly"
+    inputs:
+      product:
+        - row_id: bought_body
+          role: "Purchased finished enamelled iron cooker body"
+          name: "Purchased finished enamelled iron cooker body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only purchased completed body; exclude its duplicate casting/finishing/material inputs."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_bought_body."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bought_body
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: cast_support
+          role: "Purchased cast-iron pan support"
+          name: "Purchased cast-iron pan support"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased support; embedded iron/casting once."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_cast_support."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cast_support
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: gas_burner
+          role: "Purchased gas cooking-burner assembly"
+          name: "Purchased gas cooking-burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual gas configuration, fuel/nozzle/power qualifier; embedded metals once."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_gas_burner."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_burner
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: oil_burner
+          role: "Purchased oil cooking-burner assembly"
+          name: "Purchased oil cooking-burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual liquid-fuel configuration; embedded motor/pump and metals once."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_oil_burner."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_oil_burner
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: gas_valve
+          role: "Purchased gas safety valve"
+          name: "Purchased gas safety valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual gas safety device; no duplicate brass or steel burden."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_gas_valve."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_valve
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: igniter
+          role: "Purchased spark-ignition module"
+          name: "Purchased spark-ignition module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ancillary ignition does not establish electric principal cooking heat."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_igniter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_igniter
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: control
+          role: "Purchased cooker control board"
+          name: "Purchased cooker control board"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual board; embedded electronics once."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_control."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: firebrick
+          role: "Aluminosilicate refractory firebrick, declared grade"
+          name: "Aluminosilicate refractory firebrick, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual firebox liner, supplier chemistry required."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_firebrick."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_firebrick
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: glass
+          role: "Borosilicate viewing glass, declared grade"
+          name: "Borosilicate viewing glass, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual confirmed glass chemistry; another glass-ceramic needs its own card."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_glass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glass
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: seal
+          role: "Glass-fibre rope door seal, declared formulation"
+          name: "Glass-fibre rope door seal, declared formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only confirmed actual seal formulation; ceramic fibre requires separate identity."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_seal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seal
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: fastener
+          role: "Steel fastener, declared grade"
+          name: "Steel fastener, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied fastener and coating; separate brass/copper components where present."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_fastener."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fastener
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
+            ranges: []
+        - row_id: assembly_power
+          role: "Purchased electricity at factory delivery interface"
+          name: "Purchased electricity at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual attributable assembly load only."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_assembly_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_power
+              source_ids:
+                - esse-cookers
+                - rangemaster-gas
+                - aga-rayburn
             ranges: []
       waste:
         []
@@ -209,49 +1008,123 @@ process_inventory:
         []
       elementary:
         []
-  - id: final_assembly_test
-    label: "Final assembly and acceptance test"
+  - id: test
+    label: "Factory acceptance"
     inputs:
       product:
-        - row_id: domestic_gas_burner_input
-          role: "Purchased domestic gas burner assembly"
-          name: "Domestic gas hob burner assembly"
+        - row_id: test_gas
+          role: "Natural gas at factory delivery interface"
+          name: "Natural gas at factory delivery interface"
           flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Include for a gas-fired configuration with a purchased domestic hob burner assembly; record its supplier identity and delivered mass. The searched industrial burner records are not this product."
+          property_unit: "Energy / MJ"
+          description: "Only actual factory gas firing test, not lifetime cooking fuel."
           amount:
-            expression: "Measured mass of purchased domestic burner assemblies per one accepted gas-fired finished unit."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_components
-              source_ids:
-                - eu-jrc-cooking-appliances-2020
-            ranges: []
-        - row_id: acceptance_test_natural_gas
-          role: "Natural gas for gas-fired acceptance test"
-          name: "natural gas in the gaseous state"
-          flow_type: "product"
-          flow_ref:
-            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
-          property_unit: "Volume / m3"
-          description: "Include only when natural gas is actually burned during the factory acceptance test; use a separate atomic fuel row in the produced dataset for any other test fuel."
-          amount:
-            expression: "Metered natural gas consumed in acceptance testing per one accepted finished unit when this fuel is used."
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_gas."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
+              text: "per 1 kg reference flow"
+              kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_test_gas
               source_ids:
-                - eu-jrc-cooking-appliances-2020
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: test_propane
+          role: "Propane test fuel"
+          name: "Propane test fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual propane test; mixed LPG requires actual separate mixture identity."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_propane."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_propane
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: test_oil
+          role: "Kerosene test fuel, declared specification"
+          name: "Kerosene test fuel, declared specification"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual kerosene test; HVO or other actual oil separately identified."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_oil
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: test_wood
+          role: "Wood-log test fuel, declared species and moisture"
+          name: "Wood-log test fuel, declared species and moisture"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual wood test; actual other solid fuel needs its own row."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_wood."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_wood
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: test_power
+          role: "Purchased electricity at factory delivery interface"
+          name: "Purchased electricity at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual test instruments and ancillary ignition/control."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_power
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: test_water
+          role: "Industrial process water"
+          name: "Industrial process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual water used in factory tests; exclude cooking food from net reference mass."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_water
+              source_ids:
+                - rangemaster-manufacture
             ranges: []
       waste:
         []
@@ -259,254 +1132,1150 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: finished_appliance
-          role: "Accepted finished cooking appliance or plate warmer"
-          name: "Cooking appliances and plate warmers, non-electric, domestic, of iron or steel"
-          flow_type: "product"
-          flow_ref:
-            uuid: "6cc6000a-58ba-4ba3-bfa1-94ee239070ff"
+        []
+      waste:
+        - row_id: wood_ash
+          role: "Wood-combustion test ash"
+          name: "Wood-combustion test ash"
+          flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "The reference product is one accepted complete unit. Its net mass M excludes the transport package and is weighed for the same configuration."
+          description: "Only actual test ash; own unburned carbon and water assay."
           amount:
-            expression: "M kg"
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_wood_ash."
             value_mode: "foreground_record"
-            specificity: "product_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood_ash
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: test_drain
+          role: "Factory-test wastewater to treatment"
+          name: "Factory-test wastewater to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discharge and treatment interface; returned loop paired separately."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_test_drain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_drain
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species/size-resolved factory release; no lifetime emission or carbon-only inference of CO/NOx."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_fossil_co2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fossil_co2
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: biogenic_co2
+          role: "Carbon dioxide, biogenic, to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species/size-resolved factory release; no lifetime emission or carbon-only inference of CO/NOx."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_biogenic_co2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biogenic_co2
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species/size-resolved factory release; no lifetime emission or carbon-only inference of CO/NOx."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_carbon_monoxide."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_monoxide
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: nitric_oxide
+          role: "Nitric oxide to air"
+          name: "Nitric oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species/size-resolved factory release; no lifetime emission or carbon-only inference of CO/NOx."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_nitric_oxide."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitric_oxide
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species/size-resolved factory release; no lifetime emission or carbon-only inference of CO/NOx."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_nitrogen_dioxide."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitrogen_dioxide
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+        - row_id: pm10
+          role: "Particulate matter PM10 to air"
+          name: "Particulate matter PM10 to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species/size-resolved factory release; no lifetime emission or carbon-only inference of CO/NOx."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_pm10."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm10
+              source_ids:
+                - rangemaster-manufacture
+            ranges: []
+  - id: dispatch
+    label: "Packing and residual shared services"
+    inputs:
+      product:
+        - row_id: corrugated
+          role: "Corrugated-board transport packaging"
+          name: "Corrugated-board transport packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual packaging only, outside product net mass; allocate actual reuse cycles from return records."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_corrugated."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_corrugated
+              source_ids:
+                - aga-sustainability
+            ranges: []
+        - row_id: wood_pallet
+          role: "Wood transport pallet"
+          name: "Wood transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual packaging only, outside product net mass; allocate actual reuse cycles from return records."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_wood_pallet."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood_pallet
+              source_ids:
+                - aga-sustainability
+            ranges: []
+        - row_id: pe_foam
+          role: "Polyethylene protective foam"
+          name: "Polyethylene protective foam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual packaging only, outside product net mass; allocate actual reuse cycles from return records."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_pe_foam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pe_foam
+              source_ids:
+                - aga-sustainability
+            ranges: []
+        - row_id: residual_power
+          role: "Purchased electricity at factory delivery interface"
+          name: "Purchased electricity at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "ONLY unassigned site residual after casting/fabrication/finish/assembly/test/packing; reconcile same period and units."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_residual_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual_power
+              source_ids:
+                - aga-sustainability
+            ranges: []
+        - row_id: purchased_heat
+          role: "Purchased steam heat at factory delivery interface"
+          name: "Purchased steam heat at factory delivery interface"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual purchased heat; measure supply and condensate return on common enthalpy basis; no supplier fuel duplication."
+          amount:
+            expression: "Measured attributable period exchange normalized per 1 kg reference flow using cp_purchased_heat."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_heat
+              source_ids:
+                - aga-sustainability
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Domestic non-electric iron or steel cooking appliances and plate warmers"
+          name: "Domestic non-electric iron or steel cooking appliances and plate warmers"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual accepted complete declared configuration at gate, unfilled with customer fuel; excludes packaging/test food/free test water."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_mass
               source_ids:
-                - un-cpc-3-2025
-                - eu-jrc-cooking-appliances-2020
+                - aga-sustainability
             ranges: []
-      waste:
-        []
-      elementary:
-        []
-  - id: sales_packaging
-    label: "Corrugated-box packaging"
-    inputs:
-      product:
-        - row_id: corrugated_box_input
-          role: "Corrugated board sale box"
-          name: "corrugated board boxes"
-          flow_type: "product"
-          flow_ref:
-            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
-          property_unit: "Mass / kg"
-          description: "Include only when a corrugated board sale box accompanies the accepted appliance at the declared factory gate. This box is outside the measured net product mass M."
-          amount:
-            expression: "Measured mass of corrugated sale boxes issued per one accepted finished unit when boxed."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_packaging
-              source_ids:
-                - eu-jrc-cooking-appliances-2020
-            ranges: []
-      waste:
-        []
-      elementary:
-        []
-    outputs:
-      product:
-        []
       waste:
         []
       elementary:
         []
 allocation_rules:
-  - rule_id: allocation_subdivide
-    applies_to: "shared factory processes"
-    rule: "First separate metered process lines, production periods and product configurations; retain directly traceable sheet, scrap, coating, burner, test gas and box records."
+  - rule_id: allocation
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate model/configuration and fuel/material routes; subdivide measured operations first. Allocate remaining shared work using documented causal machine-hours, treated area, measured heat or test cycles. Retain reject/rework Q with accepted D. Record actual scrap/waste/co-product status and consistent upstream recycling allocation; no automatic avoided burden or credit for paired internal returns."
     source_ids:
-      - us-epa-metal-fabrication-2007
-      - eu-jrc-cooking-appliances-2020
-  - rule_id: allocation_shared
-    applies_to: "remaining shared energy and waste"
-    rule: "If direct measurement cannot separate a shared process, allocate by a documented physical driver tied to that process, such as measured machine time; disclose the driver, denominator and sensitivity."
-    source_ids:
-      - us-epa-metal-fabrication-2007
-  - rule_id: scrap_no_credit
-    applies_to: "steel scrap output"
-    rule: "Record steel scrap as an output; do not subtract an assumed recycling credit inside the factory-gate foreground inventory."
-    source_ids:
-      - us-epa-metal-fabrication-2007
+      - jrc-foundry-2024
+      - aga-sustainability
 dataset_production:
   collection_protocols:
     - protocol_id: cp_mass
-      process_id: "final_assembly_test"
-      flow_role: "accepted reference product"
-      record_type: "calibrated scale record"
-      raw_fields: "model; configuration; serial number; accepted net mass M"
-      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      process_id: "dispatch"
+      flow_role: "reference_product"
+      record_type: "measurement"
+      raw_fields: "Model; configuration; period; serial; accepted calibrated net mass; N; D; BOM; rejects"
+      collection_method: "Weigh each accepted complete declared appliance on a calibrated scale; exclude transport packaging, rejected units, free test water and test food; reconcile accepted serials and BOM; D sums same-configuration accepted net masses."
       unit: "kg"
-      frequency: "each accepted model or production lot"
-      temporal_coverage: "declared production period"
-      site_scope: "declared factory"
-      aggregation_rule: "accepted net mass per unit"
-      quality_evidence: "calibration certificate; acceptance record"
-    - protocol_id: cp_materials
-      process_id: "housing_fabrication"
-      flow_role: "steel sheet input"
-      record_type: "supplier and issue ledger"
-      raw_fields: "steel grade; sheet form; received mass; issued mass; opening and closing stock; accepted units"
-      collection_method: "Reconcile supplier and issue records with stock change for the declared configuration."
+      frequency: "Each accepted unit"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "One configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; acceptance; net BOM"
+    - protocol_id: cp_iron_charge
+      process_id: "casting"
+      flow_role: "iron_charge"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
       unit: "kg"
-      frequency: "each lot"
-      temporal_coverage: "declared production period"
-      site_scope: "housing line"
-      aggregation_rule: "issued sheet mass / accepted units"
-      quality_evidence: "supplier invoice; stock ledger"
-    - protocol_id: cp_electricity
-      process_id: "housing_fabrication"
-      flow_role: "alternating-current input"
-      record_type: "meter record"
-      raw_fields: "meter id; kWh reading; period; line allocation driver; accepted units"
-      collection_method: "Read the calibrated meter and convert kWh to MJ; document allocation of shared electricity."
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_iron_scrap
+      process_id: "casting"
+      flow_role: "iron_scrap"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_silica_sand
+      process_id: "casting"
+      flow_role: "silica_sand"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_bentonite
+      process_id: "casting"
+      flow_role: "bentonite"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_coke
+      process_id: "casting"
+      flow_role: "coke"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_casting_power
+      process_id: "casting"
+      flow_role: "casting_power"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kWh"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_casting_water
+      process_id: "casting"
+      flow_role: "casting_water"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_slag
+      process_id: "casting"
+      flow_role: "slag"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_spent_sand
+      process_id: "casting"
+      flow_role: "spent_sand"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_foundry_dust
+      process_id: "casting"
+      flow_role: "foundry_dust"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_carbon_sheet
+      process_id: "fabrication"
+      flow_role: "carbon_sheet"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_stainless_sheet
+      process_id: "fabrication"
+      flow_role: "stainless_sheet"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_weld_wire
+      process_id: "fabrication"
+      flow_role: "weld_wire"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_argon
+      process_id: "fabrication"
+      flow_role: "argon"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_cutting_oil
+      process_id: "fabrication"
+      flow_role: "cutting_oil"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_fabrication_power
+      process_id: "fabrication"
+      flow_role: "fabrication_power"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kWh"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_carbon_offcut
+      process_id: "fabrication"
+      flow_role: "carbon_offcut"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_stainless_offcut
+      process_id: "fabrication"
+      flow_role: "stainless_offcut"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_spent_oil
+      process_id: "fabrication"
+      flow_role: "spent_oil"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_wash_water
+      process_id: "finish"
+      flow_role: "wash_water"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_sodium_hydroxide
+      process_id: "finish"
+      flow_role: "sodium_hydroxide"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_enamel_frit
+      process_id: "finish"
+      flow_role: "enamel_frit"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_polyester_powder
+      process_id: "finish"
+      flow_role: "polyester_powder"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_xylene
+      process_id: "finish"
+      flow_role: "xylene"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_finish_power
+      process_id: "finish"
+      flow_role: "finish_power"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kWh"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_firing_gas
+      process_id: "finish"
+      flow_role: "firing_gas"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once. Fuel mass or metered volume uses actual composition, pressure/temperature, moisture and net calorific value; record actual repeated tests and fuel stocks, never user fuel."
       unit: "MJ"
-      frequency: "monthly or batch"
-      temporal_coverage: "declared production period"
-      site_scope: "included factory lines"
-      aggregation_rule: "attributable MJ / accepted units"
-      quality_evidence: "meter readings; allocation worksheet"
-    - protocol_id: cp_scrap
-      process_id: "housing_fabrication"
-      flow_role: "steel offcut output"
-      record_type: "weighbridge and stock record"
-      raw_fields: "scrap type; dispatched mass; opening and closing stock; accepted units"
-      collection_method: "Weigh clean steel offcuts and reconcile stock change."
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_enamel_sludge
+      process_id: "finish"
+      flow_role: "enamel_sludge"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
       unit: "kg"
-      frequency: "each dispatch or batch"
-      temporal_coverage: "declared production period"
-      site_scope: "housing line"
-      aggregation_rule: "steel scrap mass / accepted units"
-      quality_evidence: "weighbridge ticket; stock ledger"
-    - protocol_id: cp_coating
-      process_id: "surface_coating"
-      flow_role: "powder paint input"
-      record_type: "coating issue record"
-      raw_fields: "powder type; issued mass; returned mass; accepted units"
-      collection_method: "Reconcile powder issues and returns when this route is used."
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_finish_wastewater
+      process_id: "finish"
+      flow_role: "finish_wastewater"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "declared production period"
-      site_scope: "coating line"
-      aggregation_rule: "consumed powder mass / accepted units"
-      quality_evidence: "issue ledger; route record"
-    - protocol_id: cp_components
-      process_id: "final_assembly_test"
-      flow_role: "burner assembly input"
-      record_type: "supplier BoM and receipt"
-      raw_fields: "burner model; supplier; receipt mass; installed count; accepted units"
-      collection_method: "Reconcile received domestic burner assemblies with installed components and rejected units."
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_solvent_media
+      process_id: "finish"
+      flow_role: "solvent_media"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
       unit: "kg"
-      frequency: "each model or lot"
-      temporal_coverage: "declared production period"
-      site_scope: "assembly line"
-      aggregation_rule: "installed burner mass / accepted units"
-      quality_evidence: "supplier BoM; receipt; assembly traveler"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_xylene_air
+      process_id: "finish"
+      flow_role: "xylene_air"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_bought_body
+      process_id: "assembly"
+      flow_role: "bought_body"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_cast_support
+      process_id: "assembly"
+      flow_role: "cast_support"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_gas_burner
+      process_id: "assembly"
+      flow_role: "gas_burner"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_oil_burner
+      process_id: "assembly"
+      flow_role: "oil_burner"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_gas_valve
+      process_id: "assembly"
+      flow_role: "gas_valve"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_igniter
+      process_id: "assembly"
+      flow_role: "igniter"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_control
+      process_id: "assembly"
+      flow_role: "control"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_firebrick
+      process_id: "assembly"
+      flow_role: "firebrick"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_glass
+      process_id: "assembly"
+      flow_role: "glass"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_seal
+      process_id: "assembly"
+      flow_role: "seal"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_fastener
+      process_id: "assembly"
+      flow_role: "fastener"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_assembly_power
+      process_id: "assembly"
+      flow_role: "assembly_power"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kWh"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
     - protocol_id: cp_test_gas
-      process_id: "final_assembly_test"
-      flow_role: "natural gas test input"
-      record_type: "gas meter and test record"
-      raw_fields: "gas meter id; m3 reading; gas type; test duration; accepted units"
-      collection_method: "Meter natural gas attributable to acceptance tests for the declared gas configuration."
-      unit: "m3"
-      frequency: "each test batch"
-      temporal_coverage: "declared production period"
-      site_scope: "test line"
-      aggregation_rule: "attributable natural gas m3 / accepted units"
-      quality_evidence: "gas meter record; test log"
-    - protocol_id: cp_packaging
-      process_id: "sales_packaging"
-      flow_role: "corrugated sale box input"
-      record_type: "packaging issue record"
-      raw_fields: "box specification; issued mass; accepted units"
-      collection_method: "Reconcile corrugated boxes issued to accepted units when boxed."
+      process_id: "test"
+      flow_role: "test_gas"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once. Fuel mass or metered volume uses actual composition, pressure/temperature, moisture and net calorific value; record actual repeated tests and fuel stocks, never user fuel."
+      unit: "MJ"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_test_propane
+      process_id: "test"
+      flow_role: "test_propane"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once. Fuel mass or metered volume uses actual composition, pressure/temperature, moisture and net calorific value; record actual repeated tests and fuel stocks, never user fuel."
+      unit: "MJ"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_test_oil
+      process_id: "test"
+      flow_role: "test_oil"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once. Fuel mass or metered volume uses actual composition, pressure/temperature, moisture and net calorific value; record actual repeated tests and fuel stocks, never user fuel."
+      unit: "MJ"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_test_wood
+      process_id: "test"
+      flow_role: "test_wood"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once. Fuel mass or metered volume uses actual composition, pressure/temperature, moisture and net calorific value; record actual repeated tests and fuel stocks, never user fuel."
+      unit: "MJ"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_test_power
+      process_id: "test"
+      flow_role: "test_power"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kWh"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_test_water
+      process_id: "test"
+      flow_role: "test_water"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
       unit: "kg"
-      frequency: "each lot"
-      temporal_coverage: "declared production period"
-      site_scope: "packing line"
-      aggregation_rule: "issued box mass / accepted units"
-      quality_evidence: "packaging ledger; supplier specification"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_wood_ash
+      process_id: "test"
+      flow_role: "wood_ash"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_test_drain
+      process_id: "test"
+      flow_role: "test_drain"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_fossil_co2
+      process_id: "test"
+      flow_role: "fossil_co2"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_biogenic_co2
+      process_id: "test"
+      flow_role: "biogenic_co2"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_carbon_monoxide
+      process_id: "test"
+      flow_role: "carbon_monoxide"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_nitric_oxide
+      process_id: "test"
+      flow_role: "nitric_oxide"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_nitrogen_dioxide
+      process_id: "test"
+      flow_role: "nitrogen_dioxide"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_pm10
+      process_id: "test"
+      flow_role: "pm10"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual species and receiving compartment with matched concentration and integrated stack/discharge flow, sampling duration, wet/dry and oxygen basis; documented species-specific factor may substitute only with actual fuel/process conditions. No carbon-only CO/NOx inference; preserve measured particle size definition."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_corrugated
+      process_id: "dispatch"
+      flow_role: "corrugated"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_wood_pallet
+      process_id: "dispatch"
+      flow_role: "wood_pallet"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_pe_foam
+      process_id: "dispatch"
+      flow_role: "pe_foam"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure actual attributable period Q with calibrated meters/weighing and reconcile receipts, beginning/end stock, internal paired transfers and reject/rework allocation. For physical materials record each own grade, concentration, moisture and wet/dry assay; for delivered components confirm completion state and upstream coverage once."
+      unit: "kg"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_residual_power
+      process_id: "dispatch"
+      flow_role: "residual_power"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Same-period site electricity balance reconciles imports plus actual onsite generation minus exports and storage change; subtract every assigned casting/fabrication/finish/assembly/test/packing load, allocate only unassigned residual using measured causal service. Investigate negative residual against measurement/period/unit/allocation uncertainty, never clip or add whole site total to submeters."
+      unit: "kWh"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
+    - protocol_id: cp_purchased_heat
+      process_id: "dispatch"
+      flow_role: "purchased_heat"
+      record_type: "measurement"
+      raw_fields: "Period; configuration; Q; original unit; supplier/interface or compartment; meter; stock; allocation; own assay where physical; uncertainty"
+      collection_method: "Measure delivered steam mass and supply enthalpy relative to one common reference, and separately measure actual condensate return mass/enthalpy; kg times MJ/kg gives net MJ. Reconcile assigned processes and residual; upstream supplier fuel is included once, onsite generation separately records actual fuel and releases."
+      unit: "MJ"
+      frequency: "Each batch/test or meter period"
+      temporal_coverage: "Matched reporting period"
+      site_scope: "Declared process/configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated records; assays; receipts; provider; uncertainty budget"
   calculation_rules:
-    []
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Use each attributable period exchange Q / D; preserve original numerator units; reference_product = 1 kg."
+      inputs:
+        - Q
+        - D
+        - cp_mass
+      output: "q_ref"
+      source_ids:
+        - rangemaster-manufacture
   data_quality_requirements:
-    - id: dq_configuration
-      applies_to: "all included rows"
-      requirement: "Keep model, fuel, coating route and accepted configuration consistent with M and the bill of materials."
-      evidence: "eu-jrc-cooking-appliances-2020; acceptance and supplier records"
-    - id: dq_period
-      applies_to: "all collected rows"
-      requirement: "Use one declared production period; reconcile shared meter and stock boundaries to accepted output."
-      evidence: "meter, ledger and acceptance dates"
-    - id: dq_identity
-      applies_to: "unresolved UUID rows"
-      requirement: "Preserve the concrete physical name and leave UUID blank until an exact public TianGong flow is verified."
-      evidence: "flow identity review"
+    - id: identity
+      applies_to: "all applicable rows"
+      requirement: "Confirm actual UUID/property/unit, grade/formulation, fuel, supply state/geography and downstream waste treatment interface; unresolved is explicit, not a generic substitute."
+      evidence: "Actual supplier/site records and direct identity reads"
+    - id: coverage
+      applies_to: "all exchanges"
+      requirement: "Same configuration/BOM/period and tests; actual route absence documented. Missing actual quantities, ranges or recipes remain unknown, not zero; no factory default inferred from brochure use specifications."
+      evidence: "Measured raw records, route matrix and uncertainty"
 validation_rules:
-  - rule_id: validate_mass
-    applies_to: "reference and material balance"
-    rule: "Confirm M is measured for the accepted configuration and the finished output equals M kg; reconcile sheet issued, component mass, scrap and stock movements without forcing equality across unlike materials."
+  - rule_id: reference_check
+    applies_to: "reference_product"
+    rule: "Require positive D and N, calibrated accepted net same-configuration mass, and same-period Q including rejects/rework; 1 kg output and Q/D must reconcile. Cooking/heating hybrids require principal-function/classification authority evidence."
     source_ids:
-      - eu-jrc-cooking-appliances-2020
-      - us-epa-metal-fabrication-2007
-  - rule_id: validate_routes
-    applies_to: "conditional process rows"
-    rule: "Confirm powder paint, domestic burner, natural gas and corrugated box are included only when their declared routes apply; require an explicit absence reason otherwise."
+      - esse-cookers
+      - aga-rayburn
+  - rule_id: water_closure
+    applies_to: "physical water and moisture records"
+    rule: "Each wet stream uses its own measured moisture and wet/dry basis, including product, sludge, wastewater and residuals. External water plus input moisture plus beginning stock and reaction-generated water equal retained product moisture plus end stock, evaporation, discharge and reaction consumption. Pair internal returns; do not count circulation repeatedly. Investigate residual using actual combined meter/sampling/allocation uncertainty, not universal tolerance."
     source_ids:
-      - eu-jrc-cooking-appliances-2020
-  - rule_id: validate_sources
-    applies_to: "foreground data package"
-    rule: "Require meter, supplier, weighbridge, BoM and acceptance records for nonzero rows; disclose geography, technology, time and unresolved UUIDs."
+      - rangemaster-manufacture
+      - jrc-foundry-2024
+  - rule_id: metal_species_closure
+    applies_to: "physical material and species records"
+    rule: "For each actual element/species, every input, product, scrap, slag, sludge, wastewater and release uses its OWN matched assay and wet/dry basis. Include beginning/end stocks, reaction transformations, retention and paired internal return cancellation. Gross material mass is not contained iron/chromium/nickel; investigate closure with actual combined measurement, sampling and allocation uncertainty."
     source_ids:
-      - eu-jrc-cooking-appliances-2020
-      - us-epa-metal-fabrication-2007
+      - jrc-foundry-2024
+  - rule_id: solvent_closure
+    applies_to: "physical solvent records"
+    rule: "For each actual solvent, reconcile fresh input and beginning stock against end stock, retained product, recovered solvent, solvent in capture media, verified destruction, air releases and non-air residues. Unknown solvent residual is not automatically an air emission. Recovery/capture is not destruction; paired returned solvent cancels once. Investigate residual against actual combined uncertainty; no assumed solvent for absent route."
+    source_ids:
+      - rangemaster-manufacture
+  - rule_id: utility_closure
+    applies_to: "utility records"
+    rule: "Process and shared-service rows reconcile SAME measured site period and units; shared service is only the unassigned residual. Do not add whole-factory meter totals to assigned submeters. Reconcile imports, actual onsite generation, exports, storage changes and steam/condensate returns; investigate negative residual using matched meter, sampling, period, stock and allocation uncertainty, never clip. Bought power is not source-specific incineration output; generation fuel is not purchased power."
+    source_ids:
+      - rangemaster-manufacture
+  - rule_id: emission_evidence
+    applies_to: "elementary emissions and fuel records"
+    rule: "Factory combustion/firing releases remain production; customer use remains separate. Fuel carbon closes total carbon but cannot prove CO, NO or NO2 amounts. Require species-specific measured/factor evidence, actual compartments and fossil/biogenic split. NOx as NO2 equivalent is a convention, not pure NO2; measured size-resolved PM10/PM2.5 are distinct, do not infer from unsized dust. Capture media and treatment residues need their own assays."
+    source_ids:
+      - jrc-foundry-2024
+      - esse-cookers
 published_dataset_profile:
-  dataset_role: "Factory-gate foreground data package for an accepted complete appliance"
-  downstream_use: "May become a reviewed secondary_dataset or background_dataset and support process or lifecyclemodel projections"
-  allowed_use: "Use for the declared model, site, period, fuel and finish route, with upstream links and disclosed UUID gaps"
-  excluded_use: "Do not treat this production package as a use-stage cooking or end-of-life result; do not transfer it to electric, copper-bodied or industrial equipment"
-  required_metadata: "model; configuration; fuel; iron or steel grade; site; period; M and measurement evidence; BoM; process routes; packaging state; upstream dataset geography"
-  required_quality_disclosure: "direct measurements; allocation drivers; excluded stages; unmatched flow UUIDs; unresolved range evidence; data coverage"
-  update_trigger: "Reissue when material design, burner, fuel, coating route, supplier, site or measurement protocol changes materially"
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing supply of declared configuration; downstream process/lifecyclemodel projection with independently defined cooking service"
+  excluded_use: "Universal cooker fuel/lifetime or equivalence defaults; unresolved hybrid classification; use-phase claims from factory mass"
+  required_metadata: "Qualifiers, D/N/M and raw Q, period, make/buy, actual routes, provider links, acceptance and downstream service boundary"
+  required_quality_disclosure: "Unresolved UUIDs, recipes, quantities, standalone plate-warmer evidence and classification hybrids; measurement/allocation uncertainty and completeness"
+  update_trigger: "Model/BOM/fuel/finish/supplier/test/route change or resolved evidence/identity gap"
 data_sources:
-  - id: "un-cpc-3-2025"
+  - id: "un-cpc-3-0"
     type: "official_guidance"
-    reference: "CPC Version 3.0 Structure, United Nations Statistics Division, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
-    used_for: "Product class and adjacent exclusions only"
-  - id: "eu-jrc-cooking-appliances-2020"
+    reference: "UNSD CPC Version 3.0 Explanatory Notes, 30 June 2025, p.240, 4482/44821/44822 https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Category and adjacent classification boundaries only"
+  - id: "esse-cookers"
+    type: "handbook"
+    reference: "ESSE Range Cookers, COOK1023 ©2023, pp.9,23–27 https://www.esse.com/wp-content/themes/esse/media-library/brochures/esse-cooker-brochure.pdf"
+    used_for: "Actual wood cooking architecture, handmade assembly and cooking/heating counterexample; electric pages excluded; no factory quantities"
+  - id: "rangemaster-gas"
+    type: "handbook"
+    reference: "Rangemaster Built-In Appliances, undated inspected original, p.9 https://www.rangemaster.co.uk/sites/default/files/2019-05/RM_Built-In_Brochure_Sept2018_V1.pdf"
+    used_for: "Stainless gas hobs, cast-iron supports, LPG kit; neighboring electric models are counterevidence"
+  - id: "rangemaster-manufacture"
+    type: "handbook"
+    reference: "Rangemaster Quick Guide, undated inspected original, pp.2–3 https://www.rangemaster.co.uk/sites/default/files/2021-02/Rangemaster%20Quick%20Guide.pdf"
+    used_for: "Actual cooker steel press/cut/wash/polish/enamel, folded frame and testing; conditional routes only, no universal formulation or quantity"
+  - id: "aga-sustainability"
+    type: "handbook"
+    reference: "AGA Sustainability, publisher HTML https://old.agaliving.com/buying/sustainability"
+    used_for: "Actual cast-iron cooker melting and packaging; environmental marketing and percentages are not adopted factors"
+  - id: "aga-rayburn"
+    type: "handbook"
+    reference: "AGA Rayburn, publisher HTML https://www.agaliving.com/products/aga-rayburn/"
+    used_for: "Oil/gas cast-iron cooking and warming ovens, vitreous enamel; combined heating needs actual principal-function review"
+  - id: "jrc-foundry-2024"
     type: "official_guidance"
-    reference: "Review study of Ecodesign and Energy Labelling for Cooking appliances, first draft, February 2020, https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/2020-07/CA_%20Prep%20Study_draft1_Feb2020.pdf"
-    used_for: "Domestic gas appliance scope; product-specific BoM and component collection; no empirical PCR range"
-  - id: "us-epa-metal-fabrication-2007"
-    type: "official_guidance"
-    reference: "Clean Lines: Strategies for Reducing Your Environmental Footprint, U.S. Environmental Protection Agency, November 2007, https://www.epa.gov/sites/default/files/2015-03/documents/fabrication.pdf"
-    used_for: "Fabrication process map, steel scrap and machining-fluid separation"
+    reference: "JRC Smitheries and Foundries BREF, EUR 40127, 2024, section 2.2.1.1, pp.67–68, DOI 10.2760/4805267 https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2024-12/SF_BREF_2024-bref.pdf"
+    used_for: "Conditional actual foundry process decomposition only; not a domestic-cooker recipe, emission factor or universal process requirement"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0a868853903fdb59cec3c5f5f0cc3623f24b371e0ab1d5f15fc591124654a3a3"
+  source_sha256: "sha256:c9feb0205578e5aa94e7e845dff1e4087a923a1f40a69f4042b471afb82e88f8"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4175"
+    - unit_id: "normative_4871"
       family: "system_boundary"
       span:
         start:
-          offset: 4175
-          line: 54
+          offset: 4871
+          line: 52
           column: 1
         end:
-          offset: 5814
-          line: 72
+          offset: 6894
+          line: 70
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Iron or steel sheet and purchased burner components enter the foreground factory; their upstream production is linked as separate background datasets |\n| starting_condition_role | Purchased product inputs at the gate of the first included factory process |\n| product_classification_scope | Finished CPC 44821 appliance; separately supplied CPC 44832 parts remain input components |\n| recursive_input_rule | If a complete same-category appliance is purchased as an input, disclose and link its upstream dataset rather than recursively modelling it as fresh factory output |\n| upstream_dataset_requirement | Link upstream datasets for purchased metal, functional components, coating material, gas, electricity and packaging, with geography and technology recorded |\n| disclosure | Declare site, period, model, configuration, fuel, process route, purchased-versus-in-house components, mass M and all exclusions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_gate` | factory-gate foreground package | Include fabrication, route-specific finishing, final assembly, acceptance testing, attributable factory energy, scrap and packaging up to release of the accepted appliance. | `eu-jrc-cooking-appliances-2020`; `us-epa-metal-fabrication-2007` |\n| `boundary_exclusions` | downstream stages | Exclude customer cooking fuel, distribution, installation and end-of-life from this factory-gate inventory; disclose any separately modelled downstream scenarios. | `eu-jrc-cooking-appliances-2020` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual received grade-specific metal, completed casting/body or component and supplier completion state |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Domestic non-electric cooking/plate-warming; accepted classification relation requires semantic review |\n| recursive_input_rule | Purchased same-category complete appliance is one input with upstream product dataset, not repeated hidden manufacture |\n| upstream_dataset_requirement | Actual grade/composition, supplier technology/geography, treatment completion and delivery interface; no generic basket substitutions |\n| disclosure | Declare make/buy, route absence and unknowns; factory testing separated from later cooking/plate-warming fuel |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| gate | Include actual factory operations, supplier inputs, cleaning, finishes, acceptance repeat tests, rejects/rework, residues and packing. Exclude installation, user cooking fuel, customer food and lifetime heat service; incidental heat does not change product identity without review. | esse-cookers; aga-rayburn |\n| make_buy | For every body/hotplate/support/burner/valve/control item, record whether fabricated here or purchased at the actual completion state. Bought enamelled body includes casting and enamel once; bought burner includes motor/pump/metals once; bought valve includes its alloy once. Do not combine finished purchase with its embedded in-house recipe. A partly processed bought item receives only remaining operations. | rangemaster-manufacture; aga-sustainability |\n| conditional_routes | Do not force casting, enamelling, solvents, electric heaters or one fuel on every product. Add atomic grade/chemistry/component/fuel/waste/emission cards for actual unlisted exchanges and recheck; evidence-backed absence is not_applicable, unknown is not zero. | esse-cookers; rangemaster-gas; aga-rayburn |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -518,17 +2287,17 @@ normative_context:
               offset: 294
               line: 8
               column: 75
-          text: "# Non-electric domestic iron or steel cooking appliances and plate warmers"
+          text: "# Domestic non-electric iron or steel cooking appliances and plate warmers"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 4175
-              line: 54
+              offset: 4871
+              line: 52
               column: 1
             end:
-              offset: 4196
-              line: 54
+              offset: 4892
+              line: 52
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -543,18 +2312,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_14190"
+    - unit_id: "normative_50781"
       family: "allocation"
       span:
         start:
-          offset: 14190
-          line: 275
+          offset: 50781
+          line: 1014
           column: 1
         end:
-          offset: 15094
-          line: 283
+          offset: 51334
+          line: 1019
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide` | shared factory processes | First separate metered process lines, production periods and product configurations; retain directly traceable sheet, scrap, coating, burner, test gas and box records. | `us-epa-metal-fabrication-2007`; `eu-jrc-cooking-appliances-2020` |\n| `allocation_shared` | remaining shared energy and waste | If direct measurement cannot separate a shared process, allocate by a documented physical driver tied to that process, such as measured machine time; disclose the driver, denominator and sensitivity. | `us-epa-metal-fabrication-2007` |\n| `scrap_no_credit` | steel scrap output | Record steel scrap as an output; do not subtract an assumed recycling credit inside the factory-gate foreground inventory. | `us-epa-metal-fabrication-2007` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation | Separate model/configuration and fuel/material routes; subdivide measured operations first. Allocate remaining shared work using documented causal machine-hours, treated area, measured heat or test cycles. Retain reject/rework Q with accepted D. Record actual scrap/waste/co-product status and consistent upstream recycling allocation; no automatic avoided burden or credit for paired internal returns. | jrc-foundry-2024; aga-sustainability |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -566,17 +2335,17 @@ normative_context:
               offset: 294
               line: 8
               column: 75
-          text: "# Non-electric domestic iron or steel cooking appliances and plate warmers"
+          text: "# Domestic non-electric iron or steel cooking appliances and plate warmers"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 14190
-              line: 275
+              offset: 50781
+              line: 1014
               column: 1
             end:
-              offset: 14230
-              line: 275
+              offset: 50821
+              line: 1014
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -591,18 +2360,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_19388"
+    - unit_id: "normative_98654"
       family: "validation"
       span:
         start:
-          offset: 19388
-          line: 311
+          offset: 98654
+          line: 1098
           column: 1
         end:
-          offset: 20328
-          line: 319
+          offset: 101744
+          line: 1108
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_mass` | reference and material balance | Confirm M is measured for the accepted configuration and the finished output equals M kg; reconcile sheet issued, component mass, scrap and stock movements without forcing equality across unlike materials. | `eu-jrc-cooking-appliances-2020`; `us-epa-metal-fabrication-2007` |\n| `validate_routes` | conditional process rows | Confirm powder paint, domestic burner, natural gas and corrugated box are included only when their declared routes apply; require an explicit absence reason otherwise. | `eu-jrc-cooking-appliances-2020` |\n| `validate_sources` | foreground data package | Require meter, supplier, weighbridge, BoM and acceptance records for nonzero rows; disclose geography, technology, time and unresolved UUIDs. | `eu-jrc-cooking-appliances-2020`; `us-epa-metal-fabrication-2007` |\n\n"
+      markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| reference_check | reference_product | Require positive D and N, calibrated accepted net same-configuration mass, and same-period Q including rejects/rework; 1 kg output and Q/D must reconcile. Cooking/heating hybrids require principal-function/classification authority evidence. | esse-cookers; aga-rayburn |\n| water_closure | physical water and moisture records | Each wet stream uses its own measured moisture and wet/dry basis, including product, sludge, wastewater and residuals. External water plus input moisture plus beginning stock and reaction-generated water equal retained product moisture plus end stock, evaporation, discharge and reaction consumption. Pair internal returns; do not count circulation repeatedly. Investigate residual using actual combined meter/sampling/allocation uncertainty, not universal tolerance. | rangemaster-manufacture; jrc-foundry-2024 |\n| metal_species_closure | physical material and species records | For each actual element/species, every input, product, scrap, slag, sludge, wastewater and release uses its OWN matched assay and wet/dry basis. Include beginning/end stocks, reaction transformations, retention and paired internal return cancellation. Gross material mass is not contained iron/chromium/nickel; investigate closure with actual combined measurement, sampling and allocation uncertainty. | jrc-foundry-2024 |\n| solvent_closure | physical solvent records | For each actual solvent, reconcile fresh input and beginning stock against end stock, retained product, recovered solvent, solvent in capture media, verified destruction, air releases and non-air residues. Unknown solvent residual is not automatically an air emission. Recovery/capture is not destruction; paired returned solvent cancels once. Investigate residual against actual combined uncertainty; no assumed solvent for absent route. | rangemaster-manufacture |\n| utility_closure | utility records | Process and shared-service rows reconcile SAME measured site period and units; shared service is only the unassigned residual. Do not add whole-factory meter totals to assigned submeters. Reconcile imports, actual onsite generation, exports, storage changes and steam/condensate returns; investigate negative residual using matched meter, sampling, period, stock and allocation uncertainty, never clip. Bought power is not source-specific incineration output; generation fuel is not purchased power. | rangemaster-manufacture |\n| emission_evidence | elementary emissions and fuel records | Factory combustion/firing releases remain production; customer use remains separate. Fuel carbon closes total carbon but cannot prove CO, NO or NO2 amounts. Require species-specific measured/factor evidence, actual compartments and fossil/biogenic split. NOx as NO2 equivalent is a convention, not pure NO2; measured size-resolved PM10/PM2.5 are distinct, do not infer from unsized dust. Capture media and treatment residues need their own assays. | jrc-foundry-2024; esse-cookers |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -614,17 +2383,17 @@ normative_context:
               offset: 294
               line: 8
               column: 75
-          text: "# Non-electric domestic iron or steel cooking appliances and plate warmers"
+          text: "# Domestic non-electric iron or steel cooking appliances and plate warmers"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 19388
-              line: 311
+              offset: 98654
+              line: 1098
               column: 1
             end:
-              offset: 19410
-              line: 311
+              offset: 98676
+              line: 1098
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -641,157 +2410,183 @@ normative_context:
           markdown: "---\n"
   bindings:
     - pointer: "/system_boundary/rules/0"
-      rule_id: "boundary_gate"
+      rule_id: "gate"
       identity_kind: "explicit"
-      unit_id: "normative_4175"
+      unit_id: "normative_4871"
       source_span:
         start:
-          offset: 5270
-          line: 69
+          offset: 5769
+          line: 66
           column: 1
         end:
-          offset: 5566
-          line: 69
-          column: 297
+          offset: 6089
+          line: 66
+          column: 321
     - pointer: "/system_boundary/rules/1"
-      rule_id: "boundary_exclusions"
+      rule_id: "make_buy"
       identity_kind: "explicit"
-      unit_id: "normative_4175"
+      unit_id: "normative_4871"
       source_span:
         start:
-          offset: 5567
-          line: 70
+          offset: 6090
+          line: 67
           column: 1
         end:
-          offset: 5812
-          line: 70
-          column: 246
+          offset: 6561
+          line: 67
+          column: 472
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "conditional_routes"
+      identity_kind: "explicit"
+      unit_id: "normative_4871"
+      source_span:
+        start:
+          offset: 6562
+          line: 68
+          column: 1
+        end:
+          offset: 6892
+          line: 68
+          column: 331
     - pointer: "/allocation_rules/0"
-      rule_id: "allocation_subdivide"
+      rule_id: "allocation"
       identity_kind: "explicit"
-      unit_id: "normative_14190"
+      unit_id: "normative_50781"
       source_span:
         start:
-          offset: 14303
-          line: 279
+          offset: 50874
+          line: 1017
           column: 1
         end:
-          offset: 14594
-          line: 279
-          column: 292
-    - pointer: "/allocation_rules/1"
-      rule_id: "allocation_shared"
-      identity_kind: "explicit"
-      unit_id: "normative_14190"
-      source_span:
-        start:
-          offset: 14595
-          line: 280
-          column: 1
-        end:
-          offset: 14890
-          line: 280
-          column: 296
-    - pointer: "/allocation_rules/2"
-      rule_id: "scrap_no_credit"
-      identity_kind: "explicit"
-      unit_id: "normative_14190"
-      source_span:
-        start:
-          offset: 14891
-          line: 281
-          column: 1
-        end:
-          offset: 15092
-          line: 281
-          column: 202
+          offset: 51332
+          line: 1017
+          column: 459
     - pointer: "/validation_rules/0"
-      rule_id: "validate_mass"
+      rule_id: "reference_check"
       identity_kind: "explicit"
-      unit_id: "normative_19388"
+      unit_id: "normative_98654"
       source_span:
         start:
-          offset: 19483
-          line: 315
+          offset: 98748
+          line: 1101
           column: 1
         end:
-          offset: 19811
-          line: 315
-          column: 329
+          offset: 99058
+          line: 1101
+          column: 311
     - pointer: "/validation_rules/1"
-      rule_id: "validate_routes"
+      rule_id: "water_closure"
       identity_kind: "explicit"
-      unit_id: "normative_19388"
+      unit_id: "normative_98654"
       source_span:
         start:
-          offset: 19812
-          line: 316
+          offset: 99059
+          line: 1102
           column: 1
         end:
-          offset: 20065
-          line: 316
-          column: 254
+          offset: 99628
+          line: 1102
+          column: 570
     - pointer: "/validation_rules/2"
-      rule_id: "validate_sources"
+      rule_id: "metal_species_closure"
       identity_kind: "explicit"
-      unit_id: "normative_19388"
+      unit_id: "normative_98654"
       source_span:
         start:
-          offset: 20066
-          line: 317
+          offset: 99629
+          line: 1103
           column: 1
         end:
-          offset: 20326
-          line: 317
-          column: 261
+          offset: 100117
+          line: 1103
+          column: 489
+    - pointer: "/validation_rules/3"
+      rule_id: "solvent_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_98654"
+      source_span:
+        start:
+          offset: 100118
+          line: 1104
+          column: 1
+        end:
+          offset: 100631
+          line: 1104
+          column: 514
+    - pointer: "/validation_rules/4"
+      rule_id: "utility_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_98654"
+      source_span:
+        start:
+          offset: 100632
+          line: 1105
+          column: 1
+        end:
+          offset: 101197
+          line: 1105
+          column: 566
+    - pointer: "/validation_rules/5"
+      rule_id: "emission_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_98654"
+      source_span:
+        start:
+          offset: 101198
+          line: 1106
+          column: 1
+        end:
+          offset: 101742
+          line: 1106
+          column: 545
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4175"
+      unit_id: "normative_4871"
       source_span:
         start:
-          offset: 4175
-          line: 54
+          offset: 4871
+          line: 52
           column: 1
         end:
-          offset: 4196
-          line: 54
+          offset: 4892
+          line: 52
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4175"
+      unit_id: "normative_4871"
       source_span:
         start:
-          offset: 4224
-          line: 58
+          offset: 4919
+          line: 55
           column: 1
         end:
-          offset: 5197
-          line: 65
-          column: 146
+          offset: 5715
+          line: 62
+          column: 127
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_14190"
+      unit_id: "normative_50781"
       source_span:
         start:
-          offset: 14190
-          line: 275
+          offset: 50781
+          line: 1014
           column: 1
         end:
-          offset: 14230
-          line: 275
+          offset: 50821
+          line: 1014
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_19388"
+      unit_id: "normative_98654"
       source_span:
         start:
-          offset: 19388
-          line: 311
+          offset: 98654
+          line: 1098
           column: 1
         end:
-          offset: 19410
-          line: 311
+          offset: 98676
+          line: 1098
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -800,5 +2595,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0a868853903fdb59cec3c5f5f0cc3623f24b371e0ab1d5f15fc591124654a3a3"
-  generated_content_sha256: "sha256:5c872278701dffb58c0ad875db663a6e6d75ffb4abccdf9f12af7b2dd837f0be"
+    sha256: "sha256:c9feb0205578e5aa94e7e845dff1e4087a923a1f40a69f4042b471afb82e88f8"
+  generated_content_sha256: "sha256:3e6cec91687fb7623620febc11b5740cbd71a89bddd9d18b093589224b6cc22b"

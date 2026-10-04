@@ -1,10 +1,2246 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44812"
-  title: "Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.dishwashing-machines-and-clothes-or-linen-washing-or-drying-machines-household-type-ele-884bcccf"
+  classification_refs: "CPC 3.0 44812"
+  covered_products: "Complete household dishwashers; powered or manual washers; vented, condensing, heatpump or gas dryers; combined washer-dryers where actual design supports household supply"
+  excluded_products: "Commercial/industrial equipment after reviewed boundary decision; dry-cleaning machinery; independent spare parts; cleaning/laundry service"
+  representative_product: "One declared accepted configuration; no universal representative washing machine"
+  production_route: "Actual make/buy matrix then conditional fabrication/surface operations, configuration assembly, thermal circuit if present, acceptance and dispatch"
+  market_state: "New accepted complete manufactured appliance at plant; disclose retained charge and included functional accessories"
+functional_unit:
+  what: "Supply a complete household dishwashing or clothes/linen washing/drying appliance"
+  how_much: "1 kg accepted net finished product of one configuration"
+  how_well: "Declared model specifications and actual factory acceptance, without invented performance threshold"
+  how_long_or_cycle: "One factory production period; household operating cycles and lifetime excluded"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: factory_only
+      applies_to: "all processes"
+      rule: "Include actual fabrication, surface work, assembly, charge if present, factory acceptance/rework, packaging and attributable controls; later installation, consumer water/energy/detergent and end-of-life are separate scenarios. Consumer energy labels never become factory factors."
+      source_ids:
+        - bosch-dryers-2021
+        - speedqueen-home-stack
+    - rule_id: make_buy_once
+      applies_to: "all processes"
+      rule: "For every tub/drum, motor, pump, board, harness, seal, heating unit and refrigeration circuit, record delivered state and one mutually exclusive make/buy path. Bought finished parts include upstream materials/processes; in-house paths replace them with actual atomic inputs and processes. Charged circuit excludes a second initial fill; uncharged circuit requires actual factory fill."
+      source_ids:
+        - bosch-heatpump-r290
+    - rule_id: site_completion
+      applies_to: "all processes"
+      rule: "Cards are conditional evidence-guided starting points, not a complete default BOM. Add every actually present grade, compound, purchased part, fuel, transport interface, refrigerant, chemical, waste and elementary species separately before dataset validation; retain unknown versus demonstrated not_applicable."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual received sheet, resin or completed purchased component, with supplier operations and retained initial fill declared"
+  starting_condition_role: "Supplier material/component interface"
+  product_classification_scope: "Reviewed complete household washing/drying/dishwashing category"
+  recursive_input_rule: "Purchased same-category subassembly or returned unit retains upstream manufacture once; internal rework cancels only transfer quantities"
+  upstream_dataset_requirement: "Actual material, completed component, utility, transport and waste providers; gaps cannot mean zero"
+  disclosure: "Model/BOM, make/buy, operations omitted as supplier-completed, charges, site, period and gate; infrastructure/maintenance cutoffs justified"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
+    uuid: "57770f75-ea3a-4810-94e8-8fb918f69b50"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - function
+    - "model/configuration"
+    - "household principal design and reviewed classification"
+    - "wash and dry capacities separately"
+    - "electric/manual/gas auxiliaries"
+    - "vented/condensing/heatpump architecture"
+    - "refrigerant chemistry and retained fill"
+    - "material grade/recipe"
+    - "make/buy and supplier completion"
+    - "accepted net mass"
+    - "factory/site/period"
+    - "gate and supplied accessories"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: energy_units
+    applies_to: "fabrication_power; surface_power; assembly_power; drying_power; test_power; residual_power"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain each raw electricity meter in kWh and use 1 kWh = 3.6 MJ. Fuel needs its own measured composition, pressure/temperature and net calorific value; heat is not electric work."
+  - id: physical_basis
+    applies_to: "stainless_sheet; galvanized_sheet; abs_resin; pp_resin; steel_scrap; abs_scrap; sludge; test_wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Gross material mass is not contained element mass. Each physical balance term uses its own matched assay and wet/dry basis; utility or transport service quantities do not receive material assays."
+process_map:
+  - id: fabrication
+    name: "Material receipt and conditional part fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Actual in-house cutting/forming/moulding; bought parts bypass supplier-completed work"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: surface
+    name: "Conditional cleaning and surface treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual cleaning, coating/cure and controls; outsourced operations upstream once"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: assembly
+    name: "Configuration-specific appliance assembly"
+    inclusion: "required"
+    inclusion_condition: "Actual dishwasher, powered/manual washer, dryer or combined product BOM and make/buy"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: drying_system
+    name: "Conditional thermal and refrigeration subsystem"
+    inclusion: "conditional"
+    inclusion_condition: "Actual gas, resistance, condensation or heatpump design; absent for washing-only/manual designs without it"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: acceptance
+    name: "Factory acceptance and rework"
+    inclusion: "required"
+    inclusion_condition: "Actual safety, quality and functional acceptance; wet/loaded tests only when performed"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Packaging and factory gate"
+    inclusion: "required"
+    inclusion_condition: "Accepted finished configuration and actual supplied package"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: shared_services
+    name: "Residual shared utilities and pollution controls"
+    inclusion: "required"
+    inclusion_condition: "Only attributable unassigned services and actual controls; add site-specific atomic exchanges"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Material receipt and conditional part fabrication"
+    inputs:
+      product:
+        - row_id: stainless_sheet
+          role: "AISI 304 stainless steel sheet"
+          name: "AISI 304 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when the actual drawing and mill certificate specify this grade and sheet delivery; split any other stainless grade into its own card. Form tub/drum/sheet parts only where made on site."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stainless_sheet."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_sheet
+              source_ids:
+                - bosch-dishwashers
+                - speedqueen-home-stack
+            ranges: []
+        - row_id: galvanized_sheet
+          role: "Galvanized low-carbon steel sheet"
+          name: "Galvanized low-carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional cabinet manufacture; record actual substrate grade, zinc coating and supplier treatment. Never equate zinc coating with gross steel mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_galvanized_sheet."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanized_sheet
+              source_ids:
+                - speedqueen-home-stack
+            ranges: []
+        - row_id: abs_resin
+          role: "Acrylonitrile butadiene styrene (ABS) granulate"
+          name: "Acrylonitrile butadiene styrene (ABS) granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b895c3a1-076e-4a42-a2c0-6088890c0bd9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only CN granulate procurement for actual in-house ABS moulding: record impact grade, additives, recycled/virgin state and supplier. WonderWash confirms ABS construction, not this supplier or recipe. Bought moulded parts replace resin and their completed processing."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_abs_resin."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_abs_resin
+              source_ids:
+                - laundry-alternative-manual
+            ranges: []
+        - row_id: pp_resin
+          role: "Polypropylene granulate"
+          name: "Polypropylene granulate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual in-house polypropylene tub or spray-arm moulding; record grade, filler and supplier. ABS is not its substitute."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_pp_resin."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pp_resin
+              source_ids: []
+            ranges: []
+        - row_id: concrete_ballast
+          role: "Concrete washer counterweight"
+          name: "Concrete washer counterweight"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual externally supplied counterweight; declare mix and cured delivered state. In-house casting instead requires separate actual cement, aggregate, water and additives, curing and waste cards."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_concrete_ballast."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concrete_ballast
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Customer-side 1–35 kV grid supply only when site boundary matches; retain geography/year/provider and internal transformation separately. Include actual cutting/forming/welding/moulding submeter load, including rejects and rework."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_power
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Stainless steel sheet offcut"
+          name: "Stainless steel sheet offcut"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "External scrap only; identify grade, destination and own composition. Internal recirculated trim cancels as a transfer but retains processing burden."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_steel_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_scrap
+              source_ids: []
+            ranges: []
+        - row_id: abs_scrap
+          role: "ABS moulding reject"
+          name: "ABS moulding reject"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional weighed reject by compound; internal regrind is not a second external resin input or avoided virgin credit."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_abs_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_abs_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface
+    label: "Conditional cleaning and surface treatment"
+    inputs:
+      product:
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide cleaning solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual alkaline cleaning bath; record supplied solution concentration, active mass, bath makeup/returns and stocks. Add each co-formulant separately; do not infer from appliance architecture."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_sodium_hydroxide."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sodium_hydroxide
+              source_ids: []
+            ranges: []
+        - row_id: epoxy_powder
+          role: "Epoxy powder coating"
+          name: "Epoxy powder coating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual epoxy coating; establish formulation, retained coating and cure records. Polyester or hybrid recipes require distinct cards."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_epoxy_powder."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_epoxy_powder
+              source_ids: []
+            ranges: []
+        - row_id: isopropanol
+          role: "Isopropanol cleaning solvent"
+          name: "Isopropanol cleaning solvent"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual solvent cleaning; split other solvents and water. Capture/recovery is not destruction; quantify retained product, stocks and every waste/release fate."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_isopropanol."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_isopropanol
+              source_ids: []
+            ranges: []
+        - row_id: surface_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual cleaning, extraction, coating and cure electricity; avoid duplicating furnace fuel or whole-site meter. Customer-side voltage must match."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_power
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only metered factory oven/burner/test gas of actual composition and delivery pressure; supplied fuel is not appliance lifetime fuel. Record volume temperature/pressure and own net calorific value."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_natural_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids:
+                - speedqueen-home-stack
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: paint_residue
+          role: "Epoxy coating overspray residue"
+          name: "Epoxy coating overspray residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only external weighed waste; retain wet/dry basis and own resin/pigment/metal assays."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_paint_residue."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_paint_residue
+              source_ids: []
+            ranges: []
+        - row_id: spent_solvent
+          role: "Spent isopropanol cleaning solvent"
+          name: "Spent isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual off-site treatment/recovery; each solvent concentration and water fraction must match the weighed waste."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_spent_solvent."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_solvent
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol to air"
+          name: "Isopropanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured or verified species-specific exhaust and fugitive release after capture; no automatic emission-free solvent route."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_ipa_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ipa_air
+              source_ids: []
+            ranges: []
+  - id: assembly
+    label: "Configuration-specific appliance assembly"
+    inputs:
+      product:
+        - row_id: wash_motor
+          role: "Household washer drive motor"
+          name: "Household washer drive motor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Bought completed motor only for powered washer configuration; provider includes contained copper, steel, magnets and completed manufacture. Do not add these materials again."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_wash_motor."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wash_motor
+              source_ids:
+                - speedqueen-home-stack
+            ranges: []
+        - row_id: dishwash_pump
+          role: "Dishwasher circulation pump"
+          name: "Dishwasher circulation pump"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual dishwasher water-circulation assembly; declare motor/impeller/seal delivery boundary and upstream completion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_dishwash_pump."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dishwash_pump
+              source_ids:
+                - bosch-dishwashers
+            ranges: []
+        - row_id: dishwash_arm
+          role: "Dishwasher spray arm"
+          name: "Dishwasher spray arm"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Bought finished arm if used; separately declare polymer or metal design and provider. If made in house replace bought arm by actual materials and fabrication."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_dishwash_arm."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dishwash_arm
+              source_ids:
+                - bosch-dishwashers
+            ranges: []
+        - row_id: drain_pump
+          role: "Household appliance drain pump"
+          name: "Household appliance drain pump"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual purchased drain/condensate pump; distinguish from dishwasher circulation pump."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drain_pump."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drain_pump
+              source_ids:
+                - bosch-dryers-2021
+            ranges: []
+        - row_id: control_board
+          role: "Household appliance control circuit board"
+          name: "Household appliance control circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Bought assembled board only for actual electronic control; no electric controller imposed on manual machines. State populated board boundary and provider."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_control_board."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_board
+              source_ids: []
+            ranges: []
+        - row_id: wire_harness
+          role: "Household appliance insulated copper wiring harness"
+          name: "Household appliance insulated copper wiring harness"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual bought harness; include copper and insulation upstream once, not again as raw copper/polymer."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_wire_harness."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wire_harness
+              source_ids: []
+            ranges: []
+        - row_id: epdm_seal
+          role: "EPDM appliance door seal"
+          name: "EPDM appliance door seal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual EPDM supplier seal; silicone or other elastomers require distinct identities/recipes. No universal seal grade assumed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_epdm_seal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_epdm_seal
+              source_ids: []
+            ranges: []
+        - row_id: manual_crank
+          role: "Hand-operated washer crank"
+          name: "Hand-operated washer crank"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual purchased hand-drive part only for manual washer; identify material and mechanical connection. Manual dryer or dishwasher needs its own actual design evidence and part rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_manual_crank."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manual_crank
+              source_ids:
+                - laundry-alternative-manual
+            ranges: []
+        - row_id: assembly_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual powered tools and assembly line load, including manual-appliance manufacture; no-electricity appliance use does not make factory energy zero."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_power
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: drying_system
+    label: "Conditional thermal and refrigeration subsystem"
+    inputs:
+      product:
+        - row_id: resistance_heater
+          role: "Household dryer electric resistance heater"
+          name: "Household dryer electric resistance heater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual vented or resistance-condensing dryer heating assembly; heatpump technology does not automatically contain this part. Actual schematic controls choice."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_resistance_heater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resistance_heater
+              source_ids:
+                - speedqueen-home-stack
+            ranges: []
+        - row_id: dryer_blower
+          role: "Household dryer blower"
+          name: "Household dryer blower"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual purchased airflow assembly for dryer; keep drive and housing supplier scope explicit."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_dryer_blower."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dryer_blower
+              source_ids:
+                - speedqueen-home-stack
+            ranges: []
+        - row_id: gas_burner
+          role: "Household dryer gas burner assembly"
+          name: "Household dryer gas burner assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual natural-gas/LP model; declared fuel conversion kit, valve, ignition and control are included in supplier boundary or separate actual rows, never a default dual-fuel BOM."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_gas_burner."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_burner
+              source_ids:
+                - speedqueen-home-stack
+            ranges: []
+        - row_id: condenser
+          role: "Household dryer condensation heat exchanger"
+          name: "Household dryer condensation heat exchanger"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual purchased non-refrigerant exchanger for specified condensation design; declare air/water cooling, metal and provider. Condensing label alone does not prove resistance heating or lack of refrigerant."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_condenser."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_condenser
+              source_ids:
+                - bosch-dryers-2021
+                - bosch-condensing-sheet
+            ranges: []
+        - row_id: charged_heatpump
+          role: "Factory-charged household dryer heat-pump circuit"
+          name: "Factory-charged household dryer heat-pump circuit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual purchased sealed charged circuit. Supplier burden includes compressor, evaporator/condenser, lubricant and initial refrigerant; do not add embedded materials or charge again. Site topping-up and loss remain separate actual exchanges."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_charged_heatpump."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charged_heatpump
+              source_ids:
+                - bosch-heatpump-r290
+            ranges: []
+        - row_id: uncharged_heatpump
+          role: "Uncharged household dryer heat-pump circuit"
+          name: "Uncharged household dryer heat-pump circuit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Alternative actual purchased uncharged circuit; provider scope excludes missing fill. In-house circuit manufacture needs actual compressor, exchanger, copper tubing, braze, oil and assembly rows; not this bought circuit plus embedded components."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_uncharged_heatpump."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_uncharged_heatpump
+              source_ids:
+                - bosch-heatpump-r290
+            ranges: []
+        - row_id: r290_fill
+          role: "Propane refrigerant R290"
+          name: "Propane refrigerant R290"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual site initial fill/topping-up of an R290 circuit; measured cylinder loss, retained charge, recovery, stocks and leak. Another refrigerant requires own supply and release rows; model brochure is not a fill amount."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_r290_fill."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_r290_fill
+              source_ids:
+                - bosch-heatpump-r290
+            ranges: []
+        - row_id: drying_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual circuit assembly, vacuum pump and charging station electricity; consumer rated cycle energy is excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drying_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_power
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: r290_recovery
+          role: "Recovered propane refrigerant R290"
+          name: "Recovered propane refrigerant R290"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "External recovery shipment only; record purity, cylinder tare and destination, no automatic destruction or substitution credit."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_r290_recovery."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_r290_recovery
+              source_ids:
+                - bosch-heatpump-r290
+            ranges: []
+      elementary:
+        - row_id: r290_air
+          role: "Propane to air"
+          name: "Propane to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual R290 charging/test/fugitive loss to air; separate measured recovered quantities and residual waste. Do not set leakage zero solely because equipment is hermetically sealed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_r290_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_r290_air
+              source_ids:
+                - bosch-heatpump-r290
+            ranges: []
+  - id: acceptance
+    label: "Factory acceptance and rework"
+    inputs:
+      product:
+        - row_id: test_water
+          role: "Factory appliance test water"
+          name: "Factory appliance test water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual metered leak/hydraulic/wash performance tests; separate new water, recirculation, retained residual moisture and discharge. Customer hot-water supply is excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_water
+              source_ids: []
+            ranges: []
+        - row_id: test_detergent
+          role: "Factory test sodium carbonate detergent component"
+          name: "Factory test sodium carbonate detergent component"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual sodium carbonate in the verified test recipe, retaining solution/active fraction; actual surfactant, bleach and other components each require an atomic card. No detergent imposed on dry inspection."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_detergent."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_detergent
+              source_ids: []
+            ranges: []
+        - row_id: test_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual end-of-line operation, safety and rework test electricity; separate sample tests from production machines and all household service cycles."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_power
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: test_wastewater
+          role: "Appliance factory test wastewater"
+          name: "Appliance factory test wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "External wastewater to actual receiving treatment; water mass, solids, individual pollutant concentrations and own uncertainty; treatment cannot be assumed burden-free."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_wastewater
+              source_ids: []
+            ranges: []
+        - row_id: rejected_machine
+          role: "Rejected household washing or drying appliance"
+          name: "Rejected household washing or drying appliance"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only external rejected unit destination. Rework loops cancel internal material transfers but include repeated assembly/test energy; rejects never enlarge accepted denominator."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_rejected_machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejected_machine
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: dispatch
+    label: "Packaging and factory gate"
+    inputs:
+      product:
+        - row_id: carton
+          role: "Corrugated cardboard transport carton"
+          name: "Corrugated cardboard transport carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual measured dispatch packaging; upstream once; separate retained product net mass and recyclable packaging."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_carton."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carton
+              source_ids: []
+            ranges: []
+        - row_id: eps
+          role: "Expanded polystyrene protective insert"
+          name: "Expanded polystyrene protective insert"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual EPS packaging; EPE/pulp alternatives require separate cards and no assumed universal package."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_eps."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eps
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
+          name: "Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "57770f75-ea3a-4810-94e8-8fb918f69b50"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One accepted complete configuration at factory gate, including actual installed retained initial fill and supplied functional parts; exclude packaging, rejected units, free test water and user loads."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: shared_services
+    label: "Residual shared utilities and pollution controls"
+    inputs:
+      product:
+        - row_id: residual_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "ONLY unassigned residual same-period electricity after fabrication/surface/assembly/drying/test/dispatch assignments. Reconcile imports, actual generation, exports and storage; negative residual triggers investigation, never clipping."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_residual_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual_power
+              source_ids: []
+            ranges: []
+        - row_id: steam
+          role: "Delivered factory steam"
+          name: "Delivered factory steam"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only actual purchased steam service on an energy basis; meter delivered kg and own delivered specific enthalpy MJ/kg, reference state and supplier boundary. Return condensate kg and its own return MJ/kg are measured on the same common enthalpy datum and period. Agree the provider interface as gross delivered energy or net useful heat: net service is delivered MJ minus returned MJ once; gross service reports the return separately without subtracting it twice. Do not add own-boiler production for purchased steam."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids: []
+            ranges: []
+        - row_id: makeup_water
+          role: "Purchased industrial makeup water"
+          name: "Purchased industrial makeup water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same-period unassigned cooling/cleaning/water-treatment makeup only, separate from assigned test water; record provider versus direct abstraction independently."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_makeup_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_makeup_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: condensate_return
+          role: "Steam condensate return"
+          name: "Steam condensate return"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual external return; mass, own specific enthalpy, temperature, pressure, quality, common enthalpy datum and receiving boundary collected independently from delivered steam; reconcile return energy once under agreed gross/net provider interface. Internal return transfers cancel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_condensate_return."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_condensate_return
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: sludge
+          role: "Appliance factory wastewater-treatment sludge"
+          name: "Appliance factory wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual sludge destination; weighed wet mass, own water/solids and each metal/solvent assay, not feed-metal composition."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_sludge."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sludge
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Water vapour to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual factory evaporation only; close cooling/test/cleaning water with stocks and moisture, not household laundry moisture."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water_vapour."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_vapour
+              source_ids: []
+            ranges: []
+        - row_id: co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual factory fossil-fuel combustion with retained carbon, incomplete combustion, stocks and non-air carbon fates reconciled."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_co2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual species-specific exhaust measurement or verified process-specific method; fuel carbon balance alone cannot establish this amount."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_co."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual NO2 species data; NOx-as-NO2 reporting index is not automatically physical NO2. Add measured NO and other actual species separately. Retain reporting units and basis: NOx expressed as NO2-equivalent needs documented molar/molecular-mass conversion and measured species split; no aggregate NOx amount becomes pure NO2."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_no2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_no2
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: avoid_allocation
+    applies_to: "all processes"
+    rule: "First isolate configuration production lines and causal meters. Allocate mixed runs and residual shared services by measured driver appropriate to the service (time, metered load, handled mass or wastewater load); disclose rejected/reworked burden assigned to accepted output. Do not default every utility to product mass."
+    source_ids: []
+  - rule_id: scrap_treatment
+    applies_to: "steel_scrap; abs_scrap; paint_residue; r290_recovery"
+    rule: "Internal returns cancel paired transfers but retain repeated process burden. External recycling/disposal uses actual destination and a declared consistent allocation convention. No automatic avoided-primary-material credit or arbitrary negative burden. Separate any sold co-product by actual sale, quality and quantity."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "model; configuration; serial number; accepted net mass M; period; N; D"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "Each accepted unit"
+      temporal_coverage: "Same complete reporting period"
+      site_scope: "Declared configuration and factory gate"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "Calibration; tare; acceptance; retained fill evidence"
+    - protocol_id: cp_stainless_sheet
+      process_id: "fabrication"
+      flow_role: "stainless_sheet"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_galvanized_sheet
+      process_id: "fabrication"
+      flow_role: "galvanized_sheet"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_abs_resin
+      process_id: "fabrication"
+      flow_role: "abs_resin"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_pp_resin
+      process_id: "fabrication"
+      flow_role: "pp_resin"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_concrete_ballast
+      process_id: "fabrication"
+      flow_role: "concrete_ballast"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_fabrication_power
+      process_id: "fabrication"
+      flow_role: "fabrication_power"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_steel_scrap
+      process_id: "fabrication"
+      flow_role: "steel_scrap"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_abs_scrap
+      process_id: "fabrication"
+      flow_role: "abs_scrap"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_sodium_hydroxide
+      process_id: "surface"
+      flow_role: "sodium_hydroxide"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_epoxy_powder
+      process_id: "surface"
+      flow_role: "epoxy_powder"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_isopropanol
+      process_id: "surface"
+      flow_role: "isopropanol"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_surface_power
+      process_id: "surface"
+      flow_role: "surface_power"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_natural_gas
+      process_id: "surface"
+      flow_role: "natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_paint_residue
+      process_id: "surface"
+      flow_role: "paint_residue"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_spent_solvent
+      process_id: "surface"
+      flow_role: "spent_solvent"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_ipa_air
+      process_id: "surface"
+      flow_role: "ipa_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Species-specific calibrated exhaust/effluent or leak measurement with matched concentration, flow, time and compartment; validated chemistry-specific method if measurement unavailable; retain uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_wash_motor
+      process_id: "assembly"
+      flow_role: "wash_motor"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_dishwash_pump
+      process_id: "assembly"
+      flow_role: "dishwash_pump"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_dishwash_arm
+      process_id: "assembly"
+      flow_role: "dishwash_arm"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_drain_pump
+      process_id: "assembly"
+      flow_role: "drain_pump"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_control_board
+      process_id: "assembly"
+      flow_role: "control_board"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_wire_harness
+      process_id: "assembly"
+      flow_role: "wire_harness"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_epdm_seal
+      process_id: "assembly"
+      flow_role: "epdm_seal"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_manual_crank
+      process_id: "assembly"
+      flow_role: "manual_crank"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_assembly_power
+      process_id: "assembly"
+      flow_role: "assembly_power"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_resistance_heater
+      process_id: "drying_system"
+      flow_role: "resistance_heater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_dryer_blower
+      process_id: "drying_system"
+      flow_role: "dryer_blower"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_gas_burner
+      process_id: "drying_system"
+      flow_role: "gas_burner"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_condenser
+      process_id: "drying_system"
+      flow_role: "condenser"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_charged_heatpump
+      process_id: "drying_system"
+      flow_role: "charged_heatpump"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_uncharged_heatpump
+      process_id: "drying_system"
+      flow_role: "uncharged_heatpump"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_r290_fill
+      process_id: "drying_system"
+      flow_role: "r290_fill"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_r290_recovery
+      process_id: "drying_system"
+      flow_role: "r290_recovery"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_r290_air
+      process_id: "drying_system"
+      flow_role: "r290_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Species-specific calibrated exhaust/effluent or leak measurement with matched concentration, flow, time and compartment; validated chemistry-specific method if measurement unavailable; retain uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_drying_power
+      process_id: "drying_system"
+      flow_role: "drying_power"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_test_water
+      process_id: "acceptance"
+      flow_role: "test_water"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated mass/volume and measured density at actual conditions; opening/closing stocks, input moisture, carryover, evaporation and discharge; matched own solids and species assays, destination and uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_test_detergent
+      process_id: "acceptance"
+      flow_role: "test_detergent"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_test_power
+      process_id: "acceptance"
+      flow_role: "test_power"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_test_wastewater
+      process_id: "acceptance"
+      flow_role: "test_wastewater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated mass/volume and measured density at actual conditions; opening/closing stocks, input moisture, carryover, evaporation and discharge; matched own solids and species assays, destination and uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_rejected_machine
+      process_id: "acceptance"
+      flow_role: "rejected_machine"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_carton
+      process_id: "dispatch"
+      flow_role: "carton"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_eps
+      process_id: "dispatch"
+      flow_role: "eps"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated weighing with receipts, issues, stock and paired internal transfers; supplier/BOM and own grade/composition and moisture basis where physical material applies."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_residual_power
+      process_id: "shared_services"
+      flow_role: "residual_power"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated service meter and interval logs; raw kWh for electricity, own composition/calorific value and temperature/pressure for fuel; actual allocation and same-period site reconciliation."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_steam
+      process_id: "shared_services"
+      flow_role: "steam"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Meter delivered steam mass kg and own delivered specific enthalpy MJ/kg, common enthalpy datum, pressure, temperature and quality; retain independent return kg and own return MJ/kg on the same datum, supplier gross/net interface and no duplicated boiler/return energy."
+      unit: "MJ"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_condensate_return
+      process_id: "shared_services"
+      flow_role: "condensate_return"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Independently meter external return kg and own return MJ/kg at measured pressure, temperature and quality with the same common enthalpy datum as delivery; calculate returned MJ, retain interval and receiving boundary, reconcile gross/net service once and pair internal return transfers."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_makeup_water
+      process_id: "shared_services"
+      flow_role: "makeup_water"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated mass/volume and measured density at actual conditions; opening/closing stocks, input moisture, carryover, evaporation and discharge; matched own solids and species assays, destination and uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_sludge
+      process_id: "shared_services"
+      flow_role: "sludge"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Calibrated mass/volume and measured density at actual conditions; opening/closing stocks, input moisture, carryover, evaporation and discharge; matched own solids and species assays, destination and uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_water_vapour
+      process_id: "shared_services"
+      flow_role: "water_vapour"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Species-specific calibrated exhaust/effluent or leak measurement with matched concentration, flow, time and compartment; validated chemistry-specific method if measurement unavailable; retain uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_co2
+      process_id: "shared_services"
+      flow_role: "co2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Species-specific calibrated exhaust/effluent or leak measurement with matched concentration, flow, time and compartment; validated chemistry-specific method if measurement unavailable; retain uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_co
+      process_id: "shared_services"
+      flow_role: "co"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Species-specific calibrated exhaust/effluent or leak measurement with matched concentration, flow, time and compartment; validated chemistry-specific method if measurement unavailable; retain uncertainty."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+    - protocol_id: cp_no2
+      process_id: "shared_services"
+      flow_role: "no2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; raw amount/unit; Q; N; D; M; route; stock; supplier; allocation; calibration; uncertainty"
+      collection_method: "Retain actual NO and NO2 measurements separately, original report units, NOx-as-NO2-equivalent convention and molecular-mass/molar conversions; aggregate NOx without a species split cannot establish pure NO2."
+      unit: "kg"
+      frequency: "Each lot or meter interval; period reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects/rework"
+      site_scope: "Matched configuration process and same-period residual site service"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "Original receipts; calibration; supplier boundary; applicable assays; uncertainty"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "stainless_sheet; galvanized_sheet; abs_resin; pp_resin; concrete_ballast; fabrication_power; steel_scrap; abs_scrap; sodium_hydroxide; epoxy_powder; isopropanol; surface_power; natural_gas; paint_residue; spent_solvent; ipa_air; wash_motor; dishwash_pump; dishwash_arm; drain_pump; control_board; wire_harness; epdm_seal; manual_crank; assembly_power; resistance_heater; dryer_blower; gas_burner; condenser; charged_heatpump; uncharged_heatpump; r290_fill; r290_recovery; r290_air; drying_power; test_water; test_detergent; test_power; test_wastewater; rejected_machine; carton; eps; residual_power; steam; condensate_return; makeup_water; sludge; water_vapour; co2; co; no2"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: traceability
+      applies_to: "all inventory rows"
+      requirement: "Actual configuration, supplier completion, grade/recipe, gate and provider geography/time; every actual exchange atomic and localized; no unsupported UUID substitutes."
+      evidence: "BOM; drawings; certificates; direct identities; provider records"
+    - id: closure
+      applies_to: "physical materials and species"
+      requirement: "Close each metal/polymer/chemical on its own species and wet/dry basis: external input plus opening stock and documented formation equals accepted product, external scrap/sludge/wastewater/release, closing stock and actual reaction/destruction. Each term uses its own assay; oxygen/reagent uptake and reaction products retained. Pair internal returns; never count gross mass as contained metal. Close actual water including input moisture, stocks, evaporation, product carryover, discharge and reaction. Every wet input, product, opening/closing stock, sludge, wastewater and waste uses its own measured water fraction and wet/dry basis; volume terms use their own measured density. Retain paired return transfers and investigate closure against actual combined measurement, sampling and allocation uncertainty."
+      evidence: "Matched weighings; assays; moisture; reaction and stock records"
+    - id: solvent_charge
+      applies_to: "isopropanol; spent_solvent; ipa_air; r290_fill; r290_recovery; r290_air"
+      requirement: "Separate product retention, recovery, capture media, stocks, actual destruction and every air/non-air residual. Capture is not destruction and recovered mass is not zero release. An unexplained balance residual is not automatically an air emission; investigate non-air retained material, waste, water and stock terms first, without assigning an unsupported fate. Investigate closure with actual combined sampling, measurement and allocation uncertainty; no universal tolerance."
+      evidence: "Charge/cylinder tare; capture/recovery assays; destruction receipt; species balance"
+    - id: utility_reconcile
+      applies_to: "all utility rows"
+      requirement: "Each service reconciles the same period/units: imports plus actual generation less exports and storage change equals assigned process use and unassigned residual. Shared services carry only residual; actual onsite generation replaces purchased service for that fraction and adds its own fuel/controls. Investigate negative residual against meter/time/allocation uncertainty; never clip."
+      evidence: "Imports/generation/export/storage and submeters; causal allocation"
+validation_rules:
+  - rule_id: identity_scope
+    applies_to: "final_product"
+    rule: "Reject appliance/service confusion, mismatched configuration or unsupported classification assignment. Household centrifugation and borderline marketed capacities require explicit review; no automatic mapping from HS or supplier marketing."
+    source_ids:
+      - unsd-cpc3
+      - thomas-spin
+  - rule_id: measurement_complete
+    applies_to: "all inventory rows"
+    rule: "Require positive N/D, calibrated cp_mass, same configuration and period, supported normalize_mass for every applicable input/output and original Q records. Reject packaging/reject mass in D, double counted bought components/charge or consumer factors."
+    source_ids: []
+  - rule_id: balances
+    applies_to: "physical balances"
+    rule: "Require separate gross and contained-species/water/solvent/charge/energy closure with stocks and internal-return cancellation. Unexplained discrepancy beyond actual combined uncertainty requires investigation; no invented default yield or threshold."
+    source_ids: []
+  - rule_id: gaps
+    applies_to: "all exchanges"
+    rule: "Unavailable UUID/provider/recipe/measurement is unknown, not zero/not_applicable. Add every actual conditional route exchange before downstream use; report checks performed/skipped and remaining limitations. Candidate methodology does not satisfy publication identity/evidence gates by itself."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Actual declared household appliance factory manufacture; downstream lifecycle with separately evidenced use/end-of-life"
+  excluded_use: "Laundry/dishwashing service; generic appliance functional comparison; automatic commercial or spin-dryer assignment"
+  required_metadata: "All reference qualifiers, model/BOM, N/D/M, Q and providers, make/buy, charge, factory boundaries, allocation and actual exclusions"
+  required_quality_disclosure: "Measured coverage, route evidence, identity/provider gaps, site period and actual uncertainty; no invented ranges"
+  update_trigger: "Changed configuration, supplier, grade/recipe, heating/refrigerant route, gate, acceptance or measured service allocation"
+data_sources:
+  - id: "unsd-cpc3"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 explanatory notes, 30 June 2025, printed pp.237,239,241. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Current titles/hierarchy and 44622/44812/44911 adjacent boundary; no model crosswalk inferred"
+  - id: "laundry-alternative-manual"
+    type: "handbook"
+    reference: "The Laundry Alternative, WonderWash original product page, publisher snapshot 2026-10-02. https://www.laundry-alternative.com/products/the-wonderwash"
+    used_for: "Hand drive and ABS; excludes imposed electric motor/spin function; conflicting dimensions and marketing mass/time/water not adopted"
+  - id: "speedqueen-home-stack"
+    type: "handbook"
+    reference: "Speed Queen, ATEE9AWP435AW01 electric / ATGE9AWP305AW01 gas home stack washer dryer, undated original publisher snapshot 2026-10-02, pp.1–3. https://speedqueen.com/au/wp-content/uploads/sites/21/2019/01/Speed-Queen-Stack-ATEE9A-ATGE9A-NEW.pdf"
+    used_for: "Home design counterexample; separate washer and gas/electric vented dryer; stainless tub, galvanized cabinet; shipping weight not net reference"
+  - id: "bosch-dishwashers"
+    type: "handbook"
+    reference: "Bosch, Stainless Steel Dishwashers original product family page, publisher snapshot 2026-10-02. https://www.bosch-home.com/us/products/dishwashers/stainless-steel-dishwashers/"
+    used_for: "Household dishwashing function, stainless design, motor/spray-arm and insulation architecture only; no grade/recipe assumed"
+  - id: "bosch-dryers-2021"
+    type: "handbook"
+    reference: "Bosch New Zealand, Bosch Dryers brochure, July 2021, pp.4,6. https://media3.bosch-home.com/Documents/MCDOC03215793_Bosch_NZ_Dryer_Brochure.pdf"
+    used_for: "Heatpump/condensing/washer-dryer alternatives and condensate drainage; actual model supplier scope required"
+  - id: "bosch-heatpump-r290"
+    type: "handbook"
+    reference: "Bosch, WQB245B0SG Series 8 Heat Pump Dryer specification, undated publisher snapshot 2026-10-02, pp.1–2. https://media3.bosch-home.com/Documents/specsheet/en-MY/WQB245B0SG.pdf"
+    used_for: "Hermetic R290 heatpump, stainless drum and condensate container; heading says fluorinated greenhouse gases though R290 is propane; no label-derived chemical factor, charge/mass default"
+  - id: "bosch-condensing-sheet"
+    type: "handbook"
+    reference: "Bosch, WTR88T81GB Product information sheet, footer 04.07.2025, pp.1–2. https://media3.bosch-home.com/Documents/eudatasheet/en-IE/WTR88T81GB.pdf"
+    used_for: "Condensing label counterexample; blank numerical cells and No entry cannot establish factory amounts or absence of refrigerant"
+  - id: "thomas-spin"
+    type: "handbook"
+    reference: "THOMAS, Spin dryer CENTRI 776 SEK original product page, publisher snapshot 2026-10-02. https://thomas-germany.com/en-uk/THOMAS-Spin-dryer-CENTRI-776-SEK/"
+    used_for: "Separate centrifugal appliance counterexample and device/boxed mass distinction; model classification remains reviewed"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:40c1d9feb8409ceb706a52a8216816342acc354347fb212d2548853c6431c51d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6201"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6201
+          line: 57
+          column: 1
+        end:
+          offset: 8288
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual received sheet, resin or completed purchased component, with supplier operations and retained initial fill declared |\n| starting_condition_role | Supplier material/component interface |\n| product_classification_scope | Reviewed complete household washing/drying/dishwashing category |\n| recursive_input_rule | Purchased same-category subassembly or returned unit retains upstream manufacture once; internal rework cancels only transfer quantities |\n| upstream_dataset_requirement | Actual material, completed component, utility, transport and waste providers; gaps cannot mean zero |\n| disclosure | Model/BOM, make/buy, operations omitted as supplier-completed, charges, site, period and gate; infrastructure/maintenance cutoffs justified |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| factory_only | all processes | Include actual fabrication, surface work, assembly, charge if present, factory acceptance/rework, packaging and attributable controls; later installation, consumer water/energy/detergent and end-of-life are separate scenarios. Consumer energy labels never become factory factors. | bosch-dryers-2021; speedqueen-home-stack |\n| make_buy_once | all processes | For every tub/drum, motor, pump, board, harness, seal, heating unit and refrigeration circuit, record delivered state and one mutually exclusive make/buy path. Bought finished parts include upstream materials/processes; in-house paths replace them with actual atomic inputs and processes. Charged circuit excludes a second initial fill; uncharged circuit requires actual factory fill. | bosch-heatpump-r290 |\n| site_completion | all processes | Cards are conditional evidence-guided starting points, not a complete default BOM. Add every actually present grade, compound, purchased part, fuel, transport interface, refrigerant, chemical, waste and elementary species separately before dataset validation; retain unknown versus demonstrated not_applicable. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 353
+              line: 8
+              column: 113
+          text: "# Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6201
+              line: 57
+              column: 1
+            end:
+              offset: 6222
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48582"
+      family: "allocation"
+      span:
+        start:
+          offset: 48582
+          line: 944
+          column: 1
+        end:
+          offset: 49461
+          line: 951
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| avoid_allocation | all processes | First isolate configuration production lines and causal meters. Allocate mixed runs and residual shared services by measured driver appropriate to the service (time, metered load, handled mass or wastewater load); disclose rejected/reworked burden assigned to accepted output. Do not default every utility to product mass. |  |\n| scrap_treatment | steel_scrap; abs_scrap; paint_residue; r290_recovery | Internal returns cancel paired transfers but retain repeated process burden. External recycling/disposal uses actual destination and a declared consistent allocation convention. No automatic avoided-primary-material credit or arbitrary negative burden. Separate any sold co-product by actual sale, quality and quantity. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 353
+              line: 8
+              column: 113
+          text: "# Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48582
+              line: 944
+              column: 1
+            end:
+              offset: 48622
+              line: 944
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_91583"
+      family: "validation"
+      span:
+        start:
+          offset: 91583
+          line: 1029
+          column: 1
+        end:
+          offset: 92896
+          line: 1038
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| identity_scope | final_product | Reject appliance/service confusion, mismatched configuration or unsupported classification assignment. Household centrifugation and borderline marketed capacities require explicit review; no automatic mapping from HS or supplier marketing. | unsd-cpc3; thomas-spin |\n| measurement_complete | all inventory rows | Require positive N/D, calibrated cp_mass, same configuration and period, supported normalize_mass for every applicable input/output and original Q records. Reject packaging/reject mass in D, double counted bought components/charge or consumer factors. |  |\n| balances | physical balances | Require separate gross and contained-species/water/solvent/charge/energy closure with stocks and internal-return cancellation. Unexplained discrepancy beyond actual combined uncertainty requires investigation; no invented default yield or threshold. |  |\n| gaps | all exchanges | Unavailable UUID/provider/recipe/measurement is unknown, not zero/not_applicable. Add every actual conditional route exchange before downstream use; report checks performed/skipped and remaining limitations. Candidate methodology does not satisfy publication identity/evidence gates by itself. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 353
+              line: 8
+              column: 113
+          text: "# Dishwashing machines and clothes or linen washing or drying machines, household type, electric or non-electric"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 91583
+              line: 1029
+              column: 1
+            end:
+              offset: 91605
+              line: 1029
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "factory_only"
+      identity_kind: "explicit"
+      unit_id: "normative_6201"
+      source_span:
+        start:
+          offset: 7134
+          line: 72
+          column: 1
+        end:
+          offset: 7491
+          line: 72
+          column: 358
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "make_buy_once"
+      identity_kind: "explicit"
+      unit_id: "normative_6201"
+      source_span:
+        start:
+          offset: 7492
+          line: 73
+          column: 1
+        end:
+          offset: 7934
+          line: 73
+          column: 443
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "site_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_6201"
+      source_span:
+        start:
+          offset: 7935
+          line: 74
+          column: 1
+        end:
+          offset: 8286
+          line: 74
+          column: 352
+    - pointer: "/allocation_rules/0"
+      rule_id: "avoid_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_48582"
+      source_span:
+        start:
+          offset: 48695
+          line: 948
+          column: 1
+        end:
+          offset: 49059
+          line: 948
+          column: 365
+    - pointer: "/allocation_rules/1"
+      rule_id: "scrap_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_48582"
+      source_span:
+        start:
+          offset: 49060
+          line: 949
+          column: 1
+        end:
+          offset: 49459
+          line: 949
+          column: 400
+    - pointer: "/validation_rules/0"
+      rule_id: "identity_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_91583"
+      source_span:
+        start:
+          offset: 91678
+          line: 1033
+          column: 1
+        end:
+          offset: 91979
+          line: 1033
+          column: 302
+    - pointer: "/validation_rules/1"
+      rule_id: "measurement_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_91583"
+      source_span:
+        start:
+          offset: 91980
+          line: 1034
+          column: 1
+        end:
+          offset: 92282
+          line: 1034
+          column: 303
+    - pointer: "/validation_rules/2"
+      rule_id: "balances"
+      identity_kind: "explicit"
+      unit_id: "normative_91583"
+      source_span:
+        start:
+          offset: 92283
+          line: 1035
+          column: 1
+        end:
+          offset: 92570
+          line: 1035
+          column: 288
+    - pointer: "/validation_rules/3"
+      rule_id: "gaps"
+      identity_kind: "explicit"
+      unit_id: "normative_91583"
+      source_span:
+        start:
+          offset: 92571
+          line: 1036
+          column: 1
+        end:
+          offset: 92894
+          line: 1036
+          column: 324
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6201"
+      source_span:
+        start:
+          offset: 6201
+          line: 57
+          column: 1
+        end:
+          offset: 6222
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6201"
+      source_span:
+        start:
+          offset: 6250
+          line: 61
+          column: 1
+        end:
+          offset: 7061
+          line: 68
+          column: 157
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48582"
+      source_span:
+        start:
+          offset: 48582
+          line: 944
+          column: 1
+        end:
+          offset: 48622
+          line: 944
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_91583"
+      source_span:
+        start:
+          offset: 91583
+          line: 1029
+          column: 1
+        end:
+          offset: 91605
+          line: 1029
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:40c1d9feb8409ceb706a52a8216816342acc354347fb212d2548853c6431c51d"
+  generated_content_sha256: "sha256:bfa643ded8ebbc4945406cf6e54d6bcdd2f016c8c0b73754820de3ab8189d904"

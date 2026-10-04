@@ -1,10 +1,2105 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44827"
-  title: "Other non-electric water heaters"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.other-non-electric-water-heaters"
+  classification_refs: "CPC 3.0:44827; HS 2022:8419.11,8419.19"
+  covered_products: "Complete other non-electric instantaneous/storage heaters; actual gas/storage/other-fuel/indirect configurations subject to principal-function and supplied-state review"
+  excluded_products: "Solar/electric water heating, central heating boilers, separate tank/exchanger/burner/parts as complete output; industrial multifunction boundary unresolved until review"
+  representative_product: "One declared complete accepted configuration, not one gas model universalized"
+  production_route: "Actual make/buy vessel/exchanger/burner/controls/lining/insulation/integration and factory test route"
+  market_state: "Complete accepted factory supply list including separately boxed included accessories and actual retained fill; installation-only supplies excluded"
+functional_unit:
+  what: "Supply a complete non-electric water heater, not consumer hot-water service"
+  how_much: "1 kg accepted net complete machine mass of the same configuration"
+  how_well: "Meets actual hydraulic, combustion, pressure, leak, safety and declared acceptance requirements"
+  how_long_or_cycle: "One manufacturing/delivery period; no default lifetime"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: gate
+      applies_to: "foreground"
+      rule: "Include receipt, actual site fabrication/corrosion/insulation, integration, factory acceptance/rework, services, wastes and packing to accepted release."
+      source_ids:
+        - rinnai-condensing
+        - bw-gas-storage
+        - bw-indirect
+        - bock-oil
+    - rule_id: make_buy
+      applies_to: "supplier_interface"
+      rule: "Bought complete tank/burner/exchanger/controller embeds its upstream materials and operations once. Own fabrication uses feedstocks and actual operations instead. Partial supplied modules disclose remaining work. Pair internal transfers and count each burden once."
+      source_ids:
+        - rinnai-condensing
+        - bw-gas-storage
+        - bw-indirect
+        - bock-oil
+    - rule_id: factory_use
+      applies_to: "production"
+      rule: "Include actual factory hydrostatic/leak and burner/function test water, gas/oil/electricity and losses; separate retained shipped fills and accessories. User fuel/hot water, installation vent/pipe/commissioning and use-phase condensate are outside factory production. Manufacturer installer instructions do not prove factory test amounts."
+      source_ids: []
+    - rule_id: bom_extension
+      applies_to: "route"
+      rule: "Atomic cards are conditional anchors, not a universal recipe. Add each actual grade, coating ingredient, foam precursor/blowing agent, weld gas, fuel, accessory, fill, waste and emitted species; require actual formulation/assay and route. not_applicable requires absence evidence; unknown is not zero."
+      source_ids: []
+    - rule_id: upstream
+      applies_to: "links"
+      rule: "Actual upstream production/transport and external treatment links need supplied state/geography/period. Supplier boiler fuel embedded in purchased heat is not onsite combustion; no complete cradle-to-gate claim before missing providers are resolved."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual input grade/completed state and supplier delivery interface"
+  starting_condition_role: "Factory receipt boundary"
+  product_classification_scope: "Complete other non-electric water heater, actual principal function and supplied state reviewed"
+  recursive_input_rule: "Same-category bought precursor upstream once; subsequent site work only; paired internal transfers cancel"
+  upstream_dataset_requirement: "Actual grade/formulation/state/provider/geography/period; link complete bought units without expanding embedded material twice"
+  disclosure: "make-buy; complete supply list; site process; test fuel/water; retained fill; installer exclusions; classification gaps; denominator/uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Other non-electric water heaters"
+    uuid: "5df9cf00-65b4-4cb5-b2b9-46664241c680"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "principal function and domestic/commercial/industrial market"
+    - "actual classification/supply boundary"
+    - "model/revision"
+    - "instantaneous/storage"
+    - "actual gas/fuel/indirect source"
+    - "condensing/non-condensing"
+    - "tank/coil/burner make-buy"
+    - "corrosion lining/anode/insulation formulation"
+    - "vent/fan/controls"
+    - "included vs installer accessories"
+    - "actual retained fill"
+    - "pressure/leak/burner/electrical factory acceptance"
+    - "calibrated net mass/common-period accepted N"
+    - "providers/geography/voltage/units"
+    - "species/compartment and uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: physical_basis
+    applies_to: "material/water/species"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Each term uses its own assay, moisture, wet/dry basis, measured temperature/density, stocks and reactions; gross mass is not contained element."
+  - id: gas_state
+    applies_to: "test gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Declare meter reference state and actual T/P/humidity; mass/volume conversion uses actual composition/density, never power-plant case factors."
+  - id: energy_interface
+    applies_to: "energy"
+    required_property_ref:
+      name: "Delivered energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Electricity 1 kWh=3.6 MJ. Heat supply mass times own enthalpy minus independent return mass times own enthalpy/common datum; gross subtract return once, already-net never twice."
+process_map:
+  - id: fabrication
+    name: "Vessel, exchanger and housing fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Conditional own forming/welding/brazing, cleaning, corrosion lining/firing, insulation and jacket; bought complete tank/exchanger bypasses embedded fabrication"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: integration
+    name: "Heater integration"
+    inclusion: "required"
+    inclusion_condition: "Actual burner or indirect heat interface, controls, valves, fan/vent, refractory, seals and shipped accessories/fills; gas tankless does not require storage tank"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: test
+    name: "Factory acceptance and rework"
+    inclusion: "required"
+    inclusion_condition: "Actual pressure/leak/corrosion integrity, burner ignition/gas safety/thermal function and electrical auxiliaries; trace fuel and test medium consumed; installer commissioning excluded"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Packing and accepted release"
+    inclusion: "required"
+    inclusion_condition: "Complete accepted actual supply list; exclude transport packaging and consumed test loads from net product mass"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: services
+    name: "Residual utilities"
+    inclusion: "conditional"
+    inclusion_condition: "Only common-period unassigned residual and actual onsite generation, not duplicated whole-site imports"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Vessel, exchanger and housing fabrication"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Carbon steel sheet"
+          name: "Carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual certified carbon-steel plate for own vessel/jacket. Do not adopt a sheet-piling or contradictory bilingual identity; record grade/state and own Fe/C assay."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: stainless
+          role: "Stainless steel sheet"
+          name: "Flat-rolled products of stainless steel, further worked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "add37984-82d6-4c91-85e3-9911c0135944"
+          property_unit: "Mass / kg"
+          description: "Conditional actual further-worked stainless flat stock and supplier grade for own exchanger/vessel/housing; unfinished rolled stock needs another matching identity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: copper_tube
+          role: "Copper tube"
+          name: "Copper tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual certified pressure tube for own exchanger fabrication; recreational-tubing comment is incompatible, UUID unresolved."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: braze
+          role: "Silver brazing alloy"
+          name: "Silver brazing alloy"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual silver-bearing brazing alloy consumed on site; collect own Ag/Cu chemistry and flux separately; solder is not automatically this alloy."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: weld_wire
+          role: "Steel welding wire"
+          name: "Steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Own welding actual wire grade and chemistry; non-consumable route can evidence absence."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: argon
+          role: "Argon gas"
+          name: "Argon gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual pure gaseous shielding/purge argon only; liquid procurement or CO2 mixture differs and requires its own supplied-state row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: enamel
+          role: "Vitreous enamel frit"
+          name: "Vitreous enamel frit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual own enamel frit/formulation and lining/firing; a completed bought lined tank embeds it once. Other surface pretreatment/coating chemistry requires separate atomic rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: magnesium
+          role: "Magnesium anode rod"
+          name: "Magnesium anode rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual completed magnesium corrosion anode supplied with heater; collect alloy and net included mass, never substitute graphite/carbon anode."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: glass_wool
+          role: "Glass wool insulation"
+          name: "Glass Wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "85977f80-d866-44ec-bac9-52cb2d9fb421"
+          property_unit: "Mass / kg"
+          description: "Only actual glass wool insulation grade. Do not transfer published bulk density as a factory mass factor."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: pu_foam
+          role: "Rigid polyurethane insulation foam"
+          name: "Rigid polyurethane insulation foam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased cured rigid polyurethane insulation; onsite foaming instead records each real polyol/isocyanate/blowing agent/catalyst and losses separately, no generic OSB adhesive recipe."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Actual fabrication wash/process supply; actual water fraction, density at measured temperature and recirculation stocks required."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Only actual chemical IPA cleaning input; commercial mixed cleaner requires its actual composition row; no assumed evaporation fraction."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: steel_tube
+          role: "Carbon steel tube"
+          name: "Carbon steel tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual carbon-steel tube for own indirect coil or tank flue; preserve certified grade and pressure/surface state; bought complete coated coil embeds fabrication once."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: polyol
+          role: "Polyether polyol"
+          name: "Polyether Polyol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "328068ba-3cd2-44c7-a118-8274c9c7885b"
+          property_unit: "Mass / kg"
+          description: "Only actual propylene-oxide block-polymerization polyether polyol at chemical-plant supply, matching this selected route for own polyurethane foaming. Other polyether grades/routes need their own identity; require actual formulation, hydroxyl and assay records without generic recipe, bio-content or performance assumptions."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: pmdi
+          role: "Polymeric methylene diphenyl diisocyanate"
+          name: "Polymeric methylene diphenyl diisocyanate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual foam-grade polymeric MDI; OSB adhesive resin is incompatible. Actual isocyanate chemistry, assay and other blowing agent/catalyst rows required; supplied cured foam bypasses onsite formulation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Delivered energy / MJ"
+          description: "Actual metered process load, not stacked with whole-site/residual electricity; selected CN1–35kV requires actual delivery interface match."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Meter actual factory burner test or onsite firing gas; project-specific power-station composition/provider rejected. Declare actual gas specification and meter T/P/humidity/density; no use-phase fuel burden."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e4449c6f-3b27-426d-ba8d-47c20c99c609"
+          property_unit: "Mass / kg"
+          description: "Actual distinct offsite waste transfer with own composition/moisture/stock and treatment interface; keep recovered internal return paired. Waste mass is not elemental discharge to water/air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper scrap"
+          name: "Copper scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual distinct offsite waste transfer with own composition/moisture/stock and treatment interface; keep recovered internal return paired. Waste mass is not elemental discharge to water/air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: enamel_sludge
+          role: "Enamelling wastewater sludge"
+          name: "Enamelling wastewater sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual distinct offsite waste transfer with own composition/moisture/stock and treatment interface; keep recovered internal return paired. Waste mass is not elemental discharge to water/air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: spent_solvent
+          role: "Spent isopropanol solvent"
+          name: "Spent isopropanol solvent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual distinct offsite waste transfer with own composition/moisture/stock and treatment interface; keep recovered internal return paired. Waste mass is not elemental discharge to water/air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_co2
+          role: "Carbon dioxide fossil"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_co
+          role: "Carbon monoxide fossil"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_no2
+          role: "Nitrogen dioxide"
+          name: "Nitrogen dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual measured molecular NO2 to air only; nitrite and NOx reported as NO2-equivalent are different identities, unresolved."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_so2
+          role: "Sulfur dioxide"
+          name: "Sulfur dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual measured molecular SO2 from applicable site combustion, ordinary air compartment; indoor/stratosphere/water candidates rejected."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+        - row_id: fabrication_water_vapour
+          role: "Water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - bw-indirect
+                - bw-gas-storage
+            ranges: []
+  - id: integration
+    label: "Heater integration"
+    inputs:
+      product:
+        - row_id: tank_module
+          role: "Glass-lined water heater tank"
+          name: "Glass-lined water heater tank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied glass-lined storage tank in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: burner_module
+          role: "Gas water heater burner assembly"
+          name: "Gas water heater burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied gas water heater burner in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: oil_burner
+          role: "Oil burner assembly"
+          name: "Oil burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied oil burner in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: exchanger_module
+          role: "Water heater heat exchanger"
+          name: "Water heater heat exchanger"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied water heater exchanger in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: valve
+          role: "Water heater pressure relief valve"
+          name: "Water heater pressure relief valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied pressure relief valve in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: gas_valve
+          role: "Water heater gas control valve"
+          name: "Water heater gas control valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied gas control valve in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: controller
+          role: "Water heater electronic controller"
+          name: "Water heater electronic controller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied electronic controller in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: fan
+          role: "Water heater combustion fan"
+          name: "Water heater combustion fan"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied combustion fan in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: vent
+          role: "Water heater flue vent"
+          name: "Water heater flue vent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied flue vent in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: refractory
+          role: "Fireclay refractory brick"
+          name: "Fireclay refractory brick"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied fireclay brick in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: gasket
+          role: "Silicone rubber gasket"
+          name: "Silicone rubber gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied silicone gasket in declared heater configuration. Bought complete state embeds upstream once; own manufacture uses actual feedstocks/operations and cancels internal transfers. Included versus installer-supplied accessory verified."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: retained_water
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass / kg"
+          description: "Only actual DI water retained in factory-shipped product; most drained test water is not shipped mass. Other retained fills require actual composition and separate identity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: drain_valve
+          role: "Brass drain valve"
+          name: "Brass drain valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual included brass drain valve, independently weighed supplied finished state; not generic bulk brass or installer-only valve."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: bracket
+          role: "Steel mounting bracket"
+          name: "Steel mounting bracket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied steel mounting bracket and included kit; Rinnai indoor kit differs from outdoor configuration and separately bought roof-jack."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: integration_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Delivered energy / MJ"
+          description: "Actual metered process load, not stacked with whole-site/residual electricity; selected CN1–35kV requires actual delivery interface match."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Factory acceptance and rework"
+    inputs:
+      product:
+        - row_id: test_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Audit missing actual exchanges separately; no universal recipe."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: test_air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Audit missing actual exchanges separately; no universal recipe."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Meter actual factory burner test or onsite firing gas; project-specific power-station composition/provider rejected. Declare actual gas specification and meter T/P/humidity/density; no use-phase fuel burden."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: propane
+          role: "Propane"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass / kg"
+          description: "Actual propane factory test only; liquefied supply and vaporization interface documented. Mixed LPG is not pure propane and requires actual mixture identity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: oil_fuel
+          role: "Light fuel oil"
+          name: "light fuel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2a02a3f7-8d3b-4556-aebc-318fddcbfe1e"
+          property_unit: "Volume / m3"
+          description: "Only actual matched light fuel oil consumed in factory test; selected flow native Volume/m3, convert mass using independently measured batch density/temperature. Do not adopt catalogue density or heating-value factors."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: test_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Delivered energy / MJ"
+          description: "Actual metered process load, not stacked with whole-site/residual electricity; selected CN1–35kV requires actual delivery interface match."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: effluent
+          role: "Water heater factory test wastewater"
+          name: "Water heater factory test wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual distinct offsite waste transfer with own composition/moisture/stock and treatment interface; keep recovered internal return paired. Waste mass is not elemental discharge to water/air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: heater_reject
+          role: "Rejected non-electric water heater"
+          name: "Rejected non-electric water heater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual terminal rejected heater transferred offsite; repairable returns stay paired internal rework; rejected mass excluded from accepted denominator."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Carbon dioxide fossil"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide fossil"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide"
+          name: "Nitrogen dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual measured molecular NO2 to air only; nitrite and NOx reported as NO2-equivalent are different identities, unresolved."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide"
+          name: "Sulfur dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual measured molecular SO2 from applicable site combustion, ordinary air compartment; indoor/stratosphere/water candidates rejected."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual independently measured species release to unspecified ordinary air, matched post-control concentration/flow/time/state and separate fugitive evidence. Assign each measured release to its actual fabrication or factory-test emitter/source and period once; do not stack duplicated whole-site totals over process rows. Only actual site source, no inferred residual-to-air."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - rinnai-condensing
+                - bock-oil
+            ranges: []
+  - id: dispatch
+    label: "Packing and accepted release"
+    inputs:
+      product:
+        - row_id: board
+          role: "Corrugated board"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Only actual C, E or F multi-layer corrugated fibreboard containing recycled material with fibre content at least80%, matching this selected identity; retain supplier composition/state evidence. This is board, not any cardboard or a bought complete box. Outside accepted net mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: pe_film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual polyethylene film packaging, not resin or luggage article; contradictory supplied-state classification remains identity review."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Actual EURO wooden pallet only when matching supply specification; other pallet designs need own identity. Packaging excluded from accepted net mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: dispatch_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Delivered energy / MJ"
+          description: "Actual metered process load, not stacked with whole-site/residual electricity; selected CN1–35kV requires actual delivery interface match."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Other non-electric water heater"
+          name: "Other non-electric water heaters"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5df9cf00-65b4-4cb5-b2b9-46664241c680"
+          property_unit: "Mass / kg"
+          description: "Selected complete accepted configuration includes actual retained fills/accessories, excluding packaging and rejects."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: services
+    label: "Residual utilities"
+    inputs:
+      product:
+        - row_id: purchased_heat
+          role: "Purchased steam heat"
+          name: "Heat, district or industrial, natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eb581eb3-c707-41a0-b4e6-ee1854551714"
+          property_unit: "Delivered energy / MJ"
+          description: "Only actual CN natural-gas district/industrial delivered heat matching the selected identity; not a universal steam provider. Record actual thermal interface; net heat supply/return independently reconciled, supplier upstream fuel not onsite."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Delivered energy / MJ"
+          description: "Only unassigned residual matching CN1–35kV user-side supply; actual other voltage/geography needs its own identity; onsite generation separate."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: causal
+    applies_to: "site"
+    rule: "Separate configurations and subdivisions first; allocate common residual by measured causal load, operating time or appropriate physical driver, retain numerator and denominator records and uncertainty. Do not average unrelated non-electric heater configurations or use heater mass automatically for every utility."
+    source_ids: []
+  - rule_id: rejects
+    applies_to: "accepted"
+    rule: "Include actual rejects, rework and qualification burdens in attributable Q for accepted output; only accepted net mass/count enters denominator. Segregate recycling transfer and treatment; do not assume avoided-product credits or zero upstream recycled burden."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "reference product"
+      record_type: "weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted lot"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration/tare/included accessories/acceptance"
+    - protocol_id: cp_material
+      process_id: "all"
+      flow_role: "actual inputs"
+      record_type: "meter_issue"
+      raw_fields: "specific species/grade; supplied state; native unit; gas actual T/P/humidity and meter reference state; issue; each moisture/density/assay; make/buy; stocks; Q; N"
+      collection_method: "Reconcile each exchange metering/stores/recipe and paired returns in common period; Q includes rejects/rework and each term own assay."
+      unit: "kg; m3"
+      frequency: "each batch or continuous meter"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site and supplier"
+      aggregation_rule: "attributable quantity / accepted machines"
+      quality_evidence: "grade/composition tests/meters/stocks"
+    - protocol_id: cp_energy
+      process_id: "all"
+      flow_role: "electricity and heat"
+      record_type: "meter"
+      raw_fields: "process meters; gross imports; actual generation; exports; storage; each supply/return steam mass pressure temperature enthalpy; net invoice; Q; N"
+      collection_method: "Reconcile process meters in same period/units; shared services only unassigned residual, investigate negative residual. Each steam supply/return uses own kg and MJ/kg/common zero, return deducted once."
+      unit: "MJ"
+      frequency: "continuous meters/each test"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site"
+      aggregation_rule: "attributable energy / accepted machines"
+      quality_evidence: "calibrated meters/delivery interface/thermodynamics/allocation uncertainty"
+    - protocol_id: cp_waste
+      process_id: "all"
+      flow_role: "specific waste"
+      record_type: "transfer"
+      raw_fields: "each stream mass and own moisture/assay; beginning/end stocks; internal return; external treatment; Q; N"
+      collection_method: "Weigh/sample treatment transfers, distinguish return/reuse/recycling/disposal without assumed substitution credit."
+      unit: "kg"
+      frequency: "each transfer lot"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site and treatment interface"
+      aggregation_rule: "attributable waste / accepted machines"
+      quality_evidence: "waste tickets/sampling/stocks"
+    - protocol_id: cp_emission
+      process_id: "all"
+      flow_role: "specific species/compartment"
+      record_type: "species_measurement"
+      raw_fields: "actual species/compartment; concentration; exhaust or liquid flow; wet/dry temperature/pressure; capture/destruction; own assays; Q; N"
+      collection_method: "Use matched species/compartment measured or verified actual technology factors; investigate closure, capture not destruction, residual not air emission."
+      unit: "kg"
+      frequency: "actual tests/emission periods"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site boundary"
+      aggregation_rule: "attributable emission / accepted machines"
+      quality_evidence: "sampling/flow/combined uncertainty"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: complete_bom
+      applies_to: "actual configuration"
+      requirement: "Cover all actual exchanges; separate make/buy/accessories/fills/test charges; gaps explicit"
+      evidence: "actual BOM/routes/suppliers"
+    - id: mass_period
+      applies_to: "cohort"
+      requirement: "Same configuration/period/acceptance, calibrated mass/stocks; no cross-configuration mean"
+      evidence: "calibration/period ledger"
+    - id: balance_uncertainty
+      applies_to: "physical balances"
+      requirement: "Own water fraction/density/assay/reactions/paired returns; compare combined uncertainty"
+      evidence: "measurement/sampling/reaction/allocation evidence"
+    - id: cohort_raw
+      applies_to: "common-period records"
+      requirement: "Naccepted, Dnet and Qattr share configuration/period. Dnet sums calibrated accepted net masses; M=Dnet/Naccepted, q_item=Qattr/Naccepted, q_ref=Qattr/Dnet. Qattr includes rejects/rework/factory tests; Dnet excludes packing/rejects/consumed test media; preserve each native numerator unit."
+      evidence: "actual period/calibrated acceptance ledger"
+    - id: species_sampling
+      applies_to: "air or liquid releases"
+      requirement: "Post-control species concentration times matched same-period gas/liquid flow or integrated duration; correct temperature/pressure/wet-dry/units; fugitives independently measured. Carbon closure cannot derive CO/NOx; NO2 not NOx-equivalent."
+      evidence: "actual sampling/flow/period/state records"
+    - id: provider_gaps
+      applies_to: "links"
+      requirement: "Each actual upstream/treatment matches state/geography/period; unverified not complete footprint"
+      evidence: "direct records/substitution disclosure"
+validation_rules:
+  - rule_id: identity
+    applies_to: "dataset"
+    rule: "Confirm principal function, intended market, model/revision, delivered configuration and activated architecture. Every actual exchange needs matching identity/property/unit/provider; absent, zero and unknown remain distinct."
+    source_ids: []
+  - rule_id: denominator
+    applies_to: "all inventory rows"
+    rule: "All inventory uses the same accepted cohort and common period. Verify calibrated accepted net mass and N; reject and packaging mass excluded. Check q_item=Q/N then normalization by same mean M; mixed configurations are invalid."
+    source_ids: []
+  - rule_id: double_count
+    applies_to: "make_buy"
+    rule: "Reconcile complete bought modules versus own materials and operations, retained fills/accessories versus factory consumption, paired internal transfers and external inputs. Count each actual burden once."
+    source_ids: []
+  - rule_id: water_close
+    applies_to: "physical water records"
+    rule: "For each term use its own measured water fraction, density and wet/dry basis: fresh and input moisture plus reaction water and beginning stocks minus final stocks, retained product, discharge and evaporation; internal returns cancel paired. Investigate measured closure against combined sampling/meter/allocation uncertainty; no universal tolerance."
+    source_ids: []
+  - rule_id: species_close
+    applies_to: "material and chemical records"
+    rule: "Close each contained metal/chemical separately using each input, product, scrap, sludge, liquid and release own matched assay and dry/wet basis, reaction stoichiometry and stocks. Gross mass is not contained element. No all-inventory mass rule applies to energy or transport."
+    source_ids: []
+  - rule_id: solvent_close
+    applies_to: "solvent records"
+    rule: "Distinguish retained solvent, recovered return, captured liquid/media, demonstrated destruction, wastewater/non-air residual and actual species air release. Capture is not destruction; an unexplained residual must be investigated, not assigned to air."
+    source_ids: []
+  - rule_id: utility_close
+    applies_to: "energy records"
+    rule: "Reconcile purchased imports, actual on-site generation, exports and storage changes with assigned fabrication/integration/test/dispatch loads in the same period and units. Shared row ONLY unassigned residual; investigate negative residual against period, unit and combined measurement uncertainty without clipping."
+    source_ids: []
+  - rule_id: steam_close
+    applies_to: "steam and condensate"
+    rule: "Use supply kg times supply own MJ/kg and return kg times return own MJ/kg at measured pressure/temperature relative to common zero. If gross supply, subtract return once; if already-net invoice, do not subtract again. Keep physical steam/condensate mass balance independent from energy."
+    source_ids: []
+  - rule_id: species_emissions
+    applies_to: "air releases"
+    rule: "Validate every emitted species and compartment independently. Fuel carbon balance cannot alone establish CO or NOx. NO2 mass is not NOx reported as NO2 equivalent; keep reporting conventions and actual species identities distinct."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "primary_dataset"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Actual configuration factory foreground production and models with explicit completed upstream links"
+  excluded_use: "Cross-configuration functional equivalence, default consumer service, default weight/manufacturing factors, complete footprint with missing providers"
+  required_metadata: "Section3 qualifiers, raw-period denominator, actual architecture/make-buy/boundary"
+  required_quality_disclosure: "collection coverage, provider/identity/recipe gaps, allocation/combined uncertainty, all conditions/exclusions"
+  update_trigger: "model/architecture/recipe/supply state/geography/measurement/factory-test/treatment changes"
+data_sources:
+  - id: "rinnai-condensing"
+    type: "handbook"
+    reference: "Tankless Water Heater Installation and Operation Manual; 100000467; 10/2017; https://media.rinnai.us/salsify_asset/s-378ffc11-7201-4965-a2f1-22e2286e360c/100000467-N%20Series%20Residential%20Condensing%20Installation%20and%20Operation%20Manual.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "bw-gas-storage"
+    type: "handbook"
+    reference: "Energy Saver Gas Water Heater; 107-B-0213-A; copyright2013; https://docs.bradfordwhite.com/Spec_Sheets/107_0213.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "bw-indirect"
+    type: "handbook"
+    reference: "Residential Single-Wall Indirect Water Heater; INT554-1125; copyright2025; https://docs.bradfordwhite.com/Spec_Sheets/INT554_Current.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "bock-oil"
+    type: "handbook"
+    reference: "Oil-Fired Water Heaters — Turboflue heat exchanger; Doc80014 Rev1/16; Bock authored distributor-hosted original; https://cdn.lsicloud.net/torrcosupl/productdocs/Bock_Water_32E_Specification_Sheet.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "un-cpc-44827"
+    type: "official_guidance"
+    reference: "Central Product Classification (CPC) Version 3.0 Explanatory Notes; 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "wco-hs2022"
+    type: "official_guidance"
+    reference: "HS2022 Chapter84 nomenclature; HS2022 Chapter84; https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1684_2022e.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "rheem-solar-adjacent"
+    type: "handbook"
+    reference: "Premier Hiline Solar Water Heater Owner’s Guide and Installation Instructions; 347490 RevA March2014; https://assets.ctfassets.net/phagqs82lusw/54M47Qq3UcOeGSEmag42WK/1aa2a920b6ad04b7293a09d15a630595/installinstruct-Rheemsolarpremierhiline52Cseries-347490RevA-2014Mar.pdf"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+  - id: "stiebel-hybrid-adjacent"
+    type: "handbook"
+    reference: "SB-E Single Coil DHW Tanks with Integral Backup Heating Element; undated publisher page; inspected 2026-10-02; https://www.stiebel-eltron-usa.com/products/sb-e-single-coil-domestic-hot-water-tanks-ingetral-backup-element-solar-geothermal-or-hydronic-applications"
+    used_for: "Product architecture/category boundary; not factory recipe or quantitative default"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:086d5ae61b4b24909085cbbc97d854482c269a617ea4607725c0c68880ddf8e5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6073"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6073
+          line: 60
+          column: 1
+        end:
+          offset: 9592
+          line: 90
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `gate` | foreground | Include receipt, actual site fabrication/corrosion/insulation, integration, factory acceptance/rework, services, wastes and packing to accepted release. | rinnai-condensing; bw-gas-storage; bw-indirect; bock-oil |\n| `make_buy` | supplier_interface | Bought complete tank/burner/exchanger/controller embeds its upstream materials and operations once. Own fabrication uses feedstocks and actual operations instead. Partial supplied modules disclose remaining work. Pair internal transfers and count each burden once. | rinnai-condensing; bw-gas-storage; bw-indirect; bock-oil |\n| `factory_use` | production | Include actual factory hydrostatic/leak and burner/function test water, gas/oil/electricity and losses; separate retained shipped fills and accessories. User fuel/hot water, installation vent/pipe/commissioning and use-phase condensate are outside factory production. Manufacturer installer instructions do not prove factory test amounts. |  |\n| `bom_extension` | route | Atomic cards are conditional anchors, not a universal recipe. Add each actual grade, coating ingredient, foam precursor/blowing agent, weld gas, fuel, accessory, fill, waste and emitted species; require actual formulation/assay and route. not_applicable requires absence evidence; unknown is not zero. |  |\n| `upstream` | links | Actual upstream production/transport and external treatment links need supplied state/geography/period. Supplier boiler fuel embedded in purchased heat is not onsite combustion; no complete cradle-to-gate claim before missing providers are resolved. |  |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual input grade/completed state and supplier delivery interface |\n| starting_condition_role | Factory receipt boundary |\n| product_classification_scope | Complete other non-electric water heater, actual principal function and supplied state reviewed |\n| recursive_input_rule | Same-category bought precursor upstream once; subsequent site work only; paired internal transfers cancel |\n| upstream_dataset_requirement | Actual grade/formulation/state/provider/geography/period; link complete bought units without expanding embedded material twice |\n| disclosure | make-buy; complete supply list; site process; test fuel/water; retained fill; installer exclusions; classification gaps; denominator/uncertainty |\n\n### Architecture and supplied-state matrix\n\n| Configuration | Actual fabrication/integration | Limits |\n| --- | --- | --- |\n| Gas instantaneous | Actual burner, exchanger, ignition, gas valve, sensing, vent/fan and conditional condensate path | No storage tank imposed; condensing and non-condensing need actual metallurgy and architecture |\n| Gas storage | Actual vessel/flue, lining, anode, insulation, jacket, burner and controls | Manufactured-home roof-jack source is a specific configuration, not default supplied kit |\n| Oil/other-fuel | Actual supplied burner/fuel pump/combustion interface and vessel/exchanger; add each real fuel/species | Bock shipping weight excludes burner/controls; use weighed complete supply state; other-fuel recipe unresolved |\n| Indirect/hybrid | Actual heating coil and external heat supply/return, tank and controls; actual backup declared | Generic coil tank, separate exchanger, central boiler and solar-ready/electric backup hybrids need classification review; no compulsory onsite burner |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 211
+              line: 8
+              column: 35
+          text: "# Other non-electric water heaters"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6073
+              line: 60
+              column: 1
+            end:
+              offset: 6094
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_61589"
+      family: "allocation"
+      span:
+        start:
+          offset: 61589
+          line: 1132
+          column: 1
+        end:
+          offset: 62334
+          line: 1139
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `causal` | site | Separate configurations and subdivisions first; allocate common residual by measured causal load, operating time or appropriate physical driver, retain numerator and denominator records and uncertainty. Do not average unrelated non-electric heater configurations or use heater mass automatically for every utility. |  |\n| `rejects` | accepted | Include actual rejects, rework and qualification burdens in attributable Q for accepted output; only accepted net mass/count enters denominator. Segregate recycling transfer and treatment; do not assume avoided-product credits or zero upstream recycled burden. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 211
+              line: 8
+              column: 35
+          text: "# Other non-electric water heaters"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 61589
+              line: 1132
+              column: 1
+            end:
+              offset: 61629
+              line: 1132
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67463"
+      family: "validation"
+      span:
+        start:
+          offset: 67463
+          line: 1170
+          column: 1
+        end:
+          offset: 70316
+          line: 1184
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `identity` | dataset | Confirm principal function, intended market, model/revision, delivered configuration and activated architecture. Every actual exchange needs matching identity/property/unit/provider; absent, zero and unknown remain distinct. |  |\n| `denominator` | all inventory rows | All inventory uses the same accepted cohort and common period. Verify calibrated accepted net mass and N; reject and packaging mass excluded. Check q_item=Q/N then normalization by same mean M; mixed configurations are invalid. |  |\n| `double_count` | make_buy | Reconcile complete bought modules versus own materials and operations, retained fills/accessories versus factory consumption, paired internal transfers and external inputs. Count each actual burden once. |  |\n| `water_close` | physical water records | For each term use its own measured water fraction, density and wet/dry basis: fresh and input moisture plus reaction water and beginning stocks minus final stocks, retained product, discharge and evaporation; internal returns cancel paired. Investigate measured closure against combined sampling/meter/allocation uncertainty; no universal tolerance. |  |\n| `species_close` | material and chemical records | Close each contained metal/chemical separately using each input, product, scrap, sludge, liquid and release own matched assay and dry/wet basis, reaction stoichiometry and stocks. Gross mass is not contained element. No all-inventory mass rule applies to energy or transport. |  |\n| `solvent_close` | solvent records | Distinguish retained solvent, recovered return, captured liquid/media, demonstrated destruction, wastewater/non-air residual and actual species air release. Capture is not destruction; an unexplained residual must be investigated, not assigned to air. |  |\n| `utility_close` | energy records | Reconcile purchased imports, actual on-site generation, exports and storage changes with assigned fabrication/integration/test/dispatch loads in the same period and units. Shared row ONLY unassigned residual; investigate negative residual against period, unit and combined measurement uncertainty without clipping. |  |\n| `steam_close` | steam and condensate | Use supply kg times supply own MJ/kg and return kg times return own MJ/kg at measured pressure/temperature relative to common zero. If gross supply, subtract return once; if already-net invoice, do not subtract again. Keep physical steam/condensate mass balance independent from energy. |  |\n| `species_emissions` | air releases | Validate every emitted species and compartment independently. Fuel carbon balance cannot alone establish CO or NOx. NO2 mass is not NOx reported as NO2 equivalent; keep reporting conventions and actual species identities distinct. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 211
+              line: 8
+              column: 35
+          text: "# Other non-electric water heaters"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67463
+              line: 1170
+              column: 1
+            end:
+              offset: 67485
+              line: 1170
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 6167
+          line: 64
+          column: 1
+        end:
+          offset: 6404
+          line: 64
+          column: 238
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "make_buy"
+      identity_kind: "explicit"
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 6405
+          line: 65
+          column: 1
+        end:
+          offset: 6766
+          line: 65
+          column: 362
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "factory_use"
+      identity_kind: "explicit"
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 6767
+          line: 66
+          column: 1
+        end:
+          offset: 7141
+          line: 66
+          column: 375
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "bom_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 7142
+          line: 67
+          column: 1
+        end:
+          offset: 7476
+          line: 67
+          column: 335
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 7477
+          line: 68
+          column: 1
+        end:
+          offset: 7754
+          line: 68
+          column: 278
+    - pointer: "/allocation_rules/0"
+      rule_id: "causal"
+      identity_kind: "explicit"
+      unit_id: "normative_61589"
+      source_span:
+        start:
+          offset: 61702
+          line: 1136
+          column: 1
+        end:
+          offset: 62041
+          line: 1136
+          column: 340
+    - pointer: "/allocation_rules/1"
+      rule_id: "rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_61589"
+      source_span:
+        start:
+          offset: 62042
+          line: 1137
+          column: 1
+        end:
+          offset: 62332
+          line: 1137
+          column: 291
+    - pointer: "/validation_rules/0"
+      rule_id: "identity"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 67558
+          line: 1174
+          column: 1
+        end:
+          offset: 67812
+          line: 1174
+          column: 255
+    - pointer: "/validation_rules/1"
+      rule_id: "denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 67813
+          line: 1175
+          column: 1
+        end:
+          offset: 68084
+          line: 1175
+          column: 272
+    - pointer: "/validation_rules/2"
+      rule_id: "double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 68085
+          line: 1176
+          column: 1
+        end:
+          offset: 68323
+          line: 1176
+          column: 239
+    - pointer: "/validation_rules/3"
+      rule_id: "water_close"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 68324
+          line: 1177
+          column: 1
+        end:
+          offset: 68721
+          line: 1177
+          column: 398
+    - pointer: "/validation_rules/4"
+      rule_id: "species_close"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 68722
+          line: 1178
+          column: 1
+        end:
+          offset: 69054
+          line: 1178
+          column: 333
+    - pointer: "/validation_rules/5"
+      rule_id: "solvent_close"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 69055
+          line: 1179
+          column: 1
+        end:
+          offset: 69349
+          line: 1179
+          column: 295
+    - pointer: "/validation_rules/6"
+      rule_id: "utility_close"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 69350
+          line: 1180
+          column: 1
+        end:
+          offset: 69706
+          line: 1180
+          column: 357
+    - pointer: "/validation_rules/7"
+      rule_id: "steam_close"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 69707
+          line: 1181
+          column: 1
+        end:
+          offset: 70039
+          line: 1181
+          column: 333
+    - pointer: "/validation_rules/8"
+      rule_id: "species_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 70040
+          line: 1182
+          column: 1
+        end:
+          offset: 70314
+          line: 1182
+          column: 275
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 6073
+          line: 60
+          column: 1
+        end:
+          offset: 6094
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 7782
+          line: 72
+          column: 1
+        end:
+          offset: 8557
+          line: 79
+          column: 162
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6073"
+      source_span:
+        start:
+          offset: 8603
+          line: 83
+          column: 1
+        end:
+          offset: 9590
+          line: 88
+          column: 269
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_61589"
+      source_span:
+        start:
+          offset: 61589
+          line: 1132
+          column: 1
+        end:
+          offset: 61629
+          line: 1132
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67463"
+      source_span:
+        start:
+          offset: 67463
+          line: 1170
+          column: 1
+        end:
+          offset: 67485
+          line: 1170
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:086d5ae61b4b24909085cbbc97d854482c269a617ea4607725c0c68880ddf8e5"
+  generated_content_sha256: "sha256:b9b2be93a6c9f76a430c4245362bb74e860856d242f3513259d0ca2aa50f9fea"

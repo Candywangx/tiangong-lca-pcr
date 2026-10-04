@@ -1,10 +1,2650 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41281"
-  title: "Line pipe of a kind used for oil or gas pipelines, seamless, of steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.line-pipe-of-a-kind-used-for-oil-or-gas-pipelines-seamless-of-steel"
+  classification_refs: "CPC 3.0:41281"
+  covered_products: "Seamless steel line pipe for oil or gas pipelines"
+  excluded_products: "Welded pipe; OCTG; hollow profiles; fittings; installed pipeline"
+  representative_product: "Accepted seamless steel line pipe"
+  production_route: "Hot piercing/elongation/rolling or actual extrusion, conditional cold reduction and heat treatment, acceptance and actual surface system"
+  market_state: "Net accepted pipe at declared manufacturing gate"
+functional_unit:
+  what: "Seamless steel line pipe for oil or gas pipelines"
+  how_much: "1 kg"
+  how_well: "oil/gas linepipe application; specification and edition; product specification level; steel grade and heat chemistry; outside diameter, wall thickness and length; seamless forming route; hot/cold finishing; delivery heat-treatment condition; sour-service requirements; inspection and hydrotest acceptance; surface/coating system and coating mass; end preparation; site, period and feed starting state"
+  how_long_or_cycle: "One supply at manufacturing gate; no pipeline service life is claimed"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacturing
+      applies_to: "all processes"
+      rule: "Include actual preparation, heating, seamless forming, cold finishing if used, all interpass/delivery heat treatment, descaling, end finishing, acceptance, surface operations and attributable utilities through the stated gate."
+      source_ids:
+        - ec-fmp-bref-2022
+        - api-5l-announcement-2026
+    - rule_id: boundary_surface
+      applies_to: "surface_dispatch"
+      rule: "Bare and protected/coated pipe are separate declared states. Include the actual contract coating within the gate; outsourced coating carries supplier processing and transport. Later field-joint coating and installation are excluded."
+      source_ids:
+        - tenaris-coatings
+    - rule_id: boundary_site
+      applies_to: "all exchanges"
+      rule: "Include proportional handling, maintenance consumables and pollution controls. Justify infrastructure/capital exclusions or link their attributable service. Add every actual chemical, fuel, waste, emission and direct water source as an atomic row; these candidate cards do not replace a site audit."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received solid steel billet/bloom/bar or purchased hot-finished hollow tube; declare upstream completed operations and temperature"
+  starting_condition_role: "Supplier intermediate product"
+  product_classification_scope: "Seamless steel line pipe for oil or gas pipelines"
+  recursive_input_rule: "Purchased same-category pipe carries distinct supplier burden; internal rework transfers cancel and never receive substitution credits"
+  upstream_dataset_requirement: "Link actual feed steel route, electricity, each fuel/chemical, transport and waste destination; disclosed gaps cannot mean zero"
+  disclosure: "oil/gas linepipe application; specification and edition; product specification level; steel grade and heat chemistry; outside diameter, wall thickness and length; seamless forming route; hot/cold finishing; delivery heat-treatment condition; sour-service requirements; inspection and hydrotest acceptance; surface/coating system and coating mass; end preparation; site, period and feed starting state"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted seamless steel line pipe"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "oil/gas linepipe application"
+    - "specification and edition"
+    - "product specification level"
+    - "steel grade and heat chemistry"
+    - "outside diameter"
+    - "wall thickness and length"
+    - "seamless forming route"
+    - "hot/cold finishing"
+    - "delivery heat-treatment condition"
+    - "sour-service requirements"
+    - "inspection and hydrotest acceptance"
+    - "surface/coating system and coating mass"
+    - "end preparation"
+    - site
+    - "period and feed starting state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_final_product measures D; each exchange normalizes its attributable period amount by D."
+  - id: conversion
+    applies_to: "all exchanges"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "kg; m3; kWh; MJ"
+    rule: "Retain raw units and conversion evidence: 1 kWh = 3.6 MJ. Fuel volume needs measured net calorific value at declared temperature/pressure; wet wastes need solids and metal fraction."
+  - id: balance
+    applies_to: "production"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain separate gross masses of received steel, accepted steel body, scrap, wet solids, water and opening/closing work in progress; do not add contained-iron mass to gross steel mass. Close the elemental iron balance on one contained-Fe basis: measured Fe in external feed plus opening work in progress = measured Fe in accepted steel body, external scrap, scale, sludge and effluent plus closing work in progress and every other measured Fe release. Derive each term from its own measured gross mass and Fe assay; use matched concentration and volume for effluent. Retain carbon and each actual alloy-element oxidation, release, retained mass and chemical-reaction records as separate elemental balances. Account for oxygen uptake, water content and actual reaction products; never assume pure iron, common composition, a fixed conversion or an invented yield. Cancel internal rework; retain its repeated energy and chemistry. Close water makeup + opening storage = external transfer + discharge + evaporation + product carryover + closing storage; close acid/chemical active-component stock, reaction, carryover and waste balances with measured uncertainty."
+process_map:
+  - id: feed_receipt
+    name: "Supplier feed receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Receive and trace actual solid feed or purchased hollow tube, declaring supplier operations and temperature."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: hot_forming
+    name: "Feed preparation, heating and seamless hot forming"
+    inclusion: "conditional"
+    inclusion_condition: "When solid billet/bloom/bar enters: crop/condition, reheat, pierce then elongate and size by actual mandrel/plug/pilger route; include hot extrusion if used. Purchased hollow tube bypasses only supplier-performed operations."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: cold_finish
+    name: "Conditional pickling and cold drawing or pilgering"
+    inclusion: "conditional"
+    inclusion_condition: "Only when actually used for the declared linepipe: descaling, degreasing, rinse, lubrication and repeated cold reduction; include interpass annealing in heat_treatment."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: heat_treatment
+    name: "Delivery-condition heat treatment and straightening"
+    inclusion: "conditional"
+    inclusion_condition: "Record actual normalizing, annealing, quench/temper and straightening; do not assume every grade follows every treatment."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: acceptance
+    name: "End finishing, inspection and hydrotest"
+    inclusion: "required"
+    inclusion_condition: "Cut/bevel, sample and test, perform required NDT and hydrotest, segregate rejects, mark and trace accepted pipe. Test pressure/time comes from the actual order specification."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: surface_dispatch
+    name: "Conditional surface protection and gate dispatch"
+    inclusion: "required"
+    inclusion_condition: "Record bare, temporarily protected or contract-coated state. Include actual abrasive cleaning, coating/cure, handling and separately measured packaging."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: water_controls
+    name: "Shared water loops and pollution controls"
+    inclusion: "required"
+    inclusion_condition: "Cooling, descaling, quenching, hydrotest and pickling loops, treatment and air controls; allocate each shared burden once."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: feed_receipt
+    label: "Supplier feed receipt and preparation"
+    inputs:
+      product:
+        - row_id: steel_billet
+          role: "Steel billet for seamless tube manufacture"
+          name: "Steel billet for seamless tube manufacture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use actual round billet/bloom for unalloyed/medium-alloy tubes; high-chrome steel may require rolled round bar from cast billet. Declare actual grade and supplier starting temperature; link full steelmaking/casting burden upstream. No steel composition or billet yield is prescribed."
+          amount:
+            expression: "Attributable reporting-period amount from cp_steel_billet / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_billet
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: purchased_hollow
+          role: "Purchased hot-finished seamless steel hollow tube"
+          name: "Purchased hot-finished seamless steel hollow tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Alternative purchased feed only; supplier burden includes already completed heating and forming. Do not count it together with billet for the same material path."
+          amount:
+            expression: "Attributable reporting-period amount from cp_purchased_hollow / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_hollow
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: feed_receipt_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_feed_receipt_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_receipt_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: hot_forming
+    label: "Feed preparation, heating and seamless hot forming"
+    inputs:
+      product:
+        - row_id: hot_forming_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_forming_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_natural_gas / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_natural_gas
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_forming_fuel_oil
+          role: "Fuel oil supplied for combustion"
+          name: "Fuel oil supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_fuel_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_fuel_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_oil
+          role: "Lubricating oil for tube rolling"
+          name: "Lubricating oil for tube rolling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_rolling_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: mill_scale
+          role: "Iron oxide mill scale"
+          name: "Iron oxide mill scale"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_mill_scale / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mill_scale
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_scrap
+          role: "Steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "21cb9bfe-3598-416d-b127-9e94906f80cc"
+          property_unit: "Mass / kg"
+          description: "Weigh cropped ends and rejected hot-formed tube leaving the boundary; retain actual scrap fate and metal assay. Internal rework stays in throughput records."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_scrap / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_scrap
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: hot_forming_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_co2 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_co2
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_forming_nox
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_nox / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_nox
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_forming_co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_co / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_co
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_forming_so2
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_so2 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_so2
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_forming_dust
+          role: "Particulate matter smaller than 2.5 micrometres, to air"
+          name: "Particulate matter smaller than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hot_forming_dust / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_forming_dust
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+  - id: cold_finish
+    label: "Conditional pickling and cold drawing or pilgering"
+    inputs:
+      product:
+        - row_id: cold_finish_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_cold_finish_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_finish_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hcl
+          role: "Hydrochloric acid for pickling"
+          name: "Hydrochloric acid for pickling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual formulation only: record purchased concentration and active mass; do not count both pickling acids unless both are used. Additional bath chemicals require separate named rows."
+          amount:
+            expression: "Attributable reporting-period amount from cp_hcl / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hcl
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: h2so4
+          role: "Sulfuric acid for pickling"
+          name: "Sulfuric acid for pickling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual formulation only: record purchased concentration and active mass; do not count both pickling acids unless both are used. Additional bath chemicals require separate named rows."
+          amount:
+            expression: "Attributable reporting-period amount from cp_h2so4 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_h2so4
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: naoh
+          role: "Sodium hydroxide for degreasing"
+          name: "Sodium hydroxide for degreasing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual formulation only: record purchased concentration and active mass; do not count both pickling acids unless both are used. Additional bath chemicals require separate named rows."
+          amount:
+            expression: "Attributable reporting-period amount from cp_naoh / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_naoh
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: drawing_oil
+          role: "Cold drawing lubricating oil"
+          name: "Cold drawing lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual formulation only: record purchased concentration and active mass; do not count both pickling acids unless both are used. Additional bath chemicals require separate named rows."
+          amount:
+            expression: "Attributable reporting-period amount from cp_drawing_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_hcl
+          role: "Spent hydrochloric acid pickling liquor"
+          name: "Spent hydrochloric acid pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_spent_hcl / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_hcl
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: spent_h2so4
+          role: "Spent sulfuric acid pickling liquor"
+          name: "Spent sulfuric acid pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_spent_h2so4 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_h2so4
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: acid_mist
+          role: "Hydrogen chloride, to air"
+          name: "Hydrogen chloride, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_acid_mist / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acid_mist
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+  - id: heat_treatment
+    label: "Delivery-condition heat treatment and straightening"
+    inputs:
+      product:
+        - row_id: heat_treatment_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_treatment_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_natural_gas / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_natural_gas
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_treatment_fuel_oil
+          role: "Fuel oil supplied for combustion"
+          name: "Fuel oil supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_fuel_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_fuel_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: quench_oil
+          role: "Heat-treatment quenching oil"
+          name: "Heat-treatment quenching oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_quench_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quench_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_quench_oil
+          role: "Spent quenching oil"
+          name: "Spent quenching oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_spent_quench_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_quench_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: heat_treatment_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_co2 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_co2
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_treatment_nox
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_nox / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_nox
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_treatment_co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_co / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_co
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_treatment_so2
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_so2 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_so2
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_treatment_dust
+          role: "Particulate matter smaller than 2.5 micrometres, to air"
+          name: "Particulate matter smaller than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_heat_treatment_dust / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_dust
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+  - id: acceptance
+    label: "End finishing, inspection and hydrotest"
+    inputs:
+      product:
+        - row_id: acceptance_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_acceptance_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: test_sample
+          role: "Steel test specimen scrap"
+          name: "Steel test specimen scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_test_sample / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_sample
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: rejected_pipe
+          role: "Rejected seamless steel line pipe for external recycling"
+          name: "Rejected seamless steel line pipe for external recycling"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_rejected_pipe / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejected_pipe
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+  - id: surface_dispatch
+    label: "Conditional surface protection and gate dispatch"
+    inputs:
+      product:
+        - row_id: surface_dispatch_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: surface_dispatch_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_natural_gas / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_natural_gas
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: surface_dispatch_fuel_oil
+          role: "Fuel oil supplied for combustion"
+          name: "Fuel oil supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_fuel_oil / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_fuel_oil
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: abrasive
+          role: "Steel grit blast-cleaning abrasive"
+          name: "Steel grit blast-cleaning abrasive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_abrasive / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_abrasive
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+        - row_id: epoxy
+          role: "Fusion-bonded epoxy coating powder"
+          name: "Fusion-bonded epoxy coating powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the delivered surface system actually ordered; record formulation, layer mass and losses. PE and PP are distinct alternatives; add actual internal liquid epoxy components separately."
+          amount:
+            expression: "Attributable reporting-period amount from cp_epoxy / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_epoxy
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+        - row_id: adhesive
+          role: "Polyolefin coating copolymer adhesive"
+          name: "Polyolefin coating copolymer adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the delivered surface system actually ordered; record formulation, layer mass and losses. PE and PP are distinct alternatives; add actual internal liquid epoxy components separately."
+          amount:
+            expression: "Attributable reporting-period amount from cp_adhesive / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_adhesive
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+        - row_id: pe
+          role: "Polyethylene coating resin"
+          name: "Polyethylene coating resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the delivered surface system actually ordered; record formulation, layer mass and losses. PE and PP are distinct alternatives; add actual internal liquid epoxy components separately."
+          amount:
+            expression: "Attributable reporting-period amount from cp_pe / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pe
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+        - row_id: pp
+          role: "Polypropylene coating resin"
+          name: "Polypropylene coating resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the delivered surface system actually ordered; record formulation, layer mass and losses. PE and PP are distinct alternatives; add actual internal liquid epoxy components separately."
+          amount:
+            expression: "Attributable reporting-period amount from cp_pp / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pp
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+        - row_id: preservative
+          role: "Temporary rust-preventive oil"
+          name: "Temporary rust-preventive oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the delivered surface system actually ordered; record formulation, layer mass and losses. PE and PP are distinct alternatives; add actual internal liquid epoxy components separately."
+          amount:
+            expression: "Attributable reporting-period amount from cp_preservative / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservative
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+        - row_id: strapping
+          role: "Steel packaging strap"
+          name: "Steel packaging strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_strapping / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_strapping
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: wood
+          role: "Wooden transport spacer"
+          name: "Wooden transport spacer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_wood / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: cap
+          role: "Polyethylene end protector"
+          name: "Polyethylene end protector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_cap / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cap
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Accepted seamless steel line pipe"
+          name: "Accepted seamless steel line pipe"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "D is weighed accepted net delivered pipe, including declared adherent coating, excluding packaging and free test water. Report steel and coating mass separately."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - api-5l-announcement-2026
+            ranges: []
+      waste:
+        - row_id: spent_grit
+          role: "Spent steel blasting grit"
+          name: "Spent steel blasting grit"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_spent_grit / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_grit
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: coating_waste
+          role: "Waste fusion-bonded epoxy powder"
+          name: "Waste fusion-bonded epoxy powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_coating_waste / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_waste
+              source_ids:
+                - tenaris-coatings
+            ranges: []
+      elementary:
+        - row_id: surface_dispatch_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_co2 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_co2
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: surface_dispatch_nox
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_nox / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_nox
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: surface_dispatch_co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_co / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_co
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: surface_dispatch_so2
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_so2 / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_so2
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: surface_dispatch_dust
+          role: "Particulate matter smaller than 2.5 micrometres, to air"
+          name: "Particulate matter smaller than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_surface_dispatch_dust / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_dispatch_dust
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+  - id: water_controls
+    label: "Shared water loops and pollution controls"
+    inputs:
+      product:
+        - row_id: water_controls_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_water_controls_electricity / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_controls_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: freshwater
+          role: "Purchased industrial process water"
+          name: "Purchased industrial process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_freshwater / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freshwater
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: lime
+          role: "Calcium hydroxide for wastewater neutralization"
+          name: "Calcium hydroxide for wastewater neutralization"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_lime / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lime
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: polymer
+          role: "Polyacrylamide flocculant"
+          name: "Polyacrylamide flocculant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_polymer / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polymer
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: riverwater
+          role: "Water withdrawn from river"
+          name: "Water withdrawn from river"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_riverwater / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_riverwater
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater
+          role: "Industrial wastewater transferred to treatment"
+          name: "Industrial wastewater transferred to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_wastewater / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: sludge
+          role: "Oily iron-bearing water-treatment sludge"
+          name: "Oily iron-bearing water-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_sludge / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sludge
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: water_release
+          role: "Treated water discharged to river"
+          name: "Treated water discharged to river"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_water_release / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_release
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: iron_release
+          role: "Iron dissolved in discharged river water"
+          name: "Iron dissolved in discharged river water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_iron_release / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_iron_release
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: oil_release
+          role: "Petroleum hydrocarbons in discharged river water"
+          name: "Petroleum hydrocarbons in discharged river water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record when this exchange crosses the selected process boundary; document absence separately from unknown quantity."
+          amount:
+            expression: "Attributable reporting-period amount from cp_oil_release / D; reconcile stock, internal transfers and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_oil_release
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "joint operations"
+    rule: "Prefer subdivision; otherwise substantiate physical causality. Economic allocation is fallback with consistent period/currency/prices and sensitivity; retain unallocated totals. Do not use pipe mass alone as a furnace allocation driver unless it explains grade, heat cycle and loading differences."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocation_rework
+    applies_to: "rework and residue"
+    rule: "Retain all repeated processing energy and material for reworked/retested lots. Cancel internal transfer quantities; measure external scrap, scale and sludge separately and apply actual treatment once. Sale alone does not prove co-product status; disclose recycling allocation and never assume an avoided-steel credit."
+    source_ids:
+      - ef-allocation-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_steel_billet
+      process_id: "feed_receipt"
+      flow_role: "steel_billet"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_purchased_hollow
+      process_id: "feed_receipt"
+      flow_role: "purchased_hollow"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_feed_receipt_electricity
+      process_id: "feed_receipt"
+      flow_role: "feed_receipt_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_electricity
+      process_id: "hot_forming"
+      flow_role: "hot_forming_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_cold_finish_electricity
+      process_id: "cold_finish"
+      flow_role: "cold_finish_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_electricity
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_acceptance_electricity
+      process_id: "acceptance"
+      flow_role: "acceptance_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_electricity
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_water_controls_electricity
+      process_id: "water_controls"
+      flow_role: "water_controls_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Read process submeter by interval; reconcile to site purchased power; allocate auxiliaries by measured machine hours/load and retain voltage, grid region and supply year."
+      unit: "kWh"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_natural_gas
+      process_id: "hot_forming"
+      flow_role: "hot_forming_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Meter gas volume with declared pressure/temperature and measured net calorific value; retain supplier composition and convert to MJ, not an assumed gas factor."
+      unit: "MJ"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_fuel_oil
+      process_id: "hot_forming"
+      flow_role: "hot_forming_fuel_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Weigh fuel oil and use lot-specific net calorific value; separate each actual alternative fuel on its own card."
+      unit: "MJ"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_co2
+      process_id: "hot_forming"
+      flow_role: "hot_forming_co2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_nox
+      process_id: "hot_forming"
+      flow_role: "hot_forming_nox"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_co
+      process_id: "hot_forming"
+      flow_role: "hot_forming_co"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_so2
+      process_id: "hot_forming"
+      flow_role: "hot_forming_so2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_forming_dust
+      process_id: "hot_forming"
+      flow_role: "hot_forming_dust"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_natural_gas
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Meter gas volume with declared pressure/temperature and measured net calorific value; retain supplier composition and convert to MJ, not an assumed gas factor."
+      unit: "MJ"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_fuel_oil
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_fuel_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Weigh fuel oil and use lot-specific net calorific value; separate each actual alternative fuel on its own card."
+      unit: "MJ"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_co2
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_co2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_nox
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_nox"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_co
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_co"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_so2
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_so2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_heat_treatment_dust
+      process_id: "heat_treatment"
+      flow_role: "heat_treatment_dust"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_natural_gas
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Meter gas volume with declared pressure/temperature and measured net calorific value; retain supplier composition and convert to MJ, not an assumed gas factor."
+      unit: "MJ"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_fuel_oil
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_fuel_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Weigh fuel oil and use lot-specific net calorific value; separate each actual alternative fuel on its own card."
+      unit: "MJ"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_co2
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_co2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_nox
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_nox"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_co
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_co"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_so2
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_so2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_surface_dispatch_dust
+      process_id: "surface_dispatch"
+      flow_role: "surface_dispatch_dust"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use matched stack/fugitive monitoring: concentration, dry/wet gas basis, flow and operating hours after controls. Fossil CO2 uses actual fuel carbon balance; report species and compartment; no default factor here."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_rolling_oil
+      process_id: "hot_forming"
+      flow_role: "rolling_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_mill_scale
+      process_id: "hot_forming"
+      flow_role: "mill_scale"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hot_scrap
+      process_id: "hot_forming"
+      flow_role: "hot_scrap"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_hcl
+      process_id: "cold_finish"
+      flow_role: "hcl"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_h2so4
+      process_id: "cold_finish"
+      flow_role: "h2so4"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_naoh
+      process_id: "cold_finish"
+      flow_role: "naoh"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_drawing_oil
+      process_id: "cold_finish"
+      flow_role: "drawing_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_spent_hcl
+      process_id: "cold_finish"
+      flow_role: "spent_hcl"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_spent_h2so4
+      process_id: "cold_finish"
+      flow_role: "spent_h2so4"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_acid_mist
+      process_id: "cold_finish"
+      flow_role: "acid_mist"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Monitor pickling exhaust concentration and ventilation flow after capture/scrubbing; quantify fugitive loss separately."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_quench_oil
+      process_id: "heat_treatment"
+      flow_role: "quench_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_spent_quench_oil
+      process_id: "heat_treatment"
+      flow_role: "spent_quench_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_test_sample
+      process_id: "acceptance"
+      flow_role: "test_sample"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_rejected_pipe
+      process_id: "acceptance"
+      flow_role: "rejected_pipe"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_abrasive
+      process_id: "surface_dispatch"
+      flow_role: "abrasive"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_epoxy
+      process_id: "surface_dispatch"
+      flow_role: "epoxy"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_adhesive
+      process_id: "surface_dispatch"
+      flow_role: "adhesive"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_pe
+      process_id: "surface_dispatch"
+      flow_role: "pe"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_pp
+      process_id: "surface_dispatch"
+      flow_role: "pp"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_preservative
+      process_id: "surface_dispatch"
+      flow_role: "preservative"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_strapping
+      process_id: "surface_dispatch"
+      flow_role: "strapping"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_wood
+      process_id: "surface_dispatch"
+      flow_role: "wood"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_cap
+      process_id: "surface_dispatch"
+      flow_role: "cap"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_spent_grit
+      process_id: "surface_dispatch"
+      flow_role: "spent_grit"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_coating_waste
+      process_id: "surface_dispatch"
+      flow_role: "coating_waste"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_final_product
+      process_id: "surface_dispatch"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Weigh accepted lots on calibrated scales; reconcile production acceptance, dispatch and opening/closing finished inventory; retain grade, dimensions and coating mass."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_freshwater
+      process_id: "water_controls"
+      flow_role: "freshwater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Meter external makeup separately for cooling/descaling/quench/test/rinse loops; log bleed and stock changes. Internal circulating volume is not external withdrawal."
+      unit: "m3"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_riverwater
+      process_id: "water_controls"
+      flow_role: "riverwater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Meter only direct river abstraction; record basin, season and treatment, avoiding duplication of purchased water."
+      unit: "m3"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_lime
+      process_id: "water_controls"
+      flow_role: "lime"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_polymer
+      process_id: "water_controls"
+      flow_role: "polymer"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_wastewater
+      process_id: "water_controls"
+      flow_role: "wastewater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated transfer/discharge flowmeter, matched period and destination; retain temperature, suspended solids, density where mass conversion is used, and samples for pollutant analysis."
+      unit: "m3"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_sludge
+      process_id: "water_controls"
+      flow_role: "sludge"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated weighing and opening + receipts - closing stock reconciliation, linked to batch and grade."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_water_release
+      process_id: "water_controls"
+      flow_role: "water_release"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Calibrated transfer/discharge flowmeter, matched period and destination; retain temperature, suspended solids, density where mass conversion is used, and samples for pollutant analysis."
+      unit: "m3"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_iron_release
+      process_id: "water_controls"
+      flow_role: "iron_release"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Multiply matched effluent volume by dissolved iron concentration after treatment; subtract documented inlet load when required by the chosen method."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+    - protocol_id: cp_oil_release
+      process_id: "water_controls"
+      flow_role: "oil_release"
+      record_type: "measurement_record"
+      raw_fields: "site; period; batch; grade; raw amount/unit; stock; calibration; uncertainty; route condition; allocation; D"
+      collection_method: "Use species/fraction-specific effluent analysis and volume; aggregate laboratory oil indices must not be mapped to a chemically incompatible elementary flow."
+      unit: "kg"
+      frequency: "Each batch or meter interval; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative campaign including rejects and rework"
+      site_scope: "Declared pipe production line and shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records; calibration; assays; acceptance and balance evidence"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all exchanges"
+      rule: "q_i = allocated external amount_i / D; output reference = 1 kg. Reconcile material stocks and cancel internal transfers before calculation."
+      inputs:
+        - cp_final_product
+        - "row-specific cp"
+      output: "per 1 kg"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "site"
+      rule: "Retain separate gross masses of received steel, accepted steel body, scrap, wet solids, water and opening/closing work in progress; do not add contained-iron mass to gross steel mass. Close the elemental iron balance on one contained-Fe basis: measured Fe in external feed plus opening work in progress = measured Fe in accepted steel body, external scrap, scale, sludge and effluent plus closing work in progress and every other measured Fe release. Derive each term from its own measured gross mass and Fe assay; use matched concentration and volume for effluent. Retain carbon and each actual alloy-element oxidation, release, retained mass and chemical-reaction records as separate elemental balances. Account for oxygen uptake, water content and actual reaction products; never assume pure iron, common composition, a fixed conversion or an invented yield. Cancel internal rework; retain its repeated energy and chemistry. Close water makeup + opening storage = external transfer + discharge + evaporation + product carryover + closing storage; close acid/chemical active-component stock, reaction, carryover and waste balances with measured uncertainty."
+      inputs:
+        - "Steel/iron assays"
+        - "water meters"
+        - "acid concentration"
+        - stocks
+        - "waste records"
+      output: "Closure residual with measurement uncertainty; no invented tolerance"
+      source_ids: []
+    - id: energy_conversion
+      applies_to: "utilities"
+      rule: "Metered kWh × 3.6 = MJ; fuel mass × measured NCV = MJ. Shared service allocations sum to measured total."
+      inputs:
+        - Meters
+        - NCV
+        - calibration
+        - "allocation driver"
+      output: "MJ"
+      source_ids: []
+  data_quality_requirements:
+    - id: qualification
+      applies_to: "pipe"
+      requirement: "oil/gas linepipe application; specification and edition; product specification level; steel grade and heat chemistry; outside diameter, wall thickness and length; seamless forming route; hot/cold finishing; delivery heat-treatment condition; sour-service requirements; inspection and hydrotest acceptance; surface/coating system and coating mass; end preparation; site, period and feed starting state"
+      evidence: "Order; mill certificate; dimensional/heat-treatment and test records"
+    - id: coverage
+      applies_to: "all rows"
+      requirement: "Record applicability as present, absent, measured zero or unknown. No missing-as-zero. Resolve exact flow identity, supplier geography/year, treatment destination and emission compartment before dataset completion."
+      evidence: "manifest review_metadata"
+    - id: ranges
+      applies_to: "all rows"
+      requirement: "No default process intensity, yield, chemistry or empirical range is established. Use foreground records; independent compatible range evidence remains pending."
+      evidence: "Retained records and uncertainty"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Check positive measured D, 1 kg reference, accepted product, steel/coating separation and all qualifiers. Do not label generic tube or welded/OCTG UUID as seamless linepipe."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "production"
+    rule: "Retain separate gross masses of received steel, accepted steel body, scrap, wet solids, water and opening/closing work in progress; do not add contained-iron mass to gross steel mass. Close the elemental iron balance on one contained-Fe basis: measured Fe in external feed plus opening work in progress = measured Fe in accepted steel body, external scrap, scale, sludge and effluent plus closing work in progress and every other measured Fe release. Derive each term from its own measured gross mass and Fe assay; use matched concentration and volume for effluent. Retain carbon and each actual alloy-element oxidation, release, retained mass and chemical-reaction records as separate elemental balances. Account for oxygen uptake, water content and actual reaction products; never assume pure iron, common composition, a fixed conversion or an invented yield. Cancel internal rework; retain its repeated energy and chemistry. Close water makeup + opening storage = external transfer + discharge + evaporation + product carryover + closing storage; close acid/chemical active-component stock, reaction, carryover and waste balances with measured uncertainty."
+    source_ids: []
+  - rule_id: validate_complete
+    applies_to: "dataset"
+    rule: "Check applicable routes, each atomic external exchange, normalization, provider/waste fate and post-control emissions. Unresolved UUID, mandatory unknown quantity or unsupported unit conversion blocks a complete dataset; candidate methodology checks do not constitute product conformance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "process; lifecyclemodel"
+  allowed_use: "Specified seamless linepipe manufacturing, with upstream burdens linked"
+  excluded_use: "Welded/OCTG or installed pipeline; full API conformity inferred from this PCR"
+  required_metadata: "oil/gas linepipe application; specification and edition; product specification level; steel grade and heat chemistry; outside diameter, wall thickness and length; seamless forming route; hot/cold finishing; delivery heat-treatment condition; sour-service requirements; inspection and hydrotest acceptance; surface/coating system and coating mass; end preparation; site, period and feed starting state"
+  required_quality_disclosure: "Route, upstream coverage, identity/measurement gaps, uncertainty, allocation and waste fate"
+  update_trigger: "Grade/specification, process route, coating, yield, supply or acceptance requirement change"
+data_sources:
+  - id: "ec-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission JRC, Ferrous Metals Processing BREF (2022), DOI 10.2760/196475, chapter 1 steel tubes; 2.2.1.6 tube mills; 2.2.18 wastes; 2.3.2 energy; 2.3.5 emissions. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-12/FMP%20BREF_Final%20Version.pdf"
+    used_for: "Seamless billet heating, piercing, elongation, final rolling and heat treatment; conditional cold drawing; water, oil, scale and combustion controls. No universal intensity or temperature adopted."
+  - id: "api-5l-announcement-2026"
+    type: "official_guidance"
+    reference: "API, API Announces 47th Edition of Foundational Line Pipe Standard, 2 June 2026. https://www.api.org/news-policy-and-issues/news/2026/06/02/api-announces-47th-edition-of-api-specification-5l"
+    used_for: "Official scope and manufacture/inspection/test/marking/traceability categories only. Announcement is not the specification: obtain the actual order edition and clauses for conformance."
+  - id: "tenaris-coatings"
+    type: "extension_guidance"
+    reference: "Tenaris, Offshore and Onshore Pipeline Coating Solutions, pages 4 and 6, undated brochure, retrieved 2 October 2026. https://www.tenaris.com/media/1jtmlf5o/offshore-onshore-pipeline-coatingsolutions.pdf"
+    used_for: "Conditional FBE, adhesive and polyethylene/polypropylene layers; separate internal coating. Manufacturer offerings do not establish mandatory coating or universal thickness/intensity."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Subdivision, physical-causality and other-relationship allocation hierarchy; no claim of complete PEF conformance."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:6c7424d2131258046451e0c546a731c68c6631cc6adf7064b616bb03659aee00"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5013"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5013
+          line: 55
+          column: 1
+        end:
+          offset: 7175
+          line: 74
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received solid steel billet/bloom/bar or purchased hot-finished hollow tube; declare upstream completed operations and temperature |\n| starting_condition_role | Supplier intermediate product |\n| product_classification_scope | Seamless steel line pipe for oil or gas pipelines |\n| recursive_input_rule | Purchased same-category pipe carries distinct supplier burden; internal rework transfers cancel and never receive substitution credits |\n| upstream_dataset_requirement | Link actual feed steel route, electricity, each fuel/chemical, transport and waste destination; disclosed gaps cannot mean zero |\n| disclosure | oil/gas linepipe application; specification and edition; product specification level; steel grade and heat chemistry; outside diameter, wall thickness and length; seamless forming route; hot/cold finishing; delivery heat-treatment condition; sour-service requirements; inspection and hydrotest acceptance; surface/coating system and coating mass; end preparation; site, period and feed starting state |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_manufacturing | all processes | Include actual preparation, heating, seamless forming, cold finishing if used, all interpass/delivery heat treatment, descaling, end finishing, acceptance, surface operations and attributable utilities through the stated gate. | `ec-fmp-bref-2022`; `api-5l-announcement-2026` |\n| boundary_surface | surface_dispatch | Bare and protected/coated pipe are separate declared states. Include the actual contract coating within the gate; outsourced coating carries supplier processing and transport. Later field-joint coating and installation are excluded. | `tenaris-coatings` |\n| boundary_site | all exchanges | Include proportional handling, maintenance consumables and pollution controls. Justify infrastructure/capital exclusions or link their attributable service. Add every actual chemical, fuel, waste, emission and direct water source as an atomic row; these candidate cards do not replace a site audit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 199
+              line: 8
+              column: 1
+            end:
+              offset: 250
+              line: 8
+              column: 52
+          text: "# Seamless steel line pipe for oil or gas pipelines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5013
+              line: 55
+              column: 1
+            end:
+              offset: 5034
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_53904"
+      family: "allocation"
+      span:
+        start:
+          offset: 53904
+          line: 1143
+          column: 1
+        end:
+          offset: 54771
+          line: 1150
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | joint operations | Prefer subdivision; otherwise substantiate physical causality. Economic allocation is fallback with consistent period/currency/prices and sensitivity; retain unallocated totals. Do not use pipe mass alone as a furnace allocation driver unless it explains grade, heat cycle and loading differences. | `ef-allocation-2021` |\n| allocation_rework | rework and residue | Retain all repeated processing energy and material for reworked/retested lots. Cancel internal transfer quantities; measure external scrap, scale and sludge separately and apply actual treatment once. Sale alone does not prove co-product status; disclose recycling allocation and never assume an avoided-steel credit. | `ef-allocation-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 199
+              line: 8
+              column: 1
+            end:
+              offset: 250
+              line: 8
+              column: 52
+          text: "# Seamless steel line pipe for oil or gas pipelines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 53904
+              line: 1143
+              column: 1
+            end:
+              offset: 53944
+              line: 1143
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_98922"
+      family: "validation"
+      span:
+        start:
+          offset: 98922
+          line: 1238
+          column: 1
+        end:
+          offset: 100761
+          line: 1246
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | final_product | Check positive measured D, 1 kg reference, accepted product, steel/coating separation and all qualifiers. Do not label generic tube or welded/OCTG UUID as seamless linepipe. |  |\n| validate_balance | production | Retain separate gross masses of received steel, accepted steel body, scrap, wet solids, water and opening/closing work in progress; do not add contained-iron mass to gross steel mass. Close the elemental iron balance on one contained-Fe basis: measured Fe in external feed plus opening work in progress = measured Fe in accepted steel body, external scrap, scale, sludge and effluent plus closing work in progress and every other measured Fe release. Derive each term from its own measured gross mass and Fe assay; use matched concentration and volume for effluent. Retain carbon and each actual alloy-element oxidation, release, retained mass and chemical-reaction records as separate elemental balances. Account for oxygen uptake, water content and actual reaction products; never assume pure iron, common composition, a fixed conversion or an invented yield. Cancel internal rework; retain its repeated energy and chemistry. Close water makeup + opening storage = external transfer + discharge + evaporation + product carryover + closing storage; close acid/chemical active-component stock, reaction, carryover and waste balances with measured uncertainty. |  |\n| validate_complete | dataset | Check applicable routes, each atomic external exchange, normalization, provider/waste fate and post-control emissions. Unresolved UUID, mandatory unknown quantity or unsupported unit conversion blocks a complete dataset; candidate methodology checks do not constitute product conformance. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 199
+              line: 8
+              column: 1
+            end:
+              offset: 250
+              line: 8
+              column: 52
+          text: "# Seamless steel line pipe for oil or gas pipelines"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 98922
+              line: 1238
+              column: 1
+            end:
+              offset: 98944
+              line: 1238
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_manufacturing"
+      identity_kind: "explicit"
+      unit_id: "normative_5013"
+      source_span:
+        start:
+          offset: 6219
+          line: 70
+          column: 1
+        end:
+          offset: 6539
+          line: 70
+          column: 321
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_surface"
+      identity_kind: "explicit"
+      unit_id: "normative_5013"
+      source_span:
+        start:
+          offset: 6540
+          line: 71
+          column: 1
+        end:
+          offset: 6835
+          line: 71
+          column: 296
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_site"
+      identity_kind: "explicit"
+      unit_id: "normative_5013"
+      source_span:
+        start:
+          offset: 6836
+          line: 72
+          column: 1
+        end:
+          offset: 7173
+          line: 72
+          column: 338
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_53904"
+      source_span:
+        start:
+          offset: 54017
+          line: 1147
+          column: 1
+        end:
+          offset: 54383
+          line: 1147
+          column: 367
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_53904"
+      source_span:
+        start:
+          offset: 54384
+          line: 1148
+          column: 1
+        end:
+          offset: 54769
+          line: 1148
+          column: 386
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_98922"
+      source_span:
+        start:
+          offset: 99017
+          line: 1242
+          column: 1
+        end:
+          offset: 99234
+          line: 1242
+          column: 218
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_98922"
+      source_span:
+        start:
+          offset: 99235
+          line: 1243
+          column: 1
+        end:
+          offset: 100433
+          line: 1243
+          column: 1199
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_98922"
+      source_span:
+        start:
+          offset: 100434
+          line: 1244
+          column: 1
+        end:
+          offset: 100759
+          line: 1244
+          column: 326
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5013"
+      source_span:
+        start:
+          offset: 5013
+          line: 55
+          column: 1
+        end:
+          offset: 5034
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5013"
+      source_span:
+        start:
+          offset: 5062
+          line: 59
+          column: 1
+        end:
+          offset: 6146
+          line: 66
+          column: 418
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_53904"
+      source_span:
+        start:
+          offset: 53904
+          line: 1143
+          column: 1
+        end:
+          offset: 53944
+          line: 1143
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_98922"
+      source_span:
+        start:
+          offset: 98922
+          line: 1238
+          column: 1
+        end:
+          offset: 98944
+          line: 1238
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6c7424d2131258046451e0c546a731c68c6631cc6adf7064b616bb03659aee00"
+  generated_content_sha256: "sha256:5ca214dfd7b8986ffcd28ccc76dbba1da3eeaae1b6ff2fefcabcaf02bc00bed0"
