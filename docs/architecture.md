@@ -402,16 +402,18 @@ message、details 和 exit_code；validation gate 的 exit 2 仍把完整 valida
 ### 本地 viewer 预览 PCR
 
 ```text
-npm run viewer:build
+npm run viewer:build -- <accepted source identity and passed validation evidence>
   -> packages/pcr-core reads library + classifications
-  -> packages/pcr-viewer/dist/data/pcr-viewer-data.json
+  -> immutable snapshot objects + active/history pointers + compatible UI bundle
   -> npm run viewer:serve
   -> local static browser viewer
 ```
 
 viewer 是只读预览界面。它可以帮助浏览、搜索和检查 Markdown/guidance/source，但不能编辑 PCR。
-viewer build 默认 scope 是 `material`；只有显式传入 `--scope legacy` 或 `--scope all` 才包含迁移期
-兼容记录。Classification coverage 作为独立 read model 展示，不把 legacy scaffold 重新包装成方法学。
+split Viewer 部署只接受 `material` scope；底层兼容数据读取接口仍可显式选择 `legacy` 或 `all`。
+Classification coverage 作为独立 read model 展示，不把 legacy scaffold 重新包装成方法学。
+bootstrap 的来源元数据只携带明确的 snapshot、Goal、commit、tree、时间及验证证据字段；它不能
+指定仓库根、产物目录、生成器配置或执行钩子。额外元数据不会成为发布配置，内部暂存路径始终由构建器控制。
 构建器先在同级临时目录准备完整输出，再替换目标。自定义非空目录只有带有 viewer build marker
 时才允许替换；仓库根、package source 和其他受保护路径会在 realpath 解析后被拒绝。local server
 同样会解析请求文件的真实路径，并拒绝通过 symlink 跳出 build root 的访问。
