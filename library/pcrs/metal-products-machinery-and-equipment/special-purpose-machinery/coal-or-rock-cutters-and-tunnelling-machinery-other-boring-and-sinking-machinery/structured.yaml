@@ -1,10 +1,2170 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44412"
-  title: "Coal or rock cutters and tunnelling machinery; other boring and sinking machinery"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.coal-or-rock-cutters-and-tunnelling-machinery-other-boring-and-sinking-machinery"
+  classification_refs: "CPC 3.0 44412; reviewed complete-machine boundary; code is not a canonical identity"
+  covered_products: "Coal cutters; continuous, bolter and borer miners; rock-cutting roadheaders; open/gripper and shield TBMs; raise, boxhole and downward boring rigs; shaft sinking and other boring machines with actual declared delivery configuration"
+  excluded_products: "Independent underground conveyors/elevators; cranes and independent hauling vehicles; independently supplied site separation plants; excavators/loaders; separately supplied spare parts or cutting tools; metalworking boring machine-tools; drilling/excavation services; tunnel lining manufacture and mine production"
+  representative_product: "An accepted complete double-shield TBM with explicitly declared cutterhead, drive, shields and included back-up; illustrative, not a mass or recipe default"
+  production_route: "Supplier-qualified raw stock and bought modules; actual fabrication, machining and conditional treatment; family integration, electrical/hydraulic assembly, factory testing and dispatch"
+  market_state: "Accepted new finished machine at plant, including documented initial fill and installed tools; shipping split modules reconcile to the same complete configuration"
+functional_unit:
+  what: "Provide one configuration-qualified machine capable of its declared cutting, tunnelling, boring or sinking function"
+  how_much: "1 kg accepted net complete-machine output; report accepted unit count and measured mass alongside"
+  how_well: "Meets actual purchase drawing, cutting/boring architecture, interface, controls and recorded factory acceptance criteria"
+  how_long_or_cycle: "One manufacturing and factory acceptance cycle; operating lifetime, excavation distance and output remain separately evidenced downstream scenarios"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: factory_gate
+      applies_to: "all inventory rows"
+      rule: "Include upstream supply once and all attributable factory operations through acceptance, correction, initial fill and packing. Exclude transport after declared gate, installation/excavation energy, mined coal/rock, routine cutter replacement, tunnel segments, grout and lifetime service unless explicitly modelled as a separate downstream scenario. Factory test materials and energy remain included."
+      source_ids:
+        - sandvik-testing-2026
+        - herrenknecht-follo-2018
+    - rule_id: configuration_boundary
+      applies_to: "reference_product"
+      rule: "Integral carrier, gathering mechanism, machine belt and installed handling equipment belong only when accepted in the same complete-machine BOM. Independently sold conveyors, cranes, transport vehicles, separation plants and tools have separate identity. A supplied VSM lowering/winch/control/separation module explicitly included in the accepted modular product BOM is retained once as a manufacturing input; its downstream shaft-water, rock/slurry and lining service is excluded. A self-propelled cutter does not become an excavator merely because it has tracks. For ambiguous integrated systems verify drawing, sales object and classification before mapping; no silent scope change."
+      source_ids:
+        - un-cpc-2025
+        - sandvik-cutting-2024
+        - herrenknecht-double-shield
+        - herrenknecht-vsm
+    - rule_id: make_buy_once
+      applies_to: "all inventory rows"
+      rule: "For each serial/configuration build a make/buy matrix for structure, shields, cutterhead/drum, motor, gears, bearing, hydraulics and controls. Purchased completed modules carry embedded material, processing, motor and supplied oil once; no parallel raw inputs for those burdens. For actual in-house fabrication use material/consumable/energy/output records, not a second purchased completed module. Partial supplier state retains only completed upstream steps."
+      source_ids:
+        - sandvik-zeltweg-manufacturing
+boundary_abstraction:
+  declared_starting_condition: "Factory receipt of composition- and state-qualified raw stock or completed supplier modules"
+  starting_condition_role: "Foreground manufacturing starting state; upstream production remains required"
+  product_classification_scope: "Complete machines in reviewed category; supplied integrated configuration must be declared"
+  recursive_input_rule: "A purchased same-category completed machine used as a base is an explicit upstream input with inherited manufacture once; model only actual incremental work; never recursively create its full manufacturing inventory again"
+  upstream_dataset_requirement: "Supplier processes match grade, module state, voltage, geography and delivery interface; unresolved providers remain disclosed and block a complete burden claim"
+  disclosure: "Actual factory and gate; routes performed; subcontract steps; bought modules; included carrier/back-up; meter period; acceptance/reject/rework; gaps and downstream exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Coal or rock cutters and tunnelling machinery, other boring and sinking machinery"
+    uuid: "52fdea74-4411-454d-8b7f-e7bd43044586"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - family
+    - "model/revision"
+    - "serial/configuration"
+    - "integrated host/propulsion"
+    - "cutting or drilling mechanism"
+    - "supplier/make-buy matrix"
+    - "exact supplied modules/back-up/initial fill"
+    - "nominal functional ratings from actual specifications"
+    - "factory gate and acceptance"
+    - "geography and period"
+    - "calibrated net mass"
+    - "packaging excluded"
+    - "excluded site plant and spare parts"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: material_species_basis
+    applies_to: "physical material and species records in cp_material, cp_waste, cp_water and cp_emission"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Gross purchased alloy, mixture, emulsion or sludge is not contained element mass. Each term needs its own moisture and element/species assay on a compatible wet/dry basis. Do not apply this material rule to electricity or transport."
+  - id: energy_interface
+    applies_to: "cp_energy records"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain raw kWh and meter interface; use verified unit conversion only. Fuel requires actual supplied quantity and calorific value, not electricity equivalence. Water volume needs actual density, not a universal screening density."
+process_map:
+  - id: fabrication
+    name: "Structural fabrication and component machining"
+    inclusion: "conditional"
+    inclusion_condition: "Actual in-house plate cutting, forming, welding, turning, milling, gear cutting or grinding"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: treatment
+    name: "Conditional heat treatment and surface coating"
+    inclusion: "conditional"
+    inclusion_condition: "Only documented in-house treatment; outsourced finished parts retain prior treatment in supplier datasets"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: cutters
+    name: "Coal and rock cutting machine integration"
+    inclusion: "conditional"
+    inclusion_condition: "Continuous miner, bolter miner, borer miner or roadheader configuration"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: tunnel
+    name: "Tunnel boring machine integration"
+    inclusion: "conditional"
+    inclusion_condition: "Actual gripper or shield machine and declared back-up configuration; no assumed universal shield"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: boring
+    name: "Other boring and sinking machine integration"
+    inclusion: "conditional"
+    inclusion_condition: "Actual raise-boring, boxhole, downward boring, shaft-sinking or drilling configuration"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: assembly
+    name: "Common drive, hydraulics and control integration"
+    inclusion: "required"
+    inclusion_condition: "Every machine; instantiate only its actual modules and make/buy interfaces"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: test
+    name: "Factory acceptance, correction and release preparation"
+    inclusion: "required"
+    inclusion_condition: "All accepted units; actual load, leak, function, control and safety tests before gate"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Residual shared services and conditional on-site generation"
+    inclusion: "conditional"
+    inclusion_condition: "Only unassigned load of the same metered period after process and test assignments"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: release
+    name: "Packing and factory-gate handover"
+    inclusion: "required"
+    inclusion_condition: "All accepted configurations; disassembled shipping modules reconciled to accepted complete machine"
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Structural fabrication and component machining"
+    inputs:
+      product:
+        - row_id: plate
+          role: "Steel Plate"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Hot-rolled low-alloy high-strength plate is actually issued. Use this UUID only when the actual supplied grade and interface are documented as Q345/Q355 or an independently verified matching low-alloy high-strength family. S355, AR400, stainless steel or another unverified grade requires its separate verified identity or an unresolved row; declare actual grade, heat number, thickness and supplier. Neither the OEM fabrication source nor this UUID sets a grade default Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: forged_blank
+          role: "Alloy-steel forged shaft blank"
+          name: "Alloy-steel forged shaft blank"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Machined shaft blank is purchased; retain alloy and supplied heat-treatment state Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: weld_wire
+          role: "Carbon-steel arc-welding wire"
+          name: "Carbon-steel arc-welding wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified welding procedure uses carbon-steel wire; document classification and composition Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: shield_gas
+          role: "Carbon dioxide welding shielding gas"
+          name: "Carbon dioxide welding shielding gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "CO2 shielding is actually used; mixed shielding gas needs its separately verified composition-qualified flow Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: coolant
+          role: "Water-miscible mineral-oil machining concentrate"
+          name: "Water-miscible mineral-oil machining concentrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual coolant formulation uses mineral-oil concentrate; record concentration separately from dilution water Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: dilution_water
+          role: "Treated process dilution water"
+          name: "Treated process dilution water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Coolant is mixed on site; record source, treatment and temperature-specific measured density"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: fabrication_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: swarf
+          role: "Alloy-steel machining swarf"
+          name: "Alloy-steel machining swarf"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Swarf leaves for recovery; separate attached coolant, water and alloy assays"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: spent_coolant
+          role: "Spent mineral-oil machining emulsion"
+          name: "Spent mineral-oil machining emulsion"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Spent emulsion leaves for treatment; measured oil fraction and moisture are not steel mass"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: weld_dust
+          role: "Captured iron-bearing welding filter dust"
+          name: "Captured iron-bearing welding filter dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Captured dust leaves for treatment; retain Fe and other actual element assays"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+      elementary:
+        []
+  - id: treatment
+    label: "Conditional heat treatment and surface coating"
+    inputs:
+      product:
+        - row_id: gas_heat
+          role: "Pipeline natural gas for heat treatment"
+          name: "Pipeline natural gas for heat treatment"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual on-site gas furnace; supplier gas composition and calorific value required"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: quench_oil
+          role: "Mineral-oil quench fluid"
+          name: "Mineral-oil quench fluid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual oil-quench recipe; reused bath transfer is internal, replenishment is external Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen heat-treatment gas"
+          name: "Nitrogen heat-treatment gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual furnace atmosphere contains supplied nitrogen Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: epoxy
+          role: "Two-component epoxy protective coating"
+          name: "Two-component epoxy protective coating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual purchased formulation is applied; retain SDS, resin/hardener ratio and solvent fractions; no assumed universal coating Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: mek
+          role: "Methyl ethyl ketone cleaning solvent"
+          name: "Methyl ethyl ketone cleaning solvent"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual site cleaning recipe uses MEK; no default solvent Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: coat_water
+          role: "Treated coating-process water"
+          name: "Treated coating-process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual aqueous cleaning or rinsing"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: treatment_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: coat_sludge
+          role: "Epoxy coating-treatment sludge"
+          name: "Epoxy coating-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual collected sludge leaves for treatment; measure water, coating and contained elements separately"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+      elementary:
+        - row_id: mek_air
+          role: "Methyl ethyl ketone, emission to air"
+          name: "Methyl ethyl ketone, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Species-resolved measurement or supported solvent balance establishes actual uncaptured MEK"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+  - id: cutters
+    label: "Coal and rock cutting machine integration"
+    inputs:
+      product:
+        - row_id: cut_drum
+          role: "Completed coal-cutting drum module"
+          name: "Completed coal-cutting drum module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased dedicated drum is fitted; cutter-tool material and supplied drive coverage are declared Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-cutting-2024
+            ranges: []
+        - row_id: cut_boom
+          role: "Completed roadheader cutter-boom module"
+          name: "Completed roadheader cutter-boom module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased roadheader boom is fitted instead of making its structural and drive parts on site Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-cutting-2024
+            ranges: []
+        - row_id: track
+          role: "Completed steel crawler-track module"
+          name: "Completed steel crawler-track module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Integral crawler is in the accepted machine; separately sold hauling vehicle is excluded Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-cutting-2024
+            ranges: []
+        - row_id: gathering
+          role: "Completed continuous-miner gathering-arm module"
+          name: "Completed continuous-miner gathering-arm module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual integral gathering equipment is supplied as part of machine Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-cutting-2024
+            ranges: []
+        - row_id: cutters_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - sandvik-cutting-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: tunnel
+    label: "Tunnel boring machine integration"
+    inputs:
+      product:
+        - row_id: cutterhead
+          role: "Completed tunnel-boring cutterhead module"
+          name: "Completed tunnel-boring cutterhead module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased cutterhead, including declared fitted cutters; otherwise use actual fabrication BOM once Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-double-shield
+            ranges: []
+        - row_id: bearing
+          role: "Completed TBM main-bearing module"
+          name: "Completed TBM main-bearing module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased main bearing; declared seal and lubricant supply state Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-double-shield
+            ranges: []
+        - row_id: shield
+          role: "Completed steel shield-body module"
+          name: "Completed steel shield-body module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual shielded route purchases this module; open gripper machine has no assumed shield Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-double-shield
+            ranges: []
+        - row_id: erector
+          role: "Completed tunnel-segment erector module"
+          name: "Completed tunnel-segment erector module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Integral erector is accepted in configuration; concrete segments used later are excluded Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-double-shield
+            ranges: []
+        - row_id: machine_belt
+          role: "Completed TBM internal belt module"
+          name: "Completed TBM internal belt module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal transfer belt included in accepted BOM; separate tunnel conveyor system is excluded Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-double-shield
+            ranges: []
+        - row_id: tunnel_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - herrenknecht-double-shield
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: boring
+    label: "Other boring and sinking machine integration"
+    inputs:
+      product:
+        - row_id: rotary
+          role: "Completed raise-boring rotary-drive module"
+          name: "Completed raise-boring rotary-drive module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased rotary drive; record variable-frequency/electric or hydraulic configuration Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: column
+          role: "Completed steel raise-boring guide-column module"
+          name: "Completed steel raise-boring guide-column module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased column rather than in-house fabrication Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: pipe_handler
+          role: "Completed boring-rig pipe-handling module"
+          name: "Completed boring-rig pipe-handling module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual accepted mechanized pipe handler is supplied Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: rod
+          role: "Alloy-steel drill rod"
+          name: "Alloy-steel drill rod"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only rods included in accepted delivery configuration; later consumable replacement is outside gate Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: shaft_boom
+          role: "Completed shaft-sinking cutting-boom module"
+          name: "Completed shaft-sinking cutting-boom module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual VSM or shaft-boring configuration has this assembly Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: muck_pump
+          role: "Completed submersible shaft-muck pump"
+          name: "Completed submersible shaft-muck pump"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted sinking machine includes this pump; separate site separation plant remains separately declared Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: lowering
+          role: "Completed shaft-sinking lowering unit"
+          name: "Completed shaft-sinking lowering unit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual lowering unit is included in accepted modular machine supply; site foundation and shaft lining remain downstream Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: winch
+          role: "Completed shaft-sinking recovery winch"
+          name: "Completed shaft-sinking recovery winch"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual recovery winch is included in accepted configuration; standalone crane is not this machine Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: separation
+          role: "Completed shaft-muck separation module"
+          name: "Completed shaft-muck separation module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Included only when the accepted delivered modular machine BOM explicitly includes this module; an independently supplied plant has separate identity. Manufacturing of included module is counted once; operating shaft-water/slurry/rock service is downstream Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+        - row_id: boring_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - herrenknecht-raise-2024
+                - herrenknecht-vsm
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: assembly
+    label: "Common drive, hydraulics and control integration"
+    inputs:
+      product:
+        - row_id: motor
+          role: "Completed industrial electric drive motor"
+          name: "Completed industrial electric drive motor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only separately purchased motor not embedded in a purchased drive module; record power, topology and supplier Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: gearbox
+          role: "Completed machine planetary gearbox"
+          name: "Completed machine planetary gearbox"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual planetary gearbox not already counted inside rotary drive; record ratios and delivery state Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: cylinder
+          role: "Completed hydraulic thrust cylinder"
+          name: "Completed hydraulic thrust cylinder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual cylinder is separately purchased; piston/rod/tube raw material not also charged Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: hose
+          role: "Reinforced rubber hydraulic hose"
+          name: "Reinforced rubber hydraulic hose"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately installed hose; record rubber, reinforcement and fittings Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: plc
+          role: "Completed programmable logic controller"
+          name: "Completed programmable logic controller"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual control unit; declare sensors, software hardware and supplied cabinet coverage separately Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: sensor
+          role: "Electronic pressure sensor"
+          name: "Electronic pressure sensor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately purchased pressure sensor not embedded in control assembly Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: cable
+          role: "Copper-conductor power cable"
+          name: "Copper-conductor power cable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual cable; retain conductor section, insulation and voltage Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: hydraulic_fill
+          role: "Mineral-oil hydraulic fluid initial fill"
+          name: "Mineral-oil hydraulic fluid initial fill"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified mineral-oil grade; fluid already supplied inside modules is not a second external input Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: grease
+          role: "Lithium-soap mineral-oil lubricating grease"
+          name: "Lithium-soap mineral-oil lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual approved grease; retain grade and retained versus consumed amount Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+        - row_id: assembly_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - sandvik-zeltweg-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Factory acceptance, correction and release preparation"
+    inputs:
+      product:
+        - row_id: test_water
+          role: "Treated factory hydraulic-test water"
+          name: "Treated factory hydraulic-test water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual water-filled factory test; record reused stock and return separately"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: test_oil
+          role: "Mineral-oil factory-test hydraulic fluid"
+          name: "Mineral-oil factory-test hydraulic fluid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual test circuit uses oil; distinguish retained delivery fill, reused rig oil and drained waste Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: test_rock
+          role: "Rock block for factory cutting test"
+          name: "Rock block for factory cutting test"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual acceptance test consumes documented rock; record lithology and only manufacturing test quantity Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: test_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: test_rock_waste
+          role: "Factory cutting-test rock residue"
+          name: "Factory cutting-test rock residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual factory test residue leaves; excavation production rock is excluded"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent factory-test mineral hydraulic oil"
+          name: "Spent factory-test mineral hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual externally removed oil; internal recovered test oil is not waste"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: test_effluent
+          role: "Oil-bearing factory-test wastewater"
+          name: "Oil-bearing factory-test wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual test-water discharge leaves to treatment; measure water, oil and contained metals separately"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - sandvik-testing-2026
+                - herrenknecht-follo-2018
+            ranges: []
+      elementary:
+        []
+  - id: utilities
+    label: "Residual shared services and conditional on-site generation"
+    inputs:
+      product:
+        - row_id: service_water
+          role: "Treated residual factory-service water"
+          name: "Treated residual factory-service water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only residual attributable supply after fabrication, coating and test water assignments"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel for factory generator"
+          name: "Diesel fuel for factory generator"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual on-site generation; purchased electricity carries external generation emissions once"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: utilities_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, emission to air"
+          name: "Carbon dioxide, fossil, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual on-site combustion with fuel carbon and oxidation evidence; imported power has no direct stack CO2 here"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide, emission to air"
+          name: "Nitrogen dioxide, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual species-resolved exhaust evidence; fuel carbon does not establish NO2"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide, emission to air"
+          name: "Carbon monoxide, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual CO exhaust measurement or applicable documented factor; no inference from carbon closure alone"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: release
+    label: "Packing and factory-gate handover"
+    inputs:
+      product:
+        - row_id: timber
+          role: "Sawn softwood shipping support"
+          name: "Sawn softwood shipping support"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual transport support excluded from machine net mass; reusable ownership tracked Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: film
+          role: "Low-density polyethylene shipping film"
+          name: "Low-density polyethylene shipping film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual shipping wrap excluded from net reference mass Cited OEM evidence supports the conditional architecture or manufacturing stage only; it does not establish this exact grade, formulation, module supply state or quantity. Retain the actual supplier/site specification under cp_material before activating the row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - herrenknecht-follo-2018
+            ranges: []
+        - row_id: release_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN grid supply at 1–35 kV only; actual process-assigned electricity, or residual only for utilities; retain voltage, year and supplier; different interfaces require another verified identity"
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - herrenknecht-follo-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Coal or rock cutters and tunnelling machinery, other boring and sinking machinery"
+          name: "Coal or rock cutters and tunnelling machinery, other boring and sinking machinery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "52fdea74-4411-454d-8b7f-e7bd43044586"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted complete machine configuration at factory gate; product UUID does not establish any supplier process"
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - herrenknecht-follo-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rejects
+    applies_to: "all inventory rows"
+    rule: "Assign specific jobs and meters before allocation. Keep all attributable rejects, rework and repeated factory tests in Q; denominator includes only N accepted units of one configuration and their calibrated net masses. Do not pool unlike families or use packaging/reject mass. For shared processing use measured machine time, test duration or another documented physical cause, with complete reconciliation."
+    source_ids: []
+  - rule_id: scrap_transfer
+    applies_to: "swarf; weld_dust; coat_sludge"
+    rule: "Record each external recovery/treatment transfer, composition and actual destination. Internal rework and reusable oil transfers cancel as paired internal records. Do not credit avoided virgin metal or energy without an explicitly evidenced, separately disclosed downstream method."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "release"
+      flow_role: "reference_product"
+      record_type: "acceptance/weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M; accepted N; summed accepted mass D; weighing tare; retained delivery fill"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "same accepted cohort and Q period"
+      site_scope: "accepted configuration at factory gate"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale calibration, tare, module/BOM reconciliation and acceptance signature"
+    - protocol_id: cp_material
+      process_id: "all"
+      flow_role: "specific raw stock/module/chemical"
+      record_type: "material issue/BOM"
+      raw_fields: "row id; grade; formulation; composition; moisture; supplier state; opening/closing stock; purchase/issue/return; serial/job; Q; N; D"
+      collection_method: "Reconcile received stock, issues and returns to jobs and make/buy BOM; weigh actual modules and material, retain reject/rework quantities. Each material balance term carries its own assay and wet/dry basis; no utility is subjected to a material assay. Q is attributable period exchange including rejects/rework; derive q_item = Q/N and M = D/N only for this configuration."
+      unit: "kg"
+      frequency: "each issue and period closure"
+      temporal_coverage: "matched production and acceptance period"
+      site_scope: "actual performed factory stages and supplier interface"
+      aggregation_rule: "attributable material / accepted machines"
+      quality_evidence: "certificates, SDS, receipts, calibrated weighing, stock reconciliation"
+    - protocol_id: cp_energy
+      process_id: "all"
+      flow_role: "individual electricity/fuel exchange"
+      record_type: "meter/fuel ledger"
+      raw_fields: "row id; import/generation/export; voltage/grid/year; submeter; site meter; period; Q; job/load duration; storage change; N; D"
+      collection_method: "Read calibrated process meters and same-period site balances; retain measured test and rework load. Convert kWh to MJ with verified unit group; fuel retains actual mass/volume and measured calorific value. Allocate only residual unassigned services by measured causal activity. Q includes attributable reject/rework load; q_item = Q/N for same configuration."
+      unit: "MJ"
+      frequency: "continuous meters and each test/job"
+      temporal_coverage: "same period as N and D"
+      site_scope: "factory meter boundary; actual supplier voltage and geography"
+      aggregation_rule: "attributable electricity / accepted machines"
+      quality_evidence: "meter calibration, electricity invoices, fuel certificates and full site reconciliation"
+    - protocol_id: cp_water
+      process_id: "all"
+      flow_role: "each water exchange"
+      record_type: "water meter/bath record"
+      raw_fields: "row id; source/treatment; density/temperature; input moisture of each material; retained water; stock; return; effluent; evaporation; actual reaction water; Q; N; D"
+      collection_method: "Meter each external supply and discharge; convert actual volume using measured density. Sample moisture for each physical term independently; maintain paired internal returns and actual stock/reaction records. No assumption of universal water density. Q includes attributable reject/rework demand for same configuration; q_item = Q/N."
+      unit: "kg"
+      frequency: "each batch/test and matched period"
+      temporal_coverage: "same period as material and accepted mass"
+      site_scope: "actual factory supply, test circuit and treatment transfer"
+      aggregation_rule: "attributable water / accepted machines"
+      quality_evidence: "meter calibration, measured density, moisture samples and closure uncertainty"
+    - protocol_id: cp_waste
+      process_id: "all"
+      flow_role: "one specific residue per row"
+      record_type: "waste consignment/weighing"
+      raw_fields: "row id; gross/wet/dry mass; moisture; each contained-element assay; attached oil; opening/closing stock; paired rework return; destination; Q; N; D"
+      collection_method: "Weigh external transfer and retain receiver treatment interface; separately sample moisture, oil and actual metals for each residue, including sludge and effluent. Internally returned scrap/oil is paired and not an external credit. Q is attributable period external waste including rejects; q_item = Q/N."
+      unit: "kg"
+      frequency: "each consignment and period stock"
+      temporal_coverage: "same production period"
+      site_scope: "factory-to-treatment transfer"
+      aggregation_rule: "attributable waste / accepted machines"
+      quality_evidence: "weighbridge calibration, laboratory assays, moisture basis and receiver receipts"
+    - protocol_id: cp_emission
+      process_id: "all"
+      flow_role: "one elementary species and compartment"
+      record_type: "species measurement/balance"
+      raw_fields: "species; compartment; stack/fugitive point; sampling method; gas flow/time; capture/destruction; fuel composition; own fractions; stock; non-air residual; Q; N; D"
+      collection_method: "Use actual species-resolved sampling and measured gas volume/time, or a documented applicable species factor/balance with uncertainty. Include own solvent fractions, retained product, recovery, capture medium, actual destruction and residues; CO and NO2 require independent species evidence. Q is attributable measured period release including test/rework; q_item = Q/N."
+      unit: "kg"
+      frequency: "representative operating conditions and each relevant test"
+      temporal_coverage: "matched production period"
+      site_scope: "actual controlled/fugitive factory boundary"
+      aggregation_rule: "attributable emissions / accepted machines"
+      quality_evidence: "sampling calibration, species identity, factor applicability and combined uncertainty"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+    - id: water_balance
+      applies_to: "dilution_water; coat_water; test_water; service_water"
+      rule: "For one matched period close water inputs plus input moisture, opening stock and actual reaction formation against retained product water, each waste moisture, effluent water, evaporation, closing stock and actual reaction consumption. Use the moisture of each actual term, cancel paired internal coolant/test-water returns, and retain combined meter, sampling, density and allocation uncertainty. Investigate residuals beyond that evidence; no universal tolerance or clipping."
+      inputs:
+        - cp_water
+        - cp_material
+        - cp_waste
+      output: "water closure and uncertainty"
+      source_ids: []
+    - id: metal_balance
+      applies_to: "plate; forged_blank; swarf; weld_dust; coat_sludge"
+      rule: "Close each actual metal separately using the own matched assay and wet/dry basis of every input, accepted product, scrap, dust, sludge, effluent, release and opening/closing stock; include actual reaction partitioning and cancel paired internal transfers. Product BOM metal mass and waste gross mass are never automatically contained Fe, Mn, Ni or other element. Compare residual with combined weighing, assay, sampling and allocation uncertainty; investigate, do not invent yield."
+      inputs:
+        - cp_material
+        - cp_waste
+        - cp_emission
+        - cp_mass
+      output: "each contained-metal closure and uncertainty"
+      source_ids: []
+    - id: solvent_oil_balance
+      applies_to: "mek; epoxy; hydraulic_fill; test_oil"
+      rule: "Balance each actual solvent and oil separately with own composition fractions, retained product, opening/closing stocks, recovered returns, capture media, actual destruction and non-air residues. Internal recovered fluid is paired, not new external input or fictitious waste. A total VOC result cannot establish MEK; disclose unresolved species."
+      inputs:
+        - cp_material
+        - cp_waste
+        - cp_emission
+      output: "species closure and uncertainty"
+      source_ids: []
+    - id: utility_balance
+      applies_to: "all inventory rows"
+      rule: "For identical period and units reconcile purchased imports plus measured on-site generation and storage discharge against assigned fabrication/treatment/integration/assembly/test/dispatch load, exports, storage charge and only unassigned residual shared services. Apply measured causal allocation only to residual. Never add factory total to submeters; investigate negative residuals with meter and timing uncertainty, do not clip. Fuel, actual generation and stack species are separate; carbon balance cannot alone establish CO or NO2."
+      inputs:
+        - cp_energy
+        - cp_water
+      output: "reconciled allocation of assigned and residual loads"
+      source_ids: []
+  data_quality_requirements:
+    - id: configuration_records
+      applies_to: "all inventory rows"
+      requirement: "Retain independent family/module state, actual supplier data and the make/buy ledger; product identity is not supplier evidence"
+      evidence: "Drawing, BOM, purchase order and direct identity"
+    - id: period_completeness
+      applies_to: "all inventory rows"
+      requirement: "Disclose every missing exchange, provider and quantity; no default ranges or zero substitution. Verify total utility assignments and each physical closure with actual combined uncertainty"
+      evidence: "Calibrated logs, samples, closure ledgers and gap register"
+validation_rules:
+  - rule_id: accepted_denominator
+    applies_to: "all inventory rows"
+    rule: "Verify family/configuration, accepted N > 0, traceable calibrated net masses and acceptance records match Q period and BOM; normalize_mass is applied to each non-reference row; 1 kg output contains no transport package or rejects. Missing mass or allocation is unknown, not zero."
+    source_ids: []
+  - rule_id: route_identity
+    applies_to: "all inventory rows"
+    rule: "Every active physical exchange has one exact substance, grade/module/state and interface, supplier or disposal destination; add separate atomic rows for every actual omitted exchange. not_applicable requires evidence of absence, zero requires measurement and unknown requires a gap. UUIDs never prove completed upstream burdens; CN medium-voltage electricity cannot represent another grid or voltage."
+    source_ids: []
+  - rule_id: water_closure
+    applies_to: "dilution_water; coat_water; test_water; service_water; spent_coolant; coat_sludge; test_effluent"
+    rule: "For one matched period close water inputs plus input moisture, opening stock and actual reaction formation against retained product water, each waste moisture, effluent water, evaporation, closing stock and actual reaction consumption. Use the moisture of each actual term, cancel paired internal coolant/test-water returns, and retain combined meter, sampling, density and allocation uncertainty. Investigate residuals beyond that evidence; no universal tolerance or clipping."
+    source_ids: []
+  - rule_id: contained_metal_closure
+    applies_to: "plate; forged_blank; weld_wire; swarf; weld_dust; coat_sludge; test_effluent; reference_product"
+    rule: "Close each actual metal separately using the own matched assay and wet/dry basis of every input, accepted product, scrap, dust, sludge, effluent, release and opening/closing stock; include actual reaction partitioning and cancel paired internal transfers. Product BOM metal mass and waste gross mass are never automatically contained Fe, Mn, Ni or other element. Compare residual with combined weighing, assay, sampling and allocation uncertainty; investigate, do not invent yield."
+    source_ids: []
+  - rule_id: solvent_and_oil_closure
+    applies_to: "coolant; quench_oil; epoxy; mek; hydraulic_fill; grease; test_oil; spent_oil; mek_air"
+    rule: "Balance each actual solvent and oil separately with own composition fractions, retained product, opening/closing stocks, recovered returns, capture media, actual destruction and non-air residues. Internal recovered fluid is paired, not new external input or fictitious waste. A total VOC result cannot establish MEK; disclose unresolved species."
+    source_ids: []
+  - rule_id: utility_reconciliation
+    applies_to: "all inventory rows"
+    rule: "For identical period and units reconcile purchased imports plus measured on-site generation and storage discharge against assigned fabrication/treatment/integration/assembly/test/dispatch load, exports, storage charge and only unassigned residual shared services. Apply measured causal allocation only to residual. Never add factory total to submeters; investigate negative residuals with meter and timing uncertainty, do not clip. Fuel, actual generation and stack species are separate; carbon balance cannot alone establish CO or NO2."
+    source_ids: []
+  - rule_id: test_use_split
+    applies_to: "test; reference_product"
+    rule: "Retain before-gate test power, water, oil, test medium, rejected parts and corrective work; identify acceptance dates. Later excavation feed, rock removal, support concrete, cutter changes and operating energy belong only to a separately stated use/service model. OEM project performance and cutter weights are not manufacturing defaults."
+    source_ids:
+      - sandvik-testing-2026
+      - herrenknecht-follo-2018
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package"
+  downstream_use: "secondary_dataset; background_dataset; process and lifecyclemodel projections retain same boundary"
+  allowed_use: "Configuration-qualified factory manufacture and explicitly linked upstream production; separately evidenced downstream scenario"
+  excluded_use: "Per-kg mass alone as equivalent excavation service; unexplained fleet average; lifetime impact without operating scenario; complete upstream claim with unresolved providers"
+  required_metadata: "Required qualifiers; supplier/make-buy gates; N, D and M; Q period; actual routes; acceptance and uncertainty"
+  required_quality_disclosure: "Every unresolved UUID/provider, omitted exchange, source/recipe and quantitative gap; not_applicable/zero/unknown distinctions and measured closure"
+  update_trigger: "Change of family/model/BOM, supplier or treatment state, test boundary, voltage/geography, factory route or acceptance criteria"
+data_sources:
+  - id: "un-cpc-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes (30 June 2025), p.234, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Full category and adjacent independent underground conveyors and earthmoving machinery; title establishes classification, not a recipe"
+  - id: "sandvik-cutting-2024"
+    type: "handbook"
+    reference: "Sandvik Cutting Catalogue 2024, 2024, https://www.rocktechnology.sandvik/siteassets/product-documents/rock-tools/cutting/sandvik_cutting_catalog_2024.pdf"
+    used_for: "Printed p.13 / PDF p.7: continuous/bolter/borer miners and roadheaders; integral track, cutter and control alternatives; no numerical defaults"
+  - id: "sandvik-zeltweg-manufacturing"
+    type: "handbook"
+    reference: "Sandvik Zeltweg Contract Manufacturing, publisher brochure; acquired 2026-10-02, https://www.mining.sandvik/globalassets/products/mechanical-cutting-equipment/pdf/lohnfertigung-brochure-english.pdf"
+    used_for: "Undated brochure, pp.3 and 6: actual machining, welding, treatment and assembly capability; site examples are conditional, not universal"
+  - id: "herrenknecht-double-shield"
+    type: "handbook"
+    reference: "Herrenknecht Double Shield TBM, snapshot 2026-10-02, https://www.herrenknecht.com/en/products/productdetail/double-shield-tbm/"
+    used_for: "Architecture, internal belt versus external transport, shields/thrust/bearing and erector; operational water/lining is not factory input by default"
+  - id: "herrenknecht-raise-2024"
+    type: "handbook"
+    reference: "Herrenknecht Full Range Raise Boring, 05.2024 / HK3774, https://www.herrenknecht.com/?eID=file_download&file=fileadmin%2Fuser_upload%2FMain_Website%2F03_Produkte%2F02_Mining%2F02_Raise-Boring-Rig%2F02_Content%2FHK3774_DB_Mining_RBR_Full_Range_Raise_Borig_GB_20240514_MidRes.pdf"
+    used_for: "05.2024 HK3774 p.1: modular raise-boring and variable-frequency drives/rod handling; counterexample to tunnel-only architecture"
+  - id: "herrenknecht-vsm"
+    type: "handbook"
+    reference: "Herrenknecht Vertical Shaft Sinking Machine VSM, snapshot 2026-10-02, https://www.herrenknecht.com/en/products/productdetail/vertical-shaft-sinking-machine-vsm/"
+    used_for: "Shaft-sinking boom, pump and lowering architecture; separate site separation and shaft lining uses"
+  - id: "sandvik-testing-2026"
+    type: "handbook"
+    reference: "Sandvik 175 years at mining’s cutting edge, 20 March 2026, https://www.mining.sandvik/en/solid-ground/sandvik-perspective/2026/03/175-years-at-minings-cutting-edge/"
+    used_for: "20 March 2026: dedicated factory machine validation and cutting test facility; no measured consumption default"
+  - id: "herrenknecht-follo-2018"
+    type: "handbook"
+    reference: "Herrenknecht Double Breakthrough on the Follo Line, publisher press release; acquired 2026-10-02, https://www.herrenknecht.com/fileadmin/user_upload/Herrenknecht_Press_Release__Double_Breakthrough_on_the_Follo_Line.pdf"
+    used_for: "28 September 2018 press release p.2: factory acceptance precedes site assembly and tunnelling; project cutter mass/performance not adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:06589e5cd173ad3ca73b46b555219e3851702897ef3e38d7cd4c2fc09c10284a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4954"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4954
+          line: 55
+          column: 1
+        end:
+          offset: 8784
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `factory_gate` | all inventory rows | Include upstream supply once and all attributable factory operations through acceptance, correction, initial fill and packing. Exclude transport after declared gate, installation/excavation energy, mined coal/rock, routine cutter replacement, tunnel segments, grout and lifetime service unless explicitly modelled as a separate downstream scenario. Factory test materials and energy remain included. | `sandvik-testing-2026`; `herrenknecht-follo-2018` |\n| `configuration_boundary` | reference_product | Integral carrier, gathering mechanism, machine belt and installed handling equipment belong only when accepted in the same complete-machine BOM. Independently sold conveyors, cranes, transport vehicles, separation plants and tools have separate identity. A supplied VSM lowering/winch/control/separation module explicitly included in the accepted modular product BOM is retained once as a manufacturing input; its downstream shaft-water, rock/slurry and lining service is excluded. A self-propelled cutter does not become an excavator merely because it has tracks. For ambiguous integrated systems verify drawing, sales object and classification before mapping; no silent scope change. | `un-cpc-2025`; `sandvik-cutting-2024`; `herrenknecht-double-shield`; `herrenknecht-vsm` |\n| `make_buy_once` | all inventory rows | For each serial/configuration build a make/buy matrix for structure, shields, cutterhead/drum, motor, gears, bearing, hydraulics and controls. Purchased completed modules carry embedded material, processing, motor and supplied oil once; no parallel raw inputs for those burdens. For actual in-house fabrication use material/consumable/energy/output records, not a second purchased completed module. Partial supplier state retains only completed upstream steps. | `sandvik-zeltweg-manufacturing` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Factory receipt of composition- and state-qualified raw stock or completed supplier modules |\n| starting_condition_role | Foreground manufacturing starting state; upstream production remains required |\n| product_classification_scope | Complete machines in reviewed category; supplied integrated configuration must be declared |\n| recursive_input_rule | A purchased same-category completed machine used as a base is an explicit upstream input with inherited manufacture once; model only actual incremental work; never recursively create its full manufacturing inventory again |\n| upstream_dataset_requirement | Supplier processes match grade, module state, voltage, geography and delivery interface; unresolved providers remain disclosed and block a complete burden claim |\n| disclosure | Actual factory and gate; routes performed; subcontract steps; bought modules; included carrier/back-up; meter period; acceptance/reject/rework; gaps and downstream exclusions |\n\n### Family and make/buy matrix\n\n| Family | Actual assemblies | Scope decision |\n| --- | --- | --- |\n| Coal/rock cutter | Drum or boom, track/base, gathering and conditional integral bolter | Make or buy each named module; no universal TBM shield or disc-cutter recipe |\n| Tunnel machine | Cutterhead, bearing/drive, gripper or shields, thrust, machine belt and declared erector/back-up | Shield and lining mechanism are conditional; external tunnel conveyor and lining concrete are excluded |\n| Other boring/sinking | Base/columns, rotary drive, thrust cylinders, pipe handler; actual shaft cutting boom/pump/lowering apparatus and explicitly included control/separation modules | Raise-boring and VSM are counterexamples to a tunnel-only structure; site foundation, shaft rings and separation service are downstream |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 225
+              line: 8
+              column: 1
+            end:
+              offset: 308
+              line: 8
+              column: 84
+          text: "# Coal or rock cutters and tunnelling machinery; other boring and sinking machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4954
+              line: 55
+              column: 1
+            end:
+              offset: 4975
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_74177"
+      family: "allocation"
+      span:
+        start:
+          offset: 74177
+          line: 1279
+          column: 1
+        end:
+          offset: 75090
+          line: 1286
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_rejects` | all inventory rows | Assign specific jobs and meters before allocation. Keep all attributable rejects, rework and repeated factory tests in Q; denominator includes only N accepted units of one configuration and their calibrated net masses. Do not pool unlike families or use packaging/reject mass. For shared processing use measured machine time, test duration or another documented physical cause, with complete reconciliation. |  |\n| `scrap_transfer` | swarf; weld_dust; coat_sludge | Record each external recovery/treatment transfer, composition and actual destination. Internal rework and reusable oil transfers cancel as paired internal records. Do not credit avoided virgin metal or energy without an explicitly evidenced, separately disclosed downstream method. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 225
+              line: 8
+              column: 1
+            end:
+              offset: 308
+              line: 8
+              column: 84
+          text: "# Coal or rock cutters and tunnelling machinery; other boring and sinking machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 74177
+              line: 1279
+              column: 1
+            end:
+              offset: 74217
+              line: 1279
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_84276"
+      family: "validation"
+      span:
+        start:
+          offset: 84276
+          line: 1318
+          column: 1
+        end:
+          offset: 87871
+          line: 1330
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `accepted_denominator` | all inventory rows | Verify family/configuration, accepted N > 0, traceable calibrated net masses and acceptance records match Q period and BOM; normalize_mass is applied to each non-reference row; 1 kg output contains no transport package or rejects. Missing mass or allocation is unknown, not zero. |  |\n| `route_identity` | all inventory rows | Every active physical exchange has one exact substance, grade/module/state and interface, supplier or disposal destination; add separate atomic rows for every actual omitted exchange. not_applicable requires evidence of absence, zero requires measurement and unknown requires a gap. UUIDs never prove completed upstream burdens; CN medium-voltage electricity cannot represent another grid or voltage. |  |\n| `water_closure` | dilution_water; coat_water; test_water; service_water; spent_coolant; coat_sludge; test_effluent | For one matched period close water inputs plus input moisture, opening stock and actual reaction formation against retained product water, each waste moisture, effluent water, evaporation, closing stock and actual reaction consumption. Use the moisture of each actual term, cancel paired internal coolant/test-water returns, and retain combined meter, sampling, density and allocation uncertainty. Investigate residuals beyond that evidence; no universal tolerance or clipping. |  |\n| `contained_metal_closure` | plate; forged_blank; weld_wire; swarf; weld_dust; coat_sludge; test_effluent; reference_product | Close each actual metal separately using the own matched assay and wet/dry basis of every input, accepted product, scrap, dust, sludge, effluent, release and opening/closing stock; include actual reaction partitioning and cancel paired internal transfers. Product BOM metal mass and waste gross mass are never automatically contained Fe, Mn, Ni or other element. Compare residual with combined weighing, assay, sampling and allocation uncertainty; investigate, do not invent yield. |  |\n| `solvent_and_oil_closure` | coolant; quench_oil; epoxy; mek; hydraulic_fill; grease; test_oil; spent_oil; mek_air | Balance each actual solvent and oil separately with own composition fractions, retained product, opening/closing stocks, recovered returns, capture media, actual destruction and non-air residues. Internal recovered fluid is paired, not new external input or fictitious waste. A total VOC result cannot establish MEK; disclose unresolved species. |  |\n| `utility_reconciliation` | all inventory rows | For identical period and units reconcile purchased imports plus measured on-site generation and storage discharge against assigned fabrication/treatment/integration/assembly/test/dispatch load, exports, storage charge and only unassigned residual shared services. Apply measured causal allocation only to residual. Never add factory total to submeters; investigate negative residuals with meter and timing uncertainty, do not clip. Fuel, actual generation and stack species are separate; carbon balance cannot alone establish CO or NO2. |  |\n| `test_use_split` | test; reference_product | Retain before-gate test power, water, oil, test medium, rejected parts and corrective work; identify acceptance dates. Later excavation feed, rock removal, support concrete, cutter changes and operating energy belong only to a separately stated use/service model. OEM project performance and cutter weights are not manufacturing defaults. | `sandvik-testing-2026`; `herrenknecht-follo-2018` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 225
+              line: 8
+              column: 1
+            end:
+              offset: 308
+              line: 8
+              column: 84
+          text: "# Coal or rock cutters and tunnelling machinery; other boring and sinking machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 84276
+              line: 1318
+              column: 1
+            end:
+              offset: 84298
+              line: 1318
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "factory_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4954"
+      source_span:
+        start:
+          offset: 5048
+          line: 59
+          column: 1
+        end:
+          offset: 5541
+          line: 59
+          column: 494
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "configuration_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_4954"
+      source_span:
+        start:
+          offset: 5542
+          line: 60
+          column: 1
+        end:
+          offset: 6368
+          line: 60
+          column: 827
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "make_buy_once"
+      identity_kind: "explicit"
+      unit_id: "normative_4954"
+      source_span:
+        start:
+          offset: 6369
+          line: 61
+          column: 1
+        end:
+          offset: 6906
+          line: 61
+          column: 538
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_74177"
+      source_span:
+        start:
+          offset: 74290
+          line: 1283
+          column: 1
+        end:
+          offset: 74748
+          line: 1283
+          column: 459
+    - pointer: "/allocation_rules/1"
+      rule_id: "scrap_transfer"
+      identity_kind: "explicit"
+      unit_id: "normative_74177"
+      source_span:
+        start:
+          offset: 74749
+          line: 1284
+          column: 1
+        end:
+          offset: 75088
+          line: 1284
+          column: 340
+    - pointer: "/validation_rules/0"
+      rule_id: "accepted_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 84371
+          line: 1322
+          column: 1
+        end:
+          offset: 84703
+          line: 1322
+          column: 333
+    - pointer: "/validation_rules/1"
+      rule_id: "route_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 84704
+          line: 1323
+          column: 1
+        end:
+          offset: 85151
+          line: 1323
+          column: 448
+    - pointer: "/validation_rules/2"
+      rule_id: "water_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 85152
+          line: 1324
+          column: 1
+        end:
+          offset: 85753
+          line: 1324
+          column: 602
+    - pointer: "/validation_rules/3"
+      rule_id: "contained_metal_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 85754
+          line: 1325
+          column: 1
+        end:
+          offset: 86368
+          line: 1325
+          column: 615
+    - pointer: "/validation_rules/4"
+      rule_id: "solvent_and_oil_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 86369
+          line: 1326
+          column: 1
+        end:
+          offset: 86837
+          line: 1326
+          column: 469
+    - pointer: "/validation_rules/5"
+      rule_id: "utility_reconciliation"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 86838
+          line: 1327
+          column: 1
+        end:
+          offset: 87429
+          line: 1327
+          column: 592
+    - pointer: "/validation_rules/6"
+      rule_id: "test_use_split"
+      identity_kind: "explicit"
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 87430
+          line: 1328
+          column: 1
+        end:
+          offset: 87869
+          line: 1328
+          column: 440
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4954"
+      source_span:
+        start:
+          offset: 4954
+          line: 55
+          column: 1
+        end:
+          offset: 4975
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4954"
+      source_span:
+        start:
+          offset: 6934
+          line: 65
+          column: 1
+        end:
+          offset: 7962
+          line: 72
+          column: 192
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4954"
+      source_span:
+        start:
+          offset: 7996
+          line: 76
+          column: 1
+        end:
+          offset: 8782
+          line: 80
+          column: 326
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_74177"
+      source_span:
+        start:
+          offset: 74177
+          line: 1279
+          column: 1
+        end:
+          offset: 74217
+          line: 1279
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_84276"
+      source_span:
+        start:
+          offset: 84276
+          line: 1318
+          column: 1
+        end:
+          offset: 84298
+          line: 1318
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:06589e5cd173ad3ca73b46b555219e3851702897ef3e38d7cd4c2fc09c10284a"
+  generated_content_sha256: "sha256:169d3bae1ff6ab2b6a7f15b857ee27907aaf2b5065a5b246615e1822bf1f6c10"

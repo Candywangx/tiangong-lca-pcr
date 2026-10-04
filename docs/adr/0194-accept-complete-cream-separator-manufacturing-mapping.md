@@ -1,0 +1,15 @@
+# Accept complete cream-separator manufacture
+
+Decision UTC: 2026-10-01T21:17:15.257309Z
+PCR: `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.cream-separators`
+Status: candidate; authored methodology.
+
+Accept CPC 3.0 44511 as an exact edge to this equipment-manufacturing methodology. It retains complete manual, small electric and industrial cream separators under actual configuration and principal cream-separation function. Generic centrifuges, separate parts, entire dairy plants and downstream milk-separation services are outside this boundary. Each dataset represents an actual supplied configuration rather than a representative industrial skid.
+
+Independent review inspected genuine Janschitz product tables distinguishing manual aluminium die-cast housing from electric plastic/stainless/aluminium configurations, and the original Tetra Pak H7C PDF page 2 with June 2025 footer, contact-grade versus duplex/super-duplex bowl materials and preassembled in-house-tested release. These establish alternative architectures, not material masses, factory utility intensities or universal recipes. JRC process evidence supports conditional route decomposition only. Rated capacity, consumer operating consumption and leaflet GWP are not manufacturing defaults.
+
+The bilingual four-file record includes eight processes and 54 distinct exchanges. All bilingual card IDs match. Actual make/buy, supplied modules and retained fills are counted once; optional motors do not become manual-machine inputs. Factory test milk, water, cleaning and coproducts require actual quantities and destination evidence, with no assumed dairy yield. Calibrated accepted net mass and same-configuration period Q/N and Q/D normalization retain rejects/rework burdens without inflating the accepted denominator.
+
+Projected validation rules retain each physical term's own species assay, moisture/density and wet/dry basis, stocks/reactions and paired returns; solvent capture differs from destruction and unexplained residual cannot become air. Utilities carry only unassigned residual after process loads, with storage/export/return reconciliation and negative-residual uncertainty investigation. Purchased steam is collected as measured kg times actual MJ/kg enthalpy less separately measured return enthalpy on a common reference, or by calibrated net heat meter; no kg-as-MJ or boiler double counting. NO, NO2 and NOx-as-NO2-equivalent remain distinct. Explicit finite inspection passes 540 checks with 108 bilingual rows and zero skipped.
+
+Unrelated battery separator scrap and generated-electricity interfaces were rejected. Full-category reference and specific inventory/provider UUIDs, empirical ranges and actual recipe links remain disclosed candidate gaps, with verified Mass/kg support. No unsupported grade, polymer formulation, machine mass or environmental factor is inferred. Semantic acceptance is not publication or a declaration of complete empirical datasets. Runtime and root/original-author full-validation evidence are retained separately.

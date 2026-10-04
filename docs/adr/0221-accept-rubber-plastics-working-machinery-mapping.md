@@ -1,0 +1,9 @@
+# Accept CPC 44915 rubber plastics working machinery mapping
+
+Accept an exact CPC 3.0 44915 edge to `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.machinery-n-e-c-for-working-rubber-or-plastics-or-for-the-manufacture-of-products-from-6d07fcd2`, a candidate with authored bilingual methodology and a current structured projection.
+
+Full n.e.c. rubber/plastics working and products-manufacturing scope including mixing/milling/calendering/curing/injection/extrusion/blow/thermoforming; electric/hydraulic/hybrid and make/buy routes separated. Primary machinery sources support architecture only, with no catalogue mass/throughput or user production recipe adopted. Actual included moulds and retained fills differ from independent moulds, test polymer/rubber charges and customer goods. Sulfur is restricted to compatible CN conventional tyre-compound trials; robot inverter to included robot <=1000V interface; cable retains native Length/m and actual own kg/m conversion.
+
+Every atomic identity has actual bounded UUID search evidence. Adoption requires independently reviewed published identity/type, supplied state, native reference property/unit, classification, chemical and provider interface; unresolved identities remain explicit gaps. The methodology preserves actual collected quantities, factory-only test burdens and accepted complete configuration, and has complete finite bilingual measurement coverage. Original source and extraction bytes plus verified fragments were independently checked. Source examples do not establish a universal factory recipe, lifetime or completed foreground/provider records.
+
+Decision: accepted by codex-direct-pcr-author at 2026-10-02T21:14:32.793378Z. This accepts the classification link to usable candidate methodology, without publishing it.

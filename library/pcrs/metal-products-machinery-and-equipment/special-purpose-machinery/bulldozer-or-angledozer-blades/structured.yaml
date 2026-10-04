@@ -1,10 +1,1569 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44429"
-  title: "Bulldozer or angledozer blades"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.bulldozer-or-angledozer-blades"
+  classification_refs: "CPC 3.0 44429"
+  covered_products: "Actual configured complete bulldozer or angledozer blade"
+  excluded_products: "Complete self-propelled dozer; separately sold parts; earthmoving service; snowploughs and rakes"
+  representative_product: "Steel U-blade with declared installed wear group; not a universal recipe"
+  production_route: "Actual make/buy matrix; cut/form/weld; conditional machining, heat and surface treatment; assembly and acceptance"
+  market_state: "New accepted blade at factory gate; packaging separate"
+functional_unit:
+  what: "Manufacture of the declared delivered blade configuration"
+  how_much: "1 kg accepted complete blade of the same configuration"
+  how_well: "Meets actual dimensional, attachment, weld and control acceptance; mass does not establish equivalence across capacity/functions"
+  how_long_or_cycle: "One factory manufacturing/acceptance cycle; no service lifetime imposed"
+  reference_flow_link: "finished_blade"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual receiving, in-house operations, upstream outsourced products, assembly, factory tests, rework and packaging; later earthmoving, installation, maintenance and disposal are separate."
+      source_ids:
+        - un-cpc3-blades
+        - dymax-abrasion-blades
+    - rule_id: boundary_make_buy
+      applies_to: "foreground_system_boundary"
+      rule: "Declare make/buy per moldboard, edge, end bit, side plate, frame, arm, pin and cylinder. Embedded plate, wire, treatment and supplier fill in bought completed components are not added again in foreground."
+      source_ids:
+        - dymax-abrasion-blades
+        - cat-moldboard-patent
+boundary_abstraction:
+  declared_starting_condition: "Actual certified plate or completed components delivered by suppliers into plant"
+  starting_condition_role: "foreground_input"
+  product_classification_scope: "Complete dozer/angle blade, distinguished from host and separately sold parts"
+  recursive_input_rule: "Bought moldboard or blade assembly enters once as upstream product; do not recreate its embedded manufacture"
+  upstream_dataset_requirement: "Match grade, state, completed operations, supply interface, geography and year; disclose unresolved links"
+  disclosure: "Complete delivered BOM, wear options, arm/hydraulic boundary and test-rig ownership"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bulldozer or angledozer blades"
+    uuid: "e2bc45f7-c072-4426-814c-f254a6b821ce"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "blade type"
+    - model
+    - "host interface"
+    - "width/height and actual capacity definition"
+    - "moldboard/side plate grade"
+    - "wear package"
+    - "shipped arms/frame/cylinder scope"
+    - "net mass"
+    - "make/buy"
+    - "factory/year"
+    - acceptance
+    - "utility geography/voltage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: material_assay
+    applies_to: "physical material and species records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Each input, product, scrap, sludge, wastewater and emission term uses its own matched assay and wet/dry basis; gross mass is not contained iron or solvent."
+  - id: energy_basis
+    applies_to: "electricity and fuel"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "1 kWh = 3.6 MJ; fuel mass to energy needs actual heating value; rated host power is not factory energy."
+process_map:
+  - id: fabrication
+    name: "Plate cutting, forming, welding and machining"
+    inclusion: "conditional"
+    inclusion_condition: "Actual in-house blade or frame fabrication, including one-piece or panel-built moldboard."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: surface
+    name: "Heat treatment and wear/surface treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual foreground heat treatment, hardfacing, blasting or coating; bought pretreated stock stays upstream."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: assembly
+    name: "Blade configuration assembly"
+    inclusion: "required"
+    inclusion_condition: "Assemble actual delivered blade BOM, including wear parts and only supplied arms/cylinders."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: test_pack
+    name: "Factory acceptance and packaging"
+    inclusion: "required"
+    inclusion_condition: "Actual dimensional, weld, attachment and conditional hydraulic tests before release."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: shared
+    name: "Unassigned shared factory services"
+    inclusion: "conditional"
+    inclusion_condition: "Only measured residual after process loads have been assigned."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Plate cutting, forming, welding and machining"
+    inputs:
+      product:
+        - row_id: ar400
+          role: "AR400 abrasion-resistant steel plate"
+          name: "AR400 abrasion-resistant steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual certified AR400 plate in the BOM; do not replace with A36 or assume all blade plates are AR400."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: hardox500
+          role: "Hardox 500 steel plate"
+          name: "Hardox 500 steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual selected Hardox 500 wear package, separate from the AR400 alternative."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: t1_plate
+          role: "ASTM A514 quenched and tempered steel plate"
+          name: "ASTM A514 quenched and tempered steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when T1 side plate/support procurement certificates establish ASTM A514 and its grade; supplier shorthand alone is insufficient."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: weld_wire
+          role: "ER70S-6 carbon steel welding wire"
+          name: "ER70S-6 carbon steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if the actual qualified weld procedure specifies this wire; record another filler as a separate exact-grade exchange."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: argon
+          role: "Argon shielding gas"
+          name: "Argon shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual argon use; gas mixtures require individual component masses and supplier blend specification."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: shield_co2
+          role: "Carbon dioxide shielding gas"
+          name: "Carbon dioxide shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual carbon dioxide shielding, separate from combustion emissions."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: oxygen
+          role: "Oxygen cutting gas"
+          name: "Oxygen cutting gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual oxygen cutting; plasma/laser/mechanical cutting has its own actual consumables."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: acetylene
+          role: "Acetylene cutting fuel"
+          name: "Acetylene cutting fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only oxyacetylene cutting; actual propane or another fuel is a different atomic row, not a substitution inside this card."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Water-miscible mineral-oil cutting fluid concentrate"
+          name: "Water-miscible mineral-oil cutting fluid concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual machining concentrate with declared SDS/formulation; dilution water is separate."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: water_fab
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only fresh water crossing the boundary; internal return is paired transfer, not a new fresh-water input."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: electricity_fabrication
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional CN 1–35 kV grid-average supply to user. Other geography/voltage needs a matching provider identity. Use assigned actual process demand, not rated power or earthmoving-use diesel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Segregated steel cutting scrap"
+          name: "Segregated steel cutting scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh actual grade-specific offcuts and chips; external recycling is a waste/provider link, not automatic avoided virgin steel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: spent_fluid
+          role: "Spent mineral-oil cutting emulsion"
+          name: "Spent mineral-oil cutting emulsion"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual water/oil/metal assay and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: filter_dust
+          role: "Captured iron-bearing welding and cutting dust"
+          name: "Captured iron-bearing welding and cutting dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Captured dust is a waste, distinct from uncaptured airborne release."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      elementary:
+        []
+  - id: surface
+    label: "Heat treatment and wear/surface treatment"
+    inputs:
+      product:
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual in-house gas-fired heat treatment; record fuel composition and heating value, not rated furnace power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: quench_oil
+          role: "Mineral-oil quenching oil"
+          name: "Mineral-oil quenching oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual oil quench with formulation and make-up; bought quenched plate has no foreground quenching operation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: carbide_wire
+          role: "Chromium-carbide hardfacing cored wire"
+          name: "Chromium-carbide hardfacing cored wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only in-house hardfacing using this exact consumable; bought carbide wear blocks enter as components."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: blast_grit
+          role: "Steel blasting grit"
+          name: "Steel blasting grit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual blasting media make-up; recirculated grit is not repeatedly purchased."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: epoxy_coat
+          role: "Two-component epoxy coating"
+          name: "Two-component epoxy coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual documented epoxy formulation; component ratio and contained solvent are recorded, another coating gets a distinct row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: xylene
+          role: "Xylene coating thinner"
+          name: "Xylene coating thinner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual separately added xylene; do not add contained paint solvent again as purchased thinner."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: electricity_surface
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional CN 1–35 kV grid-average supply to user. Other geography/voltage needs a matching provider identity. Use assigned actual process demand, not rated power or earthmoving-use diesel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: paint_sludge
+          role: "Epoxy paint overspray sludge"
+          name: "Epoxy paint overspray sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use actual wet mass, water/solvent/resin/metal assays and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: spent_quench
+          role: "Spent mineral-oil quenching oil"
+          name: "Spent mineral-oil quenching oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only waste crossing boundary; retained bath stock and internal recovery are reconciled."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      elementary:
+        - row_id: xylene_air
+          role: "Xylene to air"
+          name: "Xylene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or species-resolved balance emission after retention, recovery, capture and actual destruction."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual fossil combustion; composition-based carbon accounting excludes carbon retained in residuals."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+  - id: assembly
+    label: "Blade configuration assembly"
+    inputs:
+      product:
+        - row_id: bought_moldboard
+          role: "Fabricated steel dozer moldboard"
+          name: "Fabricated steel dozer moldboard"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought finished moldboard; embedded stock/forming/welding is upstream once, not duplicate foreground material."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bought_edge
+          role: "Heat-treated steel bolt-on dozer cutting edge"
+          name: "Heat-treated steel bolt-on dozer cutting edge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an edge installed in this delivered blade; a separately sold edge is outside this reference product."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bought_endbit
+          role: "Heat-treated steel dozer end bit"
+          name: "Heat-treated steel dozer end bit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied end bit; grade, heat treatment and supplier are required."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bought_arm
+          role: "Fabricated steel dozer push arm"
+          name: "Fabricated steel dozer push arm"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if supplied in the declared blade assembly; existing tractor arms are excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bought_cylinder
+          role: "Hydraulic blade tilt cylinder"
+          name: "Hydraulic blade tilt cylinder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only supplied tilt cylinder; angle cylinder is a distinct component row when included."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bought_angle
+          role: "Hydraulic blade angle cylinder"
+          name: "Hydraulic blade angle cylinder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual shipped angle-control cylinder; no host hydraulic pump or engine is assumed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bought_pin
+          role: "Machined steel blade pivot pin"
+          name: "Machined steel blade pivot pin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bought finished pin; bought cylinder or arm embedded pins are not re-added."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: bolt
+          role: "High-strength steel blade bolt"
+          name: "High-strength steel blade bolt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual fasteners installed with grade and count/mass reconciliation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: electricity_assembly
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional CN 1–35 kV grid-average supply to user. Other geography/voltage needs a matching provider identity. Use assigned actual process demand, not rated power or earthmoving-use diesel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test_pack
+    label: "Factory acceptance and packaging"
+    inputs:
+      product:
+        - row_id: hydraulic_oil
+          role: "ISO VG 46 mineral hydraulic oil"
+          name: "ISO VG 46 mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual first fill or consumed test oil of this grade; returned test-rig oil and cylinder supplier fill remain distinct."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: wood
+          role: "Sawn softwood packaging timber"
+          name: "Sawn softwood packaging timber"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual cradle timber outside accepted blade net mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual transport film, separately weighed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: electricity_test_pack
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional CN 1–35 kV grid-average supply to user. Other geography/voltage needs a matching provider identity. Use assigned actual process demand, not rated power or earthmoving-use diesel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_blade
+          role: "Bulldozer or angledozer blades"
+          name: "Bulldozer or angledozer blades"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2bc45f7-c072-4426-814c-f254a6b821ce"
+          property_unit: "Mass / kg"
+          description: "Accepted complete configuration only, including documented installed wear group and supplied attachments."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: shared
+    label: "Unassigned shared factory services"
+    inputs:
+      product:
+        - row_id: water_shared
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only causally assigned unallocated site residual; exclude water already assigned to fabrication and treatment."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_shared."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shared
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+        - row_id: electricity_shared
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional CN 1–35 kV grid-average supply to user. Other geography/voltage needs a matching provider identity. Residual only, after all measured process assignments; never the full site meter added to submeters."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_shared."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shared
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater
+          role: "Metal-bearing process wastewater"
+          name: "Metal-bearing process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discharge/treatment transfer with wet mass, water content and each metal species concentration."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_shared."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shared
+              source_ids:
+                - dymax-abrasion-blades
+                - cat-moldboard-patent
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_separate
+    applies_to: "foreground_burden_allocation"
+    rule: "First separate by same-configuration work orders and submeters; allocate shared services by measured causal drivers and disclose other lines. Blade capacity or host power does not substitute for measurement."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "foreground_burden_allocation"
+    rule: "Retain reject, rework, cutting-loss and captured-waste burdens; reject and packaging mass are excluded from accepted-net-mass denominator. Recycling uses actual waste/provider links, with no default virgin-substitution credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "test_pack"
+      flow_role: "reference_product"
+      record_type: "weighing_record"
+      raw_fields: "model; configuration; serial number; accepted net mass M; accepted count N"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "per accepted unit"
+      temporal_coverage: "same production period"
+      site_scope: "declared delivered blade, not host"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "calibration, tare, configuration and acceptance records"
+    - protocol_id: cp_fabrication
+      process_id: "fabrication"
+      flow_role: "atomic_exchanges"
+      record_type: "production_record"
+      raw_fields: "exchange identity; Q; N; configuration; meter units; stock opening/closing; wet/dry basis; own assay; route; period; provider"
+      collection_method: "Meters, weighing, procurement, work orders, sampling and provider records; retain reject/rework burdens."
+      unit: "MJ for energy; kg for mass"
+      frequency: "per batch and meter interval"
+      temporal_coverage: "same production period"
+      site_scope: "actual plant and delivered configuration"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "calibration, sampling, stocks, allocation and uncertainty evidence"
+    - protocol_id: cp_surface
+      process_id: "surface"
+      flow_role: "atomic_exchanges"
+      record_type: "production_record"
+      raw_fields: "exchange identity; Q; N; configuration; meter units; stock opening/closing; wet/dry basis; own assay; route; period; provider"
+      collection_method: "Meters, weighing, procurement, work orders, sampling and provider records; retain reject/rework burdens."
+      unit: "MJ for energy; kg for mass"
+      frequency: "per batch and meter interval"
+      temporal_coverage: "same production period"
+      site_scope: "actual plant and delivered configuration"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "calibration, sampling, stocks, allocation and uncertainty evidence"
+    - protocol_id: cp_assembly
+      process_id: "assembly"
+      flow_role: "atomic_exchanges"
+      record_type: "production_record"
+      raw_fields: "exchange identity; Q; N; configuration; meter units; stock opening/closing; wet/dry basis; own assay; route; period; provider"
+      collection_method: "Meters, weighing, procurement, work orders, sampling and provider records; retain reject/rework burdens."
+      unit: "MJ for energy; kg for mass"
+      frequency: "per batch and meter interval"
+      temporal_coverage: "same production period"
+      site_scope: "actual plant and delivered configuration"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "calibration, sampling, stocks, allocation and uncertainty evidence"
+    - protocol_id: cp_test_pack
+      process_id: "test_pack"
+      flow_role: "atomic_exchanges"
+      record_type: "production_record"
+      raw_fields: "exchange identity; Q; N; configuration; meter units; stock opening/closing; wet/dry basis; own assay; route; period; provider"
+      collection_method: "Meters, weighing, procurement, work orders, sampling and provider records; retain reject/rework burdens."
+      unit: "MJ for energy; kg for mass"
+      frequency: "per batch and meter interval"
+      temporal_coverage: "same production period"
+      site_scope: "actual plant and delivered configuration"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "calibration, sampling, stocks, allocation and uncertainty evidence"
+    - protocol_id: cp_shared
+      process_id: "shared"
+      flow_role: "atomic_exchanges"
+      record_type: "production_record"
+      raw_fields: "exchange identity; Q; N; configuration; meter units; stock opening/closing; wet/dry basis; own assay; route; period; provider"
+      collection_method: "Meters, weighing, procurement, work orders, sampling and provider records; retain reject/rework burdens."
+      unit: "MJ for energy; kg for mass"
+      frequency: "per batch and meter interval"
+      temporal_coverage: "same production period"
+      site_scope: "actual plant and delivered configuration"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "calibration, sampling, stocks, allocation and uncertainty evidence"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished unit; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all exchanges"
+      requirement: "Actual type, chemical/component identity, delivery state, geography, units and provider interface; no mixed-metal candidate substitutes for an exact steel grade."
+      evidence: "certificates, SDS and direct identity review"
+    - id: quality_complete
+      applies_to: "data package"
+      requirement: "Disclose collected/calculated/not-applicable/unknown/missing state per row, UUID/range gaps; unknown is not zero."
+      evidence: "route matrix, raw records, measurements and uncertainty"
+validation_rules:
+  - rule_id: validate_configuration
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reference product, acceptance, mass denominator and inventory must share one delivered configuration; verify excluded host/parts and supplied-option status."
+    source_ids:
+      - dymax-dozer-guide
+      - un-cpc3-blades
+  - rule_id: validate_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile atomic exchanges, upstream counted once, water/species/metal balances, shared residual, stocks and rework against measured uncertainty; no invented universal range."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Adopt UUID only with directly confirmed type, official bilingual name, property/unit, state/interface and geography. CN medium-voltage user power is conditional; disclose unresolved identities/ranges for prepublication review."
+    source_ids: []
+  - rule_id: validate_denominator
+    applies_to: "foreground_dataset_conformance"
+    rule: "For each configuration and matched period, retain attributable Q including reject/rework burdens; N is accepted delivered blades and M is sum of calibrated accepted net blade masses / N. q_item = Q/N and q_ref = Q/sum of accepted net masses. Exclude packaging/reject mass and other blade configurations from denominator; align stocks and work in progress."
+    source_ids: []
+  - rule_id: validate_utility_residual
+    applies_to: "foreground_dataset_conformance"
+    rule: "Use the same site period and units to reconcile purchased imports plus actual on-site generation minus exports and storage change against assigned fabrication/surface/assembly/test demand plus shared residual and evidenced conversion losses. Shared rows include only unassigned residual. Investigate negative residual with period, calibration, allocation and combined uncertainty, never clip. Record generation fuel/water/emissions once and cancel paired internal transfers."
+    source_ids: []
+  - rule_id: validate_water_closure
+    applies_to: "foreground_dataset_conformance"
+    rule: "For each water-bearing input and output use its own actual water content and wet/dry basis: input moisture, fresh/dilution/quench/cleaning water, product/fluid retention, wet scrap/sludge, wastewater, evaporation, opening/closing stocks and actual reaction water production/consumption. Cancel paired internal returns. Investigate closure against combined measurement/sampling/allocation uncertainty; no universal tolerance."
+    source_ids: []
+  - rule_id: validate_contained_species
+    applies_to: "foreground_dataset_conformance"
+    rule: "For every metal/chemical species, match each term independently with its own grade assay, concentration, amount and wet/dry conversion for inputs, product, scrap, slag, captured dust, sludge, wastewater, releases and opening/closing stocks. Include actual species reactions and cancel paired internal returns. Gross steel/wastewater mass never equals contained iron/species mass. Closure uses combined measurement/sampling/allocation uncertainty, not invented yield."
+    source_ids: []
+  - rule_id: validate_solvent_emissions
+    applies_to: "foreground_dataset_conformance"
+    rule: "Balance each actual solvent supplied inside paint separately from added thinner against product retention, recovery, capture-media content, stocks, actual destruction and non-air wastes before assigning measured species-resolved air release. Captured/recovered solvent is not air emission. Fuel carbon balance may support actual CO2 with matched fuel carbon and other carbon outputs, but never establishes CO, NOx or metal aerosol; use separate applicable species evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing data for same delivered configuration, projected to process/lifecyclemodel"
+  excluded_use: "Earthmoving service, host manufacture, universal capacity equivalence or unreviewed separately sold part substitution"
+  required_metadata: "model, delivered BOM, make/buy, routes, net mass, period, plant, supply interfaces and collection protocols"
+  required_quality_disclosure: "unresolved UUIDs, missing empirical ranges, conditional routes, allocation and uncertainty"
+  update_trigger: "design, grade, wear package, provider, route, geography or voltage change"
+data_sources:
+  - id: "un-cpc3-blades"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 explanatory notes (2025-06-30), 44421 and 44429: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Blade versus self-propelled host classification; label does not prove route"
+  - id: "dymax-abrasion-blades"
+    type: "handbook"
+    reference: "Dymax Heavy Duty Abrasion U Blades: https://dymaxinc.com/attachments/abrasion-u-dozer-blades/"
+    used_for: "Wear options, cutting-edge group and existing-arm interface, not universal recipe"
+  - id: "dymax-dozer-guide"
+    type: "handbook"
+    reference: "Dymax Dozer Product Guide, coal U-blade table and variant pages: https://dymaxinc.com/wp-content/uploads/2024/05/Dozer-Product-Guide-web.pdf"
+    used_for: "Model/liner/capacity/weight variants; no universal mass"
+  - id: "cat-blade-components"
+    type: "handbook"
+    reference: "Caterpillar, Your Cat Dozer Blade Level Indicator: https://www.cat.com/en_US/articles/for-owners/small-dozers/small-dozer-blade-level-indicator.html"
+    used_for: "OEM blade types, attachment/control components, not every sale configuration"
+  - id: "cat-moldboard-patent"
+    type: "literature"
+    reference: "Caterpillar Inc., WO2009002409A1 (filed 2008-06-13; published 2008-12-31), detailed description and figures 2–7: https://patents.google.com/patent/WO2009002409A1/en"
+    used_for: "Manufacturer original disclosure: panel versus one-piece cut/form/weld alternatives; not industry-wide process"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0b145a7f925e7eb7c34ea967d4b1eb6cc1ded13ffadf460afc2808385ff3497f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4464"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4464
+          line: 57
+          column: 1
+        end:
+          offset: 5786
+          line: 75
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual certified plate or completed components delivered by suppliers into plant |\n| starting_condition_role | foreground_input |\n| product_classification_scope | Complete dozer/angle blade, distinguished from host and separately sold parts |\n| recursive_input_rule | Bought moldboard or blade assembly enters once as upstream product; do not recreate its embedded manufacture |\n| upstream_dataset_requirement | Match grade, state, completed operations, supply interface, geography and year; disclose unresolved links |\n| disclosure | Complete delivered BOM, wear options, arm/hydraulic boundary and test-rig ownership |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_factory | Include actual receiving, in-house operations, upstream outsourced products, assembly, factory tests, rework and packaging; later earthmoving, installation, maintenance and disposal are separate. | un-cpc3-blades; dymax-abrasion-blades |\n| boundary_make_buy | Declare make/buy per moldboard, edge, end bit, side plate, frame, arm, pin and cylinder. Embedded plate, wire, treatment and supplier fill in bought completed components are not added again in foreground. | dymax-abrasion-blades; cat-moldboard-patent |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 175
+              line: 8
+              column: 1
+            end:
+              offset: 207
+              line: 8
+              column: 33
+          text: "# Bulldozer or angledozer blades"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4464
+              line: 57
+              column: 1
+            end:
+              offset: 4485
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39116"
+      family: "allocation"
+      span:
+        start:
+          offset: 39116
+          line: 809
+          column: 1
+        end:
+          offset: 39701
+          line: 816
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_separate | First separate by same-configuration work orders and submeters; allocate shared services by measured causal drivers and disclose other lines. Blade capacity or host power does not substitute for measurement. |  |\n| allocation_scrap | Retain reject, rework, cutting-loss and captured-waste burdens; reject and packaging mass are excluded from accepted-net-mass denominator. Recycling uses actual waste/provider links, with no default virgin-substitution credit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 175
+              line: 8
+              column: 1
+            end:
+              offset: 207
+              line: 8
+              column: 33
+          text: "# Bulldozer or angledozer blades"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39116
+              line: 809
+              column: 1
+            end:
+              offset: 39156
+              line: 809
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_46759"
+      family: "validation"
+      span:
+        start:
+          offset: 46759
+          line: 852
+          column: 1
+        end:
+          offset: 49879
+          line: 865
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_configuration | Reference product, acceptance, mass denominator and inventory must share one delivered configuration; verify excluded host/parts and supplied-option status. | dymax-dozer-guide; un-cpc3-blades |\n| validate_balance | Reconcile atomic exchanges, upstream counted once, water/species/metal balances, shared residual, stocks and rework against measured uncertainty; no invented universal range. |  |\n| validate_identity | Adopt UUID only with directly confirmed type, official bilingual name, property/unit, state/interface and geography. CN medium-voltage user power is conditional; disclose unresolved identities/ranges for prepublication review. |  |\n| validate_denominator | For each configuration and matched period, retain attributable Q including reject/rework burdens; N is accepted delivered blades and M is sum of calibrated accepted net blade masses / N. q_item = Q/N and q_ref = Q/sum of accepted net masses. Exclude packaging/reject mass and other blade configurations from denominator; align stocks and work in progress. |  |\n| validate_utility_residual | Use the same site period and units to reconcile purchased imports plus actual on-site generation minus exports and storage change against assigned fabrication/surface/assembly/test demand plus shared residual and evidenced conversion losses. Shared rows include only unassigned residual. Investigate negative residual with period, calibration, allocation and combined uncertainty, never clip. Record generation fuel/water/emissions once and cancel paired internal transfers. |  |\n| validate_water_closure | For each water-bearing input and output use its own actual water content and wet/dry basis: input moisture, fresh/dilution/quench/cleaning water, product/fluid retention, wet scrap/sludge, wastewater, evaporation, opening/closing stocks and actual reaction water production/consumption. Cancel paired internal returns. Investigate closure against combined measurement/sampling/allocation uncertainty; no universal tolerance. |  |\n| validate_contained_species | For every metal/chemical species, match each term independently with its own grade assay, concentration, amount and wet/dry conversion for inputs, product, scrap, slag, captured dust, sludge, wastewater, releases and opening/closing stocks. Include actual species reactions and cancel paired internal returns. Gross steel/wastewater mass never equals contained iron/species mass. Closure uses combined measurement/sampling/allocation uncertainty, not invented yield. |  |\n| validate_solvent_emissions | Balance each actual solvent supplied inside paint separately from added thinner against product retention, recovery, capture-media content, stocks, actual destruction and non-air wastes before assigning measured species-resolved air release. Captured/recovered solvent is not air emission. Fuel carbon balance may support actual CO2 with matched fuel carbon and other carbon outputs, but never establishes CO, NOx or metal aerosol; use separate applicable species evidence. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 175
+              line: 8
+              column: 1
+            end:
+              offset: 207
+              line: 8
+              column: 33
+          text: "# Bulldozer or angledozer blades"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 46759
+              line: 852
+              column: 1
+            end:
+              offset: 46781
+              line: 852
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_factory"
+      identity_kind: "explicit"
+      unit_id: "normative_4464"
+      source_span:
+        start:
+          offset: 5251
+          line: 72
+          column: 1
+        end:
+          offset: 5509
+          line: 72
+          column: 259
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_make_buy"
+      identity_kind: "explicit"
+      unit_id: "normative_4464"
+      source_span:
+        start:
+          offset: 5510
+          line: 73
+          column: 1
+        end:
+          offset: 5784
+          line: 73
+          column: 275
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_separate"
+      identity_kind: "explicit"
+      unit_id: "normative_39116"
+      source_span:
+        start:
+          offset: 39210
+          line: 813
+          column: 1
+        end:
+          offset: 39446
+          line: 813
+          column: 237
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_39116"
+      source_span:
+        start:
+          offset: 39447
+          line: 814
+          column: 1
+        end:
+          offset: 39699
+          line: 814
+          column: 253
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_configuration"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 46835
+          line: 856
+          column: 1
+        end:
+          offset: 47056
+          line: 856
+          column: 222
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 47057
+          line: 857
+          column: 1
+        end:
+          offset: 47257
+          line: 857
+          column: 201
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 47258
+          line: 858
+          column: 1
+        end:
+          offset: 47511
+          line: 858
+          column: 254
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 47512
+          line: 859
+          column: 1
+        end:
+          offset: 47897
+          line: 859
+          column: 386
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_utility_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 47898
+          line: 860
+          column: 1
+        end:
+          offset: 48407
+          line: 860
+          column: 510
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_water_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 48408
+          line: 861
+          column: 1
+        end:
+          offset: 48864
+          line: 861
+          column: 457
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_contained_species"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 48865
+          line: 862
+          column: 1
+        end:
+          offset: 49367
+          line: 862
+          column: 503
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_solvent_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 49368
+          line: 863
+          column: 1
+        end:
+          offset: 49877
+          line: 863
+          column: 510
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4464"
+      source_span:
+        start:
+          offset: 4464
+          line: 57
+          column: 1
+        end:
+          offset: 4485
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4464"
+      source_span:
+        start:
+          offset: 4513
+          line: 61
+          column: 1
+        end:
+          offset: 5197
+          line: 68
+          column: 101
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39116"
+      source_span:
+        start:
+          offset: 39116
+          line: 809
+          column: 1
+        end:
+          offset: 39156
+          line: 809
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_46759"
+      source_span:
+        start:
+          offset: 46759
+          line: 852
+          column: 1
+        end:
+          offset: 46781
+          line: 852
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0b145a7f925e7eb7c34ea967d4b1eb6cc1ded13ffadf460afc2808385ff3497f"
+  generated_content_sha256: "sha256:d96f12ee109969322aeaf726d4a79c92174e9bed152d5a0da455838f24f5be51"

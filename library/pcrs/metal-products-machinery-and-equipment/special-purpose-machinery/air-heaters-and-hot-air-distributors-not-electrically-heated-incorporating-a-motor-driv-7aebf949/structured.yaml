@@ -3,46 +3,41 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.air-heaters-and-hot-air-distributors-not-electrically-heated-incorporating-a-motor-driv-7aebf949"
-  classification_refs: "CPC 3.0:44824"
-  covered_products: "Finished iron/steel-cased hydronic or gas-fired air heaters with motor-driven fan"
-  excluded_products: "Electric-resistance heaters; fanless radiators; stand-alone boilers; unassembled components"
-  representative_product: "Complete steel-cased hydronic unit heater with motor-driven fan"
-  production_route: "Sheet fabrication, component assembly, factory test and packing; declare hydronic or gas-fired route"
-  market_state: "One accepted complete unit at factory gate, excluding transport packaging"
+  classification_refs: "CPC 3.0 44824"
+  covered_products: "Iron/steel non-electrically heated fan/blower air heaters and hot-air distributors in declared actual configurations"
+  excluded_products: "Electric heaters; heat pumps; passive radiators; boilers; generic fans; spare parts; installation systems"
+  representative_product: "One accepted complete declared heater or hot-air distributor, not a universal burner-heated average"
+  production_route: "Actual metal fabrication and finishing or purchased assemblies, component assembly, configuration-specific factory QA and packaging"
+  market_state: "Accepted finished equipment at factory gate; installation excluded"
 functional_unit:
-  what: "One accepted complete iron/steel non-electric air heater with motor-driven fan"
-  how_much: "One unit with measured net mass M kg"
-  how_well: "Declared heat-source route, air-flow performance, casing material and motor configuration"
-  how_long_or_cycle: "Factory-gate product; no use period"
-  reference_flow_link: "finished_heater"
+  what: "Provide one complete declared air-heating or supplied-hot-air distribution machine for downstream modelling"
+  how_much: "One accepted finished machine, represented by measured net mass M kg"
+  how_well: "Declared thermal/airflow, safety and acceptance requirements of actual configuration; no efficiency or heat rating prescribed"
+  how_long_or_cycle: "One factory production/acceptance cycle; no lifetime heating service represented"
+  reference_flow_link: "final_product"
 system_boundary:
   rules:
-    - rule_id: boundary_gate
-      applies_to: "foreground manufacturing"
-      rule: "Include received purchased materials and components, sheet fabrication, assembly, factory testing and packing through accepted output; model use and end of life separately."
+    - rule_id: boundary_factory
+      applies_to: "all processes"
+      rule: "Include actual fabrication, surface finish, assembly, QA/repeated tests, rework, packaging, utilities and pollution controls before gate. Purchased finished components retain upstream material and production burdens; internal intermediate transfers cancel."
       source_ids:
-        - kampmann-tip4-epd-2026
-        - nist-tn1975r2
-    - rule_id: boundary_route
-      applies_to: "covered product"
-      rule: "Include only iron/steel heaters with a motor-driven fan and a non-electric heat source; select hydronic or gas components from the actual route."
+        - reznor-udx-specification
+    - rule_id: boundary_use
+      applies_to: "factory_acceptance"
+      rule: "Only factory test energy/emissions belong here. Installation, field commissioning, lifetime fuel/fan power, maintenance replacement and end-of-life are excluded and require separate downstream scenarios. A supplied-hot-air distributor does not produce its heat upstream at this factory unless actual test heat is supplied."
       source_ids:
-        - un-cpc-3-2025
-        - kampmann-tip4-epd-2026
-        - nist-tn1975r2
-    - rule_id: boundary_upstream
-      applies_to: "purchased inputs"
-      rule: "Record purchased materials and components as product inputs with upstream datasets; do not duplicate supplier manufacture in this foreground process."
-      source_ids:
-        - kampmann-tip4-epd-2026
-        - nist-tn1975r2
+        - dantherm-direct-indirect
+    - rule_id: boundary_atomic
+      applies_to: "site audit"
+      rule: "Add every actual distinct fuel, solvent, joining alloy, purchased component, waste and emission species as an atomic row. These candidate rows require route audit; no omitted-as-zero. If cure combustion, purchased test steam/heat, direct water withdrawal or other services occur, add their individual exchanges and matched upstream/direct emissions."
+      source_ids: []
 boundary_abstraction:
-  declared_starting_condition: "Factory receipt of specified steel sheet, fan assembly and route-specific heat-source components"
-  starting_condition_role: "foreground manufacturing entry"
-  product_classification_scope: "CPC 3.0:44824 finished products; component classification is independent"
-  recursive_input_rule: "If a purchased input is itself in the category, record it once as a distinct purchased product flow rather than recursively expanding the same manufacturing process"
-  upstream_dataset_requirement: "Link each purchased input to an upstream dataset with a distinct boundary; disclose missing links"
-  disclosure: "Disclose route, model, steel state, site, period, measured M and allocation of shared energy"
+  declared_starting_condition: "Actual purchased sheet/tube, fabricated housing/exchanger or finished components at receiving gate, including their declared upstream production"
+  starting_condition_role: "foreground_starting_state"
+  product_classification_scope: "CPC 3.0 44824"
+  recursive_input_rule: "A purchased same-category unit for assembly/rework is an upstream product with provenance; do not recurse into itself or duplicate completed supplier manufacture."
+  upstream_dataset_requirement: "Link compatible supplier material/component manufacture, electricity supply, fuel supply, inbound transport and waste treatment exactly once, with geography/year and starting-state disclosure."
+  disclosure: "Actual route, outsourcing, supplier operations, installed component scope, QA type, heat source, pollutant fate and exclusions"
 reference_flow_definition:
   reference_amount: "M"
   product_flow_ref:
@@ -54,11 +49,24 @@ reference_flow_definition:
     uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
   reference_unit: "kg"
   required_qualifiers:
-    - "heat-source route"
-    - "casing steel state"
-    - "fan/motor configuration"
-    - "acceptance state"
-    - "net-mass measurement record"
+    - "model and configuration"
+    - "iron/steel housing and heat-transfer material grades"
+    - direct-fired
+    - indirect-fired
+    - "hydronic/steam-coil or supplied-hot-air distribution technology"
+    - "actual fuel or heat-transfer medium"
+    - "fan/blower and motor specification"
+    - "burner and heat exchanger presence"
+    - "declared airflow with test conditions"
+    - "actual heater rated thermal output"
+    - "not_applicable for a supplied-hot-air distributor without a heat source"
+    - "controls and safety equipment"
+    - "factory acceptance procedure"
+    - coating
+    - "gate state"
+    - "site and reporting period"
+    - "measured net mass M"
+    - "supplier geography/year"
 reference_flows:
   []
 measurement_rules:
@@ -68,197 +76,269 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: component_mass
+    applies_to: "metal/component accounting"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record actual composite steel, aluminium, purchased component and retained coating masses separately. Gross steel product mass is not elemental Fe mass; any element balance needs assays. Exclude packaging from M."
+  - id: energy_units
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Keep electricity kWh and fuel NCV MJ distinct; 1 kWh = 3.6 MJ. Fuel volume conversion requires actual temperature/pressure, density and calorific basis."
 process_map:
-  - id: heater_manufacturing
-    name: "Air-heater fabrication, assembly, test and packing"
+  - id: metal_fabrication
+    name: "Receipt, cutting, forming and heat-transfer fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "For site-fabricated housing, ducts or exchanger: sheet/tube preparation, punching, bending, pressing, machining and actual joining. Purchased assemblies bypass only supplier-completed operations."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: surface_finish
+    name: "Surface preparation, coating and curing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual degreasing, rinse, abrasive cleaning, liquid or powder coating and cure; purchased finished parts retain supplier finishing burden."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: assembly
+    name: "Fan, heat-source and controls assembly"
     inclusion: "required"
-    inclusion_condition: "All covered routes; activate conditional rows by actual route"
-    role: "foreground production"
-    quantitative_reference: "per one accepted finished unit; reference product M kg"
+    inclusion_condition: "Fit actual fan/blower, motor, guards, fasteners, wiring and controls; burner and heat exchanger only if present. Supplied-hot-air distributor may have neither burner nor exchanger."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: factory_acceptance
+    name: "Factory acceptance and rework"
+    inclusion: "required"
+    inclusion_condition: "Document actual fan/controls/electrical and dimensional checks. Leak/pressure testing applies to sealed fuel/heat-transfer circuits; combustion QA only to fired configurations actually tested at this factory. No universal testing duration or fuel."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: dispatch
+    name: "Packaging and factory gate release"
+    inclusion: "required"
+    inclusion_condition: "Release one accepted complete declared configuration; separate protective packaging from net machine mass."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: site_services
+    name: "Shared utilities and pollution control"
+    inclusion: "required"
+    inclusion_condition: "Attribute actual maintenance, compressed-air generation, water treatment and exhaust capture once; no duplication in process meters."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
 process_inventory:
-  - id: heater_manufacturing
-    label: "Air-heater fabrication, assembly, test and packing"
+  - id: metal_fabrication
+    label: "Receipt, cutting, forming and heat-transfer fabrication"
     inputs:
       product:
-        - row_id: galvanized_sheet
-          role: "Galvanized steel sheet for casing"
-          name: "Sendzimir galvanized steel sheet"
+        - row_id: carbon_steel_sheet
+          role: "Low-carbon steel sheet"
+          name: "Low-carbon steel sheet"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Inclusion condition: galvanized casing route. This card represents one concrete exchange."
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
           amount:
-            expression: "Record the installed and offcut mass of received sheet used for a galvanized casing, only when this casing stock is used."
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_bom
-              source_ids:
-                - kampmann-tip4-epd-2026
-            ranges: []
-        - row_id: cold_rolled_sheet
-          role: "Cold-rolled steel sheet for casing"
-          name: "Cold-rolled steel sheet"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Inclusion condition: cold-rolled ungalvanized casing route. This card represents one concrete exchange."
-          amount:
-            expression: "Record received cold-rolled cabinet sheet mass when the gas-fired or another declared route uses this stock; exclude sheet already counted as galvanized_sheet."
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_bom
-              source_ids:
-                - nist-tn1975r2
-            ranges: []
-        - row_id: fan_motor
-          role: "Purchased motor-driven fan assembly"
-          name: "Motor-driven air circulation fan assembly"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Inclusion condition: all covered routes. This card represents one concrete exchange."
-          amount:
-            expression: "Record installed purchased fan-and-motor assembly mass for each accepted heater configuration."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_bom
-              source_ids:
-                - kampmann-tip4-epd-2026
-                - nist-tn1975r2
-            ranges: []
-        - row_id: hydronic_exchanger
-          role: "Hydronic heat exchanger assembly"
-          name: "Copper-aluminium hydronic air heat exchanger assembly"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Inclusion condition: hydronic hot-water route. This card represents one concrete exchange."
-          amount:
-            expression: "Record installed purchased copper-aluminium hydronic exchanger mass only for the hot-water heating route."
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_bom
-              source_ids:
-                - kampmann-tip4-epd-2026
-            ranges: []
-        - row_id: gas_exchanger
-          role: "Gas heat exchanger tube assembly"
-          name: "Aluminized-steel gas heat exchanger tube assembly"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Inclusion condition: gas-fired route. This card represents one concrete exchange."
-          amount:
-            expression: "Record installed aluminized-steel heat-exchanger tube assembly mass only for the gas-fired route; exclude burner mass."
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_bom
-              source_ids:
-                - nist-tn1975r2
-            ranges: []
-        - row_id: gas_burner
-          role: "Gas burner assembly"
-          name: "Natural-gas burner assembly for unit air heater"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Inclusion condition: gas-fired route. This card represents one concrete exchange."
-          amount:
-            expression: "Record installed gas burner assembly mass only for the gas-fired route; exclude heat-exchanger tubes."
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_bom
-              source_ids:
-                - nist-tn1975r2
-            ranges: []
-        - row_id: factory_electricity
-          role: "Factory alternating current"
-          name: "Alternating current"
-          flow_type: "product"
-          flow_ref:
-            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
-          property_unit: "Net calorific value / MJ"
-          description: "Inclusion condition: all covered routes. This card represents one concrete exchange."
-          amount:
-            expression: "Measure electricity attributable to sheet fabrication, assembly, testing and packing for one accepted finished unit."
+            expression: "Actual attributable exchange amount per accepted machine from cp_carbon_steel_sheet; retain route-specific allocation and stock reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
+              text: "per one accepted finished machine"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_electricity
+              collection_protocol_id: cp_carbon_steel_sheet
               source_ids:
-                - kampmann-tip4-epd-2026
+                - reznor-udx-specification
             ranges: []
-        - row_id: test_natural_gas
-          role: "Natural gas for factory firing test"
-          name: "natural gas in the gaseous state"
+        - row_id: stainless_tube
+          role: "Stainless steel heat-exchanger tube"
+          name: "Stainless steel heat-exchanger tube"
           flow_type: "product"
-          flow_ref:
-            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
-          property_unit: "Volume / m3"
-          description: "Inclusion condition: gas-fired route with factory firing test. This card represents one concrete exchange."
-          amount:
-            expression: "Record metered gaseous natural gas used for a factory firing test only when the gas-fired unit is fired before dispatch."
-            value_mode: "foreground_record"
-            specificity: "route_specific"
-            basis:
-              text: "per one accepted finished unit"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_gas
-              source_ids:
-                - nist-tn1975r2
-            ranges: []
-        - row_id: corrugated_box
-          role: "Corrugated shipping box"
-          name: "corrugated board boxes"
-          flow_type: "product"
-          flow_ref:
-            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
           property_unit: "Mass / kg"
-          description: "Inclusion condition: when corrugated boxes are used. This card represents one concrete exchange."
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
           amount:
-            expression: "Weigh corrugated board boxes issued for shipment per accepted finished unit; exclude transport packaging from the accepted unit."
+            expression: "Actual attributable exchange amount per accepted machine from cp_stainless_tube; retain route-specific allocation and stock reconciliation."
             value_mode: "foreground_record"
-            specificity: "product_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
+              text: "per one accepted finished machine"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_packaging
+              collection_protocol_id: cp_stainless_tube
               source_ids:
-                - kampmann-tip4-epd-2026
-                - nist-tn1975r2
+                - reznor-udx-specification
+            ranges: []
+        - row_id: aluminized_sheet
+          role: "Aluminized steel sheet"
+          name: "Aluminized steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_aluminized_sheet; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminized_sheet
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: aluminium_fin
+          role: "Aluminium heat-exchanger fin sheet"
+          name: "Aluminium heat-exchanger fin sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_aluminium_fin; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_fin
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: weld_wire
+          role: "Carbon steel welding wire"
+          name: "Carbon steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_weld_wire; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weld_wire
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: braze_alloy
+          role: "Copper-phosphorus brazing alloy"
+          name: "Copper-phosphorus brazing alloy"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_braze_alloy; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_braze_alloy
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: braze_flux
+          role: "Brazing flux containing potassium fluoroborate"
+          name: "Brazing flux containing potassium fluoroborate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_braze_flux; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_braze_flux
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: cutting_oil
+          role: "Metalworking cutting oil"
+          name: "Metalworking cutting oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade/formulation and operation. Aluminized steel is one purchased composite sheet: do not add its coating metal again. Welding/brazing may be absent for press-fabricated exchangers; other actual alloys or flux formulations need their own cards."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_cutting_oil; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_oil
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: argon
+          role: "Argon welding shielding gas"
+          name: "Argon welding shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_argon; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_argon
+              source_ids: []
+            ranges: []
+        - row_id: metal_fabrication_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_metal_fabrication_electricity; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_fabrication_electricity
+              source_ids: []
+            ranges: []
+        - row_id: copper_tube
+          role: "Copper hydronic heat-exchanger tube"
+          name: "Copper hydronic heat-exchanger tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_copper_tube; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_tube
+              source_ids:
+                - reznor-hydronic-manual
             ranges: []
       waste:
         []
@@ -266,220 +346,2176 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: finished_heater
-          role: "Accepted finished non-electric air heater"
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Carbon steel fabrication scrap"
+          name: "Carbon steel fabrication scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_steel_scrap; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_scrap
+              source_ids: []
+            ranges: []
+        - row_id: stainless_scrap
+          role: "Stainless steel fabrication scrap"
+          name: "Stainless steel fabrication scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_stainless_scrap; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_scrap
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium fin offcut scrap"
+          name: "Aluminium fin offcut scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_aluminium_scrap; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_scrap
+              source_ids: []
+            ranges: []
+        - row_id: spent_cutting_oil
+          role: "Spent metalworking cutting oil"
+          name: "Spent metalworking cutting oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_spent_cutting_oil; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_cutting_oil
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: weld_pm25
+          role: "Welding particulate matter smaller than 2.5 micrometres, to air"
+          name: "Welding particulate matter smaller than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_weld_pm25; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weld_pm25
+              source_ids: []
+            ranges: []
+  - id: surface_finish
+    label: "Surface preparation, coating and curing"
+    inputs:
+      product:
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline degreasing"
+          name: "Sodium hydroxide for alkaline degreasing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual coating/preparation recipe only; retain concentration, solids and solvent composition. Powder and liquid paint are alternative routes unless both are actually used. Subdivide other chemicals and solvents individually."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_sodium_hydroxide; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sodium_hydroxide
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: phosphoric_acid
+          role: "Phosphoric acid for surface pretreatment"
+          name: "Phosphoric acid for surface pretreatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual coating/preparation recipe only; retain concentration, solids and solvent composition. Powder and liquid paint are alternative routes unless both are actually used. Subdivide other chemicals and solvents individually."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_phosphoric_acid; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_phosphoric_acid
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: steel_grit
+          role: "Steel grit abrasive"
+          name: "Steel grit abrasive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual coating/preparation recipe only; retain concentration, solids and solvent composition. Powder and liquid paint are alternative routes unless both are actually used. Subdivide other chemicals and solvents individually."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_steel_grit; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_grit
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: polyester_powder
+          role: "Polyester powder coating"
+          name: "Polyester powder coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual coating/preparation recipe only; retain concentration, solids and solvent composition. Powder and liquid paint are alternative routes unless both are actually used. Subdivide other chemicals and solvents individually."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_polyester_powder; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polyester_powder
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: alkyd_paint
+          role: "Alkyd paint"
+          name: "Alkyd paint"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual coating/preparation recipe only; retain concentration, solids and solvent composition. Powder and liquid paint are alternative routes unless both are actually used. Subdivide other chemicals and solvents individually."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_alkyd_paint; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alkyd_paint
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: xylene
+          role: "Xylene coating thinner"
+          name: "Xylene coating thinner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual coating/preparation recipe only; retain concentration, solids and solvent composition. Powder and liquid paint are alternative routes unless both are actually used. Subdivide other chemicals and solvents individually."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_xylene; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_xylene
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: surface_finish_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_surface_finish_electricity; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish_electricity
+              source_ids: []
+            ranges: []
+        - row_id: cure_gas
+          role: "Natural gas for coating cure"
+          name: "Natural gas for coating cure"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_cure_gas; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure_gas
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pretreatment_sludge
+          role: "Phosphate surface-treatment sludge"
+          name: "Phosphate surface-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_pretreatment_sludge; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_sludge
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: spent_grit
+          role: "Spent steel-grit abrasive"
+          name: "Spent steel-grit abrasive"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_spent_grit; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_grit
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: paint_residue
+          role: "Alkyd paint residue"
+          name: "Alkyd paint residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_paint_residue; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_paint_residue
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: powder_residue
+          role: "Unrecovered polyester coating powder"
+          name: "Unrecovered polyester coating powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_powder_residue; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powder_residue
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+      elementary:
+        - row_id: xylene_air
+          role: "Xylene, to air"
+          name: "Xylene, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_xylene_air; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_xylene_air
+              source_ids:
+                - epa-other-metal-coating
+            ranges: []
+        - row_id: cure_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual fuel-fired curing; residual direct combustion release after controls. Electric curing has no onsite combustion exchange. NOx as NO2 reporting does not establish pure NO2 identity."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_cure_co2; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure_co2
+              source_ids: []
+            ranges: []
+        - row_id: cure_co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual fuel-fired curing; residual direct combustion release after controls. Electric curing has no onsite combustion exchange. NOx as NO2 reporting does not establish pure NO2 identity."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_cure_co; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure_co
+              source_ids: []
+            ranges: []
+        - row_id: cure_nox
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual fuel-fired curing; residual direct combustion release after controls. Electric curing has no onsite combustion exchange. NOx as NO2 reporting does not establish pure NO2 identity."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_cure_nox; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cure_nox
+              source_ids: []
+            ranges: []
+  - id: assembly
+    label: "Fan, heat-source and controls assembly"
+    inputs:
+      product:
+        - row_id: fan_impeller
+          role: "Purchased axial fan impeller"
+          name: "Purchased axial fan impeller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_fan_impeller; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fan_impeller
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: blower
+          role: "Purchased centrifugal blower assembly"
+          name: "Purchased centrifugal blower assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_blower; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blower
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: motor
+          role: "Purchased electric fan motor"
+          name: "Purchased electric fan motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_motor; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_motor
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: control_board
+          role: "Purchased heater electronic control board"
+          name: "Purchased heater electronic control board"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_control_board; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_board
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: gas_burner
+          role: "Purchased gas burner assembly"
+          name: "Purchased gas burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_gas_burner; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_burner
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: oil_burner
+          role: "Purchased fuel-oil burner assembly"
+          name: "Purchased fuel-oil burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_oil_burner; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_oil_burner
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: gas_valve
+          role: "Purchased gas safety valve"
+          name: "Purchased gas safety valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_gas_valve; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_valve
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: exchanger
+          role: "Purchased steel heat-exchanger assembly"
+          name: "Purchased steel heat-exchanger assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_exchanger; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exchanger
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: housing
+          role: "Purchased coated steel heater housing"
+          name: "Purchased coated steel heater housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_housing; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_housing
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: fasteners
+          role: "Steel bolts"
+          name: "Steel bolts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_fasteners; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fasteners
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: wire
+          role: "Insulated copper electrical wire"
+          name: "Insulated copper electrical wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_wire; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wire
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: gasket
+          role: "Silicone rubber sealing gasket"
+          name: "Silicone rubber sealing gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_gasket; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gasket
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: insulation
+          role: "Mineral wool thermal insulation"
+          name: "Mineral wool thermal insulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual fitted component; fan impeller and purchased complete blower are alternative component scopes, not duplicates. If a purchased blower already includes the motor, omit the separate motor input. Link each supplier component burden once, including constituent materials and processing; do not also add its copper/steel/magnet as raw feed. Purchased housing/exchanger replaces its corresponding onsite route. Burner/valve absent on non-fired distributors; record actual bill of materials."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_insulation; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_insulation
+              source_ids:
+                - reznor-udx-specification
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_assembly_electricity; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: factory_acceptance
+    label: "Factory acceptance and rework"
+    inputs:
+      product:
+        - row_id: natural_gas
+          role: "Natural gas for factory combustion testing"
+          name: "Natural gas for factory combustion testing"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only the actual test fuel consumed before factory gate on the fired route. Fan-only and hydronic units require no combustion input; later installation/startup/use fuel excluded."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_natural_gas; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: propane
+          role: "Propane for factory combustion testing"
+          name: "Propane for factory combustion testing"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only the actual test fuel consumed before factory gate on the fired route. Fan-only and hydronic units require no combustion input; later installation/startup/use fuel excluded."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_propane; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_propane
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: fuel_oil
+          role: "Fuel oil for factory combustion testing"
+          name: "Fuel oil for factory combustion testing"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only the actual test fuel consumed before factory gate on the fired route. Fan-only and hydronic units require no combustion input; later installation/startup/use fuel excluded."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_fuel_oil; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_oil
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: test_water
+          role: "Water supplied for factory circuit leak testing"
+          name: "Water supplied for factory circuit leak testing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual water-based leak/pressure testing; measure makeup and drain, not recirculated throughput. Air-tested or distributor-only units may have no water test."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_test_water; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_water
+              source_ids: []
+            ranges: []
+        - row_id: factory_acceptance_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_factory_acceptance_electricity; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_acceptance_electricity
+              source_ids: []
+            ranges: []
+        - row_id: supplied_hotwater_heat
+          role: "Purchased hot-water heat for factory testing"
+          name: "Purchased hot-water heat for factory testing"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only externally supplied hot-water test heat consumed within factory gate; count supplier heat provision once, separate circuit water makeup. No lifetime heating demand."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_supplied_hotwater_heat; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplied_hotwater_heat
+              source_ids: []
+            ranges: []
+        - row_id: steam
+          role: "Purchased steam for factory testing"
+          name: "Purchased steam for factory testing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual steam-tested configurations; record pressure, temperature and condensate return state, supplier production once."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_steam; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: condensate
+          role: "Returned factory-test steam condensate"
+          name: "Returned factory-test steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_condensate; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_condensate
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: test_water_waste
+          role: "Factory circuit-test wastewater"
+          name: "Factory circuit-test wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_test_water_waste; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_water_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual factory fuel combustion only. Distinguish direct/indirect exhaust pathway, capture and stack/room discharge; unresolved NOx mixture is not pure NO2. No use-phase exhaust here."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_co2; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual factory fuel combustion only. Distinguish direct/indirect exhaust pathway, capture and stack/room discharge; unresolved NOx mixture is not pure NO2. No use-phase exhaust here."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_co; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: nox
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual factory fuel combustion only. Distinguish direct/indirect exhaust pathway, capture and stack/room discharge; unresolved NOx mixture is not pure NO2. No use-phase exhaust here."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_nox; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nox
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual factory fuel combustion only. Distinguish direct/indirect exhaust pathway, capture and stack/room discharge; unresolved NOx mixture is not pure NO2. No use-phase exhaust here."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_so2; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_so2
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+        - row_id: pm25
+          role: "Particulate matter smaller than 2.5 micrometres, to air"
+          name: "Particulate matter smaller than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual factory fuel combustion only. Distinguish direct/indirect exhaust pathway, capture and stack/room discharge; unresolved NOx mixture is not pure NO2. No use-phase exhaust here."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_pm25; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm25
+              source_ids:
+                - dantherm-direct-indirect
+            ranges: []
+  - id: dispatch
+    label: "Packaging and factory gate release"
+    inputs:
+      product:
+        - row_id: cardboard
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_cardboard; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cardboard
+              source_ids: []
+            ranges: []
+        - row_id: wood
+          role: "Wooden shipping pallet"
+          name: "Wooden shipping pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_wood; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids: []
+            ranges: []
+        - row_id: pe_film
+          role: "Polyethylene protective film"
+          name: "Polyethylene protective film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_pe_film; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pe_film
+              source_ids: []
+            ranges: []
+        - row_id: dispatch_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_dispatch_electricity; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Air heaters and hot air distributors, not electrically heated, incorporating a motor-driven fan or blower, of iron or steel"
           name: "Air heaters and hot air distributors, not electrically heated, incorporating a motor-driven fan or blower, of iron or steel"
           flow_type: "product"
           flow_ref:
             uuid: "bab3c9c3-6018-402d-835f-c56ee7db029c"
           property_unit: "Mass / kg"
-          description: "Inclusion condition: all covered routes. This card represents one concrete exchange."
+          description: "One complete accepted machine of the exact declared configuration at factory gate; no transport packaging in net mass."
           amount:
             expression: "M kg"
             value_mode: "foreground_record"
-            specificity: "product_specific"
+            specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
+              text: "per one accepted finished machine"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_mass
-              source_ids:
-                - un-cpc-3-2025
-                - kampmann-tip4-epd-2026
-                - nist-tn1975r2
+              source_ids: []
             ranges: []
       waste:
-        - row_id: steel_scrap
-          role: "Steel sheet fabrication scrap"
-          name: "Steel scrap"
-          flow_type: "waste"
-          flow_ref:
-            uuid: "37997e0e-e34b-4ab9-a642-5d86f4333919"
-          property_unit: "Mass / kg"
-          description: "Inclusion condition: when casing fabrication generates steel scrap. This card represents one concrete exchange."
+        []
+      elementary:
+        []
+  - id: site_services
+    label: "Shared utilities and pollution control"
+    inputs:
+      product:
+        - row_id: site_services_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
           amount:
-            expression: "Weigh segregated steel offcuts and rejects from casing fabrication attributable to one accepted finished unit."
+            expression: "Actual attributable exchange amount per accepted machine from cp_site_services_electricity; retain route-specific allocation and stock reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per one accepted finished unit"
+              text: "per one accepted finished machine"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_scrap
-              source_ids:
-                - kampmann-tip4-epd-2026
-                - nist-tn1975r2
+              collection_protocol_id: cp_site_services_electricity
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Supplied process water"
+          name: "Supplied process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_process_water; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids: []
+            ranges: []
+        - row_id: lubricant
+          role: "Maintenance lubricating oil"
+          name: "Maintenance lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_lubricant; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lubricant
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater
+          role: "Metal fabrication and cleaning wastewater"
+          name: "Metal fabrication and cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_wastewater; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids: []
+            ranges: []
+        - row_id: treatment_sludge
+          role: "Metal fabrication wastewater-treatment sludge"
+          name: "Metal fabrication wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_treatment_sludge; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_sludge
+              source_ids: []
+            ranges: []
+        - row_id: filter_dust
+          role: "Collected metalworking exhaust filter dust"
+          name: "Collected metalworking exhaust filter dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when this named exchange occurs in the declared configuration/route; unknown quantity is not zero."
+          amount:
+            expression: "Actual attributable exchange amount per accepted machine from cp_filter_dust; retain route-specific allocation and stock reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filter_dust
+              source_ids: []
             ranges: []
       elementary:
         []
 allocation_rules:
-  - rule_id: allocation_direct
-    applies_to: "direct inputs and scrap"
-    rule: "Assign direct components, packaging and steel scrap to accepted product models from bills of materials and weighing records; do not net off recycling substitution credits in the factory foreground."
+  - rule_id: allocation_hierarchy
+    applies_to: "shared plant"
+    rule: "Prefer subdivision and metering, then justified physical causality. Allocation drivers reflect actual forming hours, coated area, cure load or test runtime, not assumed identical heat output. Other/economic allocation requires consistent prices, period and sensitivity with unallocated totals retained."
     source_ids:
-      - kampmann-tip4-epd-2026
-      - nist-tn1975r2
-  - rule_id: allocation_shared_energy
-    applies_to: "shared electricity"
-    rule: "Prefer sub-metered electricity; where shared, use recorded equipment operating time and power as an attribution driver and disclose the driver and unassigned amount."
+      - ef-allocation-2021
+  - rule_id: allocation_scrap_rework
+    applies_to: "rework and scrap"
+    rule: "Retain repeat processing/test burdens; recovered powder and internal scrap reuse are internal transfers, not new virgin inputs or credits. External steel/aluminium scrap and coating residues carry measured destination and treatment; sale does not prove co-product status and no automatic avoided-material credit is allowed. Disclose selected recycling convention."
     source_ids:
-      - kampmann-tip4-epd-2026
+      - ef-allocation-2021
 dataset_production:
   collection_protocols:
     - protocol_id: cp_mass
-      process_id: "heater_manufacturing"
-      flow_role: "reference product"
-      record_type: "acceptance and calibrated weighing record"
+      process_id: "dispatch"
+      flow_role: "final_product"
+      record_type: "measurement_record"
       raw_fields: "model; configuration; serial number; accepted net mass M"
-      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
       unit: "kg"
-      frequency: "each unit or batch"
-      temporal_coverage: "representative production year with dates"
-      site_scope: "actual manufacturing site"
-      aggregation_rule: "accepted net mass per unit"
-      quality_evidence: "meter calibration, invoices, batch and acceptance records"
-    - protocol_id: cp_bom
-      process_id: "heater_manufacturing"
-      flow_role: "material and component inputs"
-      record_type: "bill of materials, receiving and weighing records"
-      raw_fields: "model; configuration; part number; material state; input mass; accepted unit count"
-      collection_method: "Reconcile installed masses for the same configuration and aggregate separately by hydronic or gas route."
+      frequency: "Each accepted configuration/batch"
+      temporal_coverage: "Declared production period"
+      site_scope: "Declared factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "Calibration; weighing and BOM reconciliation"
+    - protocol_id: cp_carbon_steel_sheet
+      process_id: "metal_fabrication"
+      flow_role: "carbon_steel_sheet"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
       unit: "kg"
-      frequency: "each unit or batch"
-      temporal_coverage: "representative production year with dates"
-      site_scope: "actual manufacturing site"
-      aggregation_rule: "per one accepted finished unit"
-      quality_evidence: "meter calibration, invoices, batch and acceptance records"
-    - protocol_id: cp_electricity
-      process_id: "heater_manufacturing"
-      flow_role: "alternating current"
-      record_type: "electricity meter record"
-      raw_fields: "meter boundary; reading; unit; period; accepted count; allocation driver"
-      collection_method: "Read traceable meter and attribute energy to recorded production; if meter reports kWh, convert at 3.6 MJ/kWh and retain original reading."
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_stainless_tube
+      process_id: "metal_fabrication"
+      flow_role: "stainless_tube"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_aluminized_sheet
+      process_id: "metal_fabrication"
+      flow_role: "aluminized_sheet"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_aluminium_fin
+      process_id: "metal_fabrication"
+      flow_role: "aluminium_fin"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_weld_wire
+      process_id: "metal_fabrication"
+      flow_role: "weld_wire"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_braze_alloy
+      process_id: "metal_fabrication"
+      flow_role: "braze_alloy"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_braze_flux
+      process_id: "metal_fabrication"
+      flow_role: "braze_flux"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_cutting_oil
+      process_id: "metal_fabrication"
+      flow_role: "cutting_oil"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_argon
+      process_id: "metal_fabrication"
+      flow_role: "argon"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_steel_scrap
+      process_id: "metal_fabrication"
+      flow_role: "steel_scrap"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_stainless_scrap
+      process_id: "metal_fabrication"
+      flow_role: "stainless_scrap"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_aluminium_scrap
+      process_id: "metal_fabrication"
+      flow_role: "aluminium_scrap"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_spent_cutting_oil
+      process_id: "metal_fabrication"
+      flow_role: "spent_cutting_oil"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_sodium_hydroxide
+      process_id: "surface_finish"
+      flow_role: "sodium_hydroxide"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_phosphoric_acid
+      process_id: "surface_finish"
+      flow_role: "phosphoric_acid"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_steel_grit
+      process_id: "surface_finish"
+      flow_role: "steel_grit"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_polyester_powder
+      process_id: "surface_finish"
+      flow_role: "polyester_powder"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_alkyd_paint
+      process_id: "surface_finish"
+      flow_role: "alkyd_paint"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_xylene
+      process_id: "surface_finish"
+      flow_role: "xylene"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_pretreatment_sludge
+      process_id: "surface_finish"
+      flow_role: "pretreatment_sludge"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_spent_grit
+      process_id: "surface_finish"
+      flow_role: "spent_grit"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_paint_residue
+      process_id: "surface_finish"
+      flow_role: "paint_residue"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_powder_residue
+      process_id: "surface_finish"
+      flow_role: "powder_residue"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_xylene_air
+      process_id: "surface_finish"
+      flow_role: "xylene_air"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Species-specific solvent balance after recovered solvent, retained coating solvent and collected waste, or measured capture/stack flows; do not map aggregate VOC to xylene."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_fan_impeller
+      process_id: "assembly"
+      flow_role: "fan_impeller"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_blower
+      process_id: "assembly"
+      flow_role: "blower"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_motor
+      process_id: "assembly"
+      flow_role: "motor"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_control_board
+      process_id: "assembly"
+      flow_role: "control_board"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_gas_burner
+      process_id: "assembly"
+      flow_role: "gas_burner"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_oil_burner
+      process_id: "assembly"
+      flow_role: "oil_burner"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_gas_valve
+      process_id: "assembly"
+      flow_role: "gas_valve"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_exchanger
+      process_id: "assembly"
+      flow_role: "exchanger"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_housing
+      process_id: "assembly"
+      flow_role: "housing"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_fasteners
+      process_id: "assembly"
+      flow_role: "fasteners"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_wire
+      process_id: "assembly"
+      flow_role: "wire"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_gasket
+      process_id: "assembly"
+      flow_role: "gasket"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_insulation
+      process_id: "assembly"
+      flow_role: "insulation"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_natural_gas
+      process_id: "factory_acceptance"
+      flow_role: "natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter actual test consumption and repeated tests; retain fuel composition, pressure/temperature and measured net calorific value. Mass × NCV gives MJ; no assumed hours or consumption."
       unit: "MJ"
-      frequency: "each unit or batch"
-      temporal_coverage: "representative production year with dates"
-      site_scope: "actual manufacturing site"
-      aggregation_rule: "attributable electricity / accepted units"
-      quality_evidence: "meter calibration, invoices, batch and acceptance records"
-    - protocol_id: cp_gas
-      process_id: "heater_manufacturing"
-      flow_role: "factory test natural gas"
-      record_type: "gas meter and test record"
-      raw_fields: "gas state; meter reading; unit; test lot; accepted count"
-      collection_method: "Attribute only metered gaseous natural gas for this site’s pre-dispatch firing test to the matching gas-fired units."
-      unit: "m3"
-      frequency: "each unit or batch"
-      temporal_coverage: "representative production year with dates"
-      site_scope: "actual manufacturing site"
-      aggregation_rule: "per one accepted finished unit"
-      quality_evidence: "meter calibration, invoices, batch and acceptance records"
-    - protocol_id: cp_packaging
-      process_id: "heater_manufacturing"
-      flow_role: "corrugated boxes"
-      record_type: "packaging issue and weighing records"
-      raw_fields: "box type; mass per box; box count; accepted unit count"
-      collection_method: "Reconcile corrugated boxes shipped with each unit; exclude transport packaging from M."
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_propane
+      process_id: "factory_acceptance"
+      flow_role: "propane"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter actual test consumption and repeated tests; retain fuel composition, pressure/temperature and measured net calorific value. Mass × NCV gives MJ; no assumed hours or consumption."
+      unit: "MJ"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_fuel_oil
+      process_id: "factory_acceptance"
+      flow_role: "fuel_oil"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter actual test consumption and repeated tests; retain fuel composition, pressure/temperature and measured net calorific value. Mass × NCV gives MJ; no assumed hours or consumption."
+      unit: "MJ"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_co2
+      process_id: "factory_acceptance"
+      flow_role: "co2"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Matched pollutant measurement, gas flow, reporting basis and test duration after control; fossil CO2 may use actual fuel carbon balance. Retain species and air compartment; no generic factor adopted."
       unit: "kg"
-      frequency: "each unit or batch"
-      temporal_coverage: "representative production year with dates"
-      site_scope: "actual manufacturing site"
-      aggregation_rule: "box mass / accepted units"
-      quality_evidence: "meter calibration, invoices, batch and acceptance records"
-    - protocol_id: cp_scrap
-      process_id: "heater_manufacturing"
-      flow_role: "steel scrap"
-      record_type: "steel scrap weighing and disposition records"
-      raw_fields: "material state; scrap mass; batch; disposition; accepted count"
-      collection_method: "Weigh attributable steel offcuts and rejects; reconcile internal rework against exported waste to prevent double counting."
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_co
+      process_id: "factory_acceptance"
+      flow_role: "co"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Matched pollutant measurement, gas flow, reporting basis and test duration after control; fossil CO2 may use actual fuel carbon balance. Retain species and air compartment; no generic factor adopted."
       unit: "kg"
-      frequency: "each unit or batch"
-      temporal_coverage: "representative production year with dates"
-      site_scope: "actual manufacturing site"
-      aggregation_rule: "exported scrap mass / accepted units"
-      quality_evidence: "meter calibration, invoices, batch and acceptance records"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_nox
+      process_id: "factory_acceptance"
+      flow_role: "nox"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Matched pollutant measurement, gas flow, reporting basis and test duration after control; fossil CO2 may use actual fuel carbon balance. Retain species and air compartment; no generic factor adopted."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_so2
+      process_id: "factory_acceptance"
+      flow_role: "so2"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Matched pollutant measurement, gas flow, reporting basis and test duration after control; fossil CO2 may use actual fuel carbon balance. Retain species and air compartment; no generic factor adopted."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_pm25
+      process_id: "factory_acceptance"
+      flow_role: "pm25"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Matched pollutant measurement, gas flow, reporting basis and test duration after control; fossil CO2 may use actual fuel carbon balance. Retain species and air compartment; no generic factor adopted."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_test_water
+      process_id: "factory_acceptance"
+      flow_role: "test_water"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_test_water_waste
+      process_id: "factory_acceptance"
+      flow_role: "test_water_waste"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_cardboard
+      process_id: "dispatch"
+      flow_role: "cardboard"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_wood
+      process_id: "dispatch"
+      flow_role: "wood"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_pe_film
+      process_id: "dispatch"
+      flow_role: "pe_film"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_metal_fabrication_electricity
+      process_id: "metal_fabrication"
+      flow_role: "metal_fabrication_electricity"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Process submeter and shared-service allocation; reconcile site bill, voltage, supply geography/year and meter intervals. Exclude lifetime fan energy."
+      unit: "kWh"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_surface_finish_electricity
+      process_id: "surface_finish"
+      flow_role: "surface_finish_electricity"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Process submeter and shared-service allocation; reconcile site bill, voltage, supply geography/year and meter intervals. Exclude lifetime fan energy."
+      unit: "kWh"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_assembly_electricity
+      process_id: "assembly"
+      flow_role: "assembly_electricity"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Process submeter and shared-service allocation; reconcile site bill, voltage, supply geography/year and meter intervals. Exclude lifetime fan energy."
+      unit: "kWh"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_factory_acceptance_electricity
+      process_id: "factory_acceptance"
+      flow_role: "factory_acceptance_electricity"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Process submeter and shared-service allocation; reconcile site bill, voltage, supply geography/year and meter intervals. Exclude lifetime fan energy."
+      unit: "kWh"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_dispatch_electricity
+      process_id: "dispatch"
+      flow_role: "dispatch_electricity"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Process submeter and shared-service allocation; reconcile site bill, voltage, supply geography/year and meter intervals. Exclude lifetime fan energy."
+      unit: "kWh"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_site_services_electricity
+      process_id: "site_services"
+      flow_role: "site_services_electricity"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Process submeter and shared-service allocation; reconcile site bill, voltage, supply geography/year and meter intervals. Exclude lifetime fan energy."
+      unit: "kWh"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_cure_gas
+      process_id: "surface_finish"
+      flow_role: "cure_gas"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter actual cure furnace fuel and measured NCV; electric-only cure has no gas input. Add actual combustion species separately if used."
+      unit: "MJ"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_process_water
+      process_id: "site_services"
+      flow_role: "process_water"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter actual external makeup for cleaning and treatment; exclude internal loop circulation."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_lubricant
+      process_id: "site_services"
+      flow_role: "lubricant"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_wastewater
+      process_id: "site_services"
+      flow_role: "wastewater"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter discharge to actual offsite treatment, document solids/contaminants; onsite-treated effluent species require individual receiving-compartment cards instead."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_treatment_sludge
+      process_id: "site_services"
+      flow_role: "treatment_sludge"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_filter_dust
+      process_id: "site_services"
+      flow_role: "filter_dust"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_weld_pm25
+      process_id: "metal_fabrication"
+      flow_role: "weld_pm25"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Actual residual welding fume after capture, measured with particle-size basis; collected filter dust stays a waste exchange. Do not turn total fume into PM2.5 without size evidence."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_copper_tube
+      process_id: "metal_fabrication"
+      flow_role: "copper_tube"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_supplied_hotwater_heat
+      process_id: "factory_acceptance"
+      flow_role: "supplied_hotwater_heat"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Meter heat from actual flow and inlet/return temperatures with validated fluid heat capacity; retain losses and recirculation boundary."
+      unit: "MJ"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_steam
+      process_id: "factory_acceptance"
+      flow_role: "steam"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_condensate
+      process_id: "factory_acceptance"
+      flow_role: "condensate"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Weigh actual external amount by batch; reconcile receipts, opening/closing stock and returns; retain supplier specification."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_cure_co2
+      process_id: "surface_finish"
+      flow_role: "cure_co2"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Fuel-carbon closure for fossil CO2 requires measured fuel carbon, retained carbon and known other carbon outputs including CO, hydrocarbons and soot; otherwise use matched species monitoring or an independently verified applicable factor."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_cure_co
+      process_id: "surface_finish"
+      flow_role: "cure_co"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Use species-specific matched concentration, gas flow and cure duration after controls, or an independently verified applicable species factor with actual fuel/device/control conditions. Fuel carbon closure alone cannot establish CO or NOx."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
+    - protocol_id: cp_cure_nox
+      process_id: "surface_finish"
+      flow_role: "cure_nox"
+      record_type: "measurement_record"
+      raw_fields: "configuration; route applicability; period; raw amount and unit; meter or weighing record; stocks; accepted units; rejects; rework; allocation driver; uncertainty"
+      collection_method: "Use species-specific matched concentration, gas flow and cure duration after controls, or an independently verified applicable species factor with actual fuel/device/control conditions. Fuel carbon closure alone cannot establish CO or NOx."
+      unit: "kg"
+      frequency: "Each batch/test or meter interval"
+      temporal_coverage: "Full year or justified representative campaign including rework"
+      site_scope: "Declared configuration at factory and shared services"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "Original records; calibration; supplier certificates; route and fate evidence"
   calculation_rules:
-    - id: unit_mass_relation
-      applies_to: "finished_heater"
-      rule: "M = measured net mass of one accepted complete unit; record through cp_mass and aggregate inputs per unit."
+    - id: period_allocation
+      applies_to: "all inventory rows"
+      rule: "Allocate reconciled reporting-period external exchanges to accepted machines of the same configuration; use actual accepted count. Keep rejects/rework in numerator. Product output is M kg for one accepted machine."
       inputs:
-        - M
+        - "row protocols"
+        - "accepted count"
         - cp_mass
-      output: "M kg"
+      output: "per one accepted finished machine"
+      source_ids: []
+    - id: material_balance
+      applies_to: "metal_fabrication; assembly"
+      rule: "For each material grade, opening stock + external receipts = closing stock + incorporated material + external scrap/waste + documented actual losses. Pair internal recovery generation and reuse by batch/process and cancel the matching transfer quantities at plant boundary; recovered material is never a fresh external receipt. Reconcile complete-machine mass to actual BOM and retained coating/fluids; purchased-component mass is counted once. Fe-element balance uses grade-specific assays, never gross steel mass."
+      inputs:
+        - weighing
+        - BOM
+        - stocks
+        - waste
+        - assays
+      output: "Balance residual and measurement uncertainty"
+      source_ids: []
+    - id: coating_balance
+      applies_to: "surface_finish"
+      rule: "Account formulation solids and each solvent separately: opening stock + external receipts = closing stock + retained formulation constituents + externally recovered material/waste + direct air releases. Match and cancel internal powder/solvent recovery and reuse; do not count them as external receipts or external recovered outputs. Quantify captured waste separately from residual air releases; no generic VOC factor."
+      inputs:
+        - formulation
+        - "application/capture records"
+        - stocks
+      output: "Component-specific closure"
       source_ids:
-        - kampmann-tip4-epd-2026
+        - epa-other-metal-coating
+    - id: energy_balance
+      applies_to: "utilities; factory_acceptance"
+      rule: "Process and allocated auxiliary electricity totals reconcile to supply meters; document distribution losses. Test fuel carbon/energy balance uses actual measured fuel and test record; useful test heat, exhaust and losses remain distinguishable. Lifetime heat demand is outside this balance."
+      inputs:
+        - "electric meters"
+        - "fuel NCV/carbon"
+        - "test records"
+      output: "Measured energy/closure, no invented tolerance"
+      source_ids: []
   data_quality_requirements:
-    - id: dq_configuration
-      applies_to: "all inventory rows"
-      requirement: "All rows refer to the same model, configuration and acceptance lot; record hydronic or gas route."
-      evidence: "bill of materials and acceptance record"
-    - id: dq_completeness
-      applies_to: "all inventory rows"
-      requirement: "Reconcile components, metered energy, packaging and wastes; add a separate atomic row for any uncovered specific exchange rather than an other-material aggregate."
-      evidence: "meter ledger, purchasing and waste transfer records"
+    - id: identity
+      applies_to: "reference and components"
+      requirement: "model and configuration; iron/steel housing and heat-transfer material grades; direct-fired, indirect-fired, hydronic/steam-coil or supplied-hot-air distribution technology; actual fuel or heat-transfer medium; fan/blower and motor specification; burner and heat exchanger presence; declared airflow with test conditions; actual heater rated thermal output, not_applicable for a supplied-hot-air distributor without a heat source; controls and safety equipment; factory acceptance procedure; coating; gate state; site and reporting period; measured net mass M; supplier geography/year"
+      evidence: "BOM; drawings; model; supplier records; factory acceptance"
+    - id: applicability
+      applies_to: "all rows"
+      requirement: "Distinguish measured zero, absent route, unknown and measured amount. Resolve flow type, material formulation, property/unit, geography/year and emission compartment before finalized data."
+      evidence: "Route audit; direct flow records; QA evidence"
+    - id: representativeness
+      applies_to: "production"
+      requirement: "Stratify actual technology/model/metal grades and purchased-versus-site fabrication; disclose weighting, uncertainty, omitted exchanges and evidence limitations. No empirical intensity range is imposed."
+      evidence: "Period totals and configuration production shares"
 validation_rules:
-  - rule_id: validate_identity
-    applies_to: "product identity"
-    rule: "Check iron/steel casing, motor-driven fan, non-electric heat source and declared route."
+  - rule_id: validation_mass
+    applies_to: "reference and inventory"
+    rule: "Reference M must trace to cp_mass for the same configuration and exclude packaging. Every row uses the same one-accepted-machine denominator and a declared protocol; no assumed equipment weight."
+    source_ids: []
+  - rule_id: validation_route
+    applies_to: "factory_acceptance"
+    rule: "Check heat-source and component configuration; no mandatory burner, welding/brazing or combustion QA for all models. No missing fuel or direct emission when actual factory combustion occurs; no lifetime-use energy in manufacturing."
     source_ids:
-      - un-cpc-3-2025
-  - rule_id: validate_mass
-    applies_to: "reference mass"
-    rule: "Confirm positive same-configuration accepted net mass M from cp_mass, excluding packaging; reference definition and finished_heater row both use M kg."
-    source_ids:
-      - kampmann-tip4-epd-2026
-  - rule_id: validate_inventory
-    applies_to: "atomic inventory"
-    rule: "Confirm each applicable material, component, energy, packaging and waste is a separate concrete exchange reconciled to bill of materials and meters."
-    source_ids:
-      - kampmann-tip4-epd-2026
-      - nist-tn1975r2
-  - rule_id: validate_allocation
-    applies_to: "shared burdens"
-    rule: "Check documented meter or allocation driver for shared electricity; disclose scrap disposition separately without netting recycling credits."
-    source_ids:
-      - kampmann-tip4-epd-2026
-      - nist-tn1975r2
+      - reznor-udx-specification
+      - dantherm-direct-indirect
+      - reznor-hydronic-manual
+  - rule_id: validation_balance
+    applies_to: "all processes"
+    rule: "Reconcile material, stock, coating, energy and rework balances with uncertainty; verify supplier burdens, transport and waste fate exactly once. Unknown UUID or insufficient species evidence remains an explicit gap rather than an invented match. No generic incinerator power dataset as factory supply."
+    source_ids: []
 published_dataset_profile:
-  dataset_role: "foreground manufacturing dataset per accepted unit"
-  downstream_use: "construct process and lifecyclemodel projections and link upstream material and component datasets"
-  allowed_use: "declared configurations with measured M, actual route and complete atomic inventory"
-  excluded_use: "not for electric heaters or undeclared heat-source variants without route-specific additions"
-  required_metadata: "model; configuration; heat source; site; period; output count; mass and allocation records"
-  required_quality_disclosure: "missing upstream data, unresolved UUIDs, absent comparable ranges and allocation assumptions"
-  update_trigger: "material, heat-source route, fan configuration or manufacturing process materially changes"
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing equipment inputs to process/lifecyclemodel with separate installation and use scenarios"
+  excluded_use: "Standalone lifetime heating assessment; equipment kg as equivalent delivered heat; uncontrolled cross-technology average"
+  required_metadata: "model and configuration; iron/steel housing and heat-transfer material grades; direct-fired, indirect-fired, hydronic/steam-coil or supplied-hot-air distribution technology; actual fuel or heat-transfer medium; fan/blower and motor specification; burner and heat exchanger presence; declared airflow with test conditions; actual heater rated thermal output, not_applicable for a supplied-hot-air distributor without a heat source; controls and safety equipment; factory acceptance procedure; coating; gate state; site and reporting period; measured net mass M; supplier geography/year"
+  required_quality_disclosure: "Route coverage; supplier starting state; unresolved identities; empirical range gaps; acceptance evidence; uncertainty and allocation"
+  update_trigger: "Changed technology/BOM, heat source, manufacturing route, supplier, coating, acceptance tests or reference mass"
 data_sources:
-  - id: "un-cpc-3-2025"
+  - id: "unsd-cpc3-air-heaters"
     type: "official_guidance"
-    reference: "CPC Version 3.0 Structure (30 June 2025), https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
-    used_for: "product classification identity"
-  - id: "kampmann-tip4-epd-2026"
-    type: "dataset"
-    reference: "Unit heater: TIP - size 4, EPD-IES-0028786:001 (15 June 2026), https://api.prod.environdec.com/api/v1/EPDLibrary/Files/EPDs/7d618de6-69a2-4a59-77f1-08de6ec010de/Documents"
-    used_for: "hydronic components, manufacturing process and factory-gate basis"
-  - id: "nist-tn1975r2"
-    type: "literature"
-    reference: "Building Industry Reporting and Design for Sustainability (BIRDS) Commercial Database Technical Manual: Update, NIST Technical Note 1975 Revision 2 (September 2019), https://doi.org/10.6028/NIST.TN.1975r2"
-    used_for: "gas-route component identification; modeled case is not an industry quantity range"
+    reference: "UNSD, CPC Version 3.0, subclass 44824 and class 4482. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/44824"
+    used_for: "Identity qualifiers: iron/steel, non-electrical heating and motor-driven fan/blower; adjacent subclasses distinguish radiators and boilers. Classification does not prescribe a burner, mass, efficiency or manufacturing route."
+  - id: "reznor-udx-specification"
+    type: "extension_guidance"
+    reference: "Reznor, Model UDX Sample Specification, heat exchanger, burner and controls sections. https://assets.reznorhvac.com/download/150e5cee-9ce7-11ed-bfcb-0016e1e579b9"
+    used_for: "One indirect gas-fired heater architecture: steel exchanger, axial fan, gas burner, valve and electronic controls. Press-fabricated exchanger explicitly avoids welding/brazing: joining is conditional, not universal. Manufacturer specifications are not category-wide intensities."
+  - id: "dantherm-direct-indirect"
+    type: "extension_guidance"
+    reference: "Dantherm Group, Heating for large-scale construction projects, direct versus indirect-fired heaters. https://www.danthermgroup.com/uk/solutions/construction/heating-for-large-scale-construction-projects"
+    used_for: "Independent manufacturer distinguishes direct combustion into air from indirect heat exchanger separation; does not establish universal factory test time, fuel, mass or lifetime performance."
+  - id: "reznor-hydronic-manual"
+    type: "handbook"
+    reference: "Reznor, UWS Hydronic Unit Heater. https://www.reznorhvac.com/product/uws/"
+    used_for: "Hydronic hot-water heater counterexample uses copper rather than steel heat-exchanger tubes; establishes non-burner supply and material-route variability only. Iron/steel category applicability needs actual housing/product records. No operating figures adopted."
+  - id: "epa-other-metal-coating"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 section 4.2.2.4 Other Metal Coating, 1995. https://www.epa.gov/sites/default/files/2020-10/documents/c4s02_2d.pdf"
+    used_for: "Conditional liquid/powder coating and solvent loss pathways; use actual formulation and capture fate rather than historical generic factors."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Subdivision and justified physical/other allocation hierarchy; no claim of complete PEF conformance."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:61bd9dbf96cfa2c22247ef50df0dc1bf331e75cf159820a5de8121b94d328a8c"
+  source_sha256: "sha256:067a4530e630bf7c0f300ea3ecde1ada5cbdc905b10b623b39f9193996c42a2b"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_3139"
+    - unit_id: "normative_4807"
       family: "system_boundary"
       span:
         start:
-          offset: 3139
-          line: 51
+          offset: 4807
+          line: 55
           column: 1
         end:
-          offset: 4780
-          line: 70
+          offset: 6912
+          line: 74
           column: 1
-      markdown: "## 5. System Boundary\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_gate` | foreground manufacturing | Include received purchased materials and components, sheet fabrication, assembly, factory testing and packing through accepted output; model use and end of life separately. | `kampmann-tip4-epd-2026`; `nist-tn1975r2` |\n| `boundary_route` | covered product | Include only iron/steel heaters with a motor-driven fan and a non-electric heat source; select hydronic or gas components from the actual route. | `un-cpc-3-2025`; `kampmann-tip4-epd-2026`; `nist-tn1975r2` |\n| `boundary_upstream` | purchased inputs | Record purchased materials and components as product inputs with upstream datasets; do not duplicate supplier manufacture in this foreground process. | `kampmann-tip4-epd-2026`; `nist-tn1975r2` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Factory receipt of specified steel sheet, fan assembly and route-specific heat-source components |\n| starting_condition_role | foreground manufacturing entry |\n| product_classification_scope | CPC 3.0:44824 finished products; component classification is independent |\n| recursive_input_rule | If a purchased input is itself in the category, record it once as a distinct purchased product flow rather than recursively expanding the same manufacturing process |\n| upstream_dataset_requirement | Link each purchased input to an upstream dataset with a distinct boundary; disclose missing links |\n| disclosure | Disclose route, model, steel state, site, period, measured M and allocation of shared energy |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual purchased sheet/tube, fabricated housing/exchanger or finished components at receiving gate, including their declared upstream production |\n| starting_condition_role | foreground_starting_state |\n| product_classification_scope | CPC 3.0 44824 |\n| recursive_input_rule | A purchased same-category unit for assembly/rework is an upstream product with provenance; do not recurse into itself or duplicate completed supplier manufacture. |\n| upstream_dataset_requirement | Link compatible supplier material/component manufacture, electricity supply, fuel supply, inbound transport and waste treatment exactly once, with geography/year and starting-state disclosure. |\n| disclosure | Actual route, outsourcing, supplier operations, installed component scope, QA type, heat source, pollutant fate and exclusions |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_factory | all processes | Include actual fabrication, surface finish, assembly, QA/repeated tests, rework, packaging, utilities and pollution controls before gate. Purchased finished components retain upstream material and production burdens; internal intermediate transfers cancel. | `reznor-udx-specification` |\n| boundary_use | factory_acceptance | Only factory test energy/emissions belong here. Installation, field commissioning, lifetime fuel/fan power, maintenance replacement and end-of-life are excluded and require separate downstream scenarios. A supplied-hot-air distributor does not produce its heat upstream at this factory unless actual test heat is supplied. | `dantherm-direct-indirect` |\n| boundary_atomic | site audit | Add every actual distinct fuel, solvent, joining alloy, purchased component, waste and emission species as an atomic row. These candidate rows require route audit; no omitted-as-zero. If cure combustion, purchased test steam/heat, direct water withdrawal or other services occur, add their individual exchanges and matched upstream/direct emissions. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -488,20 +2524,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 366
+              offset: 345
               line: 8
-              column: 126
-          text: "# Air heaters and hot air distributors, not electrically heated, incorporating a motor-driven fan or blower, of iron or steel"
+              column: 105
+          text: "# Manufacture of iron or steel non-electrically heated air heaters and motor-driven hot-air distributors"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 3139
-              line: 51
+              offset: 4807
+              line: 55
               column: 1
             end:
-              offset: 3160
-              line: 51
+              offset: 4828
+              line: 55
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -516,18 +2552,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_13529"
+    - unit_id: "normative_64980"
       family: "allocation"
       span:
         start:
-          offset: 13529
-          line: 261
+          offset: 64980
+          line: 1216
           column: 1
         end:
-          offset: 14184
-          line: 268
+          offset: 65898
+          line: 1223
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct` | direct inputs and scrap | Assign direct components, packaging and steel scrap to accepted product models from bills of materials and weighing records; do not net off recycling substitution credits in the factory foreground. | `kampmann-tip4-epd-2026`; `nist-tn1975r2` |\n| `allocation_shared_energy` | shared electricity | Prefer sub-metered electricity; where shared, use recorded equipment operating time and power as an attribution driver and disclose the driver and unassigned amount. | `kampmann-tip4-epd-2026` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | shared plant | Prefer subdivision and metering, then justified physical causality. Allocation drivers reflect actual forming hours, coated area, cure load or test runtime, not assumed identical heat output. Other/economic allocation requires consistent prices, period and sensitivity with unallocated totals retained. | `ef-allocation-2021` |\n| allocation_scrap_rework | rework and scrap | Retain repeat processing/test burdens; recovered powder and internal scrap reuse are internal transfers, not new virgin inputs or credits. External steel/aluminium scrap and coating residues carry measured destination and treatment; sale does not prove co-product status and no automatic avoided-material credit is allowed. Disclose selected recycling convention. | `ef-allocation-2021` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -536,20 +2572,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 366
+              offset: 345
               line: 8
-              column: 126
-          text: "# Air heaters and hot air distributors, not electrically heated, incorporating a motor-driven fan or blower, of iron or steel"
+              column: 105
+          text: "# Manufacture of iron or steel non-electrically heated air heaters and motor-driven hot-air distributors"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 13529
-              line: 261
+              offset: 64980
+              line: 1216
               column: 1
             end:
-              offset: 13569
-              line: 261
+              offset: 65020
+              line: 1216
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -564,18 +2600,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_18330"
+    - unit_id: "normative_116364"
       family: "validation"
       span:
         start:
-          offset: 18330
-          line: 294
+          offset: 116364
+          line: 1318
           column: 1
         end:
-          offset: 19263
-          line: 303
+          offset: 117411
+          line: 1326
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | product identity | Check iron/steel casing, motor-driven fan, non-electric heat source and declared route. | `un-cpc-3-2025` |\n| `validate_mass` | reference mass | Confirm positive same-configuration accepted net mass M from cp_mass, excluding packaging; reference definition and finished_heater row both use M kg. | `kampmann-tip4-epd-2026` |\n| `validate_inventory` | atomic inventory | Confirm each applicable material, component, energy, packaging and waste is a separate concrete exchange reconciled to bill of materials and meters. | `kampmann-tip4-epd-2026`; `nist-tn1975r2` |\n| `validate_allocation` | shared burdens | Check documented meter or allocation driver for shared electricity; disclose scrap disposition separately without netting recycling credits. | `kampmann-tip4-epd-2026`; `nist-tn1975r2` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validation_mass | reference and inventory | Reference M must trace to cp_mass for the same configuration and exclude packaging. Every row uses the same one-accepted-machine denominator and a declared protocol; no assumed equipment weight. |  |\n| validation_route | factory_acceptance | Check heat-source and component configuration; no mandatory burner, welding/brazing or combustion QA for all models. No missing fuel or direct emission when actual factory combustion occurs; no lifetime-use energy in manufacturing. | `reznor-udx-specification`; `dantherm-direct-indirect`; `reznor-hydronic-manual` |\n| validation_balance | all processes | Reconcile material, stock, coating, energy and rework balances with uncertainty; verify supplier burdens, transport and waste fate exactly once. Unknown UUID or insufficient species evidence remains an explicit gap rather than an invented match. No generic incinerator power dataset as factory supply. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -584,20 +2620,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 366
+              offset: 345
               line: 8
-              column: 126
-          text: "# Air heaters and hot air distributors, not electrically heated, incorporating a motor-driven fan or blower, of iron or steel"
+              column: 105
+          text: "# Manufacture of iron or steel non-electrically heated air heaters and motor-driven hot-air distributors"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 18330
-              line: 294
+              offset: 116364
+              line: 1318
               column: 1
             end:
-              offset: 18352
-              line: 294
+              offset: 116386
+              line: 1318
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -614,170 +2650,157 @@ normative_context:
           markdown: "---\n"
   bindings:
     - pointer: "/system_boundary/rules/0"
-      rule_id: "boundary_gate"
+      rule_id: "boundary_factory"
       identity_kind: "explicit"
-      unit_id: "normative_3139"
+      unit_id: "normative_4807"
       source_span:
         start:
-          offset: 3233
-          line: 55
+          offset: 5806
+          line: 70
           column: 1
         end:
-          offset: 3498
-          line: 55
-          column: 266
+          offset: 6130
+          line: 70
+          column: 325
     - pointer: "/system_boundary/rules/1"
-      rule_id: "boundary_route"
+      rule_id: "boundary_use"
       identity_kind: "explicit"
-      unit_id: "normative_3139"
+      unit_id: "normative_4807"
       source_span:
         start:
-          offset: 3499
-          line: 56
+          offset: 6131
+          line: 71
           column: 1
         end:
-          offset: 3745
-          line: 56
-          column: 247
+          offset: 6522
+          line: 71
+          column: 392
     - pointer: "/system_boundary/rules/2"
-      rule_id: "boundary_upstream"
+      rule_id: "boundary_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_3139"
+      unit_id: "normative_4807"
       source_span:
         start:
-          offset: 3746
-          line: 57
+          offset: 6523
+          line: 72
           column: 1
         end:
-          offset: 3984
-          line: 57
-          column: 239
+          offset: 6910
+          line: 72
+          column: 388
     - pointer: "/allocation_rules/0"
-      rule_id: "allocation_direct"
+      rule_id: "allocation_hierarchy"
       identity_kind: "explicit"
-      unit_id: "normative_13529"
+      unit_id: "normative_64980"
       source_span:
         start:
-          offset: 13642
-          line: 265
+          offset: 65093
+          line: 1220
           column: 1
         end:
-          offset: 13935
-          line: 265
-          column: 294
+          offset: 65460
+          line: 1220
+          column: 368
     - pointer: "/allocation_rules/1"
-      rule_id: "allocation_shared_energy"
+      rule_id: "allocation_scrap_rework"
       identity_kind: "explicit"
-      unit_id: "normative_13529"
+      unit_id: "normative_64980"
       source_span:
         start:
-          offset: 13936
-          line: 266
+          offset: 65461
+          line: 1221
           column: 1
         end:
-          offset: 14182
-          line: 266
-          column: 247
+          offset: 65896
+          line: 1221
+          column: 436
     - pointer: "/validation_rules/0"
-      rule_id: "validate_identity"
+      rule_id: "validation_mass"
       identity_kind: "explicit"
-      unit_id: "normative_18330"
+      unit_id: "normative_116364"
       source_span:
         start:
-          offset: 18425
-          line: 298
+          offset: 116459
+          line: 1322
           column: 1
         end:
-          offset: 18575
-          line: 298
-          column: 151
+          offset: 116704
+          line: 1322
+          column: 246
     - pointer: "/validation_rules/1"
-      rule_id: "validate_mass"
+      rule_id: "validation_route"
       identity_kind: "explicit"
-      unit_id: "normative_18330"
+      unit_id: "normative_116364"
       source_span:
         start:
-          offset: 18576
-          line: 299
+          offset: 116705
+          line: 1323
           column: 1
         end:
-          offset: 18792
-          line: 299
-          column: 217
+          offset: 117063
+          line: 1323
+          column: 359
     - pointer: "/validation_rules/2"
-      rule_id: "validate_inventory"
+      rule_id: "validation_balance"
       identity_kind: "explicit"
-      unit_id: "normative_18330"
+      unit_id: "normative_116364"
       source_span:
         start:
-          offset: 18793
-          line: 300
+          offset: 117064
+          line: 1324
           column: 1
         end:
-          offset: 19031
-          line: 300
-          column: 239
-    - pointer: "/validation_rules/3"
-      rule_id: "validate_allocation"
-      identity_kind: "explicit"
-      unit_id: "normative_18330"
-      source_span:
-        start:
-          offset: 19032
-          line: 301
-          column: 1
-        end:
-          offset: 19261
-          line: 301
-          column: 230
+          offset: 117409
+          line: 1324
+          column: 346
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_3139"
+      unit_id: "normative_4807"
       source_span:
         start:
-          offset: 3139
-          line: 51
+          offset: 4807
+          line: 55
           column: 1
         end:
-          offset: 3160
-          line: 51
+          offset: 4828
+          line: 55
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_3139"
+      unit_id: "normative_4807"
       source_span:
         start:
-          offset: 4012
-          line: 61
+          offset: 4856
+          line: 59
           column: 1
         end:
-          offset: 4778
-          line: 68
-          column: 110
+          offset: 5733
+          line: 66
+          column: 144
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_13529"
+      unit_id: "normative_64980"
       source_span:
         start:
-          offset: 13529
-          line: 261
+          offset: 64980
+          line: 1216
           column: 1
         end:
-          offset: 13569
-          line: 261
+          offset: 65020
+          line: 1216
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_18330"
+      unit_id: "normative_116364"
       source_span:
         start:
-          offset: 18330
-          line: 294
+          offset: 116364
+          line: 1318
           column: 1
         end:
-          offset: 18352
-          line: 294
+          offset: 116386
+          line: 1318
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -786,5 +2809,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:61bd9dbf96cfa2c22247ef50df0dc1bf331e75cf159820a5de8121b94d328a8c"
-  generated_content_sha256: "sha256:84e6a75eaded9f0fd1c8b8b36cfc12f4ca5d8c214f3c6efe5f609aa840fb32dd"
+    sha256: "sha256:067a4530e630bf7c0f300ea3ecde1ada5cbdc905b10b623b39f9193996c42a2b"
+  generated_content_sha256: "sha256:00e889a0c98f047e5c98e1d3349813436fc902db1de42c2553c2579e6ca33044"
