@@ -1,0 +1,1765 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.textile-carding-and-fibre-preparation-machinery"
+  classification_refs: "CPC 3.0 44611; this staple-fibre preparation manufacturing boundary is narrower than the classification; context only"
+  covered_products: "Complete new opening, cleaning, blending, carding, combing-preparation/combing and drawing/coiling machinery for staple spinning preparation"
+  excluded_products: "Fibre extrusion, final yarn manufacture, winding/warping/sizing, weaving/knitting and nonwoven lines; separate parts and mill services"
+  representative_product: "One serialized accepted functional configuration with measured net M, no assumed per-machine mass"
+  production_route: "Actual conditional fabrication, precision machining and finishing; configured fibre-working, drive/control integration and factory acceptance; fibre trial and packaging only when present"
+  market_state: "Accepted complete configured machine at declared dispatch gate, integral modules and retained first fill defined"
+functional_unit:
+  what: "Manufacture the configured complete staple-fibre spinning-preparation machine"
+  how_much: "1 kg net accepted complete machine, converted from per-machine records using measured M"
+  how_well: "Document drawing-specific mechanical/electrical, clearance/alignment and guarding/interlock acceptance; no equal-mass fibre quality or throughput equivalence"
+  how_long_or_cycle: "One manufacture and factory acceptance cycle; no imposed service life"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground
+      applies_to: "all processes"
+      rule: "Include actual manufacture, assembly, first fill, attributable factory trials and rework. Exclude customer mill installation, use, fibre/yarn output, central extraction service, maintenance and end of life."
+      source_ids: []
+    - rule_id: boundary_components
+      applies_to: "supplier assemblies"
+      rule: "Map each configured mechanism once to purchased assembly or internal manufacture. Bare cylinders, clothing, supplied clothed cylinders and integrated motors/controllers must have nonoverlapping BOM coverage."
+      source_ids:
+        - rieter-card
+boundary_abstraction:
+  declared_starting_condition: "Documented purchased stock and discrete complete components received at the reporting manufacturing site"
+  starting_condition_role: "Foreground receipt-to-dispatch manufacturing module"
+  product_classification_scope: "Configured staple-fibre preparation machine, not textile production or downstream final yarn equipment"
+  recursive_input_rule: "Do not generate purchased complete modules recursively from this same reference output; exclude their completed internal operations and avoid raw-stock duplication"
+  upstream_dataset_requirement: "Match material/assembly state, technology, supply geography and property; disclose unlinked suppliers and stages before any cradle-to-gate claim"
+  disclosure: "Site/period, model/function, supplier completeness, in-house/outsourced operations, measured M, factory-only trial, dispatch gate and identity/quantity gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Machines for extruding, drawing, texturing or cutting man-made textile materials, machines for preparing textile fibres or producing textile yarns, textile reeling or winding machines and machines for preparing textile yarns for use on machines for weaving, knitting and the like"
+    uuid: "f87c38cc-b845-46dd-bd91-3619a4444524"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer/model"
+    - "serial/configuration and drawing revision"
+    - "staple-fibre function and intended fibre type"
+    - "working width"
+    - "cylinder/roller arrangement and clothing state"
+    - "feed/chute"
+    - "combing/drafting/coiling modules included"
+    - "dedicated drive"
+    - control
+    - guards
+    - "interlocks and optional sensors/grinding"
+    - "machine-specific suction/fan inclusion"
+    - "supplier bare versus complete assembly scope"
+    - "retained first-fill grease"
+    - "transport-disassembled integral delivery parts"
+    - "accepted net mass M"
+    - "tare and calibration"
+    - "factory/site/period"
+    - "actual route"
+    - "gate and unlinked upstream stages"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: gas_volume
+    applies_to: "curing_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Retain actual pipeline gas volume and meter reference pressure/temperature/composition; reference internal property 1 is Volume. Alternate Mass meanValue 1 is not a density or mass-conversion factor."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert measured kWh with verified energy unit group factor 3.6 MJ/kWh; declare intake voltage and supply geography/provider. Installed motor kW is not consumed electricity."
+  - id: liquid_mass
+    applies_to: "liquid exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh actual formulations or use measured density at documented composition/concentration and temperature for liquid volume conversion; do not substitute pure ingredients for premixes."
+process_map:
+  - id: fabrication
+    name: "Frame and enclosure fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "The specified frame/enclosure is manufactured at the reporting site."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: precision
+    name: "Precision part machining and rotor preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Shafts, rollers, cylinders or supports are processed within the foreground."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: finishing
+    name: "Surface cleaning and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Declared parts are cleaned or coated at this site."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: mechanical
+    name: "Configured fibre-working mechanisms integration"
+    inclusion: "required"
+    inclusion_condition: "Every complete preparation machine, with its actual function-specific mechanism."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: drive_controls
+    name: "Drive, electrical and control integration"
+    inclusion: "required"
+    inclusion_condition: "Every configured motor-driven preparation machine."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: acceptance
+    name: "Factory mechanical and electrical acceptance"
+    inclusion: "required"
+    inclusion_condition: "Every accepted complete machine."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: fibre_trial
+    name: "Conditional factory fibre trial"
+    inclusion: "conditional"
+    inclusion_condition: "An actual configured machine undergoes fibre-fed acceptance before dispatch."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: packing
+    name: "Dispatch packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Actual packaging crosses the declared factory dispatch gate."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+process_inventory:
+  - id: fabrication
+    label: "Frame and enclosure fabrication"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Uncoated cold-rolled low-carbon steel sheet"
+          name: "Uncoated cold-rolled low-carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual documented sheet for frame/enclosure fabrication; record grade, thickness, state and measured fresh issue-return balance."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: self_shield_wire
+          role: "Flux Cored Wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Only documented self-shielded carbon-steel flux-cored wire matching the weld procedure; gas-shielded techniques require separate wire and gas identities."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dmg-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut
+          role: "Steel scrap, offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Only segregated clean untreated uncoated steel offcuts exported after internal reuse; identify actual destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - dmg-factory
+            ranges: []
+      elementary:
+        []
+  - id: precision
+    label: "Precision part machining and rotor preparation"
+    inputs:
+      product:
+        - row_id: steel_bar
+          role: "Cold-finished carbon-steel shaft bar blank"
+          name: "Cold-finished carbon-steel shaft bar blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented drawing-specific bar for in-house shafts, with grade and measured mass; do not count raw bar for purchased finished shafts."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: cast_iron_blank
+          role: "Grey-cast-iron textile-machine frame casting blank"
+          name: "Grey-cast-iron textile-machine frame casting blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual grey-iron blank machining route; document alloy, casting completeness and measured stock/part masses; casting itself is outside unless performed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: cutting_emulsion
+          role: "Formulated mineral-oil-in-water metalworking emulsion"
+          name: "Formulated mineral-oil-in-water metalworking emulsion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied premixed cutting emulsion with measured concentration/additions and SDS; individually mixed oil, water and additives need separate cards."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: precision_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_chips
+          role: "Steel scrap, machining chips"
+          name: "Steel scrap, machining chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7f46756b-6f66-46a7-bbcb-c04727d9d19e"
+          property_unit: "Mass / kg"
+          description: "Only separately collected clean untreated steel machining chips; oily swarf and mixed alloys need separately defined wastes."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: iron_chips
+          role: "Segregated grey-cast-iron machining chips"
+          name: "Segregated grey-cast-iron machining chips"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only exported grey-iron machining chips after internal reuse; document oil contamination and outlet."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: spent_emulsion
+          role: "Spent mineral-oil-in-water cutting emulsion sent to treatment"
+          name: "Spent mineral-oil-in-water cutting emulsion sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual exported spent emulsion with concentration/contamination and treatment receipt; not direct environmental water emission."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_precision."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision
+              source_ids:
+                - dmg-factory
+            ranges: []
+      elementary:
+        []
+  - id: finishing
+    label: "Surface cleaning and finishing"
+    inputs:
+      product:
+        - row_id: powder_coating
+          role: "Powder Coating"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied dry powder coating formulation; record resin/grade, fresh issues, internal recovery and cured retention. No universal coating recipe."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: cleaning_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only treated industrial water supplied for actual cleaning; do not count internal circulation as fresh water or resource withdrawal."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: curing_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Only actual gaseous pipeline-supplied natural gas for an installed curing burner; record composition and metered reference pressure/temperature, not LNG or unspecified fuel heat."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_effluent
+          role: "Aqueous metal-part cleaning effluent sent to treatment"
+          name: "Aqueous metal-part cleaning effluent sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only exported cleaning effluent with actual dissolved/entrained composition and treatment destination; separate from water-resource or direct water emissions."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: powder_residue
+          role: "Captured cured thermoset powder-coating residue"
+          name: "Captured cured thermoset powder-coating residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actually collected cured thermoset coating residue; uncured reusable overspray is an internal recovery, not automatically this waste."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only attributable measured fossil CO2 from actual factory curing combustion emitted to air, unspecified subcompartment; no mandatory occurrence or invented fuel factor."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - dmg-factory
+            ranges: []
+  - id: mechanical
+    label: "Configured fibre-working mechanisms integration"
+    inputs:
+      product:
+        - row_id: frame
+          role: "Finished textile-preparation machine frame"
+          name: "Finished textile-preparation machine frame"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: main_cylinder
+          role: "Bare textile-carding main cylinder assembly"
+          name: "Bare textile-carding main cylinder assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Card configuration only; bare cylinder excludes separately installed clothing."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: card_clothing
+          role: "Finished hardened-steel saw-tooth card-clothing strip"
+          name: "Finished hardened-steel saw-tooth card-clothing strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Card configuration only; raw steel wire is not finished toothed clothing."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: flat_bar
+          role: "Finished carding revolving-flat bar assembly"
+          name: "Finished carding revolving-flat bar assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Flat-card configuration only; declare clothing inclusion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: doffer
+          role: "Bare carding doffer-cylinder assembly"
+          name: "Bare carding doffer-cylinder assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Card configuration only; declare installed clothing separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: licker_in
+          role: "Carding licker-in roller assembly"
+          name: "Carding licker-in roller assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Card configuration only; declare clothing inclusion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: opening_rotor
+          role: "Textile tuft-opening beater rotor assembly"
+          name: "Textile tuft-opening beater rotor assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Opening/cleaning configuration only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: feed_roller
+          role: "Textile-preparation feed-roller assembly"
+          name: "Textile-preparation feed-roller assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only an actual installed feed roller."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: feed_chute
+          role: "Integral textile-fibre feed-chute assembly"
+          name: "Integral textile-fibre feed-chute assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only when included in this machine delivery, not separately counted central feed equipment."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: drafting_roller
+          role: "Sliver draw-frame drafting-roller assembly"
+          name: "Sliver draw-frame drafting-roller assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Draw-frame configuration only; supplier-included cot/apron boundaries must be declared."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: coiler
+          role: "Textile-sliver coiler assembly"
+          name: "Textile-sliver coiler assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only the installed coiler; standalone can handling equipment excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: combing_head
+          role: "Textile-fibre combing-head assembly"
+          name: "Textile-fibre combing-head assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Comber configuration only; record nipper, comb cylinder and detaching-roller inclusion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: ball_bearing
+          role: "Steel deep-groove ball bearing"
+          name: "Steel deep-groove ball bearing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only the actual bearing construction, not a ball-or-roller category."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: drive_belt
+          role: "Vulcanized-rubber textile-machine transmission belt"
+          name: "Vulcanized-rubber textile-machine transmission belt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only an actual installed drive belt; conveying belt is a different role."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: mechanical_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rieter-card
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: drive_controls
+    label: "Drive, electrical and control integration"
+    inputs:
+      product:
+        - row_id: motor
+          role: "Three-phase squirrel-cage induction drive motor"
+          name: "Three-phase squirrel-cage induction drive motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only independently supplied installed components; the gap sensor is optional."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: drive_inverter
+          role: "Variable frequency drive"
+          name: "Variable frequency drive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c14b641c-8fbe-40c4-843b-3cc9b0faeff3"
+          property_unit: "Mass / kg"
+          description: "Only an independently supplied actual variable-frequency drive including power electronics, enclosure and heat sink; verify configured voltage/rating and supplied completeness, no duplication inside a complete drive cabinet. The public flow identifies an estimated purchased component, not a measured manufacturing intensity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: controller
+          role: "Dedicated textile-preparation controller module"
+          name: "Dedicated textile-preparation controller module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only independently supplied installed components; the gap sensor is optional."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: harness
+          role: "Insulated copper textile-machine wiring harness"
+          name: "Insulated copper textile-machine wiring harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only independently supplied installed components; the gap sensor is optional."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: gap_sensor
+          role: "Carding-gap displacement sensor module"
+          name: "Carding-gap displacement sensor module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only independently supplied installed components; the gap sensor is optional."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: extraction_fan
+          role: "Dedicated textile-machine centrifugal extraction fan"
+          name: "Dedicated textile-machine centrifugal extraction fan"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only independently supplied installed components; the gap sensor is optional."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: suction_duct
+          role: "Galvanized-steel machine extraction duct"
+          name: "Galvanized-steel machine extraction duct"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named discrete bought-in finished assembly, with drawing/part revision, material and measured net mass. Omit purchase for in-house transfers or constituents already inside a complete supplier module. Only independently supplied installed components; the gap sensor is optional."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: steel_screw
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Only independently supplied actual steel screws; nuts, bolts and washers need separate exact exchanges when issued independently."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: drive_controls_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_drive_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_controls
+              source_ids:
+                - rieter-card
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "Factory mechanical and electrical acceptance"
+    inputs:
+      product:
+        - row_id: first_fill_grease
+          role: "Lithium-soap mineral-oil bearing grease"
+          name: "Lithium-soap mineral-oil bearing grease"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented first-fill grease actually issued, with grade/soap/base oil and quantity; supplier-prelubricated bearings do not receive duplicate fill."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - rieter-card
+            ranges: []
+        - row_id: acceptance_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - rieter-card
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Machines for extruding, drawing, texturing or cutting man-made textile materials, machines for preparing textile fibres or producing textile yarns, textile reeling or winding machines and machines for preparing textile yarns for use on machines for weaving, knitting and the like"
+          name: "Machines for extruding, drawing, texturing or cutting man-made textile materials, machines for preparing textile fibres or producing textile yarns, textile reeling or winding machines and machines for preparing textile yarns for use on machines for weaving, knitting and the like"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f87c38cc-b845-46dd-bd91-3619a4444524"
+          property_unit: "Mass / kg"
+          description: "Exactly 1 kg net accepted complete configured spinning-preparation machine, including installed mechanisms, dedicated drive/control and retained first fill; test fibre, shipping packaging and extra spares excluded."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - rieter-card
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: fibre_trial
+    label: "Conditional factory fibre trial"
+    inputs:
+      product:
+        - row_id: cotton_trial
+          role: "Ginned uncarded cotton lint for factory trial"
+          name: "Ginned uncarded cotton lint for factory trial"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual fresh cotton trial input with fibre/moisture/contamination recorded; no mill production or cotton-linter substitution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fibre_trial."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_trial
+              source_ids:
+                - truetz-preparation
+            ranges: []
+        - row_id: pet_trial
+          role: "Virgin PET staple fibre for factory trial"
+          name: "Virgin PET staple fibre for factory trial"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual documented virgin PET staple material, with fineness, cut length, finish and moisture; no acrylic or recycled feed substitution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fibre_trial."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_trial
+              source_ids:
+                - truetz-preparation
+            ranges: []
+        - row_id: fibre_trial_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only metered attributable actual manufacturing or factory trial power at declared voltage/geography/provider; customer mill operation excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fibre_trial."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_trial
+              source_ids:
+                - truetz-preparation
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cotton_trial_waste
+          role: "Segregated cotton trial-fibre waste sent to recycling"
+          name: "Segregated cotton trial-fibre waste sent to recycling"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only exported segregated cotton fibre/sliver from actual factory trial after internal reuse, with measured mass and receiving route."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fibre_trial."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_trial
+              source_ids:
+                - truetz-preparation
+            ranges: []
+        - row_id: pet_trial_waste
+          role: "Segregated PET staple trial-fibre waste sent to recycling"
+          name: "Segregated PET staple trial-fibre waste sent to recycling"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only exported PET staple fibre from actual trial, segregated from cotton and mixed blends; record polymer, finish and outlet."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fibre_trial."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_trial
+              source_ids:
+                - truetz-preparation
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Dispatch packaging"
+    inputs:
+      product:
+        - row_id: timber_support
+          role: "Kiln-dried sawn coniferous timber, at mill"
+          name: "Kiln-dried sawn coniferous timber, at mill"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50904047-e5b0-4110-990a-53751d250267"
+          property_unit: "Mass / kg"
+          description: "Only actual kiln-dried sawn coniferous shipping timber with measured mass, excluded from M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - dmg-factory
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual LDPE protective film with declared thickness and measured mass, excluded from M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - dmg-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_order
+    applies_to: "shared operations"
+    rule: "Separate function/model, working width, mechanism, clothing and installed options by work order. Directly assign issues, returns, station meters, trials and rework first. For inseparable shared manufacturing resources, use measured causal station time or load; share = order driver / sum of all covered order drivers, documenting causal justification, period and denominator. No unexplained equal-count allocation across card, draw-frame and opener models."
+    source_ids: []
+  - rule_id: allocation_reuse
+    applies_to: "scrap and trials"
+    rule: "Internal stock/fibre reuse is a transfer, not repeated fresh input. Exported chips, residues and trial fibres retain measured quantity and destination without automatic avoided-product credit. Identify saleable trial sliver or other co-products separately and obtain reviewed residual allocation after direct separation. Rejected/reworked machine burdens belong to the recorded accepted-output period; reconcile unfinished stock."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "accepted net machine mass"
+      record_type: "weighing_record"
+      raw_fields: "model; function; configuration; serial; accepted net mass M; scale_id; calibration; clothing/module inclusion; retained_fill; detached_integral_parts; test_fibre_removed; packaging_tare"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each machine or representative same-configuration batch"
+      temporal_coverage: "same manufacturing period as orders"
+      site_scope: "declared factory/configuration"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration, tare, completeness and acceptance receipts"
+    - protocol_id: cp_fabrication
+      process_id: "fabrication"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Weigh grade/dimension-specific stock issues, returns, accepted frame masses and segregated offcuts; collect weld procedure, rework and station electricity."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Frame and enclosure fabrication"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_precision
+      process_id: "precision"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Collect drawing/part revision, supplied blank and accepted part mass, machining time, coolant formulation/concentration, additions/returns, separate chips and spent coolant outlets, balancing records and metered station power."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Precision part machining and rotor preparation"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_finishing
+      process_id: "finishing"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Collect preparation/coating batch and SDS, fresh issues minus recoveries, coated part mass, water and actual effluent, curing fuel/state, electricity and attributable measured combustion emissions only if present."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Surface cleaning and finishing"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_mechanical
+      process_id: "mechanical"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Trace function, working width, cylinder/roller arrangement, clothing type and included modules to BOM; weigh supplied assemblies, record internal transfers separately and verify alignment/clearance and mechanical completeness."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Configured fibre-working mechanisms integration"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_drive_controls
+      process_id: "drive_controls"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Record drive topology, motor part/rating and measured mass, controller/software revision, harness construction/mass, sensor option and enclosure inclusion; retain continuity/interlock and power-meter evidence."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Drive, electrical and control integration"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Collect serial-linked dimensional/alignment, safety and run acceptance reports; measure attributable test electricity, installed first-fill grease and accepted net M with tare/completeness evidence."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Factory mechanical and electrical acceptance"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_fibre_trial
+      process_id: "fibre_trial"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Weigh fresh trial fibre, reusable returns, exported trial fibre/sliver and residual stock by polymer/origin; retain fibre composition, moisture, contamination, waste receipts and machine-specific trial log."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Conditional factory fibre trial"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; drawing/part/material revision; supplier_scope; issues; returns; stock_change; exchange_amount; component_mass; meter_unit; voltage; gas_pressure_temperature; formulation_concentration_density; accepted_count; rework; allocation_driver; trial_fibre_return; waste_outlet; measured_emission_mass"
+      collection_method: "Weigh each packaging material per dispatched configuration, reconcile returns and packaging tare; document actual reusable-support cycles."
+      unit: "kg, MJ or m3 as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Dispatch packaging"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, trial and transfer receipts"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_bom
+      applies_to: "all components"
+      requirement: "Reconcile every installed frame, fibre-working surface, roller/cylinder, clothing, drive, controller, guard and first fill against configured BOM and supplier completeness; avoid bare/clothed assembly and internal-transfer duplication."
+      evidence: "configuration BOM and supplier scope"
+    - id: quality_balance
+      applies_to: "mass and utilities"
+      requirement: "Reconcile stock, component masses, M, retained grease, exported wastes, trial-fibre returns and rework; retain scale/meter calibration and composition/state conversions. Establish site QA limits from measured records, not brochure machine capacity, fibre yield or assumed material losses."
+      evidence: "weighing, meter, stock and trial receipts"
+    - id: quality_coverage
+      applies_to: "all processes"
+      requirement: "Report period/geography, model coverage, actual/absent conditional stages, outsourcing, identity/quantity gaps, uncertainty and upstream links. Historical equipment/factory examples provide no current factory intensities or universal tolerances."
+      evidence: "order coverage and evidence register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require positive measured M, complete functional preparation machine, explicit working mechanism, clothing/module and drive/control inclusion, net tare and factory acceptance. Do not substitute fibre/yarn output or throughput services for machine manufacture."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "inventory rows"
+    rule: "Require one physically defined exchange with matching public identity, reference property, unit group, route and medium. Steel wire is not finished card clothing, PET is not any synthetic staple, process water is not wastewater, and a product scrap flow is not automatically a waste transfer. Keep incompatible UUIDs blank until dataset completion."
+    source_ids: []
+  - rule_id: validate_conversion
+    applies_to: "inventory rows"
+    rule: "Check cp_mass and normalize_mass against the same accepted configuration and period, exact gas meter conditions and electricity units. Reject duplication of complete-module constituents, fibre returns and first fills."
+    source_ids: []
+  - rule_id: validate_emissions
+    applies_to: "elementary rows"
+    rule: "Fossil CO2 requires attributable actual factory combustion measurements and air-unspecified subcompartment. Any other demonstrated substance and medium gets its own card; no universal emissions from machining, coating or fibre trials."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured staple-fibre preparation machine foreground manufacture dataset"
+  downstream_use: "secondary_dataset; background_dataset after qualified review and explicit upstream coverage"
+  allowed_use: "Manufacturing supply-chain modelling for matching function/configuration, state, gate, site and period"
+  excluded_use: "Fibre/yarn production, lifetime service comparison, equal-mass preparation equivalence, other textile functions and complete cradle-to-gate claims with missing upstream stages"
+  required_metadata: "Reference qualifiers, configuration BOM, measured M, supplier scope, actual operations/trials, site/period/gates, collection/allocation evidence and upstream links"
+  required_quality_disclosure: "Missing identities/quantities, uncertainty, inactive cards, added BOM exchanges, historical evidence limits and unlinked outsourced/upstream stages"
+  update_trigger: "Function, working width, mechanism/clothing, module/drive/control options, supplier completeness, M/first fill, finishing route, factory period/geography or resolved evidence gap changes"
+data_sources:
+  - id: "rieter-card"
+    type: "literature"
+    reference: "[Rieter C 81 Card, 3586-v1 en 2305](https://www.rieter.com/fileadmin/user_upload/products/documents/systems/fiber-preparation/c-81/rieter-c-81-card-brochure-3586-v1-98697-en.pdf)"
+    used_for: "May 2023 brochure, PDF/printed page 11, Carding Gap Control and Automatic distance adjustment, option footnote: cylinder clothing/flat-wire interfaces and optional control example. Historical configuration only; no universal gap, clothing specification, manufacturing intensity, mass or life adopted."
+  - id: "dmg-factory"
+    type: "literature"
+    reference: "[DMG MORI Technology Excellence 01–2022](https://en.dmgmori.com/resource/blob/626730/cde70e4767e83788dd7d9fd44f6c05b0/j221en-data.pdf)"
+    used_for: "PDF/printed page 56, Trützschler Textile Machinery Shanghai case: historical manufacture/assembly of blow rooms, cards and draw frames using machining centres. Example of in-house part machining and configured assembly only; no compulsory machine-tool brand, current factory activity, coating recipe, efficiency or machine mass."
+  - id: "truetz-preparation"
+    type: "literature"
+    reference: "[Trützschler Ring spinning applications](https://www.truetzschler.com/en/spinning/applications/ring-spinning/)"
+    used_for: "Combed cotton, Carded cotton/pure man-made fibres, Material blends and Overview of our solutions sections: opening/blending/card/draw-frame/lap/comber alternatives in staple preparation; retrieved 2026-10-04 UTC. Product-boundary evidence only, not ring-spinning machine manufacture, fibre trial recipe, yields or manufacturing quantities."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:7714c1b00151ba07932c642579234b81aea85a3bd9e823e543b97d8e89ee265a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5788"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5788
+          line: 60
+          column: 1
+        end:
+          offset: 7375
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Documented purchased stock and discrete complete components received at the reporting manufacturing site |\n| starting_condition_role | Foreground receipt-to-dispatch manufacturing module |\n| product_classification_scope | Configured staple-fibre preparation machine, not textile production or downstream final yarn equipment |\n| recursive_input_rule | Do not generate purchased complete modules recursively from this same reference output; exclude their completed internal operations and avoid raw-stock duplication |\n| upstream_dataset_requirement | Match material/assembly state, technology, supply geography and property; disclose unlinked suppliers and stages before any cradle-to-gate claim |\n| disclosure | Site/period, model/function, supplier completeness, in-house/outsourced operations, measured M, factory-only trial, dispatch gate and identity/quantity gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_foreground` | all processes | Include actual manufacture, assembly, first fill, attributable factory trials and rework. Exclude customer mill installation, use, fibre/yarn output, central extraction service, maintenance and end of life. |  |\n| `boundary_components` | supplier assemblies | Map each configured mechanism once to purchased assembly or internal manufacture. Bare cylinders, clothing, supplied clothed cylinders and integrated motors/controllers must have nonoverlapping BOM coverage. | `rieter-card` |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 192
+              line: 8
+              column: 1
+            end:
+              offset: 260
+              line: 8
+              column: 69
+          text: "# Textile carding and staple-fibre preparation machinery manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5788
+              line: 60
+              column: 1
+            end:
+              offset: 5809
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_53106"
+      family: "allocation"
+      span:
+        start:
+          offset: 53106
+          line: 964
+          column: 1
+        end:
+          offset: 54203
+          line: 972
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_order` | shared operations | Separate function/model, working width, mechanism, clothing and installed options by work order. Directly assign issues, returns, station meters, trials and rework first. For inseparable shared manufacturing resources, use measured causal station time or load; share = order driver / sum of all covered order drivers, documenting causal justification, period and denominator. No unexplained equal-count allocation across card, draw-frame and opener models. |  |\n| `allocation_reuse` | scrap and trials | Internal stock/fibre reuse is a transfer, not repeated fresh input. Exported chips, residues and trial fibres retain measured quantity and destination without automatic avoided-product credit. Identify saleable trial sliver or other co-products separately and obtain reviewed residual allocation after direct separation. Rejected/reworked machine burdens belong to the recorded accepted-output period; reconcile unfinished stock. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 192
+              line: 8
+              column: 1
+            end:
+              offset: 260
+              line: 8
+              column: 69
+          text: "# Textile carding and staple-fibre preparation machinery manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 53106
+              line: 964
+              column: 1
+            end:
+              offset: 53146
+              line: 964
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_64316"
+      family: "validation"
+      span:
+        start:
+          offset: 64316
+          line: 1005
+          column: 1
+        end:
+          offset: 65667
+          line: 1015
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference product | Require positive measured M, complete functional preparation machine, explicit working mechanism, clothing/module and drive/control inclusion, net tare and factory acceptance. Do not substitute fibre/yarn output or throughput services for machine manufacture. |  |\n| `validate_identity` | inventory rows | Require one physically defined exchange with matching public identity, reference property, unit group, route and medium. Steel wire is not finished card clothing, PET is not any synthetic staple, process water is not wastewater, and a product scrap flow is not automatically a waste transfer. Keep incompatible UUIDs blank until dataset completion. |  |\n| `validate_conversion` | inventory rows | Check cp_mass and normalize_mass against the same accepted configuration and period, exact gas meter conditions and electricity units. Reject duplication of complete-module constituents, fibre returns and first fills. |  |\n| `validate_emissions` | elementary rows | Fossil CO2 requires attributable actual factory combustion measurements and air-unspecified subcompartment. Any other demonstrated substance and medium gets its own card; no universal emissions from machining, coating or fibre trials. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 192
+              line: 8
+              column: 1
+            end:
+              offset: 260
+              line: 8
+              column: 69
+          text: "# Textile carding and staple-fibre preparation machinery manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 64316
+              line: 1005
+              column: 1
+            end:
+              offset: 64338
+              line: 1005
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_5788"
+      source_span:
+        start:
+          offset: 6845
+          line: 75
+          column: 1
+        end:
+          offset: 7098
+          line: 75
+          column: 254
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_components"
+      identity_kind: "explicit"
+      unit_id: "normative_5788"
+      source_span:
+        start:
+          offset: 7099
+          line: 76
+          column: 1
+        end:
+          offset: 7372
+          line: 76
+          column: 274
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_order"
+      identity_kind: "explicit"
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 53219
+          line: 968
+          column: 1
+        end:
+          offset: 53723
+          line: 968
+          column: 505
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_reuse"
+      identity_kind: "explicit"
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 53724
+          line: 969
+          column: 1
+        end:
+          offset: 54200
+          line: 969
+          column: 477
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_64316"
+      source_span:
+        start:
+          offset: 64411
+          line: 1009
+          column: 1
+        end:
+          offset: 64720
+          line: 1009
+          column: 310
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_64316"
+      source_span:
+        start:
+          offset: 64721
+          line: 1010
+          column: 1
+        end:
+          offset: 65115
+          line: 1010
+          column: 395
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_conversion"
+      identity_kind: "explicit"
+      unit_id: "normative_64316"
+      source_span:
+        start:
+          offset: 65116
+          line: 1011
+          column: 1
+        end:
+          offset: 65381
+          line: 1011
+          column: 266
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_64316"
+      source_span:
+        start:
+          offset: 65382
+          line: 1012
+          column: 1
+        end:
+          offset: 65664
+          line: 1012
+          column: 283
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5788"
+      source_span:
+        start:
+          offset: 5788
+          line: 60
+          column: 1
+        end:
+          offset: 5809
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5788"
+      source_span:
+        start:
+          offset: 5837
+          line: 64
+          column: 1
+        end:
+          offset: 6772
+          line: 71
+          column: 174
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_53106"
+      source_span:
+        start:
+          offset: 53106
+          line: 964
+          column: 1
+        end:
+          offset: 53146
+          line: 964
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_64316"
+      source_span:
+        start:
+          offset: 64316
+          line: 1005
+          column: 1
+        end:
+          offset: 64338
+          line: 1005
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7714c1b00151ba07932c642579234b81aea85a3bd9e823e543b97d8e89ee265a"
+  generated_content_sha256: "sha256:f28b5d4fe18a490b8ad737896fb4e55ee83811be5bbad9608f862df1c773a45e"
