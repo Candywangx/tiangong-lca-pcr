@@ -1,10 +1,2355 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44913"
-  title: "Machinery for making pulp of fibrous cellulosic material or for making or finishing paper or paperboard; machinery (except bookbinding machinery) for making up paper pulp, paper or paperboard"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.machinery-for-making-pulp-of-fibrous-cellulosic-material-or-for-making-or-finishing-pap-79fe0566"
+  classification_refs: "CPC3.0:44913; exact semantic category, subject to concrete-item classification"
+  covered_products: "Configured pulp making; paper/board making and finishing; making-up and converting machinery except bookbinding"
+  excluded_products: "Printing/bookbinding; generic plant utilities; independently supplied spare parts/dryers; pulp/paper products; whole-mill output"
+  representative_product: "One accepted declared refiner, pulper, paper machine or corrugator/folder-gluer/bag machine configuration; no single model defines the whole category"
+  production_route: "Actual casting or bought castings; rolled/formed/welded/machined materials; surface finishing; supplied modules; assembly/control integration; factory tests/rework; packing"
+  market_state: "New accepted configured machinery at declared manufacturing gate; complete supplied scope and transport disassembly declared"
+functional_unit:
+  what: "Supply the declared configured pulp/paper/board/making-up machine"
+  how_much: "1 kg accepted net configured machinery"
+  how_well: "Actual principal function, supplied modules, acceptance requirements and material-grade/pressure/drive/control interfaces declared"
+  how_long_or_cycle: "One manufacturing and acceptance cycle; user service life and replacement duty are scenario evidence, not defaults"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual supply transport, manufacture, finishing, assembly, factory trials, rejects/rework, utilities, abatement and packing; report separate actual transport-service rows by mode and provider. Downstream user mill production/service and user end-of-life remain separate."
+      source_ids:
+        - un-cpc3
+        - andritz-cast
+    - rule_id: boundary_makebuy
+      applies_to: "foreground_system_boundary"
+      rule: "Count each bought complete or partial supplied module and its finished operations once; do not also count embedded materials or power. Pair internal transfers and cancel once. Incorporated installed first-set items enter configured Dnet; shipping packaging/loose excluded supplies do not."
+      source_ids:
+        - valmet-headbox
+        - bhs-corrugator
+        - holweg-bag
+boundary_abstraction:
+  declared_starting_condition: "Actual received metal/chemical feedstocks and bought supplied-state modules linked to upstream providers"
+  starting_condition_role: "foreground_input_interface"
+  product_classification_scope: "Reviewed full category with each concrete function and module exception declared"
+  recursive_input_rule: "A bought completed same-category unit retains its upstream manufacture once; only actual local integration/test is added. Partial input covers completed operations only; local remainder is explicit."
+  upstream_dataset_requirement: "Compatible supplied state, grade, geography, provider and unit for each actual input or waste-treatment link"
+  disclosure: "Gate, sites/subcontractors, transport, unshipped installation/commissioning, module/fill/clothing inclusion, make/buy and unresolved identities"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Machinery for making pulp of fibrous cellulosic material or for making or finishing paper or paperboard, machinery (except bookbinding machinery) for making up paper pulp, paper or paperboard"
+    uuid: "59606f39-b2c5-4c5d-a906-0b9110b7c256"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "principal function and classification decision"
+    - "pulp/paper/converting family"
+    - "model/configuration"
+    - "complete delivered BOM and installed fills/clothing/accessories"
+    - "net mass and accepted count"
+    - "site/period"
+    - "manufacture gate and transport disassembly"
+    - "pressure/material/drive/control specifications"
+    - "make/buy"
+    - "factory tests"
+    - "utility/provider geography"
+    - "allocation and gaps"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calibrated accepted net configured-machine masses define Dnet; packing, rejects, free trial loads and loose spares not in the declared reference are excluded. Use cp_mass for exactly one configuration/period."
+  - id: native_quantity
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual reference property"
+      uuid: ""
+    required_unit: "native"
+    rule: "Keep Mass/kg, Volume/m3 and Energy/MJ or kWh numerator native. Convert m3 and kg only with the stream own measured density at actual T/P; electrical MJ=kWh×3.6. Unit labels never repair wrong physical identity."
+process_map:
+  - id: casting
+    name: "Conditional local casting"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: fabrication
+    name: "Metal fabrication and machining"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finish
+    name: "Cleaning surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: assembly
+    name: "Configured mechanical electrical integration"
+    inclusion: "required"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: test
+    name: "Factory acceptance and rework"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Actual site utilities"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Packing and gate handover"
+    inclusion: "required"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: residues
+    name: "External wastes and measured releases"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared site operation; never a universal recipe"
+    role: "foreground_process"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: casting
+    label: "Conditional local casting"
+    inputs:
+      product:
+        - row_id: pigiron
+          role: "Foundry pig iron"
+          name: "Foundry pig iron"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual site melt charge with measured alloy composition and supplier state; no standard recipe."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+            ranges: []
+        - row_id: scrapcharge
+          role: "Sorted steel scrap for remelting"
+          name: "Scrap Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cb5e364-ba39-4009-8b40-a76fdc88bc42"
+          property_unit: "Mass / kg"
+          description: "Only actual externally pretreated/sorted or remelted scrap matching the selected supplied route; preserve actual grade, chemistry and completed operations. Paired internal runners are returns rather than another purchase."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+            ranges: []
+        - row_id: sand
+          role: "Silica foundry sand"
+          name: "Silica foundry sand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual specified foundry sand makeup; declared grain distribution, silica assay and moisture; internal sand circulation cancels."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+            ranges: []
+        - row_id: resin
+          role: "Phenolic resin"
+          name: "Phenolic resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9f10798f-ffb5-402d-b805-27d2db4e2caf"
+          property_unit: "Mass / kg"
+          description: "Only actual phenol-formaldehyde condensation resin input for a documented resin-bonded mould route; verify prepolymer/formulation state; separately supplied catalyst and solvent need additional atomic rows."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+            ranges: []
+        - row_id: bentonite
+          role: "Foundry bentonite binder"
+          name: "Foundry bentonite binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented bentonite-bonded mould route; wine fining and raw mine clay cannot represent the processed foundry binder."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+            ranges: []
+        - row_id: casting_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Energy / kWh"
+          description: "Actual metered attributable casting electricity only; CN1–35kV user-side supply requires matched geography, voltage and provider. Shared services include only unassigned residual."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - andritz-cast
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: fabrication
+    label: "Metal fabrication and machining"
+    inputs:
+      product:
+        - row_id: steel
+          role: "Carbon steel plate"
+          name: "Carbon steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual grade, thickness and rolled state for frames, vessels or fabricated rolls; conflicting bilingual metals are unavailable."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: stainless
+          role: "304 stainless steel sheet"
+          name: "304 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual 304 sheet manufacture; the Valmet pulp-drying headbox example establishes stainless construction but no universal 304 grade."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: duplex
+          role: "Duplex stainless steel plate"
+          name: "Duplex stainless steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual corrosion-service duplex grade supported by purchase and alloy assay; not assumed for all digesters or wet ends."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: aluminium
+          role: "Aluminium extrusion profile"
+          name: "Aluminium extrusion profile"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be3-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Only actual extruded profile of documented alloy for guards or structural frames; finished purchased guards exclude duplicate profile fabrication."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: copper
+          role: "Copper wire"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197beb-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Bare copper wire only for actual local wiring or winding; insulated cable and bought motor are separate supply states."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: weld
+          role: "Stainless steel welding wire"
+          name: "Stainless steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual filler-fed stainless welding; specify alloy and solid/flux-cored state. Filler-free joining does not imply wire."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: argon
+          role: "Gaseous argon"
+          name: "Argon, gaseous"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f83a939c-a58f-44de-a593-d9c9ffb584e4"
+          property_unit: "Mass / kg"
+          description: "Actual gaseous shielding argon only; purity and provider must match. Liquid supply includes its own actual vaporisation; volume-to-mass uses actual temperature, pressure and density."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: cutfluid
+          role: "Metalworking cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Actual purchased liquid metalworking formulation for machining; match formulation and concentration, measure own water fraction and lubricant assay; gas cooling is a separate exchange."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Energy / kWh"
+          description: "Actual metered attributable fabrication electricity only; CN1–35kV user-side supply requires matched geography, voltage and provider. Shared services include only unassigned residual."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - andritz-cast
+                - valmet-headbox
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: finish
+    label: "Cleaning surface finishing"
+    inputs:
+      product:
+        - row_id: coat
+          role: "Powder coating"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased dry polymer powder formulation applied locally; document resin and additives, retained coating, reclaim and cure; no assumed epoxy recipe or coverage."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Actual IPA cleaning input with own solution assay; selected China at-plant identity requires matched procurement. Distinguish retained, recovered, destroyed, wastewater and emitted fractions."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+            ranges: []
+        - row_id: citric
+          role: "Citric acid"
+          name: "Citric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual citric-acid cleaning/passivation formulation with own assay and water fraction; other acids are separate."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+            ranges: []
+        - row_id: nitric
+          role: "Nitric acid"
+          name: "Nitric acid, 50% aqueous solution"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db613797-10b0-4252-b818-659b99ce85dd"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased 50% aqueous nitric-acid cleaning/etching reagent; quantity is whole solution, with own assay and water fraction. Other concentrations require distinct matched identities; no generic stainless passivation recipe."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+            ranges: []
+        - row_id: water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Actual treated industrial wash/rinse makeup only, with own quality and supply interface; circulation is not fresh supply."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+            ranges: []
+        - row_id: finish_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Energy / kWh"
+          description: "Actual metered attributable finish electricity only; CN1–35kV user-side supply requires matched geography, voltage and provider. Shared services include only unassigned residual."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - valmet-headbox
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: assembly
+    label: "Configured mechanical electrical integration"
+    inputs:
+      product:
+        - row_id: castiron
+          role: "Finished grey-cast-iron machine casting"
+          name: "Finished grey-cast-iron machine casting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual bought completed grey-iron housing or cylinder casting; primary cast-iron metal and iron ore do not include the casting manufacture. If made locally replace this input with its actual casting route."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: refiner
+          role: "Finished refiner plate"
+          name: "Finished refiner plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match actual alloy, supplied finish and mechanical/thermomechanical/chemical-pulp compatibility; the Muncy casting example does not establish one alloy."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: roll
+          role: "Finished paper-machine dryer cylinder"
+          name: "Finished paper-machine dryer cylinder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Distinguish an actual bought cylinder from an independently classified complete dryer, or onsite rolled/welded steel Yankee. Record supplied coating and internal assemblies exactly once."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: headbox
+          role: "Finished pulp-drying headbox"
+          name: "Finished pulp-drying headbox"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only compatible actual hydraulic or rectifier-roll headbox supplied as a unit; Valmet evidence is pulp-drying wet-end specific, not every paper machine."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: pulper
+          role: "Finished pulper rotor"
+          name: "Finished pulper rotor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual pulper-compatible purchased rotor, not wind or helicopter rotor. Local rotor fabrication is a separate make route."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: screen
+          role: "Finished pulp screen basket"
+          name: "Finished pulp screen basket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual finished screen basket with slot/hole and corrosion specification; raw pulp or general cloth is not an equipment input."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: digester
+          role: "Finished pulp digester vessel"
+          name: "Finished pulp digester vessel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual purchased supplied vessel, with pressure boundary and inclusions declared; onsite plate forming/welding replaces upstream vessel manufacture."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: corrroll
+          role: "Finished corrugating-roll cassette"
+          name: "Finished corrugating-roll cassette"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bought cassette with rolls and included drive/service interfaces; BHS documents replaceable modules and steam/condensate connections, not a universal bill of materials."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: bagmodule
+          role: "Finished paper-bag bottom-closing module"
+          name: "Finished paper-bag bottom-closing module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bought compatible closing module. Holweg servo closing and handle/window options illustrate a bag-making configuration, not every machine or an automatic printing classification."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: motor
+          role: "Industrial electric motor"
+          name: "Industrial electric motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual rated industrial motor with speed/drive interface; do not borrow a conveyor/washing-module expert-estimate BOM for a refiner motor."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: gearbox
+          role: "Industrial reduction gearbox"
+          name: "Industrial reduction gearbox"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual bought gearbox with duty, ratio and oil state; wind-turbine gearbox is not a generic compatible input."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: hydraulic
+          role: "Hydraulic power unit"
+          name: "Hydraulic power unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual compatible purchased hydraulic assembly; a metal-press subsystem quantified by Energy is unavailable for a mass component input."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: bearing
+          role: "Roller bearing"
+          name: "Ball or roller bearings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+          property_unit: "Mass / kg"
+          description: "Actual bought finished roller bearing with load and compatibility; broad bearing identity requires actual subtype specification, not a cage or a wind pitch system."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: plc
+          role: "Programmable logic controller"
+          name: "Programmable logic controller"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b817eb4-cab3-4fed-87c9-457d66d0bb19"
+          property_unit: "Mass / kg"
+          description: "Actual complete CN hardware PLC input only with procurement/voltage compatibility; embedded board, chips and solder remain upstream."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: cable
+          role: "Insulated copper control/power cable"
+          name: "Insulated copper control/power cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual purchased insulated cable with cross-section and voltage; bare wire and an Energy-referenced component cannot substitute."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: gasket
+          role: "EPDM rubber gasket"
+          name: "EPDM rubber gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual EPDM finished gasket of verified dimensions and compound; general sealing elements do not establish the polymer."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: fabric
+          role: "Paper-machine forming fabric"
+          name: "Paper-machine forming fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual supplied machine clothing of declared polymer, structure and net mass; printed apparel fabric and its marketing lifetime are unrelated."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: felt
+          role: "Paper-machine press felt"
+          name: "Paper-machine press felt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual included press felt with fibre/BOM specification; distinguish supplied first set from subsequent user replacement and free shipping spares."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: belt
+          role: "Polyurethane conveyor belt"
+          name: "Polyurethane conveyor belt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented actual PU belt; rubber belting or conveying service is a different identity. No universal belt material follows from BOBST architecture."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: blade
+          role: "Machine paper-cutting knife"
+          name: "Machine paper-cutting knife"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual compatible installed knife, distinct from steel saw blade, generic machining consumable or non-machine scissors."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: die
+          role: "Paperboard steel-rule cutting die"
+          name: "Paperboard steel-rule cutting die"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual configured purchased die installed in the delivered converting machine; customer tools merely used for factory test are separate consumed or returned loads."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: oil
+          role: "Hydraulic fluid"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume / m3"
+          description: "Actual fill physically shipped in a compatible mineral/synthetic-base hydraulic system; selected Volume reference is native m3, convert weighed amount with independently measured density at actual temperature. Bought prefilled module excludes duplicate fill."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: grease
+          role: "Lubricating grease"
+          name: "Lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual documented supplied grease and separately consumed shop grease; liquid lubricant is not automatically the same grade."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Energy / kWh"
+          description: "Actual metered attributable assembly electricity only; CN1–35kV user-side supply requires matched geography, voltage and provider. Shared services include only unassigned residual."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - valmet-headbox
+                - andritz-cooking
+                - andritz-recycled
+                - andritz-paper
+                - bobst-fold
+                - bhs-corrugator
+                - holweg-bag
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Factory acceptance and rework"
+    inputs:
+      product:
+        - row_id: tap
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Actual hydrostatic, circulation or cleaning test water; record fresh supply, stocks and matched returns, actual water quality and density; customer mill water consumption is excluded."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_test."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+        - row_id: pulp
+          role: "Bleached kraft wood pulp test load"
+          name: "Bleached kraft wood pulp test load"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual declared factory acceptance or prototype stock test, never a fixed customer mill recipe; match pulping, bleaching and dry-solids state. Returned customer stock cancels."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_test."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+        - row_id: paper
+          role: "Corrugated cardboard test blank"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Actual C/E/F corrugated board, fibre content at least80%, containing recycled material with actual fraction documented, used solely for factory converting tests; other grades need separate identities."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_test."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+        - row_id: kraft
+          role: "Unbleached kraft paper test web"
+          name: "Unbleached kraft paper test web"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bag-making or cutting acceptance-test web; specify grade and moisture, consumed/returned quantities and rejected tests; user production throughput is not a factory input."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_test."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+        - row_id: glue
+          role: "Polyvinyl acetate adhesive"
+          name: "Polyvinyl acetate adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual PVA adhesive formulation consumed during factory gluer acceptance tests; retain own solids/water fraction and stock return; no automatic application to corrugator starch or machine manufacture."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_test."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+        - row_id: starch
+          role: "Starch corrugating adhesive"
+          name: "Starch-based adhesive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2a847cb1-f8c0-4fd4-8c7c-2f26f1dcec70"
+          property_unit: "Mass / kg"
+          description: "Only actual prepared starch adhesive consumed in factory corrugating trials, with formulation constituents separately identified if mixed onsite; no user running recipe."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_test."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+        - row_id: test_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Energy / kWh"
+          description: "Actual metered attributable test electricity only; CN1–35kV user-side supply requires matched geography, voltage and provider. Shared services include only unassigned residual."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - bobst-fold
+                - holweg-bag
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: utilities
+    label: "Actual site utilities"
+    inputs:
+      product:
+        - row_id: heat
+          role: "Purchased industrial heat"
+          name: "Heat, district or industrial, natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eb581eb3-c707-41a0-b4e6-ee1854551714"
+          property_unit: "Energy / MJ"
+          description: "Only actual purchased CN natural-gas-fired industrial thermal service matching provider. Use native Energy/MJ despite Gross calorific value label; physical steam/return masses are separately measured. Supplier boiler fuel is upstream."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: gas
+          role: "Gaseous natural gas"
+          name: "Gaseous natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Only actual site combustion with declared gas assay, temperature/pressure, density and calorific value; a single generating-project or drying-specific interface cannot establish universal fuel identity."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Only actual purchased compressed air at declared reference conditions in native m3. Actual onsite compression records electricity once and does not duplicate purchased service."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: dispatch
+    label: "Packing and gate handover"
+    inputs:
+      product:
+        - row_id: dispatch_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Energy / kWh"
+          description: "Actual metered attributable dispatch electricity only; CN1–35kV user-side supply requires matched geography, voltage and provider. Shared services include only unassigned residual."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - bhs-corrugator
+            ranges: []
+        - row_id: board
+          role: "Corrugated cardboard"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Actual C/E/F packing board with fibre content at least80%, contains recycled material of documented actual fraction; other grades and bought cartons need separate identities."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - bhs-corrugator
+            ranges: []
+        - row_id: film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual LDPE protective foil, not self-adhesive, non-cellular, not reinforced, laminated, supported or combined with other materials. Confirm supplier polymer grade and supplied state; other PE grades and multilayer films require separate atomic identities."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - bhs-corrugator
+            ranges: []
+        - row_id: pallet
+          role: "EURO wooden pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Only actual EURO pallet matching dimensions and supplied state; reuse allocation uses documented trips/returns. Other crates are distinct."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - bhs-corrugator
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Accepted configured pulp/paper/converting machinery"
+          name: "Machinery for making pulp of fibrous cellulosic material or for making or finishing paper or paperboard, machinery (except bookbinding machinery) for making up paper pulp, paper or paperboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "59606f39-b2c5-4c5d-a906-0b9110b7c256"
+          property_unit: "Mass / kg"
+          description: "One kg accepted net declared configured machinery at the gate; scope and supplied modules/accessories explicit; no pulp, paper or mill output is the reference."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - bhs-corrugator
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: residues
+    label: "External wastes and measured releases"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wsteel
+          role: "Steel machining scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e4449c6f-3b27-426d-ba8d-47c20c99c609"
+          property_unit: "Mass / kg"
+          description: "Actual segregated steel offcuts/chips transferred to recycling, with own grade/assay; internal remelt and component rework transfers cancel."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wsand
+          role: "Spent silica foundry sand"
+          name: "Spent silica foundry sand"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discharged used sand with binder/contaminant and moisture assay; recirculated mould sand is not waste."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: sludge
+          role: "Metal-hydroxide treatment sludge"
+          name: "Metal-hydroxide treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discharged wet finishing-treatment sludge with own water fraction and each metal assay; gross wet mass is not elemental metal."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Machinery-factory wastewater"
+          name: "Machinery-factory wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual factory cleaning/test wastewater at treatment handover with own water/species assays; paper-mill production wastewater or municipal influent is not interchangeable."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spentipa
+          role: "Spent IPA cleaning solution"
+          name: "Spent IPA cleaning solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual handed-over spent IPA solution with own assay and recovery destination, separate from destroyed or emitted solvent."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wtest
+          role: "Paperboard factory-test waste"
+          name: "Paperboard factory-test waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discharged tested corrugated blanks only; packaging trim and customer production waste do not substitute. Returned reusable test loads cancel."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: reject
+          role: "Rejected paper-machinery assembly"
+          name: "Rejected paper-machinery assembly"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual final rejected configured assembly leaving as waste; reusable rework is not external waste and user end-of-life machinery is outside factory scope."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual attributable fossil CO2 to ordinary unspecified outdoor air; retain origin and post-control monitoring; supplier/user emissions excluded."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual species-specific fossil CO to ordinary unspecified outdoor air; carbon closure alone cannot infer this release."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Molecular nitrogen dioxide to air"
+          name: "Molecular nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured molecular NO2; nitrite or NOx as NO2-equivalent is not the same chemical exchange."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide to ordinary air"
+          name: "Sulfur dioxide to ordinary air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual SO2 in ordinary outdoor-air compartment, not stratosphere/water/indoor substitutes."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm
+          role: "PM2.5 to ordinary air"
+          name: "PM2.5 to ordinary air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual measured particulate fraction below2.5micrometres to ordinary air; wrong compartment or unspecified particle size cannot substitute."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: vapor
+          role: "Water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual net factory evaporation to ordinary air; separate own water in sludge/product, reactions, returns and stocks."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: ipair
+          role: "Isopropanol to air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual post-control IPA species release to ordinary air with matched concentration, flow and time plus independently measured fugitives. Capture/recovery/destruction remain different fates."
+          amount:
+            expression: "Measured attributable native-unit exchange for the declared configuration and period divided by Dnet; use cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_actual
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer measured configuration/process segregation. Shared fabrication and services use documented causal drivers and an explicitly justified allocation if unavoidable; retain reject/rework/test burden in accepted production. Allocate only unassigned shared residual and investigate negative residual without clipping."
+    source_ids: []
+  - rule_id: allocation_recycling
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate internal returns from external waste treatment; disclose recycling method and treatment provider. Avoid arbitrary recycling credits, displacement, free coproduct assumptions or reuse-life factors."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "accepted configured machine"
+      record_type: "foreground_record"
+      raw_fields: "model/configuration; serial/BOM; calibrated accepted net mass; Naccepted; Dnet; gate; period; installed first set and fills; excluded packing/loose spares/test stocks"
+      collection_method: "Use calibrated weighing or traceable weighing records for exactly the accepted delivered configuration; sum actual accepted net masses to Dnet and match accepted count. Transport-disassembled sets retain one nonduplicated complete BOM."
+      unit: "kg"
+      frequency: "each batch and matched meter interval"
+      temporal_coverage: "one common production period"
+      site_scope: "declared configuration and sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; receipts; own assays; BOM/acceptance; uncertainty"
+    - protocol_id: cp_inputs
+      process_id: "fabrication"
+      flow_role: "each actual material/component"
+      record_type: "foreground_record"
+      raw_fields: "atomic identity; supplied state; native amount Qattr; own chemistry/assay/moisture; stocks; returns; onsite reaction; retained material; supplier/transport; make/buy; configuration/period"
+      collection_method: "Reconcile calibrated receipts, actual BOM/issues, stock change and returns; each stream own gross mass and assay, not alloy/sludge gross mass as contained Fe/Cu. Separate finished versus partial modules and actual local operations."
+      unit: "native"
+      frequency: "each batch and matched meter interval"
+      temporal_coverage: "one common production period"
+      site_scope: "declared configuration and sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; receipts; own assays; BOM/acceptance; uncertainty"
+    - protocol_id: cp_utilities
+      process_id: "utilities"
+      flow_role: "each metered utility"
+      record_type: "foreground_record"
+      raw_fields: "native Qattr; import/generation/export/storage; fabrication/casting/finish/assembly/test/dispatch meters; unassigned residual; heat datum; separate supplied/return kg and MJ/kg; actual T/P/density; provider/configuration/period"
+      collection_method: "Match one period/site; reconcile imports plus generation minus exports and storage with process loads. Assign shared services only from unassigned residual. Independently measure gross supply and return on one enthalpy datum; gross return deducted once, already-net heat never deducted twice; physical steam mass separate."
+      unit: "native"
+      frequency: "each batch and matched meter interval"
+      temporal_coverage: "one common production period"
+      site_scope: "declared configuration and sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; receipts; own assays; BOM/acceptance; uncertainty"
+    - protocol_id: cp_test
+      process_id: "test"
+      flow_role: "each actual factory test medium"
+      record_type: "foreground_record"
+      raw_fields: "trial/acceptance/rework log; Qattr; medium own assay/moisture/water fraction; load source; delivered/consumed/returned fractions; stocks; actual T density; runoff/evaporation/retention/reaction; configuration/period"
+      collection_method: "Measure actual factory trials with separate meters and transfers; record consumed/returned test pulp/paper/adhesives separately, never user throughput, rated duty or a simulated mill recipe. Each water stream uses own water fraction, density and measured losses/stocks."
+      unit: "native"
+      frequency: "each batch and matched meter interval"
+      temporal_coverage: "one common production period"
+      site_scope: "declared configuration and sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; receipts; own assays; BOM/acceptance; uncertainty"
+    - protocol_id: cp_waste
+      process_id: "residues"
+      flow_role: "each waste handover"
+      record_type: "foreground_record"
+      raw_fields: "identity; Qattr wet gross mass; own moisture/water fraction; each contaminant assay; treatment/provider; retained rework and internal transfers; stocks/configuration/period"
+      collection_method: "Use weighed transfer manifests and own stream sampling; retain gross mass distinct from contained elements/water and pair returns. External provider emissions stay in provider process."
+      unit: "kg"
+      frequency: "each batch and matched meter interval"
+      temporal_coverage: "one common production period"
+      site_scope: "declared configuration and sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; receipts; own assays; BOM/acceptance; uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "residues"
+      flow_role: "each elementary species"
+      record_type: "foreground_record"
+      raw_fields: "species/CAS/origin/compartment; Qattr; measured post-control concentration; matched gas/liquid flow; same time interval; T/P/wet-dry/oxygen/unit correction; independent fugitive basis; capture/recovery/destruction; stocks"
+      collection_method: "Measure each species after actual controls using matched concentration × gas/liquid flow × same period with measured state/unit corrections, plus independently measured fugitives; unexplained mass residual or carbon closure cannot create an emission."
+      unit: "kg"
+      frequency: "each batch and matched meter interval"
+      temporal_coverage: "one common production period"
+      site_scope: "declared configuration and sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; receipts; own assays; BOM/acceptance; uncertainty"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For one configuration and period divide each attributable native-unit exchange total by the sum of accepted configured-machine net masses; keep raw amounts, units and uncertainty."
+      inputs:
+        - Qattr
+        - Dnet
+        - cp_mass
+      output: "native-unit amount per kg reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_qnd
+      applies_to: "all inventory rows"
+      requirement: "For one configuration/period Qattr includes attributable rejects, rework and factory tests; Naccepted counts precisely the accepted net configured machines in Dnet. Per-machine exchange=Qattr/Naccepted; mean net mass=Dnet/Naccepted; per-kg exchange=Qattr/Dnet. Equivalent per-machine conversion uses measured mean net mass, never a catalogue weight or an invented fixed machine mass."
+      evidence: "matched calibrated net-mass and acceptance ledger"
+    - id: quality_balances
+      applies_to: "all inventory rows"
+      requirement: "Each physical element/species term uses own gross mass and own assay, wet/dry basis and moisture with stocks, reactions, retained product, internal returns and external waste; gross alloy/sludge is not contained element. Each water stream uses own water fraction and measured density at actual temperature, with reaction generation/consumption, retention, evaporation, discharge and stocks; pair circulation returns."
+      evidence: "stream-specific assays, stock and reaction ledger"
+    - id: quality_solvent
+      applies_to: "ipa; spentipa; ipair"
+      requirement: "Use each stream own IPA assay for stock-adjusted input, retained product, captured/recovered liquid, wastewater/spent media, destruction and measured air release. Capture differs from destruction; non-air fates never become air and unexplained residual remains unresolved."
+      evidence: "independent fate/assay and emission measurements"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Match actual state/type, reference property/native unit, alloy/polymer/chemical, supplied completion, provider/geography and elementary compartment. Conditional identity UUIDs are no numeric defaults. Add every actual unlisted fastener, valve, coating reagent, welding gas, test stock, transport service, steam/return or waste species as an atomic queried and measured row. Unknown is not zero; absent requires proof."
+      evidence: "actual procurement/BOM/process/provider and gap disclosure"
+    - id: quality_category
+      applies_to: "reference product"
+      requirement: "Full category remains broader than a single refiner/headbox/folder-gluer model. Independently classified dryers, printing, bookbinding, generic equipment and spare parts need supplied-state/principal-function review. Pressure-vessel chemistry, envelope/creping/calendering and unobserved configurations require item-specific primary architecture; examples never imply universal material grades, operating recipes, speed, lifetime or efficiency."
+      evidence: "original configuration and classification decision"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require complete declared accepted configured BOM, positive Dnet/Naccepted and actual principal-function review; reject a pulp/paper product or one unrelated partial component as full reference. Both languages use the same native numerator and one-kg net reference."
+    source_ids:
+      - un-cpc3
+  - rule_id: validate_interfaces
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject duplicate bought-module manufacture, embedded-material double counting, uncancelled internal returns, assumed supplied fills/clothing, or customer mill use quantities presented as factory burdens. Actual factory trial/reject/rework loads remain attributable."
+    source_ids:
+      - andritz-cast
+      - valmet-headbox
+      - bhs-corrugator
+      - holweg-bag
+  - rule_id: validate_physics
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require own stream element/water/solvent fate closure, measured post-control concentration with matched flow/time/state and independently measured fugitives. Reconcile utilities from imports/generation/exports/storage and actual process loads, allocate only unassigned residual; investigate negatives without clipping. Gross heat=supplied measured kg×its own MJ/kg minus independently measured return kg×its own MJ/kg on one datum, deducted once; already-net heat never deducts return again. Physical steam and heat separate; supplier boiler is upstream."
+    source_ids: []
+  - rule_id: validate_species
+    applies_to: "foreground_dataset_conformance"
+    rule: "Carbon closure cannot infer CO or NO2; NOx as NO2-equivalent is not pure molecular NO2. Ordinary-air emissions cannot use stratospheric/indoor/water flows. State20 and wrong reference property are unavailable. Report performed/skipped checks, missing records, findings and completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Declared configured-machine production and compatible downstream supplied machinery scenario"
+  excluded_use: "Universal mill recipes, operation/service-life factors, printing/bookbinding/general equipment comparisons without reviewed scope, pulp/paper output datasets"
+  required_metadata: "All qualifiers, Qattr/Naccepted/Dnet and native units, actual BOM/makebuy, routes/sites/period, supplier/transport/treatment, tests, allocation and gaps"
+  required_quality_disclosure: "Measured/estimated/missing distinction, sampling/calibration/uncertainty and balance residual, classification and identity/provider gaps, performed/skipped checks/completeness"
+  update_trigger: "Configuration, function/classification, grade/route/makebuy, provider/site/period, supplied accessories or factory test changes"
+data_sources:
+  - id: "un-cpc3"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "30June2025; PDF/printed p241 leaf44913 and adjacent44912/44914: full pulp/paper making, finishing and making-up except bookbinding; classification only."
+  - id: "andritz-cast"
+    type: "handbook"
+    reference: "https://www.andritz.com/pulp-and-paper-en/locations/muncy-usa"
+    used_for: "Undated publisher page; snapshot2026-10-02. Actual foundry and precise machining of refiner plates; alloy and factory quantities remain measured, MDF use is outside the pulp/paper reference."
+  - id: "andritz-cooking"
+    type: "handbook"
+    reference: "https://www.andritz.com/products-en/power-to-x/pulp-and-paper/pulp-production/a-conapex-technology"
+    used_for: "Undated publisher page; snapshot2026-10-02. Chemical/nonwood pulp continuous reactor, feeding/mixing/pump interfaces; not a mill chemical recipe or generic boiler boundary."
+  - id: "andritz-recycled"
+    type: "handbook"
+    reference: "https://www.andritz.com/products-en/products/pulp-and-paper/deinking-systems"
+    used_for: "Undated publisher page; snapshot2026-10-02. Recycled-fibre pulping, screening, cleaning, flotation, dewatering, dispersing/bleaching and reject/sludge treatment equipment; not customer waste or chemical quantities."
+  - id: "valmet-headbox"
+    type: "handbook"
+    reference: "https://www.valmet.com/pulp/pulp-drying/wet-end/headbox/"
+    used_for: "Undated publisher page; snapshot2026-10-02. Pulp-drying wet-end hydraulic versus rectifier-roll headbox, stainless construction and polished stock-contact faces; no universal304 specification."
+  - id: "andritz-paper"
+    type: "handbook"
+    reference: "https://www.andritz.com/products-en/forever/pulp-and-paper/paper-production/paper-board-machines/primeline"
+    used_for: "Undated publisher page; snapshot2026-10-02. Configured paper/board drying sections with steel cylinders/Yankee, presses/coaters/winders as actual supplied options; no operating speed, drying duty or yield defaults."
+  - id: "bobst-fold"
+    type: "handbook"
+    reference: "https://www.bobst.com/afr/en/products/folding-gluing/expertfold-145-165"
+    used_for: "Undated publisher page; snapshot2026-10-02. Corrugated/litho-laminated board feeding, prebreaking, folding/gluing, belts and rejection options; no universal belt chemistry or factory quantity."
+  - id: "bhs-corrugator"
+    type: "handbook"
+    reference: "https://www.bhs-world.com/en/corrugators/individual-machines/single-facer"
+    used_for: "Undated publisher page; snapshot2026-10-02. Corrugating cassettes, pressure-roll/belt architectures, integrated controls and steam/condensate connections; actual supplied inclusion rather than paper-use recipe."
+  - id: "holweg-bag"
+    type: "handbook"
+    reference: "https://www.holwegweber.com/production-lines/5xf/"
+    used_for: "Undated publisher page; snapshot2026-10-02. Servo bottom closing, handle/window/unwind/tension/glue-sensor options; optional printing/lamination highlights principal-function classification review."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8516eccab8a309306fdb147b1e75fdb2cb85782a9500143040e228580844cb01"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5265"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5265
+          line: 55
+          column: 1
+        end:
+          offset: 6926
+          line: 73
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual received metal/chemical feedstocks and bought supplied-state modules linked to upstream providers |\n| starting_condition_role | foreground_input_interface |\n| product_classification_scope | Reviewed full category with each concrete function and module exception declared |\n| recursive_input_rule | A bought completed same-category unit retains its upstream manufacture once; only actual local integration/test is added. Partial input covers completed operations only; local remainder is explicit. |\n| upstream_dataset_requirement | Compatible supplied state, grade, geography, provider and unit for each actual input or waste-treatment link |\n| disclosure | Gate, sites/subcontractors, transport, unshipped installation/commissioning, module/fill/clothing inclusion, make/buy and unresolved identities |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_factory | Include actual supply transport, manufacture, finishing, assembly, factory trials, rejects/rework, utilities, abatement and packing; report separate actual transport-service rows by mode and provider. Downstream user mill production/service and user end-of-life remain separate. | un-cpc3; andritz-cast |\n| boundary_makebuy | Count each bought complete or partial supplied module and its finished operations once; do not also count embedded materials or power. Pair internal transfers and cancel once. Incorporated installed first-set items enter configured Dnet; shipping packaging/loose excluded supplies do not. | valmet-headbox; bhs-corrugator; holweg-bag |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 336
+              line: 9
+              column: 57
+          text: "# Pulp, paper, paperboard and paper-converting machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5265
+              line: 55
+              column: 1
+            end:
+              offset: 5286
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67731"
+      family: "allocation"
+      span:
+        start:
+          offset: 67731
+          line: 1342
+          column: 1
+        end:
+          offset: 68407
+          line: 1349
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_actual | Prefer measured configuration/process segregation. Shared fabrication and services use documented causal drivers and an explicitly justified allocation if unavoidable; retain reject/rework/test burden in accepted production. Allocate only unassigned shared residual and investigate negative residual without clipping. |  |\n| allocation_recycling | Separate internal returns from external waste treatment; disclose recycling method and treatment provider. Avoid arbitrary recycling credits, displacement, free coproduct assumptions or reuse-life factors. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 336
+              line: 9
+              column: 57
+          text: "# Pulp, paper, paperboard and paper-converting machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67731
+              line: 1342
+              column: 1
+            end:
+              offset: 67771
+              line: 1342
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_76100"
+      family: "validation"
+      span:
+        start:
+          offset: 76100
+          line: 1378
+          column: 1
+        end:
+          offset: 77723
+          line: 1387
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_reference | Require complete declared accepted configured BOM, positive Dnet/Naccepted and actual principal-function review; reject a pulp/paper product or one unrelated partial component as full reference. Both languages use the same native numerator and one-kg net reference. | un-cpc3 |\n| validate_interfaces | Reject duplicate bought-module manufacture, embedded-material double counting, uncancelled internal returns, assumed supplied fills/clothing, or customer mill use quantities presented as factory burdens. Actual factory trial/reject/rework loads remain attributable. | andritz-cast; valmet-headbox; bhs-corrugator; holweg-bag |\n| validate_physics | Require own stream element/water/solvent fate closure, measured post-control concentration with matched flow/time/state and independently measured fugitives. Reconcile utilities from imports/generation/exports/storage and actual process loads, allocate only unassigned residual; investigate negatives without clipping. Gross heat=supplied measured kg×its own MJ/kg minus independently measured return kg×its own MJ/kg on one datum, deducted once; already-net heat never deducts return again. Physical steam and heat separate; supplier boiler is upstream. |  |\n| validate_species | Carbon closure cannot infer CO or NO2; NOx as NO2-equivalent is not pure molecular NO2. Ordinary-air emissions cannot use stratospheric/indoor/water flows. State20 and wrong reference property are unavailable. Report performed/skipped checks, missing records, findings and completeness. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 336
+              line: 9
+              column: 57
+          text: "# Pulp, paper, paperboard and paper-converting machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 76100
+              line: 1378
+              column: 1
+            end:
+              offset: 76122
+              line: 1378
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_factory"
+      identity_kind: "explicit"
+      unit_id: "normative_5265"
+      source_span:
+        start:
+          offset: 6242
+          line: 70
+          column: 1
+        end:
+          offset: 6567
+          line: 70
+          column: 326
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_makebuy"
+      identity_kind: "explicit"
+      unit_id: "normative_5265"
+      source_span:
+        start:
+          offset: 6568
+          line: 71
+          column: 1
+        end:
+          offset: 6924
+          line: 71
+          column: 357
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_67731"
+      source_span:
+        start:
+          offset: 67825
+          line: 1346
+          column: 1
+        end:
+          offset: 68169
+          line: 1346
+          column: 345
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_recycling"
+      identity_kind: "explicit"
+      unit_id: "normative_67731"
+      source_span:
+        start:
+          offset: 68170
+          line: 1347
+          column: 1
+        end:
+          offset: 68405
+          line: 1347
+          column: 236
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_76100"
+      source_span:
+        start:
+          offset: 76176
+          line: 1382
+          column: 1
+        end:
+          offset: 76476
+          line: 1382
+          column: 301
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_76100"
+      source_span:
+        start:
+          offset: 76477
+          line: 1383
+          column: 1
+        end:
+          offset: 76827
+          line: 1383
+          column: 351
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physics"
+      identity_kind: "explicit"
+      unit_id: "normative_76100"
+      source_span:
+        start:
+          offset: 76828
+          line: 1384
+          column: 1
+        end:
+          offset: 77408
+          line: 1384
+          column: 581
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_76100"
+      source_span:
+        start:
+          offset: 77409
+          line: 1385
+          column: 1
+        end:
+          offset: 77721
+          line: 1385
+          column: 313
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5265"
+      source_span:
+        start:
+          offset: 5265
+          line: 55
+          column: 1
+        end:
+          offset: 5286
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5265"
+      source_span:
+        start:
+          offset: 5314
+          line: 59
+          column: 1
+        end:
+          offset: 6188
+          line: 66
+          column: 161
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67731"
+      source_span:
+        start:
+          offset: 67731
+          line: 1342
+          column: 1
+        end:
+          offset: 67771
+          line: 1342
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_76100"
+      source_span:
+        start:
+          offset: 76100
+          line: 1378
+          column: 1
+        end:
+          offset: 76122
+          line: 1378
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8516eccab8a309306fdb147b1e75fdb2cb85782a9500143040e228580844cb01"
+  generated_content_sha256: "sha256:78e45a58cbe8582548ba292ab9636ecf515260f877be302d3f5f25050a67bb86"

@@ -1,0 +1,21 @@
+---
+title: Accept complete underground continuous conveying machinery mapping
+docType: decision
+status: accepted
+---
+
+# Accept complete underground continuous conveying machinery mapping
+
+Decision time: 2026-10-01T20:51:56.419375Z.
+
+Accept CPC 3.0 44411 as an exact positive methodology edge to `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.continuous-action-elevators-and-conveyors-for-goods-or-materials-specially-designed-for-dd6e8554`, a material candidate for complete continuous-action goods/material elevators and conveyors specially designed for underground use. This includes actual belt, chain/scraper/flight, armoured-face, stage-loading and flexible continuous haulage configurations; underground-designed bucket/other continuous architectures remain conditional on project design and acceptance evidence. The scope is underground use, not a mining-only or belt-only restriction. Ordinary surface conveyors, separate replacement parts, intermittent hoists, personnel lifts and cutting/boring equipment are separate boundaries. The current original CPC structure places liquid pumps/elevators in 43220; this classification evidence does not establish manufacturing routes.
+
+The independently inspected Komatsu original pages show cast AFC side sections and combined belt/chain flexible haulage with actual drive interfaces. Actual Fenner PVC, separate PVG and production originals support distinct solid-woven PVC, rubber-covered PVC and reinforced rubber routes. JDT and ITG originals supply conditional mining-chain manufacturing and hardening examples. General JRC factory guidance supplies record/utility completeness, not conveyor manufacturing quantities. No required grade, recipe, test parameter, safety certificate, machine weight, yield, lifetime or energy/emission factor is inferred from these sources.
+
+The directly read reference UUID `609af8a1-d52f-4af9-9baf-fefe36a22a50` is a finished manufactured Product flow at plant, official Chinese name 按专门设计用于地下运送货物及原料的连动升降机和输送机, with verified Mass-to-kg support. The other 76 inventory cards retain actual supplier/interface-specific identity gaps. A source-specific US pump-and-treat grid, contradictory steel identity, unrelated gearbox and generic belt without actual fire/antistatic qualification do not establish this manufacturing inventory. Conditional grid matches are not universal category defaults.
+
+Both languages and their deterministic projection require actual accepted complete configuration and calibrated net mass, attributable period exchanges including reject/rework burdens, and separate make/buy interfaces. Bought castings, chain, belts, motors and reducers carry prior manufacture once; actual site operations replace the respective finished supply interface. PVC impregnation/plasticization, rubber calendering/vulcanization and PVG covering are separate conditional routes. Factory test and retained first fill are included; downstream underground installation and conveying service are separately modelled.
+
+Fourteen projected validation rules retain complete material, contained-species, water, solvent, utility and uncertainty balances. Each term uses its own assay/moisture and wet/dry basis, with stocks, reactions and paired internal transfers. Solvent capture is not destruction and unexplained residual is not automatically air emission. Same-period process loads plus only unassigned residual reconcile to imports, generation, exports and storage; negative residuals are investigated, not clipped. The output denominator excludes packaging/reject mass and separates configurations. Species emissions need actual evidence, not fuel carbon alone.
+
+The frozen independent worktree author commit `94d52c3db57182e276b4f168c4b7c7fdb7c80813` changes exactly four canonical files. Explicit finite measurement reports 770 performed checks, 154 bilingual rows, complete coverage and zero skipped; 77 missing empirical range warnings remain honest collection requirements. Integration requires catalog/coverage regeneration, runtime guidance/accepted resolution, actual root validation and independent full validation in that same original worktree. Mapping acceptance neither publishes this candidate nor establishes completed supplier or project evidence.

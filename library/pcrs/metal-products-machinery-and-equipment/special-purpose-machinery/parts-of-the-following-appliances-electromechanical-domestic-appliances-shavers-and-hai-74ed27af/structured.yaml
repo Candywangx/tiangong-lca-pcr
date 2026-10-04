@@ -1,10 +1,1530 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44831"
-  title: "Parts of the following appliances: electromechanical domestic appliances, shavers and hairclippers, with self-contained electric motor; electric instantaneous or storage water heaters, immersion heaters, space heating apparatus and soil heating apparatus; electro-thermic hair-dressing apparatus and hand dryers; electric smoothing irons; other electro-thermic appliances of a kind used for domestic purposes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.parts-of-the-following-appliances-electromechanical-domestic-appliances-shavers-and-hai-74ed27af"
+  classification_refs: "CPC 3.0 44831; full explanatory scope; parent4483 excludes44814"
+  covered_products: "Residual appliance-specific parts/modules/assemblies for every covered family above, explicitly including industrial vacuum-cleaner parts"
+  excluded_products: "Complete appliances; independently classified general components; sewing-machine parts; non-electric stove/boiler parts; separately classified consumables; end-of-life equipment"
+  representative_product: "One configuration of an accepted supplied appliance-specific part, supported by compatible original part/service evidence"
+  production_route: "Actual purchased module integration or actual metal/polymer/insulation/winding conversion; route-specific assembly, finishing and tests"
+  market_state: "New accepted component at dispatch gate, with actual specified supplied state and included contents"
+functional_unit:
+  what: "Supply the declared compatible appliance part/module/assembly at the factory gate"
+  how_much: "1 kg accepted net supplied component of the same configuration"
+  how_well: "Meet the declared drawing, compatibility, material, electrical/thermal/mechanical ratings and part-specific acceptance tests"
+  how_long_or_cycle: "One production-and-acceptance cycle; no imposed appliance service life or replacement interval"
+  reference_flow_link: "finished_part"
+system_boundary:
+  rules:
+    - rule_id: boundary_make_buy
+      applies_to: "foreground_system_boundary"
+      rule: "A bought completed module embeds its upstream once; actual local material conversion is included only for the corresponding make route. Pair internal intermediate outputs/inputs and cancel transfers once. Supplier exclusions cannot erase upstream requirements."
+      source_ids:
+        - stiebel-dhc-parts
+        - stiebel-heating-systems
+    - rule_id: boundary_tests
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual part-level assembly, insulation/pressure/rotation/cutting/thermal tests as applicable, consumed test loads, factory rejects and rework. User operation, maintenance, repair installation and complete-appliance end-of-life are distinct downstream scenarios, never default factory loads."
+      source_ids:
+        - nilfisk-vhs010-parts
+        - braun-shaver-compatibility
+    - rule_id: boundary_full_scope
+      applies_to: "foreground_system_boundary"
+      rule: "Retain every appliance family and industrial-vacuum exception. Per item require actual principal-use and independently classified component review; do not restrict the category to the observed cassette, gasket or DHC heating system."
+      source_ids:
+        - un-cpc3-parts
+boundary_abstraction:
+  declared_starting_condition: "Actual raw stock or actual bought finished/partial component arriving at each make/buy interface"
+  starting_condition_role: "foreground_collection_boundary"
+  product_classification_scope: "The reviewed residual parts scope, including industrial vacuum-cleaner parts; complete appliance and general component classifications remain separate"
+  recursive_input_rule: "Record each bought same-category component once at its actual supplied state with a compatible upstream dataset; do not recreate embedded manufacture or silently omit upstream burdens"
+  upstream_dataset_requirement: "Each external input needs actual grade/state, unit, geography, technology, period and provider match; UUID identity alone is not provider completeness"
+  disclosure: "Report supplier/site split, included modules/accessories/fills, local route, transport, utilities, finishing, tests, rejects/rework, treatment, packing and unfilled data gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Parts of the following appliances: electromechanical domestic appliances, shavers and hairclippers, with self-contained electric motor, electric instantaneous or storage water heaters, immersion heaters, space heating apparatus and soil heating apparatus, electro-thermic hair-dressing apparatus and hand dryers, electric smoothing irons, other electro-thermic appliances of a kind used for domestic purposes"
+    uuid: "2ea8896a-c4b5-45ba-b109-51f607ca0227"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Part number and configuration"
+    - "intended appliance family and principal use"
+    - "compatibility evidence"
+    - "supplied state and included BOM"
+    - "reviewed classification interface"
+    - "actual material grades"
+    - "make/buy state"
+    - "ratings and acceptance criteria"
+    - "site/geography/period"
+    - "measured net component mass excluding packing"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure accepted net delivered component mass by calibrated weighing or traceable weighing record for the same configuration, excluding transport packaging, rejects and consumed test media. Dnet is the sum of these accepted masses."
+  - id: native_quantity
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual reference property of each exchange"
+      uuid: ""
+    required_unit: "Native unit"
+    rule: "Preserve kg, MJ, kWh or m3 numerator independently. Electricity energy conversion is 1 kWh=3.6 MJ; volume-to-mass uses the stream own measured density at actual T/P. No machine-weight proxy."
+process_map:
+  - id: components
+    name: "Receipt and make/buy integration"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared route; components/test/dispatch required, material conversion and utilities only where present"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: fabrication
+    name: "Conditional material conversion and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared route; components/test/dispatch required, material conversion and utilities only where present"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Utility supply and attributable residual services"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared route; components/test/dispatch required, material conversion and utilities only where present"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: test
+    name: "Assembly, acceptance and factory testing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared route; components/test/dispatch required, material conversion and utilities only where present"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Packing and factory-gate dispatch"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared route; components/test/dispatch required, material conversion and utilities only where present"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: residues
+    name: "Treatment handovers and actual emissions"
+    inclusion: "conditional"
+    inclusion_condition: "Actual declared route; components/test/dispatch required, material conversion and utilities only where present"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: components
+    label: "Receipt and make/buy integration"
+    inputs:
+      product:
+        - row_id: casing
+          role: "Appliance-specific finished housing"
+          name: "Appliance-specific finished housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive only the actual finished housing for the supplied part. Declare metal/polymer, finish and make/buy interface; do not substitute a whole appliance or generic metal for a completed casing."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids:
+                - stiebel-dhc-parts
+            ranges: []
+        - row_id: fan
+          role: "Vacuum-cleaner impeller"
+          name: "Vacuum-cleaner impeller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual bought impeller for a vacuum or motor-driven part; match geometry, balance and material. It is distinct from a complete fan or vacuum pump."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: seal
+          role: "Silicone rubber gasket"
+          name: "Silicone rubber gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional purchased finished silicone gasket with verified polymer and dimensions. The Nilfisk example demonstrates a gasket interface, not its material or a universal recipe."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids:
+                - nilfisk-vhs010-parts
+            ranges: []
+        - row_id: blade
+          role: "Shaver cutter cassette"
+          name: "Shaver cutter cassette"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a purchased compatible electric-shaver cassette only when installed in the delivered assembly; a generic razor blade cannot substitute. If this cassette is the supplied output, record its manufacture, not a fictitious cassette input."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids:
+                - braun-shaver-compatibility
+            ranges: []
+        - row_id: thermostat
+          role: "Appliance thermostat"
+          name: "Appliance thermostat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only an actual bought thermostat with ratings and compatibility; identify independent classification before treating the thermostat itself as the PCR output."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids:
+                - stiebel-dhc-parts
+            ranges: []
+        - row_id: heaterblock
+          role: "Water-heater heating-system module"
+          name: "Water-heater heating-system module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a bought heating-system module only for the actual compatible water-heater part; distinguish bare-wire insulating-block and tubular constructions. A complete heater and a separately classified resistor are different identities."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids:
+                - stiebel-dhc-parts
+            ranges: []
+        - row_id: control
+          role: "Appliance control module"
+          name: "Appliance control module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only the actual finished control module. Do not expand its bought PCB, chips, solder and embedded electricity again; local mounting and wiring remain foreground."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: motor
+          role: "Appliance-compatible electric motor"
+          name: "Appliance-compatible electric motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual bought motor input; declare winding, power, voltage and interface. OEM service evidence alone does not classify an independently sold motor as an appliance part."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: fabrication
+    label: "Conditional material conversion and finishing"
+    inputs:
+      product:
+        - row_id: steel
+          role: "304 stainless steel sheet"
+          name: "304 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased 304 sheet used in site cutting, forming or blade fabrication; verify alloy assay and gross input mass. Other alloys require their own atomic rows."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: aluminium
+          role: "Aluminium casting ingot"
+          name: "Aluminium casting ingot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional site casting feedstock of the actual alloy and supplier state, with independent casting alloy identity; no assumed pure-aluminium composition."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: pp
+          role: "Polypropylene granulate"
+          name: "polypropylene granulate (PP)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19f11d-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Conditional site moulding of actual unfilled PP granulate; fillers, pigments and recycled content require verified identities and measured separate inputs."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: abs
+          role: "ABS granulate"
+          name: "Acrylonitrile butadiene styrene (ABS) granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b895c3a1-076e-4a42-a2c0-6088890c0bd9"
+          property_unit: "Mass / kg"
+          description: "Conditional actual ABS injection moulding; the selected identity is a China production mix, usable only with matched procurement geography. Other resins or filled/flame-retarded grades are additional atomic inputs."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: copper
+          role: "Copper wire"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197beb-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Actual bare copper wire only for site wiring/winding fabrication. Enamelled magnet wire and copper tube are separate supplied states; a finished motor does not require duplicate embedded copper."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: nichrome
+          role: "Nichrome wire"
+          name: "Nichrome wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual NiCr wire feedstock for a reviewed local heater-part route, with measured alloy grade. Do not adopt any upstream exclusion from the identity record as the dataset boundary."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: magnesia
+          role: "Electrical-grade magnesium oxide powder"
+          name: "Electrical-grade magnesium oxide powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if the actual tubular part uses verified electrical-grade MgO; the manufacturer FAQ establishes an unspecified filler, not this chemical. Other insulation requires separate identity and route evidence."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: silicone
+          role: "Silicone rubber compound"
+          name: "Silicone rubber compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional local gasket moulding using the actual formulation; a finished gasket input excludes duplicate compound production. Add each separately supplied crosslinker or additive."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: epoxy
+          role: "Epoxy resin"
+          name: "Epoxy resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2bab6ae-d42f-4fca-bab5-ae9c6692f105"
+          property_unit: "Mass / kg"
+          description: "Conditional actual DGEBA resin for local bonding or potting; separately supplied hardener and solvent each require additional atomic inputs. Bought cured modules exclude duplicate potting materials."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: solder
+          role: "Tin-silver-copper solder alloy"
+          name: "Tin-silver-copper solder alloy"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual SnAgCu solder used on site, with alloy certificate; flux, carrier and recovered dross are separate rows. A generic optical solder description does not establish the alloy."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: grease
+          role: "Lubricating grease"
+          name: "Lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual grease grade and measured site consumption in forming or supplied moving parts; oils and greases are not interchangeable. Separate shipped fill from consumed factory lubricant."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Conditional actual IPA cleaning input; selected China chemical interface requires matched sourcing. Record gross solution and its own IPA assay, recovery, retained residues and waste fates; do not assume pure formulation."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: utilities
+    label: "Utility supply and attributable residual services"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Energy / MJ"
+          description: "Actual metered fabrication, assembly and test electricity. Selected CN user-side below1kV identity is conditional on voltage, geography and provider; other supplies require their own compatible identity."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: heat
+          role: "Purchased steam heat"
+          name: "Purchased steam heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual purchased thermal service; preserve energy meter datum and gross/net convention. Supplier boiler fuel and emissions remain upstream; record physical steam/condensate mass separately when crossing the site boundary."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: gas
+          role: "Gaseous natural gas"
+          name: "Gaseous natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Only actual on-site combustion fuel; declare actual gas assay, T/P, density and calorific value. Do not adopt a single power-project gas composition or convert kg to m3 with an assumed density."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Only actual delivered pneumatic/test air at declared reference T/P in m3. For site compression record actual compressor electricity and mass/volume accounting once, not a duplicate purchased upstream service."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen
+          role: "Gaseous nitrogen"
+          name: "Gaseous nitrogen"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional actual gaseous nitrogen for leak testing or joining. Liquid nitrogen cannot substitute unless actual vaporisation and supply interface are modelled."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Assembly, acceptance and factory testing"
+    inputs:
+      product:
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Actual factory water for cleaning, hydrostatic or thermal testing as applicable; separate meters and test circuits from user operation. Include supplied water only if physically shipped."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids: []
+            ranges: []
+        - row_id: diwater
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased deionised test/cleaning water; if produced on site, record actual feedwater and treatment inputs instead of double-counting bought water production."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: dispatch
+    label: "Packing and factory-gate dispatch"
+    inputs:
+      product:
+        - row_id: board
+          role: "Corrugated cardboard"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Actual C/E/F corrugated board with fibre content ≥80%, containing recycled material whose actual fraction is documented, used to pack parts; other board grades need a separate compatible identity. Include finished carton conversion when on site, or use a bought carton identity."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied PE-LD protective foil that is non-self-adhesive, non-cellular, not reinforced, laminated, supported or combined with other materials. Verify supplier grade and physical form, then measure net packing consumption; other PE grades or composite films require their own atomic rows and matching identity, never this UUID by default."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+        - row_id: pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual compatible wooden dispatch pallet; record allocation over documented reuse trips and returns without reducing part net-mass denominator by an assumed rate."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inventory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_part
+          role: "Accepted supplied appliance part"
+          name: "Parts of the following appliances: electromechanical domestic appliances, shavers and hairclippers, with self-contained electric motor, electric instantaneous or storage water heaters, immersion heaters, space heating apparatus and soil heating apparatus, electro-thermic hair-dressing apparatus and hand dryers, electric smoothing irons, other electro-thermic appliances of a kind used for domestic purposes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2ea8896a-c4b5-45ba-b109-51f607ca0227"
+          property_unit: "Mass / kg"
+          description: "The quantitative output is only the supplied accepted part/module/assembly at its actual configuration, not its host appliance."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc3-parts
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: residues
+    label: "Treatment handovers and actual emissions"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wsteel
+          role: "304 stainless steel scrap"
+          name: "304 stainless steel scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual separated 304 offcuts/chips discharged to treatment or recycling; gross waste mass and contained elements use their own assay. Do not use incoming 316 scrap or count paired internal returns twice."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: wplastic
+          role: "ABS moulding scrap"
+          name: "ABS moulding scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discharged ABS rejects or purge; distinguish internal regrind, additives, metal inserts and mixed plastics. Regrind transfers cancel once."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: sludge
+          role: "Metal-hydroxide treatment sludge"
+          name: "Metal-hydroxide treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual wet treatment sludge if local finishing/wastewater treatment occurs; measure moisture and each relevant metal separately, not total sludge as elemental mass."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Appliance-parts factory wastewater"
+          name: "Appliance-parts factory wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual factory wastewater sent to an external treatment interface, with its own water fraction and species assay. Direct receiving-water emissions are separate elementary exchanges."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: spentipa
+          role: "Spent isopropanol cleaning solution"
+          name: "Spent isopropanol cleaning solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual spent IPA solution at a treatment/recovery handover, with IPA assay and co-contaminants; recovered solvent is not destroyed solvent or emitted IPA."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+        - row_id: reject
+          role: "Rejected appliance-part assembly"
+          name: "Rejected appliance-part assembly"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual final rejected supplied-part configuration removed to waste; separate reusable rework and packaging. Never include complete end-of-life appliance mass in this factory output."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only attributable actual fossil CO2 emitted to ordinary outdoor air; retain carbon origin, stacks/fugitives and controls. No supplier-side or user use emissions in this foreground."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual fossil CO emitted to ordinary outdoor air, with species-specific post-control measurements; carbon closure cannot derive CO."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide to outdoor air"
+          name: "Nitrogen dioxide to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured molecular NO2; NOx reported as NO2-equivalent requires distinct identity and explicit reported basis. Nitrite is a different chemical."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide to outdoor air"
+          name: "Sulfur dioxide to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured actual SO2 to an ordinary outdoor-air compartment; no indoor, stratosphere or water-compartment substitution."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm
+          role: "Particles below 2.5 micrometres to outdoor air"
+          name: "Particles below 2.5 micrometres to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actually measured below2.5micrometre particulate fraction to ordinary outdoor air. PM2.5–10 or unspecified-size particulate identities do not establish this fraction."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: vapor
+          role: "Water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual net factory evaporation to ordinary outdoor air, verified separately from water in sludge, product retention, stock and returned circuits."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: ipair
+          role: "Isopropanol to air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual measured post-control IPA plus separately measured fugitives into ordinary outdoor air. Retained/captured/wastewater/recovered IPA is not air release; unexplained residual remains a gap."
+          amount:
+            expression: "Measured attributable native-unit exchange total divided by same-period accepted net supplied-part mass; preserve route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "foreground_burden_allocation"
+    rule: "Use direct part/batch metering and subdivision first. Attribute actual test, reject and rework burdens to accepted supplied parts of the same configuration and period; do not normalize by started count or complete-appliance mass. Shared services use only the unassigned residual on a documented physical driver."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate internal returns, sold co-products and discharged waste. State the recycling convention and provider interfaces; no automatic avoided-primary-metal credit or arbitrary negative burden. Use documented physical causality, with any economic fallback justified and sensitivity disclosed."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "accepted net component mass"
+      record_type: "weighing"
+      raw_fields: "part/configuration; accepted identifiers; calibrated net mass; Naccepted; Dnet; tare and packing; period"
+      collection_method: "Weigh each accepted delivered part/module/assembly on a calibrated scale or use traceable weighing records for that exact configuration, excluding packing, rejected parts and consumed test loads."
+      unit: "kg"
+      frequency: "each batch and common reporting period"
+      temporal_coverage: "same accepted-production period"
+      site_scope: "declared sites and supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable receipts; assays; stocks; acceptance; uncertainty"
+    - protocol_id: cp_inventory
+      process_id: "components_fabrication_dispatch"
+      flow_role: "each atomic bought/material/packing exchange"
+      record_type: "material_record"
+      raw_fields: "row identity; actual grade/state; supplier/provider; gross mass; own assay/moisture; receipts/issues/stocks/returns; route; part configuration; period; Qattr; native unit"
+      collection_method: "Reconcile weighed receipts and issues with opening/closing stocks, actual supplier documents and paired internal transfers; separate bought finished modules from site manufacture and retain route-specific raw quantities."
+      unit: "native"
+      frequency: "each batch and common reporting period"
+      temporal_coverage: "same accepted-production period"
+      site_scope: "declared sites and supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable receipts; assays; stocks; acceptance; uncertainty"
+    - protocol_id: cp_utilities
+      process_id: "utilities"
+      flow_role: "each carrier and residual service"
+      record_type: "meter_record"
+      raw_fields: "meter imports; on-site generation; exports; storage; fabrication/assembly/test/dispatch submeter; voltage/T/P/density/calorific value; heat gross/net datum; independent return mass/enthalpy; period; Qattr"
+      collection_method: "Meter each utility with its own native unit over the common period; reconcile supply with actual end-use meters and only the remaining shared residual; investigate negatives and uncertainties without clipping."
+      unit: "native"
+      frequency: "each batch and common reporting period"
+      temporal_coverage: "same accepted-production period"
+      site_scope: "declared sites and supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable receipts; assays; stocks; acceptance; uncertainty"
+    - protocol_id: cp_tests
+      process_id: "test"
+      flow_role: "actual factory test media and loads"
+      record_type: "test_record"
+      raw_fields: "part configuration; acceptance criteria; duration; instrument calibration; test media/input/output mass; water own density/fraction; recirculation/evaporation/discharge/retention; reject/rework; accepted period; Qattr"
+      collection_method: "Use factory test logs and separate meters; identify each consumed medium as its own atomic exchange, retain actual load and water balance, and exclude downstream appliance-use estimates."
+      unit: "native"
+      frequency: "each batch and common reporting period"
+      temporal_coverage: "same accepted-production period"
+      site_scope: "declared sites and supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable receipts; assays; stocks; acceptance; uncertainty"
+    - protocol_id: cp_residues
+      process_id: "residues"
+      flow_role: "each waste handover"
+      record_type: "waste_record"
+      raw_fields: "specific waste identity; gross wet mass; own moisture/water fraction; own species assay; treatment/provider; internal returns; retention/stocks; configuration; period; Qattr"
+      collection_method: "Use calibrated transfer weighing, manifests and stream-specific laboratory assays; keep gross waste mass, water and contained species distinct, and match treatment interfaces."
+      unit: "kg"
+      frequency: "each batch and common reporting period"
+      temporal_coverage: "same accepted-production period"
+      site_scope: "declared sites and supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable receipts; assays; stocks; acceptance; uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "residues"
+      flow_role: "each measured elementary species"
+      record_type: "emission_record"
+      raw_fields: "species/CAS; fossil origin; actual compartment; post-control concentration; matching gas/liquid flow; same measurement period; T/P/dry-wet/oxygen corrections; fugitive independent measurement; capture/destruction/recovery; Qattr"
+      collection_method: "Measure each species after actual controls with matched flow and time, apply documented state/unit corrections, and independently measure fugitives; no unexplained residual or carbon-only inference becomes an emission."
+      unit: "kg"
+      frequency: "each batch and common reporting period"
+      temporal_coverage: "same accepted-production period"
+      site_scope: "declared sites and supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable receipts; assays; stocks; acceptance; uncertainty"
+  calculation_rules:
+    - id: normalize_component
+      applies_to: "all inventory rows"
+      rule: "For one configuration and period, divide the attributable exchange total in its native unit by the sum of accepted net supplied-part masses; retain all raw totals and uncertainty."
+      inputs:
+        - Qattr
+        - Dnet
+        - cp_mass
+      output: "native-unit exchange per kg component"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_qnd
+      applies_to: "all inventory rows"
+      requirement: "For the same supplied-part configuration and period: Naccepted counts accepted delivered parts/modules/assemblies; Dnet sums measured accepted net component masses; Qattr is the attributable exchange total including reject/rework/test burdens in the row native unit. Mean net part mass=Dnet/Naccepted; per-part exchange=Qattr/Naccepted; per-kg exchange=Qattr/Dnet; the equivalent conversion divides per-part exchange by measured mean net part mass. No assumed component or whole-appliance weight."
+      evidence: "calibrated net-mass and acceptance records"
+    - id: quality_balances
+      applies_to: "fabrication; residues; test"
+      requirement: "Each element/species term uses its own gross mass and own assay, moisture and wet/dry basis, with stocks, reactions, retained product, recycling returns and discharge; gross alloy or wet sludge is not contained metal. Each water stream uses its own water fraction and actual temperature density, with reaction, retention, evaporation, discharge and stock; paired circuit returns cancel."
+      evidence: "stream-specific assay and mass ledger"
+    - id: quality_solvent
+      applies_to: "ipa; spentipa; ipair"
+      requirement: "Track each stream own IPA assay across input, product retention, recovered/captured liquid, wastewater, spent media, stocks, destruction and air. Capture is not destruction; non-air fates never become air and unexplained residual stays unresolved."
+      evidence: "separate assays, recovery and emissions records"
+    - id: quality_heat
+      applies_to: "heat; utilities"
+      requirement: "Reconcile common-period imports+generation minus exports and storage change with fabrication, assembly, test, dispatch and unassigned shared services only. Gross heat=independently measured supplied kg times its own MJ/kg minus independently measured return kg times its own MJ/kg on one datum; deduct gross return once, never deduct again from already-net heat. Steam and condensate physical masses remain separate."
+      evidence: "matched meter and enthalpy datum"
+    - id: quality_emission
+      applies_to: "all inventory rows"
+      requirement: "Each emitted species uses measured post-control concentration times its matched gas/liquid flow and same time interval, with actual unit/state corrections and separately measured fugitives. Do not infer CO or NO2 from carbon closure or confuse NO2 molecules with NOx as NO2-equivalent."
+      evidence: "species-specific monitoring and corrections"
+    - id: quality_completeness
+      applies_to: "all inventory rows"
+      requirement: "The route cards are conditional atomic candidates, not a universal recipe. Add each actual unlisted alloy, polymer, chemical, fastener, bearing, cable, test load, freight service, steam/return or species as its own queried and measured row. Absent is not_applicable only with proof; unknown is not zero. Disclose missing original part-specific architecture and provider/UUID gaps rather than borrowing a shaver/vacuum/DHC construction."
+      evidence: "actual BOM, process route, compatibility and gap disclosure"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a whole-appliance output, wrong supplied state or implicit positive classification based on a spare-list label alone. Require full category applicability, actual principal use, component exceptions and compatible part evidence."
+    source_ids:
+      - un-cpc3-parts
+      - braun-shaver-compatibility
+      - nilfisk-vhs010-parts
+      - stiebel-dhc-parts
+  - rule_id: validate_mass
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require positive measured Dnet and same-period Naccepted/Qattr for one supplied-part configuration; independently reconcile net mass, rejected/reworked parts and test burdens. Packing and consumed loads cannot enter Dnet. Native numerator unit and per-kg denominator must agree in both languages."
+    source_ids: []
+  - rule_id: validate_physics
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require element/species/water/solvent fates, post-control concentration-flow-time and fugitive evidence, actual utility residual and gross/net heat reconciliation. Investigate negative or unexplained closure; do not clip, fabricate emission factors, efficiencies, lifetime, yields or per-part weight."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject invented zeroes, duplicated module manufacture or internal transfer burdens, missing atomic exchanges and unresolved identity treated as a usable matched UUID. Report every performed/skipped check, finding and completeness; pending item-specific evidence must remain visible."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Compatible supplied-part production at declared gate; downstream appliance assembly or replacement scenario using actual part quantity"
+  excluded_use: "Universal appliance BOM; whole-appliance impacts; default use-stage duty/service life; automatically classified general parts; complete-appliance end-of-life"
+  required_metadata: "All reference qualifiers, Qattr/Naccepted/Dnet, native units, routes, site/supplier interfaces, tests, treatment, transport, allocation and actual upstream links"
+  required_quality_disclosure: "Measured/estimated/missing distinction; uncertainty; item-specific classification review; unresolved flows/providers and unshown architecture; checks skipped and completeness"
+  update_trigger: "Change in part configuration, compatible family, classification, material route, make/buy interface, provider, test protocol, site or measured period"
+data_sources:
+  - id: "un-cpc3-parts"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "30 June2025; printed pp240–241,4483/44831; full parts scope including industrial vacuum; classification only, no inventory amounts"
+  - id: "braun-shaver-compatibility"
+    type: "handbook"
+    reference: "https://us.braun.com/en-us/service/products/parts/5412/20000309"
+    used_for: "Undated service page, copyright2026; compatible-model list; original cassette fit only, not legal classification, recipe or replacement lifetime"
+  - id: "nilfisk-vhs010-parts"
+    type: "handbook"
+    reference: "https://www.nilfisk.com/media/5ttbwdqo/user-manual-vhs010-acd.pdf"
+    used_for: "English printed pp12–13 and industrial-machine declaration; gasket80554900, adjacent filter and bag examples distinguish parts/consumables; no universal material, recipe or legal classification"
+  - id: "stiebel-dhc-parts"
+    type: "handbook"
+    reference: "https://www.stiebel-eltron-usa.com/sites/default/files/pdf/parts-dhc-classic.pdf"
+    used_for: "Effective August1,2021; footer rev.4.2022; list and exploded diagram pp1–2 show model-specific heating systems, thermostat, housings, connections; not proof that every independently classified item is residual part"
+  - id: "stiebel-heating-systems"
+    type: "handbook"
+    reference: "https://www.stiebel-eltron.com/en/home/service/faq/what-heating-systems-are-used-in-instantaneous-water-heaters.html"
+    used_for: "Undated FAQ, copyright2026; bare-wire insulating block versus tubular spiral and unspecified filler; architecture counterexample only, not specific MgO or universal recipe"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b176599f0e578aac4859327bc8092a8f563a52704318d49d8ff1b07053dc1967"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5503"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5503
+          line: 57
+          column: 1
+        end:
+          offset: 7581
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual raw stock or actual bought finished/partial component arriving at each make/buy interface |\n| starting_condition_role | foreground_collection_boundary |\n| product_classification_scope | The reviewed residual parts scope, including industrial vacuum-cleaner parts; complete appliance and general component classifications remain separate |\n| recursive_input_rule | Record each bought same-category component once at its actual supplied state with a compatible upstream dataset; do not recreate embedded manufacture or silently omit upstream burdens |\n| upstream_dataset_requirement | Each external input needs actual grade/state, unit, geography, technology, period and provider match; UUID identity alone is not provider completeness |\n| disclosure | Report supplier/site split, included modules/accessories/fills, local route, transport, utilities, finishing, tests, rejects/rework, treatment, packing and unfilled data gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_make_buy | A bought completed module embeds its upstream once; actual local material conversion is included only for the corresponding make route. Pair internal intermediate outputs/inputs and cancel transfers once. Supplier exclusions cannot erase upstream requirements. | stiebel-dhc-parts; stiebel-heating-systems |\n| boundary_tests | Include actual part-level assembly, insulation/pressure/rotation/cutting/thermal tests as applicable, consumed test loads, factory rejects and rework. User operation, maintenance, repair installation and complete-appliance end-of-life are distinct downstream scenarios, never default factory loads. | nilfisk-vhs010-parts; braun-shaver-compatibility |\n| boundary_full_scope | Retain every appliance family and industrial-vacuum exception. Per item require actual principal-use and independently classified component review; do not restrict the category to the observed cassette, gasket or DHC heating system. | un-cpc3-parts |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 384
+              line: 9
+              column: 105
+          text: "# Residual parts for electrical and electrothermal appliances, including industrial vacuum-cleaner parts"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5503
+              line: 57
+              column: 1
+            end:
+              offset: 5524
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_44818"
+      family: "allocation"
+      span:
+        start:
+          offset: 44818
+          line: 857
+          column: 1
+        end:
+          offset: 45571
+          line: 864
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_direct | Use direct part/batch metering and subdivision first. Attribute actual test, reject and rework burdens to accepted supplied parts of the same configuration and period; do not normalize by started count or complete-appliance mass. Shared services use only the unassigned residual on a documented physical driver. |  |\n| allocation_scrap | Separate internal returns, sold co-products and discharged waste. State the recycling convention and provider interfaces; no automatic avoided-primary-metal credit or arbitrary negative burden. Use documented physical causality, with any economic fallback justified and sensitivity disclosed. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 384
+              line: 9
+              column: 105
+          text: "# Residual parts for electrical and electrothermal appliances, including industrial vacuum-cleaner parts"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 44818
+              line: 857
+              column: 1
+            end:
+              offset: 44858
+              line: 857
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_53426"
+      family: "validation"
+      span:
+        start:
+          offset: 53426
+          line: 894
+          column: 1
+        end:
+          offset: 54804
+          line: 903
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_identity | Reject a whole-appliance output, wrong supplied state or implicit positive classification based on a spare-list label alone. Require full category applicability, actual principal use, component exceptions and compatible part evidence. | un-cpc3-parts; braun-shaver-compatibility; nilfisk-vhs010-parts; stiebel-dhc-parts |\n| validate_mass | Require positive measured Dnet and same-period Naccepted/Qattr for one supplied-part configuration; independently reconcile net mass, rejected/reworked parts and test burdens. Packing and consumed loads cannot enter Dnet. Native numerator unit and per-kg denominator must agree in both languages. |  |\n| validate_physics | Require element/species/water/solvent fates, post-control concentration-flow-time and fugitive evidence, actual utility residual and gross/net heat reconciliation. Investigate negative or unexplained closure; do not clip, fabricate emission factors, efficiencies, lifetime, yields or per-part weight. |  |\n| validate_coverage | Reject invented zeroes, duplicated module manufacture or internal transfer burdens, missing atomic exchanges and unresolved identity treated as a usable matched UUID. Report every performed/skipped check, finding and completeness; pending item-specific evidence must remain visible. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 384
+              line: 9
+              column: 105
+          text: "# Residual parts for electrical and electrothermal appliances, including industrial vacuum-cleaner parts"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 53426
+              line: 894
+              column: 1
+            end:
+              offset: 53448
+              line: 894
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_make_buy"
+      identity_kind: "explicit"
+      unit_id: "normative_5503"
+      source_span:
+        start:
+          offset: 6604
+          line: 72
+          column: 1
+        end:
+          offset: 6933
+          line: 72
+          column: 330
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_tests"
+      identity_kind: "explicit"
+      unit_id: "normative_5503"
+      source_span:
+        start:
+          offset: 6934
+          line: 73
+          column: 1
+        end:
+          offset: 7304
+          line: 73
+          column: 371
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_full_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_5503"
+      source_span:
+        start:
+          offset: 7305
+          line: 74
+          column: 1
+        end:
+          offset: 7579
+          line: 74
+          column: 275
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_44818"
+      source_span:
+        start:
+          offset: 44912
+          line: 861
+          column: 1
+        end:
+          offset: 45250
+          line: 861
+          column: 339
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_44818"
+      source_span:
+        start:
+          offset: 45251
+          line: 862
+          column: 1
+        end:
+          offset: 45569
+          line: 862
+          column: 319
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_53426"
+      source_span:
+        start:
+          offset: 53502
+          line: 898
+          column: 1
+        end:
+          offset: 53845
+          line: 898
+          column: 344
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_53426"
+      source_span:
+        start:
+          offset: 53846
+          line: 899
+          column: 1
+        end:
+          offset: 54165
+          line: 899
+          column: 320
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physics"
+      identity_kind: "explicit"
+      unit_id: "normative_53426"
+      source_span:
+        start:
+          offset: 54166
+          line: 900
+          column: 1
+        end:
+          offset: 54492
+          line: 900
+          column: 327
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_53426"
+      source_span:
+        start:
+          offset: 54493
+          line: 901
+          column: 1
+        end:
+          offset: 54802
+          line: 901
+          column: 310
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5503"
+      source_span:
+        start:
+          offset: 5503
+          line: 57
+          column: 1
+        end:
+          offset: 5524
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5503"
+      source_span:
+        start:
+          offset: 5552
+          line: 61
+          column: 1
+        end:
+          offset: 6550
+          line: 68
+          column: 192
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_44818"
+      source_span:
+        start:
+          offset: 44818
+          line: 857
+          column: 1
+        end:
+          offset: 44858
+          line: 857
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_53426"
+      source_span:
+        start:
+          offset: 53426
+          line: 894
+          column: 1
+        end:
+          offset: 53448
+          line: 894
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b176599f0e578aac4859327bc8092a8f563a52704318d49d8ff1b07053dc1967"
+  generated_content_sha256: "sha256:78d3c4d4bd13534886e5a41096637fa9150bc3491ad4c23404eaf9a788eb088e"
