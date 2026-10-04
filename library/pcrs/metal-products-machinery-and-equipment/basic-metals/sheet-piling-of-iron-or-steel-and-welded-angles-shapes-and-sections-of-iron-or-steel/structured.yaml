@@ -3,41 +3,46 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.sheet-piling-of-iron-or-steel-and-welded-angles-shapes-and-sections-of-iron-or-steel"
-  classification_refs: "CPC 3.0: 41252"
-  covered_products: "Iron or steel sheet piling; welded iron or steel angles, shapes and sections"
-  excluded_products: "Unwelded ordinary hot-rolled sections, railway track materials, welded pipe and installed structures"
-  representative_product: "Accepted hot-rolled steel sheet piling"
-  production_route: "Hot-rolled sheet piling, cold-formed sheet piling or welded plate section; model separately"
-  market_state: "Accepted, net-mass measured and ready at factory gate"
+  classification_refs: "CPC 3.0:41252"
+  covered_products: "Hot/cold-formed iron or steel sheet piles; factory assemblies; welded built-up steel angles/shapes/sections"
+  excluded_products: "Installed retaining structures; unrelated ordinary sections, hollow profiles, pipe, rail"
+  representative_product: "Accepted interlocking steel sheet pile or welded built-up steel section"
+  production_route: "Hot sheet-pile rolling OR cold forming of hot-rolled strip; conditional welded fabrication/assembly; actual finishing and surface system"
+  market_state: "Net accepted solid product at declared manufacturing gate"
 functional_unit:
-  what: "Iron or steel sheet piling or welded steel section"
-  how_much: "1 kg accepted finished product"
-  how_well: "Declare steel grade, profile, length and route; meet order acceptance"
-  how_long_or_cycle: "One factory-gate delivery; no service life prescribed"
-  reference_flow_link: "hot_sheet_pile_out"
+  what: "Sheet piling of iron or steel and welded angles, shapes and sections of iron or steel"
+  how_much: "1 kg"
+  how_well: "product family and interlock/section geometry; hot-rolled or cold-formed sheet-pile route; welded built-up section route; specification and edition; grade and heat chemistry; thickness and length; delivered net unit mass; weld procedure, filler and shielding system; acceptance tests; coating system and coating mass; supplier feed form and completed upstream operations; site, period, electricity interface and geography"
+  how_long_or_cycle: "One accepted supply at manufacturing gate; no installed functional lifetime"
+  reference_flow_link: "final_product"
 system_boundary:
   rules:
-    - rule_id: boundary_gate
-      applies_to: "all routes"
-      rule: "From receipt of purchased steel to accepted finished product at the factory gate, collect route-specific direct materials, energy and steel scrap."
+    - rule_id: boundary_route
+      applies_to: "all processes"
+      rule: "Include the actual selected route, preparation, joining, finishing, inspection, attributable handling and controls through the gate; distinguish upstream coil hot rolling from local cold forming."
       source_ids:
-        - worldsteel-sections-2023
-    - rule_id: boundary_recycling
-      applies_to: "end_of_life"
-      rule: "Keep end-of-life recycling credits separate from the factory-gate result."
+        - ec-fmp-bref-2022
+        - arcelormittal-cold-piles-2025
+    - rule_id: boundary_surface
+      applies_to: "surface_gate"
+      rule: "Include contract surface operations and outsourced work before gate, with separate chemicals, energy, retained coating and wastes; later installation/field application is excluded."
       source_ids:
-        - worldsteel-sections-2023
+        - epa-fabricated-metal-2021
+    - rule_id: boundary_completeness
+      applies_to: "all exchanges"
+      rule: "Audit the site: add each actual fuel, shielding mixture, chemical, transport service, packing material, waste and emission as its own atomic exchange. Record and justify capital/infrastructure treatment. Candidate cards are conditional, unknown is not absent."
+      source_ids: []
 boundary_abstraction:
-  declared_starting_condition: "Purchased billet, hot-rolled coil or plate reaches the foreground gate"
-  starting_condition_role: "Upstream product input"
-  product_classification_scope: "Accepted steel sheet piling or welded steel angle, shape or section"
-  recursive_input_rule: "Link purchased materials and energy to upstream data; count steel production once"
-  upstream_dataset_requirement: "Match billet, coil, plate and energy datasets by grade, route, geography and time"
-  disclosure: "Disclose manufacturing and upstream boundary; report end-of-life recycling credit separately, outside this gate result"
+  declared_starting_condition: "Received steel beam blank/bloom/billet, hot-rolled coil, plate or individual profile; declare supplier-completed operations, temperature and coating"
+  starting_condition_role: "Supplier intermediate product"
+  product_classification_scope: "Sheet piling of iron or steel and welded angles, shapes and sections of iron or steel"
+  recursive_input_rule: "Purchased sheet pile or welded section retains distinct supplier burden; internal transfers cancel, never become new production or recycling credits"
+  upstream_dataset_requirement: "Qualified steelmaking/casting/rolling by actual feed route, grade, supplier and geography; utilities, chemicals, transport and waste destinations; missing links are explicit gaps, never zero"
+  disclosure: "product family and interlock/section geometry; hot-rolled or cold-formed sheet-pile route; welded built-up section route; specification and edition; grade and heat chemistry; thickness and length; delivered net unit mass; weld procedure, filler and shielding system; acceptance tests; coating system and coating mass; supplier feed form and completed upstream operations; site, period, electricity interface and geography"
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
-    name: "Finished hot-rolled steel sheet piling"
+    name: "Sheet piling of iron or steel and welded angles, shapes and sections of iron or steel"
     uuid: ""
   flow_property_ref:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
@@ -45,64 +50,107 @@ reference_flow_definition:
     uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
   reference_unit: "kg"
   required_qualifiers:
-    - "Product form"
-    - "hot-rolled/cold-formed/welded route"
-    - "steel grade"
-    - "cross-section and length"
-    - "surface state"
-    - "accepted net mass"
-    - "production site and period"
+    - "product family and interlock/section geometry"
+    - "hot-rolled or cold-formed sheet-pile route"
+    - "welded built-up section route"
+    - "specification and edition"
+    - "grade and heat chemistry"
+    - "thickness and length"
+    - "delivered net unit mass"
+    - "weld procedure"
+    - "filler and shielding system"
+    - "acceptance tests"
+    - "coating system and coating mass"
+    - "supplier feed form and completed upstream operations"
+    - site
+    - period
+    - "electricity interface and geography"
 reference_flows:
   []
 measurement_rules:
-  - id: net_mass
-    applies_to: "hot_sheet_pile_out, cold_sheet_pile_out, welded_section_out"
+  - id: reference_mass
+    applies_to: "final_product"
     required_property_ref:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Determine accepted net finished mass for the same batch using a calibrated scale or traceable weighing records; exclude transport packaging."
-  - id: reference_basis
-    applies_to: "all inventory rows"
+    rule: "cp_final_product measures D; each attributable period exchange is divided by D."
+  - id: conversion
+    applies_to: "all exchanges"
     required_property_ref:
-      name: "Mass or energy"
+      name: "Row-specific property"
       uuid: ""
-    required_unit: "kg or MJ"
-    rule: "Normalize each route to 1 kg accepted net finished product; retain MJ for electricity and natural gas rather than treating energy as mass."
+    required_unit: "kg; m3; kWh; MJ"
+    rule: "Retain raw units and conversion evidence; 1 kWh = 3.6 MJ. Gas volume requires temperature/pressure, purity and density or NCV; wet residue requires moisture and element assays."
+  - id: balances
+    applies_to: "steel, weld, coating, water and chemicals"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Never sum gross steel kg with contained-Fe kg. For each actual element e, measured gross mass times its own same-element assay defines every feed, weld, steel body, scrap, scale, slag, sludge, effluent, release and opening/closing stock term. Include nonsteel contributions where present; close each element separately. Carbon/alloy-element oxidation, oxygen uptake and water/chemical reactions require separate measured reaction balances; no pure-iron or fixed-alloy conversion. Cancel internal rework but retain repeated energy and consumables."
 process_map:
-  - id: hot_rolling
-    name: "Sheet-pile hot rolling"
-    inclusion: "conditional"
-    inclusion_condition: "If the declared product is sheet piling hot rolled from billet"
+  - id: receipt
+    name: "Steel receipt and route preparation"
+    inclusion: "required"
+    inclusion_condition: "Trace heat/coil/plate identity and actual starting condition; crop or slit only when performed here."
     role: "Foreground manufacturing"
-    quantitative_reference: "per 1 kg accepted hot-rolled sheet piling"
-  - id: cold_forming
-    name: "Sheet-pile cold forming"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: hot_pile
+    name: "Hot rolling of sheet piling"
     inclusion: "conditional"
-    inclusion_condition: "If the declared product is sheet piling cold formed from hot-rolled coil"
+    inclusion_condition: "Only hot-rolled sheet piling from bloom/billet/beam blank: reheat, descale, rough and finish with interlock profiles, cool."
     role: "Foreground manufacturing"
-    quantitative_reference: "per 1 kg accepted cold-formed sheet piling"
-  - id: welded_fabrication
-    name: "Welded section fabrication"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: cold_pile
+    name: "Cold forming of sheet piling"
     inclusion: "conditional"
-    inclusion_condition: "If the declared product is an angle, shape or section cut and welded from plate"
+    inclusion_condition: "Only cold-formed sheet piling: uncoil hot-rolled strip, slit if needed, roll-form or bend the declared sheet-pile/interlock shape and cut. Coil hot rolling stays upstream."
     role: "Foreground manufacturing"
-    quantitative_reference: "per 1 kg accepted welded section"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: welding
+    name: "Welded-section fabrication and sheet-pile assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Cut/prepare plate, strip or profiles, fit and tack, weld the built-up angle/shape/section or actual sheet-pile assembly; record SAW, MAG, FCAW or actual procedure, preheat and weld repairs."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: heat_treatment
+    name: "Conditional delivery heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual anneal, normalize, quench/temper or solution treatment required by declared grade/order; record every furnace pass, atmosphere, cooling medium and stock state; no generic treatment cycle."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: acceptance
+    name: "Straightening, machining and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Straighten, cut to length, drill/punch as ordered, inspect dimensions and interlocks, perform specified mechanical and weld tests, segregate rejects and mark accepted lots."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: surface_gate
+    name: "Declared surface system and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Record bare state or actual blast/paint/galvanize/sealant treatment before the declared gate, including outsourced work and transport; weigh accepted product separately from packaging."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: controls
+    name: "Water circuits and pollution controls"
+    inclusion: "required"
+    inclusion_condition: "Record makeup, circulation, blowdown, treatment, captured solids and actual direct releases; allocate shared pumps and extraction once."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
 process_inventory:
-  - id: hot_rolling
-    label: "Sheet-pile hot rolling"
+  - id: receipt
+    label: "Steel receipt and route preparation"
     inputs:
       product:
-        - row_id: hot_billet_in
-          role: "Steel billet"
-          name: "Billet"
+        - row_id: steel_blank
+          role: "Steel beam blank for sheet-pile rolling"
+          name: "Steel beam blank for sheet-pile rolling"
           flow_type: "product"
-          flow_ref:
-            uuid: "7de70586-42d8-40bb-a687-e0e0c05722e4"
           property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the hot_rolling route and normalize it to accepted net finished mass of the same batch."
+          description: "Use only the actual solid hot-route feed; record alternate bloom or billet in a separate card when present. Link steelmaking/casting and supplier transport."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_hot_material"
+            expression: "Matched attributable period amount from cp_steel_blank / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -110,20 +158,18 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_hot_material
+              collection_protocol_id: cp_steel_blank
               source_ids:
-                - worldsteel-sections-2023
+                - ec-fmp-bref-2022
             ranges: []
-        - row_id: hot_electricity_in
-          role: "Electricity"
-          name: "Electricity"
+        - row_id: steel_coil
+          role: "Hot-rolled steel strip coil for cold-formed sheet piling"
+          name: "Hot-rolled steel strip coil for cold-formed sheet piling"
           flow_type: "product"
-          flow_ref:
-            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
-          property_unit: "Net calorific value / MJ"
-          description: "Collect this atomic exchange only for the hot_rolling route and normalize it to accepted net finished mass of the same batch."
+          property_unit: "Mass / kg"
+          description: "Cold-route feed with width, thickness, grade and supplier hot-rolling burden; do not count as beam blank for the same path."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_hot_energy"
+            expression: "Matched attributable period amount from cp_steel_coil / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -131,20 +177,18 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_hot_energy
+              collection_protocol_id: cp_steel_coil
               source_ids:
-                - worldsteel-sections-2023
+                - arcelormittal-cold-piles-2025
             ranges: []
-        - row_id: hot_gas_in
-          role: "Natural gas"
-          name: "Natural gas"
+        - row_id: steel_plate
+          role: "Steel plate for welded built-up sections"
+          name: "Steel plate for welded built-up sections"
           flow_type: "product"
-          flow_ref:
-            uuid: "4bfd1abb-9106-495a-a291-ce410f205691"
-          property_unit: "Gross calorific value / MJ"
-          description: "Collect this atomic exchange only for the hot_rolling route and normalize it to accepted net finished mass of the same batch. Include only when the gas-fired reheating furnace actually consumes natural gas."
+          property_unit: "Mass / kg"
+          description: "Actual plate grade/thickness and supplier process route; separately record purchased strip or individual profile feed if used."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_hot_energy"
+            expression: "Matched attributable period amount from cp_steel_plate / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -152,9 +196,44 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_hot_energy
-              source_ids:
-                - worldsteel-sections-2023
+              collection_protocol_id: cp_steel_plate
+              source_ids: []
+            ranges: []
+        - row_id: steel_profile
+          role: "Steel I-section for welded assembly"
+          name: "Steel I-section for welded assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when this individual profile enters; other profiles require separate atomic cards. Purchased sheet piles also require a separate qualified input and completed-route disclosure."
+          amount:
+            expression: "Matched attributable period amount from cp_steel_profile / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_profile
+              source_ids: []
+            ranges: []
+        - row_id: receipt_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
+          amount:
+            expression: "Matched attributable period amount from cp_receipt_electricity / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_electricity
+              source_ids: []
             ranges: []
       waste:
         []
@@ -162,14 +241,23 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: hot_sheet_pile_out
-          role: "Finished hot-rolled steel sheet piling"
-          name: "Finished hot-rolled steel sheet piling"
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: hot_pile
+    label: "Hot rolling of sheet piling"
+    inputs:
+      product:
+        - row_id: hot_pile_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
           flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the hot_rolling route and normalize it to accepted net finished mass of the same batch."
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
           amount:
-            expression: "1 kg"
+            expression: "Matched attributable period amount from cp_hot_pile_electricity / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -177,21 +265,81 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_hot_output
+              collection_protocol_id: cp_hot_pile_electricity
+              source_ids: []
+            ranges: []
+        - row_id: hot_pile_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual reheating, preheat or cure/bath heat; use measured net calorific value and stated volume conditions. Other fuels are separate cards."
+          amount:
+            expression: "Matched attributable period amount from cp_hot_pile_natural_gas / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_pile_natural_gas
+              source_ids: []
+            ranges: []
+        - row_id: rolling_oil
+          role: "Rolling lubrication oil"
+          name: "Rolling lubrication oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual site consumption and stock movement; no generic factor is prescribed."
+          amount:
+            expression: "Matched attributable period amount from cp_rolling_oil / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_oil
               source_ids:
-                - worldsteel-sections-2023
+                - ec-fmp-bref-2022
             ranges: []
       waste:
-        - row_id: hot_scrap_out
-          role: "Steel scrap"
-          name: "Steel scrap"
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: mill_scale
+          role: "Steel mill scale"
+          name: "Steel mill scale"
           flow_type: "waste"
-          flow_ref:
-            uuid: "e4449c6f-3b27-426d-ba8d-47c20c99c609"
           property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the hot_rolling route and normalize it to accepted net finished mass of the same batch."
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_hot_scrap"
+            expression: "Matched attributable period amount from cp_mill_scale / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mill_scale
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hot_scrap
+          role: "Steel crop-end scrap"
+          name: "Steel crop-end scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_hot_scrap / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -201,24 +349,57 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_hot_scrap
               source_ids:
-                - worldsteel-sections-2023
+                - ec-fmp-bref-2022
             ranges: []
       elementary:
-        []
-  - id: cold_forming
-    label: "Sheet-pile cold forming"
+        - row_id: combustion_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct combustion only; measured fuel-carbon balance, unburned carbon and oxidation basis; supplier fuel emissions remain upstream."
+          amount:
+            expression: "Matched attributable period amount from cp_combustion_co2 / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_combustion_co2
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_oxides
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured furnace emission and actual gas flow; no default sheet-pile emission factor."
+          amount:
+            expression: "Matched attributable period amount from cp_nitrogen_oxides / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitrogen_oxides
+              source_ids: []
+            ranges: []
+  - id: cold_pile
+    label: "Cold forming of sheet piling"
     inputs:
       product:
-        - row_id: cold_coil_in
-          role: "Hot-rolled steel coil"
-          name: "steel hot rolled coil"
+        - row_id: cold_pile_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
           flow_type: "product"
-          flow_ref:
-            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
-          property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the cold_forming route and normalize it to accepted net finished mass of the same batch."
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_cold_material"
+            expression: "Matched attributable period amount from cp_cold_pile_electricity / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -226,20 +407,17 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_cold_material
-              source_ids:
-                - arcelormittal-sheet-piling-routes
+              collection_protocol_id: cp_cold_pile_electricity
+              source_ids: []
             ranges: []
-        - row_id: cold_electricity_in
-          role: "Electricity"
-          name: "Electricity"
+        - row_id: forming_lubricant
+          role: "Cold-forming lubricant emulsion"
+          name: "Cold-forming lubricant emulsion"
           flow_type: "product"
-          flow_ref:
-            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
-          property_unit: "Net calorific value / MJ"
-          description: "Collect this atomic exchange only for the cold_forming route and normalize it to accepted net finished mass of the same batch."
+          property_unit: "Mass / kg"
+          description: "Specify formulation and as-supplied concentration; reconcile emulsion water separately without double counting."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_cold_energy"
+            expression: "Matched attributable period amount from cp_forming_lubricant / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -247,9 +425,8 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_cold_energy
-              source_ids:
-                - arcelormittal-sheet-piling-routes
+              collection_protocol_id: cp_forming_lubricant
+              source_ids: []
             ranges: []
       waste:
         []
@@ -257,36 +434,16 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: cold_sheet_pile_out
-          role: "Finished cold-formed steel sheet piling"
-          name: "Finished cold-formed steel sheet piling"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the cold_forming route and normalize it to accepted net finished mass of the same batch."
-          amount:
-            expression: "1 kg"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cold_output
-              source_ids:
-                - arcelormittal-sheet-piling-routes
-            ranges: []
+        []
       waste:
-        - row_id: cold_scrap_out
-          role: "Steel scrap"
-          name: "Steel scrap"
+        - row_id: cold_scrap
+          role: "Steel strip trimming scrap"
+          name: "Steel strip trimming scrap"
           flow_type: "waste"
-          flow_ref:
-            uuid: "e4449c6f-3b27-426d-ba8d-47c20c99c609"
           property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the cold_forming route and normalize it to accepted net finished mass of the same batch."
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_cold_scrap"
+            expression: "Matched attributable period amount from cp_cold_scrap / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -296,22 +453,22 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_cold_scrap
               source_ids:
-                - arcelormittal-sheet-piling-routes
+                - epa-fabricated-metal-2021
             ranges: []
       elementary:
         []
-  - id: welded_fabrication
-    label: "Welded section fabrication"
+  - id: welding
+    label: "Welded-section fabrication and sheet-pile assembly"
     inputs:
       product:
-        - row_id: weld_plate_in
-          role: "Steel plate for welded sections"
-          name: "Steel plate for welded sections"
+        - row_id: welding_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
           flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the welded_fabrication route and normalize it to accepted net finished mass of the same batch."
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_weld_material"
+            expression: "Matched attributable period amount from cp_welding_electricity / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -319,41 +476,17 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_weld_material
-              source_ids:
-                - sci-welded-sections-ss052a
+              collection_protocol_id: cp_welding_electricity
+              source_ids: []
             ranges: []
-        - row_id: weld_wire_in
-          role: "Flux-cored welding wire"
-          name: "Flux Cored Wire"
+        - row_id: welding_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
           flow_type: "product"
-          flow_ref:
-            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
-          property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the welded_fabrication route and normalize it to accepted net finished mass of the same batch. Include only when flux-cored wire is actually used; another filler requires its own specific atomic row in the data package."
-          amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_weld_material"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_weld_material
-              source_ids:
-                - sci-welded-sections-ss052a
-            ranges: []
-        - row_id: weld_electricity_in
-          role: "Electricity"
-          name: "Electricity"
-          flow_type: "product"
-          flow_ref:
-            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
           property_unit: "Net calorific value / MJ"
-          description: "Collect this atomic exchange only for the welded_fabrication route and normalize it to accepted net finished mass of the same batch."
+          description: "Only actual reheating, preheat or cure/bath heat; use measured net calorific value and stated volume conditions. Other fuels are separate cards."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_weld_energy"
+            expression: "Matched attributable period amount from cp_welding_natural_gas / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -361,9 +494,103 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_weld_energy
+              collection_protocol_id: cp_welding_natural_gas
+              source_ids: []
+            ranges: []
+        - row_id: solid_wire
+          role: "Solid steel welding wire"
+          name: "Solid steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For actual SAW/MAG procedure; record classification, lot, purchased and returned spool mass, deposited metal and losses, not a fixed weld factor."
+          amount:
+            expression: "Matched attributable period amount from cp_solid_wire / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_wire
               source_ids:
-                - sci-welded-sections-ss052a
+                - twi-saw
+            ranges: []
+        - row_id: flux_cored_wire
+          role: "Flux-cored steel welding wire"
+          name: "Flux-cored steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only FCAW route; declare gas-shielded or self-shielded variant. Do not adopt a generic wire row that ambiguously treats every cored wire as gas-free."
+          amount:
+            expression: "Matched attributable period amount from cp_flux_cored_wire / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flux_cored_wire
+              source_ids:
+                - twi-mag
+            ranges: []
+        - row_id: saw_flux
+          role: "Granulated submerged-arc welding flux"
+          name: "Granulated submerged-arc welding flux"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "SAW only: fresh additions and opening/closing stocks, recovered unused flux, fused slag and spills; internal flux circulation is not fresh use. SAW does not require external shielding gas."
+          amount:
+            expression: "Matched attributable period amount from cp_saw_flux / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_saw_flux
+              source_ids:
+                - twi-saw
+            ranges: []
+        - row_id: argon
+          role: "Delivered argon welding gas"
+          name: "Delivered argon welding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Gas-shielded route only if separately delivered argon is used; record purity, pressure, cylinder return and reference volume conditions."
+          amount:
+            expression: "Matched attributable period amount from cp_argon / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_argon
+              source_ids:
+                - twi-mag
+            ranges: []
+        - row_id: carbon_dioxide_gas
+          role: "Delivered carbon dioxide welding gas"
+          name: "Delivered carbon dioxide welding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual separate CO2 supply; a purchased premixed shielding gas needs its own single formulation-qualified card, not component inputs plus the mixture."
+          amount:
+            expression: "Matched attributable period amount from cp_carbon_dioxide_gas / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_dioxide_gas
+              source_ids:
+                - twi-mag
             ranges: []
       waste:
         []
@@ -371,14 +598,16 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: welded_section_out
-          role: "Finished welded steel angle, shape or section"
-          name: "Finished welded steel angle, shape or section"
-          flow_type: "product"
+        []
+      waste:
+        - row_id: weld_slag
+          role: "Spent welding slag"
+          name: "Spent welding slag"
+          flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the welded_fabrication route and normalize it to accepted net finished mass of the same batch."
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
           amount:
-            expression: "1 kg"
+            expression: "Matched attributable period amount from cp_weld_slag / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -386,21 +615,18 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_weld_output
+              collection_protocol_id: cp_weld_slag
               source_ids:
-                - sci-welded-sections-ss052a
+                - epa-fabricated-metal-2021
             ranges: []
-      waste:
-        - row_id: weld_scrap_out
-          role: "Steel scrap"
-          name: "Steel scrap"
+        - row_id: weld_scrap
+          role: "Steel fabrication offcut scrap"
+          name: "Steel fabrication offcut scrap"
           flow_type: "waste"
-          flow_ref:
-            uuid: "e4449c6f-3b27-426d-ba8d-47c20c99c609"
           property_unit: "Mass / kg"
-          description: "Collect this atomic exchange only for the welded_fabrication route and normalize it to accepted net finished mass of the same batch."
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
           amount:
-            expression: "Collect and report actual exchange per 1 kg reference flow using cp_weld_scrap"
+            expression: "Matched attributable period amount from cp_weld_scrap / D, after stock and allocation reconciliation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -410,262 +636,1534 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_weld_scrap
               source_ids:
-                - sci-welded-sections-ss052a
+                - epa-fabricated-metal-2021
+            ranges: []
+      elementary:
+        - row_id: welding_dust
+          role: "Particulate matter from welding to air"
+          name: "Particulate matter from welding to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual uncaptured air release, separate from captured filter dust; elemental constituents need separate qualified emissions without double counting totals."
+          amount:
+            expression: "Matched attributable period amount from cp_welding_dust / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_dust
+              source_ids: []
+            ranges: []
+  - id: heat_treatment
+    label: "Conditional delivery heat treatment"
+    inputs:
+      product:
+        - row_id: heat_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Only actual heat-treatment power with qualified supply interface and metering; repeated passes remain included."
+          amount:
+            expression: "Matched attributable period amount from cp_heat_electricity / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_electricity
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: heat_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual furnace combustion; record measured NCV, grade/order and delivery condition."
+          amount:
+            expression: "Matched attributable period amount from cp_heat_natural_gas / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_natural_gas
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "Straightening, machining and acceptance"
+    inputs:
+      product:
+        - row_id: acceptance_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
+          amount:
+            expression: "Matched attributable period amount from cp_acceptance_electricity / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_electricity
+              source_ids: []
+            ranges: []
+        - row_id: machining_fluid
+          role: "Water-based machining fluid"
+          name: "Water-based machining fluid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual drilling/cutting fluid; track concentration, replenishment and spent fluid separately."
+          amount:
+            expression: "Matched attributable period amount from cp_machining_fluid / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_fluid
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: ndt_couplant
+          role: "Ultrasonic inspection couplant gel"
+          name: "Ultrasonic inspection couplant gel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when specified inspection uses this gel; actual penetrant/developer chemicals each require their own cards."
+          amount:
+            expression: "Matched attributable period amount from cp_ndt_couplant / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ndt_couplant
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: rejects
+          role: "Rejected steel section"
+          name: "Rejected steel section"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_rejects / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejects
+              source_ids:
+                - epa-fabricated-metal-2021
             ranges: []
       elementary:
         []
+  - id: surface_gate
+    label: "Declared surface system and dispatch"
+    inputs:
+      product:
+        - row_id: surface_gate_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
+          amount:
+            expression: "Matched attributable period amount from cp_surface_gate_electricity / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_gate_electricity
+              source_ids: []
+            ranges: []
+        - row_id: surface_gate_natural_gas
+          role: "Natural gas supplied for combustion"
+          name: "Natural gas supplied for combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual reheating, preheat or cure/bath heat; use measured net calorific value and stated volume conditions. Other fuels are separate cards."
+          amount:
+            expression: "Matched attributable period amount from cp_surface_gate_natural_gas / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_gate_natural_gas
+              source_ids: []
+            ranges: []
+        - row_id: blast_grit
+          role: "Steel blasting grit"
+          name: "Steel blasting grit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual blast route; fresh grit, recirculation, wear and spent grit are distinct."
+          amount:
+            expression: "Matched attributable period amount from cp_blast_grit / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blast_grit
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: epoxy_coating
+          role: "Epoxy protective coating formulation"
+          name: "Epoxy protective coating formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when this precise formulation is sold on product; record solids, curing components and retained dry coating. Other paint layers and separately purchased hardener/thinner are individual cards."
+          amount:
+            expression: "Matched attributable period amount from cp_epoxy_coating / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_epoxy_coating
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: zinc
+          role: "Zinc ingot for hot-dip galvanizing"
+          name: "Zinc ingot for hot-dip galvanizing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual hot-dip route only; bath stocks, adherent zinc, dross and ash need separate measured terms; outsourced galvanizing is supplier processing without duplicated site inputs."
+          amount:
+            expression: "Matched attributable period amount from cp_zinc / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_zinc
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: hydrochloric_acid
+          role: "Hydrochloric acid solution"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual pickling before galvanizing; declare solution and active HCl mass, bath stock and spent acid. Other pretreatment chemicals require separate cards."
+          amount:
+            expression: "Matched attributable period amount from cp_hydrochloric_acid / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydrochloric_acid
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: sealant
+          role: "Bituminous sheet-pile interlock sealant"
+          name: "Bituminous sheet-pile interlock sealant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when applied before the gate; disclose formulation and retained sealant mass separately from steel. Later site application is excluded."
+          amount:
+            expression: "Matched attributable period amount from cp_sealant / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sealant
+              source_ids: []
+            ranges: []
+        - row_id: packing_band
+          role: "Steel packaging band"
+          name: "Steel packaging band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "External packaging, excluded from accepted-product D; other packing materials are separate cards."
+          amount:
+            expression: "Matched attributable period amount from cp_packing_band / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_band
+              source_ids: []
+            ranges: []
+        - row_id: nitric_acid
+          role: "Nitric acid solution"
+          name: "Nitric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual grade-specific pickling/passivation with concentration and active-acid balance. If premixed HNO3/HF is purchased, represent the mixture as one qualified formulation instead of duplicating component inputs."
+          amount:
+            expression: "Matched attributable period amount from cp_nitric_acid / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitric_acid
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: hydrofluoric_acid
+          role: "Hydrofluoric acid solution"
+          name: "Hydrofluoric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual separate HF supply in declared alloy/stainless treatment, not a universal recipe; measured stock, reaction and treatment fate are required."
+          amount:
+            expression: "Matched attributable period amount from cp_hydrofluoric_acid / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydrofluoric_acid
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Sheet piling of iron or steel and welded angles, shapes and sections of iron or steel"
+          name: "Sheet piling of iron or steel and welded angles, shapes and sections of iron or steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only net accepted gate product contributes to D; steel body includes retained weld metal; retained contractual coatings and sealant are separately weighed. Rejects, packing and free water are excluded."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: spent_grit
+          role: "Spent steel blasting grit"
+          name: "Spent steel blasting grit"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_spent_grit / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_grit
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: paint_residue
+          role: "Epoxy paint application residue"
+          name: "Epoxy paint application residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_paint_residue / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_paint_residue
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: zinc_dross
+          role: "Zinc bath dross"
+          name: "Zinc bath dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_zinc_dross / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_zinc_dross
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: spent_acid
+          role: "Spent hydrochloric pickling liquor"
+          name: "Spent hydrochloric pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_spent_acid / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_acid
+              source_ids:
+                - epa-fabricated-metal-2021
+            ranges: []
+        - row_id: mixed_spent_acid
+          role: "Spent nitric-hydrofluoric steel pickling liquor"
+          name: "Spent nitric-hydrofluoric steel pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual mixed-acid bath transfer; record water, acid and each dissolved metal assay and actual treatment; never treat gross acid liquor kg as metal kg."
+          amount:
+            expression: "Matched attributable period amount from cp_mixed_spent_acid / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mixed_spent_acid
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: toluene_air
+          role: "Toluene to air"
+          name: "Toluene to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only when actual coating formulation contains toluene; measure solvent retention, recovery and release; add every actual other solvent separately."
+          amount:
+            expression: "Matched attributable period amount from cp_toluene_air / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_toluene_air
+              source_ids: []
+            ranges: []
+        - row_id: hf_air
+          role: "Hydrogen fluoride to air"
+          name: "Hydrogen fluoride to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured uncaptured release from actual fluoride treatment, separated from scrubber capture and transferred waste."
+          amount:
+            expression: "Matched attributable period amount from cp_hf_air / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hf_air
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: acid_nox
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual nitric-acid treatment release; separate from furnace emissions and use site monitoring, not generic alloy factor."
+          amount:
+            expression: "Matched attributable period amount from cp_acid_nox / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acid_nox
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+  - id: controls
+    label: "Water circuits and pollution controls"
+    inputs:
+      product:
+        - row_id: controls_electricity
+          role: "Purchased plant electricity"
+          name: "Purchased plant electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual delivery voltage, supplier, geography and loss boundary; source-specific generator output is not a generic factory supply."
+          amount:
+            expression: "Matched attributable period amount from cp_controls_electricity / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_controls_electricity
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Purchased industrial process water"
+          name: "Purchased industrial process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Purchased makeup only; raw abstraction needs a separate elementary resource card. Record internal cooling/descaling loops as circulation, not repeated fresh inputs."
+          amount:
+            expression: "Matched attributable period amount from cp_process_water / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide solution"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual wastewater neutralization; record delivered concentration, active alkali, reaction and sludge/effluent fate."
+          amount:
+            expression: "Matched attributable period amount from cp_sodium_hydroxide / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sodium_hydroxide
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: oily_sludge
+          role: "Oily mill-water treatment sludge"
+          name: "Oily mill-water treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_oily_sludge / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_oily_sludge
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+        - row_id: wastewater
+          role: "Industrial wastewater transferred for treatment"
+          name: "Industrial wastewater transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only actual external transfer; mass, wet/dry state, element assay, contamination, destination and opening/closing stocks are required. Internal rework is not an exported waste."
+          amount:
+            expression: "Matched attributable period amount from cp_wastewater / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: iron_water
+          role: "Iron to fresh water"
+          name: "Iron to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only direct permitted release: measured effluent concentration times discharged volume on the same dissolved/total basis; treated offsite wastewater is not also a direct site release."
+          amount:
+            expression: "Matched attributable period amount from cp_iron_water / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_iron_water
+              source_ids: []
+            ranges: []
+        - row_id: chromium_water
+          role: "Chromium to fresh water"
+          name: "Chromium to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual direct release from chromium-bearing grade; measured species and total/dissolved basis. Add separately any measured chromium(VI) with matching speciation, avoiding double-counting total chromium."
+          amount:
+            expression: "Matched attributable period amount from cp_chromium_water / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chromium_water
+              source_ids: []
+            ranges: []
+        - row_id: nickel_water
+          role: "Nickel to fresh water"
+          name: "Nickel to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual direct release from nickel-bearing grade with compatible concentration and effluent volume; offsite-treatment transfer is distinct."
+          amount:
+            expression: "Matched attributable period amount from cp_nickel_water / D, after stock and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nickel_water
+              source_ids: []
+            ranges: []
 allocation_rules:
-  - rule_id: allocation_subdivide
-    applies_to: "shared_operations"
-    rule: "Prefer measured process subdivision among hot rolling, cold forming and welded fabrication."
+  - rule_id: allocation_hierarchy
+    applies_to: "shared processes"
+    rule: "First isolate product and route by batch metering/subdivision; where unavoidable allocate by demonstrated physical causation (machine time, weld work, heated load or treated area). Explain other relationships with sensitivity; mass alone is not automatically appropriate across different routes."
     source_ids:
-      - ghg-product-standard-2011
-  - rule_id: allocation_residual
-    applies_to: "shared_operations"
-    rule: "For inseparable shared burdens, allocate using a verified physical relationship; document the relationship, data and sensitivity."
+      - ec-pef-2021
+  - rule_id: scrap_and_rework
+    applies_to: "metal residues"
+    rule: "Keep rejects, internal rework, external scrap and actual saleable co-products distinct. Retain waste treatment/transport; no automatic avoided-steel credit inside this foreground package. Declare recycling method and end-of-waste boundary separately for any full LCA."
     source_ids:
-      - ghg-product-standard-2011
-  - rule_id: scrap_accounting
-    applies_to: "steel_scrap"
-    rule: "Record mass and destination of exported or internally reused scrap; do not double count internal recirculation as external scrap input or end-of-life credit."
-    source_ids:
-      - worldsteel-sections-2023
+      - ec-pef-2021
 dataset_production:
   collection_protocols:
-    - protocol_id: cp_hot_material
-      process_id: "hot_rolling"
-      flow_role: "hot_billet_in"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
+    - protocol_id: cp_steel_blank
+      process_id: "receipt"
+      flow_role: "steel_blank"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_hot_energy
-      process_id: "hot_rolling"
-      flow_role: "hot_electricity_in, hot_gas_in"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
-      unit: "kg or MJ"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_hot_output
-      process_id: "hot_rolling"
-      flow_role: "hot_sheet_pile_out"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_steel_coil
+      process_id: "receipt"
+      flow_role: "steel_coil"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_steel_plate
+      process_id: "receipt"
+      flow_role: "steel_plate"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_steel_profile
+      process_id: "receipt"
+      flow_role: "steel_profile"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_receipt_electricity
+      process_id: "receipt"
+      flow_role: "receipt_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_hot_pile_electricity
+      process_id: "hot_pile"
+      flow_role: "hot_pile_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_cold_pile_electricity
+      process_id: "cold_pile"
+      flow_role: "cold_pile_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_welding_electricity
+      process_id: "welding"
+      flow_role: "welding_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_acceptance_electricity
+      process_id: "acceptance"
+      flow_role: "acceptance_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_surface_gate_electricity
+      process_id: "surface_gate"
+      flow_role: "surface_gate_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_controls_electricity
+      process_id: "controls"
+      flow_role: "controls_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_hot_pile_natural_gas
+      process_id: "hot_pile"
+      flow_role: "hot_pile_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "MJ"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_welding_natural_gas
+      process_id: "welding"
+      flow_role: "welding_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "MJ"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_surface_gate_natural_gas
+      process_id: "surface_gate"
+      flow_role: "surface_gate_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "MJ"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_rolling_oil
+      process_id: "hot_pile"
+      flow_role: "rolling_oil"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_forming_lubricant
+      process_id: "cold_pile"
+      flow_role: "forming_lubricant"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_solid_wire
+      process_id: "welding"
+      flow_role: "solid_wire"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_flux_cored_wire
+      process_id: "welding"
+      flow_role: "flux_cored_wire"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_saw_flux
+      process_id: "welding"
+      flow_role: "saw_flux"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_argon
+      process_id: "welding"
+      flow_role: "argon"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_carbon_dioxide_gas
+      process_id: "welding"
+      flow_role: "carbon_dioxide_gas"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_machining_fluid
+      process_id: "acceptance"
+      flow_role: "machining_fluid"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_ndt_couplant
+      process_id: "acceptance"
+      flow_role: "ndt_couplant"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_blast_grit
+      process_id: "surface_gate"
+      flow_role: "blast_grit"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_epoxy_coating
+      process_id: "surface_gate"
+      flow_role: "epoxy_coating"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_zinc
+      process_id: "surface_gate"
+      flow_role: "zinc"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_hydrochloric_acid
+      process_id: "surface_gate"
+      flow_role: "hydrochloric_acid"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_sealant
+      process_id: "surface_gate"
+      flow_role: "sealant"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_packing_band
+      process_id: "surface_gate"
+      flow_role: "packing_band"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_final_product
+      process_id: "surface_gate"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Weighbridge/batch scale and stock ledger with heat chemistry and retained-coating separation"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_mill_scale
+      process_id: "hot_pile"
+      flow_role: "mill_scale"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
     - protocol_id: cp_hot_scrap
-      process_id: "hot_rolling"
-      flow_role: "hot_scrap_out"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
+      process_id: "hot_pile"
+      flow_role: "hot_scrap"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_cold_material
-      process_id: "cold_forming"
-      flow_role: "cold_coil_in"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
-      unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_cold_energy
-      process_id: "cold_forming"
-      flow_role: "cold_electricity_in"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
-      unit: "kg or MJ"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_cold_output
-      process_id: "cold_forming"
-      flow_role: "cold_sheet_pile_out"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
-      unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
     - protocol_id: cp_cold_scrap
-      process_id: "cold_forming"
-      flow_role: "cold_scrap_out"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
+      process_id: "cold_pile"
+      flow_role: "cold_scrap"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_weld_material
-      process_id: "welded_fabrication"
-      flow_role: "weld_plate_in, weld_wire_in"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_weld_slag
+      process_id: "welding"
+      flow_role: "weld_slag"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_weld_energy
-      process_id: "welded_fabrication"
-      flow_role: "weld_electricity_in"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
-      unit: "kg or MJ"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
-    - protocol_id: cp_weld_output
-      process_id: "welded_fabrication"
-      flow_role: "welded_section_out"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
-      unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
     - protocol_id: cp_weld_scrap
-      process_id: "welded_fabrication"
-      flow_role: "weld_scrap_out"
-      record_type: "Batch production record"
-      raw_fields: "batch ID; exchange amount; accepted net finished mass; meter or invoice ID"
-      collection_method: "Read batch ledger or calibrated meter and reconcile with production and acceptance records."
+      process_id: "welding"
+      flow_role: "weld_scrap"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
       unit: "kg"
-      frequency: "each batch"
-      temporal_coverage: "representative production period"
-      site_scope: "one manufacturing site"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale/meter calibration and mass-balance reconciliation"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_rejects
+      process_id: "acceptance"
+      flow_role: "rejects"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_spent_grit
+      process_id: "surface_gate"
+      flow_role: "spent_grit"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_paint_residue
+      process_id: "surface_gate"
+      flow_role: "paint_residue"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_zinc_dross
+      process_id: "surface_gate"
+      flow_role: "zinc_dross"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_spent_acid
+      process_id: "surface_gate"
+      flow_role: "spent_acid"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_oily_sludge
+      process_id: "controls"
+      flow_role: "oily_sludge"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_wastewater
+      process_id: "controls"
+      flow_role: "wastewater"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_process_water
+      process_id: "controls"
+      flow_role: "process_water"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "m3"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_sodium_hydroxide
+      process_id: "controls"
+      flow_role: "sodium_hydroxide"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_combustion_co2
+      process_id: "hot_pile"
+      flow_role: "combustion_co2"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_nitrogen_oxides
+      process_id: "hot_pile"
+      flow_role: "nitrogen_oxides"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_welding_dust
+      process_id: "welding"
+      flow_role: "welding_dust"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_toluene_air
+      process_id: "surface_gate"
+      flow_role: "toluene_air"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_iron_water
+      process_id: "controls"
+      flow_role: "iron_water"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_heat_electricity
+      process_id: "heat_treatment"
+      flow_role: "heat_electricity"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_heat_natural_gas
+      process_id: "heat_treatment"
+      flow_role: "heat_natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "MJ"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_nitric_acid
+      process_id: "surface_gate"
+      flow_role: "nitric_acid"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_hydrofluoric_acid
+      process_id: "surface_gate"
+      flow_role: "hydrofluoric_acid"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_mixed_spent_acid
+      process_id: "surface_gate"
+      flow_role: "mixed_spent_acid"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_hf_air
+      process_id: "surface_gate"
+      flow_role: "hf_air"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_acid_nox
+      process_id: "surface_gate"
+      flow_role: "acid_nox"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_chromium_water
+      process_id: "controls"
+      flow_role: "chromium_water"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
+    - protocol_id: cp_nickel_water
+      process_id: "controls"
+      flow_role: "nickel_water"
+      record_type: "measurement_record"
+      raw_fields: "lot_id; route; date; amount; unit; opening_stock; closing_stock; returns; internal_transfers; destination; meter_id; uncertainty"
+      collection_method: "Calibrated meter/scale and supplier or waste records; element assay, moisture/concentration and interface as applicable"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Matched representative reporting period, including startup, repairs and rejects"
+      site_scope: "Declared site/route and external boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, assay reports, mass reconciliation and absence evidence"
   calculation_rules:
-    - id: batch_normalization
-      applies_to: "all inventory rows"
-      rule: "Divide attributable exchange amount for one batch by accepted net finished mass for that batch; calculate each route separately."
+    - id: normalize
+      applies_to: "all inventory"
+      rule: "q_i = attributed external period amount_i / D; allocation precedes normalization. D excludes repeated rework output."
       inputs:
-        - "batch exchange amount"
-        - "accepted net finished mass"
+        - cp_final_product
+        - "each cp_i"
       output: "amount per 1 kg reference flow"
       source_ids: []
-    - id: energy_conversion
-      applies_to: "hot_electricity_in, cold_electricity_in, weld_electricity_in"
-      rule: "If meter records are in kWh, convert at 1 kWh = 3.6 MJ before reporting; do not mix net and gross calorific bases."
+    - id: element_balance
+      applies_to: "steel and coating"
+      rule: "For each measured element e: sum external input gross mass_i * measured fraction_e_i + opening element stock = accepted body element + coating element + exported residues element + measured releases element + closing stock. Same-element assays apply to every term; dissolved effluent uses compatible concentration * volume. Report residual against propagated measurement uncertainty; never impose a common Fe/alloy fraction."
       inputs:
-        - "meter reading"
-        - unit
-      output: "MJ"
+        - mass
+        - assays
+        - stocks
+        - "release records"
+      output: "Separate elemental closures"
+      source_ids: []
+    - id: water_balance
+      applies_to: "controls"
+      rule: "Makeup + opening water stock + reaction-generated water = discharge + evaporation + product/waste carryover + closing stock + reaction-consumed water. Internal recirculation cancels; reconcile water carried by solutions without double counting."
+      inputs:
+        - meters
+        - stock
+        - moisture
+        - "reaction records"
+      output: "Water closure"
+      source_ids: []
+    - id: chemical_balance
+      applies_to: "welding and surface"
+      rule: "Close each active chemical/weld-flux/coating component with measured inputs, stocks, reacted/retained mass, recovery and residue. Separate carbon and alloy oxidation, oxygen uptake and gas reaction products; shield-gas CO2 release is distinct from fuel combustion CO2."
+      inputs:
+        - formulation
+        - consumption
+        - stock
+        - composition
+        - "reaction records"
+      output: "Component and reaction closures"
+      source_ids: []
+    - id: coating_conversion
+      applies_to: "surface_gate"
+      rule: "When coverage is collected by area or length, use measured area/length and actual accepted coated mass; dry retained mass is separately measured. No coating density, thickness, transfer efficiency or weld deposition yield is prescribed."
+      inputs:
+        - area
+        - length
+        - mass
+        - "coating records"
+      output: "Measured conversion to D"
       source_ids: []
   data_quality_requirements:
-    - id: dq_identity
-      applies_to: "all routes"
-      requirement: "Declare finished product profile, grade and route; match the process map and reference output row."
-      evidence: "order and acceptance record"
-    - id: dq_mass
-      applies_to: "all routes"
-      requirement: "Use accepted net mass as denominator; reconcile material input, finished output and steel scrap."
-      evidence: "calibration record and mass balance"
-    - id: dq_energy
-      applies_to: "all routes"
-      requirement: "Record electricity and natural gas separately; disclose electricity units and the gross-calorific gas basis."
-      evidence: "meter, invoices and calorific-value record"
+    - id: identity
+      applies_to: "all flows"
+      requirement: "Match product/waste/elementary type, property, supply interface, route, formulation, geography and state before assigning UUID; classification code or baseName alone cannot prove identity."
+      evidence: "Direct qualified record and supplier documents"
+    - id: coverage
+      applies_to: "all data"
+      requirement: "Same representative period, route and site; trace meters, lot genealogy, offsite work and stocks. Report missing data and uncertainty; absence needs evidence."
+      evidence: "Audit and calibration records"
+    - id: ranges
+      applies_to: "all quantities"
+      requirement: "Collect actual foreground amounts. No generic yield, energy, weld consumption, alloy fraction or coating factor. Numeric defaults/guardrails require independent originals with matching route/boundary/unit conditions; unresolved evidence remains a gap."
+      evidence: "Primary observations and source applicability review"
 validation_rules:
-  - rule_id: validate_route
-    applies_to: "all routes"
-    rule: "Each dataset shall use only the manufacturing route and reference output row matching its declared finished product."
-    source_ids:
-      - un-cpc-3-2025
-  - rule_id: validate_balance
-    applies_to: "all routes"
-    rule: "Reconcile same-batch steel input, finished output and steel scrap; explain differences without unsupported industry factors."
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Require D > 0, finite kg and every qualifier; distinguish accepted steel body, weld metal, coating/sealant and packing."
     source_ids: []
-  - rule_id: validate_uuid
-    applies_to: "all inventory rows"
-    rule: "Resolve unfinished sheet-pile, welded-section and plate UUIDs before dataset publication; do not substitute generic steel flows."
+  - rule_id: validate_route
+    applies_to: "all processes"
+    rule: "Verify hot/cold sheet-pile and welded-section modules against records; bypass only completed supplier operations with burden links. Reject installed-service or unqualified-grade substitutions."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "all exchanges"
+    rule: "Check gross mass and every measured same-element balance separately, water/chemical/weld-flux/coating closure, stock matching, internal transfers and rework energy; investigate residuals beyond measured uncertainty. Never enforce pure Fe or fixed alloy fractions."
+    source_ids: []
+  - rule_id: validate_exchange
+    applies_to: "inventory"
+    rule: "Require atomic exchanges, dimensionally supported units, matched reporting period and explicit supplier/treatment links; keep missing UUIDs or quantities unresolved, not zero or guessed."
     source_ids: []
 published_dataset_profile:
-  dataset_role: "foreground manufacturing dataset"
-  downstream_use: "Factory-gate inventory for process and lifecyclemodel projections of the declared steel product"
-  allowed_use: "Comparable form, grade, route, geography and period"
-  excluded_use: "Not for installation, use or end-of-life; no unlabelled average across hot-rolled, cold-formed and welded routes"
-  required_metadata: "product form; grade; profile and length; route; site; period; reference output row; net mass"
-  required_quality_disclosure: "unresolved UUIDs, missing data, allocation and background data choices"
-  update_trigger: "material change in process, grade, metering or background data"
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Route/grade/surface-qualified product supply inventory and downstream process/lifecyclemodel projection"
+  excluded_use: "Installed wall performance or lifetime comparisons; other sections or unqualified grades; generic electricity or unqualified steel substitution"
+  required_metadata: "product family and interlock/section geometry; hot-rolled or cold-formed sheet-pile route; welded built-up section route; specification and edition; grade and heat chemistry; thickness and length; delivered net unit mass; weld procedure, filler and shielding system; acceptance tests; coating system and coating mass; supplier feed form and completed upstream operations; site, period, electricity interface and geography"
+  required_quality_disclosure: "Site/period/route, measurements, allocation, balances, upstream linkage, uncertainty and unresolved identities/ranges"
+  update_trigger: "Grade, geometry, route, weld/coating system, supplier interface or representative period changes"
 data_sources:
-  - id: "un-cpc-3-2025"
+  - id: "ec-fmp-bref-2022"
     type: "official_guidance"
-    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
-    used_for: "product identity"
-  - id: "worldsteel-sections-2023"
-    type: "dataset"
-    reference: "https://worldsteel.org/wp-content/uploads/Sections-Global-Construction.pdf"
-    used_for: "hot-rolled section route, declared unit, boundary and recycling separation"
-  - id: "sci-welded-sections-ss052a"
-    type: "extension_guidance"
-    reference: "https://steelconstruction.info/images/9/9b/SS052a.pdf"
-    used_for: "plate cutting and welded-section process decomposition"
-  - id: "arcelormittal-sheet-piling-routes"
-    type: "extension_guidance"
-    reference: "https://sheetpiling.arcelormittal.com/sites/default/files/2024-05/AMCRPS_Flyer-EPD-LCA-Public-procurement-infrastructure-en-2022-web%5B1%5D.pdf"
-    used_for: "hot-rolled and cold-formed sheet-pile route distinction"
-  - id: "ghg-product-standard-2011"
-    type: "standard"
-    reference: "https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
-    used_for: "allocation hierarchy"
+    reference: "European Commission JRC. Ferrous Metals Processing BREF, 2022, DOI 10.2760/196475. https://doi.org/10.2760/196475"
+    used_for: "Section 2.2.1.5, printed pp.47–50 and Figs.2.10/2.13: section and sheet-pile rolling; sections 2.2.17–18: water circuits and residues. General mill facts, no product-specific numeric factors."
+  - id: "arcelormittal-cold-piles-2025"
+    type: "literature"
+    reference: "ArcelorMittal. Manufacturing cold formed sheet piles, 20 January 2025. https://constructalia.arcelormittal.com/en/news_center/2025/01/cold-formed-steel-sheet-piles"
+    used_for: "Producer description verifies hot-rolled coil as cold-formed sheet-pile feed; promotional efficiency claims supply no yield range."
+  - id: "twi-saw"
+    type: "handbook"
+    reference: "TWI. What is Submerged-arc Welding? https://www.twi-global.com/technical-knowledge/faqs/faq-what-is-submerged-arc-welding"
+    used_for: "Wire/flux/slag and absence of external shielding gas for SAW; no welding quantities prescribed."
+  - id: "twi-mag"
+    type: "handbook"
+    reference: "TWI. What is Gas Metal Arc Welding? https://www.twi-global.com/technical-knowledge/faqs/faq-what-is-mig-mag-welding"
+    used_for: "Gas-shielded wire-welding distinction; gas identity/amount remains procedure-specific."
+  - id: "epa-fabricated-metal-2021"
+    type: "official_guidance"
+    reference: "US EPA. Sector AA: Fabricated Metal Products Manufacturing Facilities, EPA 833-F-06-042, February 2021, Table 1 p.2. https://www.epa.gov/sites/default/files/2015-10/documents/sector_aa_fabmetal.pdf"
+    used_for: "Independent qualitative cross-check for preparation, painting, galvanizing and waste omissions; broad stormwater-sector scope, not evidence that every product uses every operation."
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, consolidated 30 December 2021, section 4.5 pp.87–88. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230"
+    used_for: "Allocation hierarchy; study-specific application and explicit recycling boundary."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fbe7213653c215b761207d3070b5c19aa90e7f1f4029aaf6b217d28308dec1b2"
+  source_sha256: "sha256:1f1868766861610537c600acf0501515e5c6a1756b6a90f1fe8f6c1ae2616010"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_3335"
+    - unit_id: "normative_5676"
       family: "system_boundary"
       span:
         start:
-          offset: 3335
-          line: 60
+          offset: 5676
+          line: 57
           column: 1
         end:
-          offset: 4461
-          line: 80
+          offset: 7878
+          line: 76
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased billet, hot-rolled coil or plate reaches the foreground gate |\n| starting_condition_role | Upstream product input |\n| product_classification_scope | Accepted steel sheet piling or welded steel angle, shape or section |\n| recursive_input_rule | Link purchased materials and energy to upstream data; count steel production once |\n| upstream_dataset_requirement | Match billet, coil, plate and energy datasets by grade, route, geography and time |\n| disclosure | Disclose manufacturing and upstream boundary; report end-of-life recycling credit separately, outside this gate result |\n\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_gate | all routes | From receipt of purchased steel to accepted finished product at the factory gate, collect route-specific direct materials, energy and steel scrap. | worldsteel-sections-2023 |\n| boundary_recycling | end_of_life | Keep end-of-life recycling credits separate from the factory-gate result. | worldsteel-sections-2023 |\n\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received steel beam blank/bloom/billet, hot-rolled coil, plate or individual profile; declare supplier-completed operations, temperature and coating |\n| starting_condition_role | Supplier intermediate product |\n| product_classification_scope | Sheet piling of iron or steel and welded angles, shapes and sections of iron or steel |\n| recursive_input_rule | Purchased sheet pile or welded section retains distinct supplier burden; internal transfers cancel, never become new production or recycling credits |\n| upstream_dataset_requirement | Qualified steelmaking/casting/rolling by actual feed route, grade, supplier and geography; utilities, chemicals, transport and waste destinations; missing links are explicit gaps, never zero |\n| disclosure | product family and interlock/section geometry; hot-rolled or cold-formed sheet-pile route; welded built-up section route; specification and edition; grade and heat chemistry; thickness and length; delivered net unit mass; weld procedure, filler and shielding system; acceptance tests; coating system and coating mass; supplier feed form and completed upstream operations; site, period, electricity interface and geography |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | all processes | Include the actual selected route, preparation, joining, finishing, inspection, attributable handling and controls through the gate; distinguish upstream coil hot rolling from local cold forming. | `ec-fmp-bref-2022`; `arcelormittal-cold-piles-2025` |\n| boundary_surface | surface_gate | Include contract surface operations and outsourced work before gate, with separate chemicals, energy, retained coating and wastes; later installation/field application is excluded. | `epa-fabricated-metal-2021` |\n| boundary_completeness | all exchanges | Audit the site: add each actual fuel, shielding mixture, chemical, transport service, packing material, waste and emission as its own atomic exchange. Record and justify capital/infrastructure treatment. Candidate cards are conditional, unknown is not absent. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -682,12 +2180,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 3335
-              line: 60
+              offset: 5676
+              line: 57
               column: 1
             end:
-              offset: 3356
-              line: 60
+              offset: 5697
+              line: 57
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -702,18 +2200,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_15659"
+    - unit_id: "normative_49479"
       family: "allocation"
       span:
         start:
-          offset: 15659
-          line: 337
+          offset: 49479
+          line: 1043
           column: 1
         end:
-          offset: 16367
-          line: 346
+          offset: 50275
+          line: 1050
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | shared_operations | Prefer measured process subdivision among hot rolling, cold forming and welded fabrication. | ghg-product-standard-2011 |\n| allocation_residual | shared_operations | For inseparable shared burdens, allocate using a verified physical relationship; document the relationship, data and sensitivity. | ghg-product-standard-2011 |\n| scrap_accounting | steel_scrap | Record mass and destination of exported or internally reused scrap; do not double count internal recirculation as external scrap input or end-of-life credit. | worldsteel-sections-2023 |\n\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | shared processes | First isolate product and route by batch metering/subdivision; where unavoidable allocate by demonstrated physical causation (machine time, weld work, heated load or treated area). Explain other relationships with sensitivity; mass alone is not automatically appropriate across different routes. | `ec-pef-2021` |\n| scrap_and_rework | metal residues | Keep rejects, internal rework, external scrap and actual saleable co-products distinct. Retain waste treatment/transport; no automatic avoided-steel credit inside this foreground package. Declare recycling method and end-of-waste boundary separately for any full LCA. | `ec-pef-2021` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -730,12 +2228,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 15659
-              line: 337
+              offset: 49479
+              line: 1043
               column: 1
             end:
-              offset: 15699
-              line: 337
+              offset: 49519
+              line: 1043
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -750,18 +2248,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_22977"
+    - unit_id: "normative_88729"
       family: "validation"
       span:
         start:
-          offset: 22977
-          line: 383
+          offset: 88729
+          line: 1133
           column: 1
         end:
-          offset: 23578
-          line: 392
+          offset: 89754
+          line: 1142
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_route | all routes | Each dataset shall use only the manufacturing route and reference output row matching its declared finished product. | un-cpc-3-2025 |\n| validate_balance | all routes | Reconcile same-batch steel input, finished output and steel scrap; explain differences without unsupported industry factors. |  |\n| validate_uuid | all inventory rows | Resolve unfinished sheet-pile, welded-section and plate UUIDs before dataset publication; do not substitute generic steel flows. |  |\n\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | final_product | Require D > 0, finite kg and every qualifier; distinguish accepted steel body, weld metal, coating/sealant and packing. |  |\n| validate_route | all processes | Verify hot/cold sheet-pile and welded-section modules against records; bypass only completed supplier operations with burden links. Reject installed-service or unqualified-grade substitutions. |  |\n| validate_balance | all exchanges | Check gross mass and every measured same-element balance separately, water/chemical/weld-flux/coating closure, stock matching, internal transfers and rework energy; investigate residuals beyond measured uncertainty. Never enforce pure Fe or fixed alloy fractions. |  |\n| validate_exchange | inventory | Require atomic exchanges, dimensionally supported units, matched reporting period and explicit supplier/treatment links; keep missing UUIDs or quantities unresolved, not zero or guessed. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -778,12 +2276,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 22977
-              line: 383
+              offset: 88729
+              line: 1133
               column: 1
             end:
-              offset: 22999
-              line: 383
+              offset: 88751
+              line: 1133
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -800,157 +2298,170 @@ normative_context:
           markdown: "---\n"
   bindings:
     - pointer: "/system_boundary/rules/0"
-      rule_id: "boundary_gate"
+      rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_3335"
+      unit_id: "normative_5676"
       source_span:
         start:
-          offset: 4112
-          line: 76
+          offset: 7034
+          line: 72
           column: 1
         end:
-          offset: 4318
-          line: 76
-          column: 207
+          offset: 7320
+          line: 72
+          column: 287
     - pointer: "/system_boundary/rules/1"
-      rule_id: "boundary_recycling"
+      rule_id: "boundary_surface"
       identity_kind: "explicit"
-      unit_id: "normative_3335"
+      unit_id: "normative_5676"
       source_span:
         start:
-          offset: 4319
-          line: 77
+          offset: 7321
+          line: 73
           column: 1
         end:
-          offset: 4458
-          line: 77
-          column: 140
+          offset: 7569
+          line: 73
+          column: 249
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_5676"
+      source_span:
+        start:
+          offset: 7570
+          line: 74
+          column: 1
+        end:
+          offset: 7876
+          line: 74
+          column: 307
     - pointer: "/allocation_rules/0"
-      rule_id: "allocation_subdivide"
+      rule_id: "allocation_hierarchy"
       identity_kind: "explicit"
-      unit_id: "normative_15659"
+      unit_id: "normative_49479"
       source_span:
         start:
-          offset: 15772
-          line: 341
+          offset: 49592
+          line: 1047
           column: 1
         end:
-          offset: 15938
-          line: 341
-          column: 167
+          offset: 49949
+          line: 1047
+          column: 358
     - pointer: "/allocation_rules/1"
-      rule_id: "allocation_residual"
+      rule_id: "scrap_and_rework"
       identity_kind: "explicit"
-      unit_id: "normative_15659"
+      unit_id: "normative_49479"
       source_span:
         start:
-          offset: 15939
-          line: 342
+          offset: 49950
+          line: 1048
           column: 1
         end:
-          offset: 16142
-          line: 342
-          column: 204
-    - pointer: "/allocation_rules/2"
-      rule_id: "scrap_accounting"
-      identity_kind: "explicit"
-      unit_id: "normative_15659"
-      source_span:
-        start:
-          offset: 16143
-          line: 343
-          column: 1
-        end:
-          offset: 16364
-          line: 343
-          column: 222
+          offset: 50273
+          line: 1048
+          column: 324
     - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_88729"
+      source_span:
+        start:
+          offset: 88824
+          line: 1137
+          column: 1
+        end:
+          offset: 88987
+          line: 1137
+          column: 164
+    - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_22977"
+      unit_id: "normative_88729"
       source_span:
         start:
-          offset: 23072
-          line: 387
+          offset: 88988
+          line: 1138
           column: 1
         end:
-          offset: 23238
-          line: 387
-          column: 167
-    - pointer: "/validation_rules/1"
+          offset: 89220
+          line: 1138
+          column: 233
+    - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_22977"
+      unit_id: "normative_88729"
       source_span:
         start:
-          offset: 23239
-          line: 388
+          offset: 89221
+          line: 1139
           column: 1
         end:
-          offset: 23402
-          line: 388
-          column: 164
-    - pointer: "/validation_rules/2"
-      rule_id: "validate_uuid"
+          offset: 89526
+          line: 1139
+          column: 306
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_exchange"
       identity_kind: "explicit"
-      unit_id: "normative_22977"
+      unit_id: "normative_88729"
       source_span:
         start:
-          offset: 23403
-          line: 389
+          offset: 89527
+          line: 1140
           column: 1
         end:
-          offset: 23575
-          line: 389
-          column: 173
+          offset: 89752
+          line: 1140
+          column: 226
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_3335"
+      unit_id: "normative_5676"
       source_span:
         start:
-          offset: 3335
-          line: 60
+          offset: 5676
+          line: 57
           column: 1
         end:
-          offset: 3356
-          line: 60
+          offset: 5697
+          line: 57
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_3335"
+      unit_id: "normative_5676"
       source_span:
         start:
-          offset: 3384
-          line: 64
+          offset: 5725
+          line: 61
           column: 1
         end:
-          offset: 4038
-          line: 71
-          column: 136
+          offset: 6961
+          line: 68
+          column: 439
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_15659"
+      unit_id: "normative_49479"
       source_span:
         start:
-          offset: 15659
-          line: 337
+          offset: 49479
+          line: 1043
           column: 1
         end:
-          offset: 15699
-          line: 337
+          offset: 49519
+          line: 1043
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_22977"
+      unit_id: "normative_88729"
       source_span:
         start:
-          offset: 22977
-          line: 383
+          offset: 88729
+          line: 1133
           column: 1
         end:
-          offset: 22999
-          line: 383
+          offset: 88751
+          line: 1133
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -959,5 +2470,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fbe7213653c215b761207d3070b5c19aa90e7f1f4029aaf6b217d28308dec1b2"
-  generated_content_sha256: "sha256:b69965325c79c218ecf63544b32130c0074808d232d60403091dc00d94c3db75"
+    sha256: "sha256:1f1868766861610537c600acf0501515e5c6a1756b6a90f1fe8f6c1ae2616010"
+  generated_content_sha256: "sha256:9aa487f84fcebc750963096e92e19c3c60ade02c9b4e2055e9388c9ece26e2de"

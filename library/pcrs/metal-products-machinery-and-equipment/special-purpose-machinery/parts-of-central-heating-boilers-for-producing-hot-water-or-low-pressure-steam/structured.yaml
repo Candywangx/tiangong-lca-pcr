@@ -1,10 +1,1938 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44833"
-  title: "Parts of central heating boilers for producing hot water or low pressure steam"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.parts-of-central-heating-boilers-for-producing-hot-water-or-low-pressure-steam"
+  classification_refs: "CPC3.0:44833"
+  covered_products: "Full eligible central-heating hot-water/low-pressure-steam parts family in section1"
+  excluded_products: "Complete boilers, independently classified goods and adjacent radiator/water-heater/high-pressure generator parts in section1"
+  representative_product: "One actual accepted dedicated part/module/kit configuration; no representative weight across families"
+  production_route: "Actual cast section, welded pressure part, condensing exchanger or bought completed subassembly; retain seals/coatings/controls only where supplied"
+  market_state: "Accepted delivered part configuration with actual included components/retained fills; net mass excludes packaging/rejects"
+functional_unit:
+  what: "Supply one actual dedicated part/module/kit, not a complete host or its downstream heating service"
+  how_much: "1 kg accepted net delivered part/module/kit mass of the same configuration"
+  how_well: "Meets declared combustion/leak/mechanical safety, function, interfaces and actual acceptance plan"
+  how_long_or_cycle: "One manufacturing/delivery period; no default service lifetime"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: gate
+      applies_to: "foreground"
+      rule: "Include actual receipt, eligible part fabrication/integration, factory part testing/rework, waste, assigned common services and packing through accepted release."
+      source_ids:
+        - weil-80
+        - foundry-bref
+    - rule_id: make_buy
+      applies_to: "supplier_interface"
+      rule: "Each supplied component has an actual completion state: bought complete cast section, sealed block, exchanger or populated control includes its upstream once; own manufacture expands actual alloy feed, molding, welding, sealing and testing instead. Count only subsequent site work; pair internal transfers."
+      source_ids:
+        - weil-catalog
+        - viessmann-burner
+    - rule_id: factory_use
+      applies_to: "production"
+      rule: "Factory pressure/leak water or gas, thermal/fuel tests, cleaning and electricity are included only for actual acceptance of the supplied part. Disclose reused fixtures and residual retained test fills separately from drained/consumed media. Installer commissioning, downstream replacement and lifetime heating are outside manufacturing."
+      source_ids:
+        - weil-80
+        - viessmann-burner
+    - rule_id: bom_extension
+      applies_to: "route"
+      rule: "Atomic cards are conditional anchors, not a universal recipe. Audit every actual alloy, coating, refractory/seal chemistry, component, accessory, test medium, waste and emitted species; add missing atomic exchanges. Unknown differs from zero and evidenced not_applicable."
+      source_ids:
+        - weil-catalog
+    - rule_id: upstream
+      applies_to: "links"
+      rule: "Link each actual supplier and transport at actual chemistry, grade, completion state, geography and period; external waste treatment after measured transfer is separate from site emissions. Incomplete provider links do not establish a full cradle-to-gate footprint."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual selected inputs supplied grade, completion state and delivery interface"
+  starting_condition_role: "Factory foreground receipt boundary"
+  product_classification_scope: "Full eligible central-heating boiler parts category reviewed in section1"
+  recursive_input_rule: "Same-category purchased precursor uses upstream once; expand subsequent site work only, cancel paired internal transfers without infinite recursion"
+  upstream_dataset_requirement: "Match actual grade, recipe, completed treatment, geography/period and supply interface; disclose missing providers/substitution"
+  disclosure: "Actual configuration, make/buy, coverage/conditional absence, transport/treatment, measured denominator and uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Parts of central heating boilers for producing hot water or low pressure steam"
+    uuid: "acf2b6ec-7649-4251-b769-2f2b2cecc6ae"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "host central-heating hot-water or low-pressure-steam principal function"
+    - "part classification"
+    - "model revision"
+    - "actual part number and fit"
+    - "alloy/part material"
+    - "pressure/temperature duty and fuel/electrical interfaces"
+    - "actual refractory/seal/coating chemistry or gap"
+    - "supplied accessories/fills"
+    - "make/buy"
+    - "delivered state"
+    - "actual acceptance tests"
+    - "calibrated net mass"
+    - N
+    - "site/period"
+    - "utility delivery conditions"
+    - "waste and species"
+    - "upstream/treatment"
+    - "allocation uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure Dnet as the sum of calibrated accepted net part masses for one configuration and period; use cp_mass."
+  - id: material_species
+    applies_to: "physical material/species records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use each term own moisture/metal/chemical assay, stocks and reactions. Gross mass is not contained element; do not apply to electricity/transport."
+  - id: energy_interface
+    applies_to: "electricity, steam, condensate and fuel"
+    required_property_ref:
+      name: "Delivered energy or fuel mass and NCV"
+      uuid: ""
+    required_unit: "MJ; kg; MJ/kg"
+    rule: "Retain kWh electricity, 1 kWh=3.6 MJ. Steam supply and return each use own kg times own MJ/kg relative to common zero; distinguish gross/already-net, return deducted once. Fuel uses own mass and NCV, not purchased steam."
+process_map:
+  - id: fabrication
+    name: "Actual casting, pressure-part fabrication and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual site melting, mold/core preparation, casting, machining, tube forming, welding, cleaning, coating and scrap treatment; bought complete parts bypass embedded manufacture"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: integration
+    name: "Dedicated boiler part or kit integration"
+    inclusion: "required"
+    inclusion_condition: "Actual eligible part drawing/BOM and supplied state; cast section, heat block, exchanger, casing, flue collector, seal or subassembly only if actual scope; do not assemble an imaginary complete boiler"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: test
+    name: "Actual factory part acceptance and rework"
+    inclusion: "required"
+    inclusion_condition: "Only actual dimensional, pressure/leak, electrical, thermal or fuel/combustion tests for that supplied part; installer commissioning and lifetime heating excluded"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Packing and accepted release"
+    inclusion: "required"
+    inclusion_condition: "Same accepted part number/revision/completion-state configuration; identical kits counted separately from contained pieces or boilers"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: services
+    name: "Residual shared utilities and actual generation"
+    inclusion: "conditional"
+    inclusion_condition: "Only unassigned residual after process meters and actual on-site generation"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Actual casting, pressure-part fabrication and finishing"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Low carbon steel sheet"
+          name: "Low carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: stainless
+          role: "Stainless steel sheet"
+          name: "Flat-rolled products of stainless steel, further worked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "add37984-82d6-4c91-85e3-9911c0135944"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual further-worked flat-rolled stainless supply, with supplier alloy/finish certificates; primary slab, raw coil, tube or bought complete exchanger needs a different actual identity."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: aluminium
+          role: "Aluminium casting alloy ingot"
+          name: "Aluminium casting alloy ingot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: cast_iron
+          role: "Cast iron foundry charge"
+          name: "Cast iron foundry charge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Own foundry only; specify each actual charge grade, recycled fraction, stock and return. Do not treat primary cast metal as a finished boiler section or assume vanadium-bearing pig iron."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - foundry-bref
+            ranges: []
+        - row_id: silica_sand
+          role: "Silica foundry sand"
+          name: "Silica foundry sand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual foundry sand and supply treatment; internal sand regeneration is paired, fresh make-up and spent transfer separate."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - foundry-bref
+            ranges: []
+        - row_id: bentonite
+          role: "Bentonite foundry binder"
+          name: "Bentonite foundry binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented foundry-grade binder; wine-fining bentonite and raw mine clay cannot establish processed casting binder."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ferrosilicon
+          role: "Ferrosilicon alloy"
+          name: "Ferrosilicon"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aba73e7d-6fa9-4320-9e5c-62b018975000"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual iron-silicon alloy additive, with its own silicon/iron assay and supplier grade; do not substitute silicon-calcium or impose a universal charge recipe."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - foundry-bref
+            ranges: []
+        - row_id: welding_wire
+          role: "Carbon steel welding wire"
+          name: "Carbon steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: argon
+          role: "Argon welding gas"
+          name: "Argon welding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: powder
+          role: "Epoxy powder coating"
+          name: "Epoxy powder coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: coolant
+          role: "Metalworking fluid concentrate"
+          name: "Metalworking fluid concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual formulated metalworking concentrate; dilution water, own assay, returns and stock separate; rolling oil is not automatically this formulation."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Only actual IPA cleaning; own assay/water fraction, returns, captured media, stocks and species release required. Only matched actual CN at-plant IPA supply, with actual assay/provider and no assumed universal cleaner purity."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only external fresh make-up for actual site processes, not repeated internal circulation. Actual externally supplied process water; document treatment/specification and meter fresh water separately from internal loops."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Delivered energy / MJ"
+          description: "Only measured actual electricity attributable to this process and selected configuration in the common period; not whole-site meter on top of subprocess loads. Only actual CN user-side grid-average AC below1kV delivery. Other voltage/geography/provider requires its own identity; supplier generation must not be counted again as site fuel."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel fabrication scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Only actual untreated externally transferred steel production scrap with own alloy/moisture/metal assay; separate internal returns and processed scrap. Only actual external untreated steel production scrap from machining/forming at the plant; other alloy/state and internal returns separate."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: foundry_sand
+          role: "Spent foundry sand"
+          name: "Spent foundry sand"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: slag
+          role: "Iron foundry slag"
+          name: "Iron foundry slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_solvent
+          role: "Spent isopropanol solvent"
+          name: "Spent isopropanol solvent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: effluent
+          role: "Metalworking wastewater"
+          name: "Metalworking wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol to air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual ordinary outdoor-air IPA release measured independently, never an unexplained solvent-balance remainder. Only actual ordinary unspecified outdoor-air IPA species release, not indoor/soil/wastewater identity."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: integration
+    label: "Dedicated boiler part or kit integration"
+    inputs:
+      product:
+        - row_id: cast_section
+          role: "Cast iron boiler section"
+          name: "Cast iron boiler section"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only independently bought actual cast section at documented machined/tested state. Own casting is an internal paired transfer; assembled sealed block and one loose section are different supplied objects."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-80
+            ranges: []
+        - row_id: steel_tube
+          role: "Welded carbon steel boiler tube"
+          name: "Steel Pipe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "370d14a6-55f3-4fdd-90b2-84751125ff00"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual welded tube route and documented carbon-steel pressure-duty grade; not seamless tube, stainless tube or completed exchanger."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ss_exchanger
+          role: "Stainless steel condensing boiler heat exchanger"
+          name: "Stainless steel condensing boiler heat exchanger"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only independently bought completed stainless condensing exchanger with actual alloy, tube/plate geometry and included seals. Do not repeat its sheet, welding and factory test upstream."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-catalog
+            ranges: []
+        - row_id: al_exchanger
+          role: "Cast aluminium boiler heat exchanger"
+          name: "Cast aluminium boiler heat exchanger"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual completed cast-aluminium exchanger and documented alloy/finish; a generic aluminium ingot is not its finished identity."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-catalog
+            ranges: []
+        - row_id: gas_burner
+          role: "Gas boiler burner assembly"
+          name: "Gas boiler burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bought gas-burner assembly used as an input to the reviewed eligible part configuration; its own independently classified complete burner output is not automatically covered. Embedded fan/valve/control counted once unless supplied separately."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - viessmann-burner
+            ranges: []
+        - row_id: oil_burner
+          role: "Oil boiler burner assembly"
+          name: "Oil boiler burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bought oil-burner input and supplied completion state; independent burner classification remains outside automatic output coverage."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: blower
+          role: "Boiler combustion air blower assembly"
+          name: "Boiler combustion air blower assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only separately supplied actual fan/blower input; bought complete burner includes its blower once. A general-purpose blower output needs independent classification."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - viessmann-burner
+            ranges: []
+        - row_id: control
+          role: "Boiler electronic control module"
+          name: "Boiler electronic control module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought populated boiler-control input at actual interface; its substrate, chips and solder embed upstream once. Independent electrical-control output requires classification review."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: electrode
+          role: "Boiler ignition electrode"
+          name: "Boiler ignition electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - viessmann-burner
+            ranges: []
+        - row_id: gasket
+          role: "Boiler silicone rubber gasket"
+          name: "Boiler silicone rubber gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only verified actual silicone-rubber gasket chemistry, not assumed from the service-list word gasket. Other elastomer/fibre chemistries require their own exchange."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: refractory
+          role: "Boiler refractory blanket"
+          name: "Boiler refractory blanket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual documented refractory blanket formulation and supplied state; own forming/drying/cure needs actual material rows. Do not infer fibre chemistry from the word refractory."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-80
+                - viessmann-burner
+            ranges: []
+        - row_id: flue_collector
+          role: "Aluminized steel boiler flue collector"
+          name: "Aluminized steel boiler flue collector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-80
+            ranges: []
+        - row_id: trap
+          role: "Boiler condensate trap assembly"
+          name: "Boiler condensate trap assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-catalog
+            ranges: []
+        - row_id: sensor
+          role: "Boiler water temperature sensor"
+          name: "Boiler water temperature sensor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - weil-catalog
+            ranges: []
+        - row_id: steel_fastener
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Actual separately supplied steel screw as assembly input, never proof that general-purpose screw output belongs to this PCR."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: integration_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Delivered energy / MJ"
+          description: "Only measured actual electricity attributable to this process and selected configuration in the common period; not whole-site meter on top of subprocess loads. Only actual CN user-side grid-average AC below1kV delivery. Other voltage/geography/provider requires its own identity; supplier generation must not be counted again as site fuel."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Actual factory part acceptance and rework"
+    inputs:
+      product:
+        - row_id: test_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Only actually used factory acceptance-test charge; disclose exact recipe/specification, fresh issue, reuse, stock and discharge. It is not accepted part mass or consumer consumption. Only actually consumed or added supplied tap water for this factory acceptance plan; recycled loop and retained fill separate."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_nitrogen
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actually used factory acceptance-test charge; disclose exact recipe/specification, fresh issue, reuse, stock and discharge. It is not accepted part mass or consumer consumption."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Only actually used factory acceptance-test charge; disclose exact recipe/specification, fresh issue, reuse, stock and discharge. It is not accepted part mass or consumer consumption. Native Volume/m3 at actual pressure, temperature, moisture and reference conditions; if weighed use this stream own measured density to convert kg to m3, never a universal ideal-gas density. Supplier-compressed air and site compressor electricity are alternative interfaces without double counting."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actually used factory acceptance-test charge; disclose exact recipe/specification, fresh issue, reuse, stock and discharge. It is not accepted part mass or consumer consumption."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_propane
+          role: "Propane"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass / kg"
+          description: "Only actually used factory acceptance-test charge; disclose exact recipe/specification, fresh issue, reuse, stock and discharge. It is not accepted part mass or consumer consumption. Only actual liquid-propane supplied state and documented composition; account actual vaporisation and retained/consumed quantities separately, not a generic already-gaseous fuel proxy."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_oil
+          role: "Light fuel oil"
+          name: "light fuel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2a02a3f7-8d3b-4556-aebc-318fddcbfe1e"
+          property_unit: "Volume / m3"
+          description: "Only actually used factory acceptance-test charge; disclose exact recipe/specification, fresh issue, reuse, stock and discharge. It is not accepted part mass or consumer consumption. Native Volume/m3 for actual catalytic-cracked light-fuel oil supplier grade; use actual temperature and own measured density if collected by kg. Nominal catalogue42000kJ/kg is not an adopted factory factor; obtain the actual fuel assay/NCV."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Delivered energy / MJ"
+          description: "Only measured actual electricity attributable to this process and selected configuration in the common period; not whole-site meter on top of subprocess loads. Only actual CN user-side grid-average AC below1kV delivery. Other voltage/geography/provider requires its own identity; supplier generation must not be counted again as site fuel."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: part_reject
+          role: "Rejected central heating boiler part"
+          name: "Rejected central heating boiler part"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual irrecoverable rejected part; associated burdens remain attributable to accepted output, rejected mass excluded from accepted denominator."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Carbon dioxide fossil to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual fossil-origin ordinary unspecified outdoor-air release, with source-specific post-control/fugitive evidence; no long-term-air proxy."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide fossil to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual fossil ordinary outdoor-air CO species release, independently established rather than inferred from carbon closure."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual molecular NO2, not nitrite or NOx expressed as NO2-equivalent."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: pm
+          role: "Particulates less than 2.5 micrometre to air"
+          name: "Particulates less than 2.5 micrometre to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual factory water-vapour release only; no consumer heating or installer drain defaults. Only actual ordinary unspecified outdoor-air water-vapour release with matched own water mass/phase basis."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: dispatch
+    label: "Packing and accepted release"
+    inputs:
+      product:
+        - row_id: board
+          role: "Corrugated board"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual C/E/F corrugated board with fibre content at least80% and containing documented recycled material; no generic box, other grade or universal recycled-fraction assumption."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: pallet
+          role: "Wooden EURO pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once. Only actual supplied wooden EURO pallet and documented reuse/treatment; other pallet standards need their own identity."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: dispatch_electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Delivered energy / MJ"
+          description: "Only measured actual electricity attributable to this process and selected configuration in the common period; not whole-site meter on top of subprocess loads. Only actual CN user-side grid-average AC below1kV delivery. Other voltage/geography/provider requires its own identity; supplier generation must not be counted again as site fuel."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Parts of central heating boilers producing hot water or low-pressure steam"
+          name: "Parts of central heating boilers for producing hot water or low pressure steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "acf2b6ec-7649-4251-b769-2f2b2cecc6ae"
+          property_unit: "Mass / kg"
+          description: "Selected accepted part/module/kit configuration includes actual retained fills/accessories, excluding packaging and rejects."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-0-44833
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: services
+    label: "Residual shared utilities and actual generation"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Purchased alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Delivered energy / MJ"
+          description: "Only unassigned shared residual after process meters; actual delivery voltage/geography/provider required. Only actual CN user-side grid-average AC below1kV delivery. Other voltage/geography/provider requires its own identity; supplier generation must not be counted again as site fuel."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: steam
+          role: "Purchased steam heat"
+          name: "Purchased steam heat"
+          flow_type: "product"
+          property_unit: "Delivered energy / MJ"
+          description: "Only actual purchased steam thermal supply; record each supply and return mass and own enthalpy on common datum, and distinguish gross from already-net invoicing. Supplier fuel is upstream, not imagined site burning."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual verified supplied grade/state in the selected configuration; bought finished state includes upstream manufacturing once."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: condensate
+          role: "Condensate thermal return"
+          name: "Condensate thermal return"
+          flow_type: "product"
+          property_unit: "Delivered energy / MJ"
+          description: "Only measured thermal return corresponding to actual gross steam supply; do not deduct twice from already-net invoice; physical mass separately reconciled."
+          amount:
+            expression: "Collect attributable quantity and divide by accepted net part mass Dnet using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: causal
+    applies_to: "site"
+    rule: "Separate configurations and subdivisions first; allocate common residual by measured causal load, operating time or appropriate physical driver, retain numerator and denominator records and uncertainty. Do not average unrelated part configurations or use part mass automatically for every utility."
+    source_ids: []
+  - rule_id: rejects
+    applies_to: "accepted"
+    rule: "Include actual rejects, rework and qualification burdens in attributable Q for accepted output; only accepted net mass/count enters denominator. Segregate recycling transfer and treatment; do not assume avoided-product credits or zero upstream recycled burden."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "reference product"
+      record_type: "weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted part/module/kit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted lot"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration/tare/included accessories/acceptance"
+    - protocol_id: cp_material
+      process_id: "all"
+      flow_role: "actual inputs"
+      record_type: "meter_issue"
+      raw_fields: "specific species/grade; supplied state; issue; each moisture/density/assay; make/buy; stocks; Q; N"
+      collection_method: "Reconcile each exchange metering/stores/recipe and paired returns in common period; Q includes rejects/rework and each term own assay."
+      unit: "kg; m3"
+      frequency: "each batch or continuous meter"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site and supplier"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "grade/composition tests/meters/stocks"
+    - protocol_id: cp_energy
+      process_id: "all"
+      flow_role: "electricity and heat"
+      record_type: "meter"
+      raw_fields: "process meters; gross imports; actual generation; exports; storage; each supply/return steam mass pressure temperature enthalpy; net invoice; Q; N"
+      collection_method: "Reconcile process meters in same period/units; shared services only unassigned residual, investigate negative residual. Each steam supply/return uses own kg and MJ/kg/common zero, return deducted once."
+      unit: "MJ"
+      frequency: "continuous meters/each test"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated meters/delivery interface/thermodynamics/allocation uncertainty"
+    - protocol_id: cp_waste
+      process_id: "all"
+      flow_role: "specific waste"
+      record_type: "transfer"
+      raw_fields: "each stream mass and own moisture/assay; beginning/end stocks; internal return; external treatment; Q; N"
+      collection_method: "Weigh/sample treatment transfers, distinguish return/reuse/recycling/disposal without assumed substitution credit."
+      unit: "kg"
+      frequency: "each transfer lot"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site and treatment interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "waste tickets/sampling/stocks"
+    - protocol_id: cp_emission
+      process_id: "all"
+      flow_role: "specific species/compartment"
+      record_type: "species_measurement"
+      raw_fields: "actual species/compartment; concentration; exhaust or liquid flow; wet/dry temperature/pressure; capture/destruction; own assays; Q; N"
+      collection_method: "Use matched species/compartment measured or verified actual technology factors; investigate closure, capture not destruction, residual not air emission."
+      unit: "kg"
+      frequency: "actual tests/emission periods"
+      temporal_coverage: "common manufacturing period"
+      site_scope: "same configuration/site boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling/flow/combined uncertainty"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Normalize directly as Qattr/Dnet for one configuration and period. Naccepted counts accepted delivered parts or identical modules/kits; M=Dnet/Naccepted and q_item=Qattr/Naccepted are same-configuration cross-checks. Preserve each native numerator unit and exact conversion; do not pool unlike parts."
+      inputs:
+        - Qattr
+        - Dnet
+        - Naccepted
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: species_emission_method
+      applies_to: "cp_emission"
+      requirement: "For each actual species use post-control concentration times matched exhaust or liquid flow over the same period; correct actual wet/dry basis, temperature/pressure, reference state and native units. Fugitive releases require an independently measured basis, not inferred from stack readings. Keep species/compartment and capture/destruction separate."
+      evidence: "species sampling; matched flow/time; calibrated meters; fugitive evidence"
+    - id: parts_configuration
+      applies_to: "accepted output"
+      requirement: "Part number, revision, host fit, included count and supplied completion state define the accepted configuration. Kit net mass sums actually included accepted parts; N counts identical kits rather than contained pieces or hosts. Do not pool unlike parts."
+      evidence: "BOM; drawing; shipment; acceptance; calibrated tare"
+    - id: part_routes
+      applies_to: "actual manufacture"
+      requirement: "Include casting, tube forming, welding, finishing, refractory forming, sealing or electronic integration only where performed; add each actual grade/formulation as an atomic exchange. Bought finished parts use subsequent work only without repeating embedded module inputs. Pressure/leak, thermal-cycle, mechanical or fuel tests follow the actual factory plan; downstream replacement and downstream boiler operation are separate."
+      evidence: "actual route; make/buy; assay; factory test plan"
+    - id: native_volume
+      applies_to: "test_air; test_oil"
+      requirement: "Compressed air and light-fuel oil retain native m3 numerator units; record each actual pressure, temperature, moisture/density and reference state. If collected by mass use own measured density, not universal density, catalogue fuel heating value or another stream factor; Dnet remains accepted part kg."
+      evidence: "supplier specification; measured density/state; native unit receipts"
+    - id: emission_assignment
+      applies_to: "actual source"
+      requirement: "Assign each fabrication or test release once to its actual source; never add whole-site totals on top of process species rows. Actual melting/drying exhaust requires additional atomic species rows where present."
+      evidence: "source-specific matched concentration/flow/time; exhaust/fugitive ledger"
+    - id: complete_bom
+      applies_to: "actual configuration"
+      requirement: "Cover all actual exchanges; separate make/buy/accessories/fills/test charges; gaps explicit"
+      evidence: "actual BOM/routes/suppliers"
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      requirement: "Qattr is each attributable exchange in the same configuration/common period including reject/rework/factory-test burdens; Naccepted is accepted count; Dnet is sum of calibrated accepted net masses; M=Dnet/Naccepted, q_item=Qattr/Naccepted, q_ref=Qattr/Dnet. Dnet excludes packing, reject and consumed test media; preserve each native numerator unit and exact conversion."
+      evidence: "cp_mass; cp_material; cp_energy; cp_waste; cp_emission"
+    - id: mass_period
+      applies_to: "cohort"
+      requirement: "Same configuration/period/acceptance, calibrated mass/stocks; no cross-family mean"
+      evidence: "calibration/period ledger"
+    - id: contained_species
+      applies_to: "cp_material; cp_waste; cp_emission"
+      requirement: "For each element or chemical species use each term own measured gross mass times its own assay across inputs, product, scrap, sludge, liquids and releases. Gross alloy or sludge is not contained Fe, Cu or another element. Retain each own wet/dry basis, beginning/end stocks and reaction stoichiometry; paired internal returns cancel. Investigate closure against combined sampling, meter and allocation uncertainty."
+      evidence: "own-term mass/assay/moisture; stocks; reaction; return ledger"
+    - id: water_stream_closure
+      applies_to: "cp_material; cp_waste; cp_emission"
+      requirement: "Convert each water stream with its own water fraction and density at actual temperature. Reconcile fresh imports, each input own moisture, reaction water and beginning stocks against ending stocks, retained product water, discharge and evaporation. Paired internal returns cancel; never use another stream water fraction or universal density, and never turn unexplained residual into evaporation."
+      evidence: "own water fraction; density/temperature; stocks/reactions/retention/discharge/evaporation"
+    - id: solvent_fates
+      applies_to: "cp_material; cp_waste; cp_emission"
+      requirement: "Each solvent stream uses its own assay. Distinguish product retention, recovered returns, captured liquid/media, wastewater and other non-air fates, demonstrated destruction and independently established species air release. Capture is not destruction; recovered, retained, wastewater and media are non-air fates. Investigate unexplained residual, never assign it to air."
+      evidence: "assay; stocks; recovery/capture/treatment; independent air measurements"
+    - id: utility_residual
+      applies_to: "cp_energy"
+      requirement: "Reconcile common-period imports, actual site generation, exports and storage changes with assigned fabrication, integration, test and dispatch meters in the same units. Shared utilities include ONLY unassigned residual. Investigate negative residual through period, unit, meter coverage and combined uncertainty, without clipping. Offsite supplier generation or boiler fuel is not fictional site combustion."
+      evidence: "boundary/process meters; source/period/unit records; allocation uncertainty"
+    - id: heat_supply_return
+      applies_to: "cp_energy"
+      requirement: "For gross supply, heat is supply kg times supply own MJ/kg minus independently measured return kg times return own MJ/kg, each at actual temperature/pressure on one common datum. Already-net invoices must not subtract return again. Physical supply/return mass is reconciled independently; catalogue heating value or another stream enthalpy cannot replace own measured or verified properties."
+      evidence: "supply/return mass, pressure, temperature, enthalpy; gross/net invoice"
+    - id: balance_uncertainty
+      applies_to: "physical balances"
+      requirement: "Own water fraction/density/assay/reactions/paired returns; compare combined uncertainty"
+      evidence: "measurement/sampling/reaction/allocation evidence"
+    - id: provider_gaps
+      applies_to: "links"
+      requirement: "Each actual upstream/treatment matches state/geography/period; unverified not complete footprint"
+      evidence: "direct records/substitution disclosure"
+validation_rules:
+  - rule_id: identity
+    applies_to: "dataset"
+    rule: "Confirm host central-heating hot-water/low-pressure-steam function, eligible part classification, part number/revision, delivered completion state and activated architecture. Every actual exchange needs matching identity/property/unit/provider; absent, zero and unknown remain distinct."
+    source_ids:
+      - un-cpc-3-0-44833
+  - rule_id: denominator
+    applies_to: "all inventory rows"
+    rule: "All inventory uses the same accepted cohort and common period. Verify calibrated accepted net mass and N; reject and packaging mass excluded. Check q_item=Q/N then normalization by same mean M; mixed configurations are invalid."
+    source_ids: []
+  - rule_id: double_count
+    applies_to: "make_buy"
+    rule: "Reconcile complete bought modules versus own materials and operations, retained fills/accessories versus factory consumption, paired internal transfers and external inputs. Count each actual burden once."
+    source_ids: []
+  - rule_id: water_close
+    applies_to: "physical water records"
+    rule: "For each term use its own measured water fraction, density and wet/dry basis: fresh and input moisture plus reaction water and beginning stocks minus final stocks, retained product, discharge and evaporation; internal returns cancel paired. Investigate measured closure against combined sampling/meter/allocation uncertainty; no universal tolerance."
+    source_ids: []
+  - rule_id: species_close
+    applies_to: "material and chemical records"
+    rule: "Close each contained metal/chemical separately using each input, product, scrap, sludge, liquid and release own matched assay and dry/wet basis, reaction stoichiometry and stocks. Gross mass is not contained element. No all-inventory mass rule applies to energy or transport."
+    source_ids: []
+  - rule_id: solvent_close
+    applies_to: "solvent records"
+    rule: "Distinguish retained solvent, recovered return, captured liquid/media, demonstrated destruction, wastewater/non-air residual and actual species air release. Capture is not destruction; an unexplained residual must be investigated, not assigned to air."
+    source_ids: []
+  - rule_id: utility_close
+    applies_to: "energy records"
+    rule: "Reconcile purchased imports, actual on-site generation, exports and storage changes with assigned fabrication/integration/test/dispatch loads in the same period and units. Shared row ONLY unassigned residual; investigate negative residual against period, unit and combined measurement uncertainty without clipping."
+    source_ids: []
+  - rule_id: steam_close
+    applies_to: "steam and condensate"
+    rule: "Use supply kg times supply own MJ/kg and return kg times return own MJ/kg at measured pressure/temperature relative to common zero. If gross supply, subtract return once; if already-net invoice, do not subtract again. Keep physical steam/condensate mass balance independent from energy."
+    source_ids: []
+  - rule_id: species_emissions
+    applies_to: "air releases"
+    rule: "Validate every emitted species and compartment independently. Fuel carbon balance cannot alone establish CO or NOx. NO2 mass is not NOx reported as NO2 equivalent; keep reporting conventions and actual species identities distinct."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "primary_dataset"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Actual configuration factory foreground production and models with explicit completed upstream links"
+  excluded_use: "Cross-family functional equivalence, default consumer service, default weight/manufacturing factors, complete footprint with missing providers"
+  required_metadata: "Section3 qualifiers, raw-period denominator, actual architecture/make-buy/boundary"
+  required_quality_disclosure: "collection coverage, provider/identity/recipe gaps, allocation/combined uncertainty, all conditions/exclusions"
+  update_trigger: "model/architecture/recipe/supply state/geography/measurement/factory-test/treatment changes"
+data_sources:
+  - id: "un-cpc-3-0-44833"
+    type: "official_guidance"
+    reference: "Central Product Classification (CPC) Version 3.0 Explanatory Notes; 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Conditional parts architecture/classification/supplied-state and actual site casting; not factory recipe or quantitative default"
+  - id: "weil-80"
+    type: "handbook"
+    reference: "Weil-McLain 80 Cast Iron Boiler Submittal; WM2602_SUB_001_80; edition date unspecified; https://www.weil-mclain.com/wp-content/uploads/SUB_001_80-Submittal.pdf"
+    used_for: "Conditional parts architecture/classification/supplied-state and actual site casting; not factory recipe or quantitative default"
+  - id: "foundry-bref"
+    type: "handbook"
+    reference: "Best Available Techniques (BAT) Reference Document for the Smitheries and Foundries Industry; EUR40127, 2024; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2024-12/SF_BREF_2024-bref.pdf"
+    used_for: "Conditional parts architecture/classification/supplied-state and actual site casting; not factory recipe or quantitative default"
+  - id: "viessmann-burner"
+    type: "handbook"
+    reference: "Viessmann Installation Instructions Burner Assembly; 5800 178 - 06, 01/2025; https://www.viessmann-us.com/content/dam/public-brands/ca/pdfs/doc/wb2b_rep/wb2b-sm_burner_assembly.pdf/_jcr_content/renditions/original./wb2b-sm_burner_assembly.pdf"
+    used_for: "Conditional parts architecture/classification/supplied-state and actual site casting; not factory recipe or quantitative default"
+  - id: "weil-catalog"
+    type: "handbook"
+    reference: "Weil-McLain Ultra Series 3 105 Heat Exchanger/Piping Parts; undated page; publisher HTML snapshot 2026-10-02; https://parts.weil-mclain.com/catalog?model_id=17&schematic_id=608"
+    used_for: "Conditional parts architecture/classification/supplied-state and actual site casting; not factory recipe or quantitative default"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b4ecb6c0cd88ce4bae3abe03a5c7e4932a6e265c4c43b8a81b9c4eb8e45c9f65"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6518"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6518
+          line: 61
+          column: 1
+        end:
+          offset: 9033
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `gate` | foreground | Include actual receipt, eligible part fabrication/integration, factory part testing/rework, waste, assigned common services and packing through accepted release. | weil-80; foundry-bref |\n| `make_buy` | supplier_interface | Each supplied component has an actual completion state: bought complete cast section, sealed block, exchanger or populated control includes its upstream once; own manufacture expands actual alloy feed, molding, welding, sealing and testing instead. Count only subsequent site work; pair internal transfers. | weil-catalog; viessmann-burner |\n| `factory_use` | production | Factory pressure/leak water or gas, thermal/fuel tests, cleaning and electricity are included only for actual acceptance of the supplied part. Disclose reused fixtures and residual retained test fills separately from drained/consumed media. Installer commissioning, downstream replacement and lifetime heating are outside manufacturing. | weil-80; viessmann-burner |\n| `bom_extension` | route | Atomic cards are conditional anchors, not a universal recipe. Audit every actual alloy, coating, refractory/seal chemistry, component, accessory, test medium, waste and emitted species; add missing atomic exchanges. Unknown differs from zero and evidenced not_applicable. | weil-catalog |\n| `upstream` | links | Link each actual supplier and transport at actual chemistry, grade, completion state, geography and period; external waste treatment after measured transfer is separate from site emissions. Incomplete provider links do not establish a full cradle-to-gate footprint. |  |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual selected inputs supplied grade, completion state and delivery interface |\n| starting_condition_role | Factory foreground receipt boundary |\n| product_classification_scope | Full eligible central-heating boiler parts category reviewed in section1 |\n| recursive_input_rule | Same-category purchased precursor uses upstream once; expand subsequent site work only, cancel paired internal transfers without infinite recursion |\n| upstream_dataset_requirement | Match actual grade, recipe, completed treatment, geography/period and supply interface; disclose missing providers/substitution |\n| disclosure | Actual configuration, make/buy, coverage/conditional absence, transport/treatment, measured denominator and uncertainty |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 223
+              line: 8
+              column: 1
+            end:
+              offset: 299
+              line: 8
+              column: 77
+          text: "# Parts of central heating boilers producing hot water or low-pressure steam"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6518
+              line: 61
+              column: 1
+            end:
+              offset: 6539
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_56369"
+      family: "allocation"
+      span:
+        start:
+          offset: 56369
+          line: 1064
+          column: 1
+        end:
+          offset: 57097
+          line: 1071
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `causal` | site | Separate configurations and subdivisions first; allocate common residual by measured causal load, operating time or appropriate physical driver, retain numerator and denominator records and uncertainty. Do not average unrelated part configurations or use part mass automatically for every utility. |  |\n| `rejects` | accepted | Include actual rejects, rework and qualification burdens in attributable Q for accepted output; only accepted net mass/count enters denominator. Segregate recycling transfer and treatment; do not assume avoided-product credits or zero upstream recycled burden. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 223
+              line: 8
+              column: 1
+            end:
+              offset: 299
+              line: 8
+              column: 77
+          text: "# Parts of central heating boilers producing hot water or low-pressure steam"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 56369
+              line: 1064
+              column: 1
+            end:
+              offset: 56409
+              line: 1064
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_66744"
+      family: "validation"
+      span:
+        start:
+          offset: 66744
+          line: 1111
+          column: 1
+        end:
+          offset: 69675
+          line: 1125
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `identity` | dataset | Confirm host central-heating hot-water/low-pressure-steam function, eligible part classification, part number/revision, delivered completion state and activated architecture. Every actual exchange needs matching identity/property/unit/provider; absent, zero and unknown remain distinct. | un-cpc-3-0-44833 |\n| `denominator` | all inventory rows | All inventory uses the same accepted cohort and common period. Verify calibrated accepted net mass and N; reject and packaging mass excluded. Check q_item=Q/N then normalization by same mean M; mixed configurations are invalid. |  |\n| `double_count` | make_buy | Reconcile complete bought modules versus own materials and operations, retained fills/accessories versus factory consumption, paired internal transfers and external inputs. Count each actual burden once. |  |\n| `water_close` | physical water records | For each term use its own measured water fraction, density and wet/dry basis: fresh and input moisture plus reaction water and beginning stocks minus final stocks, retained product, discharge and evaporation; internal returns cancel paired. Investigate measured closure against combined sampling/meter/allocation uncertainty; no universal tolerance. |  |\n| `species_close` | material and chemical records | Close each contained metal/chemical separately using each input, product, scrap, sludge, liquid and release own matched assay and dry/wet basis, reaction stoichiometry and stocks. Gross mass is not contained element. No all-inventory mass rule applies to energy or transport. |  |\n| `solvent_close` | solvent records | Distinguish retained solvent, recovered return, captured liquid/media, demonstrated destruction, wastewater/non-air residual and actual species air release. Capture is not destruction; an unexplained residual must be investigated, not assigned to air. |  |\n| `utility_close` | energy records | Reconcile purchased imports, actual on-site generation, exports and storage changes with assigned fabrication/integration/test/dispatch loads in the same period and units. Shared row ONLY unassigned residual; investigate negative residual against period, unit and combined measurement uncertainty without clipping. |  |\n| `steam_close` | steam and condensate | Use supply kg times supply own MJ/kg and return kg times return own MJ/kg at measured pressure/temperature relative to common zero. If gross supply, subtract return once; if already-net invoice, do not subtract again. Keep physical steam/condensate mass balance independent from energy. |  |\n| `species_emissions` | air releases | Validate every emitted species and compartment independently. Fuel carbon balance cannot alone establish CO or NOx. NO2 mass is not NOx reported as NO2 equivalent; keep reporting conventions and actual species identities distinct. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 223
+              line: 8
+              column: 1
+            end:
+              offset: 299
+              line: 8
+              column: 77
+          text: "# Parts of central heating boilers producing hot water or low-pressure steam"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 66744
+              line: 1111
+              column: 1
+            end:
+              offset: 66766
+              line: 1111
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "gate"
+      identity_kind: "explicit"
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 6612
+          line: 65
+          column: 1
+        end:
+          offset: 6823
+          line: 65
+          column: 212
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "make_buy"
+      identity_kind: "explicit"
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 6824
+          line: 66
+          column: 1
+        end:
+          offset: 7201
+          line: 66
+          column: 378
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "factory_use"
+      identity_kind: "explicit"
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 7202
+          line: 67
+          column: 1
+        end:
+          offset: 7599
+          line: 67
+          column: 398
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "bom_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 7600
+          line: 68
+          column: 1
+        end:
+          offset: 7916
+          line: 68
+          column: 317
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 7917
+          line: 69
+          column: 1
+        end:
+          offset: 8210
+          line: 69
+          column: 294
+    - pointer: "/allocation_rules/0"
+      rule_id: "causal"
+      identity_kind: "explicit"
+      unit_id: "normative_56369"
+      source_span:
+        start:
+          offset: 56482
+          line: 1068
+          column: 1
+        end:
+          offset: 56804
+          line: 1068
+          column: 323
+    - pointer: "/allocation_rules/1"
+      rule_id: "rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_56369"
+      source_span:
+        start:
+          offset: 56805
+          line: 1069
+          column: 1
+        end:
+          offset: 57095
+          line: 1069
+          column: 291
+    - pointer: "/validation_rules/0"
+      rule_id: "identity"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 66839
+          line: 1115
+          column: 1
+        end:
+          offset: 67171
+          line: 1115
+          column: 333
+    - pointer: "/validation_rules/1"
+      rule_id: "denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 67172
+          line: 1116
+          column: 1
+        end:
+          offset: 67443
+          line: 1116
+          column: 272
+    - pointer: "/validation_rules/2"
+      rule_id: "double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 67444
+          line: 1117
+          column: 1
+        end:
+          offset: 67682
+          line: 1117
+          column: 239
+    - pointer: "/validation_rules/3"
+      rule_id: "water_close"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 67683
+          line: 1118
+          column: 1
+        end:
+          offset: 68080
+          line: 1118
+          column: 398
+    - pointer: "/validation_rules/4"
+      rule_id: "species_close"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 68081
+          line: 1119
+          column: 1
+        end:
+          offset: 68413
+          line: 1119
+          column: 333
+    - pointer: "/validation_rules/5"
+      rule_id: "solvent_close"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 68414
+          line: 1120
+          column: 1
+        end:
+          offset: 68708
+          line: 1120
+          column: 295
+    - pointer: "/validation_rules/6"
+      rule_id: "utility_close"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 68709
+          line: 1121
+          column: 1
+        end:
+          offset: 69065
+          line: 1121
+          column: 357
+    - pointer: "/validation_rules/7"
+      rule_id: "steam_close"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 69066
+          line: 1122
+          column: 1
+        end:
+          offset: 69398
+          line: 1122
+          column: 333
+    - pointer: "/validation_rules/8"
+      rule_id: "species_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 69399
+          line: 1123
+          column: 1
+        end:
+          offset: 69673
+          line: 1123
+          column: 275
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 6518
+          line: 61
+          column: 1
+        end:
+          offset: 6539
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6518"
+      source_span:
+        start:
+          offset: 8238
+          line: 73
+          column: 1
+        end:
+          offset: 9031
+          line: 80
+          column: 137
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_56369"
+      source_span:
+        start:
+          offset: 56369
+          line: 1064
+          column: 1
+        end:
+          offset: 56409
+          line: 1064
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_66744"
+      source_span:
+        start:
+          offset: 66744
+          line: 1111
+          column: 1
+        end:
+          offset: 66766
+          line: 1111
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b4ecb6c0cd88ce4bae3abe03a5c7e4932a6e265c4c43b8a81b9c4eb8e45c9f65"
+  generated_content_sha256: "sha256:5b878b8489c1a917c663981b557d756d6c87d3fa29ac79ec157790ee19efc309"

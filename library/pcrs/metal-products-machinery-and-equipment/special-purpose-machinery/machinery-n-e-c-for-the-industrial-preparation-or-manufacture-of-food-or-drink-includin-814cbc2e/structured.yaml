@@ -1,10 +1,2279 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44516"
-  title: "Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.machinery-n-e-c-for-the-industrial-preparation-or-manufacture-of-food-or-drink-includin-814cbc2e"
+  classification_refs: "CPC3.0:44516"
+  covered_products: "Entire residual industrial food/drink machinery category including mechanical fats/oils preparation"
+  excluded_products: "Named neighbouring machinery, separately supplied parts, customer processed foods and non-food principal functions"
+  representative_product: "Actual accepted complete configured mechanical oil press or food press/former/homogenizer/confectionery machine; no average example mass"
+  production_route: "Actual local stock fabrication and finishing or documented completed bought assemblies, then configured assembly and real acceptance"
+  market_state: "Accepted configured complete equipment at declared factory dispatch gate"
+functional_unit:
+  what: "Accepted complete configured industrial food/drink machine within the residual category"
+  how_much: "1 kg"
+  how_well: "Declared principal function, order/BOM, hygienic-contact approval where applicable and actual acceptance criteria"
+  how_long_or_cycle: "One declared completed manufacture/acceptance period; no lifetime food throughput"
+  reference_flow_link: "finished"
+system_boundary:
+  rules:
+    - rule_id: principal_function
+      applies_to: "foreground_system_boundary"
+      rule: "CPC44516 explicitly includes fats/oils. Sigma is a decanter centrifuge and stays outside the complete reference under43931 despite olive-oil application. Census chapter84 is supplementary: HS8438 excludes fats/oils and must not narrow CPC44516. Review embedded modules separately from independently supplied whole machines."
+      source_ids:
+        - cpc
+        - sigma
+        - census
+    - rule_id: source_architecture
+      applies_to: "foreground_system_boundary"
+      rule: "Anderson distinguishes mechanical pressing, extrusion preparation and customer solvent extraction; its full plant is not one universal44516 reference. Bucher hydraulic fruit presses require actual food principal function rather than pharmaceutical or lab/pilot default. Tetra distinguishes pump/transmission and homogenizing device; an independent high-pressure pump is not automatically a complete food homogenizer. Bühler conching shears/mixes chocolate mass and the five-roll refiner is not generic cereal milling."
+      source_ids:
+        - anderson-expeller
+        - anderson-oil
+        - bucher-press
+        - tetra-handbook
+        - buhler-conche
+    - rule_id: supplied_configuration
+      applies_to: "foreground_system_boundary"
+      rule: "Handtmann forming/cutting, optional co-extrusion, rollers/water-spray and downstream weighing/packing interfaces follow actual orders; a depicted filler or packaging link does not establish included BOM. Anderson optional shaft water cooling/choke and closed-loop oil cooling require actual included interfaces/fills. Example empty/gross masses, throughputs, pressure, energy savings and food yields are not Dnet or factory defaults."
+      source_ids:
+        - handtmann-fs
+        - anderson-expeller
+        - sigma
+    - rule_id: manufacture_and_tests
+      applies_to: "foreground_system_boundary"
+      rule: "Collect actual local cutting/forming/machining/welding/finishing/assembly and attributable inspection, factory trials, rejects and rework. No source establishes a universal material grade, factory route or acceptance recipe. Customer commissioning/recipe development and normal food production are separately scoped; charge factory food/media only when actual acceptance records establish attribution."
+      source_ids:
+        - anderson-expeller
+        - bucher-press
+        - buhler-conche
+        - tetra-handbook
+boundary_abstraction:
+  declared_starting_condition: "Actually received stock, identified chemicals or completed compatible assemblies at documented supplied state"
+  starting_condition_role: "foreground_input_boundary"
+  product_classification_scope: "Complete residual industrial food/drink machinery including fats/oils, with actual neighbouring-function review"
+  recursive_input_rule: "Completed bought hardware embeds upstream manufacture once; local manufacture replaces it with actual ingredients/work; pair internal transfers"
+  upstream_dataset_requirement: "Compatible published flow type/native unit/grade/chemical phase/food-contact role/provider/geography/completion and transport interface"
+  disclosure: "Declared order/configuration/net mass, supplied components/options/retained fills, make/buy, actual factory tests and customer boundary"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
+    uuid: "d646385f-0b2b-4477-81f9-43b6f354ef55"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Principal residual food/drink/fats/oils function and mechanism"
+    - "model/serial/order/configuration"
+    - "actual included hardware/options/spares/fills and food-contact scope"
+    - "same-period accepted quantity/calibrated net mass"
+    - "stock/alloy/purity/phase/chemical formula"
+    - "make/buy/completion/local operations/acceptance media/rejects/rework"
+    - "suppliers/geography/transport/receiver routes"
+    - "native units/assays/state/returns/stocks/allocation/uncertainty and identity gaps"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Collect accepted configured net mass through cp_mass; exclude packaging, extra spare stock, rejects and consumed trial media. Retain actual included first fill."
+  - id: native_amount
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "actual native property"
+      uuid: ""
+    required_unit: "native unit"
+    rule: "Retain each native numerator: cable Length/m, hydraulic fluid/compressed air/tap water Volume/m3 and Energy/kWh or MJ. Conversion requires own same-interface density/T/P/humidity/assay or cable kg/m; electricity3.6MJ/kWh."
+process_map:
+  - id: fabrication
+    name: "Local structural and food-contact part fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: assembly
+    name: "Configured food-machine assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finish
+    name: "Actual local joining cleaning and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: test
+    name: "Actual factory inspection and acceptance trials"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: services
+    name: "Unassigned common-period factory services"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Accepted equipment dispatch and packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: residues
+    name: "Measured waste transfers and direct emissions"
+    inclusion: "conditional"
+    inclusion_condition: "Actual compatible observed operation only; common services include only unassigned residual"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Local structural and food-contact part fabrication"
+    inputs:
+      product:
+        - row_id: ss304
+          role: "Food-contact AISI304 stainless steel sheet"
+          name: "Food-contact AISI304 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact aisi304 stainless steel sheet with own grade/form/dimensions/assay/food-contact scope and provider. Weigh receipts/cuts/retained parts, stocks and returns; measure local work separately. The queried UUID remains a grade/form gap."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: ss316
+          role: "Food-contact AISI316L stainless steel sheet"
+          name: "Food-contact AISI316L stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact aisi316l stainless steel sheet with own grade/form/dimensions/assay/food-contact scope and provider. Weigh receipts/cuts/retained parts, stocks and returns; measure local work separately. The queried UUID remains a grade/form gap."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: ssteel
+          role: "Non-contact carbon steel frame sheet"
+          name: "Non-contact carbon steel frame sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied non-contact carbon steel frame sheet with own grade/form/dimensions/assay/food-contact scope and provider. Weigh receipts/cuts/retained parts, stocks and returns; measure local work separately. The queried UUID remains a grade/form gap."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: castiron
+          role: "Cast iron crankcase casting"
+          name: "Cast iron crankcase casting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied cast iron crankcase casting with own grade/form/dimensions/assay/food-contact scope and provider. Weigh receipts/cuts/retained parts, stocks and returns; measure local work separately. The queried UUID remains a grade/form gap."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: aluminium
+          role: "Aluminium structural sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Actual sheet thicker than0.2mm with own alloy/temper/finish/provider and local cut/form stock and returns; food-contact certification is not inferred from sheet identity."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: copper
+          role: "T2 copper rod for local conductor manufacture"
+          name: "copper rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "776e80f1-8f0e-44ee-9a7e-baa9e747291a"
+          property_unit: "Mass / kg"
+          description: "Actual T2 copper rod, own grade/assay/dimensions/provider for local conductors; weigh receipts/cuts/retained rod and returns, excluding embedded complete-motor copper."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: sanitarytube
+          role: "Food-contact316L sanitary tube"
+          name: "Food-contact316L sanitary tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact316l sanitary tube with own grade/form/dimensions/assay/food-contact scope and provider. Weigh receipts/cuts/retained parts, stocks and returns; measure local work separately. The queried UUID remains a grade/form gap."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+        - row_id: peplate
+          role: "Food-grade HDPE forming plate"
+          name: "Food-grade HDPE forming plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-grade hdpe forming plate with own grade/form/dimensions/assay/food-contact scope and provider. Weigh receipts/cuts/retained parts, stocks and returns; measure local work separately. The queried UUID remains a grade/form gap."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - buhler-conche
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: assembly
+    label: "Configured food-machine assembly"
+    inputs:
+      product:
+        - row_id: boughtmachine
+          role: "Bought complete industrial food machinery"
+          name: "Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d646385f-0b2b-4477-81f9-43b6f354ef55"
+          property_unit: "Mass / kg"
+          description: "Only an actually completed compatible food-machine interface bought for integration; record delivered configuration/net hardware and remaining local work, embedding upstream manufacture once. It is not an allowance to buy an already finished reference and duplicate its materials."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: ptfe
+          role: "Food-contact PTFE seal"
+          name: "Food-contact PTFE seal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact ptfe seal and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: epdm
+          role: "Food-contact EPDM gasket"
+          name: "Food-contact EPDM gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact epdm gasket and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: nitrile
+          role: "Food-contact nitrile rubber seal"
+          name: "Food-contact nitrile rubber seal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact nitrile rubber seal and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: pu
+          role: "Food-contact polyurethane conveyor belt"
+          name: "Food-contact polyurethane conveyor belt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied food-contact polyurethane conveyor belt and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: filter
+          role: "Supplied juice-press filter cloth"
+          name: "Supplied juice-press filter cloth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied supplied juice-press filter cloth and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: cable
+          role: "Supplied low-voltage power cable"
+          name: "Low-voltage cable"
+          flow_type: "product"
+          flow_ref:
+            uuid: "49101b44-20cc-46a0-adfb-af07e4cc8908"
+          property_unit: "Length / m"
+          description: "Actual <=1000V power cable compatible with its construction/provider and supply standard; retain native Length/m receipts, installed lengths/cuts/returns. Physical reconciliation alone uses own same-construction kg/m."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: bearing
+          role: "Supplied roller bearing"
+          name: "Ball or roller bearings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+          property_unit: "Mass / kg"
+          description: "Actual completed roller-bearing subtype/size/finish/provider; weigh independent supplied bearings and returns, excluding bearings embedded in complete bought drives."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: screw
+          role: "Supplied steel assembly screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Actual completed steel assembly screw with own size/grade/finish/provider and installed/returned stock, not a default screw count or stainless food-contact grade."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: motor
+          role: "Bought AC electric drive motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eb4e9abb-abd4-4f75-84a8-638c4d845e85"
+          property_unit: "Mass / kg"
+          description: "Actual completed compatible AC motor for special-purpose machine assembly and matched CN supplied interface; weigh independent received/installed/returned motors. Rating or IE5 marketing is not a factory energy amount."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: gearbox
+          role: "Bought industrial gearbox"
+          name: "Bought industrial gearbox"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought industrial gearbox and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: hydpump
+          role: "Bought hydraulic power unit for food press"
+          name: "Bought hydraulic power unit for food press"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought hydraulic power unit for food press and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: actuator
+          role: "Bought hydraulic cylinder"
+          name: "Linear acting (cylinders) hydraulic and pneumatic power engines and motors"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aea61250-788d-4a2b-9c63-ff24b8113469"
+          property_unit: "Mass / kg"
+          description: "Actual completed linear hydraulic cylinder under its own stroke/bore/seal/provider interface; weigh supplied module and distinguish local charging and factory stroke-test utilities."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: screwpress
+          role: "Bought complete oilseed screw-press module"
+          name: "Bought complete oilseed screw-press module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought complete oilseed screw-press module and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: bowl
+          role: "Bought centrifuge rotating bowl assembly"
+          name: "Bought centrifuge rotating bowl assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought centrifuge rotating bowl assembly and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: homvalve
+          role: "Bought food homogenization valve assembly"
+          name: "Bought food homogenization valve assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought food homogenization valve assembly and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: hmi
+          role: "Bought complete food-machine control cabinet"
+          name: "Bought complete food-machine control cabinet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought complete food-machine control cabinet and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: valve
+          role: "Bought steel isolation valve"
+          name: "Steel valve"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3cb88a81-618f-4fa5-814e-46399b121622"
+          property_unit: "Mass / kg"
+          description: "Actual bought completed steel isolation valve and supplier/alloy/pressure/supplied finish; this generic identity does not certify a hygienic food-contact or homogenizer valve."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: sensor
+          role: "Bought complete pressure instrument"
+          name: "Bought complete pressure instrument"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied bought complete pressure instrument and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: luboil
+          role: "Local food-grade lubricating oil"
+          name: "Local food-grade lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied local food-grade lubricating oil and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: hydfluid
+          role: "Local petroleum hydraulic-fluid charge"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume / m3"
+          description: "Only actual compatible >=70% petroleum-oil hydraulic preparation for a non-food-contact drive circuit. Measure native Volume/m3 at actual temperature and own composition/density, receipts/stocks/returns/retained charge; no food-grade approval is inferred."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: grease
+          role: "Local food-grade lubricating grease"
+          name: "Local food-grade lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied local food-grade lubricating grease and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: water
+          role: "Factory treated process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Actual treated industrial process-water supplier/quality and own water fraction/temperature/density, receipts/returns/reacted water/stocks; distinct from DI and tap water."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: retained_di
+          role: "Retained supplied deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass / kg"
+          description: "Actual DI supply through compatible ion-exchange/RO interface, own conductivity/water fraction/temperature/density and measured factory-test receipts/stocks/returns; the equipment customer water rate is not a factory default. Record only actual measured charge retained in the accepted shipped machine, distinct from consumed trials and returns; empty circuits and catalogue options do not establish included fill."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+        - row_id: retained_hydfluid
+          role: "Retained supplied petroleum hydraulic-fluid charge"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume / m3"
+          description: "Only actual compatible >=70% petroleum-oil hydraulic preparation for a non-food-contact drive circuit. Measure native Volume/m3 at actual temperature and own composition/density, receipts/stocks/returns/retained charge; no food-grade approval is inferred. Record only actual measured charge retained in the accepted shipped machine, distinct from consumed trials and returns; empty circuits and catalogue options do not establish included fill."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_modules
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+                - handtmann-fs
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: finish
+    label: "Actual local joining cleaning and finishing"
+    inputs:
+      product:
+        - row_id: ipa
+          role: "Local equipment-cleaning isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Actual compatible China at-plant isopropanol for local equipment cleaning; own purity/water/density/provider and measured preparation/stock/returns/reaction/retention. It is not the optical-assembly or assumed70%-antiseptic supply."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - buhler-conche
+                - tetra-handbook
+            ranges: []
+        - row_id: nitric
+          role: "Local surface-finishing50% nitric acid"
+          name: "Nitric acid, 50% aqueous solution"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db613797-10b0-4252-b818-659b99ce85dd"
+          property_unit: "Mass / kg"
+          description: "Actual50% aqueous nitric-acid industrial finishing/cleaning reagent CAS7697-37-2; own concentration/provider/density and reaction/dilution records. Measure physical solution, not anhydrous acid; no universal hygienic passivation recipe."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - buhler-conche
+                - tetra-handbook
+            ranges: []
+        - row_id: alkali
+          role: "Local cleaning30% sodium hydroxide"
+          name: "Sodium hydroxide（30%）"
+          flow_type: "product"
+          flow_ref:
+            uuid: "47926319-2558-4b19-bbab-0ff264fca360"
+          property_unit: "Mass / kg"
+          description: "Actual30% aqueous NaOH CAS1310-73-2 and supplier/assay/density for documented local cleaning; record physical solution and dilution/reaction/returns separately. This is not automatic customer CIP consumption."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - buhler-conche
+                - tetra-handbook
+            ranges: []
+        - row_id: peracid
+          role: "Local peracetic-acid disinfectant solution"
+          name: "Local peracetic-acid disinfectant solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied local peracetic-acid disinfectant solution and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - buhler-conche
+                - tetra-handbook
+            ranges: []
+        - row_id: weld
+          role: "Local stainless-steel welding filler wire"
+          name: "Local stainless-steel welding filler wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied local stainless-steel welding filler wire and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - buhler-conche
+                - tetra-handbook
+            ranges: []
+        - row_id: argon
+          role: "Local gaseous argon welding shield"
+          name: "Local gaseous argon welding shield"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied local gaseous argon welding shield and its own completed configuration/material/food-contact approval/provider; measure receipts/installed amount/stocks/returns and remaining local work. Complete bought hardware embeds upstream manufacture once; local ingredients and tests remain separately measured. The queried UUID remains unresolved."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - buhler-conche
+                - tetra-handbook
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Actual factory inspection and acceptance trials"
+    inputs:
+      product:
+        - row_id: di
+          role: "Factory-test deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass / kg"
+          description: "Actual DI supply through compatible ion-exchange/RO interface, own conductivity/water fraction/temperature/density and measured factory-test receipts/stocks/returns; the equipment customer water rate is not a factory default."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+            ranges: []
+        - row_id: nitrogen
+          role: "Factory protective-atmosphere nitrogen"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50626f35-0e0d-4139-b9f9-7e9ff238ba62"
+          property_unit: "Mass / kg"
+          description: "Only actual factory protective-atmosphere nitrogen supply with matched purity/provider/gas phase/container and measured cylinder/line stocks/returns. Food-packaging lifetime gas and electronic-grade supply are distinct."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+            ranges: []
+        - row_id: milk
+          role: "Actual factory-trial pasteurized liquid milk"
+          name: "Processed liquid milk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02cfe33a-6f85-4477-bfde-c8057d01cfa1"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased pasteurized processed liquid milk used in a documented attributable factory acceptance trial; own supplier/composition/water/density and stocks/returns/saleable or discarded test output. No customer dairy output recipe is adopted."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+            ranges: []
+        - row_id: sugar
+          role: "Actual factory-trial soft white sugar"
+          name: "Soft white sugar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3dfedfb-7d93-4553-aba3-02940edaf6aa"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied soft white sugar in documented factory trials, matched supplier/product form and own sucrose/invert-sugar/moisture assay. Granulated sugar or total recipe solids are not automatically this exchange."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+            ranges: []
+        - row_id: oil
+          role: "Actual factory-trial refined sunflower oil"
+          name: "Sunflower-seed and safflower-seed oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b88e515-861e-4552-b494-67bb3d645aa7"
+          property_unit: "Mass / kg"
+          description: "Only actual refined sunflower oil supplied for a documented factory trial and compatible refined sunflower/safflower family interface; own species/refining/quality/water/composition/provider. Crude seed oil, seed feed and normal customer oil-production output are distinct."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tests
+              source_ids:
+                - anderson-expeller
+                - bucher-press
+                - tetra-handbook
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: services
+    label: "Unassigned common-period factory services"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Factory low-voltage electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Energy / kWh"
+          description: "Only actual compatible CN user-side grid-average AC <1kV supply; retain metered Energy/kWh and3.6MJ/kWh conversion. Allocated local work and trial meters take priority; shared service includes only unassigned common-period residual."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: air
+          role: "Factory compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Actual compressed-air supplier/pressure/purity and native Volume/m3 at stated T/P/wet-dry state; actual meter/density corrections only. Account shared residual once and exclude customer forming-air lifetime demand."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: heat
+          role: "Purchased natural-gas industrial heat"
+          name: "Heat, district or industrial, natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eb581eb3-c707-41a0-b4e6-ee1854551714"
+          property_unit: "Energy / MJ"
+          description: "Only actual compatible CN natural-gas industrial-heat supply and metered native Energy/MJ. Declare gross/net meter datum; subtract independently measured same-datum return once for gross heat, never subtract twice for net supply."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: tap
+          role: "Service tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a8411b6-e476-4f98-9d77-0d492661a07f"
+          property_unit: "Volume / m3"
+          description: "Only actual compatible Hong Kong treated-water production/supply interface; retain native Volume/m3 and own temperature/density/water fraction when reconciling mass. Unassigned service residual excludes already measured cleaning/trial water."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: dispatch
+    label: "Accepted equipment dispatch and packaging"
+    inputs:
+      product:
+        - row_id: board
+          role: "Corrugated packaging board"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Actual C/E/F corrugated board with fibre>=80%, supplier/recycled content/moisture and weighed dispatch material/returns. Packing stays outside equipment net mass."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - cpc
+                - handtmann-fs
+            ranges: []
+        - row_id: film
+          role: "LDPE packaging foil"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Actual non-cellular unreinforced non-adhesive LDPE foil supplier/thickness/moisture and dispatch/returned mass. This is not PVA, PET or HDPE forming stock."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - cpc
+                - handtmann-fs
+            ranges: []
+        - row_id: pallet
+          role: "Dispatch wood pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Actual wood pallet supplied for dispatch, own construction/moisture/receipts/reuse/return ledger. It is packaging outside Dnet and not an assumed EURO or one-pallet-per-machine mass."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - cpc
+                - handtmann-fs
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished
+          role: "Accepted configured industrial food machinery"
+          name: "Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d646385f-0b2b-4477-81f9-43b6f354ef55"
+          property_unit: "Mass / kg"
+          description: "Only the accepted complete configured machine whose principal function is residual industrial food/drink preparation or manufacture, including mechanical fats/oils pressing; calibrated net mass and actual included hardware/fill follow cp_mass. A centrifuge or packing machine is not qualified solely by food application."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - cpc
+                - handtmann-fs
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: residues
+    label: "Measured waste transfers and direct emissions"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wsteel
+          role: "Outgoing steel machining scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Measured outgoing unprocessed steel machining/forming scrap, own alloy/metal content/moisture/stocks/recovery/returns and actual receiver route; no avoided burden assumed."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: wcu
+          role: "Outgoing copper machining scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Measured outgoing copper scrap with own contained-Cu/contaminant/moisture/stocks and receiver. Selected supply interface requires an actual hydrometallurgical recycling route; direct-remelt shipments require another identity."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: wplastic
+          role: "Outgoing HDPE forming-plate machining waste"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7e78f0a8-c042-47ca-a742-3bac92be1477"
+          property_unit: "Mass / kg"
+          description: "Only actual cleaned polyethylene machining waste handed over at the compatible mechanical-recycling interface; own polymer/additive/moisture/contamination/stocks/returns and receiver route. Untreated food-soiled mixture is distinct."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: spentipa
+          role: "Outgoing spent isopropanol solution"
+          name: "Outgoing spent isopropanol solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual transferred outgoing spent isopropanol solution independently, with own composition/assay/moisture, period stocks/returns/recovery and actual receiver/treatment route. The queried identity remains unresolved; no unrelated waste or direct-air proxy."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Outgoing factory industrial wastewater"
+          name: "Outgoing factory industrial wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual transferred outgoing factory industrial wastewater independently, with own composition/assay/moisture, period stocks/returns/recovery and actual receiver/treatment route. The queried identity remains unresolved; no unrelated waste or direct-air proxy."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: sludge
+          role: "Outgoing metal-hydroxide finishing sludge"
+          name: "Outgoing metal-hydroxide finishing sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual transferred outgoing metal-hydroxide finishing sludge independently, with own composition/assay/moisture, period stocks/returns/recovery and actual receiver/treatment route. The queried identity remains unresolved; no unrelated waste or direct-air proxy."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: wtestfood
+          role: "Outgoing human-food factory-trial debris"
+          name: "Food Debris"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55feef47-26fa-48d1-bcf5-1eb581143bd7"
+          property_unit: "Mass / kg"
+          description: "Only measured discarded human-food debris from actual factory acceptance trials, own ingredient composition/moisture/stocks/returns and food-waste receiver route. Saleable or customer-returned test food is not silently waste."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: wasteoil
+          role: "Outgoing machining lubricating oil waste"
+          name: "Waste oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a68e97a-21fe-43f7-a86e-3e39b653e10a"
+          property_unit: "Mass / kg"
+          description: "Measured spent lubricating/cutting oil from local machining or equipment-maintenance tests under compatible supply scope; own oil/water/metal assay, stocks/returns and treatment receiver. Spent food oil is distinct."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: dust
+          role: "Transferred captured metal grinding dust"
+          name: "Transferred captured metal grinding dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual transferred transferred captured metal grinding dust independently, with own composition/assay/moisture, period stocks/returns/recovery and actual receiver/treatment route. The queried identity remains unresolved; no unrelated waste or direct-air proxy."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+        - row_id: wfilm
+          role: "Outgoing LDPE packaging waste"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7e78f0a8-c042-47ca-a742-3bac92be1477"
+          property_unit: "Mass / kg"
+          description: "Only actual cleaned LDPE packaging waste at the compatible mechanical-recycling interface; independently weigh dispatch offcuts/returns, composition/moisture/stocks and receiver. No automatic recovery percentage."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured fossil carbon dioxide to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air. Fossil origin requires own fuel/carbon evidence; biogenic trial-food carbon is separate."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: ipair
+          role: "Isopropanol to air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured isopropanol to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: vapor
+          role: "Water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured water vapour to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Molecular nitrogen dioxide to air"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured molecular nitrogen dioxide to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air. Molecular NO2 differs from NOx as NO2-equivalent."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm10
+          role: "PM10 to air"
+          name: "particles (PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-91be-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured pm10 to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air. PM10 includes finer fractions; avoid overlapping constituent-element/particle reporting."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: copperair
+          role: "Copper to air"
+          name: "copper"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a7a0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured copper to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air. Own contained element differs from gross oxide/salt/alloy. Generic metal-and-ion flow requires preference for separately matched individual species when the actual LCIA method differentiates them."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: chromiumair
+          role: "Hexavalent chromium to air"
+          name: "chromium (vi)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-950b-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured hexavalent chromium to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air. Own Cr(VI) assay, not total chromium or alloy mass, is required."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: nickelair
+          role: "Nickel to air"
+          name: "nickel"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96c8-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only actual independently measured nickel to air after configured local controls, CAS/species/origin and ordinary unspecified-air compartment matched to concentration × simultaneous flow/time with state/unit correction plus fugitives. Captured sludge/wastewater/stocks and unexplained residuals are non-air. Own contained element differs from gross oxide/salt/alloy. Generic metal-and-ion flow requires preference for separately matched individual species when the actual LCIA method differentiates them."
+          amount:
+            expression: "Measured attributable native-unit amount divided by accepted configured-machine net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_configuration
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate actual configurations/site/process meters first. Allocate common-period residual by measured causal service demand or work, not catalogue food throughput. Include attributable failed trials/rework/rejects in accepted-machine burdens. Cancel paired internal transfers; disclose reusable returned test food, saleable co-products and receiver allocation/treatment without invented avoided burdens."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "accepted machine"
+      record_type: "foreground_record"
+      raw_fields: "model/configuration/serial; net mass; Naccepted; Dnet; included hardware/fills; excluded packing/spares"
+      collection_method: "Calibrated traceable weighings reconcile accepted complete machines with actual order/BOM within one configuration/period. Sum accepted net mass excluding packing/spare stock/rejects/consumed trials. Include only actually retained shipped fill."
+      unit: "kg"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_materials
+      process_id: "fabrication"
+      flow_role: "local stock and chemical ingredients"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; own gross mass/assay/moisture/density; alloy/formulation; stocks/returns/reactions/retained parts; actual local route"
+      collection_method: "Weigh actual supplied stock and each local finishing/joining/cleaning ingredient; reconcile own-stream element/moisture/chemical contents with retained hardware, reaction products, baths/recovery/waste/stocks/returns. Actual surface alloy or sanitary approval is specific to the contacted part, never every frame. Embedded complete-module materials stay upstream once."
+      unit: "kg"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_modules
+      process_id: "assembly"
+      flow_role: "completed hardware and retained fill"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; BOM/completion/options; hardware mass/length; separate fill formula/assay/T/P/density; receipts/installed/returns/stocks"
+      collection_method: "Hardware branch weighs actual completed received/installed/returned assemblies and cable lengths, documenting remaining local work. Chemical branch independently measures local fill/lubricant/gas in its own native units and own composition/moisture/T/P/density, stocks/reactions/retention/returns. Complete bought modules embed their chemicals upstream once; whole hardware mass never substitutes chemical amount. First retained supply fill is distinct from trial consumption and customer maintenance."
+      unit: "native unit"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_tests
+      process_id: "test"
+      flow_role: "observed factory trial media"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; actual acceptance order/trial/repeat/reject; water/food/gas receipts; own composition/state; returned/reused/sold/discarded stocks"
+      collection_method: "Meter actual attributed factory tests and repeated/failed trials, using each food/chemical/water/gas own measured amount and composition. Record returned/reused/recovered and saleable food independently, never as disappearance. Exclude normal customer production, catalogue recipe/capacity, R&D demonstrations or customer commissioning unless an explicit declared manufacturing attribution is evidenced."
+      unit: "native unit"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_utilities
+      process_id: "services"
+      flow_role: "each unassigned utility"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; common period/site/import/self-generation/export/storage; assigned meters; gross/net heat datum; independent return; T/P/humidity/density"
+      collection_method: "Reconcile each common-period imported and actually generated utility minus exports/storage with assigned local/test meters; allocate only residual once. Cable/energy/volume units remain native. Gross heat deducts separately measured same-datum return once; net heat never twice. Process water/DI/service water and internally circulated cooling flows are independent interfaces; paired returns cancel."
+      unit: "native unit"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_dispatch
+      process_id: "dispatch"
+      flow_role: "each packaging item"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; packing grade/moisture/dimensions; dispatch receipts; returns/reuse/stocks; packing outside Dnet"
+      collection_method: "Weigh actual board/foil/pallet independently and reconcile dispatch/returns/reuse/stocks within the accepted configuration/period. No generic packaging ratio or catalogue shipping gross mass establishes net equipment mass."
+      unit: "kg"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_wastes
+      process_id: "residues"
+      flow_role: "each outgoing waste stream"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; transfer weight; own composition/assay/moisture/density; stocks/returns/recovery; receiver/transport/treatment route"
+      collection_method: "Measure each outgoing waste independently at its actual handover state; retain own-stream wet/dry/composition and chemical/metal contents, returned stock and receiver route. Wastewater/sludge/spent solvent/captured dust/food/oil remain separate. Treatment is distinct from direct environmental discharge; captured material is not air. Missing compatible identity remains a gap rather than wrong-origin waste proxy."
+      unit: "kg"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "residues"
+      flow_role: "each direct emitted species"
+      record_type: "foreground_record"
+      raw_fields: "Qattr; CAS/species/origin/compartment; post-control concentration; simultaneous flow/time; T/P/wet-dry/O2 correction; fugitive sampling; capture/reaction/byproducts"
+      collection_method: "Use independently observed post-control concentration times matched actual flow and time with unit/state correction plus separately sampled fugitives. Reconcile input/retained/recovered/destroyed/sludge/wastewater/stocks by own assays; capture is not destruction and non-air/unexplained residuals never infer air. Molecular NO2 differs from NOx-equivalent; contained Cr(VI)/Ni/Cu differs from total metal/oxide/salt/alloy and avoids PM overlap."
+      unit: "kg"
+      frequency: "each actual batch/matched interval"
+      temporal_coverage: "one common production period"
+      site_scope: "same declared configuration/site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original receipts/calibration/own assays/acceptance/BOM/uncertainty"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Within one actual configuration/period divide attributable native-unit total by the sum of calibrated accepted complete-machine net masses. Retain per-machine quantities and actual denominator evidence."
+      inputs:
+        - Qattr
+        - Dnet
+        - Naccepted
+        - cp_mass
+      output: "native-unit amount per kg reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_qnd
+      applies_to: "all inventory rows"
+      requirement: "Same configuration/period Qattr includes attributable manufacture/assembly/tests/reject/rework burden. Naccepted counts accepted machines; Dnet sums their calibrated net masses. M=Dnet/Naccepted; q_item=Qattr/Naccepted; q_ref=Qattr/Dnet. Catalogue empty/gross mass or food throughput is not a denominator."
+      evidence: "calibrated configuration-specific accepted ledger"
+    - id: quality_physical
+      applies_to: "all inventory rows"
+      requirement: "Every element/chemical term uses its own gross mass, assay/moisture/wet-dry basis, reactions/stocks/returns/retention. Alloy/sludge/solution mass differs from contained element/active chemical. Each water stream requires own water fraction/density at actual temperature, independent reaction/retained fill/evaporation/discharge/stocks; internal returns pair and cancel."
+      evidence: "own-stream assays and state/stock/reaction records"
+    - id: quality_solvent
+      applies_to: "ipa; spentipa; ipair; wastewater"
+      requirement: "Reconcile each solvent own assay, stocks/reactions/retained/recovered/captured/destroyed/wastewater/spent-media terms against independently measured air. Capture differs from destruction; non-air and unexplained residual cannot become emitted IPA."
+      evidence: "independent measured fate and air records"
+    - id: quality_scope
+      applies_to: "reference product"
+      requirement: "Maintain the entire food/drink/fats/oils residual category with actual principal-function and configuration review. Food-contact grade/approval is component-specific, not a whole-frame claim. Catalogue option, empty/gross mass, customer recipe/yield/utility demand, marketing savings and maintenance consumables are not factory manufacture defaults."
+      evidence: "actual order/BOM/acceptance and primary original technical body"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Match actual published100/type/native reference internal ID/property/unitgroup and official bilingual names with full chemistry/CAS/grade/phase/provider/completion/compartment. Add every actual unlisted material, ingredient/fuel/fill/module/test food, transport, waste and emitted species as independently queried atomic measured exchanges. Unresolved identities remain gaps; missing differs from zero and not-applicable requires physical evidence."
+      evidence: "own full direct and supplier/interface review"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require complete accepted residual industrial food/drink/fats/oils machine function and equivalent bilingual one-kg net reference. Reject general centrifuges, independent pumps/filtration/packing, parts or customer foods as whole-equipment substitutes."
+    source_ids:
+      - cpc
+      - census
+      - sigma
+  - rule_id: validate_makebuy
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require actual completed supply/order/BOM, food-contact component approval and local make/buy/test boundaries. Reject duplicate embedded upstream modules, assumed options/fills, catalogue factory recipes and lifetime customer consumables. Include attributable failed trials/rework/rejects."
+    source_ids:
+      - cpc
+      - anderson-expeller
+      - anderson-oil
+      - bucher-press
+      - buhler-conche
+      - tetra-handbook
+      - handtmann-fs
+      - sigma
+      - census
+  - rule_id: validate_balances
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require own-stream physical/chemical/water/solvent balances and post-control species concentration × matched flow/time/state plus independent fugitives. Common-period utilities reconcile imports/actual generation/exports/storage with assigned meters and residual only; gross heat return is independently deducted once."
+    source_ids: []
+  - rule_id: validate_species
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require measured molecular NO2, actual Cr(VI), contained Ni/Cu and non-overlapping PM. Prefer individual Ni/Cu species if the actual LCIA method differentiates them. Fossil CO2 needs origin evidence distinct from biogenic food carbon. Captured/dissolved material remains non-air; report checks performed/skipped, findings and actual completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Actual accepted configured residual industrial food/drink/fats/oils machinery manufacture"
+  excluded_use: "Neighbour-machine/component/customer-food proxies, catalogue mass/process recipe or universal factory assumption"
+  required_metadata: "All reference qualifiers; Qattr/Naccepted/Dnet; native units/own assays/state; order/BOM/makebuy/actual tests/providers/receiver/allocation/gaps"
+  required_quality_disclosure: "Measured/estimated/missing, calibration/sampling/uncertainty, residuals, identity/scope gaps and performed/skipped check completeness"
+  update_trigger: "Principal function/order/configuration/contact alloy/chemical phase/provider/makebuy/site/period/acceptance/treatment change"
+data_sources:
+  - id: "cpc"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Whole44516 including fats/oils; adjacent4451/44522 and43931/43914/43921/43932 review."
+  - id: "anderson-expeller"
+    type: "handbook"
+    reference: "https://www.andersonintl.com/wp-content/uploads/2026/04/260238_Anderson-International_Expeller-Press-Brochure-updates-compressed.pdf"
+    used_for: "Mechanical screw press, actual dual pressing/bearings/coupling/cooling and optional water/choke; empty mass is not accepted configured Dnet."
+  - id: "anderson-oil"
+    type: "handbook"
+    reference: "https://www.andersonintl.com/oilseed-equipment/"
+    used_for: "Oilseed press and extrusion preparation interfaces; customer solvent extraction and entire plant are not automatic complete reference."
+  - id: "bucher-press"
+    type: "handbook"
+    reference: "https://www.bucherunipektin.com/en/bucher-hpx-presses"
+    used_for: "Hydraulic piston/drainage/cylinder rotation food press, with actual food vs pharmacy/lab/pilot function and empty/gross supply review."
+  - id: "buhler-conche"
+    type: "handbook"
+    reference: "https://www.buhlergroup.com/global/en/media/media-releases/finer-s-ed-26-and-elk-s-ed-26.html"
+    used_for: "Food-grade component/frame/drives and five-roll/single-shaft mechanical chocolate processing; no alloy, marketing savings or recipe defaults."
+  - id: "tetra-handbook"
+    type: "handbook"
+    reference: "https://dairyprocessinghandbook.tetrapak.com/chapter/homogenizers"
+    used_for: "Pump/transmission/pistons/seals and precision-ground homogenizing device; customer milk pressure/flow/steam are not factory trial quantities."
+  - id: "handtmann-fs"
+    type: "handbook"
+    reference: "https://www.us.processing.handtmann.com/_Resources/Persistent/3/7/4/4/3744f681e461d09e41db8449cb7f5bfa216a4eb2/Produktdatenblatt_FS%20525_EN.pdf"
+    used_for: "Food forming/cutting with optional co-extrusion, rollers/water spray and downstream weighing/packing; actual order determines included interfaces."
+  - id: "sigma"
+    type: "handbook"
+    reference: "https://www.alfalaval.fr/globalassets/documents/products/separation/centrifugal-separators/decanters/alfa-laval-sigma-range-olive-oil-decanter-centrifuge.pdf"
+    used_for: "Excluded complete-reference counterexample: decanter centrifuge43931 even when olive-oil dedicated; actual included/optional assemblies and gross mass must not be generalized."
+  - id: "census"
+    type: "official_guidance"
+    reference: "https://www.census.gov/foreign-trade/schedules/b/2022/c84.html"
+    used_for: "Supplementary HS precedence/general centrifuge boundary only; HS8438 fats/oils exclusion cannot narrow the explicit CPC44516 scope."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:412344d223d86e60e54f0a5f5141b50c4b80e3430a5c07da4e68ccbeb78afb50"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4921"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4921
+          line: 59
+          column: 1
+        end:
+          offset: 7891
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actually received stock, identified chemicals or completed compatible assemblies at documented supplied state |\n| starting_condition_role | foreground_input_boundary |\n| product_classification_scope | Complete residual industrial food/drink machinery including fats/oils, with actual neighbouring-function review |\n| recursive_input_rule | Completed bought hardware embeds upstream manufacture once; local manufacture replaces it with actual ingredients/work; pair internal transfers |\n| upstream_dataset_requirement | Compatible published flow type/native unit/grade/chemical phase/food-contact role/provider/geography/completion and transport interface |\n| disclosure | Declared order/configuration/net mass, supplied components/options/retained fills, make/buy, actual factory tests and customer boundary |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| principal_function | CPC44516 explicitly includes fats/oils. Sigma is a decanter centrifuge and stays outside the complete reference under43931 despite olive-oil application. Census chapter84 is supplementary: HS8438 excludes fats/oils and must not narrow CPC44516. Review embedded modules separately from independently supplied whole machines. | cpc; sigma; census |\n| source_architecture | Anderson distinguishes mechanical pressing, extrusion preparation and customer solvent extraction; its full plant is not one universal44516 reference. Bucher hydraulic fruit presses require actual food principal function rather than pharmaceutical or lab/pilot default. Tetra distinguishes pump/transmission and homogenizing device; an independent high-pressure pump is not automatically a complete food homogenizer. Bühler conching shears/mixes chocolate mass and the five-roll refiner is not generic cereal milling. | anderson-expeller; anderson-oil; bucher-press; tetra-handbook; buhler-conche |\n| supplied_configuration | Handtmann forming/cutting, optional co-extrusion, rollers/water-spray and downstream weighing/packing interfaces follow actual orders; a depicted filler or packaging link does not establish included BOM. Anderson optional shaft water cooling/choke and closed-loop oil cooling require actual included interfaces/fills. Example empty/gross masses, throughputs, pressure, energy savings and food yields are not Dnet or factory defaults. | handtmann-fs; anderson-expeller; sigma |\n| manufacture_and_tests | Collect actual local cutting/forming/machining/welding/finishing/assembly and attributable inspection, factory trials, rejects and rework. No source establishes a universal material grade, factory route or acceptance recipe. Customer commissioning/recipe development and normal food production are separately scoped; charge factory food/media only when actual acceptance records establish attribution. | anderson-expeller; bucher-press; buhler-conche; tetra-handbook |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 386
+              line: 9
+              column: 107
+          text: "# Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4921
+              line: 59
+              column: 1
+            end:
+              offset: 4942
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_66872"
+      family: "allocation"
+      span:
+        start:
+          offset: 66872
+          line: 1271
+          column: 1
+        end:
+          offset: 67404
+          line: 1278
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_configuration | Separate actual configurations/site/process meters first. Allocate common-period residual by measured causal service demand or work, not catalogue food throughput. Include attributable failed trials/rework/rejects in accepted-machine burdens. Cancel paired internal transfers; disclose reusable returned test food, saleable co-products and receiver allocation/treatment without invented avoided burdens. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 386
+              line: 9
+              column: 107
+          text: "# Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 66872
+              line: 1271
+              column: 1
+            end:
+              offset: 66912
+              line: 1271
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_76874"
+      family: "validation"
+      span:
+        start:
+          offset: 76874
+          line: 1310
+          column: 1
+        end:
+          offset: 78392
+          line: 1320
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Require complete accepted residual industrial food/drink/fats/oils machine function and equivalent bilingual one-kg net reference. Reject general centrifuges, independent pumps/filtration/packing, parts or customer foods as whole-equipment substitutes. | cpc; census; sigma |\n| validate_makebuy | Require actual completed supply/order/BOM, food-contact component approval and local make/buy/test boundaries. Reject duplicate embedded upstream modules, assumed options/fills, catalogue factory recipes and lifetime customer consumables. Include attributable failed trials/rework/rejects. | cpc; anderson-expeller; anderson-oil; bucher-press; buhler-conche; tetra-handbook; handtmann-fs; sigma; census |\n| validate_balances | Require own-stream physical/chemical/water/solvent balances and post-control species concentration × matched flow/time/state plus independent fugitives. Common-period utilities reconcile imports/actual generation/exports/storage with assigned meters and residual only; gross heat return is independently deducted once. |  |\n| validate_species | Require measured molecular NO2, actual Cr(VI), contained Ni/Cu and non-overlapping PM. Prefer individual Ni/Cu species if the actual LCIA method differentiates them. Fossil CO2 needs origin evidence distinct from biogenic food carbon. Captured/dissolved material remains non-air; report checks performed/skipped, findings and actual completeness. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 9
+              column: 1
+            end:
+              offset: 386
+              line: 9
+              column: 107
+          text: "# Machinery n.e.c. for the industrial preparation or manufacture of food or drink (including fats or oils)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 76874
+              line: 1310
+              column: 1
+            end:
+              offset: 76896
+              line: 1310
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "principal_function"
+      identity_kind: "explicit"
+      unit_id: "normative_4921"
+      source_span:
+        start:
+          offset: 5897
+          line: 74
+          column: 1
+        end:
+          offset: 6266
+          line: 74
+          column: 370
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "source_architecture"
+      identity_kind: "explicit"
+      unit_id: "normative_4921"
+      source_span:
+        start:
+          offset: 6267
+          line: 75
+          column: 1
+        end:
+          offset: 6889
+          line: 75
+          column: 623
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "supplied_configuration"
+      identity_kind: "explicit"
+      unit_id: "normative_4921"
+      source_span:
+        start:
+          offset: 6890
+          line: 76
+          column: 1
+        end:
+          offset: 7393
+          line: 76
+          column: 504
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "manufacture_and_tests"
+      identity_kind: "explicit"
+      unit_id: "normative_4921"
+      source_span:
+        start:
+          offset: 7394
+          line: 77
+          column: 1
+        end:
+          offset: 7888
+          line: 77
+          column: 495
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_configuration"
+      identity_kind: "explicit"
+      unit_id: "normative_66872"
+      source_span:
+        start:
+          offset: 66966
+          line: 1275
+          column: 1
+        end:
+          offset: 67401
+          line: 1275
+          column: 436
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_76874"
+      source_span:
+        start:
+          offset: 76950
+          line: 1314
+          column: 1
+        end:
+          offset: 77244
+          line: 1314
+          column: 295
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_makebuy"
+      identity_kind: "explicit"
+      unit_id: "normative_76874"
+      source_span:
+        start:
+          offset: 77245
+          line: 1315
+          column: 1
+        end:
+          offset: 77670
+          line: 1315
+          column: 426
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_76874"
+      source_span:
+        start:
+          offset: 77671
+          line: 1316
+          column: 1
+        end:
+          offset: 78016
+          line: 1316
+          column: 346
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_76874"
+      source_span:
+        start:
+          offset: 78017
+          line: 1317
+          column: 1
+        end:
+          offset: 78389
+          line: 1317
+          column: 373
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4921"
+      source_span:
+        start:
+          offset: 4921
+          line: 59
+          column: 1
+        end:
+          offset: 4942
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4921"
+      source_span:
+        start:
+          offset: 4970
+          line: 63
+          column: 1
+        end:
+          offset: 5843
+          line: 70
+          column: 153
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_66872"
+      source_span:
+        start:
+          offset: 66872
+          line: 1271
+          column: 1
+        end:
+          offset: 66912
+          line: 1271
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_76874"
+      source_span:
+        start:
+          offset: 76874
+          line: 1310
+          column: 1
+        end:
+          offset: 76896
+          line: 1310
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:412344d223d86e60e54f0a5f5141b50c4b80e3430a5c07da4e68ccbeb78afb50"
+  generated_content_sha256: "sha256:c39916c460d05b3fcff83be784b368b4cf515c5ce08188795800748069e1d153"
