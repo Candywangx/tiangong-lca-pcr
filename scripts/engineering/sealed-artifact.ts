@@ -5,10 +5,14 @@ import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
 import { verifyProductArtifacts } from '../../builder/scripts/product-release.ts';
 import { assertProductIdentity, type ProductIdentity } from '../../builder/scripts/product-identity.ts';
 import { record, text, field, type ArtifactProof, type ProductManifest } from '../../builder/scripts/release-types.ts';
 import { verifyRuntime } from './runtime.ts';
+import { OfflineLibrary } from '../../packages/pcr-core/src/offline-library.ts';
+import { withPcrSource } from '../../packages/pcr-core/src/source-context.ts';
+import { buildGuidance } from '../../packages/pcr-core/src/index.ts';
 
 export interface SealedArtifactOptions {
   root: string;
@@ -179,19 +183,31 @@ export async function qualifySealedArtifacts(options: SealedArtifactOptions): Pr
     }
     requireCondition(selected !== null, 'Sealed library contains no usable material record.'); if (!selected) throw new Error('No selected record.');
     const id = text(selected.id, 'selected PCR ID'); requireCondition(id.length > 0, 'Selected PCR identity is empty.'); receipt.selected = { id, recordKind: text(selected.record_kind), version: selected.version }; persist();
+    const expectedGuidance = await check('independent_source_guidance', () => {
+      // Read through this tag's source implementation, separately from the installed
+      // executable. Its core regenerates normative context from canonical Markdown
+      // and checks schema, projection, source spans, provenance and readiness.
+      const source = new OfflineLibrary(sqlite, { expectedSha256: pinnedHash, verify: true });
+      try {
+        requireCondition(source.manifest.snapshot.source_commit === manifest.identity.sourceCommit && source.manifest.snapshot.content_version === manifest.identity.version, 'Independent SQLite source identity differs.');
+        return json(JSON.stringify(withPcrSource(source.root, source, () => buildGuidance({ root: source.root, pcrId: id }))));
+      } finally { source.close(); }
+    }, value => ({ id, units: array(field(value, 'normative_context', 'units'), 'verified normative units').length,
+      bindings: array(field(value, 'normative_context', 'bindings'), 'verified normative bindings').length,
+      provenance: field(value, 'normative_context_provenance'), readiness: value.readiness }));
+    writeFileSync(path.join(evidence, 'source-guidance.json'), `${JSON.stringify(expectedGuidance, null, 2)}\n`);
     const resolved = json((await consume('resolve', ['resolve', '--pcr', id, '--library', sqlite, '--library-sha256', pinnedHash])).stdout);
     requireCondition(field(resolved, 'pcr', 'id') === id, 'Resolution did not retain the selected canonical identity.');
     const guidanceFile = path.join(evidence, 'guidance.json');
     await consume('guidance', ['guidance', '--pcr', id, '--library', sqlite, '--library-sha256', pinnedHash, '--output', guidanceFile]);
     const guidance = record(jsonFile(guidanceFile)); requireCondition(field(guidance, 'pcr', 'id') === id && guidance.schema_version === 2, 'Guidance did not retain its selected identity/contract.');
-    array(field(guidance, 'normative_context', 'units'), 'complete normative units');
-    array(field(guidance, 'normative_context', 'bindings'), 'complete normative bindings');
+    await check('guidance_source_fidelity', () => requireCondition(isDeepStrictEqual(guidance, expectedGuidance), 'Installed guidance differs from independently verified SQLite source guidance.'));
     const batchInput = path.join(evidence, 'batch-request.json'); const batchOutput = path.join(evidence, 'batch.json');
     writeFileSync(batchInput, JSON.stringify({ schema_version: 1, pcr_ids: [id, id] }));
     await consume('batch', ['guidance', 'batch', '--input', batchInput, '--library', sqlite, '--library-sha256', pinnedHash, '--output', batchOutput]);
     const batch = record(jsonFile(batchOutput)); const items = array(batch.items, 'batch items');
     requireCondition(batch.count === 2 && items.length === 2 && items.every(item => field(item, 'pcr', 'id') === id), 'Batch lost input order, duplicates or identity.');
-    requireCondition(JSON.stringify(items[0]) === JSON.stringify(guidance) && JSON.stringify(items[1]) === JSON.stringify(guidance), 'Batch did not preserve complete ordinary guidance.');
+    await check('batch_source_fidelity', () => requireCondition(items.every(item => isDeepStrictEqual(item, expectedGuidance)), 'Batch differs from independently verified complete source guidance.'));
     const invalid = await consume('invalid_source', ['guidance', '--pcr', id, '--library', path.join(installation, 'missing.sqlite')], 1);
     requireCondition(invalid.stdout.trim() === '' && field(json(invalid.stderr), 'error', 'code') === 'PCR_LIBRARY_INVALID', 'Invalid source did not fail closed with a clean stdout.');
     await check('registry_no_network_sanity', () => requireCondition(requests === 0, 'Registry/proxy network access was attempted.'), () => ({ requests, offline: true, scope: 'offline npm plus registry/proxy sentinel; not OS-wide network isolation' }));

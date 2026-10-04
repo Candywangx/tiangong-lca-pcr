@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import type { TestContext } from 'node:test';
@@ -10,11 +10,53 @@ import { buildOfflineLibrary } from '../../../builder/scripts/build-offline-libr
 import { createReadSessionFixture } from '../../../packages/pcr-core/fixtures/read-session-fixture.ts';
 import { resolveNpmCli } from '../sealed-artifact.ts';
 import { parseNpmPackOutput } from '../../../builder/scripts/npm-release.ts';
+import { field, text } from '../../../builder/scripts/release-types.ts';
 
 function put(root: string, relative: string, content: string): void { const target = path.join(root, relative); mkdirSync(path.dirname(target), { recursive: true }); writeFileSync(target, content); }
 
+export type GuidanceMutation = 'empty_context' | 'omit_unit' | 'alter_condition_rehash' | 'batch_only_omission';
+export const OMITTED_ALLOCATION_CONDITION = ' when seed, screenings, and straw are all marketable products and price data are reliable';
+/** An actual compiled bin delegates every command to the original tool, then
+ * corrupts only successful guidance output. Packing still seals these real bytes;
+ * transport checks alone cannot distinguish this broken candidate. */
+function mutateInstalledGuidance(output: string, mutation: GuidanceMutation): void {
+  const metadata: unknown = JSON.parse(readFileSync(path.join(output, 'package.json'), 'utf8'));
+  const bin = path.join(output, text(field(metadata, 'bin', 'tiangong-pcr')));
+  renameSync(bin, path.join(path.dirname(bin), 'real-bin.js'));
+  writeFileSync(bin, `import {spawnSync} from 'node:child_process';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+const args=process.argv.slice(2);
+const result=spawnSync(process.execPath,['--no-strip-types',fileURLToPath(new URL('./real-bin.js',import.meta.url)),...args],{stdio:'inherit'});
+if(result.status===0&&args[0]==='guidance'){
+ const index=args.indexOf('--output');
+ if(index>=0){
+  const filename=args[index+1],value=JSON.parse(readFileSync(filename,'utf8'));
+  const mutate=guidance=>{
+   const context=guidance.normative_context,mode=${JSON.stringify(mutation)};
+   if(mode==='batch_only_omission'&&args[1]!=='batch')return;
+   if(mode==='empty_context'){context.units=[];context.bindings=[];}
+   else if(mode==='omit_unit'||mode==='batch_only_omission'){
+    if(context.units.length<2)throw new Error('Partial omission requires multiple actual units.');
+    const removed=context.units.pop();context.bindings=context.bindings.filter(binding=>binding.unit_id!==removed.unit_id);
+   }else{
+    const condition=${JSON.stringify(OMITTED_ALLOCATION_CONDITION)},unit=context.units.find(unit=>unit.family==='allocation'&&unit.markdown.includes(condition));
+    if(!unit)throw new Error('Real allocation condition missing from controlled source.');
+    unit.markdown=unit.markdown.replace(condition,'');
+   }
+   guidance.normative_context_provenance.context_sha256='sha256:'+createHash('sha256').update(JSON.stringify(context),'utf8').digest('hex');
+  };
+  if(args[1]==='batch')value.items.forEach(mutate);else mutate(value);
+  writeFileSync(filename,JSON.stringify(value));
+ }
+}
+process.exitCode=result.status??1;
+`);
+}
+
 /** Tests build controlled seals; the production qualifier receives only existing artifacts. */
-export async function sealedProductFixture(t: TestContext, usableTool: boolean) {
+export async function sealedProductFixture(t: TestContext, usableTool: boolean, guidanceMutation?: GuidanceMutation) {
   const base = mkdtempSync(path.join(realpathSync(tmpdir()), 'sealed-consumer-contract-')); t.after(() => rmSync(base, { recursive: true, force: true }));
   const source = path.join(base, 'source'); mkdirSync(source);
   const npmCli = resolveNpmCli(); const npm = execFileSync(process.execPath, [npmCli, '--version'], { encoding: 'utf8' }).trim();
@@ -42,7 +84,7 @@ export async function sealedProductFixture(t: TestContext, usableTool: boolean) 
   const manifest = await buildProductRelease(source, identity.tag, root, { webDir: web, getNpmVersion: () => npm,
     pack: ({ stage, output, spec }) => parseNpmPackOutput(execFileSync(process.execPath, [npmCli, 'pack', stage, '--json', '--ignore-scripts', '--offline', '--pack-destination', output, '--cache', path.join(base, 'pack-cache')], { cwd: source, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }), spec.name), builders: {
     tool({ output, version }) {
-      if (usableTool) return buildOfflineTool({ root: process.cwd(), output, version });
+      if (usableTool) { const built = buildOfflineTool({ root: process.cwd(), output, version }); if (guidanceMutation) mutateInstalledGuidance(output, guidanceMutation); return built; }
       // Deliberately installable but not a usable consumer; it cannot pass the qualifier.
       mkdirSync(output, { recursive: true }); put(output, 'package.json', JSON.stringify({ name: '@tiangong-lca/pcr', version, files: ['README.md'], dependencies: { ajv: '8.0.0' }, bundleDependencies: ['ajv'] }));
       put(output, 'README.md', 'Controlled malformed-consumer fixture.\n');
