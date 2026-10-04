@@ -62,7 +62,7 @@ and macOS ARM64. macOS Intel is unsupported. CI asserts the actual architecture,
 rather than inferring it from a runner label. This does not restrict public web
 browsers by CPU.
 
-The root strict TypeScript project covers `scripts/engineering/**`. Separate strict projects cover the remaining runtime boundaries. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The site has its own Next TypeScript project; `typecheck:all` checks every project.
+The root strict TypeScript project covers `scripts/engineering/**`. Separate strict projects cover the remaining runtime boundaries. `tsconfig.core.json` checks the migrated YAML boundary, vocabulary registry, offline-tool builder and their typed contract tests. The site has its own Next TypeScript project. `typecheck:all` generates route types, checks every project with the exact pinned compiler and all strict subflags explicitly enabled, then compares successful compiler file inventories with every tracked and nonignored untracked TypeScript source. Unimported subprocess fixtures and new files cannot silently escape the gate.
 `typecheck:node` checks portable Node/Viewer projects using only root dependencies;
 web tools and Worker checks additionally use the locked site dependency graph.
 Do not use `allowJs`, broad explicit `any`, `@ts-ignore` or `@ts-nocheck` to declare
@@ -71,6 +71,9 @@ an implementation migrated. Unknown external data must be validated and narrowed
 Engineering scripts run directly under Node's erasable-TypeScript support; `tsc`
 remains a separate mandatory check. `build:engineering` emits the scripts and
 declarations; `build:tests` emits both source and tests for compiled-output checks.
+The emitted engineering runner selects only the current authored test inventory,
+requires each compiled file and disables type stripping. Stale emitted tests are
+never discovered by glob, and the schema staging helper is not a test entrypoint.
 Relative imports retain `.ts` in source and are rewritten by the compiler. Public-package qualification must test the actual compiled tarballs, including bins,
 schemas, workers, relocation and asset paths. Consumers do not need a compiler.
 
@@ -103,9 +106,10 @@ From a clean Linux source checkout install both currently separate dependency gr
 ```sh
 nvm install
 nvm use
+npm install --global npm@12.2.0
 npm ci
 npm --prefix packages/pcr-docs ci
-npm run browser:install
+node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
 npm run validate
 ```
 

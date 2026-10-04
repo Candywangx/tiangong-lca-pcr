@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { getEventListeners } from 'node:events';
-import { fileURLToPath } from 'node:url';
 import { parseHTML } from 'linkedom';
 import type { SearchResult } from '../../lib/types.ts';
 

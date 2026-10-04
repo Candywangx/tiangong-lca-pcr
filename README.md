@@ -105,14 +105,16 @@ Material PCR content should use this authoring shape:
 
 ## Development and verification
 
-Use `nvm install && nvm use` for the exact Node 24 version in `.nvmrc`, then
+Use `nvm install && nvm use` for the exact Node 24 version in `.nvmrc`, select
+`npm install --global npm@12.2.0`, then install both locked graphs with
 `npm ci && npm --prefix packages/pcr-docs ci`. `npm run validate` checks the runtime,
 reviewed migration inventory, all scoped TypeScript projects, library contracts and all
 source tests, including documentation tests. Full validation currently runs on Linux because the Goal Harness requires descriptor-anchored `/proc` access; portable suites remain available separately. `npm run test:list` shows suite
-membership; `npm run test:coverage` records the initial engineering coverage.
+membership; `npm run test:coverage` collects the full test/build sources and enforces
+the complete coverage targets from fresh report paths.
 All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
 migration boundaries and final qualification requirements. The Python SEO checker
-is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Remaining authored JavaScript and final production qualification are still tracked under #69.
+is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Authored JavaScript inventory is zero; final production qualification and cutover remain tracked under #69/#79 until live acceptance.
 
 ## Builder CLI
 

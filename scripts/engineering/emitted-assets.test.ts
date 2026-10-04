@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, 
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test, { type TestContext } from 'node:test';
-import { stageTestRuntimeAssets, TEST_RUNTIME_SCHEMAS } from './test-assets.ts';
+import { stageTestRuntimeAssets, TEST_RUNTIME_SCHEMAS } from './emitted-assets.ts';
 function fixture(t: TestContext) {
   const root = mkdtempSync(path.join(tmpdir(), 'pcr-test-assets-contract-')); t.after(() => rmSync(root, { recursive: true, force: true }));
   const source = path.join(root, 'packages/pcr-core/schemas'), emitted = path.join(root, 'dist/test-engineering');

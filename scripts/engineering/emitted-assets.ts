@@ -73,6 +73,6 @@ export function stageTestRuntimeAssets(inputRoot = process.cwd()): { files: numb
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
-  try { if (process.argv.length !== 2) throw new Error('Usage: node scripts/engineering/test-assets.ts'); process.stdout.write(JSON.stringify(stageTestRuntimeAssets()) + '\n'); }
+  try { if (process.argv.length !== 2) throw new Error('Usage: node scripts/engineering/emitted-assets.ts'); process.stdout.write(JSON.stringify(stageTestRuntimeAssets()) + '\n'); }
   catch (error) { process.stderr.write((error instanceof Error ? error.message : String(error)) + '\n'); process.exitCode = 1; }
 }
