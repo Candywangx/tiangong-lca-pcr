@@ -364,7 +364,7 @@ async function run(temporary: string, scenario: string): Promise<void> {
         const { PathnameContext } = await import(pathToFileURL(path.join(nextRoot, 'dist/shared/lib/hooks-client-context.shared-runtime.js')).href) as { PathnameContext: Context<string|null> };
         const wrap = (element: ReturnType<typeof createElement>) => createElement(PathnameContext, { value: page.url }, createElement(RootProvider, { search: { enabled: false } }, createElement(DocsLayout, { tree: source.navigationTree({locale:'en',domain:'agriculture',subdomain:'seeds',record}), nav:{enabled:false}, sidebar:{enabled:false}, tabs:false }, element)));
         const detailedRecord = { ...record, readiness: { status: 'review_required', blockers: [{code:'BOUNDARY_REVIEW',message:'Boundary <needs review>'}], warnings:[{code:'TRANSLATION_WARNING',message:'Translation & evidence pending'}] }, classificationRefs:[{system:'cpc',version:'3.0',code:'01111',mapping_type:'exact'},{system:'hs',version:'2022',code:'1201'}], downloads:[{name:'pcr.en-US.md',url:'/original.md',bytes:4000,sha256:'sha256:'+'c'.repeat(64)}], versions:[{version:'1.0.0',urls:{'en-US':'/en/docs/pcr/agriculture/seeds/wheat/versions/1.0.0/'}},{version:'0.9.0',urls:{'de-DE':'/de/old/'}}] };
-        const current = render(wrap(createElement(PcrRecordPage, { record:detailedRecord, page, html: '<p id="normative">Full normative text</p>' }))); 
+        const current = render(wrap(createElement(PcrRecordPage, { record:detailedRecord, page, html: '<p id="normative">Full normative text</p>' })));
         assert.match(current.body.textContent ?? '', /Review required/);
         assert.equal(current.querySelector('#normative')?.textContent, 'Full normative text');
         assert.equal(current.querySelector('a[rel="next"]')?.getAttribute('href'), '/en/docs/pcr/agriculture/seeds/wheat/part-2/');
@@ -384,7 +384,7 @@ async function run(temporary: string, scenario: string): Promise<void> {
         assert.equal(missingVersion.querySelector('h1')?.classList.contains('pcr-title--long'), true);
         assert.equal(missingVersion.querySelector('[aria-labelledby="pcr-languages-heading"]'), null);
         const historicalPage = manifest.pages.find(item => item.recordVersion)!;
-        const old = render(wrap(createElement(PcrRecordPage, { record: manifest.historicalRecords![0]!, page: historicalPage, html: '<p>Frozen release</p>' }))); 
+        const old = render(wrap(createElement(PcrRecordPage, { record: manifest.historicalRecords![0]!, page: historicalPage, html: '<p>Frozen release</p>' })));
         assert.equal(old.querySelector('.pcr-status-note--history a')?.getAttribute('href'), historicalPage.currentUrl);
         assert.match(old.body.textContent ?? '', /Frozen release/);
       } else throw new Error('Unknown site scenario: ' + scenario);
