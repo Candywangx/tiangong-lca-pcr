@@ -1,17 +1,17 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-// Validate the explicit boundary to retained JavaScript without treating its output as typed.
+// Check the runtime failure-classification boundary with structured tool results.
 function record(value: unknown): Record<string, unknown> {
   assert.ok(value !== null && typeof value === "object" && !Array.isArray(value));
   return value as Record<string, unknown>;
 }
 
-const auditModule: unknown = await import(new URL("./evidence-audit.mjs", import.meta.url).href);
-const errorModule: unknown = await import(new URL("./errors.mjs", import.meta.url).href);
+const auditModule: unknown = await import(new URL("./evidence-audit.ts", import.meta.url).href);
+const errorModule: unknown = await import(new URL("./errors.ts", import.meta.url).href);
 
 function invoke(module: unknown, name: string, args: unknown[]): Record<string, unknown> {
   const callable = record(module)[name];
-  assert.ok(typeof callable === "function", `expected ${name} at the legacy runtime boundary`);
+  assert.ok(typeof callable === "function", `expected ${name} at the runtime boundary`);
   return record(Reflect.apply(callable, undefined, args));
 }
 

@@ -15,8 +15,10 @@ import { fileURLToPath } from "node:url";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import type { YamlObject, YamlValue } from "../../packages/pcr-core/src/yaml-lite.ts";
 
-// Validate the exact API and observed result fields of the untyped module.
-const stateModule: unknown = await import(new URL("./published-revision-state.mjs", import.meta.url).href);
+import { buildReleaseRecord as typedBuildReleaseRecord, inspectPublishedRevisionState as typedInspectPublishedRevisionState,
+  byteSha256 as typedByteSha256, manifestReleaseArtifacts as typedManifestReleaseArtifacts } from './published-revision-state.ts';
+const stateModule = { buildReleaseRecord: typedBuildReleaseRecord, inspectPublishedRevisionState: typedInspectPublishedRevisionState,
+  byteSha256: typedByteSha256, manifestReleaseArtifacts: typedManifestReleaseArtifacts };
 interface Fixture { root: string; pcrDir: string; manifest: YamlObject; }
 interface Inspection {
   problems: string[]; warnings: string[];

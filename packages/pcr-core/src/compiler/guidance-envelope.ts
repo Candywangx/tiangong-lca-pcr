@@ -1,4 +1,5 @@
-import { deriveGuidanceContext, GuidanceContextError } from './guidance-context.ts';
+import type { CurrentPcrSnapshot, StructuredProjection, CompleteGuidance, VerifiedPcrProjection } from "../types.ts";
+import { deriveGuidanceContext, GuidanceContextError, assertGuidanceContextConsistency, type GuidanceContextEnvelope } from './guidance-context.ts';
 
 function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -20,14 +21,30 @@ export function deriveSnapshotGuidanceContext(value: unknown) {
   const snapshot = checkedSnapshot(value);
   return deriveGuidanceContext(snapshot.structured, snapshot.sourceMarkdown);
 }
-export function buildCompleteGuidance(value: unknown, sourceStructured: string) {
+export function buildCompleteGuidance(value: CurrentPcrSnapshot & { structured: StructuredProjection }, sourceStructured: string): CompleteGuidance;
+export function buildCompleteGuidance(value: unknown, sourceStructured: string): ReturnType<typeof buildUnknownGuidance>;
+export function buildCompleteGuidance(value: unknown, sourceStructured: string): unknown { return buildUnknownGuidance(value, sourceStructured); }
+function buildUnknownGuidance(value: unknown, sourceStructured: string) {
   const { pcr, readiness, structured, sourceMarkdown } = checkedSnapshot(value);
+  const fields = normativeFields(structured);
+  return composeGuidance(pcr, readiness, structured, fields, sourceStructured, deriveGuidanceContext(structured, sourceMarkdown));
+}
+function normativeFields(structured: Record<string, unknown>) {
+  const systemBoundary = structured.system_boundary;
+  const allocationRules = structured.allocation_rules;
+  const validationRules = structured.validation_rules;
+  if (!object(systemBoundary) || !Array.isArray(allocationRules) || !Array.isArray(validationRules)) {
+    throw new GuidanceContextError('Complete guidance requires every normative rule family.');
+  }
+  return { system_boundary: systemBoundary, allocation_rules: allocationRules, validation_rules: validationRules };
+}
+function composeGuidance(pcr: Record<string, unknown>, readiness: Record<string, unknown>, structured: Record<string, unknown>, fields: ReturnType<typeof normativeFields>, sourceStructured: string, context: GuidanceContextEnvelope) {
   const production = object(structured.dataset_production) ? structured.dataset_production : {};
   return {
     schema_version: 2,
     guidance_kind: 'tiangong-pcr-agent-guidance',
     pcr, readiness: structuredClone(readiness), source_structured: sourceStructured,
-    system_boundary: structured.system_boundary ?? {},
+    system_boundary: fields.system_boundary,
     reference_flow: structured.reference_flow_definition ?? {},
     boundary_abstraction: structured.boundary_abstraction ?? {},
     measurement_rules: structured.measurement_rules ?? structured.unit_conventions ?? [],
@@ -38,9 +55,9 @@ export function buildCompleteGuidance(value: unknown, sourceStructured: string) 
       data_quality_requirements: production.data_quality_requirements ?? [],
     },
     published_dataset_profile: structured.published_dataset_profile ?? {},
-    allocation_rules: structured.allocation_rules ?? [], data_quality_rules: structured.data_quality_rules ?? [],
-    validation_rules: structured.validation_rules ?? [], data_sources: structured.data_sources ?? [],
-    ...deriveGuidanceContext(structured, sourceMarkdown),
+    allocation_rules: fields.allocation_rules, data_quality_rules: structured.data_quality_rules ?? [],
+    validation_rules: fields.validation_rules, data_sources: structured.data_sources ?? [],
+    ...context,
     validation_notes: [
       'Use this guidance for LCA data authoring, optional TIDAS process authoring, or Agent-led review of existing process/model data. Select requirements for the declared scope.',
       'Preserve PCR-derived UUID identities exactly. They are version-free suggestions; preserve and verify explicit versions on supplied TIDAS dataset references.',
@@ -48,4 +65,17 @@ export function buildCompleteGuidance(value: unknown, sourceStructured: string) 
       'Read complete normative units together with their ancestor_context. Source association preserves conditions and exceptions without deciding scientific applicability. Stored projection hashes and derived legacy context provenance identify different artifacts.',
     ],
   };
+}
+
+/** Rendering over a core-verified projection; consistency is rechecked, but this
+ * formatter does not replace the source reader's schema/hash/regeneration gate. */
+export function buildGuidanceFromProjection(value: VerifiedPcrProjection): CompleteGuidance;
+export function buildGuidanceFromProjection(value: VerifiedPcrProjection): unknown {
+  const structured = { ...value.structured };
+  const fields = normativeFields(structured);
+  assertGuidanceContextConsistency(structured, value);
+  return composeGuidance({ ...value.pcr }, { ...value.readiness }, structured, fields, value.source_structured, {
+    normative_context: value.normative_context,
+    normative_context_provenance: value.normative_context_provenance,
+  });
 }

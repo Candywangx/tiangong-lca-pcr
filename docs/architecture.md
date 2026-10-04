@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 provider-only import runtime and typed fixture; core/CLI/Builder ownership, canonical methodology and unified artifact identity remain unchanged. Detailed deployment pins remain in the site and engineering contracts."
 ---
 
 # PCR 资料库架构
@@ -279,6 +279,12 @@ Markdown 和 builder 管理，消费层不重写全部 PCR。
 validation report 同时声明 `validation_status`、`completeness`、输入接受状态、已执行检查和跳过检查；
 因此“没有 finding”不能在 coverage 不完整时被解释为完整符合。
 
+### Consumer read sessions
+
+严格 TypeScript 核心在同一同步会话中读取一个显式仓库或 SQLite 快照。完整批量读取保持顺序和重复项，一项失败则整体失败；私有缓存只在会话内复用，仓库读取返回前重新核对所选源字节，SQLite 持有只读事务并关闭自有句柄。调用方不能提供验证成功凭据。元数据分页先筛选、再校验当前页正文；目录浅层浏览不解析不可见正文。所有公开返回的 PCR 仍经过完整快照检查。
+
+`guidance batch --input <request.json>` 接受一到 100 个 ID，保留完整条款及祖先语境、来源身份和统计信息。大结果通过独占 output 文件保存，不按字符截断。此优化不改变科学适用性、方法学审核或翻译门槛。
+
 ### Agent-led authoring and review
 
 消费 Skill 分为一般 LCA 数据制作、可选 TIDAS process 制作、已有 process/model 审核三条路径，
@@ -396,16 +402,18 @@ message、details 和 exit_code；validation gate 的 exit 2 仍把完整 valida
 ### 本地 viewer 预览 PCR
 
 ```text
-npm run viewer:build
+npm run viewer:build -- <accepted source identity and passed validation evidence>
   -> packages/pcr-core reads library + classifications
-  -> packages/pcr-viewer/dist/data/pcr-viewer-data.json
+  -> immutable snapshot objects + active/history pointers + compatible UI bundle
   -> npm run viewer:serve
   -> local static browser viewer
 ```
 
 viewer 是只读预览界面。它可以帮助浏览、搜索和检查 Markdown/guidance/source，但不能编辑 PCR。
-viewer build 默认 scope 是 `material`；只有显式传入 `--scope legacy` 或 `--scope all` 才包含迁移期
-兼容记录。Classification coverage 作为独立 read model 展示，不把 legacy scaffold 重新包装成方法学。
+split Viewer 部署只接受 `material` scope；底层兼容数据读取接口仍可显式选择 `legacy` 或 `all`。
+Classification coverage 作为独立 read model 展示，不把 legacy scaffold 重新包装成方法学。
+bootstrap 的来源元数据只携带明确的 snapshot、Goal、commit、tree、时间及验证证据字段；它不能
+指定仓库根、产物目录、生成器配置或执行钩子。额外元数据不会成为发布配置，内部暂存路径始终由构建器控制。
 构建器先在同级临时目录准备完整输出，再替换目标。自定义非空目录只有带有 viewer build marker
 时才允许替换；仓库根、package source 和其他受保护路径会在 realpath 解析后被拒绝。local server
 同样会解析请求文件的真实路径，并拒绝通过 symlink 跳出 build root 的访问。
@@ -442,7 +450,7 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 派生物：
 
 - `structured.yaml`：canonical PCR 内容的确定性机器侧投影；material PCR 的 repo lint 会验证共享 Schema、source/content 指纹，并逐字比较重新生成结果以拒绝 stale artifact。
-- `packages/pcr-core/src/generated/controlled-vocabulary.mjs` 与 `packages/pcr-core/schemas/controlled-vocabulary.schema.json`：由 `builder/vocab/*.yaml` 确定性生成的 runtime/Schema 投影；`npm run vocab:check` 拒绝 stale artifact。
+- `packages/pcr-core/src/generated/controlled-vocabulary.ts` 与 `packages/pcr-core/schemas/controlled-vocabulary.schema.json`：由 `builder/vocab/*.yaml` 确定性生成的 runtime/Schema 投影；`npm run vocab:check` 拒绝 stale artifact。
 - `library/indexes/**`：用于浏览和检索的索引。
 - `classifications/indexes/**`：由 normalized classification leaf、accepted mapping 与 material target state 生成的完整 coverage read model。
 - `classifications/aliases/pcr-id-aliases.yaml`：由 CPC leaf identity inventory 与 accepted mapping 确定性生成；`npm run aliases:check` 拒绝 stale artifact。
@@ -511,7 +519,7 @@ freshness 和自动测试成为合并门禁的统一入口。
 
 `packages/pcr-docs/` 是与本地 viewer 并列的消费界面。当前文档和复用模块由
 `pcr-core` 的完整只读 bundle 提供；历史版本复用 Builder 已有发布链验证器，
-通过 `builder/lib/pcr-document-history.mjs` 返回完整模型和原始字节，避免复制一套
+通过 `builder/lib/pcr-document-history.ts` 返回完整模型和原始字节，避免复制一套
 发布校验逻辑。内部 revision 正文不会被公开。
 
 生成器绑定 Git 源提交，独立建立源段落、列表关系、表格单元格、代码与链接清单，
@@ -550,7 +558,11 @@ Markdown、方法学审核、历史快照或统一产品发布身份。Python SE
 
 YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解析单文档、保留续行和转义，
 受限无环别名展开为独立 JSON 值。解析错误不产生部分对象；具体边界见 TypeScript 工程契约。
-离线工具从 TypeScript 与清单内遗留源编译出运行产物，调用者无需 TypeScript 编译器。
+离线工具仅从严格 TypeScript 源编译出运行产物，调用者无需 TypeScript 编译器。
 该阶段保留方法学原文、发布状态和版本；Markdown 条件/动作保真仍由 PCR #63 单独交付。
 
 规范投影 v2 由严格 TypeScript Markdown 编译器生成，保留 H2 完整原文、根/一级标题前言、来源位置及规则绑定。core 在消费时重新生成并验证，防止仅修改哈希掩盖上下文丢失。旧 v1 快照保留原始字节和哈希，消费层以独立 provenance 补齐来源上下文。完整要求见 [语义投影契约](semantic-projection-contract.md)。网站与 AI 消费继续作为独立派生出口；正式上线由统一产品发布验收。
+
+### Typed consumer dependencies in installed Goal runtimes
+
+Verified Goal runtime overlays include the consumer core TypeScript modules, its compiler/generated dependencies and schemas. Installing a new runtime on an older task baseline must transfer the complete approved dependency graph; a file extension change must not silently omit a module. Canonical PCR content remains outside the runtime overlay and comes from the selected task/integration baseline.

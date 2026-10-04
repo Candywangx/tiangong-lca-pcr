@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { publicHomeLanguages, canonicalHome } from './home-policy.mjs';
+import { publicHomeLanguages, canonicalHome } from './home-policy.ts';
 import type { DocPage, Language, SiteManifest } from '@/lib/types';
 import { languageFor } from '@/lib/source';
 

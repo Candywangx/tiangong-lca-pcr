@@ -22,33 +22,33 @@ export type DocPage = {
   url: string;
   title: string;
   description: string;
-  pcrId?: string;
-  recordVersion?: string;
-  currentUrl?: string;
-  currentLanguage?: string;
-  lastModified?: string;
-  moduleId?: string;
-  domain?: string;
-  subdomain?: string;
-  htmlPath?: string;
+  pcrId?: string | undefined;
+  recordVersion?: string | undefined;
+  currentUrl?: string | undefined;
+  currentLanguage?: string | undefined;
+  lastModified?: string | undefined;
+  moduleId?: string | undefined;
+  domain?: string | undefined;
+  subdomain?: string | undefined;
+  htmlPath?: string | undefined;
   toc: TocItem[];
   indexable: boolean;
   canonical: string;
   alternates: Record<string, string>;
   part?: { index: number; total: number; label: string };
-  sourcePath?: string;
-  sourceSha256?: string;
+  sourcePath?: string | undefined;
+  sourceSha256?: string | undefined;
   sourceNodeIds: string[];
-  sourceHeadingId?: string;
-  sourceHeadingAnchor?: string;
-  downloads?: Download[];
+  sourceHeadingId?: string | undefined;
+  sourceHeadingAnchor?: string | undefined;
+  downloads?: Download[] | undefined;
 };
 
 export type PcrRecord = {
   versions?: Array<{ version: string; urls: Record<string, string> }>;
   id: string;
   slug: string[];
-  title: Record<string, string>;
+  title: Record<string, string | null>;
   status: string;
   maturity: string;
   version: string | null;
@@ -76,7 +76,7 @@ export type PcrRecord = {
 };
 
 export type SearchResult = {
-  breadcrumbs?: string[];
+  breadcrumbs?: string[] | undefined;
   id: string;
   type: "page";
   url: string;
@@ -91,10 +91,10 @@ export type SiteManifest = {
   generatorVersion: string;
   origin: string;
   defaultLocale: string;
-  categoryTitles?: Record<string, Record<string, string>>;
+  categoryTitles?: Record<string, Record<string, string>> | undefined;
   languages: Language[];
   records: PcrRecord[];
-  historicalRecords?: PcrRecord[];
+  historicalRecords?: PcrRecord[] | undefined;
   pages: DocPage[];
   domains: Array<{
     slug: string;

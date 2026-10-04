@@ -1,0 +1,1235 @@
+import { unknownField, errorCode, errorMessage } from '../../packages/pcr-core/src/types.ts';
+import type { BuilderOptions, LintDiagnostics } from './types.ts';
+import type { PcrLanguageFile } from './pcr-language-files.ts';
+import type { MeasurementReport } from './measurement-consistency.ts';
+interface InputState { exists: boolean; safe: boolean }
+interface ContractProblemOptions {contract: string; value: unknown; sourcePath: string; root: string; problems: string[]; entityKind: string}
+interface InventoryEntry {processEntry: ProcessInventoryEntry; direction: string; flowType: string; row: InventoryFlow}
+interface LanguageInspection {optional: PcrLanguageFile[]; managedInputsSafe: boolean}
+export interface PcrInspectionOptions {root?: unknown; pcrDir?: unknown; manifestFileName?: string; manifestText?: string; structuredText?: string; checkManifestLifecycle?: boolean; checkBilingualRuleAlignment?: boolean; measurementPolicy?: string}
+export interface PcrInspection {problems: string[]; warnings: string[]; projection: PcrMarkdownProjection | null; measurement: MeasurementReport | null; expectedStructuredText: string | null; managedInputsSafe: boolean; measurementReviewRequired?: boolean}
+import {
+  closeSync,
+  constants as fsConstants,
+  existsSync,
+  fstatSync,
+  lstatSync,
+  openSync,
+  readFileSync,
+  readdirSync,
+} from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import {
+  hasDeclaredUnresolvedReferenceProductFlow,
+  materialProjectionCompletenessIssues,
+} from "../../packages/pcr-core/src/projection-completeness.ts";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
+import {
+  AMOUNT_RANGE_ROLE_VALUES as AMOUNT_RANGE_ROLE_VALUE_LIST,
+  AMOUNT_SPECIFICITY_VALUES as AMOUNT_SPECIFICITY_VALUE_LIST,
+  AMOUNT_VALUE_MODE_VALUES as AMOUNT_VALUE_MODE_VALUE_LIST,
+  BASIS_KIND_VALUES as BASIS_KIND_VALUE_LIST,
+  EVIDENCE_KIND_VALUES as EVIDENCE_KIND_VALUE_LIST,
+  FLOW_DIRECTION_VALUES as FLOW_DIRECTION_VALUE_LIST,
+  FLOW_TYPE_VALUES as FLOW_TYPE_VALUE_LIST,
+  PROCESS_INCLUSION_VALUES as PROCESS_INCLUSION_VALUE_LIST,
+} from "../../packages/pcr-core/src/vocabulary.ts";
+import {
+  REQUIRED_PCR_LANGUAGES,
+  declaredPcrLanguages,
+  pcrMarkdownFile,
+} from "../../packages/pcr-core/src/languages.ts";
+import { manifestLifecycleProblems } from "./lifecycle-policy.ts";
+import {
+  parsePcrMarkdownToStructured,
+  type PcrMarkdownProjection, type ProcessInventoryEntry, type InventoryFlow, type InventoryDirection, type InventoryFlowType,
+  structuredProjectionYaml,
+} from "./markdown-projection.ts";
+import { inspectPublishedRevisionState } from "./published-revision-state.ts";
+import { checkMeasurementConsistency } from "./measurement-consistency.ts";
+import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.ts";
+import { REQUIRED_DIRS } from "./builder-constants.ts";
+import { validateBuilderContract } from "./schema-contracts.ts";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const defaultRoot = path.resolve(__dirname, "../..");
+const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
+
+function rootFromOptions(options: BuilderOptions): string {
+  return path.resolve(String(options.root ?? defaultRoot));
+}
+
+const PROCESS_INCLUSION_VALUES = new Set(PROCESS_INCLUSION_VALUE_LIST);
+const AMOUNT_VALUE_MODE_VALUES = new Set(AMOUNT_VALUE_MODE_VALUE_LIST);
+const AMOUNT_SPECIFICITY_VALUES = new Set(AMOUNT_SPECIFICITY_VALUE_LIST);
+const BASIS_KIND_VALUES = new Set(BASIS_KIND_VALUE_LIST);
+const FLOW_DIRECTION_VALUES = FLOW_DIRECTION_VALUE_LIST;
+const FLOW_TYPE_VALUES = new Set(FLOW_TYPE_VALUE_LIST);
+const RANGE_ROLE_VALUES = new Set(AMOUNT_RANGE_ROLE_VALUE_LIST);
+const EVIDENCE_KIND_VALUES = new Set(EVIDENCE_KIND_VALUE_LIST);
+const RECURSIVE_ORIGIN_TERM_PATTERN =
+  /\b(first[- ]generation|previous[- ]generation)\b|第一代|上一代/giu;
+const CHINESE_FLOW_NAME_GAP_PATTERN =
+  /天工(?:平台)?.*(?:未提供|没有|缺少).*中文(?:名称|名)|中文(?:名称|名).*(?:不可用|缺失)/u;
+const ATOMIC_FLOW_COLLECTION_PATTERNS = [
+  /\b(?:energy carriers?|utility flows?|utilities)\b/iu,
+  /\b(?:route-specific (?:preservation )?materials?|packaging materials?|recipe ingredients|cheesemaking ingredients|cleaning and sanitation materials)\b/iu,
+  /\bpackaging (?:product )?flow\b.*\bmaterial-specific\b|\bpackaging waste\b.*\bmaterial-specific\b/iu,
+  /\b(?:material|substance|chemical|carrier|compartment|destination)[- ]specific\b.*\b(?:flow|material|waste|emission)s?\b/iu,
+  /\b(?:flow|material|waste|emission)s?\b.*\b(?:material|substance|chemical|carrier|compartment|destination)[- ]specific\b/iu,
+  /^(?:exact|unresolved)\b.*\bflows?\b/iu,
+  /\bselect(?:ed)?\b.*\bflows?\b/iu,
+  /\b(?:spent brine|wastewater)\s*(?:,|and|or)\s*(?:wastewater|spent brine|residues?|rejects?|wastes?)\b/iu,
+  /\b(?:residues?|rejects?|wastes?)\s*(?:,|and|or)\s*(?:wastewater|spent brine)\b/iu,
+  /^(?:select|actual)\b.*\bflows?\b/iu,
+  /\belectricity\b.*\b(?:and|or)\b.*\bfuel(?:s)?\b|\bfuel(?:s)?\b.*\b(?:and|or)\b.*\belectricity\b/iu,
+  /(?:路线|场址|材料|物质|化学品|载体|隔室|去向)特定.*(?:流|材料|废物|排放)/u,
+  /(?:选择|选定|实际|待确认).*(?:流|材料|废物|排放)/u,
+  /(?:能源载体|公用工程流|包装材料|配方成分|清洗和卫生材料)/u,
+  /电力.*(?:、|和|或).*(?:蒸汽|热能|燃料)|(?:蒸汽|热能|燃料).*(?:、|和|或).*电力/u,
+  /(?:废盐水|废水).*(?:、|和|或).*(?:废水|废盐水|残渣|不合格品|废物)/u,
+];
+const ATOMIC_ENERGY_FLOW_TERMS = [
+  /\belectricity\b/iu,
+  /\bsteam\b/iu,
+  /\b(?:purchased|district) heat\b|^heat(?=\s+(?!from\s+steam\b))/iu,
+  /\bnatural gas\b/iu,
+  /\bdiesel\b/iu,
+  /\b(?:fuel oil|lpg|liquefied petroleum gas)\b/iu,
+  /\b(?:refrigeration|cooling energy)\b/iu,
+  /\bcompressed air\b/iu,
+];
+const IMPORTANT_RANGE_PATTERNS = [
+  {
+    reason: "water or liquid waste",
+    pattern: /\b(water|wastewater|brine|washing|desalting)\b|用水|清洗|废水|卤水/iu,
+  },
+  {
+    reason: "fuel or energy",
+    pattern: /\b(fuel|diesel|gasoline|natural gas|energy|electricity|power|kwh|mj)\b|燃料|柴油|汽油|天然气|能源|电力|电耗|能耗/iu,
+  },
+  {
+    reason: "direct emission or particulate",
+    pattern: /\b(dust|particulate|emission|carbon dioxide|co2|methane|nitrous oxide)\b|粉尘|颗粒|排放|二氧化碳|甲烷|氧化亚氮/iu,
+  },
+  {
+    reason: "waste, reject, or residue",
+    pattern: /\b(waste|reject|residue|scrap|off-?size|fines|sludge)\b|废物|拒收|残渣|残留|边角|不合格|细料|污泥/iu,
+  },
+  {
+    reason: "material input or product yield",
+    pattern: /\b(raw material|source material|feedstock|material input|fertili[sz]er|herbicide|fungicide|insecticide|pesticide|crop protection|seed lot|seed crop|accepted|cleaned|harvested|declared product|reference product|yield|product mass)\b|原料|来源材料|肥料|除草剂|杀菌剂|杀虫剂|农药|种子|收获|接收|已清洗|声明产品|参考产品|得率|产量/iu,
+  },
+  {
+    reason: "packaging",
+    pattern: /\b(packaging|package|packing|pallet|bag|drum)\b|包装|托盘|袋|桶/iu,
+  },
+];
+
+function discoverCanonicalPcrDirectories(root: string, problems: string[], repositoryRoot: string): string[] {
+  if (!existsSync(root)) {
+    return [];
+  }
+  const rootStats = lstatSync(root);
+  if (rootStats.isSymbolicLink() || !rootStats.isDirectory()) {
+    problems.push(
+      `${toRepoRelative(repositoryRoot, root)}: PCR root must be a canonical directory and must not be a symbolic link`,
+    );
+    return [];
+  }
+  const results = [];
+  const stack = [{ directory: root, depth: 0 }];
+  while (stack.length > 0) {
+    const entry = stack.pop();
+    if (!entry) break;
+    const { directory: current, depth } = entry;
+    const manifestPath = path.join(current, "manifest.yaml");
+    if (existsSync(manifestPath)) {
+      const manifestStats = lstatSync(manifestPath);
+      if (depth === 3 && manifestStats.isFile() && !manifestStats.isSymbolicLink()) {
+        results.push(current);
+      } else if (depth !== 3) {
+        problems.push(
+          `${toRepoRelative(repositoryRoot, manifestPath)}: manifest.yaml must be exactly three directories below library/pcrs`,
+        );
+      } else if (!manifestStats.isSymbolicLink()) {
+        problems.push(
+          `${toRepoRelative(repositoryRoot, manifestPath)}: manifest.yaml must be a canonical regular file`,
+        );
+      }
+    }
+    for (const entry of readdirSync(current)) {
+      const child = path.join(current, entry);
+      const stats = lstatSync(child);
+      if (stats.isSymbolicLink()) {
+        problems.push(
+          `${toRepoRelative(repositoryRoot, child)}: symbolic links are not allowed inside the PCR directory tree`,
+        );
+        continue;
+      }
+      if (stats.isDirectory()) {
+        stack.push({ directory: child, depth: depth + 1 });
+      }
+    }
+  }
+  return results.sort();
+}
+
+function toRepoRelative(root: string, absolutePath: string): string {
+  return path.relative(root, absolutePath).replaceAll(path.sep, "/");
+}
+
+function canonicalRegularFileState(filePath: string, root: string, problems: string[], { missingMessage }: {missingMessage?: string} = {}): InputState {
+  let stats;
+  try {
+    stats = lstatSync(filePath);
+  } catch (error) {
+    if (errorCode(error) === "ENOENT") {
+      problems.push(
+        missingMessage ?? `${toRepoRelative(root, filePath)}: required file is missing`,
+      );
+      return { exists: false, safe: true };
+    }
+    problems.push(
+      `${toRepoRelative(root, filePath)}: managed input could not be inspected (${errorCode(error) === "UNKNOWN" ? errorMessage(error) : errorCode(error)})`,
+    );
+    return { exists: false, safe: false };
+  }
+
+  if (stats.isSymbolicLink() || !stats.isFile()) {
+    problems.push(
+      `${toRepoRelative(root, filePath)}: managed input must be a canonical regular file; ` +
+        "symbolic links and special files are not allowed",
+    );
+    return { exists: true, safe: false };
+  }
+  return { exists: true, safe: true };
+}
+
+function readCanonicalRegularFile(filePath: string, root: string, problems: string[]): string | null {
+  let descriptor: number | undefined;
+  try {
+    descriptor = openSync(
+      filePath,
+      fsConstants.O_RDONLY |
+        (fsConstants.O_NOFOLLOW ?? 0) |
+        (fsConstants.O_NONBLOCK ?? 0),
+    );
+    if (!fstatSync(descriptor).isFile()) {
+      problems.push(
+        `${toRepoRelative(root, filePath)}: managed input must be a canonical regular file`,
+      );
+      return null;
+    }
+    const bytes = readFileSync(descriptor);
+    try {
+      return UTF8_DECODER.decode(bytes);
+    } catch {
+      problems.push(`${toRepoRelative(root, filePath)}: managed input must be valid UTF-8`);
+      return null;
+    }
+  } catch (error) {
+    problems.push(
+      `${toRepoRelative(root, filePath)}: managed input could not be safely read (${errorCode(error) === "UNKNOWN" ? errorMessage(error) : errorCode(error)})`,
+    );
+    return null;
+  } finally {
+    if (descriptor !== undefined) {
+      closeSync(descriptor);
+    }
+  }
+}
+
+function addContractProblems({ contract, value, sourcePath, root, problems, entityKind }: ContractProblemOptions): void {
+  const result = validateBuilderContract(contract, value, { entityKind });
+  for (const error of result.errors) {
+    problems.push(
+      `${toRepoRelative(root, sourcePath)}: ${entityKind} schema ${error.instance_path} ${error.message}`,
+    );
+  }
+}
+
+function validateYamlContractFile({ contract, sourcePath, root, problems, entityKind }: Omit<ContractProblemOptions, "value">): void {
+  const state = canonicalRegularFileState(sourcePath, root, problems, {
+    missingMessage: `Missing contract file: ${toRepoRelative(root, sourcePath)}`,
+  });
+  if (!state.exists || !state.safe) {
+    return;
+  }
+  const text = readCanonicalRegularFile(sourcePath, root, problems);
+  if (text === null) {
+    return;
+  }
+  addContractProblems({
+    contract,
+    value: parseYaml(text),
+    sourcePath,
+    root,
+    problems,
+    entityKind,
+  });
+}
+
+function inventoryRows(processInventory: readonly ProcessInventoryEntry[]): InventoryEntry[] {
+  const rows: InventoryEntry[] = [];
+  for (const processEntry of processInventory) {
+    for (const direction of FLOW_DIRECTION_VALUES as readonly InventoryDirection[]) {
+      for (const flowType of FLOW_TYPE_VALUE_LIST as readonly InventoryFlowType[]) {
+        for (const row of processEntry[direction][flowType]) {
+          rows.push({ processEntry, direction, flowType, row });
+        }
+      }
+    }
+  }
+  return rows;
+}
+
+function isCollectionFlowName(name: unknown): boolean {
+  const text = String(name ?? "").trim();
+  if (ATOMIC_FLOW_COLLECTION_PATTERNS.some((pattern) => pattern.test(text))) {
+    return true;
+  }
+  return ATOMIC_ENERGY_FLOW_TERMS.filter((pattern) => pattern.test(text)).length > 1;
+}
+
+function isLikelyTranslatableEnglishFlowName(name: unknown): boolean {
+  const text = String(name ?? "").trim();
+  return !/\p{Script=Han}/u.test(text) && /[a-z]{3,}/u.test(text);
+}
+
+function topLevelValue(text: string, key: string): string | null {
+  const value = unknownField(parseYaml(text), key);
+  return value === undefined || value === null ? null : String(value);
+}
+
+function isMaterialManifest(text: string): boolean {
+  const status = topLevelValue(text, "status");
+  const maturity = topLevelValue(text, "content_maturity");
+  return status !== "scaffold" || maturity !== "empty_scaffold";
+}
+
+function rangePolicyFromManifest(text: string): "error" | "warning" | "ignore" {
+  const status = topLevelValue(text, "status");
+  const maturity = topLevelValue(text, "content_maturity");
+  if (
+    has(["active", "published"], status) ||
+    has(["reviewed_methodology", "published_methodology"], maturity)
+  ) {
+    return "error";
+  }
+  if (
+    status === "candidate" ||
+    has(["draft_methodology", "authored_methodology"], maturity)
+  ) {
+    return "warning";
+  }
+  return "ignore";
+}
+
+function importantRangeReason({ direction, flowType, row }: InventoryEntry): string | null {
+  if (row.amount?.value_mode === "not_applicable") {
+    return "";
+  }
+  const propertyUnit = String(row.property_unit ?? "");
+  if (/(permit|narrative|descriptor|descriptive record|disclosure record)/iu.test(propertyUnit)) {
+    return "";
+  }
+  if (flowType === "waste") {
+    return "waste, reject, or residue";
+  }
+  const searchable = [
+    direction,
+    flowType,
+    row.row_id,
+    row.role,
+    row.name,
+    row.property_unit,
+    row.description,
+    row.amount?.expression,
+    row.amount?.basis?.text,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  for (const { reason, pattern } of IMPORTANT_RANGE_PATTERNS) {
+    if (pattern.test(searchable)) {
+      return reason;
+    }
+  }
+  return "";
+}
+
+function validateManifestLifecycle(root: string, manifestPath: string, manifestText: string, problems: string[]): void {
+  const relativePath = toRepoRelative(root, manifestPath);
+  const manifest = parseYaml(manifestText);
+  for (const problem of manifestLifecycleProblems(manifest)) {
+    problems.push(`${relativePath}: ${problem}`);
+  }
+}
+
+function validatePcrProjection(
+  markdownPath: string,
+  projection: PcrMarkdownProjection,
+  problems: string[],
+  warnings: string[],
+  root: string,
+  { material = false, rangePolicy = "ignore", enforceAtomicFlows = false }: {material?: boolean; rangePolicy?: string; enforceAtomicFlows?: boolean} = {},
+  markdown = "",
+): void {
+  const relativePath = toRepoRelative(root, markdownPath);
+  const rows = inventoryRows(projection.processInventory);
+  if (!material && rows.length === 0 && projection.processMap.length === 0) {
+    return;
+  }
+
+  const processMapById = new Map(projection.processMap.map((entry) => [entry.id, entry]));
+  const processInventoryById = new Map(projection.processInventory.map((entry) => [entry.id, entry]));
+
+  if (projection.processMap.length === 0) {
+    problems.push(`${relativePath}: missing Process Map table in section 6`);
+  }
+
+  for (const entry of projection.processMap) {
+    if (!entry.id) {
+      problems.push(`${relativePath}: Process Map row is missing process_id`);
+    }
+    if (!PROCESS_INCLUSION_VALUES.has(entry.inclusion)) {
+      problems.push(`${relativePath}: Process Map ${entry.id || "(missing id)"} has invalid inclusion "${entry.inclusion}"`);
+    }
+    if (entry.inclusion === "conditional" && !entry.inclusion_condition) {
+      problems.push(`${relativePath}: conditional process ${entry.id} is missing inclusion_condition`);
+    }
+    if (entry.inclusion === "required" && !processInventoryById.has(entry.id)) {
+      problems.push(`${relativePath}: required process ${entry.id} has no detailed inventory section`);
+    }
+  }
+
+  for (const entry of projection.processInventory) {
+    if (projection.processMap.length > 0 && !processMapById.has(entry.id)) {
+      problems.push(`${relativePath}: detailed process ${entry.id} is not declared in Process Map`);
+    }
+  }
+
+  const sourceIds = new Set(projection.dataSources.map((source) => source.id));
+  const collectionProtocolIds = new Set(
+    projection.collectionProtocols.map((protocol) => protocol.protocol_id).filter(Boolean),
+  );
+  for (const { processEntry, direction, flowType, row } of rows) {
+    const context = `${relativePath}: process ${processEntry.id} flow "${row.role || row.name}"`;
+    if (!row.row_id) {
+      problems.push(`${context} is missing row_id`);
+    }
+    if (!FLOW_TYPE_VALUES.has(row.flow_type)) {
+      problems.push(`${context} has invalid flow_type "${row.flow_type}"`);
+    }
+    if (material && isCollectionFlowName(row.name)) {
+      const finding =
+        `${context}: Selected flow "${row.name}" is a collection label, not one atomic inventory flow; ` +
+        "split electricity, steam or heat, each fuel, each material, each waste, and each elementary emission into separate flow cards";
+      if (enforceAtomicFlows) {
+        problems.push(finding);
+      }
+    }
+    const amount = row.amount ?? {};
+    if (!AMOUNT_VALUE_MODE_VALUES.has(amount.value_mode)) {
+      problems.push(`${context} has invalid amount.value_mode "${amount.value_mode}"`);
+    }
+    if (!AMOUNT_SPECIFICITY_VALUES.has(amount.specificity)) {
+      problems.push(`${context} has invalid amount.specificity "${amount.specificity}"`);
+    }
+    if (!BASIS_KIND_VALUES.has(amount.basis?.kind)) {
+      problems.push(`${context} has invalid amount.basis.kind "${amount.basis?.kind}"`);
+    }
+    if (!EVIDENCE_KIND_VALUES.has(amount.evidence?.kind)) {
+      problems.push(`${context} has invalid amount.evidence.kind "${amount.evidence?.kind}"`);
+    }
+    if (
+      (amount.evidence?.kind === "external_source" || amount.evidence?.kind === "method_formula") &&
+      (amount.evidence?.source_ids ?? []).length === 0
+    ) {
+      problems.push(`${context} requires source_ids for evidence_kind ${amount.evidence.kind}`);
+    }
+    if (
+      material &&
+      ["foreground_data", "collected_record", "calculated_from_collection"].includes(amount.evidence?.kind) &&
+      amount.value_mode !== "not_applicable"
+    ) {
+      if (!amount.evidence?.collection_protocol_id) {
+        problems.push(`${context} requires collection_protocol_id for evidence_kind ${amount.evidence.kind}`);
+      } else if (!collectionProtocolIds.has(amount.evidence.collection_protocol_id)) {
+        problems.push(`${context} references unknown collection_protocol_id ${amount.evidence.collection_protocol_id}`);
+      }
+    }
+    for (const sourceId of amount.evidence?.source_ids ?? []) {
+      if (!sourceIds.has(sourceId)) {
+        problems.push(`${context} references unknown source_id ${sourceId}`);
+      }
+    }
+    for (const range of amount.ranges ?? []) {
+      if (!RANGE_ROLE_VALUES.has(range.role)) {
+        problems.push(`${context} has invalid amount range role "${range.role}"`);
+      }
+      if (!range.unit) {
+        problems.push(`${context} amount range ${range.role || "(missing role)"} is missing unit`);
+      }
+      if (!range.basis) {
+        problems.push(`${context} amount range ${range.role || "(missing role)"} is missing basis`);
+      }
+      if (!BASIS_KIND_VALUES.has(range.basis_kind)) {
+        problems.push(`${context} amount range ${range.role || "(missing role)"} has invalid basis_kind "${range.basis_kind}"`);
+      }
+      if (!EVIDENCE_KIND_VALUES.has(range.evidence_kind)) {
+        problems.push(`${context} amount range ${range.role || "(missing role)"} has invalid evidence_kind "${range.evidence_kind}"`);
+      }
+      if (
+        (range.evidence_kind === "external_source" || range.evidence_kind === "method_formula") &&
+        range.source_ids.length === 0
+      ) {
+        problems.push(`${context} amount range ${range.role || "(missing role)"} requires source_ids`);
+      }
+      for (const sourceId of range.source_ids) {
+        if (!sourceIds.has(sourceId)) {
+          problems.push(`${context} amount range ${range.role || "(missing role)"} references unknown source_id ${sourceId}`);
+        }
+      }
+    }
+    const rangeReason = importantRangeReason({ processEntry, direction, flowType, row });
+    if (rangeReason && rangePolicy !== "ignore" && (amount.ranges ?? []).length === 0) {
+      const finding = `${context} is an important flow (${rangeReason}) and has no amount range; add a Range/数量范围 block with source-backed evidence or a broad reasoned_estimate.`;
+      if (rangePolicy === "error") {
+        problems.push(finding);
+      } else {
+        warnings.push(finding);
+      }
+    }
+  }
+
+  if (!material) {
+    return;
+  }
+
+  for (const match of String(markdown).matchAll(RECURSIVE_ORIGIN_TERM_PATTERN)) {
+    problems.push(`${relativePath}: contains prohibited recursive-origin term "${match[0]}"`);
+  }
+
+  for (const protocol of projection.collectionProtocols) {
+    const context = `${relativePath}: collection protocol ${protocol.protocol_id}`;
+    for (const key of [
+      "process_id",
+      "flow_role",
+      "record_type",
+      "raw_fields",
+      "collection_method",
+      "unit",
+      "frequency",
+      "temporal_coverage",
+      "site_scope",
+      "aggregation_rule",
+      "quality_evidence",
+    ]) {
+      if (!unknownField(protocol, key)) {
+        problems.push(`${context} is missing ${key}`);
+      }
+    }
+  }
+
+}
+
+function normalizeGeneratedText(text: unknown): string {
+  return `${String(text ?? "").replace(/\r\n?/gu, "\n").trimEnd()}\n`;
+}
+
+function parseMarkdownEnvelope(markdown: unknown) {
+  const lines = String(markdown ?? "").replace(/^\uFEFF/u, "").split(/\r?\n/u);
+  if (lines[0]?.trim() !== "---") {
+    return { error: "must start with YAML frontmatter", frontmatter: null, body: "" };
+  }
+  const closingIndex = lines.findIndex((line, index) => index > 0 && line.trim() === "---");
+  if (closingIndex < 0) {
+    return { error: "has unclosed YAML frontmatter", frontmatter: null, body: "" };
+  }
+  try {
+    return {
+      error: null,
+      frontmatter: parseYaml(lines.slice(1, closingIndex).join("\n")),
+      body: lines.slice(closingIndex + 1).join("\n"),
+    };
+  } catch (error) {
+    return {
+      error: `has invalid YAML frontmatter: ${errorMessage(error)}`,
+      frontmatter: null,
+      body: lines.slice(closingIndex + 1).join("\n"),
+    };
+  }
+}
+
+function validateMarkdownFrontmatterContract(root: string, markdownPath: string, markdown: unknown, problems: string[]): void {
+  const relativePath = toRepoRelative(root, markdownPath);
+  if (!String(markdown ?? "").trim()) {
+    problems.push(`${relativePath}: Markdown file must not be empty`);
+    return;
+  }
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error) {
+    problems.push(`${relativePath}: ${envelope.error}`);
+    return;
+  }
+  addContractProblems({
+    contract: "pcr-markdown-frontmatter.schema.json",
+    value: envelope.frontmatter,
+    sourcePath: markdownPath,
+    root,
+    problems,
+    entityKind: "PCR Markdown frontmatter",
+  });
+}
+
+function inspectCanonicalMarkdown(root: string, markdownPath: string, markdown: unknown, manifest: unknown, problems: string[]): void {
+  const relativePath = toRepoRelative(root, markdownPath);
+  if (!String(markdown ?? "").trim()) {
+    problems.push(`${relativePath}: active or published PCR requires non-empty canonical English Markdown`);
+    return;
+  }
+
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error) {
+    problems.push(`${relativePath}: ${envelope.error}`);
+    return;
+  }
+  if (!envelope.body.trim()) {
+    problems.push(`${relativePath}: active or published PCR requires English Markdown content after frontmatter`);
+  }
+
+  for (const [field, expected] of [
+    ["pcr_id", unknownField(manifest, "id")],
+    ["language", "en-US"],
+    ["sync_with", PCR_ZH_FILE],
+  ] as const) {
+    const actual = unknownField(envelope.frontmatter, field);
+    if (actual !== expected) {
+      problems.push(
+        `${relativePath}: frontmatter ${field} must be "${expected}"; found "${actual ?? "(missing)"}"`,
+      );
+    }
+  }
+}
+
+function inspectChineseMarkdown(root: string, markdownPath: string, markdown: string, manifest: unknown, problems: string[]): PcrMarkdownProjection | null {
+  const relativePath = toRepoRelative(root, markdownPath);
+  if (!String(markdown ?? "").trim()) {
+    problems.push(`${relativePath}: material PCR requires non-empty Chinese Markdown`);
+    return null;
+  }
+
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error) {
+    problems.push(`${relativePath}: ${envelope.error}`);
+    return null;
+  }
+  if (!envelope.body.trim()) {
+    problems.push(`${relativePath}: material PCR requires Chinese Markdown content after frontmatter`);
+  }
+
+  for (const [field, expected] of [
+    ["pcr_id", unknownField(manifest, "id")],
+    ["language", "zh-CN"],
+    ["sync_with", PCR_EN_FILE],
+  ] as const) {
+    const actual = unknownField(envelope.frontmatter, field);
+    if (actual !== expected) {
+      problems.push(
+        `${relativePath}: frontmatter ${field} must be "${expected}"; found "${actual ?? "(missing)"}"`,
+      );
+    }
+  }
+
+  return envelope.body.trim() ? parsePcrMarkdownToStructured(markdown) : null;
+}
+
+function validateBilingualRuleAlignment(
+  root: string,
+  zhPath: string,
+  english: PcrMarkdownProjection,
+  chinese: PcrMarkdownProjection | null,
+  problems: string[],
+  {
+    enforceInventoryAlignment = false,
+    localizationPolicy = "ignore",
+    warnings = [],
+  }: {enforceInventoryAlignment?: boolean; localizationPolicy?: string; warnings?: string[]} = {},
+): void {
+  if (!chinese) {
+    return;
+  }
+  const relativePath = toRepoRelative(root, zhPath);
+  for (const [label, englishRules, chineseRules] of [
+    ["system boundary", english.systemBoundary?.rules ?? [], chinese.systemBoundary?.rules ?? []],
+    ["allocation", english.allocationRules ?? [], chinese.allocationRules ?? []],
+    ["validation", english.validationRules ?? [], chinese.validationRules ?? []],
+  ] as const) {
+    const englishIds = englishRules.map((rule) => rule.rule_id);
+    const chineseIds = chineseRules.map((rule) => rule.rule_id);
+    if (JSON.stringify(englishIds) !== JSON.stringify(chineseIds)) {
+      problems.push(
+        `${relativePath}: ${label} ordered rule ids do not match canonical English ` +
+          `(en-US: [${englishIds.join(", ")}], zh-CN: [${chineseIds.join(", ")}])`,
+      );
+    }
+  }
+
+  if (enforceInventoryAlignment) {
+    const inventoryEntries = (projection: PcrMarkdownProjection) =>
+      inventoryRows(projection.processInventory).map(({ processEntry, direction, flowType, row }) => ({
+        process_id: processEntry.id,
+        direction,
+        flow_type: flowType,
+        row_id: row.row_id,
+        uuid: row.uuid || null,
+        name: String(row.name ?? "").trim(),
+        description: String(row.description ?? "").trim(),
+      }));
+    const englishInventory = inventoryEntries(english);
+    const chineseInventory = inventoryEntries(chinese);
+    const identityFields = (entries: ReturnType<typeof inventoryEntries>) => entries.map(({ name: _name, description: _description, ...identity }) => identity);
+    if (JSON.stringify(identityFields(englishInventory)) !== JSON.stringify(identityFields(chineseInventory))) {
+      problems.push(
+        `${relativePath}: inventory ordered row identities do not match canonical English; ` +
+          "process_id, direction, flow_type, row_id, order, and UUID must align",
+      );
+      return;
+    }
+
+    const unlocalizedEntries = [];
+    for (let index = 0; index < englishInventory.length; index += 1) {
+      const englishEntry = englishInventory[index];
+      if (!englishEntry) throw new Error("Inventory alignment invariant failed.");
+      const chineseEntry = chineseInventory[index];
+      if (!chineseEntry) throw new Error("Inventory alignment invariant failed.");
+      if (
+        englishEntry.name === chineseEntry.name &&
+        isLikelyTranslatableEnglishFlowName(chineseEntry.name) &&
+        !CHINESE_FLOW_NAME_GAP_PATTERN.test(chineseEntry.description)
+      ) {
+        unlocalizedEntries.push(chineseEntry);
+      }
+    }
+    if (localizationPolicy === "error") {
+      for (const entry of unlocalizedEntries) {
+        problems.push(
+          `${relativePath}: process ${entry.process_id} flow ${entry.row_id}: ` +
+            `Selected flow "${entry.name}" is not localized for Chinese readers; ` +
+            "use Tiangong's exact official Chinese baseName, translate a concrete non-UUID name, or explicitly document that Tiangong provides no Chinese name",
+        );
+      }
+    } else if (localizationPolicy === "warning" && unlocalizedEntries.length > 0) {
+      warnings.push(
+        `${relativePath}: Chinese-flow localization migration has ${unlocalizedEntries.length} untranslated ` +
+          "Selected flow displays; localize them and declare " +
+          "review_metadata.inventory_contract.localized_flow_names: tiangong_zh_v1",
+      );
+    }
+  }
+}
+
+function languageFromMarkdownFileName(fileName: unknown): string | null {
+  const match = /^pcr\.([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.md$/u.exec(String(fileName ?? ""));
+  return match?.[1] ?? null;
+}
+
+/**
+ * The included optional file set is derived from the same manifest declaration
+ * for disk and proposed-manifest inspections. Unsafe or unreadable artifacts
+ * invalidate the entire inspection; missing declarations remain explicit errors.
+ */
+function inspectLanguageArtifacts({ manifestText, manifestPath, directory, inputTexts, inputStates, root, problems }: {manifestText: string; manifestPath: string; directory: string; inputTexts: Map<string,string>; inputStates: Map<string,InputState>; root: string; problems: string[]}): LanguageInspection {
+  let declaredLanguages;
+  try {
+    declaredLanguages = declaredPcrLanguages(parseYaml(manifestText));
+  } catch (error) {
+    problems.push(`${toRepoRelative(root, manifestPath)}: ${errorMessage(error)}`);
+    declaredLanguages = [...REQUIRED_PCR_LANGUAGES];
+  }
+  const optional: PcrLanguageFile[] = [];
+  let managedInputsSafe = true;
+  // The safe manifest is the bootstrap needed to discover this exact included set.
+  // Complete optional type preflight before opening any other language body.
+  for (const language of declaredLanguages) {
+    if (REQUIRED_PCR_LANGUAGES.includes(language)) continue;
+    const fileName = pcrMarkdownFile(language), filePath = path.join(directory, fileName);
+    const state = canonicalRegularFileState(filePath, root, problems, {
+      missingMessage: `${toRepoRelative(root, filePath)}: declared language Markdown file is missing; ` +
+        `manifest.languages.available declares ${language}, so its file is required, or remove the declaration`,
+    });
+    inputStates.set(fileName, state);
+    if (!state.safe) managedInputsSafe = false;
+  }
+  for (const fileName of readdirSync(directory).sort()) {
+    const language = languageFromMarkdownFileName(fileName);
+    if (language === null) {
+      if (/^pcr\..*\.md$/u.test(fileName)) problems.push(`${toRepoRelative(root, path.join(directory, fileName))}: malformed PCR language filename`);
+      continue;
+    }
+    if (!declaredLanguages.includes(language)) problems.push(
+      `${toRepoRelative(root, path.join(directory, fileName))}: language Markdown file is not declared in manifest.languages.available`,
+    );
+  }
+  if (!managedInputsSafe) return { optional, managedInputsSafe: false };
+  for (const language of declaredLanguages) {
+    if (REQUIRED_PCR_LANGUAGES.includes(language)) continue;
+    const fileName = pcrMarkdownFile(language), filePath = path.join(directory, fileName);
+    if (!inputStates.get(fileName)?.exists) continue;
+    const text = inputTexts.get(fileName) ?? readCanonicalRegularFile(filePath, root, problems);
+    if (text === null) return { optional, managedInputsSafe: false };
+    inputTexts.set(fileName, text);
+    optional.push({ language, fileName, filePath, text });
+  }
+  return { optional, managedInputsSafe: true };
+}
+
+/**
+ * Optional language Markdown is validated whenever its file is present: it must
+ * be declared, carry a non-empty canonical language frontmatter, identify the
+ * same PCR, and sync with the canonical English file. Missing declared artifacts
+ * are errors; absent undeclared languages never block the required languages.
+ */
+function inspectDeclaredLanguageFiles({ root, manifest, resolved, problems }: {root: string; manifest: unknown; resolved: LanguageInspection; problems: string[]}): void {
+  for (const entry of resolved.optional ?? []) {
+    const language = entry.language;
+    const relativePath = toRepoRelative(root, entry.filePath);
+    if (!String(entry.text ?? "").trim()) {
+      problems.push(`${relativePath}: declared language Markdown file must not be empty`);
+      continue;
+    }
+    validateMarkdownFrontmatterContract(root, entry.filePath, entry.text, problems);
+    const envelope = parseMarkdownEnvelope(entry.text);
+    if (envelope.error) {
+      problems.push(`${relativePath}: ${envelope.error}`);
+      continue;
+    }
+    if (!envelope.body.trim()) {
+      problems.push(`${relativePath}: declared language Markdown requires content after frontmatter`);
+    }
+    for (const [field, expected] of [
+      ["pcr_id", unknownField(manifest, "id")],
+      ["language", language],
+    ] as const) {
+      const actual = unknownField(envelope.frontmatter, field);
+      if (actual !== expected) {
+        problems.push(
+          `${relativePath}: frontmatter ${field} must be "${expected}"; found "${actual ?? "(missing)"}"`,
+        );
+      }
+    }
+    // Every dependent translation is derived from the canonical English source;
+    // an arbitrary sibling locale is not an acceptable sync target.
+    const syncWith = unknownField(envelope.frontmatter, "sync_with");
+    if (syncWith !== PCR_EN_FILE) {
+      problems.push(
+        `${relativePath}: frontmatter sync_with must be "${PCR_EN_FILE}" because the canonical source is the ` +
+          `English revision; found "${syncWith ?? "(missing)"}"`,
+      );
+    }
+  }
+}
+
+export function inspectPcrDirectory({
+  root,
+  pcrDir,
+  manifestFileName = "manifest.yaml",
+  manifestText: manifestTextOverride,
+  structuredText: structuredTextOverride,
+  checkManifestLifecycle = true,
+  checkBilingualRuleAlignment = false,
+  measurementPolicy = "report",
+}: PcrInspectionOptions = {}): PcrInspection {
+  if (!["report", "enforce"].includes(measurementPolicy)) {
+    throw new Error('measurementPolicy must be "report" or "enforce".');
+  }
+  const resolvedRoot = rootFromOptions({ root });
+  const directory = path.resolve(String(pcrDir));
+  const problems: string[] = [];
+  const warnings: string[] = [];
+  let measurement: MeasurementReport | null = null;
+  const manifestPath = path.join(directory, manifestFileName);
+  const inputSpecifications = [
+    {
+      fileName: manifestFileName,
+      filePath: manifestPath,
+      override: manifestTextOverride,
+    },
+    {
+      fileName: PCR_EN_FILE,
+      filePath: path.join(directory, PCR_EN_FILE),
+      override: undefined,
+    },
+    {
+      fileName: PCR_ZH_FILE,
+      filePath: path.join(directory, PCR_ZH_FILE),
+      override: undefined,
+    },
+    {
+      fileName: "structured.yaml",
+      filePath: path.join(directory, "structured.yaml"),
+      override: structuredTextOverride,
+    },
+  ];
+  const inputStates = new Map<string, InputState>();
+  let managedInputsSafe = true;
+
+  // Complete required type preflight before opening any managed input. A single
+  // symlink or special file invalidates the inspection boundary. The safe manifest
+  // then bootstraps optional type preflight before any language body is opened.
+  for (const specification of inputSpecifications) {
+    const state = specification.override !== undefined
+      ? { exists: true, safe: true }
+      : canonicalRegularFileState(
+          specification.filePath,
+          resolvedRoot,
+          problems,
+          {
+            missingMessage: `Missing PCR file: ${toRepoRelative(resolvedRoot, specification.filePath)}`,
+          },
+        );
+    inputStates.set(specification.fileName, state);
+    if (!state.safe) {
+      managedInputsSafe = false;
+    }
+  }
+
+  if (!managedInputsSafe) {
+    return {
+      problems,
+      warnings,
+      projection: null,
+      measurement,
+      expectedStructuredText: null,
+      managedInputsSafe: false,
+    };
+  }
+
+  const inputTexts = new Map<string, string>();
+  if (manifestTextOverride !== undefined) inputTexts.set(manifestFileName, manifestTextOverride);
+  else if (inputStates.get(manifestFileName)?.exists) {
+    const text = readCanonicalRegularFile(manifestPath, resolvedRoot, problems);
+    if (text === null) managedInputsSafe = false;
+    else inputTexts.set(manifestFileName, text);
+  }
+  let languageInspection: LanguageInspection = { optional: [], managedInputsSafe: true };
+  if (managedInputsSafe && inputTexts.has(manifestFileName)) {
+    languageInspection = inspectLanguageArtifacts({
+      manifestText: requiredText(inputTexts, manifestFileName), manifestPath,
+      directory, inputTexts, inputStates, root: resolvedRoot, problems,
+    });
+    managedInputsSafe = languageInspection.managedInputsSafe;
+  }
+  // Required input types have already passed. Optional input types and readable
+  // bytes must pass too before any required methodology body is opened.
+  if (managedInputsSafe && inputTexts.has(manifestFileName)) {
+    for (const specification of inputSpecifications.slice(1)) {
+      if (specification.override !== undefined) { inputTexts.set(specification.fileName, specification.override); continue; }
+      if (!inputStates.get(specification.fileName)?.exists) continue;
+      const text = readCanonicalRegularFile(specification.filePath, resolvedRoot, problems);
+      if (text === null) { managedInputsSafe = false; break; }
+      inputTexts.set(specification.fileName, text);
+    }
+  }
+  if (!managedInputsSafe || !inputTexts.has(manifestFileName)) {
+    return { problems, warnings, projection: null, measurement,
+      expectedStructuredText: null, managedInputsSafe };
+  }
+
+  const manifestText = requiredText(inputTexts, manifestFileName);
+  const manifest = parseYaml(manifestText);
+  addContractProblems({
+    contract: "pcr-manifest.schema.json",
+    value: manifest,
+    sourcePath: manifestPath,
+    root: resolvedRoot,
+    problems,
+    entityKind: "PCR manifest",
+  });
+  if (checkManifestLifecycle) {
+    validateManifestLifecycle(resolvedRoot, manifestPath, manifestText, problems);
+  }
+  const canonicalMarkdown = path.join(directory, PCR_EN_FILE);
+  if (!inputTexts.has(PCR_EN_FILE)) {
+    return {
+      problems,
+      warnings,
+      projection: null,
+      measurement,
+      expectedStructuredText: null,
+      managedInputsSafe: true,
+    };
+  }
+
+  const markdownText = requiredText(inputTexts, PCR_EN_FILE);
+  validateMarkdownFrontmatterContract(
+    resolvedRoot,
+    canonicalMarkdown,
+    markdownText,
+    problems,
+  );
+  const projection = parsePcrMarkdownToStructured(markdownText);
+  const material = isMaterialManifest(manifestText);
+  validatePcrProjection(
+    canonicalMarkdown,
+    projection,
+    problems,
+    warnings,
+    resolvedRoot,
+    {
+      material,
+      rangePolicy: rangePolicyFromManifest(manifestText),
+      enforceAtomicFlows: unknownField(unknownField(unknownField(manifest, "review_metadata"), "inventory_contract"), "atomic_flows") === "v1",
+    },
+    markdownText,
+  );
+  if (material && unknownField(unknownField(unknownField(manifest, "review_metadata"), "inventory_contract"), "atomic_flows") !== "v1") {
+    const collectionRows = inventoryRows(projection.processInventory).filter(({ row }) =>
+      isCollectionFlowName(row.name),
+    );
+    if (collectionRows.length > 0) {
+      warnings.push(
+        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: legacy atomic-flow migration has ` +
+          `${collectionRows.length} collection-label inventory rows; split them and declare ` +
+          "review_metadata.inventory_contract.atomic_flows: v1",
+      );
+    }
+  }
+
+  if (has(["active", "published"], unknownField(manifest, "status"))) {
+    inspectCanonicalMarkdown(
+      resolvedRoot,
+      canonicalMarkdown,
+      markdownText,
+      manifest,
+      problems,
+    );
+  }
+
+  const chineseMarkdownPath = path.join(directory, PCR_ZH_FILE);
+  if (inputTexts.has(PCR_ZH_FILE)) {
+    const chineseMarkdownText = requiredText(inputTexts, PCR_ZH_FILE);
+    validateMarkdownFrontmatterContract(
+      resolvedRoot,
+      chineseMarkdownPath,
+      chineseMarkdownText,
+      problems,
+    );
+    if (material) {
+      const chineseProjection = inspectChineseMarkdown(
+        resolvedRoot,
+        chineseMarkdownPath,
+        chineseMarkdownText,
+        manifest,
+        problems,
+      );
+      if (
+        checkBilingualRuleAlignment ||
+        has(["active", "published"], unknownField(manifest, "status")) ||
+        unknownField(unknownField(unknownField(manifest, "review_metadata"), "inventory_contract"), "atomic_flows") === "v1"
+      ) {
+        validateBilingualRuleAlignment(
+          resolvedRoot,
+          chineseMarkdownPath,
+          projection,
+          chineseProjection,
+          problems,
+          {
+            enforceInventoryAlignment:
+              unknownField(unknownField(unknownField(manifest, "review_metadata"), "inventory_contract"), "atomic_flows") === "v1",
+            localizationPolicy:
+              unknownField(unknownField(unknownField(manifest, "review_metadata"), "inventory_contract"), "localized_flow_names") === "tiangong_zh_v1"
+                ? "error"
+                : "warning",
+            warnings,
+          },
+        );
+      }
+    }
+  }
+
+  inspectDeclaredLanguageFiles({
+    root: resolvedRoot,
+    manifest,
+    resolved: languageInspection,
+    problems,
+  });
+
+  const expectedStructuredText = structuredProjectionYaml(projection, {
+    sourceMarkdown: markdownText,
+  });
+  const measurementProblems: string[] = [];
+  if (material) {
+    measurement = checkMeasurementConsistency({
+      english: markdownText,
+      chinese: inputTexts.get(PCR_ZH_FILE),
+    });
+    if (measurementPolicy === "report" && measurement.status !== "pass") {
+      warnings.push(
+        `${toRepoRelative(resolvedRoot, directory)}: MEASUREMENT_REPORT: ` +
+          `status=${measurement.status}; findings=${measurement.findings.length}; ` +
+          `skipped=${measurement.coverage.skipped.length}; details are available in inspection.measurement`,
+      );
+    } else if (measurementPolicy === "enforce") {
+      for (const finding of measurement.findings) {
+        measurementProblems.push(
+          `${toRepoRelative(resolvedRoot, directory)}: ${finding.code} ` +
+            `(${finding.language}${finding.row_id ? `; row ${finding.row_id}` : ""}): ${finding.message}`,
+        );
+      }
+      problems.push(...measurementProblems);
+    }
+  }
+  if (material) {
+    const expectedProjection = parseYaml(expectedStructuredText);
+    for (const issue of materialProjectionCompletenessIssues(
+      expectedProjection,
+      {
+        expectedPcrId: unknownField(manifest, "id"),
+        allowUnresolvedProductFlowUuid:
+          hasDeclaredUnresolvedReferenceProductFlow(
+            expectedProjection,
+            manifest,
+          ),
+      },
+    )) {
+      problems.push(
+        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: ${issue.message}`,
+      );
+    }
+  }
+  const structuredPath = path.join(directory, "structured.yaml");
+  if (material && inputTexts.has("structured.yaml")) {
+    const actualStructuredText = requiredText(inputTexts, "structured.yaml");
+    addContractProblems({
+      contract: "structured-projection.schema.json",
+      value: parseYaml(actualStructuredText),
+      sourcePath: structuredPath,
+      root: resolvedRoot,
+      problems,
+      entityKind: "material structured projection",
+    });
+    if (normalizeGeneratedText(actualStructuredText) !== normalizeGeneratedText(expectedStructuredText)) {
+      const commandDirectory = manifestFileName === "manifest.next.yaml"
+        ? path.dirname(directory)
+        : directory;
+      const workspaceOption = manifestFileName === "manifest.next.yaml"
+        ? " --workspace revision"
+        : "";
+      problems.push(
+        `${toRepoRelative(resolvedRoot, structuredPath)}: stale structured projection; run ` +
+          `\`npm run pcr:sync-structured -- --pcr ${toRepoRelative(resolvedRoot, commandDirectory)}${workspaceOption}\``,
+      );
+    }
+  }
+
+  return {
+    problems,
+    warnings,
+    measurement,
+    // Only unresolved measurement semantics may request manual review. Definite
+    // Schema, lifecycle, projection or other Builder errors take precedence.
+    measurementReviewRequired: measurement?.status === "manual_review"
+      && measurementProblems.length > 0
+      && problems.length === measurementProblems.length,
+    projection,
+    expectedStructuredText,
+    managedInputsSafe: true,
+  };
+}
+
+export function collectLintDiagnostics(options: BuilderOptions): LintDiagnostics {
+  const root = rootFromOptions(options);
+  const problems: string[] = [];
+  const warnings: string[] = [];
+
+  for (const dir of REQUIRED_DIRS) {
+    const directory = path.join(root, dir);
+    if (!existsSync(directory)) {
+      problems.push(`Missing required directory: ${dir}`);
+      continue;
+    }
+    const stats = lstatSync(directory);
+    if (stats.isSymbolicLink() || !stats.isDirectory()) {
+      problems.push(`${dir}: required path must be a canonical directory`);
+    }
+  }
+
+  validateYamlContractFile({
+    contract: "catalog.schema.json",
+    sourcePath: path.join(root, "library/catalog.yaml"),
+    root,
+    problems,
+    entityKind: "PCR catalog",
+  });
+
+  const mappingRoot = path.join(root, "classifications/mappings");
+  if (existsSync(mappingRoot)) {
+    const mappingRootStats = lstatSync(mappingRoot);
+    if (mappingRootStats.isSymbolicLink() || !mappingRootStats.isDirectory()) {
+      problems.push("classifications/mappings: mapping root must be a canonical directory");
+    } else {
+      for (const fileName of readdirSync(mappingRoot).filter((entry) => /\.ya?ml$/u.test(entry)).sort()) {
+        validateYamlContractFile({
+          contract: "classification-mapping.schema.json",
+          sourcePath: path.join(mappingRoot, fileName),
+          root,
+          problems,
+          entityKind: "classification mapping",
+        });
+      }
+    }
+  }
+
+  const pcrRoot = path.join(root, "library/pcrs");
+  for (const directory of discoverCanonicalPcrDirectories(pcrRoot, problems, root)) {
+    const result = inspectPcrDirectory({ root, pcrDir: directory });
+    problems.push(...result.problems);
+    warnings.push(...result.warnings);
+    if (!result.managedInputsSafe) {
+      continue;
+    }
+
+    const state = inspectPublishedRevisionState({ root, pcrDir: directory });
+    problems.push(...state.problems);
+    warnings.push(...state.warnings);
+    if (state.revision) {
+      const revisionResult = inspectPcrDirectory({
+        root,
+        pcrDir: state.revision.revisionDir,
+        manifestFileName: "manifest.next.yaml",
+      });
+      problems.push(...revisionResult.problems);
+      warnings.push(...revisionResult.warnings);
+    }
+  }
+
+  return { problems, warnings };
+}
+
+export function lint(options: BuilderOptions): string[] {
+  const { problems, warnings } = collectLintDiagnostics(options);
+  if (problems.length > 0) {
+    throw new Error(`PCR library lint failed.\n${problems.map((problem) => `- ${problem}`).join("\n")}`);
+  }
+
+  if (warnings.length > 0) {
+    return [
+      "PCR library lint passed with warnings.",
+      "",
+      "Warnings:",
+      ...warnings.map((warning) => `- ${warning}`),
+      "",
+      "Next:",
+      "- Add Range/数量范围 blocks for important flows. Use reasoned_estimate when stronger evidence is not available yet.",
+    ];
+  }
+
+  return ["PCR library lint passed."];
+}
+
+function requiredText(values: ReadonlyMap<string, string>, key: string): string { const text = values.get(key); if (text === undefined) throw new TypeError(`Missing managed text: ${key}`); return text; }
+function has(values: readonly string[], value: unknown): boolean { return typeof value === 'string' && values.includes(value); }

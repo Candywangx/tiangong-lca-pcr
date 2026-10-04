@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
+lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
+lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -16,8 +16,8 @@ whenToUpdate:
   - when source-to-page, download, language or publication boundaries change
 checkPaths:
   - packages/pcr-docs/**
-  - packages/pcr-core/src/languages.mjs
-  - packages/pcr-core/src/index.mjs
+  - packages/pcr-core/src/languages.ts
+  - packages/pcr-core/src/index.ts
   - edgeone.json
 related:
   - architecture.md
@@ -34,7 +34,7 @@ does not promote candidate PCR methodology or certify a translation.
 
 `packages/pcr-core/` owns consistent current PCR/module reads and verified artifacts.
 Historical bundles reuse the Builder release-chain verifier through
-`builder/lib/pcr-document-history.mjs`, returning complete parsed models and
+`builder/lib/pcr-document-history.ts`, returning complete parsed models and
 byte-exact artifacts without exposing internal revision bodies.
 `packages/pcr-docs/scripts/` owns source inventory, Markdown rendering, metadata,
 search and download generation. Fumadocs owns the public document layout,
@@ -180,11 +180,20 @@ individual files, total file count and build resources, and partition search and
 source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
 and the `release/production` deployment pointer; `main` remains the sole code trunk.
 Unified tag qualification builds and seals the complete web export. The provider runs
-`product-web-materialize.mjs` to verify and atomically import that exact artifact; it
+`product-web-materialize.ts` to verify and atomically import that exact artifact; it
 does not rebuild it. Preview auto deployment remains disabled. Failed import or
 builds leave the previous verified deployment intact. The product identity endpoint
 and per-route hashes bind live acceptance to the two paired npm artifacts; see
 [the unified release contract](offline-distribution.md#npm-release-automation).
+
+Provider execution uses the preinstalled Node 24.18.0 selected by `edgeone.json`.
+Development, CI and artifact construction retain `.nvmrc` / product Node 24.19.0;
+provider imports do not construct artifacts. The separate provider-importer CI lane
+qualifies this runtime boundary. Real provider logs must additionally establish
+runtime selection and importer entry; local configuration assertions cannot prove
+the service's `nodeVersion` versus `.nvmrc` precedence. A bounded manual preview
+may verify that boundary without enabling preview auto deployment or moving the
+production pointer. Its incomplete/missing release must still fail source guards.
 
 ### Measured output and build resources
 
@@ -223,10 +232,14 @@ is assessed from measured composition and useful rendering behavior rather than
 an arbitrary aggregate-size rejection. Supported Next navigation payloads and
 complete source artifacts remain subject to the existing fidelity contract.
 
-The build has an 18-minute task budget within the 20-minute provider limit and
-uses four workers with a 4 GB Node heap ceiling per build process. Measure total
-resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
-not proof of total process memory.
+The complete export runs locally or in GitHub qualification and has no project-owned
+elapsed-time acceptance budget. CI bounds its instrumented documentation job to
+60 minutes; stage and total durations remain reported. The old 18-minute full-build
+cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
+only the sealed-product importer, whose separate 15-minute download/materialization
+deadline, cleanup and atomic handoff remain enforced. The export uses four workers
+with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
+guard; a heap ceiling is not proof of total resident memory.
 
 ### Build workspace storage
 
@@ -291,7 +304,7 @@ live checks are required after its processing.
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
 indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
 current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
-Worker and tokenization module are ordinary browser modules copied with the pinned
+Worker and tokenization module are compiled TypeScript browser modules shipped with the pinned
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
 
@@ -402,3 +415,13 @@ The offline storage context is scoped to explicit consumer calls and is never en
 by the documentation build.
 
 Projection v2 adds source units and ancestor context to exact structured downloads and complete record JSON. Canonical language bodies remain the displayed methodological source; flat structured summaries do not independently establish applicability. Historical projection v1 remains readable and is not rewritten by export. The [semantic projection contract](semantic-projection-contract.md) governs these fields; publication and translation approval remain separate.
+
+Chinese catalog presentation labels cover every domain and subdomain in the
+material index. A corpus-backed contract rejects missing Chinese category labels;
+this presentation dictionary never rewrites canonical titles, IDs or source files.
+
+The child build environment preserves existing Node runtime/instrumentation
+options and appends the required 4096 MiB heap setting last. The same rule applies
+to ordinary and relocated builds. A real subprocess test proves both preload
+execution and the effective heap bound; environment diagnostics still log presence
+only. Coverage never substitutes for the actual build time/RSS/provider gates.

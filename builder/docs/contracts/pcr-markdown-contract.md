@@ -65,6 +65,10 @@ are never marked reviewed automatically; they enter a release only when a review
 
 Active and publication preflights reject an empty Chinese file, missing or malformed frontmatter, or any mismatch in
 these three fields. They apply the same checks to every declared optional language file, plus a missing file.
+Inspection checks required file types first, then reads the safe manifest to discover and preflight all declared
+optional language files before reading language bodies. Symbolic links, non-regular files, unsafe reads and invalid
+UTF-8 invalidate the managed-input boundary: no projection or measurement result is produced. This applies equally
+to ordinary inspection and proposed-manifest previews; missing declared files remain explicit diagnostics.
 
 ## Required Sections
 

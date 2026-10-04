@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
+lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
 title: PCR Library Release Policy
 docType: contract
 scope: repo
@@ -14,10 +14,10 @@ whenToUse:
 whenToUpdate:
   - when publication, revision, immutable history, or recovery behavior changes
 checkPaths:
-  - builder/cli/index.mjs
-  - builder/lib/builder-operations.mjs
-  - builder/lib/published-revision-state.mjs
-  - builder/lib/pcr-directory-transaction.mjs
+  - builder/cli/index.ts
+  - builder/lib/builder-operations.ts
+  - builder/lib/published-revision-state.ts
+  - builder/lib/pcr-directory-transaction.ts
   - docs/pcr-library-release-policy.md
 related:
   - ../AGENTS.md

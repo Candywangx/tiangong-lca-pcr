@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 patch recovery; immutable same-product snapshots, complete normative context, read sessions and public CLI contracts remain unchanged."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -14,8 +14,8 @@ whenToUse:
 whenToUpdate:
   - when consumption commands, review evidence or Skill responsibilities change
 checkPaths:
-  - packages/pcr-core/src/consumption-*.mjs
-  - packages/pcr-core/src/tidas-inspection.mjs
+  - packages/pcr-core/src/consumption-*.ts
+  - packages/pcr-core/src/tidas-inspection.ts
   - packages/pcr-core/schemas/agent-review.schema.json
   - packages/tiangong-pcr-cli/**
   - skills/tiangong-pcr/**
@@ -143,3 +143,9 @@ does not activate its Skill or approve methodology.
 ## Normative source context
 
 Follow the [semantic projection contract](semantic-projection-contract.md) for v2 source units, normalized positions, snapshot-local IDs and legacy enrichment provenance. Read a selected rule together with its complete unit and `ancestor_context`; the flat display and generic `applies_to` do not determine scientific applicability. Old immutable v1 snapshots remain readable with separately identified source-derived context.
+
+## Complete batch reads
+
+Use `guidance batch --input request.json --output <new-result.json> --library <snapshot> --format json` for several known PCR IDs. The request is `{ "schema_version": 1, "pcr_ids": ["<id>"] }` with one to 100 IDs. Input order and duplicates are preserved. The entire batch succeeds or fails; an unavailable item never produces a partial output file. Optional topic/pointer/page selection retains complete normative units and ancestor context for each result. Large results require an exclusive `--output` file, rather than truncation.
+
+One owned synchronous session opens the immutable library once and reuses verified selected projections. It returns source identity and operation statistics. Repository sessions recheck selected bytes before return; SQLite sessions use one readonly transaction, verify the full file by default, and still verify selected artifacts. The public session API does not accept cached validation receipts. Callback Promises are rejected, source scopes remain isolated when nested, and reads after closure fail. Statistics remain inspectable after closure.

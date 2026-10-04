@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 public workflow and deployment boundary; automatic previews remain disabled while bounded manual runtime qualification is explicit. CLI, nvm development pin and scientific approval remain unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -105,14 +105,16 @@ Material PCR content should use this authoring shape:
 
 ## Development and verification
 
-Use `nvm install && nvm use` for the exact Node 24 version in `.nvmrc`, then
+Use `nvm install && nvm use` for the exact Node 24 version in `.nvmrc`, select
+`npm install --global npm@12.2.0`, then install both locked graphs with
 `npm ci && npm --prefix packages/pcr-docs ci`. `npm run validate` checks the runtime,
-reviewed migration inventory, both TypeScript projects, library contracts and all
+reviewed migration inventory, all scoped TypeScript projects, library contracts and all
 source tests, including documentation tests. Full validation currently runs on Linux because the Goal Harness requires descriptor-anchored `/proc` access; portable suites remain available separately. `npm run test:list` shows suite
-membership; `npm run test:coverage` records the initial engineering coverage.
-The shared YAML boundary and offline-tool builder now use TypeScript; installed packages contain compiled runtime code. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
+membership; `npm run test:coverage` collects the full test/build sources and enforces
+the complete coverage targets from fresh report paths.
+All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
 migration boundaries and final qualification requirements. The Python SEO checker
-is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Remaining authored JavaScript and final production qualification are still tracked under #69.
+is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Authored JavaScript inventory is zero; final production qualification and cutover remain tracked under #69/#79 until live acceptance.
 
 ## Builder CLI
 
@@ -223,6 +225,7 @@ npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format
 npm --silent run tiangong-pcr -- resolve --pcr <pcr-id> --format json
 npm --silent run tiangong-pcr -- show --pcr <pcr-id> --lang zh-CN
 npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
+npm --silent run tiangong-pcr -- guidance batch --input <request.json> --output <new-file> --format json
 npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --topic boundary --format json
 npm --silent run tiangong-pcr -- inspect --input <process.json> --related <local-package> --section exchanges --format json
 npm --silent run tiangong-pcr -- review prepare --pcr <pcr-id> --input <process.json> --output <new-review.json> --format json
@@ -286,7 +289,9 @@ consistent document API and the shared immutable-history verifier. It renders
 ordinary Markdown as complete semantic HTML in a Next.js static export. Fumadocs
 provides the documentation layout, navigation and search dialog. Unified tag qualification
 builds the web artifact once; the existing EdgeOne Git project imports it from the
-`release/production` deployment pointer. There is no request-time SSR or preview deployment.
+`release/production` deployment pointer. There is no request-time SSR; preview auto
+deployment remains disabled. A bounded manual preview may qualify provider runtime
+selection under the site contract without moving the production pointer.
 
 ```bash
 npm ci

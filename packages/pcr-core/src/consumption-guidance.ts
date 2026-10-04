@@ -6,16 +6,7 @@ import type { NormativeProjectionContext } from './compiler/normative-projection
 import { assertGuidanceContextConsistency, type GuidanceContextProvenance } from './compiler/guidance-context.ts';
 import type { GuidanceContextEnvelope } from './compiler/guidance-context.ts';
 
-// Transitional boundary to the explicitly inventoried legacy core. Its result is
-// unknown and checked below; the core port replaces this adapter, not its checks.
-const legacyCore: unknown = await import(new URL('./index.mjs', import.meta.url).href);
-function snapshotReader(options: GuidanceOptions): unknown {
-  if (!object(legacyCore) || typeof legacyCore.getVerifiedPcrProjection !== 'function') {
-    throw new ConsumptionError('PCR_INTERNAL_CONTRACT_INVALID', 'Verified projection reader is unavailable.');
-  }
-  const value: unknown = legacyCore.getVerifiedPcrProjection(options);
-  return value;
-}
+import { getVerifiedPcrProjection } from "./index.ts";
 const TOPICS: Readonly<Record<string, readonly string[]>> = {
   overview: ['product_category_identity', 'functional_unit', 'boundary_abstraction'],
   'reference-flow': ['functional_unit', 'reference_flow_definition'],
@@ -115,4 +106,4 @@ export function selectGuidanceFromSnapshot(value: unknown, { topic = 'overview',
   const selected = paginate(entries, page, pageSize);
   return { ...base, topic, ...selected, normative_context_selection: contextSelection(snapshot, selected.items.map(item => item.source.pointer), names.map(name => `/${name}`)) };
 }
-export function selectGuidance(options: GuidanceOptions) { return selectGuidanceFromSnapshot(snapshotReader(options), options); }
+export function selectGuidance(options: GuidanceOptions) { return selectGuidanceFromSnapshot(getVerifiedPcrProjection(options), options); }

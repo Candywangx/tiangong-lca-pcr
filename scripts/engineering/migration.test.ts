@@ -87,20 +87,27 @@ test('an authored file cannot become generated through an arbitrary manifest exe
   assert.match(result.findings[0]?.message ?? '', /Unapproved generated/u);
 });
 
-test('a nonignored generated search worker requires exact source and generator evidence', async t => {
-  const source = 'packages/pcr-docs/lib/search-worker.mjs';
-  const generator = 'packages/pcr-docs/scripts/generate.mjs';
+test('a nonignored generated search worker requires exact pinned compilation evidence', async t => {
+  const source = 'packages/pcr-docs/lib/search-worker.ts';
+  const generator = 'packages/pcr-docs/scripts/browser-assets.ts';
   const output = 'packages/pcr-docs/public/generated/search-worker.mjs';
-  const f = fixture(t, { [source]: 'export const search = true;\n', [generator]: '// generator fixture\n' });
-  f.manifest.generated.push({ path: output, kind: 'copy', generator, source, optional: true });
+  const generated = 'export const search = true;\n';
+  const f = fixture(t, { [source]: 'export const search: boolean = true;\n', [generator]: [
+    'import { readFileSync } from "node:fs";',
+    'if (process.argv.length !== 3 || process.argv[2] !== "--check") throw new Error("read-only check required");',
+    `if (readFileSync("${output}", "utf8") !== ${JSON.stringify(generated)}) throw new Error("compiled worker is stale");`,
+  ].join('\n') });
+  f.manifest.generated.push({ path: output, kind: 'typescript-browser', generator, source, optional: true });
   f.save();
   assert.equal((await checkMigration(f.root)).ok, true);
-  f.write(output, 'export const search = false;\n');
+  f.write(output, 'export const search: boolean = true;\n');
   assert.ok((await checkMigration(f.root)).findings.some(finding => finding.code === 'GENERATED_EVIDENCE'));
-  f.write(output, 'export const search = true;\n');
+  f.write(output, generated);
+  const before=readFileSync(path.join(f.root,output));
   const result = await checkMigration(f.root);
   assert.equal(result.ok, true);
   assert.equal(result.counts.generated, 1);
+  assert.deepEqual(readFileSync(path.join(f.root,output)),before);
   f.write('.gitignore', 'packages/pcr-docs/public/generated/\n');
   f.write(output, 'older ignored build output');
   assert.equal((await checkMigration(f.root)).ok, true);
@@ -178,14 +185,14 @@ test('CLI emits deterministic JSON and uses failure/usage exit codes', t => {
 });
 
 test('the controlled vocabulary exemption delegates to its read-only generator check and propagates stale artifacts', async t => {
-  const artifact = 'packages/pcr-core/src/generated/controlled-vocabulary.mjs';
-  const generator = 'builder/scripts/generate-controlled-vocabulary.mjs';
+  const artifact = 'packages/pcr-core/src/generated/controlled-vocabulary.ts';
+  const generator = 'builder/scripts/generate-controlled-vocabulary.ts';
   const f = fixture(t, {
     'old.mjs': 'export {};\n',
     [generator]: [
       'import { readFileSync } from "node:fs";',
       'if (!process.argv.includes("--check")) throw new Error("Mutation forbidden in this fixture");',
-      'const output = new URL("../../packages/pcr-core/src/generated/controlled-vocabulary.mjs", import.meta.url);',
+      'const output = new URL("../../packages/pcr-core/src/generated/controlled-vocabulary.ts", import.meta.url);',
       'if (readFileSync(output, "utf8") !== "export const values = [];\\n") throw new Error("stale controlled vocabulary");',
     ].join('\n'),
     [artifact]: 'export const values = [];\n',

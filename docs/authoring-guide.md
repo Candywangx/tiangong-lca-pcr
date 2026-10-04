@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 runtime recovery against authoring scope; deployment does not change methodology lifecycle, translation approval, canonical authoring or immutable history."
 ---
 
 # Authoring Guide

@@ -13,8 +13,8 @@ const legacyPattern = /\.(?:[cm]?js|jsx)$/iu;
 const tsPattern = /\.(?:[cm]?ts|tsx)$/iu;
 const pythonPath = 'scripts/vendor/workspace-seo/check.py';
 const generatedDefinitions = [
-  { path: 'packages/pcr-core/src/generated/controlled-vocabulary.mjs', kind: 'controlled-vocabulary', generator: 'builder/scripts/generate-controlled-vocabulary.mjs', source: 'builder/vocab', optional: false },
-  { path: 'packages/pcr-docs/public/generated/search-worker.mjs', kind: 'copy', generator: 'packages/pcr-docs/scripts/generate.mjs', source: 'packages/pcr-docs/lib/search-worker.mjs', optional: true },
+  { path: 'packages/pcr-core/src/generated/controlled-vocabulary.ts', kind: 'controlled-vocabulary', generator: 'builder/scripts/generate-controlled-vocabulary.ts', source: 'builder/vocab', optional: false },
+  { path: 'packages/pcr-docs/public/generated/search-worker.mjs', kind: 'typescript-browser', generator: 'packages/pcr-docs/scripts/browser-assets.ts', source: 'packages/pcr-docs/lib/search-worker.ts', optional: true },
 ] as const;
 
 type GeneratedEntry = { path: string; kind: string; generator: string; source: string; optional: boolean };
@@ -168,11 +168,8 @@ export async function checkMigration(requestedRoot: string = process.cwd()): Pro
       try {
         const content = readRegularBytes(root, entry.path);
         readRegularFile(root, entry.generator);
-        if (entry.kind === 'copy') {
-          if (!content.equals(readRegularBytes(root, entry.source))) throw new Error('Generated search worker does not match its authored source bytes.');
-        } else {
-          execFileSync(process.execPath, [path.join(root, entry.generator), '--check'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 30_000 });
-        }
+        if (content.length === 0) throw new Error('Generated artifact is empty.');
+        execFileSync(process.execPath, [path.join(root, entry.generator), '--check'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 30_000 });
         report.counts.generated++;
       } catch (error) { add('GENERATED_EVIDENCE', entry.path, errorMessage(error)); }
     }

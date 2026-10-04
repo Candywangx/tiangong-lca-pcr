@@ -2,13 +2,13 @@
 
 This is a reproducible development replay using synthetic fixtures. No production Goal, author task, session log, PCR record, or remote service was used. It is not a replay of the original production incident.
 
-The executable record is `2026-09-14-prepared-review-recovery-synthetic-replay.mjs`; the measured results are in the adjacent `.json` file. Run from the implementation checkout:
+The executable record is `2026-09-14-prepared-review-recovery-synthetic-replay.ts`; the retained historical results are in the adjacent `.json` file. Run from the implementation checkout:
 
 ```bash
-node docs/superpowers/records/2026-09-14-prepared-review-recovery-synthetic-replay.mjs
+node docs/superpowers/records/2026-09-14-prepared-review-recovery-synthetic-replay.ts
 ```
 
-The script exports the actual baseline runtime at `61d8fc44002ed9bb4baaa149e5d074af1a93e96c` into a temporary directory and runs the same synthetic scenarios against that code and the current implementation. Each scenario owns a temporary Git repository and Goal event store. The author adapter and review/evidence callbacks are synthetic. The baseline export and fixture repositories are removed after execution. The script writes only the adjacent result artifact in the implementation checkout.
+The script exports the actual baseline runtime at `61d8fc44002ed9bb4baaa149e5d074af1a93e96c` into a temporary directory and runs the same synthetic scenarios against that code and the current implementation. Each scenario owns a temporary Git repository and Goal event store. The author adapter and review/evidence callbacks are synthetic. The baseline export and fixture repositories are removed after execution. New runs write only `.reports/prepared-review-recovery-synthetic-replay.json`; the adjacent historical receipt is preserved. The current implementation uses TypeScript; the fixed archived baseline retains its original MJS entrypoints.
 
 | Injected condition | Baseline after recovery | Current implementation after recovery |
 | --- | --- | --- |

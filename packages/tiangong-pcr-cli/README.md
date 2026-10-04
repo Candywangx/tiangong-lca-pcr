@@ -15,7 +15,7 @@ x64, and macOS ARM64.
 In a project directory:
 
 ```sh
-npm install @tiangong-lca/pcr@0.3.1 @tiangong-lca/pcr-library@0.3.1
+npm install @tiangong-lca/pcr@0.4.1 @tiangong-lca/pcr-library@0.4.1
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ./node_modules/.bin/tiangong-pcr list --format json
 ```
@@ -72,15 +72,15 @@ package is optional; legacy `validate-model` only checks qualifier text and
 On a connected machine, download both packages:
 
 ```sh
-npm pack @tiangong-lca/pcr@0.3.1
-npm pack @tiangong-lca/pcr-library@0.3.1
+npm pack @tiangong-lca/pcr@0.4.1
+npm pack @tiangong-lca/pcr-library@0.4.1
 ```
 
 Transfer the two tarballs and a suitable Node.js runtime to the offline machine.
 In the destination directory:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.3.1.tgz ./tiangong-lca-pcr-library-0.3.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.1.tgz ./tiangong-lca-pcr-library-0.4.1.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 
@@ -106,3 +106,7 @@ to that host. npm installation does not automatically activate the Skill.
 
 Licensed under the **MIT License**; see the included `LICENSE`. Bundled
 dependencies retain their own license files and notices in `node_modules`.
+
+## Several PCRs in one read
+
+Save `{ "schema_version": 1, "pcr_ids": ["<pcr-id>"] }` to a request file, then run `tiangong-pcr guidance batch --input request.json --library <library.sqlite> --output <new-file> --format json`. One to 100 IDs share one verified source session. Order and duplicates are preserved; any failed item fails the entire batch without creating a partial file. Topic/pointer selection retains complete source context. The output records source identity, input hash and actual read/cache statistics.

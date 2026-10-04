@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 static TypeScript producer fixture and provider CI lane; strict source checks, exact test-only exclusion and preserved production import guards follow the engineering contract."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

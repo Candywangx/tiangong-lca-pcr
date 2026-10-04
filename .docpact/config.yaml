@@ -1,8 +1,8 @@
 version: 1
 layout: repo
 lastReviewedAt: "2026-10-04"
-lastReviewedCommit: "d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8"
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: "d0198577159e82bcc12df14bfe59f8ed060e089a"
+lastReviewedNote: "Reviewed PCR #82 provider import runtime separation and exact typed test-only producer fixture. Production modules remain in the coverage denominator; strict source inventory and formal release gates are retained. Real provider acceptance remains part of #79/#82."
 
 catalog:
   repos:
@@ -39,7 +39,10 @@ ownership:
           - .nvmrc
           - tsconfig*.json
           - config/typescript-migration.json
+          - config/coverage.json
           - scripts/engineering/**
+          - tests/browser/**
+          - tests/agent/**
           - package-lock.json
           - .github/workflows/**
           - docs/**
@@ -86,7 +89,10 @@ coverage:
     - .nvmrc
     - tsconfig*.json
     - config/typescript-migration.json
+    - config/coverage.json
     - scripts/engineering/**
+    - tests/browser/**
+    - tests/agent/**
     - edgeone.json
     - builder/**
     - classifications/**
@@ -227,13 +233,13 @@ rules:
     scope: repo
     repo: pcr
     triggers:
-      - path: builder/cli/index.mjs
+      - path: builder/cli/index.ts
         kind: release-command-entry
-      - path: builder/lib/builder-operations.mjs
+      - path: builder/lib/builder-operations.ts
         kind: release-operations
-      - path: builder/lib/published-revision-state.mjs
+      - path: builder/lib/published-revision-state.ts
         kind: release-state
-      - path: builder/lib/pcr-directory-transaction.mjs
+      - path: builder/lib/pcr-directory-transaction.ts
         kind: release-transaction
       - path: docs/pcr-library-release-policy.md
         kind: release-policy
@@ -308,11 +314,11 @@ rules:
         kind: generated-public-documentation
       - path: scripts/vendor/workspace-seo/**
         kind: generated-build-and-proof
-      - path: packages/pcr-core/src/languages.mjs
+      - path: packages/pcr-core/src/languages.ts
         kind: source-language-contract
-      - path: packages/pcr-core/src/index.mjs
+      - path: packages/pcr-core/src/index.ts
         kind: canonical-document-reader
-      - path: builder/lib/pcr-document-history.mjs
+      - path: builder/lib/pcr-document-history.ts
         kind: historical-document-reader
       - path: edgeone.json
         kind: static-production-hosting
@@ -329,9 +335,9 @@ rules:
     scope: repo
     repo: pcr
     triggers:
-      - path: builder/scripts/npm-release*.mjs
+      - path: builder/scripts/npm-release*.ts
         kind: npm-release-contract
-      - path: builder/scripts/product-*.mjs
+      - path: builder/scripts/product-*.ts
         kind: product-release-contract
       - path: tsconfig.runtime.json
         kind: compiled-runtime-distribution
@@ -349,9 +355,9 @@ rules:
         kind: distribution-license
       - path: builder/scripts/build-offline-*
         kind: offline-builder
-      - path: packages/pcr-core/src/offline-library.mjs
+      - path: packages/pcr-core/src/offline-library.ts
         kind: offline-reader
-      - path: packages/pcr-core/src/source-context.mjs
+      - path: packages/pcr-core/src/source-context.ts
         kind: storage-boundary
       - path: packages/tiangong-pcr-cli/**
         kind: public-cli
@@ -372,6 +378,14 @@ rules:
         kind: migration-inventory
       - path: scripts/engineering/**
         kind: engineering-command
+      - path: scripts/engineering/fixtures/provider-importer-producer.ts
+        kind: test-fixture
+      - path: tests/browser/**
+        kind: browser-qualification
+      - path: tests/agent/**
+        kind: bounded-agent-evaluation
+      - path: config/coverage.json
+        kind: source-accounted-coverage
       - path: package.json
         kind: validation-entrypoint
       - path: package-lock.json

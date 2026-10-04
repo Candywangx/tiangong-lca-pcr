@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: d4e34ac41a9b7a99e6642f7ac26bd9a64aed53c8
-lastReviewedNote: "Reviewed PCR #63 projection v2, complete source and ancestor context, legacy provenance, typed compiler/consumer wiring and verified candidate regeneration. Scientific/translation gates and immutable historical bytes remain unchanged; final refactor/publication remains in #69."
+lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
+lastReviewedNote: "Reviewed PCR #82 provider-runtime recovery; repository ownership, canonical PCR identities, scientific/translation gates and immutable release boundaries are unchanged. Runtime separation is governed by the updated linked contracts."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -265,6 +265,8 @@ Rules:
 - Legacy `validate-model` checks qualifier text presence and `validate-dataset` checks collection protocol ID presence. Preserve their report/exit compatibility and do not advertise them as semantic or TIDAS validation.
 - Agent skill guidance lives under `skills/tiangong-pcr/` and must remain thin. It should point agents to CLI commands and library contracts instead of duplicating PCR rules.
 - GitHub feedback intake surfaces live under `.github/ISSUE_TEMPLATE/`.
+
+Public `guidance batch` uses an owned synchronous read session for one verified source. Preserve complete units, input order and duplicate IDs; fail the complete operation when an item is unavailable. Context freshness also applies to metadata-only pages and shallow trees. See `docs/agentic-consumption.md` for source identity and lifetime boundaries.
 
 ## Generated Public Documentation
 

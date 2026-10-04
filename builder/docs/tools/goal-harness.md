@@ -61,7 +61,7 @@ write a stable error code and details to stderr, and include a next action.
 
 ### Approved dirty-main reconciliation
 
-`builder/goal-harness/reconciliation.mjs` exposes `planReconciliation` and `applyReconciliation` for a coordinator
+`builder/goal-harness/reconciliation.ts` exposes `planReconciliation` and `applyReconciliation` for a coordinator
 recovering a validated, unlanded snapshot after an explicitly approved external change. Planning takes `config`,
 `stateDir`, `snapshotId`, exact `inputPaths` (canonical PCR files, mapping/index files and ADRs), and optional
 `deliveryPaths` from the narrow runtime allowlist. It returns a SHA-256-bound plan. Applying takes that unchanged
@@ -89,7 +89,7 @@ unchanged in landed history; the new snapshot carries `correction_of` and reuses
 captures the approved external PCR inputs and rebuilds every shared projection under the next repository sequence.
 No new author result or completed PCR is counted for such a correction, and publication plus CAS remain mandatory.
 
-Viewer recovery tests use `viewer-test-fixture.mjs`: the real pinned publisher, worker, schemas and one four-file PCR,
+Viewer recovery tests use `viewer-test-fixture.ts`: the real pinned publisher, worker, schemas and one four-file PCR,
 one accepted mapping and one coverage leaf. No failure-injection assertions are skipped. On the September 10 local
 baseline, the full main test suite took 697.6 seconds (922 tests; 918 passed, 4 existing skips). After the compatible
 Harness merge and small-fixture replacement it took 32.9 seconds (935 tests; 931 passed, the same 4 skips). These are
@@ -153,7 +153,7 @@ failure, not a boundary-review workaround. Its report hash is explicitly canonic
 JSON; it is distinct from the exact persisted report-byte hash used below.
 
 For legacy reports needing coordinator inspection, the bounded library APIs in
-`builder/goal-harness/coordinator-hold.mjs` are `holdCoordinatorTask`,
+`builder/goal-harness/coordinator-hold.ts` are `holdCoordinatorTask`,
 `releaseCoordinatorTask`, and `coordinatorTaskSha256`. Both operations take:
 
 ```js
@@ -225,7 +225,7 @@ dirty primary working tree.
 
 The approved runtime paths also include the shared-materials CLI, implementation, tests, and create-PCR guidance.
 Run `goal:start` or `goal:resume` from the clean, committed checkout containing the desired Harness version (or invoke
-that checkout's `builder/cli/goal.mjs` directly); a GitHub push alone does not update another local checkout or an
+that checkout's `builder/cli/goal.ts` directly); a GitHub push alone does not update another local checkout or an
 existing Goal runtime. New dispatches query the shared store and pass bounded candidates plus explicit query/read/register
 commands to authors. Existing author turns keep their original prompts; subsequent repair turns receive the updated
 instructions from the coordinator. The default materials directory is the Git common directory's `pcr-materials/`,
@@ -261,7 +261,7 @@ It uses Node's `--env-file-if-exists=<tiangong-cli>/.env` option so authors neve
 Every real candidate query must run from the assigned worktree through:
 
 ```bash
-node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.mjs query \
+node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.ts query \
   --config <goal.yaml> --task <task-id> --query "<one concrete flow>" --flow-type product --limit 20
 ```
 
@@ -271,12 +271,12 @@ SHA-256, byte length, authenticated status, and task binding. After state-code a
 JSON decision for every candidate:
 
 ```bash
-node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.mjs direct-read \
+node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.ts direct-read \
   --config <goal.yaml> --task <task-id> --receipt <receipt-id> --uuid <candidate-uuid>
 ```
 
 ```bash
-node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.mjs finalize \
+node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.ts finalize \
   --config <goal.yaml> --task <task-id> --receipt <receipt-id> --decisions /tmp/<decisions>.json
 ```
 
@@ -286,6 +286,9 @@ hash. The author report links adopted UUIDs, rejected candidates, and `no_exact_
 finalized receipt ids. The reviewer recomputes result hashes and candidate projections. A self-reported
 `hybrid_search: true` is not evidence. `tiangong_cli_unavailable` is never valid unresolved coverage; it makes the
 whole author result an infrastructure-level retryable failure.
+Classification claims require a nonempty matching public identifier or normalized public label. Empty identifiers
+and labels that normalize to empty text cannot establish a match; a meaningful label-only public classification
+remains valid evidence for a matching claim.
 
 Goal caches are append-only and hash-bound to normalized input, tool version, query/source conditions, and response
 fingerprint. Writes use a separate bounded cross-process lock so six authors cannot fork the event chain. Schema-stale
@@ -316,7 +319,7 @@ errors only at independent intake. Contract 2 uses this sequence:
 
 ```bash
 # Run from the assigned author worktree. Use the runtime CLI path supplied by the task.
-node <runtime>/builder/cli/goal-prepare-report.mjs \
+node <runtime>/builder/cli/goal-prepare-report.ts \
   --config <absolute-goal.yaml> --task <task-id> --draft <absolute-draft.json> --format json
 ```
 
@@ -505,12 +508,12 @@ viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. 
 aliases/catalog checks, so integration does not repeat those identical checks immediately before validate.
 # Bounded matched-model production trial
 
-`node builder/cli/goal-model-trial.mjs register --config <goal.yaml> --plan <trial.json> --dry-run`
+`node builder/cli/goal-model-trial.ts register --config <goal.yaml> --plan <trial.json> --dry-run`
 previews six untouched real queued tasks after the authenticated doctor. Remove `--dry-run` to append one atomic
 registration event to the existing Goal. Repeating the identical plan is idempotent. No author is interrupted or
 dispatched by registration. The approved example is `builder/planning/model-trial-metal-20260911.json`.
 
-Use the existing `goal.mjs resume --config <goal.yaml>` entry for natural-slot dispatch. Trial tasks override only
+Use the existing `goal.ts resume --config <goal.yaml>` entry for natural-slot dispatch. Trial tasks override only
 their actual app-server model/effort parameters; the global default and existing authors remain unchanged.
 Three pairs each contain Terra/high and Sol/high, with the same action and recorded a priori difficulty reasons.
 One original-model content repair is allowed, followed by Sol rescue for Terra within the existing repair budget.
@@ -535,7 +538,7 @@ The coordinator appends this through GoalEventStore under the Goal lock and rele
 resume repeats the ordinary hard gates. A new commit invalidates this extra approval. No trial acceptance bypasses
 the normal earliest-six serial integration, complete validate, pinned Viewer publication or CAS landing.
 
-`node builder/cli/goal-model-trial.mjs report --config <goal.yaml> --trial <id>` emits JSON for individual samples,
+`node builder/cli/goal-model-trial.ts report --config <goal.yaml> --trial <id>` emits JSON for individual samples,
 turns, gate findings, measurements and landing status. Separate Terra independent, Sol independent and Terra draft
 plus Sol repair; do not count rescue as independent Terra success. Report the first six before deciding on a second
 explicitly reviewed stage. Automatic extension is disabled; this pilot must not become an unbounded experiment or

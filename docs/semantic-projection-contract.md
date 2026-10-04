@@ -19,8 +19,8 @@ checkPaths:
   - packages/pcr-core/schemas/guidance-output.schema.json
   - builder/lib/markdown-projection.ts
   - builder/lib/structured-yaml-projection.ts
-lastReviewedAt: 2026-10-03
-lastReviewedCommit: f12cdada3362cc1c845aa7baf876c29a2476676a
+lastReviewedAt: 2026-10-04
+lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
 related:
   - agentic-consumption.md
   - authoring-guide.md
@@ -125,3 +125,12 @@ collisions, dropped/rehashed context and corrupted citations. Actual historical
 npm SQLite artifacts are also qualified; reproducible legacy output alone is not
 a semantic correctness oracle. Full refactor and formal production publication
 remain separate acceptance under PCR #69.
+
+
+Complete guidance validates and captures the system-boundary, allocation and
+validation families before composition. Missing required families fail with
+`PCR_NORMATIVE_CONTEXT_INVALID`; they are never replaced with empty collections.
+The projection formatter checks consistency against its captured top-level copy.
+Optional presentation fields retain their existing defaults. Source-index array
+accesses rely only on locally constructed dense arrays and already checked integer
+bounds; parser-position, source-span and AST resource failures remain explicit.
