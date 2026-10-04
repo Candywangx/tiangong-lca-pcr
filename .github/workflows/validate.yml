@@ -346,6 +346,36 @@ jobs:
           retention-days: 14
 
 
+  provider-importer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the provider import runtime separately from the build pin
+        id: provider
+        run: echo "node=$(jq -r '.nodeVersion' edgeone.json)" >> "$GITHUB_OUTPUT"
+      - name: Set up the real artifact construction runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Preserve the artifact producer executable across the runtime switch
+        id: producer
+        run: echo "node-exec=$(command -v node)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.provider.outputs.node }}
+          cache: npm
+      - name: Select the pinned test dependency installer
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Install locked importer test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Qualify sealed import on the actual provider Node runtime
+        env:
+          PCR_TEST_PRODUCER_NODE_EXEC: ${{ steps.producer.outputs.node-exec }}
+        run: |
+          test "$(node --version)" = "v$(jq -r '.nodeVersion' edgeone.json)"
+          node --test builder/scripts/product-web-materialize.test.ts packages/pcr-docs/scripts/hosting-contract.test.ts
+
   source-coverage:
     needs: [validate, documentation]
     runs-on: ubuntu-latest

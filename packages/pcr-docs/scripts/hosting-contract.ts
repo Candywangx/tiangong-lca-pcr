@@ -33,7 +33,8 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
   assert.equal(unknownField(config,"outputDirectory"), "packages/pcr-docs/out");
   assert.equal(unknownField(config,"installCommand"), "node --version");
   assert.equal(unknownField(config,"buildCommand"), "node builder/scripts/product-web-materialize.ts");
-  assert.equal(unknownField(config,"nodeVersion"), "24.19.0");
+  // The provider imports sealed bytes; it does not run the product build toolchain.
+  assert.equal(unknownField(config,"nodeVersion"), "24.18.0", "EdgeOne importer requires its qualified preinstalled Node 24 runtime");
   for (const source of ["/zh", "/zh/"])
     assert.ok(
       Array.isArray(unknownField(config,"redirects")) && (unknownField(config,"redirects") as unknown[]).some(

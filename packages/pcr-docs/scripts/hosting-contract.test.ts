@@ -22,6 +22,14 @@ test("production headers cover nested raw sources and executable Worker modules"
   assert.equal(matchesPath("/generated/raw/*", downloads[1]!.url), true);
   assert.doesNotThrow(() => verifyHostingContract(config, downloads));
 });
+test("product build Node pin cannot replace the provider's qualified preinstalled runtime", () => {
+  const product: unknown = JSON.parse(fs.readFileSync(new URL("../../../product-release.json", import.meta.url), "utf8"));
+  assert.ok(isUnknownRecord(product));
+  assert.equal(product.node, "24.19.0");
+  assert.equal(fs.readFileSync(new URL("../../../.nvmrc", import.meta.url), "utf8").trim(), product.node);
+  assert.throws(() => verifyHostingContract({ ...config, nodeVersion: product.node }, downloads), /qualified preinstalled Node 24 runtime/u);
+  assert.doesNotThrow(() => verifyHostingContract(config, downloads));
+});
 test("moved download rules, missing module MIME and redirect drift fail the gate", () => {
   for (const mutation of ["raw", "mime", "redirect", "output"]) {
     const broken = structuredClone(config);

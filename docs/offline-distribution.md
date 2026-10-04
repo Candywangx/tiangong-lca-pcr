@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
-lastReviewedNote: "Reviewed final qualification contracts: complete source inventory, measured coverage with explicit limitations, sealed artifact platform/browser checks, runtime target assertions and bounded agent evidence. Production cutover remains pending #79/#69."
+lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
+lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -74,8 +74,8 @@ output must not be published as the complete product. Run them from a validated
 source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.0
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.0
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.1
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.1
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -94,7 +94,7 @@ Transfer both verified product tarballs and a suitable Node runtime to the offli
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.0.tgz ./tiangong-lca-pcr-library-0.4.0.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.1.tgz ./tiangong-lca-pcr-library-0.4.1.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -316,8 +316,26 @@ The initial `v0.3.0` attempt exposed a missing filesystem constraint on the prov
 memory-backed clone. Its two npm candidate packages and sealed assets remain
 unchanged and the release remains incomplete. The reviewed repair uses product
 `0.3.1`; that recovery remains immutable. The current TypeScript release examples
-below target `0.4.0`. Never repair this by moving the old
+below target `0.4.1`. Never repair this by moving the old
 tag, replacing sealed assets, or overriding source guards in the provider console.
+
+### Provider runtime selection and v0.4.0 recovery
+
+The v0.4.0 product passed its tag-bound quality gates and both npm candidate
+packages were verified, but EdgeOne deployment `dppp7t19r5fd` failed during Node
+selection before the importer ran: the service could not select Node 24.19.0.
+The previous verified website and npm latest stayed at 0.3.1. The v0.4.0 tag,
+accepted packages, sealed assets and receipts remain immutable.
+
+The patch line separates provider import from product construction: `edgeone.json`
+requests the provider-preinstalled Node 24.18.0, while `.nvmrc`, product metadata
+and construction qualification retain Node 24.19.0 / npm 12.2.0. Actual importer
+contracts run under the provider runtime as an additional CI lane. The provider
+still imports only the original sealed bytes and validates their construction
+metadata; no frontend rebuild or identity exception is introduced. Check a real
+provider log for runtime selection before claiming the configuration is effective.
+Official references: [build guide](https://pages.edgeone.ai/document/build-guide)
+and [configuration](https://pages.edgeone.ai/document/edgeone-json).
 
 ### Build and operator commands
 
@@ -328,7 +346,7 @@ checkout, prepare artifacts without any remote publication:
 npm ci --ignore-scripts --no-audit --no-fund
 npm --prefix packages/pcr-docs ci
 npm run docs:build
-npm run product:build -- v0.4.0 dist/product-release packages/pcr-docs/out
+npm run product:build -- v0.4.1 dist/product-release packages/pcr-docs/out
 npm run product:verify -- dist/product-release
 ```
 
@@ -343,13 +361,13 @@ After activation, create/resume the first product tag from the exact current mai
 version through the guarded workflow:
 
 ```sh
-gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.0
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.1
 ```
 
 Retry an existing unified release without moving its tag:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.0 -f tag_name=v0.4.0
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.1 -f tag_name=v0.4.1
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
