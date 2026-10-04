@@ -1,3 +1,5 @@
+import {parseSiteManifest} from "./site-contracts.ts";
+import {isUnknownRecord} from "../../pcr-core/src/types.ts";
 import fs from "node:fs";
 import path from "node:path";
 import type { DocPage, PcrRecord, SiteManifest } from "./types";
@@ -5,7 +7,7 @@ import type { DocPage, PcrRecord, SiteManifest } from "./types";
 const generatedRoot = path.join(process.cwd(), ".generated");
 let cached: SiteManifest | undefined;
 export function getSiteManifest(): SiteManifest {
-  return (cached ??= JSON.parse(
+  return (cached ??= parseSiteManifest(
     fs.readFileSync(path.join(generatedRoot, "site.json"), "utf8"),
   ));
 }
@@ -43,5 +45,7 @@ export function readRecordData(record: PcrRecord): {
   manifest: Record<string, unknown>;
   structured: Record<string, unknown>;
 } {
-  return JSON.parse(fs.readFileSync(artifactPath(record.dataPath), "utf8"));
+  const value:unknown=JSON.parse(fs.readFileSync(artifactPath(record.dataPath), "utf8"));
+  if(!isUnknownRecord(value)||!isUnknownRecord(value.manifest)||!isUnknownRecord(value.structured))throw new TypeError("Invalid generated PCR record data.");
+  return {manifest:value.manifest,structured:value.structured};
 }

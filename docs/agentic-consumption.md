@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 56782712f5ac3e423ab80efaef7c7e35316461f8
-lastReviewedNote: "Reviewed strict Builder/Goal source and test cutover, retained consumer/package contracts, corrected physical source routing and preserved scientific gates; site/release qualification and formal publication remain in #77/#69."
+lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
+lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

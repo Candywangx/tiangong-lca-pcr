@@ -61,8 +61,12 @@ const EXACT_RUNTIME_PATHS = new Set([
   "builder/schemas/goal-author-report.schema.json",
   "builder/schemas/goal-harness-config.schema.json",
   "package.json",
+  "package-lock.json",
+  "tsconfig.json",
+  "tsconfig.viewer-browser.json",
+  "packages/pcr-viewer/scripts/publisher-source.json",
   "packages/pcr-core/src/projection-completeness.ts",
-  "packages/pcr-viewer/viewer-build.test.mjs",
+  "packages/pcr-viewer/viewer-build.test.ts",
 ]);
 
 export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, goalId, now = () => new Date().toISOString() }: RuntimeBaselineOptions): GoalRuntimeBaseline {
@@ -82,9 +86,12 @@ export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, g
       return runtimeBaseline(state.runtime_baseline);
     }
 
-    const paths = gitZ(projectRoot, ["diff", "--name-only", "-z", text(field(state.baseline,"commit")), sourceCommit, "--"])
-      .filter(isApprovedRuntimePath)
-      .sort();
+    // Preserve original-baseline installation receipts while also synchronizing
+    // additions/deletions introduced in the tree receiving this overlay.
+    const paths = [...new Set([
+      ...gitZ(projectRoot, ["diff", "--name-only", "-z", text(field(state.baseline,"commit")), sourceCommit, "--"]),
+      ...gitZ(projectRoot, ["diff", "--name-only", "-z", baseCommit, sourceCommit, "--"]),
+    ].filter(isApprovedRuntimePath))].sort();
     if (paths.length === 0) {
       return { schema_version: 1, commit: baseCommit, base_commit: baseCommit, source_commit: sourceCommit, paths: [], path_sha256: {}, created_at: now() };
     }
@@ -167,7 +174,7 @@ export function isApprovedRuntimePath(file: string): boolean {
     /^builder\/(?:cli|lib|scripts)\/[\w.-]+\.(?:ts|mjs)$/u.test(file) ||
     /^builder\/schemas\/[\w.-]+\.json$/u.test(file) ||
     /^packages\/pcr-core\/(?:src\/(?:(?:compiler|generated)\/)?[\w.-]+\.(?:ts|mjs|json)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.(?:ts|mjs))$/u.test(file) ||
-    /^packages\/pcr-viewer\/(?:(?:scripts|static)\/[\w.-]+\.(?:mjs|js|css|html)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.mjs)$/u.test(file);
+    /^packages\/pcr-viewer\/(?:(?:scripts|static)\/[\w.-]+\.(?:ts|mjs|js|css|html)|schemas\/[\w.-]+\.json|[\w.-]+\.test\.(?:ts|mjs))$/u.test(file);
 }
 
 function hashGitPath(root: string, commit: string, file: string): string | null {

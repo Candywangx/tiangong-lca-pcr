@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 4b6d2a5d2bab726a37481a01032aa36b7caa7bb5
-lastReviewedNote: "Reviewed strict Builder/Goal cutover, unchanged canonical and scientific gates, legacy state/receipt compatibility, runtime installation and typed test discovery. Site/release completion and formal production cutover remain tracked by #77 and #69."
+lastReviewedCommit: f14879bdd9b484726260b1bcb79723cb316ce5b9
+lastReviewedNote: "Reviewed complete typed site/Viewer/release source, generated browser assets, preserved historical publisher and journal compatibility, real export browser qualification and zero authored JavaScript inventory. Final coverage and formal publication remain #79/#69."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

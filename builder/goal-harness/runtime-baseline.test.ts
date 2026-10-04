@@ -28,9 +28,9 @@ test("installed author runtime includes the working shared-materials CLI and aut
     "builder/docs/prompts/claude-create-pcr.md",
     "packages/pcr-core/src/read-context.ts",
     "packages/pcr-core/src/types.ts",
-    "packages/pcr-viewer/scripts/snapshot-store.mjs",
+    "packages/pcr-viewer/scripts/snapshot-store.ts",
     "packages/pcr-viewer/schemas/viewer-active.schema.json",
-    "packages/pcr-viewer/viewer-snapshot.test.mjs",
+    "packages/pcr-viewer/viewer-snapshot.test.ts",
   ];
   try {
     git(root, ["init", "-q"]);
@@ -242,4 +242,40 @@ test("installed runtime contains the complete measurement and preparation comman
 test("runtime allowlist contains typed Builder and compiler dependency leaves without methodology content", () => {
   for(const file of ["builder/cli/index.ts","builder/lib/builder-constants.ts","builder/lib/vocabulary-registry.ts","builder/scripts/sync-structured.ts","builder/schemas/goal-author-report.schema.json","packages/pcr-core/src/compiler/normative-projection.ts","packages/pcr-core/src/generated/contracts-data.ts","packages/pcr-core/src/generated/contracts-data.json","packages/pcr-core/schemas/guidance-batch-request.schema.json"]) assert.equal(isApprovedRuntimePath(file),true,file);
   for(const file of ["library/pcrs/example/pcr.en-US.md","classifications/mappings/cpc-3.0-to-pcr.yaml","library/catalog.yaml","vocabularies/flows.yaml","builder/lib/../../library/catalog.yaml"]) assert.equal(isApprovedRuntimePath(file),false,file);
+});
+
+test("successive runtime overlays restore unchanged format markers and remove previously introduced legacy modules", t => {
+  const root = mkdtempSync(path.join(tmpdir(), "goal-runtime-format-sequence-"));
+  const sourceRoot = `${root}-source`;
+  t.after(() => {
+    try { git(root, ["worktree", "remove", "--force", sourceRoot]); } catch {}
+    rmSync(sourceRoot, {recursive: true, force: true});
+    rmSync(root, {recursive: true, force: true});
+  });
+  git(root, ["init", "-q"]); git(root, ["config", "user.name", "Goal Test"]); git(root, ["config", "user.email", "goal@example.invalid"]);
+  const put = (base: string, file: string, content: string) => { mkdirSync(path.dirname(path.join(base, file)), {recursive: true}); writeFileSync(path.join(base, file), content); };
+  const marker = "packages/pcr-viewer/scripts/publisher-source.json";
+  const typed = "packages/pcr-viewer/scripts/build-viewer-data.ts";
+  const legacy = "packages/pcr-viewer/scripts/build-viewer-data.mjs";
+  const canonical = "library/pcrs/example/manifest.yaml";
+  const format = JSON.stringify({schemaVersion: 1, moduleFormat: "ts"});
+  put(root, ".gitignore", "library/.pcr-builder-state/\n"); put(root, marker, format); put(root, typed, "export const version = 1;\n"); put(root, canonical, "unchanged canonical bytes\n");
+  git(root, ["add", "."]); git(root, ["commit", "-qm", "marked typed baseline"]);
+  const baseline = git(root, ["rev-parse", "HEAD"]);
+  git(root, ["worktree", "add", "-qb", "runtime-source", sourceRoot, baseline]);
+  rmSync(path.join(sourceRoot, marker)); rmSync(path.join(sourceRoot, typed)); put(sourceRoot, legacy, "export const version = 0;\n");
+  git(sourceRoot, ["add", "."]); git(sourceRoot, ["commit", "-qm", "historical runtime"]);
+  const stateDir = path.join(root, "library/.pcr-builder-state/goals/fixture");
+  const store = new GoalEventStore({stateDir}); store.initialize({goal_id: "fixture", baseline: {commit: baseline}, tasks: [], snapshots: []});
+  const first = ensureGoalRuntimeBaseline({projectRoot: root, sourceRoot, stateDir, goalId: "fixture"});
+  assert.equal(git(root, ["ls-tree", "--name-only", first.commit, "--", marker]), "");
+  rmSync(path.join(sourceRoot, legacy)); put(sourceRoot, marker, format); put(sourceRoot, typed, "export const version = 2;\n");
+  git(sourceRoot, ["add", "."]); git(sourceRoot, ["commit", "-qm", "later typed runtime"]);
+  const restored = ensureGoalRuntimeBaseline({projectRoot: root, sourceRoot, stateDir, goalId: "fixture"});
+  assert.equal(git(root, ["show", `${restored.commit}:${marker}`]), format);
+  assert.equal(git(root, ["ls-tree", "--name-only", restored.commit, "--", legacy]), "");
+  assert.equal(git(root, ["show", `${restored.commit}:${typed}`]), "export const version = 2;");
+  assert.equal(git(root, ["show", `${restored.commit}:${canonical}`]), "unchanged canonical bytes");
+  assert.ok(restored.paths.includes(marker)); assert.equal(restored.path_sha256?.[legacy], null);
+  assert.equal(git(root, ["rev-parse", "HEAD"]), baseline);
 });

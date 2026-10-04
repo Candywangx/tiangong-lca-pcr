@@ -8,20 +8,7 @@ import test from "node:test";
 import { buildOfflineLibrary } from "../../builder/scripts/build-offline-library.ts";
 import { buildOfflineTool } from "../../builder/scripts/build-offline-packages.ts";
 import type { DatabaseSync } from "node:sqlite";
-const releaseModule: unknown = await import(new URL("../../builder/scripts/npm-release.mjs", import.meta.url).href);
-interface PackageReceipt { name: string; filename: string; version: string; source_commit: string }
-function callable(value: unknown): value is (...args: unknown[]) => unknown { return typeof value === "function"; }
-function releaseFunction(name: string): (...args: unknown[]) => unknown {
-  const fn = record(releaseModule)[name]; assert.ok(callable(fn)); return fn;
-}
-async function buildRelease(root: string, tag: string, output: string): Promise<PackageReceipt> {
-  const result = record(await releaseFunction("buildRelease")(root, tag, output));
-  return { name: string(result.name), filename: string(result.filename), version: string(result.version), source_commit: string(result.source_commit) };
-}
-function parseNpmPackOutput(text: string, name: string): { bundled: string[] } {
-  const result = record(releaseFunction("parseNpmPackOutput")(text, name));
-  const bundled = array(result.bundled).map(string); return { bundled };
-}
+import { buildRelease, parseNpmPackOutput } from "../../builder/scripts/npm-release.ts";
 function database(library: OfflineLibrary): DatabaseSync { assert.ok(library.db); return library.db; }
 function sqlRow(value: unknown): Record<string, unknown> { return record(value); }
 function installedBin(installation: string): string {
@@ -153,7 +140,7 @@ test("offline distribution preserves contracts and installs without network", { 
     assert.ok(npmCli && existsSync(npmCli), "Run through npm run offline:test (npm_execpath required).");
     const npm = (args: string[], cwd: string): string => execFileSync(process.execPath, [npmCli, ...args, "--cache", path.join(temp, "empty-cache"), "--offline", "--ignore-scripts", "--no-audit", "--no-fund"], { cwd, encoding: "utf8", env: { ...process.env, npm_config_registry: "http://127.0.0.1:1" }, stdio: ["ignore", "pipe", "pipe"] });
     const packed = parseNpmPackOutput(npm(["pack", tool, "--pack-destination", temp, "--json"], temp), "@tiangong-lca/pcr");
-    assert.ok(packed.bundled.includes("ajv"), "Tool tarball must contain its locked dependency graph.");
+    assert.ok(array(packed.bundled).map(string).includes("ajv"), "Tool tarball must contain its locked dependency graph.");
     npm(["pack", output, "--pack-destination", temp], temp);
     const installation = path.join(temp, "installation"); mkdirSync(installation);
     writeFileSync(path.join(installation, "package.json"), '{"private":true}\n');

@@ -69,7 +69,7 @@ test("all/root retain 89 existing root tests, nine docs tests, and every enginee
 test("registered baseline tests cannot disappear silently, while explicitly classified additions remain valid", () => {
   const files = discoverTestFiles(REPOSITORY_ROOT);
   assert.doesNotThrow(() => validateRegisteredTests(files));
-  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.mjs"]) {
+  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.ts"]) {
     assert.throws(() => validateRegisteredTests(files.filter(file => file !== missing)), /Registered tests are missing/);
   }
   const expanded = [...files, "builder/lib/new.unit.test.ts"];
@@ -228,4 +228,14 @@ test("POSIX SIGTERM is forwarded to the real test process and owned temporary fi
   assert.deepEqual(await completion, { exitCode: 0, signal: null });
   assert.deepEqual(readRunResult(stdout), { exitCode: null, signal: "SIGTERM" });
   assert.equal(existsSync(temporaryRoot), false);
+});
+
+
+test("browser contracts remain explicit members of all/root and use their own base suite", () => {
+  const filename = "tests/browser/viewer.browser.test.ts";
+  const inventory = classifyTestFiles([filename, "sample.unit.test.ts"]);
+  assert.deepEqual(inventory.browser, [filename]);
+  assert.deepEqual(selectSuite(inventory, "browser"), [filename]);
+  assert.deepEqual(selectSuite(inventory, "all"), ["sample.unit.test.ts", filename]);
+  assert.deepEqual(selectSuite(inventory, "root"), selectSuite(inventory, "all"));
 });

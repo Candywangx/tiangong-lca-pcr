@@ -49,8 +49,8 @@ function workerResponse(value:UnknownRecord):WorkerResponse {return {...value,pu
 const SHA256_REF = /^sha256:[a-f0-9]{64}$/u;
 const PINNED_PUBLISHER_API_VERSION = 1;
 const PINNED_PUBLISHER_WORKER = path.join(import.meta.dirname, "pinned-viewer-publisher-worker.ts");
-const PINNED_PUBLISHER_MODULE = "packages/pcr-viewer/scripts/build-viewer-data.mjs";
-const PINNED_STORE_MODULE = "packages/pcr-viewer/scripts/snapshot-store.mjs";
+const PINNED_PUBLISHER_MODULE = "packages/pcr-viewer/scripts/build-viewer-data";
+const PINNED_STORE_MODULE = "packages/pcr-viewer/scripts/snapshot-store";
 
 export function viewerPublicationStateDir(projectRoot: string) {
   return path.join(repositoryCoordinatorStateDir(projectRoot), "viewer-publication");
@@ -1103,12 +1103,38 @@ function innerJournalIdentitySha256(journal:UnknownRecord):string {
   return `sha256:${createHash("sha256").update(json, "utf8").digest("hex")}`;
 }
 
-function runPinnedViewerWorker({sourceRoot,operation,options}:{sourceRoot:string;operation:string;options:UnknownRecord}):WorkerResponse {
-  const modulePath = path.join(sourceRoot, ...PINNED_PUBLISHER_MODULE.split("/"));
-  const storeModulePath = path.join(sourceRoot, ...PINNED_STORE_MODULE.split("/"));
-  if (!existsSync(modulePath) || !existsSync(storeModulePath)) {
-    throw new GoalHarnessError("GOAL_VIEWER_PINNED_PUBLISHER_MISSING", "Pinned integration commit does not contain the Viewer publisher and artifact-store modules.");
+/** Select a coherent implementation pair from the exact captured source tree. */
+export function resolvePinnedViewerModules(sourceRoot: string): {modulePath: string; storeModulePath: string} {
+  const formatPath = path.join(sourceRoot, "packages/pcr-viewer/scripts/publisher-source.json");
+  const formatStat = lstatSync(formatPath, {throwIfNoEntry: false});
+  // Transitional captured trees contain both ports, but their producer used MJS.
+  // New captures name their format explicitly, including runtime overlays.
+  let extensions = ["mjs", "ts", "js"];
+  if (formatStat) {
+    try {
+      if (!formatStat.isFile() || formatStat.isSymbolicLink()) throw new Error("Source format must be a regular file.");
+      const descriptor = openSync(formatPath, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW);
+      let metadata: UnknownRecord;
+      try { metadata = jsonRecord(readFileSync(descriptor, "utf8")); }
+      finally { closeSync(descriptor); }
+      if (metadata.schemaVersion !== 1 || typeof metadata.moduleFormat !== "string" || !["ts", "mjs", "js"].includes(metadata.moduleFormat)) throw new Error("Unsupported publisher source format.");
+      extensions = [metadata.moduleFormat];
+    } catch (error) {
+      throw new GoalHarnessError("GOAL_VIEWER_PINNED_PUBLISHER_FORMAT_INVALID", "Captured Viewer publisher format is invalid.", {cause: errorMessage(error)});
+    }
   }
+  for (const extension of extensions) {
+    const modulePath = path.join(sourceRoot, `${PINNED_PUBLISHER_MODULE}.${extension}`);
+    const storeModulePath = path.join(sourceRoot, `${PINNED_STORE_MODULE}.${extension}`);
+    if ([modulePath, storeModulePath].every(file => {
+      const stat = lstatSync(file, {throwIfNoEntry: false}); return stat?.isFile() === true && !stat.isSymbolicLink();
+    })) return {modulePath, storeModulePath};
+  }
+  throw new GoalHarnessError("GOAL_VIEWER_PINNED_PUBLISHER_MISSING", "Pinned integration commit does not contain a coherent Viewer publisher and artifact-store pair.");
+}
+
+function runPinnedViewerWorker({sourceRoot,operation,options}:{sourceRoot:string;operation:string;options:UnknownRecord}):WorkerResponse {
+  const {modulePath, storeModulePath} = resolvePinnedViewerModules(sourceRoot);
   let response:UnknownRecord;
   try {
     response = jsonRecord(execFileSync(process.execPath, [PINNED_PUBLISHER_WORKER], {
