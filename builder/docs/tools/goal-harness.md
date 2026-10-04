@@ -286,6 +286,9 @@ hash. The author report links adopted UUIDs, rejected candidates, and `no_exact_
 finalized receipt ids. The reviewer recomputes result hashes and candidate projections. A self-reported
 `hybrid_search: true` is not evidence. `tiangong_cli_unavailable` is never valid unresolved coverage; it makes the
 whole author result an infrastructure-level retryable failure.
+Classification claims require a nonempty matching public identifier or normalized public label. Empty identifiers
+and labels that normalize to empty text cannot establish a match; a meaningful label-only public classification
+remains valid evidence for a matching claim.
 
 Goal caches are append-only and hash-bound to normalized input, tool version, query/source conditions, and response
 fingerprint. Writes use a separate bounded cross-process lock so six authors cannot fork the event chain. Schema-stale
