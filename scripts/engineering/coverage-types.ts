@@ -20,3 +20,9 @@ export function config(value: unknown): CoverageConfig {
  const path=(value:unknown)=>{const result=text(value);if(!result||result.startsWith('/')||result.includes('\\')||result.split('/').includes('..')||/[?*]/u.test(result))throw new Error('Coverage configuration requires exact paths or directory prefixes.');return result;};
  return {schemaVersion:1,roots:strings(data.roots).map(path),pendingPrefixes:strings(data.pendingPrefixes).map(path),exclusions:data.exclusions.map(value=>{const row=object(value);const reason=text(row.reason);if(!reason.trim())throw new Error('Coverage exclusions require reasons.');return {path:path(row.path),reason};}),thresholds:{lines:percent(gates.lines),functions:percent(gates.functions),branches:percent(gates.branches)},critical:data.critical.map(value=>{const row=object(value);return {prefix:path(row.prefix),branches:percent(row.branches)};})};
 }
+/** Route by the innermost package boundary, so bundled dependencies stay external. */
+export function executionRoute(url:string):'candidate'|'dependency'|'other'{
+ let parsed:URL;try{parsed=new URL(url);}catch{return 'other';}if(parsed.protocol!=='file:'&&parsed.protocol!=='pcr:')return 'other';
+ const parts=decodeURIComponent(parsed.pathname).split('/'),index=parts.lastIndexOf('node_modules');if(index<0)return 'candidate';
+ return parts[index+1]==='@tiangong-lca'&&parts[index+2]==='pcr'?'candidate':'dependency';
+}

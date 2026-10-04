@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {mkdtempSync,mkdirSync,readFileSync,writeFileSync,rmSync,realpathSync,symlinkSync} from 'node:fs';
+import {mkdtempSync,mkdirSync,readFileSync,writeFileSync,rmSync,realpathSync,symlinkSync,readdirSync} from 'node:fs';
 import path from 'node:path';
 import {tmpdir} from 'node:os';
 import {pathToFileURL} from 'node:url';
@@ -12,7 +12,7 @@ import {emissionProofs,emit} from './coverage-emission.ts';
 import {retainMapSources} from './coverage-capture.ts';
 import {mergeExternalCaptures} from './coverage-external.ts';
 import {proveMapping,excludedCapture} from './coverage-mapping.ts';
-import {config,object,parse,type Capture} from './coverage-types.ts';
+import {config,object,parse,executionRoute,type Capture} from './coverage-types.ts';
 import istanbul from 'istanbul-lib-coverage';
 const put=(root:string,file:string,content:string)=>{mkdirSync(path.dirname(path.join(root,file)),{recursive:true});writeFileSync(path.join(root,file),content);};
 const fixture=(t:TestContext)=>{
@@ -39,6 +39,13 @@ test('native TS identity requires exact executed stripping and production bytes,
  assert.throws(()=>proveMapping(root,{...value,source:value.source+'\nreturn 1;'},sources),/executed code/u);
  assert.throws(()=>proveMapping(root,{...value,fileSource:value.fileSource+'\n'},sources),/hash differs/u);
  const url=pathToFileURL(path.join(base,'copy.ts')).href;const copy={...value,url,source:stripTypeScriptTypes(value.fileSource??'',{sourceUrl:url})};assert.equal(proveMapping(root,copy,sources).kind,'native');
+});
+test('captured native imports retain query identity while resolving the real TypeScript file',t=>{
+ const {root}=fixture(t),sources=inventory(root,readConfig(root)),value=nativeCapture(root);
+ const url=value.url+'?harness-pinned=owned-replay';
+ const queried={...value,url,source:stripTypeScriptTypes(value.fileSource??'',{sourceUrl:url})};
+ assert.equal(proveMapping(root,queried,sources).kind,'native');
+ assert.throws(()=>proveMapping(root,{...queried,source:value.source},sources),/executed code/u);
 });
 test('emitted proof rejects forged JS/mappings even with genuine production sourcesContent',t=>{
  const {root,base}=fixture(t),sources=inventory(root,readConfig(root)),native=nativeCapture(root),emissions=emissionProofs(root,sources);const expected=emissions.get('src/a.ts');assert.ok(expected);
@@ -105,13 +112,13 @@ test('nested measured test subprocesses initialize one preload and retain collis
  const metadata=object(parse(readFileSync(path.join(inner,'run.json'),'utf8')));assert.equal(metadata.status,0);assert.equal(metadata.unchanged,true);
 });
 
-test('relocated and compiled assertion fixtures remain hash-exact audited exclusions without production credit',t=>{
- const {root}=fixture(t);put(root,'src/a.test.ts','export const fixture = 1;');const sources=inventory(root,readConfig(root)),value=nativeCapture(root),fixtureCode=readFileSync(path.join(root,'src/a.test.ts'),'utf8');
- assert.equal(excludedCapture({...value,fileSource:fixtureCode},sources),true);
- assert.equal(excludedCapture({...value,fileSource:'compiled test',sourceMap:{version:3,sources:['src/a.test.ts'],sourcesContent:[fixtureCode]}},sources),true);
- assert.equal(excludedCapture({...value,fileSource:'compiled business',sourceMap:{version:3,sources:['src/a.ts'],sourcesContent:[value.fileSource]}},sources),false);
+test('excluded mappings require code proof and cannot erase a production-URL defect',t=>{
+ const {root,base}=fixture(t);put(root,'src/a.test.ts','export const fixture = 1;');const sources=inventory(root,readConfig(root)),value=nativeCapture(root),fixtureCode=readFileSync(path.join(root,'src/a.test.ts'),'utf8'),emissions=emissionProofs(root,sources,true,true);
+ const url=pathToFileURL(path.join(base,'copy-test.ts')).href;const copied={...value,url,fileSource:fixtureCode,source:stripTypeScriptTypes(fixtureCode,{sourceUrl:url})};assert.equal(excludedCapture(copied,sources,root,emissions),true);
+ const proof=emissions.get('src/a.test.ts');assert.ok(proof);const compiled={...value,url:pathToFileURL(path.join(base,'test.js')).href,fileSource:proof.code,source:proof.code,sourceMap:{version:3,sources:['pcr://source/src/a.test.ts'],sourcesContent:[fixtureCode],mappings:proof.mappings,names:proof.names}};assert.equal(excludedCapture(compiled,sources,root,emissions),true);
+ assert.equal(excludedCapture({...compiled,source:'fake JS',fileSource:'fake JS'},sources,root,emissions),false);
+ assert.equal(excludedCapture({...compiled,url:value.url},sources,root,emissions),false);
 });
-
 test('artifact path checks resolve symlink ancestors before refusing source-directory writes',t=>{
  const {root,base}=fixture(t);symlinkSync(path.join(root,'src'),path.join(root,'.reports'),'junction');assert.throws(()=>measurementPath(root,path.join(root,'.reports','run')),/artifacts must use/u);
  assert.equal(measurementPath(root,path.join(base,'safe','new')),path.join(base,'safe','new'));
@@ -125,6 +132,43 @@ test('map capture retains exact original TS bytes when a standard emitted map om
 });
 
 test('an entirely type-only Node inventory cannot claim a passing empty-business coverage scope',async t=>{
- const {root,base}=fixture(t);put(root,'src/a.ts','export interface A { id: string }');put(root,'src/unused.ts','export type Empty = string;');const run=path.join(base,'empty-run');
- assert.equal(await collect(root,run,[process.execPath,'-e','']),0);await assert.rejects(()=>report(root,path.join(base,'empty-report'),[run],false),/no authored Node runtime sources/u);
+ const {root,base}=fixture(t);put(root,'src/browser/widget.ts','export type Widget = string;');put(root,'src/a.ts','export interface A { id: string }');put(root,'src/unused.ts','export type Empty = string;');const run=path.join(base,'empty-run');
+ assert.equal(await collect(root,run,[process.execPath,'-e','']),0);await assert.rejects(()=>report(root,path.join(base,'empty-report'),[run],false),/no authored runtime sources/u);
+});
+
+test('nested installed dependencies stay external while actual emitted PCR runtime is collected',()=>{
+ const prefix='file:///tmp/tool/node_modules/@tiangong-lca/pcr/';assert.equal(executionRoute(prefix+'packages/pcr-core/src/index.js'),'candidate');assert.equal(executionRoute(prefix+'packages/tiangong-pcr-cli/bin/tiangong-pcr.js'),'candidate');
+ assert.equal(executionRoute(prefix+'node_modules/ajv/dist/ajv.js'),'dependency');assert.equal(executionRoute(prefix+'node_modules/ajv/node_modules/fast-uri/index.js'),'dependency');assert.equal(executionRoute('file:///repo/node_modules/playwright/index.mjs'),'dependency');
+});
+test('external ranges cannot exceed authenticated executed source length',async t=>{
+ const {root}=fixture(t),sources=inventory(root,readConfig(root)),emissions=emissionProofs(root,sources,true),proof=emissions.get('src/browser/widget.ts');assert.ok(proof);const original=readFileSync(path.join(root,'src/browser/widget.ts'),'utf8');
+ const value:Capture={schemaVersion:1,pid:0,threadId:0,scriptId:'browser-1',url:'https://example.invalid/widget.js',source:proof.code,fileSource:proof.code,error:null,sourceMap:{version:3,sources:['pcr://source/src/browser/widget.ts'],sourcesContent:[original],mappings:proof.mappings,names:proof.names}};
+ await assert.rejects(()=>mergeExternalCaptures(root,istanbul.createCoverageMap(),sources,emissions,[{surface:'browser',capture:value,functions:[{functionName:'',isBlockCoverage:true,ranges:[{startOffset:0,endOffset:proof.code.length+1,count:1}]}]}]),/exceeds authenticated/u);
+});
+test('unmeasured TSX has parser/emission-proven zero runtime lines/functions and stays in full denominator',async t=>{
+ const {root,base}=fixture(t);put(root,'src/browser/view.tsx','export interface Props {label: string}\nexport function View({label}: Props) {return <div>{label}</div>;}\n');const sources=inventory(root,readConfig(root)),view=sources.find(entry=>entry.path==='src/browser/view.tsx');assert.ok(view);assert.equal(view.lane,'pending');assert.deepEqual(view.runtimeLines,[2]);assert.equal(view.functions.length,1);
+ const run=path.join(base,'run');assert.equal(await collect(root,run,[process.execPath,'-e','']),0);const result=await report(root,path.join(base,'report'),[run],false);assert.equal(result.denominatorComplete,true);assert.ok(result.unexecuted.includes('src/browser/view.tsx'));
+ const data=object(parse(readFileSync(path.join(base,'report','coverage-final.json'),'utf8'))),coverage=object(data[path.join(root,'src/browser/view.tsx')]);assert.deepEqual(Object.values(object(coverage.s)),[0]);assert.deepEqual(Object.values(object(coverage.f)),[0]);assert.deepEqual(Object.values(object(coverage.b)),[[0]]);
+});
+
+test('canonical production execution cannot disappear under forged excluded-source metadata',async t=>{
+ const {root,base}=fixture(t);put(root,'src/a.test.ts','export const assertion = 1;');const url=pathToFileURL(path.join(root,'src/a.ts')).href,run=path.join(base,'canonical-run');assert.equal(await collect(root,run,[process.execPath,'--input-type=module','-e',`const m=await import(${JSON.stringify(url)});m.choose(true);`]),0);
+ const sources=inventory(root,readConfig(root)),proof=emissionProofs(root,sources,true,true).get('src/a.test.ts');assert.ok(proof);let changed=false;
+ for(const name of readdirSync(path.join(run,'captures'))){const filename=path.join(run,'captures',name),entry=object(parse(readFileSync(filename,'utf8')));if(entry.url!==url)continue;entry.source=proof.code;entry.fileSource=proof.code;entry.sourceMap={version:3,sources:['pcr://source/src/a.test.ts'],sourcesContent:[readFileSync(path.join(root,'src/a.test.ts'),'utf8')],mappings:proof.mappings,names:proof.names};writeFileSync(filename,JSON.stringify(entry));changed=true;}
+ assert.equal(changed,true);const inspected=await report(root,path.join(base,'inspect'),[run],false);assert.ok(inspected.unmapped.some(entry=>entry.url===url));assert.equal(inspected.excludedExecution.includes(url),false);await assert.rejects(()=>report(root,path.join(base,'gate'),[run],true),/unmapped scripts/u);
+});
+test('unproved relocated execution is audited with zero credit while production stays in complete denominator',async t=>{
+ const {root,base}=fixture(t),file=path.join(base,'unproved.mjs'),url=pathToFileURL(file).href,run=path.join(base,'unknown-run');writeFileSync(file,'export const unrelated = 1;');assert.equal(await collect(root,run,[process.execPath,'--input-type=module','-e',`await import(${JSON.stringify(url)});`]),0);
+ const result=await report(root,path.join(base,'report'),[run],true);assert.ok(result.rejectedExecutions.some(entry=>entry.url===url&&entry.credit===0));assert.ok(result.unexecuted.includes('src/a.ts'));assert.equal(result.denominatorComplete,true);assert.equal(result.allModulesExecuted,false);
+ const coverage=object(parse(readFileSync(path.join(base,'report','coverage-final.json'),'utf8')));assert.ok(Object.values(object(object(coverage[path.join(root,'src/a.ts')]).s)).every(count=>count===0));
+});
+
+
+test('unsupported TypeScript module extensions cannot disappear from the source denominator', t=>{
+ const {root}=fixture(t);
+ for(const extension of ['mts','cts']){
+  const file=`src/unaccounted.${extension}`;put(root,file,'export const value: number = 1;\n');
+  assert.throws(()=>inventory(root,readConfig(root)),/cannot omit authored TypeScript/u);
+  rmSync(path.join(root,file));
+ }
 });

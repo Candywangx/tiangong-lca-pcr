@@ -7,15 +7,15 @@ import {codeIdentity,type EmissionIndex} from './coverage-emission.ts';
 import type { SourceEntry } from './coverage-inventory.ts';
 export interface ProvenSourceMap {version:3;names:string[];sources:string[];sourcesContent:string[];mappings:string;sourceRoot:string}
 export type ProvenMapping = {kind:'native';path:string;source:string} | {kind:'emitted';paths:string[];source:string;sourceMap:ProvenSourceMap;originalSource:string};
-export function proveMapping(root:string,capture:Capture,inventory:readonly SourceEntry[],emissions?:EmissionIndex,allowPending=false):ProvenMapping {
+export function proveMapping(root:string,capture:Capture,inventory:readonly SourceEntry[],emissions?:EmissionIndex,allowPending=false,allowExcluded=false):ProvenMapping {
  if(capture.error)throw new Error(`Capture failed: ${capture.error}`);
  const byPath=new Map(inventory.map(entry=>[entry.path,entry]));
- const current=(relative:string,source:string)=>{const entry=byPath.get(relative);if(!entry||entry.lane==='excluded')throw new Error('Map targets excluded or uninventoried source.');if(hash(source)!==entry.sha256||readFileSync(path.join(root,relative),'utf8')!==source)throw new Error('Source content/hash differs from production.');return entry;};
+ const current=(relative:string,source:string)=>{const entry=byPath.get(relative);if(!entry||(entry.lane==='excluded'&&!allowExcluded))throw new Error('Map targets excluded or uninventoried source.');if(hash(source)!==entry.sha256||readFileSync(path.join(root,relative),'utf8')!==source)throw new Error('Source content/hash differs from production.');return entry;};
  if(capture.sourceMap===null){
-  if(!capture.url.startsWith('file:')||!capture.url.endsWith('.ts')||capture.fileSource===null)throw new Error('Executed code has no authenticated source map.');
+  if(!capture.url.startsWith('file:')||!fileURLToPath(capture.url).endsWith('.ts')||capture.fileSource===null)throw new Error('Executed code has no authenticated source map.');
   let relative=path.relative(root,fileURLToPath(capture.url)).split(path.sep).join('/');
   if(!byPath.has(relative)){const candidates=inventory.filter(entry=>entry.sha256===hash(capture.fileSource??''));if(candidates.length!==1)throw new Error('Temporary source copy has no unique production identity.');relative=candidates[0]?.path??'';}
-  const entry=current(relative,capture.fileSource);if(entry.lane!=='node')throw new Error('Native coverage targets a pending browser/Next surface.');
+  const entry=current(relative,capture.fileSource);if(entry.lane==='excluded'&&!allowExcluded)throw new Error('Native coverage targets excluded source.');
   if(stripTypeScriptTypes(capture.fileSource,{sourceUrl:capture.url})!==capture.source)throw new Error('Native executed code/UTF-16 offsets differ from type stripping.');
   return {kind:'native',path:path.join(root,relative),source:capture.fileSource};
  }
@@ -35,11 +35,13 @@ export function proveMapping(root:string,capture:Capture,inventory:readonly Sour
  const normalized:ProvenSourceMap={version:3,names,sources:paths,sourcesContent:contents,mappings:map.mappings,sourceRoot:''};
  return {kind:'emitted',paths,source:capture.source,sourceMap:normalized,originalSource:contents[0]??''};
 }
-/** Hash-exact excluded test/declaration copies remain excluded after relocation or compilation. */
-export function excludedCapture(value:Capture,inventory:readonly SourceEntry[]):boolean{
+/** Exclusions are also code-proven; a production URL cannot impersonate an assertion fixture. */
+export function excludedCapture(value:Capture,inventory:readonly SourceEntry[],root?:string,emissions?:EmissionIndex):boolean{
+ if(!root)return false;
+ if(value.url.startsWith('file:')){const relative=path.relative(root,fileURLToPath(value.url)).split(path.sep).join('/');const claimed=inventory.find(entry=>entry.path===relative);if(claimed&&claimed.lane!=='excluded')return false;}
  const hashes=new Set(inventory.filter(entry=>entry.lane==='excluded').map(entry=>entry.sha256));
- if(value.fileSource!==null&&hashes.has(hash(value.fileSource)))return true;
- if(!value.sourceMap||typeof value.sourceMap!=='object'||Array.isArray(value.sourceMap))return false;
- const map=object(value.sourceMap);if(!Array.isArray(map.sourcesContent)||!Array.isArray(map.sources)||!map.sources.length||map.sourcesContent.length!==map.sources.length)return false;
- return map.sourcesContent.every((source:unknown)=>typeof source==='string'&&hashes.has(hash(source)));
+ const native=value.sourceMap===null&&value.fileSource!==null&&hashes.has(hash(value.fileSource));
+ let emitted=false;if(value.sourceMap&&typeof value.sourceMap==='object'&&!Array.isArray(value.sourceMap)){const map=object(value.sourceMap);emitted=Array.isArray(map.sourcesContent)&&Array.isArray(map.sources)&&map.sources.length>0&&map.sourcesContent.length===map.sources.length&&map.sourcesContent.every((source:unknown)=>typeof source==='string'&&hashes.has(hash(source)));}
+ if(!native&&!emitted)return false;
+ try{const proof=proveMapping(root,value,inventory,emissions,true,true);const paths=proof.kind==='native'?[proof.path]:proof.paths;return paths.every(file=>inventory.some(entry=>path.join(root,entry.path)===file&&entry.lane==='excluded'));}catch{return false;}
 }

@@ -2,15 +2,14 @@ import { execFileSync, spawn } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync, readdirSync, realpathSync, lstatSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { stripTypeScriptTypes } from 'node:module';
 import v8ToIstanbul from 'v8-to-istanbul';
 import istanbul from 'istanbul-lib-coverage';
 import type { CoverageSummaryData } from 'istanbul-lib-coverage';
 const {createCoverageMap}=istanbul;
-import { inventory, trimCoverage } from './coverage-inventory.ts';
+import { inventory, trimCoverage, zeroCoverage } from './coverage-inventory.ts';
 import {emit,emissionProofs} from './coverage-emission.ts';
 import { proveMapping, excludedCapture } from './coverage-mapping.ts';
-import { config, hash, object, text, capture, functions, parse, type CoverageConfig } from './coverage-types.ts';
+import { config, hash, executionRoute, object, text, capture, functions, parse, type CoverageConfig } from './coverage-types.ts';
 export function measurementPath(root:string,requested:string):string{
  let ancestor=path.resolve(requested);const suffix:string[]=[];
  while(!lstatSync(ancestor,{throwIfNoEntry:false})){suffix.unshift(path.basename(ancestor));ancestor=path.dirname(ancestor);}
@@ -38,34 +37,29 @@ export async function collect(root:string,output:string,command:readonly string[
 }
 export function thresholdFailures(summary:CoverageSummaryData,gates:CoverageConfig['thresholds']):string[]{return (['lines','functions','branches'] as const).flatMap(metric=>summary[metric].pct<gates[metric]?[`${metric}: ${summary[metric].pct} < ${gates[metric]}`]:[]);}
 export async function report(root:string,output:string,runs:readonly string[],enforce=true){
- root=realpathSync(root);output=measurementPath(root,output);const settings=readConfig(root),sources=inventory(root,settings),commit=revision(root);if(!sources.some(source=>source.lane==='node'))throw new Error('Coverage has no authored Node runtime sources.');const map=createCoverageMap();const emissions=emissionProofs(root,sources);const mapped=new Set<string>();const unmapped:{url:string;reason:string}[]=[];let scripts=0;const excludedExecution:string[]=[];
+ root=realpathSync(root);output=measurementPath(root,output);const settings=readConfig(root),sources=inventory(root,settings),commit=revision(root);if(!sources.some(source=>source.lane!=='excluded'))throw new Error('Coverage has no authored runtime sources.');const map=createCoverageMap();const emissions=emissionProofs(root,sources,true,true);const mapped=new Set<string>();const unmapped:{url:string;reason:string}[]=[],rejectedExecutions:{url:string;reason:string;credit:0}[]=[];const reject=(url:string,reason:string)=>{let canonical=false;try{const relative=url.startsWith('pcr://source/')?decodeURIComponent(url.slice('pcr://source/'.length)):path.relative(root,fileURLToPath(url)).split(path.sep).join('/');canonical=sources.some(entry=>entry.path===relative&&entry.lane!=='excluded');}catch{/* Invalid/unknown URL receives no source credit. */}if(canonical)unmapped.push({url,reason});else rejectedExecutions.push({url,reason,credit:0});};let scripts=0;const excludedExecution:string[]=[];
  if(!runs.length)throw new Error('Coverage report needs at least one collected run.');
  for(const run of runs){
   const metadata=object(parse(readFileSync(path.join(run,'run.json'),'utf8')));if(metadata.schemaVersion!==1||metadata.configSha256!==configurationHash(root)||metadata.commit!==commit||metadata.status!==0||metadata.unchanged!==true||metadata.node!==process.version||JSON.stringify(metadata.sources)!==JSON.stringify(sources))throw new Error('Coverage run is failed, incomplete, or belongs to different source/runtime.');
   const captures=new Map<string,ReturnType<typeof capture>>();for(const file of readdirSync(path.join(run,'captures')).sort()){const value=capture(parse(readFileSync(path.join(run,'captures',file),'utf8')));const key=`${value.pid}:${value.threadId}:${value.scriptId}:${value.url}`;if(captures.has(key))throw new Error('Ambiguous captured script identity.');captures.set(key,value);}
   for(const file of readdirSync(path.join(run,'raw')).sort()){
    const match=/^coverage-(\d+)-\d+-(\d+)\.json$/u.exec(file);if(!match)throw new Error('Unrecognized V8 coverage filename.');const raw=object(parse(readFileSync(path.join(run,'raw',file),'utf8')));if(!Array.isArray(raw.result))throw new Error('Invalid V8 report.');
-   for(const value of raw.result){const script=object(value),url=text(script.url);if(!url.startsWith('file:')&&!url.startsWith('pcr://source/'))continue;if(url.includes('/node_modules/')&&!url.includes('/node_modules/@tiangong-lca/pcr/'))continue;
-    const captured=captures.get(`${match[1]}:${match[2]}:${text(script.scriptId)}:${url}`);if(!captured){unmapped.push({url,reason:'Executed source was not retained before cleanup.'});continue;}
+   for(const value of raw.result){const script=object(value),url=text(script.url);if(executionRoute(url)!=='candidate')continue;
+    const captured=captures.get(`${match[1]}:${match[2]}:${text(script.scriptId)}:${url}`);if(!captured){reject(url,'Executed source was not retained before cleanup.');continue;}
     // Excluded assertions/fixtures never enter the numerator or denominator.
-    if(excludedCapture(captured,sources)){excludedExecution.push(url);continue;}
-    let proven;try{proven=proveMapping(root,captured,sources,emissions);}catch(error){unmapped.push({url,reason:error instanceof Error?error.message:String(error)});continue;}
+    if(excludedCapture(captured,sources,root,emissions)){excludedExecution.push(url);continue;}
+    let proven;try{proven=proveMapping(root,captured,sources,emissions);}catch(error){reject(url,error instanceof Error?error.message:String(error));continue;}
     const converter=proven.kind==='native'?v8ToIstanbul(proven.path,0,{source:proven.source}):v8ToIstanbul(fileURLToPath(url),0,{source:proven.source,sourceMap:{sourcemap:proven.sourceMap},originalSource:proven.originalSource});
     await converter.load();const ranges=functions(script.functions);if(ranges.some(fn=>fn.ranges.some(range=>range.endOffset>captured.source.length)))throw new Error('V8 range exceeds authenticated executed source.');converter.applyCoverage(ranges);const converted=converter.toIstanbul();
-    for(const [filename,value] of Object.entries(converted)){const entry=sources.find(entry=>path.join(root,entry.path)===filename);if(!entry||entry.lane!=='node')throw new Error('Converter escaped authenticated source inventory.');const data='data' in value?value.data:value;trimCoverage(data,entry);map.addFileCoverage(data);mapped.add(filename);}scripts++;
+    for(const [filename,value] of Object.entries(converted)){const entry=sources.find(entry=>path.join(root,entry.path)===filename);if(!entry||entry.lane==='excluded')throw new Error('Converter escaped authenticated source inventory.');const data='data' in value?value.data:value;trimCoverage(data,entry);map.addFileCoverage(data);mapped.add(filename);}scripts++;
    }
   }
  }
- for(const source of sources.filter(entry=>entry.lane==='node')){
-  const filename=path.join(root,source.path);if(mapped.has(filename))continue;
-  const original=readFileSync(filename,'utf8'),converter=v8ToIstanbul(filename,0,{source:original});await converter.load();converter.applyCoverage([{functionName:'',isBlockCoverage:true,ranges:[{startOffset:0,endOffset:original.length,count:0}]}]);
-  const value=converter.toIstanbul()[filename];if(!value)throw new Error('Converter omitted never-executed source.');const data='data' in value?value.data:value;trimCoverage(data,source);
-  // An unloaded module must not masquerade as one synthetic function. Count actual parsed runtime functions at zero.
-  const lines=stripTypeScriptTypes(original).split('\n');const position=(offset:number)=>{let line=1;for(const text of lines){if(offset<=text.length)return {line,column:offset};offset-=text.length+1;line++;}return {line,column:0};};
-  data.fnMap={};data.f={};source.functions.forEach((fn,index)=>{const start=position(fn.start),end=position(fn.end);data.fnMap[String(index)]={name:fn.name,decl:{start,end:start},loc:{start,end},line:start.line};data.f[String(index)]=0;});map.addFileCoverage(data);
+ for(const source of sources.filter(entry=>entry.lane!=='excluded')){
+  const filename=path.join(root,source.path);if(!mapped.has(filename))map.addFileCoverage(zeroCoverage(root,source));
  }
  const summary=map.getCoverageSummary().toJSON();const failures=thresholdFailures(summary,settings.thresholds);for(const critical of settings.critical){const files=sources.filter(entry=>entry.lane==='node'&&(entry.path===critical.prefix||entry.path.startsWith(critical.prefix)));if(!files.length)throw new Error(`Critical coverage scope is empty: ${critical.prefix}`);for(const entry of files){const branches=map.fileCoverageFor(path.join(root,entry.path)).toSummary().branches;if(branches.pct<critical.branches)failures.push(`${entry.path}: branches ${branches.pct} < ${critical.branches}`);}}
- const pending=sources.filter(entry=>entry.lane==='pending').map(entry=>entry.path);const result={schemaVersion:1,commit,node:process.version,scope:'node-authored-typescript',wholeProjectComplete:false,scripts,summary,failures,pending,unmapped,excludedExecution,sources,branchModel:'V8 runtime ranges; never-executed modules retain a zero-hit root-range placeholder. Static type/comment lines are removed; unexecuted runtime functions are parsed individually.'};
+ const pending=sources.filter(entry=>entry.lane==='pending'&&!mapped.has(path.join(root,entry.path))).map(entry=>entry.path);const unexecuted=sources.filter(entry=>entry.lane!=='excluded'&&!mapped.has(path.join(root,entry.path))).map(entry=>entry.path);const result={schemaVersion:1,commit,node:process.version,scope:'complete-authored-typescript-denominator',denominatorComplete:true,allModulesExecuted:unexecuted.length===0,wholeProjectComplete:false,coverageGatePassed:failures.length===0&&unmapped.length===0,branchCensusComplete:false,scripts,summary,failures,pending,unexecuted,unmapped,rejectedExecutions,excludedExecution,sources,metricDefinition:'Pinned c8/v8-to-istanbul/Istanbul named-function and runtime-range metrics; unobserved files use one zero-hit (empty-report) function/root branch. Audited type/comment-only lines are filtered; AST function census is diagnostic, not the function gate denominator.',astRuntimeFunctions:sources.filter(entry=>entry.lane!=='excluded').reduce((sum,entry)=>sum+entry.functions.length,0),branchModel:'V8 runtime ranges; unobserved modules have one zero-hit root-range placeholder. This is not a static complete branch census.'};
  mkdirSync(output,{recursive:true});write(path.join(output,'coverage-final.json'),map.toJSON());write(path.join(output,'report.json'),result);
  if(enforce&&(failures.length||unmapped.length))throw new Error(`Coverage gates failed: ${failures.length} threshold failures; ${unmapped.length} unmapped scripts.`);return result;
 }

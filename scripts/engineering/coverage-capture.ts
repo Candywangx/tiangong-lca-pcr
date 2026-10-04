@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { threadId } from 'node:worker_threads';
-import { hash, parse, object, strings, type Capture } from './coverage-types.ts';
+import { hash, parse, object, strings, executionRoute, type Capture } from './coverage-types.ts';
 export function retainMapSources(value:unknown,mapUrl:URL,root:string|undefined):unknown{
  const map=object(value),sources=strings(map.sources),originals=map.sourcesContent;
  if(originals!==undefined&&originals!==null&&(!Array.isArray(originals)||originals.length!==sources.length||originals.some(value=>value!==null&&typeof value!=='string')))throw new Error('Invalid inline source-content inventory.');
@@ -20,7 +20,7 @@ if(directory&&initialized!==true){
  Reflect.set(globalThis,marker,true);
  mkdirSync(directory,{recursive:true});const session=new Session();session.connect();
  session.on('Debugger.scriptParsed',({params})=>{
-  if(!params.url.startsWith('file:')||(params.url.includes('/node_modules/')&&!params.url.includes('/node_modules/@tiangong-lca/pcr/')))return;
+  if(executionRoute(params.url)!=='candidate')return;
   session.post('Debugger.getScriptSource',{scriptId:params.scriptId},(error,result)=>{
    let fileSource:string|null=null,sourceMap:unknown=null,failure:string|null=error?.message??null;
    try{
