@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-04
-lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
-lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
+lastReviewedAt: 2026-10-05
+lastReviewedNote: "Reviewed PCR #90 documentation package/lock version mirror only; complete source export, provider Node 24.18 import, Node 24.19 construction and guarded live acceptance remain unchanged."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
