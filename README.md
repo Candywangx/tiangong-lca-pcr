@@ -112,6 +112,15 @@ reviewed migration inventory, all scoped TypeScript projects, library contracts 
 source tests, including documentation tests. Full validation currently runs on Linux because the Goal Harness requires descriptor-anchored `/proc` access; portable suites remain available separately. `npm run test:list` shows suite
 membership; `npm run test:coverage` collects the full test/build sources and enforces
 the complete coverage targets from fresh report paths.
+CI retains the stable `validate` aggregate check and separates full source tests
+into eight complete, source-bound shards. Full-corpus reproducibility remains a
+mandatory separate gate; `npm run test:offline:portable` runs compact real offline
+contracts on supported platforms. Proven current-PCR-only changes can select a
+reduced data lane with full global contracts and complete fresh sealed-product
+acceptance; its full code coverage is explicitly unmeasured. Every reusable
+release qualification selects full mode, even with an empty product tag. See
+[CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
+for allowed changes, evidence binding and complete-attempt retry requirements.
 All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
 migration boundaries and final qualification requirements. The Python SEO checker
 is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Authored JavaScript inventory is zero; final production qualification and cutover remain tracked under #69/#79 until live acceptance.

@@ -76,3 +76,12 @@ validation entrypoint after installing both current dependency graphs. Each phas
 must distinguish native source tests, emitted code tests and installed-artifact
 qualification. Do not weaken production filesystem guards to accommodate test
 fixture aliases, or copy known semantic losses into expected output.
+
+Test fixtures should exercise production builders and integrity boundaries with
+bounded representative data. Keep independent full-corpus reproducibility in its
+own mandatory qualification test. `test:offline:portable` is the compact portable
+selection; complete `all`/`root` selections still include corpus qualification.
+Follow [CI qualification lanes](typescript-engineering.md#ci-qualification-lanes)
+for complete shard membership, fresh invocation-bound receipts and raw coverage.
+Do not infer test completeness from threshold success or a requested V8 flag,
+reuse old evidence for the data lane, or broaden its allowlist by path similarity.

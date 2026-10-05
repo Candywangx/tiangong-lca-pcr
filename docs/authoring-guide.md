@@ -222,6 +222,17 @@ Symbolic machine mass M is a collection requirement, not a fabricated numeric in
 prepare their report from finalized receipts and submit its reference; follow the assigned Harness prompt and
 `builder/docs/tools/goal-harness.md`.
 
+CI may select the bounded data lane for proven changes to current canonical PCR
+files and supported associated derived/evidence files. Whole-library lint,
+immutable history and alias/catalog invariants, changed-PCR measurement and exact
+projection checks, and complete fresh sealed-product acceptance still apply.
+Optional-language, revision/history, shared-module, classification-system and
+unknown changes select full mode; all reusable release qualification is full.
+The data lane does not measure full code coverage or establish methodology
+approval. Keep the complete local `npm run validate` workflow above; see
+[CI qualification lanes](typescript-engineering.md#ci-qualification-lanes) for the
+exact evidence and retry contract.
+
 ## Offline consumer distribution
 
 The [offline distribution contract](offline-distribution.md) defines the separate `@tiangong-lca/pcr` tool and

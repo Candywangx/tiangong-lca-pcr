@@ -512,8 +512,14 @@ Schema、指纹和语义 preflight，
 workspace 追加 release。lint 同时检查 revision/release/history Schema、不可变 artifact digest、版本链与
 current/latest 一致性。
 
-pull request 和 main 分支 push 通过 GitHub Actions 运行 `npm run validate`，使本地合同、投影
-freshness 和自动测试成为合并门禁的统一入口。
+本地 `npm run validate` 保留完整验证入口。Pull request 和 main push 的 GitHub Actions
+通过固定 `validate` aggregate job 执行所选资格门禁：full mode 包含完整八分片测试、独立全库
+可重复构建及新鲜源绑定 coverage；受限 data mode 保留全库合同、变更 PCR 的语义及 exact
+projection 检查，以及完整新构建的 tool/SQLite/web seal、四平台离线安装和浏览器验收。
+Data mode 明确声明 full code coverage 未测量，不能复用旧测试或 coverage receipt。共享模块、
+未知路径及 runtime/toolchain 变更选择 full；所有 reusable release invocation 也必须选择 full。
+精确 allowlist、分片证据和完整 attempt 重试规则由
+[工程资格合同](typescript-engineering.md#ci-qualification-lanes) 管理。
 
 ## 公共静态文档站
 
