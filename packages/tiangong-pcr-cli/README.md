@@ -9,13 +9,17 @@ Skill. Install the content separately with
 
 ## Install and run
 
-Requires **Node.js 24.19 or later**. Supported platforms are Linux x64, Windows
-x64, and macOS ARM64.
+Requires **Node.js 24.19 or later**. Supported platforms are Linux x64/ARM64,
+Windows x64, and macOS ARM64.
+
+These examples target PCR 0.4.2. Use the registry commands after guarded
+publication makes that version available; source metadata and a preparing release
+do not establish public availability.
 
 In a project directory:
 
 ```sh
-npm install @tiangong-lca/pcr@0.4.1 @tiangong-lca/pcr-library@0.4.1
+npm install @tiangong-lca/pcr@0.4.2 @tiangong-lca/pcr-library@0.4.2
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ./node_modules/.bin/tiangong-pcr list --format json
 ```
@@ -34,14 +38,26 @@ combined with `--library`.
 
 ## Latest compatible content for a new task
 
-A released `@tiangong-lca/cli` with the PCR snapshot command family can manage
-content freshness separately from this offline reader. Select this installed
-package's absolute root once when preparing a dedicated task directory:
+Released `@tiangong-lca/cli` 0.1.25 or later can manage content freshness separately
+from this offline reader; 0.1.25 is the qualified minimum for this workflow.
+Use Node 24.19.0 for this task workflow; Tiangong CLI supports `>=24.19.0 <25`,
+separately from the standalone PCR reader requirement above. After confirming its
+publication, install that qualified version:
 
 ```sh
-tiangong-lca pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <absolute-installed-PCR-package> --json
-tiangong-lca pcr exec --task-dir <absolute-task-dir> -- list --format json
+npm install @tiangong-lca/cli@0.1.25
 ```
+
+Select this installed PCR package's absolute root once when preparing a dedicated
+task directory:
+
+```sh
+./node_modules/.bin/tiangong-lca pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <absolute-installed-PCR-package> --json
+./node_modules/.bin/tiangong-lca pcr snapshot status --task-dir <absolute-task-dir> --json
+./node_modules/.bin/tiangong-lca pcr exec --task-dir <absolute-task-dir> -- list --format json
+```
+
+On Windows, use `node_modules/.bin/tiangong-lca.cmd` for this preparation CLI.
 
 Require `task_usable: true`. A new connected task selects the latest compatible
 published content, while an existing task retains its version/hash without
@@ -50,6 +66,10 @@ command help. The wrapper injects the selected library/hash; do not pass native
 source overrides. It keeps the selected installed reader bytes fixed as well.
 This is an explicit workflow preparation boundary, not a hook into every chat or
 Foundry task. Standalone commands below preserve their existing behavior.
+Content compatibility is independent of its product version: a capable reader
+0.4.1 can consume newer content when its declared compatibility and any audited
+legacy reader profile permit it. Keep that reader and an existing task's content
+pin; a new website or release does not upgrade either implicitly.
 
 ## Common commands
 
@@ -91,15 +111,15 @@ package is optional; legacy `validate-model` only checks qualifier text and
 On a connected machine, download both packages:
 
 ```sh
-npm pack @tiangong-lca/pcr@0.4.1
-npm pack @tiangong-lca/pcr-library@0.4.1
+npm pack @tiangong-lca/pcr@0.4.2
+npm pack @tiangong-lca/pcr-library@0.4.2
 ```
 
 Transfer the two tarballs and a suitable Node.js runtime to the offline machine.
 In the destination directory:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.1.tgz ./tiangong-lca-pcr-library-0.4.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.2.tgz ./tiangong-lca-pcr-library-0.4.2.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 

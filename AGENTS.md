@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 ownership: PCR supplies capabilities and bundled thin Skill; Tiangong CLI owns discovery/cache/task locks. Canonical production, #86 CI gates and guarded publication remain unchanged."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedNote: "Reviewed PCR #90 release-only 0.4.2 metadata and CLI 0.1.25 preparation examples; canonical methodology, ownership, runtime and guarded publication remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

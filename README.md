@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 public task preparation through the bundled Skill and compatible reader/content versions; installation does not activate Skills or approve methodology."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedNote: "Reviewed PCR #90 pending 0.4.2 installation and explicit task preparation with qualified CLI 0.1.25; reader minimum 0.4.1, retained pins and scientific boundaries remain unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -368,6 +368,27 @@ The [offline distribution contract](docs/offline-distribution.md) defines the se
 `@tiangong-lca/pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
+
+The 0.4.2 release-preparation examples target PCR tool/content 0.4.2 and the
+qualified minimum `@tiangong-lca/cli` 0.1.25. Confirm the corresponding registry
+versions are available before installation; source metadata or a preparing release
+does not establish completed publication. Offline consumer targets include Linux
+x64/ARM64, Windows x64 and macOS ARM64. Use the qualified Node 24.19.0 runtime
+for task preparation; Tiangong CLI supports `>=24.19.0 <25`.
+
+At the preparation boundary of a new task, select the installed PCR reader and a
+dedicated absolute task directory:
+
+```sh
+tiangong-lca pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <absolute-installed-PCR-package> --json
+tiangong-lca pcr snapshot status --task-dir <absolute-task-dir> --json
+tiangong-lca pcr exec --task-dir <absolute-task-dir> -- list --format json
+```
+
+Require `task_usable: true`. Existing task directories retain their content and
+reader pins without discovery. A capable reader 0.4.1 may consume newer content
+under declared compatibility and any audited legacy reader profile; reader and
+content SemVers need not match.
 
 Package-specific installation and usage instructions live in the
 [CLI README](packages/tiangong-pcr-cli/README.md) and the
