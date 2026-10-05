@@ -20,6 +20,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: pcr-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   CI_EVENT_NAME: ${{ github.event_name }}
   CI_WORKFLOW_INPUTS: ${{ toJSON(inputs) }}
@@ -84,14 +88,39 @@ jobs:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
           merge-multiple: true
-      - name: Verify source, types and complete global library invariants
+      - name: Initialize contract evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/pcr-content-contracts"
+          printf 'Validation has not started.\n' > "$RUNNER_TEMP/pcr-content-contracts/validation.log"
+      - name: Verify source and strict types
         run: |
           node scripts/engineering/ci-plan.ts verify "$RUNNER_TEMP/pcr-plan/ci.json"
           npm run runtime:check
           npm run migration:check
           npm run typecheck:all
-          npm run lint
-          node scripts/engineering/ci-content.ts "$RUNNER_TEMP/pcr-plan/ci.json" "$RUNNER_TEMP/pcr-selected-content.json"
+      - name: Validate complete library contracts
+        run: |
+          evidence="$RUNNER_TEMP/pcr-content-contracts"
+          mkdir -p "$evidence"
+          if [ -e .reports/pcr-lint.json ] || [ -L .reports/pcr-lint.json ]; then
+            printf 'Refusing a pre-existing lint report; validation did not run.\n' > "$evidence/validation.log"
+            cat "$evidence/validation.log"
+            exit 1
+          fi
+          set +e
+          npm run lint > "$evidence/validation.log" 2>&1
+          validation_status=$?
+          set -e
+          cat "$evidence/validation.log"
+          if [ -f .reports/pcr-lint.json ] && [ ! -L .reports/pcr-lint.json ]; then
+            cp .reports/pcr-lint.json "$evidence/pcr-lint.json"
+          else
+            printf 'Whole-library lint report was not produced; inspect the validation error above.\n' >> "$evidence/validation.log"
+            if [ "$validation_status" -eq 0 ]; then validation_status=1; fi
+          fi
+          exit "$validation_status"
+      - name: Verify changed canonical records
+        run: node scripts/engineering/ci-content.ts "$RUNNER_TEMP/pcr-plan/ci.json" "$RUNNER_TEMP/pcr-content-contracts/selected-content.json"
       - name: Verify emitted TypeScript engineering tests
         if: needs.plan.outputs.mode == 'full'
         run: npm run test:engineering:compiled
@@ -100,9 +129,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: pcr-content-contracts-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            .reports/pcr-lint.json
-            ${{ runner.temp }}/pcr-selected-content.json
+          path: ${{ runner.temp }}/pcr-content-contracts/
           if-no-files-found: error
           retention-days: 14
 
@@ -131,6 +158,11 @@ jobs:
           npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
           npm ci
           npm --prefix packages/pcr-docs ci
+      - name: Bind the actual pinned npm entry for direct shard children
+        run: |
+          npm_cli="$(readlink -f "$(command -v npm)")"
+          test "$(node "$npm_cli" --version)" = "$(jq -r '.npm' product-release.json)"
+          printf 'npm_execpath=%s\n' "$npm_cli" >> "$GITHUB_ENV"
       - name: Install browser runtimes for the consumer shard
         if: matrix.shard == 'consumer'
         run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
@@ -176,6 +208,7 @@ jobs:
         with:
           name: pcr-browser-${{ github.run_id }}-${{ github.run_attempt }}
           path: .reports/browser/
+          include-hidden-files: true
           if-no-files-found: warn
           retention-days: 14
 

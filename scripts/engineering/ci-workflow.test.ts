@@ -32,8 +32,12 @@ test('full-lane tests are complete, isolated, receipt-bound and include uninstru
  const browser=step('test-shards','Install browser runtimes for the consumer shard');assert.equal(browser.if,"matrix.shard == 'consumer'");
 });
 test('data path retains global checks, exact generated content and sealed cross-platform browser gates',()=>{
- const commands=text(step('contracts','Verify source, types and complete global library invariants').run);
- for(const required of ['ci-plan.ts verify','npm run typecheck:all','npm run lint','ci-content.ts'])assert.ok(commands.includes(required));
+ const commands=text(step('contracts','Verify source and strict types').run);
+ for(const required of ['ci-plan.ts verify','npm run typecheck:all'])assert.ok(commands.includes(required));
+ assert.match(text(step('contracts','Validate complete library contracts').run),/npm run lint/u);
+ assert.match(text(step('contracts','Verify changed canonical records').run),/ci-content.ts/u);
+ assert.equal(object(step('contracts','Preserve content qualification evidence').with).path,'${{ runner.temp }}/pcr-content-contracts/');
+ assert.match(text(step('test-shards','Bind the actual pinned npm entry for direct shard children').run),/npm_execpath=/u);
  for(const name of ['sealed-distribution','sealed-web']){assert.equal(job(name).needs,'documentation');assert.equal(job(name).if,undefined);}
  assert.equal(object(object(job('sealed-distribution').strategy).matrix).include instanceof Array,true);
  assert.match(text(step('sealed-distribution','Qualify real offline installation of the sealed packages').run),/--expected-source "\$\{\{ github.sha \}\}"/u);
