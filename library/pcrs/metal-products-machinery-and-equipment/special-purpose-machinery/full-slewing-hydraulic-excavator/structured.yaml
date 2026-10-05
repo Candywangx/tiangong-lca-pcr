@@ -1,0 +1,1767 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.full-slewing-hydraulic-excavator"
+  classification_refs: "CPC 3.0 44426: self-propelled 360-degree revolving excavation machinery; this diesel hydraulic scope is narrower, classification context only"
+  covered_products: "Complete new diesel hydraulic digging excavators, crawler or wheeled, full revolving upper structure"
+  excluded_products: "Loaders, limited-rotation or cable machines; external attachments; other power architectures without reviewed extension; lifetime services"
+  representative_product: "One serialized accepted configuration; measured M, no assumed per-machine weight"
+  production_route: "Actual conditional structural fabrication/joining/finishing, required travel/slew/digging-hydraulic/power-cab integration and factory acceptance"
+  market_state: "Accepted complete excavator at declared dispatch gate, installed bucket/counterweight and delivery fills defined"
+functional_unit:
+  what: "Manufacture the configured complete full-slewing diesel hydraulic digging machine"
+  how_much: "1 kg net accepted complete machine, converted from per-machine records with measured M"
+  how_well: "Document configuration-specific acceptance of travel, slew, hydraulic operation, brakes/interlocks, guarding and leakage; no equal-mass digging-performance equivalence"
+  how_long_or_cycle: "One manufacture and factory acceptance cycle; no imposed service life"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground
+      applies_to: "all processes"
+      rule: "Include actual site manufacture, assembly, first fills, rework and attributable acceptance tests. Exclude customer-site excavation, commissioning services, distribution beyond the gate, maintenance and end of life. Factory testing fuel must not use a jobsite service consumption rate."
+      source_ids:
+        - volvo-factory
+    - rule_id: boundary_completeness
+      applies_to: "supplier assemblies"
+      rule: "Map full configured BOM to purchased components or internal manufacture, once only. Crawler and wheeled layouts are separate; do not infer hydraulic-cylinder, track-shoe or counterweight manufacturing inside the assembly site."
+      source_ids:
+        - volvo-machine
+boundary_abstraction:
+  declared_starting_condition: "Purchased stock and discrete finished components received at reporting manufacturing site"
+  starting_condition_role: "Foreground manufacturing receipt-to-dispatch module"
+  product_classification_scope: "Complete diesel full-slewing hydraulic digging machine; upstream components retain their identities"
+  recursive_input_rule: "Record a purchased complete machine for finishing as a disclosed input; never recursively create it from this same output, and exclude its already completed constituent operations"
+  upstream_dataset_requirement: "Link matching material/component, technology, geography, supply state and property datasets; disclose all unlinked stages and avoid duplicate supplier internals"
+  disclosure: "State site/period, actual in-house and outsourced operations, received component completeness, gate, M/fills, upstream exclusions and unresolved identity/quantity gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Mechanical shovels, excavators and shovel loaders, self-propelled, with a 360-degree revolving superstructure, except front-end shovel loaders"
+    uuid: "6970cd56-054c-4ec5-9258-37356541f7d3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer/model"
+    - "serial and configuration revision"
+    - "diesel/hydraulic full-slewing function"
+    - "crawler or wheeled undercarriage and travel/steering/brake layout"
+    - "track shoe or tyre/rim specifications"
+    - "boom/stick lengths"
+    - "bucket and coupler completeness"
+    - "slew bearing/drive"
+    - "counterweight and auxiliary circuits"
+    - "engine and actual installed emission hardware"
+    - "cab/seat/protection/HVAC"
+    - "controller and harness"
+    - "supplier assembly inclusion"
+    - "retained hydraulic/engine oil"
+    - coolant
+    - "diesel and refrigerant"
+    - "transport-disassembled delivery parts"
+    - "accepted net M and tare"
+    - "factory/site/period"
+    - "actual route/gate and unlinked upstream stages"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: engine_count
+    applies_to: "diesel_engine"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Exchange numerator is actual installed engine count; separately measure the included engine assembly mass for BOM reconciliation. No universal engine count-to-mass factor."
+  - id: energy_and_fluid_units
+    applies_to: "electricity and liquids"
+    required_property_ref:
+      name: "Net calorific value; Mass"
+      uuid: ""
+    required_unit: "MJ; kg"
+    rule: "Use verified energy-group kWh to MJ conversion, 3.6 MJ/kWh. Liquid volume-to-mass conversion requires actual measured density, composition and temperature; an alternate flow-property meanValue is not density."
+process_map:
+  - id: fabrication
+    name: "Structural cutting, forming and machining"
+    inclusion: "conditional"
+    inclusion_condition: "Declared structural parts are made at the reporting site."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: joining
+    name: "Structural joining"
+    inclusion: "conditional"
+    inclusion_condition: "Welded excavator structures are made in the foreground."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: finishing
+    name: "Surface preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Declared structures receive preparation or coating at this site."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: chassis
+    name: "Lower chassis, travel and revolving platform integration"
+    inclusion: "required"
+    inclusion_condition: "Every complete excavator; crawler and wheeled layouts separately declared."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: hydraulics
+    name: "Digging linkage and hydraulic integration"
+    inclusion: "required"
+    inclusion_condition: "Every complete hydraulic digging excavator."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: power_cab
+    name: "Diesel power unit, cab and controls integration"
+    inclusion: "required"
+    inclusion_condition: "Every diesel-powered configured machine within this PCR."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: acceptance
+    name: "First fills, factory testing and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Every accepted complete machine."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+  - id: packing
+    name: "Dispatch protection"
+    inclusion: "conditional"
+    inclusion_condition: "Packaging/supports cross the declared dispatch gate."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized with M"
+process_inventory:
+  - id: fabrication
+    label: "Structural cutting, forming and machining"
+    inputs:
+      product:
+        - row_id: steel_plate
+          role: "Steel Plate"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Only actual uncoated hot-rolled high-strength low-alloy plate matching the drawing; document grade, thickness and supplier route. Other steel grades have their own cards."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - liebherr-manufacture
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - liebherr-manufacture
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut
+          role: "Steel scrap, offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Only clean untreated uncoated cutting offcuts exported after internal reuse; weigh and record destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - liebherr-manufacture
+            ranges: []
+        - row_id: steel_chips
+          role: "Steel scrap, machining chips"
+          name: "Steel scrap, machining chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7f46756b-6f66-46a7-bbcb-c04727d9d19e"
+          property_unit: "Mass / kg"
+          description: "Only separately collected untreated clean steel machining chips, not oily mixed swarf; record actual treatment destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - liebherr-manufacture
+            ranges: []
+      elementary:
+        []
+  - id: joining
+    label: "Structural joining"
+    inputs:
+      product:
+        - row_id: self_shield_wire
+          role: "Flux Cored Wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Only the documented self-shielded carbon-steel flux-cored technique compatible with the actual weld procedure; no external shielding-gas omission is inferred for other techniques."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_joining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joining
+              source_ids:
+                - liebherr-manufacture
+            ranges: []
+        - row_id: joining_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_joining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joining
+              source_ids:
+                - liebherr-manufacture
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: finishing
+    label: "Surface preparation and coating"
+    inputs:
+      product:
+        - row_id: epoxy_primer
+          role: "Formulated epoxy primer coating"
+          name: "Formulated epoxy primer coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented epoxy primer as supplied, with formulation/solids and hardener inclusion recorded; separate hardener if issued independently."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: pu_topcoat
+          role: "Formulated polyurethane topcoat"
+          name: "Formulated polyurethane topcoat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented polyurethane topcoat; specify supplied formulation and separately issued curing agent, with measured quantities."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: cleaning_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only treated supplied industrial water used in actual surface cleaning; no groundwater withdrawal or internal circulation counted as fresh supply."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - volvo-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_effluent
+          role: "Surface-cleaning aqueous effluent sent to treatment"
+          name: "Surface-cleaning aqueous effluent sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only exported cleaning effluent with measured mass, contamination and receiving treatment specified; not a direct environmental water discharge."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: epoxy_paint_residue
+          role: "Captured epoxy-primer overspray residue"
+          name: "Captured epoxy-primer overspray residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual segregated captured epoxy paint residue; record solvent/cured fraction and waste outlet, with no automatic emission assignment."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - volvo-factory
+            ranges: []
+      elementary:
+        []
+  - id: chassis
+    label: "Lower chassis, travel and revolving platform integration"
+    inputs:
+      product:
+        - row_id: lower_frame
+          role: "Finished welded excavator lower frame"
+          name: "Finished welded excavator lower frame"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: upper_frame
+          role: "Finished excavator revolving upper frame"
+          name: "Finished excavator revolving upper frame"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: slew_bearing
+          role: "Excavator slewing-ring bearing"
+          name: "Excavator slewing-ring bearing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: slew_motor
+          role: "Excavator hydraulic swing-motor assembly"
+          name: "Excavator hydraulic swing-motor assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: track_chain
+          role: "Excavator steel crawler track-chain and shoe assembly"
+          name: "Excavator steel crawler track-chain and shoe assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly. Crawler configuration only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: travel_drive
+          role: "Excavator hydraulic travel final-drive assembly"
+          name: "Excavator hydraulic travel final-drive assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: counterweight
+          role: "Finished cast-iron excavator counterweight"
+          name: "Finished cast-iron excavator counterweight"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: wheel_rim
+          role: "Steel wheeled-excavator wheel rim"
+          name: "Steel wheeled-excavator wheel rim"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly. Wheeled configuration only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: steering_axle
+          role: "Wheeled-excavator steering axle assembly"
+          name: "Wheeled-excavator steering axle assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly. Wheeled configuration only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: pneumatic_tyre
+          role: "Rubber pneumatic wheeled-excavator tyre"
+          name: "Rubber pneumatic wheeled-excavator tyre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only installed pneumatic rubber tyre of stated size/construction; mass measured without rim and declared supplier tyre completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: chassis_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - volvo-machine
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: hydraulics
+    label: "Digging linkage and hydraulic integration"
+    inputs:
+      product:
+        - row_id: boom
+          role: "Finished hydraulic-excavator boom"
+          name: "Finished hydraulic-excavator boom"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: stick
+          role: "Finished hydraulic-excavator stick"
+          name: "Finished hydraulic-excavator stick"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: digging_bucket
+          role: "Finished steel excavator digging bucket"
+          name: "Finished steel excavator digging bucket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: hydraulic_pump
+          role: "Variable-displacement excavator main hydraulic pump"
+          name: "Variable-displacement excavator main hydraulic pump"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: boom_cylinder
+          role: "Double-acting excavator boom hydraulic-cylinder assembly"
+          name: "Double-acting excavator boom hydraulic-cylinder assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: stick_cylinder
+          role: "Double-acting excavator stick hydraulic-cylinder assembly"
+          name: "Double-acting excavator stick hydraulic-cylinder assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: bucket_cylinder
+          role: "Double-acting excavator bucket hydraulic-cylinder assembly"
+          name: "Double-acting excavator bucket hydraulic-cylinder assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: main_valve
+          role: "Excavator main hydraulic control-valve block"
+          name: "Excavator main hydraulic control-valve block"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: oil_reservoir
+          role: "Finished steel excavator hydraulic-oil reservoir"
+          name: "Finished steel excavator hydraulic-oil reservoir"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: hydraulic_hose
+          role: "Hydraulic hose"
+          name: "Hydraulic hose"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2fc1719-69dc-4281-8eae-383af8d9a405"
+          property_unit: "Mass / kg"
+          description: "Only supplied complete hydraulic hose matching circuit pressure and construction; declare coupling inclusion and do not duplicate supplier-installed hose."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: hydraulics_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hydraulics."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydraulics
+              source_ids:
+                - volvo-machine
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: power_cab
+    label: "Diesel power unit, cab and controls integration"
+    inputs:
+      product:
+        - row_id: diesel_engine
+          role: "Diesel engine"
+          name: "Diesel engine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3ac8612-80b9-4283-9439-62aa4986fce2"
+          property_unit: "Number of items / Item(s)"
+          description: "Only installed diesel engine assembly; collect actual Item(s) per machine, measured assembly mass separately for BOM reconciliation and explicit included cooling/exhaust accessories."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: cab
+          role: "Complete excavator operator-cab assembly"
+          name: "Complete excavator operator-cab assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: cooling_pack
+          role: "Excavator radiator and oil-cooler heat-exchanger assembly"
+          name: "Excavator radiator and oil-cooler heat-exchanger assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: exhaust
+          role: "Configured diesel-excavator exhaust-aftertreatment assembly"
+          name: "Configured diesel-excavator exhaust-aftertreatment assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: controller
+          role: "Excavator electronic machine-controller module"
+          name: "Excavator electronic machine-controller module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: harness
+          role: "Insulated copper excavator wiring-harness assembly"
+          name: "Insulated copper excavator wiring-harness assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the named bought-in finished part, with drawing/part revision and measured installed mass; omit this purchase when made in-house or already contained in a larger supplier assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: starter_battery
+          role: "Lead Acid Battery"
+          name: "Lead Acid Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0f7ce22c-71cc-4c6c-aa33-d4074f9a03c7"
+          property_unit: "Mass / kg"
+          description: "Only actual installed lead-acid starter battery with lead/dilute-sulfuric-acid construction and documented state; no traction-battery inference."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: steel_screw
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Only actual steel screws issued to assembly; bolts, nuts and washers must be separate precise exchanges if independently supplied."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+        - row_id: power_cab_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_power_cab."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_cab
+              source_ids:
+                - volvo-machine
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "First fills, factory testing and acceptance"
+    inputs:
+      product:
+        - row_id: mineral_hydraulic_oil
+          role: "Hydraulic Fluid"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eafff56c-3487-4345-9f24-00429f61c556"
+          property_unit: "Mass / kg"
+          description: "Only supplied mineral hydraulic fluid of verified refining route and actual grade; meter fresh additions less returns, distinguish delivery-retained fill from drained test fill."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: engine_oil
+          role: "Mineral-base formulated diesel-engine lubricating oil"
+          name: "Mineral-base formulated diesel-engine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only documented supplied engine-oil formulation; supplier-pre-filled oil is not an additional purchase; collect actual first fill."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: engine_coolant
+          role: "Aqueous ethylene-glycol engine coolant"
+          name: "Aqueous ethylene-glycol engine coolant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual documented premixed aqueous ethylene-glycol coolant with recorded concentration/inhibitors and mass; neat glycol and unspecified antifreeze cannot substitute."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: factory_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record diesel actually entering factory filling/testing: purchased input equals consumed test fuel plus delivery-retained fuel plus measured other balance terms. Disclose actual grade/biofraction; fossil-only accounting uses only verified fossil fraction."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: acceptance_electricity
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter attributable actual stage work at the declared intake voltage and provider; include factory trials only, not excavation service."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - volvo-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Mechanical shovels, excavators and shovel loaders, self-propelled, with a 360-degree revolving superstructure, except front-end shovel loaders"
+          name: "Mechanical shovels, excavators and shovel loaders, self-propelled, with a 360-degree revolving superstructure, except front-end shovel loaders"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6970cd56-054c-4ec5-9258-37356541f7d3"
+          property_unit: "Mass / kg"
+          description: "Exactly 1 kg net accepted configured complete excavator, including installed counterweight, declared bucket and retained first fills; excludes shipping supports, operator and digging payload."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - volvo-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only attributable measured fossil CO2 from actual factory test combustion emitted to air, unspecified subcompartment. No fixed fuel factor, use-phase emission or biogenic substitution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - volvo-factory
+            ranges: []
+  - id: packing
+    label: "Dispatch protection"
+    inputs:
+      product:
+        - row_id: timber_support
+          role: "Kiln-dried sawn coniferous timber, at mill"
+          name: "Kiln-dried sawn coniferous timber, at mill"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50904047-e5b0-4110-990a-53751d250267"
+          property_unit: "Mass / kg"
+          description: "Only actual kiln-dried sawn coniferous shipping timber, with measured mass; excluded from net machine M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - volvo-factory
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied LDPE protective film with thickness and measured mass; excluded from M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - volvo-factory
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_order
+    applies_to: "shared operations"
+    rule: "Separate model, chassis, attachment, power and fill configurations by work order; directly assign issues, returns, meters and rework first. Unseparated shared stations use measured causal station time or metered load, with order driver divided by all covered order drivers; document causal justification, period and denominator. No unexplained equal-count allocation across differently sized models."
+    source_ids: []
+  - rule_id: allocation_reuse
+    applies_to: "material recovery"
+    rule: "Internal reuse is a stock transfer, not repeated fresh input. Exported steel scrap, drained fluid and paint residue carry measured quantities and destinations without automatic avoided-product credit. Identify valuable co-products separately and obtain reviewed residual allocation after direct separation. Include test/reject/rework burdens in accepted output for the recorded period; disclose unfinished stock."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "accepted net machine mass"
+      record_type: "weighing_record"
+      raw_fields: "model; configuration; serial number; accepted net mass M; scale_id; calibration; counterweight; bucket; retained_fills; detached_delivery_parts; packaging_tare"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each machine or representative same-configuration batch"
+      temporal_coverage: "same manufacturing period as orders"
+      site_scope: "declared factory/configuration"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration, tare, component completeness and acceptance receipts"
+    - protocol_id: cp_fabrication
+      process_id: "fabrication"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Collect grade/thickness stock issues, returns and inventory changes; weigh accepted part outputs, uncoated offcuts and machining chips separately; submeter actual stations."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Structural cutting, forming and machining"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_joining
+      process_id: "joining"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Record weld procedure, wire grade and issue-return quantities, weld inspection/rework and station electricity; weigh demonstrated residue by composition and outlet."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Structural joining"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_finishing
+      process_id: "finishing"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Collect batch formulation/SDS, each coating issue/return, area and cured mass, process water and actual exported wastewater, captured paint waste and booth electricity."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Surface preparation and coating"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_chassis
+      process_id: "chassis"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Trace lower/upper frame and travel/slew part numbers, measured installed masses, supplier completeness and track/wheel configuration; reconcile in-house transfers separately."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Lower chassis, travel and revolving platform integration"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_hydraulics
+      process_id: "hydraulics"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Record circuit and part-level BOM, pump/cylinder type, displacement/pressure specification, hose construction, net masses and supplier inclusions; document cleanliness and leak test records."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Digging linkage and hydraulic integration"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_power_cab
+      process_id: "power_cab"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Collect installed engine count and separately measured assembly mass, cab/powertrain BOM, battery construction, controller revision and harness mass; reconcile supplier-contained components."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Diesel power unit, cab and controls integration"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Measure fresh fluid/fuel additions, returns, retained fills and consumed fuel; collect factory test sheets, emission measurements and positive calibrated accepted net mass M without payload or packaging."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "First fills, factory testing and acceptance"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "each atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/configuration; part/grade; supplier_scope; issues; returns; stock_change; exchange_amount; engine_count; part_mass; meter_unit; voltage; density_temperature; accepted_count; rework; allocation_driver; waste_outlet; measured_emission_mass"
+      collection_method: "Weigh each support/film input and document dispatch quantity, packaging tare and any actual reusable-support cycles."
+      unit: "kg, MJ or Item(s) as declared by each row"
+      frequency: "each order, batch reconciliation"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Dispatch protection"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, submeter calibration, test and transfer receipts"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_bom
+      applies_to: "all components"
+      requirement: "Reconcile every installed structure, actuator, drive, cab, power system and first fill to configuration BOM and supplier boundary; avoid part/stock and prefilled-fluid duplication."
+      evidence: "serial BOM and supplier scope"
+    - id: quality_balance
+      applies_to: "mass and utilities"
+      requirement: "Reconcile stock, parts, installed M, exported waste, retained fluids, test consumption and rework; measure density/temperature for actual liquid conversion. Establish site/configuration QA limits from measured records rather than assumed yield or brochure operating weight."
+      evidence: "stock, weighing, meter and test receipts"
+    - id: quality_coverage
+      applies_to: "all processes"
+      requirement: "State period/geography, meter and order coverage, conditional absence, outsourcing and upstream linkage. Manufacturer capability/configuration descriptions do not provide net machine mass or manufacturing exchange intensities."
+      evidence: "order coverage and evidence register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require a positive measured M for the accepted full-slewing diesel hydraulic machine with explicit chassis, boom/stick/bucket, counterweight, supplier completeness and delivery fills. Reject operating-service, infrastructure amortization or dismantling flow substitution."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Require one physically defined exchange and matching public identity, actual reference property, unit group, route and medium. Leave conflicting identities unresolved until data completion; item count is not mass, coolant is not neat glycol, treatment effluent is not direct water emission."
+    source_ids: []
+  - rule_id: validate_conversion
+    applies_to: "all inventory rows"
+    rule: "Check collection scope and normalize_mass against the same accepted configuration and M; require no duplicate internal transfers, purchased complete-module components or retained/test fuel. Unknown exchanges need evidence, not zero defaults."
+    source_ids: []
+  - rule_id: validate_emissions
+    applies_to: "elementary exchanges"
+    rule: "Fossil CO2 requires attributable measured factory combustion and air-unspecified medium; separately identify any other demonstrated substance/medium. Do not substitute biogenic carbon, service-phase fuel rates or NO/NO2/N2O identities."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured full-slewing diesel hydraulic excavator foreground manufacture dataset"
+  downstream_use: "secondary_dataset; background_dataset after qualified review with explicit upstream coverage"
+  allowed_use: "Manufacturing supply-chain modelling for the same configuration, property, gate, site and period"
+  excluded_use: "Excavated m3 or lifetime emissions/service comparison; equal-mass digging equivalence; other propulsion proxy; complete cradle-to-gate claim with missing upstream stages"
+  required_metadata: "Reference qualifiers, serial/configuration BOM, measured M/fills, actual operations, supplier scopes, site/period/gates, collection and allocation evidence, matching upstream links"
+  required_quality_disclosure: "Missing identities/quantities, uncertainty, conditional absent rows, extra BOM exchanges, historical evidence limits and unlinked outsourced/upstream stages"
+  update_trigger: "Chassis/power/hydraulic/boom/bucket/cab change, supplier completeness, measured M/fills, coating route, factory geography/period or resolved evidence gap"
+data_sources:
+  - id: "volvo-factory"
+    type: "literature"
+    reference: "[Volvo CE Shippensburg Facility](https://www.volvoce.com/united-states/en-us/about-us/shippensburg-facility/)"
+    used_for: "What we do: named mixed-product manufacturing site lists welding, machining, paint, assembly and testing. Retrieved 2026-10-04 UTC. Site competency example only; no universal route, coating formulation, quantity or net machine mass."
+  - id: "volvo-machine"
+    type: "literature"
+    reference: "[Volvo EC220E crawler excavator](https://www.volvoce.com/europe/en/products/excavators/ec220e/)"
+    used_for: "Optimized hydraulics, Volvo engine, Main Control Valve and Software, and cab sections; retrieved 2026-10-04 UTC. Configuration example only. Contradictory engine-stage marketing is not a compliance basis; operating-weight or fuel/productivity claims are not manufacturing conversion factors."
+  - id: "liebherr-manufacture"
+    type: "literature"
+    reference: "[170 million euro investment: New Liebherr production site in Alsace](https://www.liebherr.com/shared/media/corporate/news/news-2023/06/21/lfr/liebherr-press-release-eco-rhena-investment-alsace.pdf)"
+    used_for: "21 June 2023 press release, PDF/printed page 1, Two different production activities: planned structural welding/machining and cab assembly for crawler/mobile excavators. Historical planned activity only; not confirmation of opening, current manufacturing, amounts or net mass."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:40b9e13a7dd3a46e7d0e5ba7c3e7fccb10bc478f226f25f2d7fd690d72f57dd5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5520"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5520
+          line: 59
+          column: 1
+        end:
+          offset: 7248
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased stock and discrete finished components received at reporting manufacturing site |\n| starting_condition_role | Foreground manufacturing receipt-to-dispatch module |\n| product_classification_scope | Complete diesel full-slewing hydraulic digging machine; upstream components retain their identities |\n| recursive_input_rule | Record a purchased complete machine for finishing as a disclosed input; never recursively create it from this same output, and exclude its already completed constituent operations |\n| upstream_dataset_requirement | Link matching material/component, technology, geography, supply state and property datasets; disclose all unlinked stages and avoid duplicate supplier internals |\n| disclosure | State site/period, actual in-house and outsourced operations, received component completeness, gate, M/fills, upstream exclusions and unresolved identity/quantity gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_foreground` | all processes | Include actual site manufacture, assembly, first fills, rework and attributable acceptance tests. Exclude customer-site excavation, commissioning services, distribution beyond the gate, maintenance and end of life. Factory testing fuel must not use a jobsite service consumption rate. | `volvo-factory` |\n| `boundary_completeness` | supplier assemblies | Map full configured BOM to purchased components or internal manufacture, once only. Crawler and wheeled layouts are separate; do not infer hydraulic-cylinder, track-shoe or counterweight manufacturing inside the assembly site. | `volvo-machine` |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 230
+              line: 8
+              column: 54
+          text: "# Full-slewing diesel hydraulic excavator manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5520
+              line: 59
+              column: 1
+            end:
+              offset: 5541
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50448"
+      family: "allocation"
+      span:
+        start:
+          offset: 50448
+          line: 955
+          column: 1
+        end:
+          offset: 51472
+          line: 963
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_order` | shared operations | Separate model, chassis, attachment, power and fill configurations by work order; directly assign issues, returns, meters and rework first. Unseparated shared stations use measured causal station time or metered load, with order driver divided by all covered order drivers; document causal justification, period and denominator. No unexplained equal-count allocation across differently sized models. |  |\n| `allocation_reuse` | material recovery | Internal reuse is a stock transfer, not repeated fresh input. Exported steel scrap, drained fluid and paint residue carry measured quantities and destinations without automatic avoided-product credit. Identify valuable co-products separately and obtain reviewed residual allocation after direct separation. Include test/reject/rework burdens in accepted output for the recorded period; disclose unfinished stock. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 230
+              line: 8
+              column: 54
+          text: "# Full-slewing diesel hydraulic excavator manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50448
+              line: 955
+              column: 1
+            end:
+              offset: 50488
+              line: 955
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_60814"
+      family: "validation"
+      span:
+        start:
+          offset: 60814
+          line: 996
+          column: 1
+        end:
+          offset: 62157
+          line: 1006
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference product | Require a positive measured M for the accepted full-slewing diesel hydraulic machine with explicit chassis, boom/stick/bucket, counterweight, supplier completeness and delivery fills. Reject operating-service, infrastructure amortization or dismantling flow substitution. |  |\n| `validate_identity` | all inventory rows | Require one physically defined exchange and matching public identity, actual reference property, unit group, route and medium. Leave conflicting identities unresolved until data completion; item count is not mass, coolant is not neat glycol, treatment effluent is not direct water emission. |  |\n| `validate_conversion` | all inventory rows | Check collection scope and normalize_mass against the same accepted configuration and M; require no duplicate internal transfers, purchased complete-module components or retained/test fuel. Unknown exchanges need evidence, not zero defaults. |  |\n| `validate_emissions` | elementary exchanges | Fossil CO2 requires attributable measured factory combustion and air-unspecified medium; separately identify any other demonstrated substance/medium. Do not substitute biogenic carbon, service-phase fuel rates or NO/NO2/N2O identities. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 230
+              line: 8
+              column: 54
+          text: "# Full-slewing diesel hydraulic excavator manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 60814
+              line: 996
+              column: 1
+            end:
+              offset: 60836
+              line: 996
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_5520"
+      source_span:
+        start:
+          offset: 6602
+          line: 74
+          column: 1
+        end:
+          offset: 6948
+          line: 74
+          column: 347
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_5520"
+      source_span:
+        start:
+          offset: 6949
+          line: 75
+          column: 1
+        end:
+          offset: 7245
+          line: 75
+          column: 297
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_order"
+      identity_kind: "explicit"
+      unit_id: "normative_50448"
+      source_span:
+        start:
+          offset: 50561
+          line: 959
+          column: 1
+        end:
+          offset: 51008
+          line: 959
+          column: 448
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_reuse"
+      identity_kind: "explicit"
+      unit_id: "normative_50448"
+      source_span:
+        start:
+          offset: 51009
+          line: 960
+          column: 1
+        end:
+          offset: 51469
+          line: 960
+          column: 461
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_60814"
+      source_span:
+        start:
+          offset: 60909
+          line: 1000
+          column: 1
+        end:
+          offset: 61230
+          line: 1000
+          column: 322
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_60814"
+      source_span:
+        start:
+          offset: 61231
+          line: 1001
+          column: 1
+        end:
+          offset: 61571
+          line: 1001
+          column: 341
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_conversion"
+      identity_kind: "explicit"
+      unit_id: "normative_60814"
+      source_span:
+        start:
+          offset: 61572
+          line: 1002
+          column: 1
+        end:
+          offset: 61865
+          line: 1002
+          column: 294
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_60814"
+      source_span:
+        start:
+          offset: 61866
+          line: 1003
+          column: 1
+        end:
+          offset: 62154
+          line: 1003
+          column: 289
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5520"
+      source_span:
+        start:
+          offset: 5520
+          line: 59
+          column: 1
+        end:
+          offset: 5541
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5520"
+      source_span:
+        start:
+          offset: 5569
+          line: 63
+          column: 1
+        end:
+          offset: 6529
+          line: 70
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50448"
+      source_span:
+        start:
+          offset: 50448
+          line: 955
+          column: 1
+        end:
+          offset: 50488
+          line: 955
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_60814"
+      source_span:
+        start:
+          offset: 60814
+          line: 996
+          column: 1
+        end:
+          offset: 60836
+          line: 996
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:40b9e13a7dd3a46e7d0e5ba7c3e7fccb10bc478f226f25f2d7fd690d72f57dd5"
+  generated_content_sha256: "sha256:301591f7544e7d702b5580ab6e41d5f8bef4d5f967ff09c18938c01d2b18d607"

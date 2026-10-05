@@ -1,0 +1,960 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.ceremonial-bladed-arm-manufacturing"
+  classification_refs: "CPC3.0:44750; narrower"
+  covered_products: "New declared ceremonial sword plus one matched scabbard at completed-component manufacturing foreground"
+  excluded_products: "Separate component sale, other arms, cutting/table tools and repair services"
+  representative_product: "Same-configuration accepted complete ceremonial set, with actual supplied composition"
+  production_route: "Environmental records from finished-component gates through actual site operations and optional cleaning to acceptance/packing; earlier manufacture linked"
+  market_state: "Accepted new complete delivered configuration; transport packing separate from net M"
+functional_unit:
+  what: "Manufacture environmental foreground of declared ceremonial sword with one matched scabbard"
+  how_much: "1 kg"
+  how_well: "Positive measured complete net M, same supplier specifications/configuration and signed supply completeness acceptance; no functional test thresholds prescribed"
+  how_long_or_cycle: "One declared manufacturing period; no use cycle or life"
+  reference_flow_link: "finished_ceremonial_set"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground
+      applies_to: "all_processes"
+      rule: "Include all actual attributable activity within declared site gates, including handling, utilities, rejected/reworked consumption and packing. Record environmental quantities without mechanical manufacturing instructions. Earlier manufacturing inside the same plant is a separately linked upstream stage, not an omitted burden."
+      source_ids: []
+    - rule_id: boundary_conditional
+      applies_to: "cleaning"
+      rule: "Cleaning is conditional on actual records. Aqueous and IPA exchanges are separate; neither is compulsory. Other actual reagents/utilities/wastes need their own specific cards before extending coverage."
+      source_ids: []
+    - rule_id: boundary_output
+      applies_to: "finished_ceremonial_set"
+      rule: "Include exactly the declared sword and one matched scabbard in net M; exclude transport packaging, display supports, spares and separately supplied accessories. Declare additional retained coating/residue without double-counting supplier inclusion."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Finished blade, single physically complete hilt module and single finished matched scabbard at actual supplier gates"
+  starting_condition_role: "manufacturing_input"
+  product_classification_scope: "CPC44750 narrower ceremonial complete-product context"
+  recursive_input_rule: "Link preceding component manufacture once; do not count both finished components and their upstream constituent materials inside this foreground"
+  upstream_dataset_requirement: "Actual matching supplier production, utilities and treatment links are required before complete lifecycle coverage claims"
+  disclosure: "Finished-component-to-accepted-product foreground, not complete cradle-to-gate; sources supply no measured factory inventory"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Swords, cutlasses, bayonets, lances and similar arms and parts thereof and scabbards and sheaths therefor"
+    uuid: "958b5c7e-4167-4f23-ae05-580f7c9af04c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Declared ceremonial supply purpose"
+    - "configuration/specification revision"
+    - "one matched scabbard"
+    - "actual supplied component composition and surface/residue scope"
+    - "complete net M and independent component weights"
+    - "transport packing excluded from M"
+    - "plant/period/accepted count"
+    - "earlier linked production boundaries and actual conditional operations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: exchange_mass
+    applies_to: "mass inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Collect q_item in actual kg per accepted same-configuration unit using its declared protocol; normalize_mass uses reference_mass."
+  - id: exchange_energy
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Energy"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Read actual kWh and convert using3.6 MJ/kWh; collect q_item MJ per accepted unit and apply normalize_mass. Public property energy dimension is retained; Mass is not substituted."
+process_map:
+  - id: site_account
+    name: "Supplied-component receipt and site-operation environmental account"
+    inclusion: "required"
+    inclusion_condition: "Actual declared foreground records"
+    role: "manufacturing"
+    quantitative_reference: "accepted complete unit; normalize by M"
+  - id: cleaning
+    name: "Conditional cleaning environmental account"
+    inclusion: "conditional"
+    inclusion_condition: "Only if actually performed"
+    role: "manufacturing"
+    quantitative_reference: "accepted complete unit; normalize by M"
+  - id: acceptance
+    name: "Configured net-mass acceptance and packing environmental account"
+    inclusion: "required"
+    inclusion_condition: "Actual declared foreground records"
+    role: "manufacturing"
+    quantitative_reference: "accepted complete unit; normalize by M"
+process_inventory:
+  - id: site_account
+    label: "Supplied-component receipt and site-operation environmental account"
+    inputs:
+      product:
+        - row_id: supplied_blade
+          role: "Finished supplied steel ceremonial sword blade"
+          name: "Finished supplied steel ceremonial sword blade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual supplier-specified finished steel component at its completed supply gate. Collect net issued kg, supplier material certificate and included surface/residue state; preceding component production is linked once, without giving design or fabrication instructions."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: supplied_hilt
+          role: "Finished supplied ceremonial sword hilt module"
+          name: "Finished supplied ceremonial sword hilt module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One physically complete supplied module with a single declared supplier specification and actual material composition. Collect its net supplied kg and included coatings/residues, rather than treating a list of unrelated materials as one exchange. Earlier module production must have its own linked inventory; if supplied as separate items, replace this card with individual specific exchanges."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: supplied_scabbard
+          role: "Finished supplied matched ceremonial sword scabbard"
+          name: "Finished supplied matched ceremonial sword scabbard"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual finished scabbard matched to the declared delivered configuration, with actual supplier composition and net kg. No universal steel, leather or wood construction is assumed; this is a single physical finished component whose materials are declared in its upstream inventory."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: site_account_electricity
+          role: "User-side electricity for Supplied-component receipt and site-operation environmental account"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Energy 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual CN <1kV user-side grid-average electricity; read calibrated kWh including attributed handling, ventilation, idle and rework, convert by3.6 MJ/kWh and collect q_item MJ per accepted same-configuration unit. The process map groups environmental records, not a manufacturing sequence."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: reject_blade
+          role: "Discarded supplied steel ceremonial sword blade"
+          name: "Discarded supplied steel ceremonial sword blade"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual discarded component of the corresponding supplied specification, with measured net kg, material/contamination and declared receiver. Distinguish supplier returns, repair/reuse and legal waste; no compulsory rejection rate or treatment credit. If fractionated, replace by each actual material fraction rather than duplicating the complete component."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: reject_hilt
+          role: "Discarded supplied ceremonial sword hilt module"
+          name: "Discarded supplied ceremonial sword hilt module"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual discarded component of the corresponding supplied specification, with measured net kg, material/contamination and declared receiver. Distinguish supplier returns, repair/reuse and legal waste; no compulsory rejection rate or treatment credit. If fractionated, replace by each actual material fraction rather than duplicating the complete component."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: reject_scabbard
+          role: "Discarded supplied ceremonial sword scabbard"
+          name: "Discarded supplied ceremonial sword scabbard"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual discarded component of the corresponding supplied specification, with measured net kg, material/contamination and declared receiver. Distinguish supplier returns, repair/reuse and legal waste; no compulsory rejection rate or treatment credit. If fractionated, replace by each actual material fraction rather than duplicating the complete component."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: cleaning
+    label: "Conditional cleaning environmental account"
+    inputs:
+      product:
+        - row_id: industrial_water
+          role: "Supplied industrial cleaning water"
+          name: "Water for industrial use"
+          flow_type: "product"
+          flow_ref:
+            uuid: "81960a30-5488-4358-a28a-a0ee1f43f0f2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual aqueous cleaning only: collect supplied water kg by calibrated mass measurement or actual metered volume and documented measured density. Exclude water already contained in purchased formulations. Technosphere water is distinct from direct resource extraction."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: ipa_liquid
+          role: "Supplied liquid isopropanol, CAS67-63-0"
+          name: "Supplied liquid isopropanol, CAS67-63-0"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual IPA cleaning only, with supplier SDS, liquid state and actual purity. Collect net issued kg and recovered returns; do not infer mandatory solvent use or use an elementary air-flow identity for purchased solvent."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_electricity
+          role: "User-side electricity for Conditional cleaning environmental account"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Energy 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual CN <1kV user-side grid-average electricity; read calibrated kWh including attributed handling, ventilation, idle and rework, convert by3.6 MJ/kWh and collect q_item MJ per accepted same-configuration unit. The process map groups environmental records, not a manufacturing sequence."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_ipa
+          role: "Collected spent liquid isopropanol cleaning solvent"
+          name: "Collected spent liquid isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional collected solvent waste with actual IPA/water/contaminant composition and net transferred kg to a declared treatment receiver. Reusable recovery is separately reconciled; an elementary chemical release is not this waste mixture."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wash_effluent
+          role: "Collected ceremonial-product aqueous cleaning effluent"
+          name: "Collected ceremonial-product aqueous cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual collected liquid with sampled composition, net kg and off-site treatment receiver. No direct discharge to water is assumed; on-site treatment needs its own exchanges and measured species/submedium releases."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Immediate isopropanol release to unspecified air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional species-specific actual outdoor IPA release, CAS67-63-0, to air/unspecified, immediate. Collect matched sampling concentration/flow/time or a documented closed solvent balance with recovery/residue/retention and uncertainty. Unexplained loss, workplace exposure or collected solvent is not assumed outdoor release."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: acceptance
+    label: "Configured net-mass acceptance and packing environmental account"
+    inputs:
+      product:
+        - row_id: packing_box
+          role: "Supplied corrugated cardboard box"
+          name: "Supplied corrugated cardboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual single corrugated box specification, recorded in net kg and supplier fibre composition. Exclude transport packaging from finished net M. A composition-qualified upstream box identity requires matching actual supplier fibre proportions."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: packing_film
+          role: "Supplied polyethylene packaging film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual PE film, CAS9002-88-4, one supplier specification and net kg. Confirm PE composition, production supply state and fossil feedstock scope; do not silently apply to PET, multilayer composite or bio-based film. Record actual supplier origin and material state before linking its upstream production."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock
+              source_ids: []
+            ranges: []
+        - row_id: acceptance_electricity
+          role: "User-side electricity for Configured net-mass acceptance and packing environmental account"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Energy 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual CN <1kV user-side grid-average electricity; read calibrated kWh including attributed handling, ventilation, idle and rework, convert by3.6 MJ/kWh and collect q_item MJ per accepted same-configuration unit. The process map groups environmental records, not a manufacturing sequence."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_ceremonial_set
+          role: "Accepted ceremonial sword with one matched scabbard"
+          name: "Swords, cutlasses, bayonets, lances and similar arms and parts thereof and scabbards and sheaths therefor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "958b5c7e-4167-4f23-ae05-580f7c9af04c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One complete accepted declared ceremonial sword and its single matched scabbard. The public44750 finished product identity is narrowed by explicit configuration, not by altering its Mass reference property. Collect actual component and complete net kg; no functional performance or service life is claimed."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_box
+          role: "Discarded cardboard packaging"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual segregated cardboard packaging waste arising inside this plant, measured net kg with contamination/receiver; include incoming packing disposal and packing losses once. Packaging delivered with the product is not simultaneously factory waste."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_film
+          role: "Discarded polyethylene packaging film"
+          name: "Discarded polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual separately collected PE film waste with composition, contamination, net kg and receiver; do not identify it using a virgin PE product flow."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_causal
+    applies_to: "all_processes"
+    rule: "Avoid allocation by separate job/utility/stock records for each accepted configuration. Shared actual consumption uses documented causal metering, observed machine time/load or handling records; accepted counts only when comparable actual loads justify it. Record total, driver, denominator, assigned shares and sensitivity; no default mass or economic allocation between sword and scabbard delivered as one reference set."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "specific waste"
+    rule: "Rejected/reworked consumption remains attributed to accepted production; unknown quantities are not zero. Waste transfers carry no automatic avoided-production credit. If actual co-products exist, document substitution-free allocation and receivers in a separate specified model before application."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "finished_ceremonial_set"
+      record_type: "calibrated scale and acceptance records"
+      raw_fields: "configuration; accepted net mass M; independent supplied component kg; zero/tare/net; scale capacity/resolution/calibration; acceptance count"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each configuration and accepted unit"
+      temporal_coverage: "actual declared period"
+      site_scope: "declared site and supplied-component gates"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "original scale/component/completeness records"
+    - protocol_id: cp_stock
+      process_id: "all_processes"
+      flow_role: "specific supplied input"
+      record_type: "original issue/return and supplier records"
+      raw_fields: "one physical specification; composition/supply state; measured net kg; issue/return/stock change; accepted count"
+      collection_method: "Measure each actual supplied input kg, including retained supplied residues once; reconcile returns and stock changes. Water volume conversion requires actual density evidence, not assumed1 kg/L."
+      unit: "kg"
+      frequency: "each transfer and actual period"
+      temporal_coverage: "actual declared period"
+      site_scope: "declared site and supplied-component gates"
+      aggregation_rule: "actual attributed input kg / accepted units of the same configuration"
+      quality_evidence: "scale/supplier/SDS/stock records"
+    - protocol_id: cp_energy
+      process_id: "all_processes"
+      flow_role: "electricity"
+      record_type: "actual calibrated operation meters"
+      raw_fields: "process/job; provider/voltage; kWh start/end; handling/idle/ventilation/rework; causal shared-load records; accepted count"
+      collection_method: "Read actual meter coverage, convert kWh to MJ using3.6 MJ/kWh, attribute shared consumption once using causal records."
+      unit: "MJ"
+      frequency: "actual period and shared-load changes"
+      temporal_coverage: "actual declared period"
+      site_scope: "declared site and supplied-component gates"
+      aggregation_rule: "actual attributed MJ / accepted units of the same configuration"
+      quality_evidence: "meter calibration and allocation observations"
+    - protocol_id: cp_waste
+      process_id: "all_processes"
+      flow_role: "specific characterized waste"
+      record_type: "receiver manifests and original weights"
+      raw_fields: "one physical waste; actual composition/contamination; net kg; reusable returns; receiver/status; accepted count"
+      collection_method: "Weigh each distinct collected waste after controlled tare, record composition and receiver; keep liquid effluent separate from elementary water releases."
+      unit: "kg"
+      frequency: "each actual transfer"
+      temporal_coverage: "actual declared period"
+      site_scope: "declared site and supplied-component gates"
+      aggregation_rule: "actual transferred waste kg / accepted units of the same configuration"
+      quality_evidence: "original weights/composition/receiver receipts"
+    - protocol_id: cp_emission
+      process_id: "cleaning"
+      flow_role: "ipa_air"
+      record_type: "matched sampling or closed solvent balance"
+      raw_fields: "CAS67-63-0; air submedium; concentration/flow/time; issue/recovery/retention/residue; detection/uncertainty; accepted count"
+      collection_method: "Measure actual outdoor residual IPA using matched species sampling or a complete documented solvent balance; unexplained residual is not an assumed emission."
+      unit: "kg"
+      frequency: "actual cleaning period"
+      temporal_coverage: "actual declared period"
+      site_scope: "declared site and supplied-component gates"
+      aggregation_rule: "actual released kg / accepted units of the same configuration"
+      quality_evidence: "sampling calibration and complete balance"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished unit; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: configuration_mass
+      applies_to: "cp_mass; finished_ceremonial_set"
+      requirement: "Complete unit here means the sword plus one matched scabbard. Independently weigh each supplied component and the accepted complete set on scales of suitable actual capacity/resolution, with calibration and zero/tare/net originals. Reconcile installed component kg plus actual retained additions to positive M kg; packaging/display fixtures are excluded. No catalogue mass, assumed per-unit weight or functional geometry substitutes. Declare included supplier coatings/residues and avoid counting twice."
+      evidence: "cp_mass; cp_stock; signed supply acceptance"
+    - id: actual_period
+      applies_to: "all protocols"
+      requirement: "Use actual accepted counts of the same configuration and declared period to collect q_item. Retain rejected/reworked consumption in numerator; paired M is physically measured for that population. Record stock changes and nonproduction utility attribution; do not pool materially different configurations."
+      evidence: "actual job/count/meter records"
+    - id: balance_coverage
+      applies_to: "all exchanges"
+      requirement: "Reconcile each physical supplied component to accepted retained kg, returns, stock change and specific waste; reconcile solvent issue/recovery/retention/residue/release with uncertainty. Additional actual glue, lubricant, wiping cloth, plating/coating inputs, heat, compressed air or other physical waste/release requires individual specified exchanges and evidence. No missing stage is treated as zero, and no mandatory process is inferred from a catalogue. This boundary does not offer a manufacturing recipe."
+      evidence: "actual plant activity register and balances"
+    - id: source_limits
+      applies_to: "external evidence"
+      requirement: "UNSD printed/PDF239 provides broad44750 title only. Windlass undated About Us supports dress-product and separate refurbishment context, not factory measurements. WKC publisher-retained historical catalogue PDF3 is a historical ceremonial sword/scabbard supply example only; no present process, quality certification, quantity or lifetime transferred. The finished-component boundary is an authored modelling choice requiring actual supplier records. Upstream PE film use requires actual material and supply-route matching."
+      evidence: "unsd-cpc3; windlass-scope; wkc-historical"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "reference_flow"
+    rule: "Verify exact reference/output name and UUID, actual declared ceremonial configuration with one matched scabbard, physically measured positive complete M and independent component reconciliation."
+    source_ids: []
+  - rule_id: validation_scope
+    applies_to: "all_processes"
+    rule: "Verify completed-component supply gates and earlier linked production; utilities and actual conditional cleaning/waste records are covered without mechanical instructions. Do not claim complete cradle-to-gate while upstream or additional actual site exchanges remain absent."
+    source_ids: []
+  - rule_id: validation_identity
+    applies_to: "all flow rows"
+    rule: "Verify public type, actual reference property/unit group and official bilingual names; the adopted electricity identity has CN supply geography and <1kV user-side grid-average route, requiring matching actual procurement. Different geography/provider/route needs its own matched identity. Distinguish purchased liquid IPA from elementary IPA; supplied industrial water from resource water or wastewater; collected effluent from direct discharge. Keep unmatched concrete rows blank with declared reasons."
+    source_ids: []
+  - rule_id: validation_claims
+    applies_to: "dataset claims"
+    rule: "Mechanical consistency pass does not establish measured factory data, weapon performance, complete lifecycle coverage, publication or scientific approval. Disclose unresolved identities, measurements, links and uncertainty; distinguish unknown, not-applicable and below-detection values."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured ceremonial sword/scabbard manufacturing environmental foreground; this heading implies no publication"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Matching completed-component foreground or linked ceremonial product manufacturing model scaled by actual M"
+  excluded_use: "Weapon design, performance, operating instructions, other arms, ordinary cutlery, repair/use/life claims"
+  required_metadata: "Configuration/specification revision, ceremonial supply purpose, matched scabbard, actual component composition/net weights/retained additions, complete M, packaging scope, plant/period/count, supplier gates, linked upstream/receiver identities and causal allocations"
+  required_quality_disclosure: "All identity/measurement/link/site coverage gaps, source historical limits, balance uncertainty and allocation sensitivity; independent scientific review pending"
+  update_trigger: "Supply configuration/composition/state/gate, plant utility provider, waste receiver, actual processing or measurement basis changes"
+data_sources:
+  - id: "unsd-cpc3"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version3.0 Explanatory Notes,30June2025, printed/PDF239,44750. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Broad category only; narrower method is authored, not an accepted mapping"
+  - id: "windlass-scope"
+    type: "handbook"
+    reference: "Windlass Steelcrafts, About Windlass, undated official page, dress-product and Sword Refurbishment paragraphs. https://windlass.com/about-windlass/"
+    used_for: "Product/service context only; no measured inventory or universal sourcing route"
+  - id: "wkc-historical"
+    type: "handbook"
+    reference: "WKC, publisher-retained catalogue wkc_katalog_2004.pdf (no internal publication date established), PDF3 About us. https://www.wkc-shop.de/media/files_public/3df4dd5f4237f7b969e987534218a0cb/wkc_katalog_2004.pdf"
+    used_for: "Historical ceremonial sword/scabbard supply example, no current quantitative or procedural rule"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:954d9bcf99c36946287f8da5441819a9beaecd5dc9139d435aad2701a31f9354"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5128"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5128
+          line: 59
+          column: 1
+        end:
+          offset: 6985
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Finished blade, single physically complete hilt module and single finished matched scabbard at actual supplier gates |\n| starting_condition_role | manufacturing_input |\n| product_classification_scope | CPC44750 narrower ceremonial complete-product context |\n| recursive_input_rule | Link preceding component manufacture once; do not count both finished components and their upstream constituent materials inside this foreground |\n| upstream_dataset_requirement | Actual matching supplier production, utilities and treatment links are required before complete lifecycle coverage claims |\n| disclosure | Finished-component-to-accepted-product foreground, not complete cradle-to-gate; sources supply no measured factory inventory |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_foreground` | all_processes | Include all actual attributable activity within declared site gates, including handling, utilities, rejected/reworked consumption and packing. Record environmental quantities without mechanical manufacturing instructions. Earlier manufacturing inside the same plant is a separately linked upstream stage, not an omitted burden. |  |\n| `boundary_conditional` | cleaning | Cleaning is conditional on actual records. Aqueous and IPA exchanges are separate; neither is compulsory. Other actual reagents/utilities/wastes need their own specific cards before extending coverage. |  |\n| `boundary_output` | finished_ceremonial_set | Include exactly the declared sword and one matched scabbard in net M; exclude transport packaging, display supports, spares and separately supplied accessories. Declare additional retained coating/residue without double-counting supplier inclusion. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 180
+              line: 8
+              column: 1
+            end:
+              offset: 266
+              line: 8
+              column: 87
+          text: "# Environmental accounting for manufacture of ceremonial swords with matched scabbards"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5128
+              line: 59
+              column: 1
+            end:
+              offset: 5149
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25998"
+      family: "allocation"
+      span:
+        start:
+          offset: 25998
+          line: 429
+          column: 1
+        end:
+          offset: 26924
+          line: 436
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_causal` | all_processes | Avoid allocation by separate job/utility/stock records for each accepted configuration. Shared actual consumption uses documented causal metering, observed machine time/load or handling records; accepted counts only when comparable actual loads justify it. Record total, driver, denominator, assigned shares and sensitivity; no default mass or economic allocation between sword and scabbard delivered as one reference set. |  |\n| `allocation_waste` | specific waste | Rejected/reworked consumption remains attributed to accepted production; unknown quantities are not zero. Waste transfers carry no automatic avoided-production credit. If actual co-products exist, document substitution-free allocation and receivers in a separate specified model before application. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 180
+              line: 8
+              column: 1
+            end:
+              offset: 266
+              line: 8
+              column: 87
+          text: "# Environmental accounting for manufacture of ceremonial swords with matched scabbards"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25998
+              line: 429
+              column: 1
+            end:
+              offset: 26038
+              line: 429
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32860"
+      family: "validation"
+      span:
+        start:
+          offset: 32860
+          line: 463
+          column: 1
+        end:
+          offset: 34404
+          line: 472
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference` | reference_flow | Verify exact reference/output name and UUID, actual declared ceremonial configuration with one matched scabbard, physically measured positive complete M and independent component reconciliation. |  |\n| `validation_scope` | all_processes | Verify completed-component supply gates and earlier linked production; utilities and actual conditional cleaning/waste records are covered without mechanical instructions. Do not claim complete cradle-to-gate while upstream or additional actual site exchanges remain absent. |  |\n| `validation_identity` | all flow rows | Verify public type, actual reference property/unit group and official bilingual names; the adopted electricity identity has CN supply geography and <1kV user-side grid-average route, requiring matching actual procurement. Different geography/provider/route needs its own matched identity. Distinguish purchased liquid IPA from elementary IPA; supplied industrial water from resource water or wastewater; collected effluent from direct discharge. Keep unmatched concrete rows blank with declared reasons. |  |\n| `validation_claims` | dataset claims | Mechanical consistency pass does not establish measured factory data, weapon performance, complete lifecycle coverage, publication or scientific approval. Disclose unresolved identities, measurements, links and uncertainty; distinguish unknown, not-applicable and below-detection values. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 180
+              line: 8
+              column: 1
+            end:
+              offset: 266
+              line: 8
+              column: 87
+          text: "# Environmental accounting for manufacture of ceremonial swords with matched scabbards"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32860
+              line: 463
+              column: 1
+            end:
+              offset: 32882
+              line: 463
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_5128"
+      source_span:
+        start:
+          offset: 6062
+          line: 76
+          column: 1
+        end:
+          offset: 6436
+          line: 76
+          column: 375
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_conditional"
+      identity_kind: "explicit"
+      unit_id: "normative_5128"
+      source_span:
+        start:
+          offset: 6437
+          line: 77
+          column: 1
+        end:
+          offset: 6681
+          line: 77
+          column: 245
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_output"
+      identity_kind: "explicit"
+      unit_id: "normative_5128"
+      source_span:
+        start:
+          offset: 6682
+          line: 78
+          column: 1
+        end:
+          offset: 6983
+          line: 78
+          column: 302
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_25998"
+      source_span:
+        start:
+          offset: 26111
+          line: 433
+          column: 1
+        end:
+          offset: 26578
+          line: 433
+          column: 468
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_25998"
+      source_span:
+        start:
+          offset: 26579
+          line: 434
+          column: 1
+        end:
+          offset: 26922
+          line: 434
+          column: 344
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_32860"
+      source_span:
+        start:
+          offset: 32955
+          line: 467
+          column: 1
+        end:
+          offset: 33198
+          line: 467
+          column: 244
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_32860"
+      source_span:
+        start:
+          offset: 33199
+          line: 468
+          column: 1
+        end:
+          offset: 33517
+          line: 468
+          column: 319
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_32860"
+      source_span:
+        start:
+          offset: 33518
+          line: 469
+          column: 1
+        end:
+          offset: 34068
+          line: 469
+          column: 551
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_claims"
+      identity_kind: "explicit"
+      unit_id: "normative_32860"
+      source_span:
+        start:
+          offset: 34069
+          line: 470
+          column: 1
+        end:
+          offset: 34402
+          line: 470
+          column: 334
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5128"
+      source_span:
+        start:
+          offset: 5128
+          line: 59
+          column: 1
+        end:
+          offset: 5149
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5128"
+      source_span:
+        start:
+          offset: 5177
+          line: 63
+          column: 1
+        end:
+          offset: 5969
+          line: 70
+          column: 142
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25998"
+      source_span:
+        start:
+          offset: 25998
+          line: 429
+          column: 1
+        end:
+          offset: 26038
+          line: 429
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32860"
+      source_span:
+        start:
+          offset: 32860
+          line: 463
+          column: 1
+        end:
+          offset: 32882
+          line: 463
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:954d9bcf99c36946287f8da5441819a9beaecd5dc9139d435aad2701a31f9354"
+  generated_content_sha256: "sha256:90325e7afcb0af2919155159640d754d473972ea9f4f22cabe9fe10245a625fc"

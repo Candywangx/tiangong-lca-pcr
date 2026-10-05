@@ -1,0 +1,1375 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.agricultural-plough"
+  classification_refs: "CPC 3.0 44111; mouldboard subset; no accepted mapping implied"
+  covered_products: "Complete conventional/reversible mouldboard ploughs with declared body count and mounted/semi-mounted support"
+  excluded_products: "Disc plough; tiller; tractor; standalone spare share; farm service"
+  representative_product: "A configured steel-frame tractor-mounted reversible mouldboard plough; no representative weight is prescribed"
+  production_route: "Stock cutting/forming, route-specific forging/thermal treatment and joining, protective finishing, assembly, acceptance; purchased finished components may replace fabrication"
+  market_state: "New accepted factory-gate complete implement, identified delivery configuration"
+functional_unit:
+  what: "Manufacture an accepted complete mouldboard plough intended for soil inversion; use-phase service is outside this unit"
+  how_much: "1 kg net accepted complete implement of one declared configuration"
+  how_well: "Conforms to the declared drawing/BOM, fitted safety/reset system and factory acceptance protocol; no universal field performance is imposed"
+  how_long_or_cycle: "One manufacturing and acceptance cycle; no assumed service life or hectares"
+  reference_flow_link: "finished_plough"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "all processes"
+      rule: "Include actual manufacturing, internal handling, rework, attributable utilities, acceptance testing and dispatch packaging within the declared site/process chain. Record outsourced heat treatment as supplier activity instead of also counting its fuel locally. This is a foreground protocol, not proof of complete cradle-to-gate coverage."
+      source_ids: []
+    - rule_id: boundary_route
+      applies_to: "thermal; joining"
+      rule: "Select operations from drawings and route cards. Manufacturer examples support forging and heat treatment for some shares; DuraMaxx wear bodies illustrate absence of drilling/punching/welding. Neither is universal. Add each actual carburising medium, quench oil, cleaner, abrasive, structural tube, wheel, hose and safety component as an individually identified exchange before claiming configuration completeness."
+      source_ids:
+        - lemken-plough-bodies
+        - kverneland-share-production
+        - kverneland-steel-technology
+    - rule_id: boundary_environment
+      applies_to: "all processes"
+      rule: "Elementary flows cross to the environment only. Supplied process water is a product input; externally treated rinse effluent is a waste output. Quantify route-specific air/water releases only from measurements or documented constituent balances; unknown species must not be invented or merged into NOx/VOC placeholders."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified received steel stock or finished supplier components, at declared receiving gate; all external inputs and inbound transport coverage disclosed"
+  starting_condition_role: "foreground manufacturing start"
+  product_classification_scope: "CPC 3.0 44111 mouldboard subset"
+  recursive_input_rule: "A purchased complete plough entering modification remains a separately recorded same-category input with its supplier dataset; stop recursion at that identified input and disclose the changed configuration"
+  upstream_dataset_requirement: "Link steel, each purchased component and utility to compatible upstream datasets; without complete verified upstream linkage describe foreground manufacture only"
+  disclosure: "Site/time; starting states; outsourced treatment; route exceptions; missing suppliers; transport; capital-equipment coverage; waste-treatment destination"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Ploughs"
+    uuid: "130fc770-822f-45ae-a438-070df7696c00"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "body count"
+    - "mouldboard/slatted design"
+    - "conventional/reversible"
+    - "hitch category"
+    - "support wheel"
+    - "working width"
+    - "wear-part grade and thermal state"
+    - "frame material"
+    - "adjustment and overload protection"
+    - "supplied hydraulics/options"
+    - "finished coating"
+    - "accepted net mass M"
+    - "packaging exclusion"
+    - "foreground starting condition"
+    - "supplier/foreground split"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: energy_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain the electrical meter basis; use the energy unit-group factor 1 kWh = 3.6 MJ. Do not interpret electricity as fuel calorific input. Selected 35–330 kV flow needs a matching supply boundary."
+  - id: gas_volume
+    applies_to: "thermal_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record actual or standard conditions with meter correction evidence; volume-to-mass conversion requires gas composition and measured density at the declared conditions."
+process_map:
+  - id: forming
+    name: "Stock preparation, cutting and forming"
+    inclusion: "conditional"
+    inclusion_condition: "When frame or body blanks are fabricated inside the declared foreground"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: thermal
+    name: "Wear-part forging and thermal treatment"
+    inclusion: "conditional"
+    inclusion_condition: "When forging, hardening, tempering or carburising is performed inside the declared foreground"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: joining
+    name: "Joining of structural parts"
+    inclusion: "conditional"
+    inclusion_condition: "When welded joints are present in the foreground route"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finishing
+    name: "Cleaning and protective finishing"
+    inclusion: "conditional"
+    inclusion_condition: "When performed inside the foreground; powder coating is one conditional route, not a universal requirement"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: assembly
+    name: "Configured assembly and acceptance"
+    inclusion: "required"
+    inclusion_condition: "All complete implements"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: packing
+    name: "Factory dispatch packaging"
+    inclusion: "conditional"
+    inclusion_condition: "When dispatch protection crosses the foreground boundary"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: forming
+    label: "Stock preparation, cutting and forming"
+    inputs:
+      product:
+        - row_id: frame_plate
+          role: "frame plate"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only hot-rolled low-alloy high-strength plate matching the mill certificate. Add a separate identified hollow-section row when used; do not represent a tube as plate."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_forming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+        - row_id: frame_section
+          role: "frame section"
+          name: "Finished rectangular structural steel hollow section"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when the frame BOM uses received hollow section; record steel grade, dimensions and welding/seam state. Plate inputs must not duplicate supplier-made sections."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_forming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+        - row_id: wear_blank
+          role: "wear blank"
+          name: "Micro-alloyed boron steel ploughshare blank"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when the share is made from this certified stock in the foreground; finished purchased shares enter assembly instead."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_forming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids:
+                - lemken-plough-bodies
+            ranges: []
+        - row_id: forming_power
+          role: "forming power"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter cutting, pressing and machining at the user supply boundary; selected identity applies only to 35–330 kV supply. Other voltage requires a matching identity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_forming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: machining_chips
+          role: "machining chips"
+          name: "Steel scrap, machining chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c978e4fc-350b-4fb6-8021-90eb5a6ed034"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Steel machining chips generated at a Chinese site only. Record drained mass and oil contamination; distinguish them from clean cutting offcuts."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_forming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+        - row_id: cutting_offcuts
+          role: "cutting offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh offcuts leaving the foreground; internal recirculation is a transfer, not a second external input."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_forming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: thermal
+    label: "Wear-part forging and thermal treatment"
+    inputs:
+      product:
+        - row_id: thermal_power
+          role: "thermal power"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Electric furnace, induction and auxiliary power only when operated; keep carburising separate from burner fuel. No universal treatment temperature or duration is imposed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_thermal."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal
+              source_ids:
+                - kverneland-share-production
+            ranges: []
+        - row_id: thermal_gas
+          role: "thermal gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Only pipeline gaseous natural gas burned on site. Retain meter pressure, temperature and standard-volume basis; do not use this identity for an unspecified carburising atmosphere."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_thermal."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal
+              source_ids: []
+            ranges: []
+        - row_id: quench_water
+          role: "quench water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Treated industrial water supplied across the foreground for a water-based quench route. Meter make-up, not recirculating tank throughput."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_thermal."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal
+              source_ids: []
+            ranges: []
+        - row_id: quench_polymer
+          role: "quench polymer"
+          name: "Polyalkylene glycol quench concentrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when the verified quench formulation contains this concentrate; record formulation, concentration and replenishment. Oil quenching requires its own separate row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_thermal."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2
+          role: "fossil co2"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only documented fossil-fuel combustion emissions to air with unspecified subcompartment. Obtain site measurements or a fuel-carbon balance with composition and oxidation evidence; never borrow a generic factor. Different air subcompartments require matching flows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_thermal."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal
+              source_ids: []
+            ranges: []
+  - id: joining
+    label: "Joining of structural parts"
+    inputs:
+      product:
+        - row_id: joining_power
+          role: "joining power"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter welding equipment power; a no-weld wear-body route does not remove welded frame operations elsewhere."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_joining."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_joining
+              source_ids:
+                - lemken-plough-bodies
+            ranges: []
+        - row_id: weld_wire
+          role: "weld wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the self-shielded carbon-steel flux-cored wire described by the selected record. Solid-wire gas-shielded welding needs separate wire and gas rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_joining."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_joining
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: weld_slag
+          role: "weld slag"
+          name: "Solidified flux-cored steel welding slag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only collected slag from the specified welding route; retain composition and disposal classification. It is not an elementary air emission."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_joining."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_joining
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: finishing
+    label: "Cleaning and protective finishing"
+    inputs:
+      product:
+        - row_id: finish_power
+          role: "finish power"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Include measured cleaning, booth and curing power if used. Fuel-fired curing requires its own fuel and evidenced emissions rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+        - row_id: powder
+          role: "powder"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only purchased powder coating; record resin chemistry, pigment and additives separately in its formulation disclosure. Liquid paint is not this exchange."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+        - row_id: rinse_water
+          role: "rinse water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Treated industrial rinse make-up when wet cleaning is used; cleaning reagents each need their own chemical row with concentration."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: rinse_effluent
+          role: "rinse effluent"
+          name: "Untreated aqueous metal-cleaning rinse effluent"
+          flow_type: "waste"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Only effluent sent to an external treatment facility; measure volume and composition. On-site treatment belongs in the expanded foreground and needs its own inventory. Do not substitute freshwater or a treated effluent flow."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+        - row_id: powder_waste
+          role: "powder waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only at a Chinese manufacturing site: unrecoverable collected solid powder overspray leaving the factory; recovered powder returned internally is not an external waste output."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_finishing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly
+    label: "Configured assembly and acceptance"
+    inputs:
+      product:
+        - row_id: purchased_share
+          role: "purchased share"
+          name: "Finished hardened boron-steel mouldboard ploughshare"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only externally purchased finished shares; declare count, grade, hardness and mass. Do not count raw stock and supplier manufacture again."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - lemken-plough-bodies
+            ranges: []
+        - row_id: purchased_mouldboard
+          role: "purchased mouldboard"
+          name: "Finished hardened steel plough mouldboard"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only externally purchased completed mouldboards; retain solid/slatted design, grade and surface state. The full body set also requires its frog, landside and shin, each identified in the BOM."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - lemken-plough-bodies
+            ranges: []
+        - row_id: steel_bolt
+          role: "steel bolt"
+          name: "Finished steel hexagon bolt"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record grade, dimensions, finish and total delivered mass; shear-bolt protection is a declared configuration, not interchangeable with ordinary bolts."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: steel_nut
+          role: "steel nut"
+          name: "Finished steel hexagon nut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record grade, finish and mass for this component only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: steel_washer
+          role: "steel washer"
+          name: "Finished steel flat washer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record finish, size and mass separately from bolts and nuts."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: pivot_pin
+          role: "pivot pin"
+          name: "Finished steel plough pivot pin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When included in the hitch or reversal assembly; record hardened state, size and mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: reset_spring
+          role: "reset spring"
+          name: "Finished steel overload-reset leaf spring"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when leaf-spring reset is fitted; a hydraulic reset system requires its actual components instead."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: support_tyre
+          role: "support tyre"
+          name: "Finished pneumatic rubber plough support tyre"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When a rubber-tyred support wheel is supplied; weigh tyre separately from rim and retain size and construction. Do not use a count-reference generic tyre UUID as a mass-reference exchange."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: support_rim
+          role: "support rim"
+          name: "Finished steel plough support-wheel rim"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When the support wheel is fitted; purchased rim only, not a trailer-specific component without applicability evidence."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_hose
+          role: "hydraulic hose"
+          name: "Hydraulic hose"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2fc1719-69dc-4281-8eae-383af8d9a405"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When a finished hydraulic hose is delivered with the implement; record reinforcement, rubber chemistry, pressure rating, fittings and mass. Fittings not included by the supplier need separate rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: assembly_screw
+          role: "assembly screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa43b425-20e7-49c0-9ea9-ecf7b1004951"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Steel screws only where used, weighed by specified size and finish; bolts, nuts and washers each require separate atomic rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_cylinder
+          role: "hydraulic cylinder"
+          name: "Complete double-acting hydraulic steel cylinder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When reversible or width-adjustment configuration uses this cylinder. Record bore, stroke, seals and acceptance; do not substitute cylinder blanks."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "hydraulic oil"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eafff56c-3487-4345-9f24-00429f61c556"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only first-fill finished hydraulic fluid meeting the selected refined-oil route; record grade and mass actually delivered with the implement. Exclude tractor reservoir fill."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: assembly_power
+          role: "assembly power"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter assembly tools and factory acceptance tests; no farm tractor fuel or field ploughing is included."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_plough
+          role: "finished plough"
+          name: "Ploughs"
+          flow_type: "product"
+          flow_ref:
+            uuid: "130fc770-822f-45ae-a438-070df7696c00"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One kilogram of the accepted complete implement, with declared frame, full body set, hitch, fitted adjustment/safety devices and supplied options. Transport packaging and the tractor are excluded from its net mass."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: packing
+    label: "Factory dispatch packaging"
+    inputs:
+      product:
+        - row_id: wood_pack
+          role: "wood pack"
+          name: "Kiln-dried sawn coniferous timber, at mill"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50904047-e5b0-4110-990a-53751d250267"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this actual timber component; record moisture and reuse count from site records. Add each other packaging component as a separate row; packaging is outside net implement mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "all processes"
+    rule: "Use direct job/lot records and subdivision first. For shared equipment measure job machine-hours and measured load, reconcile assigned plus unassigned consumption to the meter, and retain the physical causal basis. Mass allocation is allowed only when a site test establishes proportional processing demand; unequal plough configurations cannot automatically be allocated by unit count or finished mass."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "waste outputs"
+    rule: "Record steel chips, offcuts and coating residue with destination and revenue status. Sale alone does not establish a co-product or authorize an avoided-steel credit. Keep waste-treatment and recycling burdens/benefits explicit in the chosen study method; disclose any economic allocation, price period and sensitivity when physical allocation is unsupported."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "forming; assembly"
+    rule: "Attribute rejects and rework to their originating configuration and count accepted output once. Recoverable internal steel/powder circulations are tracked separately from net purchased inputs and external wastes."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "assembly"
+      flow_role: "accepted net mass"
+      record_type: "weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "declared production period"
+      site_scope: "declared factory and configuration"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale calibration; BOM; serial acceptance"
+    - protocol_id: cp_forming
+      process_id: "forming"
+      flow_role: "individual input/output exchanges"
+      record_type: "meter and job ledger"
+      raw_fields: "row_id; route; material grade; quantity; numerator unit; accepted count; configuration; stock change; reject; assigned load/time; meter conditions"
+      collection_method: "Weigh each material/waste separately; meter each utility; obtain supplier delivery/BOM records for finished components; measure documented emissions. Trace every row to its own instrument or voucher and the accepted configuration."
+      unit: "kg; MJ; m3"
+      frequency: "each job; monthly reconciliation"
+      temporal_coverage: "same declared production period as cp_mass; include seasonal utilization"
+      site_scope: "foreground and documented subcontractor split"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "calibration; job card; invoice; waste manifest; emissions test; allocation reconciliation"
+    - protocol_id: cp_thermal
+      process_id: "thermal"
+      flow_role: "individual input/output exchanges"
+      record_type: "meter and job ledger"
+      raw_fields: "row_id; route; material grade; quantity; numerator unit; accepted count; configuration; stock change; reject; assigned load/time; meter conditions"
+      collection_method: "Weigh each material/waste separately; meter each utility; obtain supplier delivery/BOM records for finished components; measure documented emissions. Trace every row to its own instrument or voucher and the accepted configuration."
+      unit: "kg; MJ; m3"
+      frequency: "each job; monthly reconciliation"
+      temporal_coverage: "same declared production period as cp_mass; include seasonal utilization"
+      site_scope: "foreground and documented subcontractor split"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "calibration; job card; invoice; waste manifest; emissions test; allocation reconciliation"
+    - protocol_id: cp_joining
+      process_id: "joining"
+      flow_role: "individual input/output exchanges"
+      record_type: "meter and job ledger"
+      raw_fields: "row_id; route; material grade; quantity; numerator unit; accepted count; configuration; stock change; reject; assigned load/time; meter conditions"
+      collection_method: "Weigh each material/waste separately; meter each utility; obtain supplier delivery/BOM records for finished components; measure documented emissions. Trace every row to its own instrument or voucher and the accepted configuration."
+      unit: "kg; MJ; m3"
+      frequency: "each job; monthly reconciliation"
+      temporal_coverage: "same declared production period as cp_mass; include seasonal utilization"
+      site_scope: "foreground and documented subcontractor split"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "calibration; job card; invoice; waste manifest; emissions test; allocation reconciliation"
+    - protocol_id: cp_finishing
+      process_id: "finishing"
+      flow_role: "individual input/output exchanges"
+      record_type: "meter and job ledger"
+      raw_fields: "row_id; route; material grade; quantity; numerator unit; accepted count; configuration; stock change; reject; assigned load/time; meter conditions"
+      collection_method: "Weigh each material/waste separately; meter each utility; obtain supplier delivery/BOM records for finished components; measure documented emissions. Trace every row to its own instrument or voucher and the accepted configuration."
+      unit: "kg; MJ; m3"
+      frequency: "each job; monthly reconciliation"
+      temporal_coverage: "same declared production period as cp_mass; include seasonal utilization"
+      site_scope: "foreground and documented subcontractor split"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "calibration; job card; invoice; waste manifest; emissions test; allocation reconciliation"
+    - protocol_id: cp_assembly
+      process_id: "assembly"
+      flow_role: "individual input/output exchanges"
+      record_type: "meter and job ledger"
+      raw_fields: "row_id; route; material grade; quantity; numerator unit; accepted count; configuration; stock change; reject; assigned load/time; meter conditions"
+      collection_method: "Weigh each material/waste separately; meter each utility; obtain supplier delivery/BOM records for finished components; measure documented emissions. Trace every row to its own instrument or voucher and the accepted configuration."
+      unit: "kg; MJ; m3"
+      frequency: "each job; monthly reconciliation"
+      temporal_coverage: "same declared production period as cp_mass; include seasonal utilization"
+      site_scope: "foreground and documented subcontractor split"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "calibration; job card; invoice; waste manifest; emissions test; allocation reconciliation"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "individual input/output exchanges"
+      record_type: "meter and job ledger"
+      raw_fields: "row_id; route; material grade; quantity; numerator unit; accepted count; configuration; stock change; reject; assigned load/time; meter conditions"
+      collection_method: "Weigh each material/waste separately; meter each utility; obtain supplier delivery/BOM records for finished components; measure documented emissions. Trace every row to its own instrument or voucher and the accepted configuration."
+      unit: "kg; MJ; m3"
+      frequency: "each job; monthly reconciliation"
+      temporal_coverage: "same declared production period as cp_mass; include seasonal utilization"
+      site_scope: "foreground and documented subcontractor split"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "calibration; job card; invoice; waste manifest; emissions test; allocation reconciliation"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_configuration
+      applies_to: "reference product"
+      requirement: "Keep body count, material, support, reset/hydraulic options and acceptance consistent with M; distinguish gross shipping mass and incomplete kit mass."
+      evidence: "BOM and calibrated weighing"
+    - id: quality_route
+      applies_to: "all processes"
+      requirement: "Specify foreground vs purchased parts; record heat treatment recipe and coating chemistry where used. A manufacturer example is route evidence, not a universal recipe, yield or lifetime."
+      evidence: "lemken-plough-bodies; kverneland-share-production; kverneland-steel-technology"
+    - id: quality_completeness
+      applies_to: "all inventory rows"
+      requirement: "Reconcile BOM and material balances, utility meters, inventory changes, rejects, packaging and waste destinations. Quantify omitted exchanges and justify each exclusion; gaps are not zero."
+      evidence: "job ledger and reconciliation"
+    - id: quality_range
+      applies_to: "all inventory rows"
+      requirement: "No transferable quantity ranges are established. Collect site-specific records and uncertainty; do not use advertised wear-life gains, carburising time or catalogue mass as factory inventory factors."
+      evidence: "measurement records and explicit evidence gaps"
+validation_rules:
+  - rule_id: validate_basis
+    applies_to: "all inventory rows"
+    rule: "Require positive measured M, same accepted configuration, reference output exactly 1 kg, explicit normalize_mass application and compatible numerator units. Record gas conditions and electricity conversion evidence."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Verify each UUID public identity, reference property/unit, route, origin and environment compartment before dataset use. An unresolved flow remains a named exchange without UUID and blocks a claim of complete identity coverage; no forced substitute."
+    source_ids: []
+  - rule_id: validate_complete
+    applies_to: "reference product"
+    rule: "Check exact BOM coverage including wheels/rims, bolts/nuts, hoses, seals and overload mechanisms when fitted; add each missing atomic exchange and supplier activity. Check route omissions and direct emission species. Report performed, skipped, uncertainty and remaining gaps; manufacturing checks do not validate farm performance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured foreground manufacture of a complete mouldboard plough"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply compatible configured plough manufacture to a separately modelled equipment life cycle; upstream use only after linkage and coverage review"
+  excluded_use: "Crop yield, soil carbon, comparative hectares, universal lifetime, disc-plough manufacture, claims of complete cradle-to-gate without upstream verification"
+  required_metadata: "Configuration qualifiers; M protocol; site/period; route; receiving state; supplier activities; boundary diagram; property/units; allocation; packaging; waste destinations"
+  required_quality_disclosure: "Identity gaps; missing BOM/suppliers; measurement uncertainty; skipped processes; unverified emissions; range evidence gaps; upstream and transport completeness"
+  update_trigger: "Configuration, steel grade, treatment route, coating, supplier, utility mix, measured mass or boundary changes"
+data_sources:
+  - id: "lemken-plough-bodies"
+    type: "handbook"
+    reference: "LEMKEN, Plough Bodies. https://lemken.com/en-en/agricultural-machines/soil-cultivation/ploughing/equipment/bodies"
+    used_for: "Dural/DuraMaxx paragraphs: boron-steel shares, hardened slats, route exceptions and body variants. Manufacturer-specific; no lifetime or quantitative ranges adopted."
+  - id: "kverneland-share-production"
+    type: "handbook"
+    reference: "Kverneland, HIGH quality production. https://uk.kverneland.com/about-kverneland/kverneland-technology/high-quality-production"
+    used_for: "Share production paragraph: forging, hardening and tempering example only; no mandatory universal route."
+  - id: "kverneland-steel-technology"
+    type: "handbook"
+    reference: "Kverneland, STEEL as a science. https://uk.kverneland.com/about-kverneland/kverneland-technology/steel-as-a-science"
+    used_for: "Complex production processes paragraph: mouldboard carburising and specimen testing example; gas composition, cycle time and emissions must be measured for the actual route."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d094b10d097bb9cc8756df65dca3457cba4bdd2c9fc49ac6296c950c3f514048"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_3986"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 3986
+          line: 54
+          column: 1
+        end:
+          offset: 6343
+          line: 73
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified received steel stock or finished supplier components, at declared receiving gate; all external inputs and inbound transport coverage disclosed |\n| starting_condition_role | foreground manufacturing start |\n| product_classification_scope | CPC 3.0 44111 mouldboard subset |\n| recursive_input_rule | A purchased complete plough entering modification remains a separately recorded same-category input with its supplier dataset; stop recursion at that identified input and disclose the changed configuration |\n| upstream_dataset_requirement | Link steel, each purchased component and utility to compatible upstream datasets; without complete verified upstream linkage describe foreground manufacture only |\n| disclosure | Site/time; starting states; outsourced treatment; route exceptions; missing suppliers; transport; capital-equipment coverage; waste-treatment destination |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_manufacture | all processes | Include actual manufacturing, internal handling, rework, attributable utilities, acceptance testing and dispatch packaging within the declared site/process chain. Record outsourced heat treatment as supplier activity instead of also counting its fuel locally. This is a foreground protocol, not proof of complete cradle-to-gate coverage. |  |\n| boundary_route | thermal; joining | Select operations from drawings and route cards. Manufacturer examples support forging and heat treatment for some shares; DuraMaxx wear bodies illustrate absence of drilling/punching/welding. Neither is universal. Add each actual carburising medium, quench oil, cleaner, abrasive, structural tube, wheel, hose and safety component as an individually identified exchange before claiming configuration completeness. | lemken-plough-bodies; kverneland-share-production; kverneland-steel-technology |\n| boundary_environment | all processes | Elementary flows cross to the environment only. Supplied process water is a product input; externally treated rinse effluent is a waste output. Quantify route-specific air/water releases only from measurements or documented constituent balances; unknown species must not be invented or merged into NOx/VOC placeholders. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 203
+              line: 9
+              column: 1
+            end:
+              offset: 247
+              line: 9
+              column: 45
+          text: "# Agricultural mouldboard plough manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 3986
+              line: 54
+              column: 1
+            end:
+              offset: 4007
+              line: 54
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34448"
+      family: "allocation"
+      span:
+        start:
+          offset: 34448
+          line: 674
+          column: 1
+        end:
+          offset: 35670
+          line: 682
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | all processes | Use direct job/lot records and subdivision first. For shared equipment measure job machine-hours and measured load, reconcile assigned plus unassigned consumption to the meter, and retain the physical causal basis. Mass allocation is allowed only when a site test establishes proportional processing demand; unequal plough configurations cannot automatically be allocated by unit count or finished mass. |  |\n| allocation_scrap | waste outputs | Record steel chips, offcuts and coating residue with destination and revenue status. Sale alone does not establish a co-product or authorize an avoided-steel credit. Keep waste-treatment and recycling burdens/benefits explicit in the chosen study method; disclose any economic allocation, price period and sensitivity when physical allocation is unsupported. |  |\n| allocation_rework | forming; assembly | Attribute rejects and rework to their originating configuration and count accepted output once. Recoverable internal steel/powder circulations are tracked separately from net purchased inputs and external wastes. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 203
+              line: 9
+              column: 1
+            end:
+              offset: 247
+              line: 9
+              column: 45
+          text: "# Agricultural mouldboard plough manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34448
+              line: 674
+              column: 1
+            end:
+              offset: 34488
+              line: 674
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43156"
+      family: "validation"
+      span:
+        start:
+          offset: 43156
+          line: 713
+          column: 1
+        end:
+          offset: 44189
+          line: 721
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_basis | all inventory rows | Require positive measured M, same accepted configuration, reference output exactly 1 kg, explicit normalize_mass application and compatible numerator units. Record gas conditions and electricity conversion evidence. |  |\n| validate_identity | all inventory rows | Verify each UUID public identity, reference property/unit, route, origin and environment compartment before dataset use. An unresolved flow remains a named exchange without UUID and blocks a claim of complete identity coverage; no forced substitute. |  |\n| validate_complete | reference product | Check exact BOM coverage including wheels/rims, bolts/nuts, hoses, seals and overload mechanisms when fitted; add each missing atomic exchange and supplier activity. Check route omissions and direct emission species. Report performed, skipped, uncertainty and remaining gaps; manufacturing checks do not validate farm performance. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 203
+              line: 9
+              column: 1
+            end:
+              offset: 247
+              line: 9
+              column: 45
+          text: "# Agricultural mouldboard plough manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43156
+              line: 713
+              column: 1
+            end:
+              offset: 43178
+              line: 713
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_manufacture"
+      identity_kind: "explicit"
+      unit_id: "normative_3986"
+      source_span:
+        start:
+          offset: 5056
+          line: 69
+          column: 1
+        end:
+          offset: 5439
+          line: 69
+          column: 384
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_3986"
+      source_span:
+        start:
+          offset: 5440
+          line: 70
+          column: 1
+        end:
+          offset: 5975
+          line: 70
+          column: 536
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_environment"
+      identity_kind: "explicit"
+      unit_id: "normative_3986"
+      source_span:
+        start:
+          offset: 5976
+          line: 71
+          column: 1
+        end:
+          offset: 6341
+          line: 71
+          column: 366
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_34448"
+      source_span:
+        start:
+          offset: 34561
+          line: 678
+          column: 1
+        end:
+          offset: 35007
+          line: 678
+          column: 447
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_34448"
+      source_span:
+        start:
+          offset: 35008
+          line: 679
+          column: 1
+        end:
+          offset: 35408
+          line: 679
+          column: 401
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_34448"
+      source_span:
+        start:
+          offset: 35409
+          line: 680
+          column: 1
+        end:
+          offset: 35668
+          line: 680
+          column: 260
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_43156"
+      source_span:
+        start:
+          offset: 43251
+          line: 717
+          column: 1
+        end:
+          offset: 43511
+          line: 717
+          column: 261
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43156"
+      source_span:
+        start:
+          offset: 43512
+          line: 718
+          column: 1
+        end:
+          offset: 43809
+          line: 718
+          column: 298
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_43156"
+      source_span:
+        start:
+          offset: 43810
+          line: 719
+          column: 1
+        end:
+          offset: 44187
+          line: 719
+          column: 378
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_3986"
+      source_span:
+        start:
+          offset: 3986
+          line: 54
+          column: 1
+        end:
+          offset: 4007
+          line: 54
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_3986"
+      source_span:
+        start:
+          offset: 4035
+          line: 58
+          column: 1
+        end:
+          offset: 4983
+          line: 65
+          column: 171
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34448"
+      source_span:
+        start:
+          offset: 34448
+          line: 674
+          column: 1
+        end:
+          offset: 34488
+          line: 674
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43156"
+      source_span:
+        start:
+          offset: 43156
+          line: 713
+          column: 1
+        end:
+          offset: 43178
+          line: 713
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d094b10d097bb9cc8756df65dca3457cba4bdd2c9fc49ac6296c950c3f514048"
+  generated_content_sha256: "sha256:cae7562176c14a2bf080ab1e41507f0ead4a72e26c03958297859eedd0012452"

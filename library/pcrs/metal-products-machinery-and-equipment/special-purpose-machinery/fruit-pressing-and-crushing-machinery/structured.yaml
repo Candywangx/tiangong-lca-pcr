@@ -1,0 +1,1430 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.fruit-pressing-and-crushing-machinery"
+  classification_refs: "CPC 3.0 44191; candidate narrower semantic boundary; no accepted mapping"
+  covered_products: "New complete configured fruit presses and fruit crushers/mills"
+  excluded_products: "Beverages, cultivation, standalone washing/lifting/thermal/filling equipment, non-fruit crushers and separately sold parts"
+  representative_product: "One declared water-pressure diaphragm press; a separately declared electric centrifugal fruit mill is an alternative configuration, not the same reference product"
+  production_route: "Receipt and make-or-buy control; actual metal fabrication; route-specific finishing; working mechanism/support/control fitting; acceptance; optional packaging"
+  market_state: "Accepted complete machine at declared factory gate, loose spares and packaging excluded from net machine mass"
+functional_unit:
+  what: "Manufacture one declared complete fruit press or crusher; no beverage-processing service"
+  how_much: "1 kg of accepted net complete configured machine; multiply by measured M for one actual unit"
+  how_well: "Meet declared model-specific dimensional, food-contact material/surface and factory functional acceptance, including pressure/leak/relief function for fitted press hardware or rotor clearance/guards/start-stop checks for the actual mill; no generic pressure, throughput or juice yield"
+  how_long_or_cycle: "One manufacturing delivery; no operating lifetime or litres of juice assigned"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "manufacturing"
+      rule: "Include receipt checks, actually performed cutting/forming/drilling/machining/welding/grinding, route-specific surface treatment, configured assembly, inspection/acceptance, attributable rework/rejects and packout. Buying a motor, moulded membrane or cast cover does not establish site motor manufacture, rubber moulding or casting. Outsourced fabrication requires explicit supplier gates."
+      source_ids: []
+    - rule_id: boundary_actual_bom
+      applies_to: "inventory"
+      rule: "Reconcile every actual BOM item and operation to an atomic exchange or documented exclusion. Add separate actual covers, juice channels, stand, wheels, hoses, connectors, bolts/nuts/washers, drive couplings, guards, interlocks, actuator, hydraulic pump/oil, cutting-fluid recipe, treatment reagents/residues and measured releases where present. A water-pressure diaphragm does not require an oil-hydraulic cylinder or electric drive. Initial cards are not a universal complete BOM."
+      source_ids: []
+    - rule_id: boundary_factory_test
+      applies_to: "factory_test"
+      rule: "Include actual factory pressure test or powered acceptance energy, water and recorded wastes. Water-pressure design establishes operating principle, not continuous factory water demand. Later fruit processing, yields and cleaning belong to use. A fruit-loaded acceptance test, if actually performed, expands fruit input and each specific output/waste at this gate with test records; it is not presumed for every machine."
+      source_ids: []
+    - rule_id: boundary_product_split
+      applies_to: "reference_product"
+      rule: "Keep standalone fruit presses and mills separate from beverage products and container filling/packaging equipment. Declare included installed accessories; model a separately delivered spare screen or upstream washer separately and never divide a combined line by one machine M."
+      source_ids:
+        - speidel-hydropress-2025
+        - voran-fruit-mills-2018
+boundary_abstraction:
+  declared_starting_condition: "Declared stock and separately specified finished components received at machine factory"
+  starting_condition_role: "Inputs to a foreground manufacturing module; supplier production and incoming transport separately linked"
+  product_classification_scope: "Configured complete fruit pressing/crushing machine within CPC44191; not a beverage production system"
+  recursive_input_rule: "A bought complete machine is a supplier-gated input; do not duplicate this factory module recursively. Purchased baskets and rotors replace their site fabrication route."
+  upstream_dataset_requirement: "Match alloy, finished component completeness, chemistry, concentration, electricity source/voltage, transport, geography and waste treatment; disclose missing links"
+  disclosure: "Declare actual operations, outsourced gates, overhead allocation, packaging and supplier links. This foreground-only module does not establish complete cradle-to-gate coverage without compatible upstream, transport and treatment activities."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Presses, crushers and similar machinery used in the manufacture of wine, cider, fruit juices or similar beverages"
+    uuid: "783c1d97-c517-42eb-bfde-b8ec8a7f3cda"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "pressing or crushing function"
+    - "single configuration/BOM revision"
+    - "drive mechanism and supplied motor"
+    - "working chamber/basket/rotor/screen"
+    - "membrane compound"
+    - "metal grade and food-contact surface"
+    - "seals and filter bag"
+    - "installed stand/guards/control"
+    - "pressure/voltage specification where relevant"
+    - "included accessories and loose-spare exclusions"
+    - "purchased assembly completeness"
+    - "fluid and drained-test-water state"
+    - "actual acceptance plan"
+    - "net measured M"
+    - site
+    - period
+    - "start/end gates"
+    - "packaging boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: electricity_energy
+    applies_to: "electricity_fabrication; electricity_finishing; electricity_assembly; electricity_factory_test"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain metered kWh; exact conversion 1 kWh = 3.6 MJ. Match supply below 1 kV and grid-average sourcing; do not convert electricity to mass."
+  - id: liquid_mass
+    applies_to: "tap_water_finishing; tap_water_factory_test; nitric_acid; acid_wastewater; alkaline_wastewater; factory_test_water_waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh each delivered liquid; a volume record needs retained measured/supplier density, temperature and explicit conversion. Record purchased solution mass at its stated concentration, not active-substance mass."
+  - id: groundwater_volume
+    applies_to: "groundwater_finishing"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Meter actual freshwater well abstraction as volume in cp_water_resource. q_ref stays m3 per kg machine; no density assumption is needed."
+process_map:
+  - id: fabrication
+    name: "Stock cutting, forming and joining"
+    inclusion: "conditional"
+    inclusion_condition: "Actual site fabrication of declared structures"
+    role: "Foreground stage; internal WIP remains inside factory module"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: finishing
+    name: "Food-contact preparation and external frame finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual mechanical finishing, wet cleaning, passivation or non-contact coating"
+    role: "Foreground stage; internal WIP remains inside factory module"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: assembly
+    name: "Configured press or mill assembly"
+    inclusion: "required"
+    inclusion_condition: "Each accepted complete machine; components depend on the single declared design"
+    role: "Foreground stage; internal WIP remains inside factory module"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: factory_test
+    name: "Configuration-specific inspection and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Each completed machine; pressure or powered testing only according to actual acceptance plan"
+    role: "Foreground stage; internal WIP remains inside factory module"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: packout
+    name: "Dispatch protection"
+    inclusion: "conditional"
+    inclusion_condition: "Factory-applied dispatch packaging"
+    role: "Foreground stage; internal WIP remains inside factory module"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+process_inventory:
+  - id: fabrication
+    label: "Stock cutting, forming and joining"
+    inputs:
+      product:
+        - row_id: stainless_sheet
+          role: "Cold-rolled AISI304 stainless steel sheet"
+          name: "Cold-rolled AISI304 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual site manufacture of one declared sheet grade and thickness for hopper, basket or enclosure. Weigh issued stock net of returns; do not also count finished bought structures. Other grades require separate rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: stainless_tube
+          role: "Welded circular AISI304 stainless steel tube"
+          name: "Welded circular AISI304 stainless steel tube"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for site-fabricated tubular stand or frame. Record one diameter, wall thickness, grade and net stock mass; purchased finished stand replaces this route. No catalogue stand mass is assumed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: welding_wire
+          role: "Solid 308L stainless steel welding wire"
+          name: "Solid 308L stainless steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for an actual compatible 308L solid-wire welding procedure. Weigh net issue including rework and record weld settings; other filler alloys or flux-cored wire need separate exchanges."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: argon
+          role: "Pure argon shielding gas"
+          name: "Pure argon shielding gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if the actual weld procedure uses pure argon. Retain cylinder mass difference and specification; an argon mixture is a different exchange. No gas consumption factor is imposed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: electricity_fabrication
+          role: "Low-voltage grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter this actual stage, including attributable rework. The selected identity is grid-average AC supplied to a user below 1 kV; other voltage or electricity sourcing needs a distinct matching flow. Water-driven product design does not eliminate measured factory electricity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: stainless_scrap
+          role: "Untreated AISI304 stainless steel offcuts"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh segregated clean AISI304 offcuts and machining chips exported without processing from actual fabrication. The broader official steel-scrap identity is restricted to this alloy in the exchange. Internal reused stock is not exported scrap; oily chips require another waste."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: grinding_dust
+          role: "Collected dry AISI304 stainless steel grinding dust"
+          name: "Collected dry AISI304 stainless steel grinding dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for measured collected dust sent to an external receiver; retain alloy and abrasive contamination. Collected solids are separate from an airborne release."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fabrication_particulate
+          role: "Airborne particulate"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when actual post-control monitoring establishes particulate emitted to air with unspecified particle-size fraction and unspecified air subcompartment. Retain outlet concentration, exhaust volume and sampling conditions; no mandatory welding or grinding release is assumed. A specified size fraction or subcompartment needs its matching identity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_emission."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: finishing
+    label: "Food-contact preparation and external frame finishing"
+    inputs:
+      product:
+        - row_id: electricity_finishing
+          role: "Low-voltage grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter this actual stage, including attributable rework. The selected identity is grid-average AC supplied to a user below 1 kV; other voltage or electricity sourcing needs a distinct matching flow. Water-driven product design does not eliminate measured factory electricity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: abrasive_disc
+          role: "Finished aluminium-oxide abrasive disc"
+          name: "Finished aluminium-oxide abrasive disc"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if mechanical finishing consumes this specified disc. Record design, binder and attributable replaced disc mass; raw aluminium oxide is not a substitute for a finished abrasive."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: tap_water_finishing
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual factory wet cleaning or dilution using supplied drinking-quality tap water. Weigh kg or retain evidenced density for volume conversion; do not double count water already inside purchased acid solution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Industrial solid sodium hydroxide, 95–98% purity"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if the actual factory cleaning recipe purchases this solid industrial reagent at 95–98% purity. Weigh as-delivered net issue, not active NaOH-equivalent mass; recipe water is separate. No mandatory alkaline cleaning or universal bath concentration is prescribed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: nitric_acid
+          role: "Industrial aqueous nitric acid, 40% purity"
+          name: "Nitric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bf883501-c052-414e-8e21-e6f53cc257ba"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if the actual passivation recipe buys this 40% aqueous solution. Weigh as-delivered solution, document purity and dilution, and avoid counting its contained water again. Different acid concentration or citric passivation needs a different explicit row; no category-wide acid treatment is assumed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: powder_paint
+          role: "Dry powder paint"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual coating of a declared non-food-contact frame with one specified dry powder formulation. Weigh issue net of powder returned to stock and meter curing electricity; other heat sources need separate exchanges. It is not a prescribed food-contact coating."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: groundwater_finishing
+          role: "Abstracted freshwater groundwater"
+          name: "ground water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4f462198-40cd-4184-8733-86648a20dc3f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Only if the factory actually abstracts freshwater from its own well for this stage. Meter m3 at the well and retain location/country for scarcity characterization; add actual treatment and pumping separately. Do not also count supplied tap water for the same abstraction or treat wastewater as a resource."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water_resource."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_resource
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_abrasive_disc
+          role: "Spent aluminium-oxide abrasive disc"
+          name: "Waste polishing media"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "cdb1838e-d3ec-41e1-87ee-627b9ce95e88"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for the actual spent disc exported after metal finishing. Weigh separately from metal dust and retain binder, abrasive and adherent metal composition; the broader public polishing-media identity is narrowed to this disc."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: powder_waste
+          role: "Unrecovered solid powder-paint overspray"
+          name: "Unrecovered solid powder-paint overspray"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh actual exported unrecovered solid overspray after internal recovery and record resin formulation and receiver route. Do not invent a universal loss rate."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: alkaline_wastewater
+          role: "Untreated aqueous sodium-hydroxide metal-cleaning wastewater"
+          name: "Untreated aqueous sodium-hydroxide metal-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual alkaline cleaning bath exported to external treatment; retain mass, pH, NaOH and measured contamination. Keep it separate from acid bath. If treated on-site, expand treatment chemicals, sludge and separately monitored environmental releases."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: acid_wastewater
+          role: "Untreated aqueous nitric-acid stainless-passivation wastewater"
+          name: "Untreated aqueous nitric-acid stainless-passivation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual acid bath exported to external treatment. Record solution mass, pH, nitric acid and dissolved-metal analysis, bath change and receiver boundary; no automatic nitrate emission to water follows from acid use."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly
+    label: "Configured press or mill assembly"
+    inputs:
+      product:
+        - row_id: electricity_assembly
+          role: "Low-voltage grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter this actual stage, including attributable rework. The selected identity is grid-average AC supplied to a user below 1 kV; other voltage or electricity sourcing needs a distinct matching flow. Water-driven product design does not eliminate measured factory electricity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: press_basket
+          role: "Finished stainless steel fruit-press basket"
+          name: "Finished stainless steel fruit-press basket"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for a separately purchased basket installed in the declared press. Record alloy, perforation, surface finish and measured mass; purchased basket replaces its site sheet fabrication. Speidel supports stainless construction, not a universal alloy grade."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids:
+                - speidel-hydropress-2025
+            ranges: []
+        - row_id: natural_rubber_membrane
+          role: "Finished natural-rubber hydropress diaphragm"
+          name: "Finished natural-rubber hydropress diaphragm"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for the natural-rubber water-pressure configuration illustrated by Speidel. Weigh the finished diaphragm and record compound, dimensions and included fittings; raw natural rubber cannot represent the moulded finished membrane. Oil-driven presses need their own actuator route."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids:
+                - speidel-hydropress-2025
+            ranges: []
+        - row_id: relief_valve
+          role: "Finished water-pressure relief valve with manometer"
+          name: "Finished water-pressure relief valve with manometer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if purchased as one specified complete relief-valve assembly for the water-pressure press. Record pressure setting, medium compatibility, gauge completeness and mass. Speidel maximum pressure is model-specific, not a universal PCR limit."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids:
+                - speidel-hydropress-2025
+            ranges: []
+        - row_id: press_filter_bag
+          role: "Finished polyester fruit-press filter bag"
+          name: "Finished polyester fruit-press filter bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if the actual delivered press includes a supplier-declared polyester bag, separately supplied and weighed. Speidel establishes a supplied press bag but not polyester chemistry; verify fibre, seams and mass from the actual supplier. Another fabric needs its own row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids:
+                - speidel-hydropress-2025
+            ranges: []
+        - row_id: mill_screen
+          role: "Finished AISI304 perforated fruit-mill screen"
+          name: "Finished AISI304 perforated fruit-mill screen"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for one specified separately supplied installed mill screen. Record hole geometry, alloy, finish and mass; Voran is a historical example of exchangeable stainless screens. Loose alternative spare screens are outside net installed machine M and require declared separate delivery exchanges."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids:
+                - voran-fruit-mills-2018
+            ranges: []
+        - row_id: mill_rotor
+          role: "Finished stainless steel fruit-mill cutting rotor"
+          name: "Finished stainless steel fruit-mill cutting rotor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for the specified separately purchased rotor in the actual mill design. Record alloy, cutter inclusion, balance record, installed mass and interfaces; bought rotor replaces on-site blank and machining for that part."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+        - row_id: electric_motor
+          role: "Finished three-phase AC fruit-mill motor"
+          name: "Finished three-phase AC fruit-mill motor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for an actual electric configuration with separately purchased motor. Weigh one specified complete motor and record rated output, supply, enclosure, mounts and included control; water-driven press excludes it. No catalogue power-to-mass conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+        - row_id: start_stop_switch
+          role: "Finished electric-motor start-stop switch assembly"
+          name: "Finished electric-motor start-stop switch assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for one separately purchased complete start-stop switch fitted to the electric machine. Record enclosure, electrical rating and measured mass; interlock or overload module separately purchased needs another row. No pooled controls mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+        - row_id: ball_bearing
+          role: "Finished ball bearing"
+          name: "Ball or roller bearings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh one specified ball-bearing design separately supplied for the configured machine. Narrow the broader official category to that design; bearings already inside bought motor/rotor assemblies are excluded from this separate exchange."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+        - row_id: stainless_bolt
+          role: "Finished stainless steel hexagonal-head bolt"
+          name: "Finished stainless steel hexagonal-head bolt"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh installed bolts of one declared alloy, dimension and strength class. Separately supplied nuts and washers each need an individual row; exclude fasteners already included in purchased assemblies."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+        - row_id: epdm_gasket
+          role: "Finished food-contact EPDM gasket"
+          name: "Finished food-contact EPDM gasket"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only where the actual supplier identifies EPDM chemistry and the specified food-contact compliance for a separately supplied installed gasket. Retain formulation, interface, declaration and mass; no universal EPDM or regulatory approval inferred."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_parts."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: factory_test
+    label: "Configuration-specific inspection and acceptance"
+    inputs:
+      product:
+        - row_id: electricity_factory_test
+          role: "Low-voltage grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter this actual stage, including attributable rework. The selected identity is grid-average AC supplied to a user below 1 kV; other voltage or electricity sourcing needs a distinct matching flow. Water-driven product design does not eliminate measured factory electricity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_energy."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: tap_water_factory_test
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual water-pressure acceptance testing using supplied drinking-quality tap water. Record make-up and discharge/reuse; later cider-making water is outside this manufacturing inventory."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Accepted complete fruit pressing or crushing machine"
+          name: "Presses, crushers and similar machinery used in the manufacture of wine, cider, fruit juices or similar beverages"
+          flow_type: "product"
+          flow_ref:
+            uuid: "783c1d97-c517-42eb-bfde-b8ec8a7f3cda"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Reference output of one explicitly configured press or crusher, not a mixed category or production line. Record installed stand, basket/membrane or rotor/screen, supplied controls, guards, specified bag, actual fluid state and accepted net M; loose spares and packaging are excluded. Count only the single declared machine configuration in this dataset."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: factory_test_water_waste
+          role: "Collected spent hydropress water-test liquid"
+          name: "Collected spent hydropress water-test liquid"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if the actual factory water test produces collected liquid exported for external treatment. Weigh and record contamination and receiver gate. Reused water is internal; direct environmental discharge requires its actual individual measured substances and medium, not this waste identity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packout
+    label: "Dispatch protection"
+    inputs:
+      product:
+        - row_id: cardboard
+          role: "C-flute corrugated cardboard"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for C-flute corrugated dispatch protection containing recycled fibre and at least 80% fibre. Weigh net issue, document specification and exclude packaging from M. Other flute/composition needs a distinct declared row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene protective foil"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only for actual non-cellular, non-adhesive, unreinforced LDPE foil. Weigh net issue and retain grade/source; no fossil origin or recycled fraction inferred from the identity. Exclude from M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "shared_operations"
+    rule: "Subdivide by actual work order, stage and single configuration before allocation. Assign material/component issues, rework and acceptance measurements directly where traceable; water-pressure presses and electric mills do not share an assumed per-unit factor."
+    source_ids: []
+  - rule_id: allocation_physical
+    applies_to: "shared_energy_water_support"
+    rule: "Collect physical drivers with an evidenced causal relation: measured machine-power profiles times machining/welding hours, cure-batch loads, test rig meter/time or actual cleaning-bath use. Reconcile assigned quantities to metered totals and accepted configuration counts. If no relationship is established, retain unresolved allocation and sensitivity; no generic equal-count or mass split or economic percentage."
+    source_ids: []
+  - rule_id: allocation_waste_rejects
+    applies_to: "exports_and_rework"
+    rule: "Include attributable rejects, failed tests and repeated finishing in quantities per accepted output for the same configuration and period. Identify exported scrap/waste and receiver route; internal returns/recovery are netted in records. No automatic avoided virgin-metal or waste-treatment credit. Any genuine co-product designation needs a documented market and boundary decision, not the presence of scrap alone."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "factory_test"
+      flow_role: "finished_machine"
+      record_type: "calibrated weighing and acceptance"
+      raw_fields: "model; configuration; serial number; accepted net mass M; installed accessories; fluid/drain state; excluded spares/packaging"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each unit or justified configuration-specific sample"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration; installed BOM; drain/fill; acceptance; sampling"
+    - protocol_id: cp_configuration
+      process_id: "all_processes"
+      flow_role: "actual route"
+      record_type: "BOM and routing review"
+      raw_fields: "single design; BOM revision; supplier completeness; alloy/compound; food-contact declaration; work orders; rework; accepted count; outsourced gates"
+      collection_method: "Crosswalk each actual item and operation to a row or justified exclusion. Separate water-pressure and electric-mill designs, installed accessories and loose spares, and purchased finished assemblies from site-made parts."
+      unit: "record"
+      frequency: "each configuration change and batch"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "one coherent configured route record"
+      quality_evidence: "BOM; purchase specification; supplier declarations; gate and work records"
+    - protocol_id: cp_material
+      process_id: "fabrication_finishing_factory_test_packout"
+      flow_role: "individual stock/reagent/liquid/packaging"
+      record_type: "stock issue and weighing"
+      raw_fields: "individual substance/product; grade/formulation; purity; issue/return; stock/WIP change; volume/density/temperature; accepted count"
+      collection_method: "Weigh net attributable issues and reconcile stocks, returns and internal recovery. Retain density/temperature for liquid volume conversion; weigh 40% nitric solution as solution and solid NaOH as delivered, with dilution water separate. Keep test water inside manufacturing and operating water outside."
+      unit: "kg"
+      frequency: "each issue and batch reconciliation"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "attributable net material mass / accepted machines of the same configuration"
+      quality_evidence: "scale; stock ledger; supplier specification; SDS; recipe; density"
+    - protocol_id: cp_parts
+      process_id: "assembly"
+      flow_role: "single finished component"
+      record_type: "receipt, weighing and build list"
+      raw_fields: "part number; one design; supplier; count; measured mass; included fittings/subparts; installed status; accepted count"
+      collection_method: "Use actual delivered mass or lot-specific verified count-to-mass data for each single component. Document supplied basket, bag, screens, membrane or rotor completeness and prevent duplicate stock/subpart accounting. No catalogue power/volume-to-mass factor."
+      unit: "kg"
+      frequency: "each supply lot and assembly batch"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "attributable installed component mass / accepted machines of the same configuration"
+      quality_evidence: "scale; supplier inclusion; lot mass; installed BOM"
+    - protocol_id: cp_energy
+      process_id: "fabrication_finishing_assembly_factory_test"
+      flow_role: "electricity"
+      record_type: "meter and causal driver ledger"
+      raw_fields: "stage; voltage/source; meter kWh; interval; shared total; driver; idle/rework; accepted count"
+      collection_method: "Meter each actual stage; convert kWh to MJ using 1 kWh = 3.6 MJ. Retain measured allocation-driver totals and reconcile shared meters, idle and rework. Water-driven product does not imply zero factory energy."
+      unit: "MJ"
+      frequency: "each meter interval and batch"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "attributable electrical energy / accepted machines of the same configuration"
+      quality_evidence: "meter calibration; electricity bills; stage/driver records"
+    - protocol_id: cp_waste
+      process_id: "fabrication_finishing_factory_test"
+      flow_role: "single exported waste"
+      record_type: "container or weighbridge balance"
+      raw_fields: "individual waste; composition; contamination; mass; recovery; receiver gate; accepted count"
+      collection_method: "Weigh segregated actual exports and reconcile stocks/recovery. Distinguish acid and alkaline baths, dry collected dust, spent abrasive discs and airborne releases; retain receiver and treatment records. Volume-only records require evidenced mass conversion."
+      unit: "kg"
+      frequency: "each export and batch balance"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "attributable exported waste mass / accepted machines of the same configuration"
+      quality_evidence: "scale; receiver receipts; composition; treatment boundary"
+    - protocol_id: cp_emission
+      process_id: "fabrication"
+      flow_role: "single air substance"
+      record_type: "post-control outlet monitoring"
+      raw_fields: "species; concentration/unit; gas flow/volume; interval; moisture/temperature/pressure; control; particle-size fraction; medium/submedium; accepted count"
+      collection_method: "Calculate one substance mass from post-control concentration and exhaust volume measured on the same interval, retaining unit conversion, moisture/temperature basis and sampling coverage. Specify actual particle fraction and medium; do not infer gaseous metal emissions, mandatory release or zero from missing data."
+      unit: "kg"
+      frequency: "representative actual emitting intervals"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "attributable measured substance mass / accepted machines of the same configuration"
+      quality_evidence: "monitoring report; calibration; sample coverage; conversion"
+    - protocol_id: cp_water_resource
+      process_id: "finishing"
+      flow_role: "groundwater abstraction"
+      record_type: "well meter and site record"
+      raw_fields: "well; freshwater origin; country/location; m3; interval; stage use; internal reuse; accepted count"
+      collection_method: "Read calibrated well volume meter for actual factory freshwater groundwater abstraction; subdivide stage use and reconcile withdrawals without counting recirculation as new abstraction. Retain country/location and separately inventory pumping/treatment."
+      unit: "m3"
+      frequency: "each meter interval and batch"
+      temporal_coverage: "same declared production period; gaps disclosed"
+      site_scope: "declared manufacturing site"
+      aggregation_rule: "attributable abstracted water volume / accepted machines of the same configuration"
+      quality_evidence: "meter; well/source evidence; country; stage water balance"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_configuration
+      applies_to: "all inventory rows"
+      requirement: "Use one design/configuration and period for M, quantities and accepted count; reconcile installed BOM, factory fill/drain, stock/WIP changes, waste and returns. Do not mix membrane press and motorised mill by equal mass."
+      evidence: "cp_mass; cp_configuration; cp_material; cp_parts; cp_waste"
+    - id: quality_coverage
+      applies_to: "inventory_and_links"
+      requirement: "Disclose missing identity, component, upstream/transport/treatment links, causal allocation, weighing and monitoring coverage. Quantities require actual primary records, not manufacturer brochure factors. No universal cutoff, machine mass, lifetime, purity conversion or emission factor."
+      evidence: "cp_configuration; cp_energy; cp_emission; cp_water_resource"
+    - id: quality_sources
+      applies_to: "design_examples"
+      requirement: "Two manufacturers provide independent design documentation but not quantitative factory measurements. Speidel supports a model-specific natural-rubber water-pressure press; Voran 3/18 supports only historical mill configuration and AISI304 example. Do not use apparent mislabelled technical rows for power or assume current availability, generic alloy, operating demand or regulatory compliance."
+      evidence: "speidel-hydropress-2025; voran-fruit-mills-2018"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "reference_flow"
+    rule: "Require positive measured M, declared single configuration, installed accessory/loose-spare and drain/fill boundary, acceptance and 1kg finished_machine. All other quantities use normalize_mass with their own Mass/Energy/Volume numerator units."
+    source_ids: []
+  - rule_id: validation_completeness
+    applies_to: "inventory"
+    rule: "Reconcile actual pressing or crushing mechanism, chamber, food-contact materials, support, drive/control/guards and fitted accessories. Verify make-or-buy alternatives, test scope, returns, rejects, rework and receiver gates. Missing measurements/links are incomplete coverage, not verified zero."
+    source_ids: []
+  - rule_id: validation_identity
+    applies_to: "all inventory rows"
+    rule: "Check public UUID substance, state/concentration, grade/route, product/waste/elementary type, actual reference property/unit group and localization. Keep water resources, tap water and waste baths distinct; verify environmental medium and particle fraction. Broader public categories are restricted to the concrete exchange, not pooled selections."
+    source_ids: []
+  - rule_id: validation_claims
+    applies_to: "dataset_claims"
+    rule: "No complete cradle-to-gate, identity resolution or scientific approval claim until the corresponding coverage and review are established. Manufacturing mass reference cannot establish juice yield, processing service equivalence, lifetime or food-contact legal compliance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured foreground fruit-press or fruit-mill manufacturing module; profile heading does not assert PCR publication"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Same configured complete-machine manufacturing inventory, scaled by measured M with declared upstream and treatment links"
+  excluded_use: "Beverage yield/service, cultivation, lifetime, later use/cleaning, packaged spare bundle normalised by net machine mass, or methodology approval"
+  required_metadata: "All required qualifiers; single model/design/BOM; actual food-contact declarations; drive/working mechanism; assembly inclusion; accessory/spare/fluid boundary; site/period/gates; measurement/allocation; supplier/receiver links"
+  required_quality_disclosure: "Measurement/sample uncertainty; actual route coverage; unresolved UUIDs/allocation/upstream; missing monitoring; historical design-source limits; rework/reject inclusion"
+  update_trigger: "Press/mill, membrane/rotor/screen, alloy, drive, motor, control, accessory, factory drain/fill or food-contact change; supplier, site, route, energy or allocation change"
+data_sources:
+  - id: "speidel-hydropress-2025"
+    type: "handbook"
+    reference: "Speidel, Home Cider Making, brochure filename2025EN, Hydropress technical details, PDF physical p.13, printed p.13. https://www.speidels-hausmosterei.de/files/hausmosterei/downloads/service/broschueren/Speidel_Broschuere_Hausmosterei2025EN.pdf"
+    used_for: "Model-specific natural-rubber diaphragm, stainless basket, water feed/drain and pressure hardware, included press bag and support configuration. No generic pressure, throughput, mass, service demand or factory quantities adopted."
+  - id: "voran-fruit-mills-2018"
+    type: "handbook"
+    reference: "Voran, Fruit mills RM1,5/RM2,2/RM5,5, edition3/18 (historical), Technical data and drawings, PDF physical p.5; cover p.1. https://www.voran.at/fileadmin/user_upload/voran/Maschinen/Prospekte/Prospekte_englisch/Fruit_mills_RM.pdf"
+    used_for: "Historical electric fruit-mill construction, 1.4301/AISI304 example, screens and stand/supply distinctions. No current availability, generic alloy, catalogue mass or quantitative manufacturing factor; apparent mislabelled row not used as power evidence."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1e1780ac6adeb0ee3f8b96dadbaed5926209b192210cc6d253dfaaf86bab79e7"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5960"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5960
+          line: 56
+          column: 1
+        end:
+          offset: 8978
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Declared stock and separately specified finished components received at machine factory |\n| starting_condition_role | Inputs to a foreground manufacturing module; supplier production and incoming transport separately linked |\n| product_classification_scope | Configured complete fruit pressing/crushing machine within CPC44191; not a beverage production system |\n| recursive_input_rule | A bought complete machine is a supplier-gated input; do not duplicate this factory module recursively. Purchased baskets and rotors replace their site fabrication route. |\n| upstream_dataset_requirement | Match alloy, finished component completeness, chemistry, concentration, electricity source/voltage, transport, geography and waste treatment; disclose missing links |\n| disclosure | Declare actual operations, outsourced gates, overhead allocation, packaging and supplier links. This foreground-only module does not establish complete cradle-to-gate coverage without compatible upstream, transport and treatment activities. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_operations` | manufacturing | Include receipt checks, actually performed cutting/forming/drilling/machining/welding/grinding, route-specific surface treatment, configured assembly, inspection/acceptance, attributable rework/rejects and packout. Buying a motor, moulded membrane or cast cover does not establish site motor manufacture, rubber moulding or casting. Outsourced fabrication requires explicit supplier gates. |  |\n| `boundary_actual_bom` | inventory | Reconcile every actual BOM item and operation to an atomic exchange or documented exclusion. Add separate actual covers, juice channels, stand, wheels, hoses, connectors, bolts/nuts/washers, drive couplings, guards, interlocks, actuator, hydraulic pump/oil, cutting-fluid recipe, treatment reagents/residues and measured releases where present. A water-pressure diaphragm does not require an oil-hydraulic cylinder or electric drive. Initial cards are not a universal complete BOM. |  |\n| `boundary_factory_test` | factory_test | Include actual factory pressure test or powered acceptance energy, water and recorded wastes. Water-pressure design establishes operating principle, not continuous factory water demand. Later fruit processing, yields and cleaning belong to use. A fruit-loaded acceptance test, if actually performed, expands fruit input and each specific output/waste at this gate with test records; it is not presumed for every machine. |  |\n| `boundary_product_split` | reference_product | Keep standalone fruit presses and mills separate from beverage products and container filling/packaging equipment. Declare included installed accessories; model a separately delivered spare screen or upstream washer separately and never divide a combined line by one machine M. | `speidel-hydropress-2025`; `voran-fruit-mills-2018` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 182
+              line: 8
+              column: 1
+            end:
+              offset: 221
+              line: 8
+              column: 40
+          text: "# Fruit pressing and crushing machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5960
+              line: 56
+              column: 1
+            end:
+              offset: 5981
+              line: 56
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42998"
+      family: "allocation"
+      span:
+        start:
+          offset: 42998
+          line: 702
+          column: 1
+        end:
+          offset: 44370
+          line: 710
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct` | shared_operations | Subdivide by actual work order, stage and single configuration before allocation. Assign material/component issues, rework and acceptance measurements directly where traceable; water-pressure presses and electric mills do not share an assumed per-unit factor. |  |\n| `allocation_physical` | shared_energy_water_support | Collect physical drivers with an evidenced causal relation: measured machine-power profiles times machining/welding hours, cure-batch loads, test rig meter/time or actual cleaning-bath use. Reconcile assigned quantities to metered totals and accepted configuration counts. If no relationship is established, retain unresolved allocation and sensitivity; no generic equal-count or mass split or economic percentage. |  |\n| `allocation_waste_rejects` | exports_and_rework | Include attributable rejects, failed tests and repeated finishing in quantities per accepted output for the same configuration and period. Identify exported scrap/waste and receiver route; internal returns/recovery are netted in records. No automatic avoided virgin-metal or waste-treatment credit. Any genuine co-product designation needs a documented market and boundary decision, not the presence of scrap alone. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 182
+              line: 8
+              column: 1
+            end:
+              offset: 221
+              line: 8
+              column: 40
+          text: "# Fruit pressing and crushing machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42998
+              line: 702
+              column: 1
+            end:
+              offset: 43038
+              line: 702
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_52191"
+      family: "validation"
+      span:
+        start:
+          offset: 52191
+          line: 739
+          column: 1
+        end:
+          offset: 53643
+          line: 748
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference` | reference_flow | Require positive measured M, declared single configuration, installed accessory/loose-spare and drain/fill boundary, acceptance and 1kg finished_machine. All other quantities use normalize_mass with their own Mass/Energy/Volume numerator units. |  |\n| `validation_completeness` | inventory | Reconcile actual pressing or crushing mechanism, chamber, food-contact materials, support, drive/control/guards and fitted accessories. Verify make-or-buy alternatives, test scope, returns, rejects, rework and receiver gates. Missing measurements/links are incomplete coverage, not verified zero. |  |\n| `validation_identity` | all inventory rows | Check public UUID substance, state/concentration, grade/route, product/waste/elementary type, actual reference property/unit group and localization. Keep water resources, tap water and waste baths distinct; verify environmental medium and particle fraction. Broader public categories are restricted to the concrete exchange, not pooled selections. |  |\n| `validation_claims` | dataset_claims | No complete cradle-to-gate, identity resolution or scientific approval claim until the corresponding coverage and review are established. Manufacturing mass reference cannot establish juice yield, processing service equivalence, lifetime or food-contact legal compliance. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 182
+              line: 8
+              column: 1
+            end:
+              offset: 221
+              line: 8
+              column: 40
+          text: "# Fruit pressing and crushing machinery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 52191
+              line: 739
+              column: 1
+            end:
+              offset: 52213
+              line: 739
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_5960"
+      source_span:
+        start:
+          offset: 7163
+          line: 71
+          column: 1
+        end:
+          offset: 7599
+          line: 71
+          column: 437
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_actual_bom"
+      identity_kind: "explicit"
+      unit_id: "normative_5960"
+      source_span:
+        start:
+          offset: 7600
+          line: 72
+          column: 1
+        end:
+          offset: 8124
+          line: 72
+          column: 525
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_factory_test"
+      identity_kind: "explicit"
+      unit_id: "normative_5960"
+      source_span:
+        start:
+          offset: 8125
+          line: 73
+          column: 1
+        end:
+          offset: 8593
+          line: 73
+          column: 469
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_product_split"
+      identity_kind: "explicit"
+      unit_id: "normative_5960"
+      source_span:
+        start:
+          offset: 8594
+          line: 74
+          column: 1
+        end:
+          offset: 8976
+          line: 74
+          column: 383
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_42998"
+      source_span:
+        start:
+          offset: 43111
+          line: 706
+          column: 1
+        end:
+          offset: 43419
+          line: 706
+          column: 309
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_42998"
+      source_span:
+        start:
+          offset: 43420
+          line: 707
+          column: 1
+        end:
+          offset: 43895
+          line: 707
+          column: 476
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_waste_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_42998"
+      source_span:
+        start:
+          offset: 43896
+          line: 708
+          column: 1
+        end:
+          offset: 44368
+          line: 708
+          column: 473
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_52191"
+      source_span:
+        start:
+          offset: 52286
+          line: 743
+          column: 1
+        end:
+          offset: 52579
+          line: 743
+          column: 294
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_52191"
+      source_span:
+        start:
+          offset: 52580
+          line: 744
+          column: 1
+        end:
+          offset: 52923
+          line: 744
+          column: 344
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_52191"
+      source_span:
+        start:
+          offset: 52924
+          line: 745
+          column: 1
+        end:
+          offset: 53323
+          line: 745
+          column: 400
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_claims"
+      identity_kind: "explicit"
+      unit_id: "normative_52191"
+      source_span:
+        start:
+          offset: 53324
+          line: 746
+          column: 1
+        end:
+          offset: 53641
+          line: 746
+          column: 318
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5960"
+      source_span:
+        start:
+          offset: 5960
+          line: 56
+          column: 1
+        end:
+          offset: 5981
+          line: 56
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5960"
+      source_span:
+        start:
+          offset: 6009
+          line: 60
+          column: 1
+        end:
+          offset: 7090
+          line: 67
+          column: 258
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42998"
+      source_span:
+        start:
+          offset: 42998
+          line: 702
+          column: 1
+        end:
+          offset: 43038
+          line: 702
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_52191"
+      source_span:
+        start:
+          offset: 52191
+          line: 739
+          column: 1
+        end:
+          offset: 52213
+          line: 739
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1e1780ac6adeb0ee3f8b96dadbaed5926209b192210cc6d253dfaaf86bab79e7"
+  generated_content_sha256: "sha256:985214ae1214e6b65b072e1417fe93aa328e372bf8a96211c96b91067d61d099"
