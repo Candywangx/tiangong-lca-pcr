@@ -11,6 +11,7 @@ import { assertIdentity, buildPackageArtifact, githubRequest, packages } from ".
 import { PRODUCT_VERSION_FILE, assertProductIdentity, productReleaseSpec, type ProductIdentity, type ProductReleaseSpec, productGit, productSha256, readProductIdentity, readProductVersion } from "./product-identity.ts";
 import { createWebProbes, writePrebuiltConfig, type WebProbes } from "./product-web.ts";
 
+import { PRODUCT_COMPATIBILITY, READER_CAPABILITIES_FILENAME, assertImplementedReaderCapabilities, assertReaderCompatibility, validateProductCompatibility } from "./reader-compatibility.ts";
 import { isRecord, record, field, text, type JsonObject, type GitHubRequest, type ArtifactProof, type ProductManifest, type ProductPackageReceipt, type ArchiveEntry, type ArchiveFile } from "./release-types.ts";
 export { productReleaseSpec } from "./product-identity.ts";
 export type { ProductManifest } from "./release-types.ts";
@@ -327,7 +328,7 @@ export async function buildProductRelease(root: string, tag: string, output: str
     if (!receipts.tool || !receipts.library) throw new Error("Both product packages must be built.");
     const names = [receipts.tool.filename, receipts.library.filename, "library.sqlite", "library.sqlite.json", webFilename].sort();
     const artifacts = await Promise.all(names.map(name => fileProof(path.join(stage, name))));
-    const manifest: ProductManifest = { schema: 1, kind: "pcr-product-release", identity, toolchain, packages: { tool: receipts.tool, library: receipts.library }, web, artifacts };
+    const manifest: ProductManifest = { schema: 1, kind: "pcr-product-release", identity, toolchain, compatibility: validateProductCompatibility(PRODUCT_COMPATIBILITY), packages: { tool: receipts.tool, library: receipts.library }, web, artifacts };
     writeJson(path.join(stage, "release.json"), manifest);
     const proofs = [...artifacts, await fileProof(path.join(stage, "release.json"))].sort((a, b) => a.filename < b.filename ? -1 : 1);
     writeFileSync(path.join(stage, "SHA256SUMS"), proofs.map(proof => `${proof.sha256}  ${proof.filename}\n`).join(""));
@@ -343,6 +344,7 @@ export function validateProductManifest(value: unknown, { identity = null, toolc
   if (!isRecord(value) || value.schema !== 1 || value.kind !== "pcr-product-release") throw new Error("Unknown product manifest.");
   const manifest = value, boundIdentity = assertProductIdentity(manifest.identity);
   productReleaseSpec(boundIdentity.tag);
+  if (Object.hasOwn(manifest, "compatibility")) validateProductCompatibility(manifest.compatibility);
   if (identity) identicalIdentity(boundIdentity, identity);
   const pins = manifest.toolchain;
   if (!isRecord(pins) || !["node", "npm"].every(key => typeof pins[key] === "string" && /^[0-9]+\.[0-9]+\.[0-9]+$/u.test(pins[key]))) throw new Error("Invalid product toolchain pins.");
@@ -430,11 +432,15 @@ export async function verifyProductArtifacts(directory: string, { expectedIdenti
     if (!proof || proof.bytes !== receipt.bytes || proof.sha256 !== receipt.sha256) throw new Error("Package proof differs from artifact manifest.");
     const digest = createHash("sha512"); for await (const chunk of createReadStream(path.join(directory, receipt.filename))) digest.update(chunk);
     if (`sha512-${digest.digest("base64")}` !== receipt.integrity) throw new Error("Package npm integrity differs.");
-    const archive = await readProductArchive(path.join(directory, receipt.filename), { allowDirectories: true, collect: ["package/product-release.json", "package/package.json", "package/library.sqlite.json"] });
+    const archive = await readProductArchive(path.join(directory, receipt.filename), { allowDirectories: true, collect: ["package/product-release.json", "package/package.json", "package/library.sqlite.json", `package/${READER_CAPABILITIES_FILENAME}`] });
     for (const entry of archive.files) if (!entry.path.startsWith("package/")) throw new Error("Npm archive contains a non-package file.");
     identicalIdentity(JSON.parse(archive.contents.get("package/product-release.json")?.toString("utf8") ?? "null"), manifest.identity);
     const packaged = record(JSON.parse(archive.contents.get("package/package.json")?.toString("utf8") ?? "null") as unknown, "packed npm metadata");
     if (packaged?.name !== source.name || packaged.version !== manifest.identity.version || packaged.gitHead !== manifest.identity.sourceCommit) throw new Error("Packed npm metadata differs from product identity.");
+    if (kind === "tool" && (Object.hasOwn(manifest, "compatibility") || archive.contents.has(`package/${READER_CAPABILITIES_FILENAME}`))) {
+      const capabilities = assertImplementedReaderCapabilities(JSON.parse(archive.contents.get(`package/${READER_CAPABILITIES_FILENAME}`)?.toString("utf8") ?? "null") as unknown);
+      if (Object.hasOwn(manifest, "compatibility")) assertReaderCompatibility(validateProductCompatibility(manifest.compatibility), capabilities, text(packaged.version, "packed reader version"));
+    }
     if (kind === "library") for (const name of ["library.sqlite", "library.sqlite.json"]) {
       const archived = archive.files.find(file => file.path === `package/${name}`), separate = proofs.find(proof => proof.filename === name);
       if (!archived || !separate || archived.bytes !== separate.bytes || archived.sha256 !== separate.sha256) throw new Error("Portable SQLite assets differ from the npm archive.");
@@ -451,6 +457,10 @@ export async function verifyProductArtifacts(directory: string, { expectedIdenti
     if (!file || file.bytes !== probe.bytes || `sha256:${file.sha256}` !== probe.sha256) throw new Error("Archived web probe differs from the release manifest.");
   }
   const library = json(path.join(directory, "library.sqlite.json"));
+  if (Object.hasOwn(manifest, "compatibility")) {
+    const compatibility = validateProductCompatibility(manifest.compatibility);
+    if (library.kind !== "tiangong-pcr-library" || library.format_version !== compatibility.libraryFormat) throw new Error("SQLite sidecar format differs from product compatibility.");
+  }
   if (field(library, "snapshot", "source_commit") !== manifest.identity.sourceCommit || field(library, "snapshot", "content_version") !== manifest.identity.version) throw new Error("SQLite snapshot source/version differs.");
   if ((await fileProof(path.join(directory, "library.sqlite"))).sha256 !== text(library.sha256, "SQLite hash").replace(/^sha256:/u, "")) throw new Error("SQLite file differs from its sidecar.");
   return manifest;

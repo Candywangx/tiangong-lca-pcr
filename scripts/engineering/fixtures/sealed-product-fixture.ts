@@ -1,3 +1,4 @@
+import { READER_CAPABILITIES } from "../../../builder/scripts/reader-compatibility.ts";
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -60,7 +61,7 @@ export async function sealedProductFixture(t: TestContext, usableTool: boolean, 
   const base = mkdtempSync(path.join(realpathSync(tmpdir()), 'sealed-consumer-contract-')); t.after(() => rmSync(base, { recursive: true, force: true }));
   const source = path.join(base, 'source'); mkdirSync(source);
   const npmCli = resolveNpmCli(); const npm = execFileSync(process.execPath, [npmCli, '--version'], { encoding: 'utf8' }).trim();
-  const version = '0.3.0';
+  const version = '0.4.1';
   put(source, 'product-release.json', JSON.stringify({ schema: 1, version, node: process.versions.node, npm, web: { origin: 'https://pcr.tiangong.earth', site: 'global' } }));
   for (const [file, name] of PRODUCT_MIRRORS) put(source, file, JSON.stringify({ name, version, private: true }));
   put(source, 'library/pcrs/fixture/pcr.en-US.md', 'Controlled transport identity fixture.\n');
@@ -86,8 +87,9 @@ export async function sealedProductFixture(t: TestContext, usableTool: boolean, 
     tool({ output, version }) {
       if (usableTool) { const built = buildOfflineTool({ root: process.cwd(), output, version }); if (guidanceMutation) mutateInstalledGuidance(output, guidanceMutation); return built; }
       // Deliberately installable but not a usable consumer; it cannot pass the qualifier.
-      mkdirSync(output, { recursive: true }); put(output, 'package.json', JSON.stringify({ name: '@tiangong-lca/pcr', version, files: ['README.md'], dependencies: { ajv: '8.0.0' }, bundleDependencies: ['ajv'] }));
+      mkdirSync(output, { recursive: true }); put(output, 'package.json', JSON.stringify({ name: '@tiangong-lca/pcr', version, files: ['README.md', 'reader-capabilities.json'], dependencies: { ajv: '8.0.0' }, bundleDependencies: ['ajv'] }));
       put(output, 'README.md', 'Controlled malformed-consumer fixture.\n');
+      put(output, 'reader-capabilities.json', JSON.stringify(READER_CAPABILITIES));
       put(output, 'node_modules/ajv/package.json', '{"name":"ajv","version":"8.0.0","main":"index.js"}');
       put(output, 'node_modules/ajv/index.js', 'module.exports = {};\n');
     },

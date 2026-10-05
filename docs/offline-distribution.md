@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-04
+lastReviewedAt: 2026-10-05
 lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
-lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
+lastReviewedNote: "Reviewed PCR #87 reader capability and product compatibility transport bindings; retained historical immutable assets. PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -18,6 +18,7 @@ checkPaths:
   - .github/workflows/tag-release-from-merge.yml
   - builder/scripts/npm-release*.ts
   - builder/scripts/product-*.ts
+  - builder/scripts/reader-compatibility.ts
   - product-release.json
   - packages/tiangong-pcr-library/package.json
   - builder/scripts/build-offline-*.ts
@@ -37,7 +38,9 @@ related:
 runtime dependencies and the thin consumer Skill. `@tiangong-lca/pcr-library` contains
 `library.sqlite`, its adjacent `library.sqlite.json` manifest and notices. Each
 package includes its own consumer README and the repository MIT `LICENSE`. The tool
-has no dependency on the data package. Completed unified product releases give
+has no dependency on the data package. Its generated root
+`reader-capabilities.json` declares the reviewed offline reader capabilities.
+Completed unified product releases give
 both packages the same product SemVer as the website. They remain separate
 installation units.
 The source package directories are development inputs; publish only generated packages.
@@ -148,6 +151,59 @@ Open revisions, historical release bodies, raw source
 PDFs, authoring traces and documentation-site outputs are excluded. Content versions
 do not change per-PCR lifecycle: candidates still require review and partial
 validation is still partial. Repository Markdown/YAML is the authoring authority.
+
+## Reader compatibility metadata
+
+New product builds include the following field in the sealed `release.json`:
+
+```json
+{
+  "compatibility": {
+    "schema": 1,
+    "libraryFormat": 1,
+    "projectionContracts": ["1", "2"],
+    "minimumReaderVersion": "0.4.1",
+    "commandProtocol": 1
+  }
+}
+```
+
+New tool packages include `reader-capabilities.json` at the package root:
+
+```json
+{
+  "schema": 1,
+  "kind": "pcr-reader-capabilities",
+  "libraryFormats": [1],
+  "projectionContracts": ["1", "2"],
+  "commandProtocol": 1
+}
+```
+
+The reviewed constants and strict validators live in
+`builder/scripts/reader-compatibility.ts`. Both objects reject missing or unknown
+keys, unsupported schemas, malformed values and duplicate array entries.
+Qualification checks the declarations against the implemented SQLite format and
+both supported projection contracts. Sealing and verification read the actual
+capability file from the hash-bound tool tarball, check the capability declaration
+against the qualified implementation, and bind `libraryFormat` to the sidecar in
+the hash-bound library tarball and matching portable SQLite assets.
+
+A compatible reader has a stable tool version at least `minimumReaderVersion`,
+supports the selected library format and every required projection contract, and
+uses the declared command protocol. Compatibility does not require equal tool
+and content SemVers; a unified product release still gives its own three outputs
+one product version. The common product `sourceFingerprint` and the English-only
+SQLite `snapshot.source_sha256` hash different source domains and must never be
+compared for equality.
+
+Historical product manifests with no `compatibility` field remain verifiable as
+legacy manifests without being rewritten. A present malformed field always
+fails. Previously published 0.4.1 release assets remain immutable; absence is not
+an unrestricted compatibility declaration. A consumer's audited legacy policy
+must separately establish whether it can use an older release. New builders
+always emit both declarations, and changes to the declarations require a new
+reviewed product release rather than modifying an existing release.
 
 ## Skill and publication
 
