@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 reader/content compatibility, sealed capability proof, legacy immutability and CLI-owned task snapshot preparation; publication remains guarded and no methodology approval is implied."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedNote: "Reviewed PCR #90 unified 0.4.2 version mirrors and bound public examples with qualified CLI 0.1.25; minimum reader remains 0.4.1, prior assets immutable and publication pending."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -57,7 +57,7 @@ set up explicitly before normal version-increase automation resumes.
 
 Node 24.19+ is required for offline SQLite reads. The implementation uses the built-in
 SQLite module (release-candidate API in this runtime), without native npm addons.
-Supported targets are macOS ARM64, Linux x64 and Windows x64. A Windows source
+Supported targets are macOS ARM64, Linux x64/ARM64 and Windows x64. A Windows source
 checkout used for building needs `core.longpaths=true` and `core.autocrlf=false`
 before checkout, so long paths and exact-byte source fingerprints are preserved.
 Installed content packages do not require Git. Prepare Node separately
@@ -65,6 +65,11 @@ on a connected machine if the destination has no runtime. No install hooks, runt
 network calls or implicit content downloads are used.
 
 ## Build and transport
+
+The release-preparation examples below target product 0.4.2. At preparation on
+2026-10-05, both public npm `latest` channels remained at 0.4.1. Verify completed
+guarded publication before using 0.4.2 registry instructions; source version
+metadata and a preparing release do not prove public availability.
 
 For production transport, take the two tarballs from one completed product
 GitHub Release and verify its `SHA256SUMS`, or create and verify a complete bundle
@@ -77,8 +82,8 @@ output must not be published as the complete product. Run them from a validated
 source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.1
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.1
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.2
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.2
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -97,7 +102,7 @@ Transfer both verified product tarballs and a suitable Node runtime to the offli
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.1.tgz ./tiangong-lca-pcr-library-0.4.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.2.tgz ./tiangong-lca-pcr-library-0.4.2.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -215,6 +220,11 @@ discovery, downloads, cache and task locks; PCR does not acquire a network runti
 dependency. Existing tasks never refresh implicitly. Explicit standalone/repository
 selection remains available. See `docs/agentic-consumption.md` for the preparation
 boundary and `skills/tiangong-pcr/SKILL.md` for commands.
+The qualified preparation runtime is Node 24.19.0; Tiangong CLI supports
+`>=24.19.0 <25`. Its qualified minimum package is released `@tiangong-lca/cli` 0.1.25.
+Confirm its publication before installation. It selects the installed PCR reader
+independently; the compatibility minimum remains 0.4.1 rather than being raised
+to the new content release's 0.4.2 version.
 The Skill teaches readiness, general LCA authoring, optional TIDAS authoring and Agent-led
 process/model review. The tool bundles inspection, cited guidance, arithmetic and
 review-envelope support; no model runtime or TIDAS schema implementation is embedded.
@@ -378,7 +388,7 @@ The initial `v0.3.0` attempt exposed a missing filesystem constraint on the prov
 memory-backed clone. Its two npm candidate packages and sealed assets remain
 unchanged and the release remains incomplete. The reviewed repair uses product
 `0.3.1`; that recovery remains immutable. The current TypeScript release examples
-below target `0.4.1`. Never repair this by moving the old
+below target `0.4.2`. Never repair this by moving the old
 tag, replacing sealed assets, or overriding source guards in the provider console.
 
 ### Provider runtime selection and v0.4.0 recovery
@@ -408,7 +418,7 @@ checkout, prepare artifacts without any remote publication:
 npm ci --ignore-scripts --no-audit --no-fund
 npm --prefix packages/pcr-docs ci
 npm run docs:build
-npm run product:build -- v0.4.1 dist/product-release packages/pcr-docs/out
+npm run product:build -- v0.4.2 dist/product-release packages/pcr-docs/out
 npm run product:verify -- dist/product-release
 ```
 
@@ -423,13 +433,13 @@ After activation, create/resume the first product tag from the exact current mai
 version through the guarded workflow:
 
 ```sh
-gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.1
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.2
 ```
 
 Retry an existing unified release without moving its tag:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.1 -f tag_name=v0.4.1
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.2 -f tag_name=v0.4.2
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an
