@@ -5,36 +5,37 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-
-# Parts for the goods of subclasses 47221 to 47223
+# Dedicated parts for telephone and wired or wireless network apparatus
 
 ## 1. Scope and Applicability
 
-This PCR describes factory-gate production of a separately supplied, finished part designed for a telephone set or communication apparatus in the CPC 47221–47223 host set. A concrete data package must name the part, compatible host, technology and production route. The category flow is a mass reporting identity, not permission to compare unlike parts by mass alone. Production of a complete telephone, router or base station is outside this part-level reference. [un-cpc-3-2025; itu-l1410-2024]
+This PCR governs production of a separately delivered genuine dedicated part for a line telephone with cordless handset, cellular/other wireless telephone, or other telephone/network communication apparatus. Determine the delivered article from its drawing, fit/interface, BOM, completion state and remaining assembly; marketing as a spare and host dependence do not establish part identity. Functionality alone does not decide the boundary. [cpc3-telecom; apple-enclosure]
+
+Complete telephone sets, completed replacement cordless handsets, routers, modems and completed communication apparatus remain outside, even if they need registration, a cable, power, software or a host chassis to operate. Panasonic optional handset listings are counterevidence against treating compatibility as proof of incomplete parts. ADP network cards are separately classified; generic ICs, bare PCBs, standalone connectors, microphones, batteries, resin and metal stock are upstream inputs, not output parts under this PCR. [cpc3-telecom; panasonic-handset; census-electronics]
+
+Enclosures, handset constituent shells, shields, mounting pieces, dedicated connector flexes and passive antenna assemblies may qualify when the actual host and dedicated delivered state are demonstrated. Electronic/RF/network modules are not excluded because they contain electronics or lack UUIDs: include only a genuine dedicated incomplete constituent, with actual remaining host assembly documented and a classification review ruling out completed apparatus or a separately classified generic component. Cisco active uplink modules support real modular interfaces but do not themselves prove parts classification; its blank module illustrates host-specific mechanical fit and airflow requirements. [apple-enclosure; apple-connector; taoglas-cellular; cisco-network-module]
 
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclasses-47221-to-47223 |
-| classification_refs | CPC 3.0 47401, parts for goods of subclasses 47221 to 47223 |
-| covered_products | Separately supplied dedicated finished parts of the specified host goods, including populated boards and fabricated mechanical parts when sold as those parts |
-| excluded_products | Complete host equipment; raw unpopulated printed circuits, standalone ICs, unshaped sheet and packaging sold as their own products |
-| representative_product | A populated communication-apparatus board module supplied as a replacement part; other dedicated part routes remain eligible when declared |
-| production_route | Declare the actual on-site route; board population and sheet fabrication rows apply only when those operations occur |
-| market_state | Accepted, functional, separately supplied part at the factory gate, before transport use or end of life |
-
+| classification_refs | CPC 3.0 47401 |
+| covered_products | Drawing-defined dedicated incomplete parts for qualifying telephone or network hosts; bounded conditional mechanical, polymer, connector, passive antenna and electronic/RF subassembly routes |
+| excluded_products | Completed telephone/communication apparatus; ADP network cards; generic separately classified electronic components and material stock |
+| representative_product | One drawing/revision-defined telephone enclosure delivered without the host logic board, battery and display; no assumed grade or weight |
+| production_route | Actual make/buy route: purchase completed part inputs or fabricate specified mechanical/polymer/electronic constituents; then actual finish, part assembly and acceptance |
+| market_state | Accepted separately delivered dedicated part at factory gate; host assembly remains outside |
 
 ## 3. Reference Flow
 
 | Field | Value |
 | --- | --- |
-| What | A declared dedicated part that performs a specified function in a compatible telephone or communications apparatus |
-| How much | 1 kg net mass of accepted finished parts of one declared part specification |
-| How well | Pass the declared inspection and compatibility specification; disclose part type, materials and performance criteria |
-| How long or cycle | One completed production lot to the factory gate; service lifetime and use are not modeled |
-| reference_flow_link | finished_part |
-
+| What | Provide the specified constituent fit, containment, mounting or electrical/RF interface in the identified host |
+| How much | 1 kg of accepted net part of one drawing/revision and delivered state |
+| How well | Meet actual drawing tolerances, grade/BOM and specified part acceptance tests; no invented generic RF performance |
+| How long or cycle | One production and factory acceptance cycle; no assumed host operating life |
+| reference_flow_link | `final_part` |
 
 | Field | Value |
 | --- | --- |
@@ -43,298 +44,615 @@ This PCR describes factory-gate production of a separately supplied, finished pa
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | part type and part number; compatible host subclass and model; accepted functional specification; material composition; manufacturing route; production geography and period; packaging exclusion from net mass |
+| Required qualifiers | host model/function; drawing/part number/revision; delivered completion state; remaining host assembly; classification review; grade/formulation/BOM; make/buy and included operations; test specification; accepted net batch mass; calibration/tare; site/period; supplier and utility interface; waste fate |
 
-
-A mass result is comparable only for parts with equivalent function, quality and boundary. The producer measures accepted net output mass for the same lot used by all inventory protocols. [itu-l1410-2024]
+All qualifiers must be declared in foreground package metadata or equivalent product/process notes. A mass unit compares the same part specification and state, not functional equivalence of different telecom components.
 
 ## 4. Measurement and Unit Rules
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
-| reference_mass | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Weigh accepted finished parts on a calibrated scale after inspection and before transport packaging; exclude rejected units and the corrugated box. Collect using cp_finished_mass. |
-| inventory_basis | all inventory rows | Physical flow property of each selected flow | row unit | Record attributable lot quantities per 1 kg reference flow using the same accepted net output mass and production period; preserve board area in m2, material masses in kg and electricity in kWh. |
-
+| reference_mass | reference product | Mass | kg | Collect accepted net part batch mass using cp_mass on calibrated scales, same drawing/revision/BOM/state; exclude transport packaging and non-delivered tooling. Inventory and collection use per 1 kg reference flow. |
+| count_mass | counted physical part and material records | Mass | kg | Count records require calibrated measured accepted batch net mass for the identical counted population; do not infer mass from nominal handset weight, housing percentage or an unrelated revision. Divide batch exchanges by that measured accepted kg; individual weighing/count conversion must reproduce the same net batch basis. |
+| species_basis | material, chemical, residual and emitted-species mass balances | Mass | kg | Keep gross material and contained-element masses separate; assays must match grade, solution concentration, wet/dry state and sampling period. |
+| energy_units | test_power; factory_power; natural_gas | Net calorific value | MJ | Energy stays MJ; calibrated kWh converts by 3.6 MJ/kWh. Gas volume requires supplier calorific value and measured conditions. |
 
 ## 5. System Boundary
-
-Cradle-to-gate accounting includes upstream datasets for purchased boards, ICs, solder paste, aluminium sheet, electricity and packaging, plus the declared on-site fabrication, assembly, testing and packing operations. Exclude host-device assembly after the part leaves the gate, distribution, use and end-of-life from this part dataset. Disclose any externally performed process as an upstream dataset. [itu-l1410-2024]
 
 ### Boundary Abstraction
 
 | Field | Value |
 | --- | --- |
-| declared_starting_condition | Purchased materials and components at the part producer gate, with supplier production represented upstream |
-| starting_condition_role | Explicit foreground inputs with linked upstream datasets |
-| product_classification_scope | Dedicated separately supplied parts for host goods 47221, 47222 and 47223 |
-| recursive_input_rule | Record a purchased same-category part as a distinct input with its own upstream dataset and stop tracing at that declared supplier boundary; do not silently merge it into the reference output |
-| upstream_dataset_requirement | Use composition- and geography-matched supplier datasets where available; disclose missing upstream processes and proxy limits |
-| disclosure | Report part identity, route, supplier boundary, included stages, exclusions and all deviations |
+| declared_starting_condition | Received certified stock or purchased completed constituent at declared supplier gate and delivery state |
+| starting_condition_role | Purchased upstream intermediate/component interface |
+| product_classification_scope | Dedicated parts for CPC3 hosts47221–47223; classification of the actual delivered part reviewed independently |
+| recursive_input_rule | Treat purchased same-category part as an upstream cut interface with completed operations recorded; do not recursively add its manufacturing again |
+| upstream_dataset_requirement | Match physical state/grade, geography/time and supplier gate; include supplier production once, flag absent provider coverage; a product UUID is not an upstream burden dataset |
+| disclosure | Delivery state, included/excluded operations, actual route gates, supplier coverage and residual identity/quantity gaps |
 
-
-| rule_id | applies_to | rule | source_ids |
+| rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| boundary_gate | foreground part production | Include applicable on-site fabrication, module assembly, testing and packing until acceptance at factory gate; disclose route-specific omissions. | itu-l1410-2024 |
-| boundary_supplier | purchased component inputs | Keep purchased-component upstream burdens and process boundary explicit; avoid double counting a supplier stage as on-site fabrication. | itu-l1410-2024 |
-
+| boundary_delivery | all processes | Require documented incomplete constituent identity. Host fit alone and absence of stand-alone operation are insufficient; completed apparatus and separately classified components stay outside final output. | `cpc3-telecom`; `panasonic-handset`; `census-electronics` |
+| boundary_make_buy | all processes | For every BOM line record make/buy, incoming completion, upstream provider coverage and operations performed here. If bought board/antenna/enclosure already embeds copper, polymer and IC manufacture, do not add embedded inputs or operations again. If made here include actual materials, chemistry, waste and energy. | `apple-enclosure`; `taoglas-cellular` |
+| boundary_factory | all processes | Include attributable fabrication, finish, assembly, rework, acceptance testing, utilities, treatment and packing. Factory RF/continuity tests are production; later telephone calls, data traffic, host installation, repair and end-of-life are outside this production package and require separate declared lifecycle stages. | `apple-enclosure`; `cisco-network-module` |
 
 ## 6. Process Inventory Structure
-
-The cards below specify atomic exchanges for the common board-module and aluminium-sheet routes. Apply each card only when its stated physical operation occurs. A different part technology must disclose its own atomic exchanges and seek method review before treating this list as complete. [itu-l1410-2024]
 
 ### Process Map
 
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
-| part_manufacturing | Part fabrication, module assembly, testing and packing | required | Declare which of board population, sheet fabrication and packing actually occur; each conditional card follows that route | foreground production of one accepted part type | per 1 kg accepted finished part |
+| p_receipt | Receipt and upstream interface | required | Every selected part | foreground | `final_part` |
+| p_mechanical | Mechanical forming and machining | conditional | Drawing-specific metal enclosure, shield or mounting member made on site | foreground | `final_part` |
+| p_polymer | Polymer molding and trimming | conditional | Drawing-specific polymer enclosure, insert or handset shell made on site | foreground | `final_part` |
+| p_electronic | Dedicated electronic or RF subassembly fabrication | conditional | Genuine incomplete dedicated part requiring host integration; actual board/antenna/connector operations performed on site | foreground | `final_part` |
+| p_finish | Surface finishing and cleaning | conditional | Actually applied drawing-specified coating, bonding or cleaning | foreground | `final_part` |
+| p_assembly | Part assembly and acceptance | required | Actual assembly, dimensional/continuity/RF acceptance as appropriate to delivered part | foreground | `final_part` |
+| p_utilities | Utilities and pollution control | required | Attributable actual utilities and treatment; combustion only when present | foreground | `final_part` |
+| p_dispatch | Packing and dispatch | required | Accepted net part at supplier gate | reference | `final_part` |
 
+Rows below are atomic route candidates, not a universal BOM or recipe. Apply only the actual certified grade/formulation and delivered interface stated on each card; add a separate named row for every actual different material, component, chemical, fuel, waste or species. Missing UUID does not exclude a genuine route. Record not_applicable only with route evidence; zero, unknown and not_applicable are distinct. Internal process transfers are paired and cancel at the aggregate gate, while their repeated processing remains.
 
-### Process: Part manufacturing (`part_manufacturing`)
+### Process: Receipt and upstream interface (`p_receipt`)
 
 #### Inputs
 
 ##### Product flows
 
-###### Bare printed circuit board input (`bare_pcb`)
+###### Drawing-specific molded telephone handset shell (`bought_shell`)
 
-Include only when the producer populates a bare board for the declared communication part. Record the purchased board area and supplier technology; its upstream fabrication remains in the supplier dataset.
+Only when bought complete as this shell; supplier production included once, no average housing-share proxy.
 
-- Selected flow: Fabricated bare PCB board `6f07dbee-0861-42d0-a644-f84a667933a9`
-
-- Flow property / unit: Area / m2
-
-- Amount rule: Measured board area attributable to accepted output, per 1 kg reference flow.
-
-- Value mode: Foreground record (`foreground_record`)
-
-- Specificity: Site-specific (`site_specific`)
-
-- Normalization basis: per 1 kg reference flow
-
-- Basis kind: Reference flow (`reference_flow`)
-
-- Evidence kind: Collected record (`collected_record`)
-
-- Collection protocol: `cp_bare_pcb`
-
-- Sources: `itu-l1410-2024`
-
-###### Packaged integrated circuit input (`packaged_ic`)
-
-Include when packaged ICs are mounted on the part; reconcile masses and part numbers with the bill of materials. Do not count bare die fabrication as an on-site process when ICs are purchased.
-
-- Selected flow: Packaged integrated circuits `b6eb5862-9b77-4f3a-8e0d-1eea7f0ac8bb`
-
+- Selected flow: Drawing-specific molded telephone handset shell
 - Flow property / unit: Mass / kg
-
-- Amount rule: Measured purchased IC mass consumed per 1 kg reference flow.
-
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_bom
 - Value mode: Foreground record (`foreground_record`)
-
 - Specificity: Site-specific (`site_specific`)
-
 - Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bom`
+- Sources: `apple-enclosure`; `protolabs-molding`
 
-- Basis kind: Reference flow (`reference_flow`)
+###### Host-dedicated populated telephone circuit board subassembly (`bought_board`)
 
-- Evidence kind: Collected record (`collected_record`)
+Only when actual dedicated subassembly is purchased; finished-apparatus and generic bare-board classification review still required.
 
-- Collection protocol: `cp_packaged_ic`
-
-- Sources: `itu-l1410-2024`
-
-###### Solder paste input (`solder_paste`)
-
-Include only for an on-site solder-paste deposition route. Declare alloy and flux formulation; the database identity does not establish lead-free composition.
-
-- Selected flow: Solder paste `13b90193-c692-4fce-a8d6-a20554776710`
-
+- Selected flow: Host-dedicated populated telephone circuit board subassembly
 - Flow property / unit: Mass / kg
-
-- Amount rule: Measured paste consumed per 1 kg reference flow.
-
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_bom
 - Value mode: Foreground record (`foreground_record`)
-
 - Specificity: Site-specific (`site_specific`)
-
 - Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bom`
+- Sources: `cpc3-telecom`
 
-- Basis kind: Reference flow (`reference_flow`)
+###### Host-dedicated flexible cellular antenna assembly (`bought_antenna`)
 
-- Evidence kind: Collected record (`collected_record`)
+Only when host drawing, feed/connector and installed state establish dedicated part status; bought antenna production covered once.
 
-- Collection protocol: `cp_solder_paste`
-
-- Sources: `itu-l1410-2024`
-
-###### Aluminium sheet input (`aluminium_sheet`)
-
-Include only for a part formed or cut from aluminium sheet at the foreground site. Declare grade, recycled content and actual fabrication route; this generic flow does not establish primary-metal origin.
-
-- Selected flow: aluminium sheet `4f197be4-7b3b-11dd-ad8b-0800200c9a66`
-
+- Selected flow: Host-dedicated flexible cellular antenna assembly
 - Flow property / unit: Mass / kg
-
-- Amount rule: Measured aluminium sheet consumption per 1 kg reference flow.
-
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_bom
 - Value mode: Foreground record (`foreground_record`)
-
 - Specificity: Site-specific (`site_specific`)
-
 - Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bom`
+- Sources: `taoglas-cellular`
 
-- Basis kind: Reference flow (`reference_flow`)
+###### Drawing-specific telephone USB-C flex connector assembly (`bought_connector`)
 
-- Evidence kind: Collected record (`collected_record`)
+Only for a dedicated connector assembly fitted to host drawing; generic standalone connector belongs to its own category.
 
-- Collection protocol: `cp_aluminium_sheet`
-
-- Sources: `itu-l1410-2024`
-
-###### Purchased AC electricity (`electricity`)
-
-Record electricity consumed by the declared on-site part fabrication, assembly, testing and packing activities. The public candidate records cannot uniquely establish the grid-supply identity; resolve the flow before dataset publication.
-
-- Selected flow: Grid-supplied alternating-current electricity
-
-- Flow property / unit: Energy / kWh
-
-- Amount rule: Metered attributable electricity per 1 kg reference flow.
-
-- Value mode: Foreground record (`foreground_record`)
-
-- Specificity: Site-specific (`site_specific`)
-
-- Normalization basis: per 1 kg reference flow
-
-- Basis kind: Reference flow (`reference_flow`)
-
-- Evidence kind: Collected record (`collected_record`)
-
-- Collection protocol: `cp_electricity`
-
-- Sources: `itu-l1410-2024`
-
-###### Corrugated board shipping box input (`corrugated_box`)
-
-Include when the accepted part is supplied in a corrugated board box. The box is an input to gate-ready packing and is excluded from the net reference-product mass.
-
-- Selected flow: corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
-
+- Selected flow: Drawing-specific telephone USB-C flex connector assembly
 - Flow property / unit: Mass / kg
-
-- Amount rule: Measured box mass attributable to accepted output per 1 kg reference flow.
-
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_bom
 - Value mode: Foreground record (`foreground_record`)
-
 - Specificity: Site-specific (`site_specific`)
-
 - Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bom`
+- Sources: `apple-connector`
 
-- Basis kind: Reference flow (`reference_flow`)
+### Process: Mechanical forming and machining (`p_mechanical`)
 
-- Evidence kind: Collected record (`collected_record`)
+#### Inputs
 
-- Collection protocol: `cp_corrugated_box`
+##### Product flows
 
-- Sources: `itu-l1410-2024`
+###### EN AW-6061 aluminum billet (`aluminum_stock`)
+
+Conditional candidate grade only when actual certificate and drawing match; separately add each other certified grade used.
+
+- Selected flow: EN AW-6061 aluminum billet
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_material
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_material`
+- Sources: `apple-enclosure`
+
+###### C11000 copper strip (`copper_stock`)
+
+Only when actual shield or conductor is formed from certified C11000 strip; do not infer alloy from host identity.
+
+- Selected flow: C11000 copper strip
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_material
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_material`
+- Sources: `cpc3-telecom`
+
+###### Mineral-oil cutting fluid concentrate (`cutting_oil`)
+
+Only when this formulation is used; record concentration, active species, dilution water and supplier formulation.
+
+- Selected flow: Mineral-oil cutting fluid concentrate
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_chem
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_chem`
+- Sources: `apple-enclosure`
+
+#### Outputs
 
 ##### Waste flows
 
+###### EN AW-6061 machining scrap (`aluminum_scrap`)
+
+External scrap only; opening/closing scrap and internal remelt transfers remain distinct.
+
+- Selected flow: EN AW-6061 machining scrap
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_residual
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_residual`
+- Sources: `apple-enclosure`
+
+###### C11000 copper stamping scrap (`copper_scrap`)
+
+When copper route is present; grade and actual treatment provider required.
+
+- Selected flow: C11000 copper stamping scrap
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_residual
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_residual`
+- Sources: `cpc3-telecom`
+
+### Process: Polymer molding and trimming (`p_polymer`)
+
+#### Inputs
+
+##### Product flows
+
+###### ABS molding resin granulate (`abs_resin`)
+
+Only when exact supplier ABS grade is specified; actual additives, recycled content and drying records required.
+
+- Selected flow: ABS molding resin granulate
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_material
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_material`
+- Sources: `protolabs-molding`
+
+###### PC/ABS molding resin granulate (`pcabs_resin`)
+
+Alternative actual resin route, not additional mandatory resin; retain declared blend/grade and drying/regrind records.
+
+- Selected flow: PC/ABS molding resin granulate
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_material
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_material`
+- Sources: `protolabs-molding`
+
+#### Outputs
+
+##### Waste flows
+
+###### ABS molding reject (`abs_reject`)
+
+When ABS route occurs; do not count internally returned sprues again as external input or waste.
+
+- Selected flow: ABS molding reject
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_residual
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_residual`
+- Sources: `protolabs-molding`
+
+### Process: Dedicated electronic or RF subassembly fabrication (`p_electronic`)
+
+#### Inputs
+
+##### Product flows
+
+###### Polyimide flexible copper-clad circuit substrate (`bare_flex`)
+
+Only for actual on-site dedicated flex/antenna pattern manufacture; bought completed flex has embedded burden instead.
+
+- Selected flow: Polyimide flexible copper-clad circuit substrate
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_bom
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bom`
+- Sources: `taoglas-cellular`
+
+###### Packaged radio-frequency integrated circuit (`mounted_ic`)
+
+Only when this purchased package is mounted here in genuine dedicated incomplete telecom subassembly; no mandatory chip fabrication.
+
+- Selected flow: Packaged radio-frequency integrated circuit
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_bom
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bom`
+- Sources: `cpc3-telecom`
+
+###### SAC305 solder paste (`solder`)
+
+Actual tin-silver-copper alloy assay and flux fraction; distinguish gross paste from contained Sn,Ag,Cu.
+
+- Selected flow: SAC305 solder paste
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_chem
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_chem`
+- Sources: `apple-connector`
+
+###### Aqueous ferric chloride etchant (`etchant`)
+
+Only if actual on-site copper etching uses this solution; concentration and bath stock required; no recipe inferred from antenna datasheet.
+
+- Selected flow: Aqueous ferric chloride etchant
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_chem
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_chem`
+- Sources: `taoglas-cellular`
+
+#### Outputs
+
+##### Waste flows
+
+###### Copper-bearing spent ferric chloride etchant (`etchant_waste`)
+
+Only from this etch route; gross liquid mass and matched copper/iron assay separate, licensed treatment interface.
+
+- Selected flow: Copper-bearing spent ferric chloride etchant
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_residual
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_residual`
+- Sources: `taoglas-cellular`
+
+### Process: Surface finishing and cleaning (`p_finish`)
+
+#### Inputs
+
+##### Product flows
+
+###### Isopropyl alcohol cleaning solvent (`ipa`)
+
+Only if actual factory cleaning uses IPA; repair-source mention is evidence of solvent identity, not a factory consumption default.
+
+- Selected flow: Isopropyl alcohol cleaning solvent
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_chem
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_chem`
+- Sources: `apple-connector`
+
+###### Acrylic pressure-sensitive adhesive film (`adhesive`)
+
+Only if actual drawing/supplier composition confirms this film; Taoglas adhesive trade name alone cannot establish polymer composition.
+
+- Selected flow: Acrylic pressure-sensitive adhesive film
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_chem
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_chem`
+- Sources: `taoglas-cellular`
+
+#### Outputs
+
 ##### Elementary flows
 
+###### Isopropyl alcohol to air (`ipa_air`)
 
+Measured or species-specific calculated post-control release only; retain recovery and solvent stock changes.
+
+- Selected flow: Isopropyl alcohol to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_emission
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_emission`
+- Sources: `apple-connector`
+
+### Process: Part assembly and acceptance (`p_assembly`)
+
+#### Inputs
+
+##### Product flows
+
+###### Alternating current (`test_power`)
+
+Only for CN customer-side 1–35 kV grid supply, allocated actual factory acceptance/test consumption; other country/voltage requires matching identity.
+
+- Selected flow: Alternating current `3d76981f-964a-4865-b588-0e067a2a1163`
+- Flow property / unit: Net calorific value / MJ
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_energy
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+- Sources: `cpc3-telecom`
+
+### Process: Utilities and pollution control (`p_utilities`)
+
+#### Inputs
+
+##### Product flows
+
+###### Alternating current (`factory_power`)
+
+Same verified CN1–35kV customer interface, excluding test_power already metered; no incineration-specific power substituted as grid supply.
+
+- Selected flow: Alternating current `3d76981f-964a-4865-b588-0e067a2a1163`
+- Flow property / unit: Net calorific value / MJ
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_energy
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+- Sources: `protolabs-molding`
+
+###### Industrial process water (`water`)
+
+Actual purchased supply; internal cooling circulation is not repeated purchased input.
+
+- Selected flow: Industrial process water
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_water
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+- Sources: `protolabs-molding`
+
+###### Pipeline natural gas (`natural_gas`)
+
+Only actual on-site gas heating/drying; measured volume needs supplier calorific value and conditions; no combustion in electric-only route.
+
+- Selected flow: Pipeline natural gas
+- Flow property / unit: Net calorific value / MJ
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_energy
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+- Sources: `protolabs-molding`
+
+#### Outputs
+
+##### Waste flows
+
+###### Copper-bearing industrial wastewater (`wastewater`)
+
+Only actual aqueous metal route; record separate suspended/dissolved species and receiving treatment; add separate other effluent streams.
+
+- Selected flow: Copper-bearing industrial wastewater
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_water
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+- Sources: `taoglas-cellular`
+
+###### Copper-bearing wastewater treatment sludge (`sludge`)
+
+Only actual treatment output; wet/dry basis, copper assay and treatment fate required.
+
+- Selected flow: Copper-bearing wastewater treatment sludge
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_residual
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_residual`
+- Sources: `taoglas-cellular`
+
+##### Elementary flows
+
+###### Fossil carbon dioxide to air (`co2`)
+
+Only actual combustion, with fuel carbon and oxidation evidence and separation from upstream purchased electricity.
+
+- Selected flow: Fossil carbon dioxide to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_emission
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_emission`
+- Sources: `protolabs-molding`
+
+###### Carbon monoxide to air (`co`)
+
+Only species-specific actual measured or applicable factor evidence; fuel-carbon balance alone cannot determine CO.
+
+- Selected flow: Carbon monoxide to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_emission
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_emission`
+- Sources: `protolabs-molding`
+
+###### Nitrogen dioxide to air (`no2`)
+
+Only evidence identifying NO2 species; aggregate NOx as NO2 equivalent is not automatically pure NO2.
+
+- Selected flow: Nitrogen dioxide to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_emission
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_emission`
+- Sources: `protolabs-molding`
+
+### Process: Packing and dispatch (`p_dispatch`)
+
+#### Inputs
+
+##### Product flows
+
+###### Corrugated cardboard carton (`box`)
+
+Actual outgoing part carton only, separately from accepted part net mass.
+
+- Selected flow: Corrugated cardboard carton
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_pack
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_pack`
+- Sources: `apple-enclosure`
+
+###### Static-shielding metallized polyethylene bag (`esd_bag`)
+
+Only actual bag for electronic/RF part; composition and supplier coverage required.
+
+- Selected flow: Static-shielding metallized polyethylene bag
+- Flow property / unit: Mass / kg
+- Amount rule: Measured attributable exchange divided by accepted net part batch mass in kg; cp_pack
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_pack`
+- Sources: `cisco-network-module`
 
 #### Outputs
 
 ##### Product flows
 
-###### Accepted finished communication-equipment part (`finished_part`)
+###### Accepted drawing-defined dedicated telephone or network apparatus part (`final_part`)
 
-One declared part type and host compatibility, accepted after inspection at the factory gate. Its net mass excludes the shipping box and rejects.
+Exactly the delivered part state and drawing/revision; completed apparatus excluded.
 
 - Selected flow: Parts for the goods of subclasses 47221 to 47223 `bf7766aa-8f63-4869-bd70-2090483f4437`
-
 - Flow property / unit: Mass / kg
-
 - Amount rule: 1 kg
-
 - Value mode: Foreground record (`foreground_record`)
-
 - Specificity: Site-specific (`site_specific`)
-
 - Normalization basis: per 1 kg reference flow
-
-- Basis kind: Reference flow (`reference_flow`)
-
-- Evidence kind: Collected record (`collected_record`)
-
-- Collection protocol: `cp_finished_mass`
-
-- Sources: `un-cpc-3-2025`
-
-##### Waste flows
-
-###### Rejected populated board waste (`rejected_pcba`)
-
-Include only when assembled boards fail inspection and leave the foreground as segregated populated-board waste. Record destination and do not treat this waste as accepted product.
-
-- Selected flow: Waste populated printed wiring board `eb5ffe4a-49af-450c-9a31-3efdfd343f8a`
-
-- Flow property / unit: Mass / kg
-
-- Amount rule: Measured rejected populated-board mass per 1 kg reference flow.
-
-- Value mode: Foreground record (`foreground_record`)
-
-- Specificity: Site-specific (`site_specific`)
-
-- Normalization basis: per 1 kg reference flow
-
-- Basis kind: Reference flow (`reference_flow`)
-
-- Evidence kind: Collected record (`collected_record`)
-
-- Collection protocol: `cp_rejected_pcba`
-
-- Sources: `itu-l1410-2024`
-
-###### Segregated aluminium cutting scrap (`aluminium_scrap`)
-
-Include only when aluminium-sheet cutting produces separately collected aluminium scrap. Record recycling or disposal destination without a credit in this foreground inventory.
-
-- Selected flow: Aluminium Scrap `96c5f842-ea53-419b-b1cd-c02c479efb45`
-
-- Flow property / unit: Mass / kg
-
-- Amount rule: Measured aluminium scrap mass per 1 kg reference flow.
-
-- Value mode: Foreground record (`foreground_record`)
-
-- Specificity: Site-specific (`site_specific`)
-
-- Normalization basis: per 1 kg reference flow
-
-- Basis kind: Reference flow (`reference_flow`)
-
-- Evidence kind: Collected record (`collected_record`)
-
-- Collection protocol: `cp_aluminium_scrap`
-
-- Sources: `itu-l1410-2024`
-
-##### Elementary flows
-
-
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mass`
+- Sources: `cpc3-telecom`; `apple-enclosure`
 
 ## 7. Allocation and Co-product Handling
 
-| rule_id | applies_to | rule | source_ids |
+| rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| allocate_subdivide | shared lines and co-products | Subdivide metered processes and assign direct input and waste records to the declared part first. | itu-l1410-2024; eu-pef-2021-2279 |
-| allocate_physical | shared facility data | When subdivision is unavailable, use a demonstrated physical driver relevant to the process: board area for PCB operations, good die area for IC production, or mass for other parts. Record driver, totals and sensitivity. | itu-l1410-2024; eu-pef-2021-2279 |
-| allocate_economic | shared facility data without a defensible physical driver | Use economic allocation only if physical data are insufficient; report price basis, period and sensitivity. Do not grant an automatic recycling credit to aluminium scrap. | itu-l1410-2024; eu-pef-2021-2279 |
-
+| allocation_causality | shared factory operations | Investigate subdivision/system expansion first. If unavoidable, retain total inventories and choose demonstrated physical causality; use actual molding shot/cavity loading, machining time, reflow loading or measured testing demand as appropriate, not part mass merely because output is kg. Other relationships need justification and sensitivity. | `ef-allocation-2021` |
+| allocation_residual | scrap and rework | Do not assume sold scrap is a co-product or avoided-primary-material credit. Disclose selected recycling/treatment allocation, provider and fate; cancel internal regrind/return transfers but retain repeated energy and losses. Rejected parts and retests contribute to the accepted output denominator. | `ef-allocation-2021` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -342,60 +660,62 @@ Include only when aluminium-sheet cutting produces separately collected aluminiu
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_bare_pcb | part_manufacturing | bare_pcb | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable bare printed circuit board input quantity | Measure or reconcile bare printed circuit board input for the same accepted lot; record route applicability and supplier or waste destination. | m2 | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_packaged_ic | part_manufacturing | packaged_ic | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable packaged integrated circuit input quantity | Measure or reconcile packaged integrated circuit input for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_solder_paste | part_manufacturing | solder_paste | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable solder paste input quantity | Measure or reconcile solder paste input for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_aluminium_sheet | part_manufacturing | aluminium_sheet | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable aluminium sheet input quantity | Measure or reconcile aluminium sheet input for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_electricity | part_manufacturing | electricity | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable purchased ac electricity quantity | Measure or reconcile purchased ac electricity for the same accepted lot; record route applicability and supplier or waste destination. | kWh | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_corrugated_box | part_manufacturing | corrugated_box | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable corrugated board shipping box input quantity | Measure or reconcile corrugated board shipping box input for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_finished_mass | part_manufacturing | finished_part | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable accepted finished communication-equipment part quantity | Measure or reconcile accepted finished communication-equipment part for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_rejected_pcba | part_manufacturing | rejected_pcba | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable rejected populated board waste quantity | Measure or reconcile rejected populated board waste for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-| cp_aluminium_scrap | part_manufacturing | aluminium_scrap | lot ledger and calibrated meter or scale | lot ID; part number; accepted net output kg; attributable segregated aluminium cutting scrap quantity | Measure or reconcile segregated aluminium cutting scrap for the same accepted lot; record route applicability and supplier or waste destination. | kg | each lot | declared production period | declared facility | per 1 kg reference flow | meter or scale calibration; purchase and production ledger; acceptance and mass-balance record |
-
+| cp_mass | p_dispatch | accepted net part | foreground_record | drawing; revision; host; delivered state; batch; tare; calibrated accepted net kg; accepted count | Weigh the identical accepted part population on calibrated scales excluding transport packaging; retain traceable batch/count pairing and acceptance record. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_bom | p_receipt | purchased constituent | foreground_record | part number; state; make/buy; supplier; provider scope; delivery mass; stock change | Reconcile receipt/issue/BOM and supplier scope with actual drawing; weigh components when counts supplied. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_material | p_mechanical | certified stock | foreground_record | grade; formulation; dry basis; batch; received/issued mass; accepted mass; stock | Use calibrated weighbridge or scale and certificate; reconcile scrap/regrind and opening/closing stocks without a fixed yield. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_chem | p_finish | specific chemical | foreground_record | species; grade; concentration; active fraction; supplier; weighed consumption; bath stock; reaction; recovery | Reconcile metered additions, assay and stock records; distinguish gross formulation mass from each active chemical. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_energy | p_utilities | actual energy interface | foreground_record | meter; voltage; country; provider; process/load; test duration; kWh; fuel volume; calorific value | Submeter actual process/test energy, retain load allocation and supplier interface; convert electricity kWh to MJ and fuel volume using actual conditions and calorific value. | MJ | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_residual | p_utilities | one residual stream | foreground_record | named stream; wet/dry mass; assay; stocks; return; external destination; treatment provider | Weigh each segregated waste stream and sample its composition; reconcile internal returns independently of outgoing residuals. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_water | p_utilities | water and effluent | foreground_record | supply; flowmeter; density; copper species; concentration; volume; stock; evaporation; provider | Use calibrated meters and matching timed concentration samples; distinguish makeup, internal circulation and actual discharge. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_emission | p_utilities | one emitted species | foreground_record | species; compartment; control state; flow; concentration; measurement duration; factor scope; stock recovery | Measure post-control discharge or apply a justified species-specific factor with matching activity; retain uncertainty and do not infer CO/NO2 from fuel carbon alone. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
+| cp_pack | p_dispatch | one packing component | foreground_record | carton/bag identity; composition; received/used mass; supplier; return rate | Weigh each actual packing component and reconcile consumed batch packaging; keep it outside reference part net mass. | kg | each batch and reporting period | same production period and drawing revision | actual site and traceable supplier | per 1 kg reference flow | calibration; traceability; uncertainty; reconciliation |
 
 ### Calculation Rules
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| lot_mass_balance | finished_part and material losses | Check that accepted output plus separated scrap is physically plausible against measured material inputs; explain non-recovered losses without inventing a yield factor. | accepted output; material inputs; scrap records | mass-balance review | itu-l1410-2024 |
-
+| batch_normalization | all inventory rows | Divide attributable batch exchange by calibrated accepted net part batch mass in kg; keep original numerator unit and reject nonpositive denominator. Reference output remains 1 kg. | cp_mass; actual batch exchange | exchange per 1 kg reference flow |  |
+| energy_conversion | test_power; factory_power | Metered kWh multiplied by 3.6 yields MJ before division by accepted net kg. Preserve actual country/voltage/provider and exclude duplicated test consumption. | cp_energy; cp_mass | MJ per kg |  |
+| contained_species | material, chemical, residual and emitted-species mass balances | For each material and chemical use its measured gross amount times matched assay/concentration for contained species; retain opening/closing stocks, reaction retention and actual releases, not a generic common assay. | cp_material; cp_chem; cp_residual; cp_emission | separate species balance |  |
 
 ### Data Quality Requirements
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| dq_identity | all inventory rows | Use the same part number, host compatibility, route and lot across inputs, outputs and reference flow. | bill of materials; inspection record |
-| dq_temporal | all collection protocols | Use one disclosed production period and site; record any estimated or missing meter share. | dated ledgers; meter and allocation records |
-| dq_completeness | applicable route cards | Account for applicable materials, power and wastes; add separate atomic records for other actual exchanges and explain omissions. | process map; mass balance; waste transfer records |
-| dq_electricity | electricity | Resolve a unique public product flow and a geography-matched upstream electricity dataset before publishing a data package. | task-bound flow audit; meter; supplier dataset |
-
+| dq_identity | all flows | Actual drawing/interface/state and exact supplier grade; UUID type/property/unit/geography checked before adoption. The category-level flow does not supply drawing, site, supplier, geography or specific part qualifications; collect these explicitly. | drawing; direct-read identity; supplier scope |
+| dq_coverage | all processes | Route ledger records included, not_applicable, zero and unknown separately; candidate source examples establish no universal empirical ranges. | route evidence; measured period totals |
 
 ## 9. Validation Rules
 
-| rule_id | applies_to | rule | source_ids |
+| rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| validate_identity | reference flow and finished_part | Require part/host compatibility, exact CPC 47401 product-flow UUID, 1 kg accepted net mass and exclusion of packaging from net product mass. | un-cpc-3-2025; itu-l1410-2024 |
-| validate_route | all inventory rows | Require route-specific inclusion conditions, atomic selected flows, lot records and reconciliation of accepted output, rejects and material inputs. | itu-l1410-2024 |
-| validate_unresolved | electricity | Block publication of a foreground data package until a unique public electricity flow is audited; retain measured activity without choosing an ambiguous UUID. | itu-l1410-2024 |
-
+| validate_scope | final_part | Verify qualifying host and delivered incomplete part, exact revision and remaining assembly; completed optional handsets, modems/routers and ADP network cards cannot be passed as dedicated parts by compatibility alone. | `cpc3-telecom`; `panasonic-handset` |
+| validate_mass | all inventory rows | Check positive calibrated accepted net batch kg, same drawing/BOM/state/period and counted population; reconcile acceptance, reject and rework. Exclude packaging from reference mass and retain numerator units. |  |
+| validate_balance | all processes | Close external gross material inputs plus opening stocks against accepted constituents, external scrap/waste, emissions and closing stocks; cancel paired internal transfers. Separately close each actual Cu,Al,Sn,Ag,Fe and other species using its own matched assay on every term. Include reactions, oxidation, dissolved releases and wet/dry moisture; gross scrap is not contained copper. Close water makeup/stock, discharge, evaporation and carryover; chemical additions/stock, recovery, reaction and residuals. Investigate imbalance against measured uncertainty; no invented fixed tolerances or yields. Fuel carbon may support CO2 with evidence but not establish CO or NO2. |  |
+| validate_completeness | dataset | Check all real conditional operations and atomic exchanges, make/buy upstream burden once, utility provider/voltage, actual waste fate and emitted species/compartment. Unknown mandatory quantity, unresolved required UUID/provider or unsupported conversion blocks a complete dataset; methodology measurement pass is not apparatus conformity or evidence completion. |  |
 
 ## 10. Published Dataset Profile
 
 | Field | Value |
 | --- | --- |
-| dataset_role | foreground product production dataset for one declared part specification |
+| dataset_role | foreground_dataset |
 | downstream_use | secondary_dataset; background_dataset |
-| allowed_use | Model the production of the declared dedicated part as an input to a host-device LCA when specifications and boundary match |
-| excluded_use | Do not substitute for a complete phone or network device, compare unlike part functions by mass, or claim use/end-of-life impacts |
-| required_metadata | part number; host compatibility; production geography, year and technology; bill of materials; accepted net mass; route and supplier boundary; allocation driver |
-| required_quality_disclosure | unresolved electricity UUID; missing upstream data; conditional route omissions; meter allocation; scrap destination; source limitations |
-| update_trigger | part design, material composition, route, supplier mix, electricity identity or production period changes materially |
-
+| allowed_use | Matched part specification/state upstream interface for foreground packages and downstream process/lifecyclemodel construction |
+| excluded_use | Generic complete handset/router model; host use-phase electricity; cross-part functional comparison by kg; unqualified material substitution |
+| required_metadata | All reference qualifiers, actual routes, supplier coverage and allocation |
+| required_quality_disclosure | Unresolved identities/providers, measured uncertainties, missing source/range coverage and exact boundaries |
+| update_trigger | Drawing/BOM/revision, delivered state, make/buy, supplier, material grade, factory route/test or utility change |
 
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| un-cpc-3-2025 | official_guidance | UNSD, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv | CPC identity and host subclasses |
-| itu-l1410-2024 | standard | ITU-T Recommendation L.1410 (11/2024), https://www.itu.int/rec/dologin_pub.asp?id=T-REC-L.1410-202411-I%21%21PDF-E&lang=s&type=items | ICT parts, functional unit, process map, physical facility allocation |
-| eu-pef-2021-2279 | official_guidance | Commission Recommendation (EU) 2021/2279, Annex I section 4.5, https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en?filename=Annexes+1+to+2.pdf | multifunctional process allocation hierarchy |
+| cpc3-telecom | official_guidance | UNSD CPC3.0 Explanatory Notes, 30 June 2025, pp257/259; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Host and part taxonomy, complete apparatus and ADP card counter-boundary; no material recipe |
+| apple-enclosure | handbook | Apple iPhone15/15Plus Enclosure, 10 April2025, Before You Begin/Reassembly; https://support.apple.com/en-gb/120605 | Delivered enclosure requires logic board, battery, display and other remaining host assembly; example only |
+| apple-connector | handbook | Apple iPhone15 USB-C Connector, 3 June2025, Removal/Reassembly; https://support.apple.com/en-gb/122386 | Dedicated connector flex, host assembly and cleaning identity; not factory quantity factors |
+| cisco-network-module | handbook | Cisco Catalyst9500 Hardware Installation Guide, Installing a Network Module; https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/hardware/install/b_catalyst_9500_hig/9500_installing-network-module.html | Specific slot/blank airflow and modular interfaces; active module classification unresolved without completion review |
+| panasonic-handset | handbook | Panasonic handset part-number/model compatibility list; https://help.na.panasonic.com/answers/parts-and-accessories-telephone-handset-part-number-to-model-number-compatibility-list/ | Optional operational handset counterexample: compatibility does not prove incomplete part |
+| taoglas-cellular | handbook | Taoglas FXP14.07.0100A Flexible PCB Cellular Antenna, SPE-12-8-050-G, p1; https://cdn.taoglas.com/datasheets/FXP14.07.0100A.pdf | Passive cellular flex antenna cable/connector/adhesive integration example, not universal dedication or manufacturing recipe |
+| protolabs-molding | handbook | Protolabs Injection Molding Services, tooling/materials/quality sections; https://www.protolabs.com/services/injection-molding/ | Conditional plastic forming, resin alternatives and inspection capability; actual supplier grade and operations must be collected |
+| census-electronics | official_guidance | US Census Schedule B2022 Chapter85, headings8517/8534/8536/8541/8542; https://www.census.gov/foreign-trade/schedules/b/2022/c85.html | Independent counterevidence for apparatus/parts and separately described generic electronic components; not an automatic CPC mapping |
+| ef-allocation-2021 | official_guidance | Commission Recommendation(EU)2021/2279, section4.5 pp87–88; https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230 | Allocation hierarchy and demonstrable physical relationship |

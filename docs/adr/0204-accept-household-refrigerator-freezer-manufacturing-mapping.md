@@ -1,0 +1,15 @@
+# Accept household refrigerator and freezer production methodology
+
+Decision UTC: 2026-10-02T16:34:56.918877Z
+PCR: `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.refrigerators-and-freezers-household-type-electric-or-non-electric`
+Status: candidate; authored methodology.
+
+Accept CPC 3.0 44811 as an exact category-to-method relation for the full household electric or non-electric refrigerator/freezer category. Compression, absorption and verified thermoelectric configurations retain their actual product function and complete supplied architecture. Passive iceboxes, portable/RV products, minibars and commercial cold-chain equipment require their actual principal-function/classification review rather than automatic inclusion.
+
+Actual primary-source review read Dometic cooling-technology bodies for distinct compression/absorption/Peltier and passive alternatives; original RM2350 instructions for ammonia/hydrogen, actual conditional chromate and gas/electric architecture, with genuine footer4445103434 dated2021-04-20 and inner03/2020; DOE EERE-2017-BT-STD-0003 RFI as a historical narrower counter-boundary, not current binding scope; EPA rigid-polyurethane appliance blowing-agent body distinct from commercial refrigeration. No nominal recipe, fill, machine mass, manufacturing intensity or use-phase factor is transferred.
+
+The bilingual record has63 atomic cards. Every card has actual flow-search evidence, with18 UUID-bearing cards including the reference and45 unresolved identities. Direct reads qualify type/state, chemistry/supplied interface, native property/unit and compartment; official Chinese names match. Verified identities include matched HIPS/China ABS, LDPE film, deionised/tap water, China IPA, steel-offcut waste, actual CN medium-voltage user electricity and species-specific ordinary unspecified-air emissions. Native gaseous nitrogen Volume/m3 retains actual batch temperature/pressure and measured density conversion when mass is collected. Unrelated chemical mixtures, indoor/soil/long-term emission compartments and conflicting steel names are rejected; unresolved identities remain explicit.
+
+Parent finite check completes630 checks with zero skipped. Qattr/Naccepted/Dnet normalization retains accepted net mass, reject/rework/test burdens and native numerator units. Separate bought modules embed their constituents once; internal transfers cancel. Reusable recovered R600a is a Product output distinct from discarded recovered refrigerant Waste, with no automatic credits. Each physical/species term retains its own assay, density/moisture, reactions and stocks. Species measurements and captured/non-air solvent fates do not infer unexplained residuals as air. Gross versus net heat and independent supply/return enthalpies count once; residual factory utilities cannot repeat already assigned loads. NOx-equivalent is distinct from molecular NO2.
+
+Acceptance does not establish publication readiness, empirical factory completeness or a matched supply provider for every dataset. Actual root and original-author full repository validation and runtime resolution/guidance are recorded separately.

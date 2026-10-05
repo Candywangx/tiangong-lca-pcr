@@ -1,10 +1,1321 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44614"
-  title: "Auxiliary machinery for use with machines for textile extruding, preparing, spinning, weaving, knitting or the like"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.auxiliary-machinery-for-use-with-machines-for-textile-extruding-preparing-spinning-weav-c86971bd"
+  classification_refs: "CPC 3.0 44614"
+  covered_products: "Complete dedicated textile auxiliary apparatus; evidenced dobby and Jacquard; other families require actual apparatus boundary evidence."
+  excluded_products: "Main textile machines; separately delivered parts/accessories; generic ventilation; textile products."
+  representative_product: "Configured electronic Jacquard head with declared controller and included harness; not a surrogate UUID for the category."
+  production_route: "Configuration-controlled make/buy, housing/mechanism fabrication, conditional foundry and surface routes, assembly, factory test, packaging."
+  market_state: "New accepted auxiliary at manufacturer gate, net equipment excluding transport packaging."
+functional_unit:
+  what: "Manufacture of the declared auxiliary configuration."
+  how_much: "1 kg accepted complete auxiliary, normalized from the same configuration."
+  how_well: "Released according to actual drawing, control/synchronization specification and acceptance test. Mass is not functional equivalence between technologies."
+  how_long_or_cycle: "One factory production and acceptance cycle; service lifetime is outside scope."
+  reference_flow_link: "finished_auxiliary"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include receiving, actual in-house fabrication, assembly, factory test, rework, treatment and packaging. Exclude later transport, installation, yarn/fabric production, maintenance and end-of-life; upstream bought burdens enter once."
+      source_ids:
+        - un-cpc3-textile
+        - bonas-ji
+    - rule_id: boundary_route
+      applies_to: "foreground_system_boundary"
+      rule: "Use actual route and make/buy matrix for every subassembly. A bought motor/controller/module includes its embedded metals, winding, board and production oil; no duplicate raw inputs. Conditional routes are neither universal nor zero when unknown."
+      source_ids:
+        - staubli-s3200
+        - staubli-sx-pro
+        - bonas-ji
+boundary_abstraction:
+  declared_starting_condition: "Supplier-delivered verified stock, machined casting or completed component at plant receiving; upstream production is connected once."
+  starting_condition_role: "foreground_input"
+  product_classification_scope: "Complete textile auxiliaries, not host machine or replacement components."
+  recursive_input_rule: "A bought auxiliary incorporated in the output is an upstream product; do not recreate its embedded manufacture or assign output identity to its parts."
+  upstream_dataset_requirement: "Match material grade, treatment, module configuration, delivery state, geography and period; unresolved provider links are disclosed."
+  disclosure: "Record included frame/stand, harness, cooling and controller; distinguish factory-owned test host from delivered apparatus."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Complete textile auxiliary machinery"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "auxiliary family"
+    - "model/configuration"
+    - "host-machine interface"
+    - "dobby shafts or Jacquard hook/modules"
+    - "drive interface"
+    - "controller/harness included"
+    - "net mass"
+    - "make/buy"
+    - "factory and year"
+    - "acceptance criteria"
+    - "utility voltage and geography"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: unit_energy
+    applies_to: "electricity and natural_gas"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain the original energy meter basis; 1 kWh = 3.6 MJ. Fuel mass to MJ requires actual fuel heating value, not machine rated power."
+  - id: material_state
+    applies_to: "material, chemical and species records"
+    required_property_ref:
+      name: "actual exchange property"
+      uuid: ""
+    required_unit: "declared unit"
+    rule: "Separate gross formulated mass, contained chemical mass, moisture and metal assay. Preserve pressure/temperature for air and supply state for oil."
+process_map:
+  - id: fabrication
+    name: "Housing, support and mechanism fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "In-house cutting, welding and machining or bought machined castings; selected by make/buy records."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: foundry
+    name: "Conditional housing casting"
+    inclusion: "conditional"
+    inclusion_condition: "Only if moulding, melting and casting occur in the foreground; not assumed from a monobloc housing."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: surface
+    name: "Conditional cleaning and surface treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Actual bath, powder/liquid coat, heat treatment or outsourced completed surface determines inclusion."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: assembly
+    name: "Technology-specific auxiliary assembly"
+    inclusion: "required"
+    inclusion_condition: "Dobby transmission or Jacquard selection/control system; optional motor, cooling, pneumatic and hydraulic circuits only if present."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+  - id: test_pack
+    name: "Factory acceptance and packaging"
+    inclusion: "required"
+    inclusion_condition: "Record actual control/synchronization/load tests and pre-gate packaging."
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: fabrication
+    label: "Housing, support and mechanism fabrication"
+    inputs:
+      product:
+        - row_id: plate
+          role: "S235JR hot-rolled steel plate"
+          name: "S235JR hot-rolled steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when the approved BOM specifies this grade for a fabricated support."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: shaft
+          role: "C45 steel round bar"
+          name: "C45 steel round bar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for in-house machined shafts with this verified grade; purchased shafts exclude this raw input."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: casting
+          role: "EN-GJL-250 machined housing casting"
+          name: "EN-GJL-250 machined housing casting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a bought housing with verified iron grade and completed treatment."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: machining_fluid
+          role: "Water-miscible mineral-oil cutting fluid concentrate"
+          name: "Water-miscible mineral-oil cutting fluid concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the actual machining formulation; disclose concentration and separately record dilution water."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: water
+          role: "Deionized process water"
+          name: "Deionized process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when used for dilution or washing; measure make-up rather than recirculation throughput."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "C45 steel machining swarf"
+          name: "C45 steel machining swarf"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only for this grade; segregate oil and measure dry metal mass and treatment destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      elementary:
+        []
+  - id: foundry
+    label: "Conditional housing casting"
+    inputs:
+      product:
+        - row_id: iron_charge
+          role: "EN-GJL-250 iron foundry charge"
+          name: "EN-GJL-250 iron foundry charge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for verified in-house housing casting; split constituent charge grades and additions in the actual dataset."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_foundry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: sand
+          role: "Silica foundry sand"
+          name: "Silica foundry sand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a sand mould route; measure new make-up, internal reclaimed sand transfers cancel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_foundry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: binder
+          role: "Sodium silicate foundry binder"
+          name: "Sodium silicate foundry binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if this actual binder is documented; other binders require their own chemical rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_foundry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_sand
+          role: "Spent silica foundry sand with sodium silicate binder"
+          name: "Spent silica foundry sand with sodium silicate binder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only for the corresponding mould route; retain waste composition and receiver interface."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_foundry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      elementary:
+        []
+  - id: surface
+    label: "Conditional cleaning and surface treatment"
+    inputs:
+      product:
+        - row_id: powder
+          role: "Epoxy-polyester powder coating"
+          name: "Epoxy-polyester powder coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a documented powder-coat route; retained film, overspray and recovered stocks must reconcile."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: cleaner
+          role: "Sodium carbonate"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when identified in the actual aqueous cleaning bath; record active mass and solution water separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: natural_gas
+          role: "Pipeline natural gas"
+          name: "Pipeline natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only for an actual gas-fired curing or heat-treatment burner; meter fuel and measured heating value."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sludge
+          role: "Metal-bearing aqueous cleaning sludge"
+          name: "Metal-bearing aqueous cleaning sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when generated; record moisture, metal assays and disposal interface."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only for on-site fossil combustion, from metered carbon and oxidation evidence; no purchased-power stack emissions here."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_surface."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+  - id: assembly
+    label: "Technology-specific auxiliary assembly"
+    inputs:
+      product:
+        - row_id: cam_module
+          role: "Dobby cam transmission assembly"
+          name: "Dobby cam transmission assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when bought complete for the declared dobby configuration; internal fabrication is separately modelled."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: selection_module
+          role: "Jacquard electronic micro-selector module"
+          name: "Jacquard electronic micro-selector module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configured Jacquard with this bought module; record module revision and channel count."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: controller
+          role: "Jacquard electronic controller"
+          name: "Jacquard electronic controller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when supplied inside the reference assembly; a shared loom controller is outside unless included at release."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: bearing
+          role: "Steel deep-groove ball bearing"
+          name: "Steel deep-groove ball bearing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when present; identify actual dimensions, seals and lubrication state per separate bearing specification."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: harness
+          role: "Jacquard polyester cord harness"
+          name: "Jacquard polyester cord harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when this material and harness are included in the released configuration; separately supplied replacement harness excluded."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: motor
+          role: "Three-phase induction electric motor"
+          name: "Three-phase induction electric motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when the auxiliary has its own included motor; loom-driven auxiliaries have no imposed motor input."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: pneumatic
+          role: "Pneumatic directional control valve"
+          name: "Pneumatic directional control valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for an evidenced pneumatic actuator configuration; record size and supply pressure interface."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: hydraulic
+          role: "Hydraulic cylinder"
+          name: "Hydraulic cylinder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for an evidenced hydraulic configuration; record stroke, seals and filled or dry supply state."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: oil
+          role: "ISO VG 68 mineral lubricating oil"
+          name: "ISO VG 68 mineral lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when actual specification requires it; distinguish shipped fill, test loss and recovered oil."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_assembly."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test_pack
+    label: "Factory acceptance and packaging"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Chinese 1–35 kV user-side grid electricity only. Allocate fabrication, assembly and factory tests using meters; other countries or voltages need a matched interface."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: air
+          role: "Compressed air, at factory supply pressure"
+          name: "Compressed air, at factory supply pressure"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Only when purchased for actual tests or assembly; disclose pressure, temperature and dry-volume basis. In-house compression uses electricity once, not bought air plus its electricity."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: test_yarn
+          role: "Polyester filament yarn"
+          name: "Polyester filament yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if consumed in factory acceptance testing; specify yarn count, loss and recovered stock. This is not downstream commercial textile production."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: pack_wood
+          role: "Kiln-dried pine timber crate"
+          name: "Kiln-dried pine timber crate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for this actual packaging type; exclude transport packaging from accepted net machine mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: pack_film
+          role: "Low-density polyethylene stretch film"
+          name: "Low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when used for release packaging; other packaging materials are separate rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_auxiliary
+          role: "Complete textile auxiliary machinery"
+          name: "Complete textile auxiliary machinery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted declared configuration excluding transport packaging."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      waste:
+        - row_id: waste_oil
+          role: "Spent ISO VG 68 mineral lubricating oil"
+          name: "Spent ISO VG 68 mineral lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only discharged factory test oil; shipped fill stays in product, recovered internal oil is not double-counted."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+        - row_id: test_waste
+          role: "Waste polyester filament yarn"
+          name: "Waste polyester filament yarn"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual test residue; document retained product, recovery and waste separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mass; cp_test_pack."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_pack
+              source_ids:
+                - bonas-ji
+                - staubli-s3200
+                - staubli-sx-pro
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_causal
+    applies_to: "foreground_burden_allocation"
+    rule: "Subdivide configuration, route and meter records first. Allocate unavoidable shared shop electricity, air, heat and rejects by documented causal machine-hours/load; never by nameplate rating alone. Retain before/after allocation totals and sensitivity. This is a foreground collection requirement."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "foreground_burden_allocation"
+    rule: "Segregate steel swarf, foundry returns, coating recovery and discarded modules. Cancel paired internal transfers; record external recoverable scrap and treatment once under the declared recycling model, without unsupported avoided-product credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "test_pack"
+      flow_role: "reference output"
+      record_type: "weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each configuration and release"
+      temporal_coverage: "production reporting period"
+      site_scope: "declared plant gate"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration and weighing certificate"
+    - protocol_id: cp_fabrication
+      process_id: "fabrication"
+      flow_role: "atomic exchanges"
+      record_type: "factory records"
+      raw_fields: "row_id; material/specification; gross/contained amount; meter; batch; inventory opening/closing; accepted count; allocation driver; test load and duration; recipient"
+      collection_method: "Reconcile issue/return ledgers, calibrated meters, BOM revision, waste manifests and accepted serial numbers. Derive each attributable raw amount per accepted machine of the same configuration; retain shared period totals and causal allocation."
+      unit: "row unit"
+      frequency: "batch and monthly reconciliation"
+      temporal_coverage: "same production reporting period"
+      site_scope: "declared route at plant"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "purchase/SDS/grade certificates; meters; stock reconciliation; acceptance logs"
+    - protocol_id: cp_foundry
+      process_id: "foundry"
+      flow_role: "atomic exchanges"
+      record_type: "factory records"
+      raw_fields: "row_id; material/specification; gross/contained amount; meter; batch; inventory opening/closing; accepted count; allocation driver; test load and duration; recipient"
+      collection_method: "Reconcile issue/return ledgers, calibrated meters, BOM revision, waste manifests and accepted serial numbers. Derive each attributable raw amount per accepted machine of the same configuration; retain shared period totals and causal allocation."
+      unit: "row unit"
+      frequency: "batch and monthly reconciliation"
+      temporal_coverage: "same production reporting period"
+      site_scope: "declared route at plant"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "purchase/SDS/grade certificates; meters; stock reconciliation; acceptance logs"
+    - protocol_id: cp_surface
+      process_id: "surface"
+      flow_role: "atomic exchanges"
+      record_type: "factory records"
+      raw_fields: "row_id; material/specification; gross/contained amount; meter; batch; inventory opening/closing; accepted count; allocation driver; test load and duration; recipient"
+      collection_method: "Reconcile issue/return ledgers, calibrated meters, BOM revision, waste manifests and accepted serial numbers. Derive each attributable raw amount per accepted machine of the same configuration; retain shared period totals and causal allocation."
+      unit: "row unit"
+      frequency: "batch and monthly reconciliation"
+      temporal_coverage: "same production reporting period"
+      site_scope: "declared route at plant"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "purchase/SDS/grade certificates; meters; stock reconciliation; acceptance logs"
+    - protocol_id: cp_assembly
+      process_id: "assembly"
+      flow_role: "atomic exchanges"
+      record_type: "factory records"
+      raw_fields: "row_id; material/specification; gross/contained amount; meter; batch; inventory opening/closing; accepted count; allocation driver; test load and duration; recipient"
+      collection_method: "Reconcile issue/return ledgers, calibrated meters, BOM revision, waste manifests and accepted serial numbers. Derive each attributable raw amount per accepted machine of the same configuration; retain shared period totals and causal allocation."
+      unit: "row unit"
+      frequency: "batch and monthly reconciliation"
+      temporal_coverage: "same production reporting period"
+      site_scope: "declared route at plant"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "purchase/SDS/grade certificates; meters; stock reconciliation; acceptance logs"
+    - protocol_id: cp_test_pack
+      process_id: "test_pack"
+      flow_role: "atomic exchanges"
+      record_type: "factory records"
+      raw_fields: "row_id; material/specification; gross/contained amount; meter; batch; inventory opening/closing; accepted count; allocation driver; test load and duration; recipient"
+      collection_method: "Reconcile issue/return ledgers, calibrated meters, BOM revision, waste manifests and accepted serial numbers. Derive each attributable raw amount per accepted machine of the same configuration; retain shared period totals and causal allocation."
+      unit: "row unit"
+      frequency: "batch and monthly reconciliation"
+      temporal_coverage: "same production reporting period"
+      site_scope: "declared route at plant"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "purchase/SDS/grade certificates; meters; stock reconciliation; acceptance logs"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: configuration
+      applies_to: "all inventory rows"
+      requirement: "Never pool dobby/Jacquard or different module/drive counts without disclosed separate configurations. Every bought assembly versus fabricated material is mutually reconciled."
+      evidence: "drawings; approved make/buy BOM"
+    - id: balances
+      applies_to: "material, chemical and species records"
+      requirement: "For each actual material and chemical species close inputs plus opening stocks against accepted product, rejected product, external scrap, treatment transfers, emissions and closing stocks, including measured reaction formation/consumption. Measure moisture and the relevant metal/species assay separately on EACH applicable term: feedstock, product, swarf, dust, slag, sludge and residual solution; do not impose one common assay or equate gross metal/sludge mass with contained element. Paired internal transfers cancel only with matched material, species, period and quantity. Report residual and combined uncertainty from actual weighing, sampling, assays, meters and allocation; investigate significant disagreement using that documented uncertainty, never an invented universal tolerance."
+      evidence: "weighing; assays; stock records"
+    - id: water_closure
+      applies_to: "water and moisture records"
+      requirement: "Close purchased and extracted make-up water, input moisture and opening liquid stocks against shipped moisture, wastewater, sludge/sand moisture, test discharge, evaporation and closing stocks; include reaction water formed/consumed when relevant. Internal cooling, dilution and return water cancel as paired transfers, not fresh inputs. Use actual evaporation measurement or independently supported calculation and quantify its uncertainty."
+      evidence: "water meters; moisture samples; stock and reaction records"
+    - id: solvent_closure
+      applies_to: "actual solvent or organic coating records"
+      requirement: "For each actual solvent species, reconcile charged amount and opening stock to retained film, recovered solvent, capture media, wastewater, sludge, air release and closing stock; destruction requires actual control-device destruction evidence and reaction products. Capture is not destruction, and non-air residuals do not disappear. Keep uncertainties from flow, composition and control performance explicit."
+      evidence: "SDS; species assays; control reports; residue manifests"
+    - id: emissions
+      applies_to: "emission species records"
+      requirement: "Add each actual species and air/water/soil compartment separately. Fuel carbon balance cannot prove CO, NOx or coating solvent emissions; use species-specific measured/factor evidence and controls. No default empirical range is supplied."
+      evidence: "test reports; SDS; factor provenance"
+    - id: coverage
+      applies_to: "all inventory rows"
+      requirement: "Document present, absent, not applicable and unknown separately. Unknown grade, UUID, provider or amount is a gap, not zero. Include actual scrap, rework, packaging and pre-gate test textile/utility media."
+      evidence: "route coverage and gap register"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify complete auxiliary delivery boundary and actual host interface; reject main-machine, spare-part or textile-product reference substitution."
+    source_ids:
+      - un-cpc3-textile
+      - un-hs844811
+  - rule_id: validate_measurement
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require positive measured same-configuration net mass, accepted output linkage, every row protocol and explicit q_item/M conversion; packaging excluded from M. Factory metering rather than rated power establishes consumption."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check full route/make-buy coverage, stock balances and upstream burdens once. Require supplier identity for each concrete dataset and species-specific emissions. Unresolved generic output identity blocks finalized identity/publication even when measurement contract passes."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing datasets for the declared complete auxiliary configuration and downstream process/lifecyclemodel projections."
+  excluded_use: "Textile mill operation, host-loom manufacture, generic accessory production or mass-only comparisons of function."
+  required_metadata: "Family, model, interfaces, module/shaft count, included components, make/buy route, plant/year, measured net mass and acceptance."
+  required_quality_disclosure: "UUID/provider and chemical-grade gaps, actual measured values, allocation, exclusions and source limits. No invented lifetime or efficiency."
+  update_trigger: "BOM/configuration, route, supplier, controller/selection mechanism or acceptance test changes."
+data_sources:
+  - id: "un-cpc3-textile"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 Explanatory Notes (30 June 2025), pp. 237–238. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Current auxiliary/main-machine/parts boundary."
+  - id: "un-hs844811"
+    type: "official_guidance"
+    reference: "UNSD HS 2012 844811. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/32/844811"
+    used_for: "Dobby/Jacquard and card machinery examples; correspondence expressly CPC2.1, corroborative only."
+  - id: "staubli-s3200"
+    type: "handbook"
+    reference: "Stäubli Rotary dobby series S3200, public product specification. https://www.staubli.com/global/en/textile/products/dobby-machine/rotary-dobby-series-s3200.html"
+    used_for: "Housing, transmission, control and conditional cooling configuration; no grade or factory energy defaults."
+  - id: "staubli-sx-pro"
+    type: "handbook"
+    reference: "Stäubli SX PRO, public product specification. https://www.staubli.com/global/en/textile/products/jacquard-machine/flat-terry-technical-fabric-sx-pro.html"
+    used_for: "Knife/selection modules, integrated power, controller, ventilation and configured harness; counterexample to universal dobby recipe."
+  - id: "bonas-ji"
+    type: "handbook"
+    reference: "BONAS Ji Jacquards, Product tour. https://bonas.be/components/ji-jacquards"
+    used_for: "Independent electronic microselection, double-cam drive, controller and customized harness technology. No manufacturing mass/energy factor."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:becad119c190683d49af53f1e6b8433e6c8a5f69d821337f69f2df048196c567"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4465"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4465
+          line: 55
+          column: 1
+        end:
+          offset: 6003
+          line: 73
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Supplier-delivered verified stock, machined casting or completed component at plant receiving; upstream production is connected once. |\n| starting_condition_role | foreground_input |\n| product_classification_scope | Complete textile auxiliaries, not host machine or replacement components. |\n| recursive_input_rule | A bought auxiliary incorporated in the output is an upstream product; do not recreate its embedded manufacture or assign output identity to its parts. |\n| upstream_dataset_requirement | Match material grade, treatment, module configuration, delivery state, geography and period; unresolved provider links are disclosed. |\n| disclosure | Record included frame/stand, harness, cooling and controller; distinguish factory-owned test host from delivered apparatus. |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_gate | Include receiving, actual in-house fabrication, assembly, factory test, rework, treatment and packaging. Exclude later transport, installation, yarn/fabric production, maintenance and end-of-life; upstream bought burdens enter once. | un-cpc3-textile; bonas-ji |\n| boundary_route | Use actual route and make/buy matrix for every subassembly. A bought motor/controller/module includes its embedded metals, winding, board and production oil; no duplicate raw inputs. Conditional routes are neither universal nor zero when unknown. | staubli-s3200; staubli-sx-pro; bonas-ji |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 358
+              line: 8
+              column: 118
+          text: "# Auxiliary machinery for use with machines for textile extruding, preparing, spinning, weaving, knitting or the like"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4465
+              line: 55
+              column: 1
+            end:
+              offset: 4486
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_31455"
+      family: "allocation"
+      span:
+        start:
+          offset: 31455
+          line: 617
+          column: 1
+        end:
+          offset: 32148
+          line: 624
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_causal | Subdivide configuration, route and meter records first. Allocate unavoidable shared shop electricity, air, heat and rejects by documented causal machine-hours/load; never by nameplate rating alone. Retain before/after allocation totals and sensitivity. This is a foreground collection requirement. |  |\n| allocation_scrap | Segregate steel swarf, foundry returns, coating recovery and discarded modules. Cancel paired internal transfers; record external recoverable scrap and treatment once under the declared recycling model, without unsupported avoided-product credit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 358
+              line: 8
+              column: 118
+          text: "# Auxiliary machinery for use with machines for textile extruding, preparing, spinning, weaving, knitting or the like"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 31455
+              line: 617
+              column: 1
+            end:
+              offset: 31495
+              line: 617
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40426"
+      family: "validation"
+      span:
+        start:
+          offset: 40426
+          line: 656
+          column: 1
+        end:
+          offset: 41262
+          line: 664
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Verify complete auxiliary delivery boundary and actual host interface; reject main-machine, spare-part or textile-product reference substitution. | un-cpc3-textile; un-hs844811 |\n| validate_measurement | Require positive measured same-configuration net mass, accepted output linkage, every row protocol and explicit q_item/M conversion; packaging excluded from M. Factory metering rather than rated power establishes consumption. |  |\n| validate_completeness | Check full route/make-buy coverage, stock balances and upstream burdens once. Require supplier identity for each concrete dataset and species-specific emissions. Unresolved generic output identity blocks finalized identity/publication even when measurement contract passes. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 358
+              line: 8
+              column: 118
+          text: "# Auxiliary machinery for use with machines for textile extruding, preparing, spinning, weaving, knitting or the like"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40426
+              line: 656
+              column: 1
+            end:
+              offset: 40448
+              line: 656
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4465"
+      source_span:
+        start:
+          offset: 5411
+          line: 70
+          column: 1
+        end:
+          offset: 5691
+          line: 70
+          column: 281
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_4465"
+      source_span:
+        start:
+          offset: 5692
+          line: 71
+          column: 1
+        end:
+          offset: 6001
+          line: 71
+          column: 310
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_31455"
+      source_span:
+        start:
+          offset: 31549
+          line: 621
+          column: 1
+        end:
+          offset: 31873
+          line: 621
+          column: 325
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_31455"
+      source_span:
+        start:
+          offset: 31874
+          line: 622
+          column: 1
+        end:
+          offset: 32146
+          line: 622
+          column: 273
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_40426"
+      source_span:
+        start:
+          offset: 40502
+          line: 660
+          column: 1
+        end:
+          offset: 40699
+          line: 660
+          column: 198
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_40426"
+      source_span:
+        start:
+          offset: 40700
+          line: 661
+          column: 1
+        end:
+          offset: 40955
+          line: 661
+          column: 256
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_40426"
+      source_span:
+        start:
+          offset: 40956
+          line: 662
+          column: 1
+        end:
+          offset: 41260
+          line: 662
+          column: 305
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4465"
+      source_span:
+        start:
+          offset: 4465
+          line: 55
+          column: 1
+        end:
+          offset: 4486
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4465"
+      source_span:
+        start:
+          offset: 4514
+          line: 59
+          column: 1
+        end:
+          offset: 5357
+          line: 66
+          column: 141
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_31455"
+      source_span:
+        start:
+          offset: 31455
+          line: 617
+          column: 1
+        end:
+          offset: 31495
+          line: 617
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40426"
+      source_span:
+        start:
+          offset: 40426
+          line: 656
+          column: 1
+        end:
+          offset: 40448
+          line: 656
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:becad119c190683d49af53f1e6b8433e6c8a5f69d821337f69f2df048196c567"
+  generated_content_sha256: "sha256:a3a47c31b665778ed2a1ea0d8ae816de93cfbd4372d2bf10b0e9a6557d3bfb4c"

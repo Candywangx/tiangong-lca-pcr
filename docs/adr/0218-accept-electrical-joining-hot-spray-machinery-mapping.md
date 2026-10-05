@@ -1,0 +1,11 @@
+# Accept electrical joining and electric hot-spray apparatus mapping
+
+- Decision: accepted
+- Decided by: codex-direct-pcr-author
+- Decided at: 2026-10-02T20:18:03.432297Z
+
+CPC 3.0 44241 maps exactly to `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.electrical-machinery-and-apparatus-for-soldering-brazing-or-welding-electric-machines-a-c3fcc824`, a candidate authored methodology covering complete electrical soldering, brazing and welding apparatus and electric hot spraying of metals or sintered metal carbides. The record covers actual resistance, arc, transformer/rectifier/inverter, induction and electric spray configurations, including declared portable or robotic systems. Independent parts, robots, non-electric joining/spray/tempering apparatus and customer weld/coating production remain separate.
+
+Primary UN classification and manufacturer records establish semantic boundaries and configuration interfaces, without inventing a universal bill of materials, catalogue mass, duty-cycle burden or user-life consumable recipe. Independent review verified 78 atomic inventory cards, 70 distinct identities and 104 actual UUID searches. The 37 adopted UUID identities across 44 cards have actual state 100, compatible flow type, supply/classification and native reference property/unit bindings. Thirty-four cards retain evidence-backed identity gaps; ethylene glycol was not forced into an incompatible supplied-use route. Copper waste applies only to the actual compatible external hydrometallurgical receiver route.
+
+The bilingual methodology measures accepted configuration net mass, attributes actual local manufacturing and failed/repeated factory tests, separates bought-module upstream work, and checks contained-species/water/solvent balances, independently measured final releases, residual utilities and gross/net heat returns. Finite measurement validation performed 393 checks across 156 bilingual inventory rows with zero skipped checks. Both deterministic projection syncs were byte-identical. Repository and original isolated author-worktree validation evidence is retained with the parent integration receipt; this acceptance does not imply publication.

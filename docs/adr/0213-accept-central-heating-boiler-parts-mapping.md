@@ -1,0 +1,11 @@
+# Accept central-heating boiler parts methodology mapping
+
+- Decision: accepted
+- Decided at UTC: 2026-10-02T19:03:18.080234Z
+- Decision-maker: codex-direct-pcr-author
+
+CPC 3.0 `44833` maps exactly to `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.parts-of-central-heating-boilers-for-producing-hot-water-or-low-pressure-steam`, a candidate authored methodology for eligible delivered parts of central-heating boilers producing hot water or low-pressure steam. The complete category includes actual cast sections, assembled heat blocks, welded pressure parts, condensing exchanger configurations, jackets, flue collectors, seals and dedicated interfaces. Complete boilers, radiator parts, unrelated water-heater/high-pressure generator parts and independently classified generic functional units require their separate boundaries. Manufacturer service fit alone cannot classify a complete burner, pump, fan, valve or electrical apparatus as a boiler part.
+
+Actual original Weil-McLain submittal and replacement-kit bodies distinguish individual sections, assembled blocks, included sensors/fittings/seals and optional complete fire-tested boilers. Viessmann instructions 5800 178-06 January2025 provide a contrasting burner-component interface; the 2024 Foundry BREF decomposes only casting performed onsite. They establish architecture and supply states, not universal recipes, weights, pressures, combustion factors or lifetimes.
+
+Both languages use measured accepted part or identical-kit mass and supported Qattr/Dnet with acceptance-count cross-checks. Bought complete units include their upstream once. All basic identities were actually searched; adopted UUIDs were directly checked for type, state, native properties/units, chemistry, classification, supplied state and official Chinese name. Conditional grades and provider interfaces remain explicit. The category reference has matching 44833 name and classification; its inconsistent adjacent general comment is disclosed in evidence. Unresolved identities and future foreground quantities remain candidate gaps. Full supply/return heat, source-specific emissions, water/species assays and solvent fates prevent invented balance residuals. This positive edge does not publish the PCR or certify future datasets.

@@ -1,10 +1,1283 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44813"
-  title: "Electric blankets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.electric-blankets"
+  classification_refs: "CPC 3.0 44813 — Electric blankets"
+  covered_products: "Complete domestic electric textile overblanket; complete domestic electric textile underblanket"
+  excluded_products: "Passive blankets; separately supplied parts; medical therapy devices; heated garments and seats"
+  representative_product: "Domestic blanket with actual textile heater, control and power connection"
+  production_route: "Purchased textile and insulated-heater assembly; conditional on-site heater/yarn/textile manufacture; actual make/buy matrix"
+  market_state: "Accepted manufactured product at factory gate"
+functional_unit:
+  what: "Accepted complete domestic electric blanket of one declared configuration"
+  how_much: "1 kg net finished product"
+  how_well: "Meets actual model-specific electrical, thermal protection, textile and acceptance requirements"
+  how_long_or_cycle: "One factory production cohort; service life declared only in a separate use scenario"
+  reference_flow_link: "finished_blanket"
+system_boundary:
+  rules:
+    - rule_id: b_makebuy
+      applies_to: "all processes"
+      rule: "For each textile layer, heater, controller and connection, choose complete purchased component or on-site fabrication. The former includes its embedded materials upstream once; the latter records every actual individual grade, chemical, utility, waste and release. Add distinct atomic rows for actual alternatives not listed here; examples are not compulsory recipes."
+      source_ids: []
+    - rule_id: b_factory
+      applies_to: "all processes"
+      rule: "Include transport into the declared factory boundary, actual conversion, joining, testing, rework, reject treatment and packaging; transport providers require separate mode-specific freight rows. Later space/body heating, laundering, product lifetime and disposal belong only to explicitly separate lifecycle scenarios."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual purchased fabric/yarn, heater cable/yarn, control and connection subassemblies or documented raw-grade fabrication inputs"
+  starting_condition_role: "foreground_boundary_choice"
+  product_classification_scope: "Domestic electric textile blanket manufactured product"
+  recursive_input_rule: "A purchased unfinished/complete blanket entering further finishing is one upstream intermediate with documented included operations; do not recurse or duplicate its embedded inputs"
+  upstream_dataset_requirement: "Each purchased exchange needs actual grade, geography, technology and delivered interface matching supplier evidence"
+  disclosure: "Site, period, actual make/buy matrix, included accessories, upstream links, omitted operations and downstream scenario separation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Electric blankets"
+    uuid: "db63276c-3e0f-4fe9-80de-b45ff12d515b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "over/under form"
+    - dimensions
+    - "fibre blend/finish"
+    - "heater construction and conductor/insulation chemistry"
+    - zones
+    - "supply voltage and plug/geography"
+    - "controller/protection and sensing architecture"
+    - "included cord/accessories"
+    - "make/buy boundary"
+    - "accepted net mass and cohort"
+    - "site/period"
+    - "test protocol"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: physical_basis
+    applies_to: "physical material and species records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure each actual material and each contained species on its own matched assay and wet/dry basis. Gross cable or fabric mass is not metal, polymer or solvent content. Convert length/count using actual batch mass or grade-specific measured linear/areal mass."
+  - id: utility_basis
+    applies_to: "utility records"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Keep delivered electricity units, voltage, supplier/site geography and time period; document kWh/MJ conversions. No source-specific waste-incineration electricity is a generic factory grid supply."
+process_map:
+  - id: textile
+    name: "Textile preparation and cutting/sewing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual operation or actual purchased interface; absent route documented"
+    role: "foreground"
+    quantitative_reference: "finished_blanket"
+  - id: heater
+    name: "Heater manufacture or purchased-heater integration"
+    inclusion: "required"
+    inclusion_condition: "Actual operation or actual purchased interface; absent route documented"
+    role: "foreground"
+    quantitative_reference: "finished_blanket"
+  - id: assembly
+    name: "Control, wiring and blanket assembly"
+    inclusion: "required"
+    inclusion_condition: "Actual operation or actual purchased interface; absent route documented"
+    role: "foreground"
+    quantitative_reference: "finished_blanket"
+  - id: test
+    name: "Acceptance tests and reject handling"
+    inclusion: "required"
+    inclusion_condition: "Actual operation or actual purchased interface; absent route documented"
+    role: "foreground"
+    quantitative_reference: "finished_blanket"
+  - id: dispatch
+    name: "Packaging and factory-gate dispatch"
+    inclusion: "required"
+    inclusion_condition: "Actual operation or actual purchased interface; absent route documented"
+    role: "foreground"
+    quantitative_reference: "finished_blanket"
+  - id: services
+    name: "Residual factory shared services"
+    inclusion: "conditional"
+    inclusion_condition: "Actual operation or actual purchased interface; absent route documented"
+    role: "foreground"
+    quantitative_reference: "finished_blanket"
+process_inventory:
+  - id: textile
+    label: "Textile preparation and cutting/sewing"
+    inputs:
+      product:
+        - row_id: nonwoven
+          role: "Polyester-viscose-polypropylene needle-punched nonwoven"
+          name: "Polyester-viscose-polypropylene needle-punched nonwoven"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the documented mixed-fibre nonwoven route; record actual blend, finish, areal mass and recycled-content evidence. A finished fabric input includes upstream fibre production once."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - beurer-ub60
+            ranges: []
+        - row_id: cotton_fabric
+          role: "Cotton woven fabric"
+          name: "Cotton woven fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only where an actual cotton fabric layer is purchased; never substitute for the documented nonwoven blend."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: polyester_yarn
+          role: "Polyester textile yarn"
+          name: "Polyester textile yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for on-site weaving, knitting or insulating-yarn wrapping; distinguish fabric yarn from heater-core/overwrap yarn and do not duplicate purchased fabric."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - woven-heater-patent
+            ranges: []
+        - row_id: sewing_thread
+          role: "Polyester sewing thread"
+          name: "Polyester sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for the actual polyester seam or edging thread; other thread chemistry receives its own atomic row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: textile_power
+          role: "Purchased alternating-current electricity at factory supply voltage"
+          name: "Purchased alternating-current electricity at factory supply voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual cutting, sewing, weaving and finishing; operating nameplate blanket wattage is not production consumption."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: fabric_offcut
+          role: "Polyester-viscose-polypropylene nonwoven offcut"
+          name: "Polyester-viscose-polypropylene nonwoven offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only from the matching fabric route; weigh by blend and treatment destination; separate other textile waste."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: heater
+    label: "Heater manufacture or purchased-heater integration"
+    inputs:
+      product:
+        - row_id: heater_cable
+          role: "Insulated electric-blanket heating cable"
+          name: "Insulated electric-blanket heating cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased complete cable branch: record conductor, separator, jacket and sensing architecture from supplier drawing. Do not also input its embedded conductor or resin."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cable-heater-patent
+            ranges: []
+        - row_id: conductive_yarn
+          role: "Insulated stainless-steel conductive textile yarn"
+          name: "Insulated stainless-steel conductive textile yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased complete conductive-yarn branch when actual architecture matches; this differs from coaxial cable. No simultaneous embedded filament/yarn inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - woven-heater-patent
+            ranges: []
+        - row_id: steel_filament
+          role: "316L stainless-steel filament"
+          name: "316L stainless-steel filament"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for actual on-site manufacture of the documented stainless conductive yarn; verify alloy, filament diameter and insulation design. Other heater alloys require separate rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - woven-heater-patent
+            ranges: []
+        - row_id: separator_resin
+          role: "Polyethylene separator compound"
+          name: "Polyethylene separator compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for on-site separator extrusion with actual qualified polyethylene formulation; additives and NTC/fusible behaviour require actual formulation evidence. Other jacket/separator formulations are separate rows, not assumed PVC."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cable-heater-patent
+            ranges: []
+        - row_id: copper_bus
+          role: "Copper bus wire"
+          name: "Copper bus wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only where actual bus/connection is uncoated copper; plated tinsel, conductive paste and other conductor chemistries require separate specific records."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - woven-heater-patent
+            ranges: []
+        - row_id: heater_power
+          role: "Purchased alternating-current electricity at factory supply voltage"
+          name: "Purchased alternating-current electricity at factory supply voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter winding, extrusion, weaving-in or routing/attachment actually performed on site; purchased heater modules carry upstream fabrication once."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: heater_offcut
+          role: "Insulated electric-blanket heating-cable offcut"
+          name: "Insulated electric-blanket heating-cable offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only for actual cable cutting scrap; composition and treatment destination must distinguish this from bare-metal recycling."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly
+    label: "Control, wiring and blanket assembly"
+    inputs:
+      product:
+        - row_id: control_module
+          role: "Electric-blanket temperature-control module"
+          name: "Electric-blanket temperature-control module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased tested controller: record actual switches, circuit, protective functions and housing included; no universal discrete thermostat, no additional embedded board/resin burden."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - beurer-ub60
+            ranges: []
+        - row_id: control_board
+          role: "Electric-blanket populated control circuit board"
+          name: "Electric-blanket populated control circuit board"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for controller assembled on site from a purchased board, instead of a complete control module; bare-board fabrication and solder chemistry need additional route-specific records when actually performed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: control_housing
+          role: "ABS temperature-controller housing"
+          name: "ABS temperature-controller housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if the actual separately purchased housing is ABS and controller is built on site; other polymers and on-site moulding require their own resin, energy and waste rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: sensor
+          role: "Electric-blanket temperature sensor"
+          name: "Electric-blanket temperature sensor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a separately purchased physical sensor in the actual design; cable-integrated sensing is included in its cable, not repeated here."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cable-heater-patent
+            ranges: []
+        - row_id: power_cord
+          role: "Electric-blanket insulated mains cord with plug"
+          name: "Electric-blanket insulated mains cord with plug"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual plug geography, voltage and complete cord mass; count separately only when not included in purchased controller."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - beurer-ub60
+            ranges: []
+        - row_id: coupling
+          role: "Electric-blanket detachable electrical coupling"
+          name: "Electric-blanket detachable electrical coupling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if separately supplied and not already embedded in heater/controller/cord; record contacts, housing and strain relief interface."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - beurer-ub60
+            ranges: []
+        - row_id: adhesive
+          role: "Ethylene-vinyl-acetate hot-melt adhesive"
+          name: "Ethylene-vinyl-acetate hot-melt adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for actual EVA adhesive lamination; actual grades and additives require evidence. Sewn-only route is not applicable; solvent-based adhesive is a separate formulated exchange with constituent balance."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - woven-heater-patent
+            ranges: []
+        - row_id: isopropanol
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for actual cleaning chemistry; record concentration, recovery, retained residue and fate. Other cleaning solvents are separate species rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chemistry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemistry
+              source_ids: []
+            ranges: []
+        - row_id: assembly_power
+          role: "Purchased alternating-current electricity at factory supply voltage"
+          name: "Purchased alternating-current electricity at factory supply voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter joining, crimping, controller assembly and lamination actually performed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: adhesive_waste
+          role: "EVA hot-melt adhesive residue"
+          name: "EVA hot-melt adhesive residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only for actual EVA residue; record retained product and stock separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: solvent_waste
+          role: "Spent isopropanol cleaning liquid"
+          name: "Spent isopropanol cleaning liquid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only for actual spent cleaner; assay water/isopropanol and other components, receiver and final treatment."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chemistry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemistry
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol to air"
+          name: "Isopropanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or species-specific calculated air release; capture or unexplained solvent residual is not automatically air emission."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chemistry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemistry
+              source_ids: []
+            ranges: []
+  - id: test
+    label: "Acceptance tests and reject handling"
+    inputs:
+      product:
+        - row_id: test_power
+          role: "Purchased alternating-current electricity at factory supply voltage"
+          name: "Purchased alternating-current electricity at factory supply voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual continuity, insulation, temperature/protection and acceptance tests by batch; include failed/retested units. Do not multiply consumer power by arbitrary hours."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+        - row_id: test_water
+          role: "Purchased process water"
+          name: "Purchased process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for actual factory washability/wet test or cleaning; downstream consumer washing is outside factory scope."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: rejected_blanket
+          role: "Rejected electric blanket"
+          name: "Rejected electric blanket"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Unrecoverable actual reject crosses boundary to treatment; rework stays internal and its burden is retained once."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_wastewater
+          role: "Electric-blanket wet-test wastewater"
+          name: "Electric-blanket wet-test wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual wet-test discharge with measured composition and treatment destination; water volume is not pollutant mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: evaporated_water
+          role: "Water vapour to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual evaporation inside factory scope, determined from closed water account and uncertainty; not inferred from consumer drying."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+  - id: dispatch
+    label: "Packaging and factory-gate dispatch"
+    inputs:
+      product:
+        - row_id: cardboard
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual dispatch box; measured separately from product mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: polybag
+          role: "Polyethylene packaging bag"
+          name: "Polyethylene packaging bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual polyethylene bag; other films receive separate atomic rows."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_blanket
+          role: "Electric blankets"
+          name: "Electric blankets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db63276c-3e0f-4fe9-80de-b45ff12d515b"
+          property_unit: "Mass / kg"
+          description: "Accepted complete blanket with the actual included heater, control, cord and required accessories; packaging excluded from net mass."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: services
+    label: "Residual factory shared services"
+    inputs:
+      product:
+        - row_id: residual_power
+          role: "Purchased alternating-current electricity at factory supply voltage"
+          name: "Purchased alternating-current electricity at factory supply voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Only unassigned shared-service residual after every textile/heater/assembly/test/dispatch meter on the same site period; causal allocation, never whole-site total on top of submeter consumption."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_cohort
+    applies_to: "all processes"
+    rule: "Keep each model/configuration and its actual accepted output separate. Allocate shared factory operations by measured causal activity (machine time, actual load or area-time), disclose the basis and reconcile to the original period totals. Do not average different heater/control/textile configurations."
+    source_ids: []
+  - rule_id: a_scrap
+    applies_to: "physical material records"
+    rule: "Internal offcut or rework returns cancel as paired transfers, not free external inputs or coproduct credits. Include scrap conditioning and all rejected/reworked burden. External recycling or treatment uses documented receiver and allocation convention; do not assume avoided virgin material."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "reference product"
+      record_type: "weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted unit"
+      temporal_coverage: "one production cohort"
+      site_scope: "declared factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration; acceptance and inclusion list"
+    - protocol_id: cp_material
+      process_id: "all_processes"
+      flow_role: "specific material/component/waste"
+      record_type: "stock and batch records"
+      raw_fields: "grade; fibre blend; supplier; delivered form; batch; opening/closing stock; issues; returns; scrap; reject; actual wet/dry mass; own species assay; destination; configuration; Q; N"
+      collection_method: "Reconcile weighed receipts/issues/stocks, actual BOM, route and counted parts with calibrated batch weight. Each material/species has its own assay for each product/waste/release term. Pair internal return transfers. Count complete purchased component upstream once."
+      unit: "kg"
+      frequency: "each batch and period close"
+      temporal_coverage: "same production period"
+      site_scope: "actual factory operation and supplier interface"
+      aggregation_rule: "attributable exchange / accepted units"
+      quality_evidence: "weighbridge/scale; supplier composition; stock reconciliation; receiver evidence"
+    - protocol_id: cp_utility
+      process_id: "all_processes"
+      flow_role: "electricity"
+      record_type: "meter records"
+      raw_fields: "site; period; units; voltage; imports; generation; exports; storage; returns; all submeters; configuration; causal allocation; Q; N"
+      collection_method: "Read calibrated same-period meters and invoices. Assign actual textile/heater/assembly/test/dispatch loads first; shared service is only the unassigned site residual. Reconcile imports, actual generation, exports and storage changes without double counting. Investigate negative residuals with period/unit/combined meter uncertainty; never clip to zero. On-site generation needs its own fuel and species-specific release rows."
+      unit: "kWh"
+      frequency: "each test batch and period"
+      temporal_coverage: "same production period"
+      site_scope: "factory utility boundary"
+      aggregation_rule: "attributable exchange / accepted units"
+      quality_evidence: "meter calibration; bills; allocation and site reconciliation"
+    - protocol_id: cp_chemistry
+      process_id: "assembly"
+      flow_role: "individual adhesive/solvent/species"
+      record_type: "chemical and sampling records"
+      raw_fields: "chemical grade; formulation; purity; wet/dry basis; actual inputs; stock changes; retained product; recovered solvent; capture media; measured destruction; waste liquid; actual air release; Q; N"
+      collection_method: "Measure species mass for each term using its own matched assay; balance inputs plus reaction production against product retention, stocks, recovered material, captures, liquid/solid waste, actual destruction/reaction consumption and measured releases. Capture is not destruction; unexplained residual is not automatically air. Resolve closure against actual combined sampling, meter and allocation uncertainty."
+      unit: "kg"
+      frequency: "each batch and sampled campaign"
+      temporal_coverage: "same production period"
+      site_scope: "actual chemical use boundary"
+      aggregation_rule: "attributable exchange / accepted units"
+      quality_evidence: "SDS/formulation; assays; capture/treatment records; sampling method and uncertainty"
+    - protocol_id: cp_water
+      process_id: "test"
+      flow_role: "water and wet-test discharge"
+      record_type: "meter and moisture records"
+      raw_fields: "purchased water; feed moisture; opening/closing water stocks; actual product moisture; evaporation; discharge; reaction production/consumption; paired internal returns; discharge assays; Q; N"
+      collection_method: "Measure all actual water-bearing inputs, outputs and stock changes on matched period/basis. Each feed, product, scrap, sludge, wastewater and opening/closing stock term uses its own measured water fraction/moisture; each liquid volume conversion uses its own measured density. Gross wet-waste mass is not water mass; never apply one moisture percentage to all terms. Include reaction water and pair internal returns; independently measure discharge/evaporation where available and investigate residual against combined uncertainty. Pollutant mass uses each discharge species concentration and actual water quantity; do not infer pollutant amount from water alone."
+      unit: "kg"
+      frequency: "each wet-test batch and period"
+      temporal_coverage: "same production period"
+      site_scope: "factory wet operation"
+      aggregation_rule: "attributable exchange / accepted units"
+      quality_evidence: "meters; moisture samples; laboratory assay; treatment contract"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished unit; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+    - id: water_balance
+      applies_to: "test_water; test_wastewater; evaporated_water"
+      rule: "Fresh water + feed moisture + opening water stock + reaction water generation = product moisture + scrap water + sludge water + external discharge water + evaporation + closing water stock + reaction water consumption. Each actual feed/product/scrap/sludge/wastewater/stock term uses its own measured water fraction and wet/dry basis; each liquid volume uses its own measured density. Gross wet waste is not water mass. Paired internal returns cancel. Reconcile the actual raw period before normalization and investigate closure with combined measurement, sampling and allocation uncertainty; no universal tolerance."
+      inputs:
+        - cp_water
+        - "actual water fractions"
+        - "actual liquid densities"
+        - "matched raw-period water and reaction/stock records"
+      output: "Closed actual raw-period water account"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_trace
+      applies_to: "all processes"
+      requirement: "Retain actual model-specific BOM, make/buy matrix, test acceptance, raw totals, uncertainty, supplier interfaces and missing/zero/absent distinctions. Source patents are architecture examples; public product pages establish no factory operating factors."
+      evidence: "Signed factory and supplier records"
+    - id: dq_balance
+      applies_to: "physical material and species records"
+      requirement: "Material/species inputs plus reaction production equal outputs plus stock increase and reaction consumption after paired internal transfers cancel. Each product/scrap/sludge/wastewater/release term uses its own actual assay and wet/dry basis; never apply one alloy fraction to all terms. Investigate imbalance against measured combined uncertainty with no universal tolerance. Fuel carbon alone does not determine CO or NOx."
+      evidence: "Assays; stock/reaction records; closure and uncertainty report"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "reference product"
+    rule: "Require actual domestic principal function, model/configuration qualifiers, accepted complete delivered inclusion list and calibrated net masses. N and D must cover the same accepted cohort; M = D/N; reconcile Q/N then q_item/M to Q/D. Do not mix configurations or include packaging/reject mass in D."
+    source_ids: []
+  - rule_id: v_routes
+    applies_to: "all processes"
+    rule: "Every actual heater conductor, insulation layer, textile, controller/sensor, cord/connector, adhesive and auxiliary has one evidenced make/buy interface. Complete purchased modules and their embedded inputs cannot coexist. Conditional alternatives require BOM evidence; not_applicable needs verified absence. All actual exchanges have atomic physical/chemical identities, matched unit support and provider interfaces; unresolved fields remain gaps."
+    source_ids: []
+  - rule_id: v_balances
+    applies_to: "physical material and species records"
+    rule: "Close each material/species and water account with matched own assays, moisture, stocks, reactions, product, scrap, waste liquid/solid, measured releases and paired internal returns. Distinguish recovery, capture and actual destruction. Investigate residual and uncertainty; missing composition or fate makes affected validation inconclusive."
+    source_ids: []
+  - rule_id: v_energy
+    applies_to: "utility records"
+    rule: "Same-period site reconciliation binds imports, generation, exports/storage and all assigned process loads. Shared services include only unassigned residual, with causal allocation. Negative residuals need investigation; consumer power/time, product-webpage mass and an incineration-specific electricity UUID are not factory defaults."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Dataset-production foreground package, projected to process or lifecyclemodel with separately declared downstream scenarios"
+  allowed_use: "Matched configuration and plant-gate domestic blanket supply"
+  excluded_use: "Unqualified blanket averages; medical service; body/room heating service without use scenario; unfinished heater as complete blanket"
+  required_metadata: "All reference qualifiers; site/time; actual route and inclusion list; allocation; supplier matching; complete raw-period conversion"
+  required_quality_disclosure: "Sources, measurement/sampling uncertainty, unresolved UUID/provider/recipe gaps, actual balance closure and validation coverage"
+  update_trigger: "Changed textile/heater/insulation/control design, make/buy boundary, supplier, geography, test method or site period"
+data_sources:
+  - id: "beurer-ub60"
+    type: "handbook"
+    reference: "https://www.beurer.com/global/p/30036/ — UB 60 Green Planet; snapshot 2026-10-02"
+    used_for: "Underblanket example; actual mixed-fibre nonwoven, removable control/power interface, temperature monitoring. No universal composition or factory quantity."
+  - id: "beurer-throws"
+    type: "handbook"
+    reference: "https://www.beurer.com/global/c/0020103/ — Heated Throws; snapshot 2026-10-02"
+    used_for: "Domestic overblanket examples; consumer washing/operation are separate. Same publisher as UB60, not independent evidence."
+  - id: "woven-heater-patent"
+    type: "literature"
+    reference: "US6888112B2 (2005-05-03), https://patents.google.com/patent/US6888112B2/en"
+    used_for: "Independent original technical disclosure: integrated conductive yarn, stainless-filament/polyester example, finishing and bus connection variants. Patent embodiments are conditional architecture, not actual factory recipe or quantitative ranges."
+  - id: "cable-heater-patent"
+    type: "literature"
+    reference: "US8698045B2 (2014-04-15), https://patents.google.com/patent/US8698045B2/en"
+    used_for: "Independent original technical disclosure: coaxial conductor/separator/jacket, cable-integrated sensing and polyethylene example. Broad pad terminology does not establish domestic-blanket classification. No mandated polymer/alloy or operating default."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:59bf7c3aa8437addb524a14974b540b5077fbdee8fc337dd3d04c5000dfc242a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4532"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4532
+          line: 58
+          column: 1
+        end:
+          offset: 6261
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual purchased fabric/yarn, heater cable/yarn, control and connection subassemblies or documented raw-grade fabrication inputs |\n| starting_condition_role | foreground_boundary_choice |\n| product_classification_scope | Domestic electric textile blanket manufactured product |\n| recursive_input_rule | A purchased unfinished/complete blanket entering further finishing is one upstream intermediate with documented included operations; do not recurse or duplicate its embedded inputs |\n| upstream_dataset_requirement | Each purchased exchange needs actual grade, geography, technology and delivered interface matching supplier evidence |\n| disclosure | Site, period, actual make/buy matrix, included accessories, upstream links, omitted operations and downstream scenario separation |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_makebuy | all processes | For each textile layer, heater, controller and connection, choose complete purchased component or on-site fabrication. The former includes its embedded materials upstream once; the latter records every actual individual grade, chemical, utility, waste and release. Add distinct atomic rows for actual alternatives not listed here; examples are not compulsory recipes. |  |\n| b_factory | all processes | Include transport into the declared factory boundary, actual conversion, joining, testing, rework, reject treatment and packaging; transport providers require separate mode-specific freight rows. Later space/body heating, laundering, product lifetime and disposal belong only to explicitly separate lifecycle scenarios. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 201
+              line: 9
+              column: 1
+            end:
+              offset: 220
+              line: 9
+              column: 20
+          text: "# Electric blankets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4532
+              line: 58
+              column: 1
+            end:
+              offset: 4553
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32909"
+      family: "allocation"
+      span:
+        start:
+          offset: 32909
+          line: 641
+          column: 1
+        end:
+          offset: 33699
+          line: 648
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_cohort | all processes | Keep each model/configuration and its actual accepted output separate. Allocate shared factory operations by measured causal activity (machine time, actual load or area-time), disclose the basis and reconcile to the original period totals. Do not average different heater/control/textile configurations. |  |\n| a_scrap | physical material records | Internal offcut or rework returns cancel as paired transfers, not free external inputs or coproduct credits. Include scrap conditioning and all rejected/reworked burden. External recycling or treatment uses documented receiver and allocation convention; do not assume avoided virgin material. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 201
+              line: 9
+              column: 1
+            end:
+              offset: 220
+              line: 9
+              column: 20
+          text: "# Electric blankets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32909
+              line: 641
+              column: 1
+            end:
+              offset: 32949
+              line: 641
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41290"
+      family: "validation"
+      span:
+        start:
+          offset: 41290
+          line: 678
+          column: 1
+        end:
+          offset: 42984
+          line: 687
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | reference product | Require actual domestic principal function, model/configuration qualifiers, accepted complete delivered inclusion list and calibrated net masses. N and D must cover the same accepted cohort; M = D/N; reconcile Q/N then q_item/M to Q/D. Do not mix configurations or include packaging/reject mass in D. |  |\n| v_routes | all processes | Every actual heater conductor, insulation layer, textile, controller/sensor, cord/connector, adhesive and auxiliary has one evidenced make/buy interface. Complete purchased modules and their embedded inputs cannot coexist. Conditional alternatives require BOM evidence; not_applicable needs verified absence. All actual exchanges have atomic physical/chemical identities, matched unit support and provider interfaces; unresolved fields remain gaps. |  |\n| v_balances | physical material and species records | Close each material/species and water account with matched own assays, moisture, stocks, reactions, product, scrap, waste liquid/solid, measured releases and paired internal returns. Distinguish recovery, capture and actual destruction. Investigate residual and uncertainty; missing composition or fate makes affected validation inconclusive. |  |\n| v_energy | utility records | Same-period site reconciliation binds imports, generation, exports/storage and all assigned process loads. Shared services include only unassigned residual, with causal allocation. Negative residuals need investigation; consumer power/time, product-webpage mass and an incineration-specific electricity UUID are not factory defaults. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 201
+              line: 9
+              column: 1
+            end:
+              offset: 220
+              line: 9
+              column: 20
+          text: "# Electric blankets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41290
+              line: 678
+              column: 1
+            end:
+              offset: 41312
+              line: 678
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_makebuy"
+      identity_kind: "explicit"
+      unit_id: "normative_4532"
+      source_span:
+        start:
+          offset: 5502
+          line: 73
+          column: 1
+        end:
+          offset: 5904
+          line: 73
+          column: 403
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_factory"
+      identity_kind: "explicit"
+      unit_id: "normative_4532"
+      source_span:
+        start:
+          offset: 5905
+          line: 74
+          column: 1
+        end:
+          offset: 6259
+          line: 74
+          column: 355
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_32909"
+      source_span:
+        start:
+          offset: 33022
+          line: 645
+          column: 1
+        end:
+          offset: 33359
+          line: 645
+          column: 338
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_32909"
+      source_span:
+        start:
+          offset: 33360
+          line: 646
+          column: 1
+        end:
+          offset: 33697
+          line: 646
+          column: 338
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_41290"
+      source_span:
+        start:
+          offset: 41385
+          line: 682
+          column: 1
+        end:
+          offset: 41726
+          line: 682
+          column: 342
+    - pointer: "/validation_rules/1"
+      rule_id: "v_routes"
+      identity_kind: "explicit"
+      unit_id: "normative_41290"
+      source_span:
+        start:
+          offset: 41727
+          line: 683
+          column: 1
+        end:
+          offset: 42209
+          line: 683
+          column: 483
+    - pointer: "/validation_rules/2"
+      rule_id: "v_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_41290"
+      source_span:
+        start:
+          offset: 42210
+          line: 684
+          column: 1
+        end:
+          offset: 42612
+          line: 684
+          column: 403
+    - pointer: "/validation_rules/3"
+      rule_id: "v_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_41290"
+      source_span:
+        start:
+          offset: 42613
+          line: 685
+          column: 1
+        end:
+          offset: 42982
+          line: 685
+          column: 370
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4532"
+      source_span:
+        start:
+          offset: 4532
+          line: 58
+          column: 1
+        end:
+          offset: 4553
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4532"
+      source_span:
+        start:
+          offset: 4581
+          line: 62
+          column: 1
+        end:
+          offset: 5429
+          line: 69
+          column: 147
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32909"
+      source_span:
+        start:
+          offset: 32909
+          line: 641
+          column: 1
+        end:
+          offset: 32949
+          line: 641
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41290"
+      source_span:
+        start:
+          offset: 41290
+          line: 678
+          column: 1
+        end:
+          offset: 41312
+          line: 678
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:59bf7c3aa8437addb524a14974b540b5077fbdee8fc337dd3d04c5000dfc242a"
+  generated_content_sha256: "sha256:b4d49650182655f27a237580efa81203ae4ddf433187fdd091bb20636e8217e6"

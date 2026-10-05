@@ -1,0 +1,9 @@
+# Accept CPC 44242 nonelectric joining gas surface tempering mapping
+
+Accept an exact CPC 3.0 44242 edge to `pcr.metal-products-machinery-and-equipment.special-purpose-machinery.non-electrical-machinery-and-apparatus-for-soldering-brazing-or-welding-gas-operated-su-84b70b48`, a candidate with authored bilingual methodology and a current structured projection.
+
+Full non-electrical soldering/brazing/welding and gas-operated surface-tempering machinery scope; supplied electric controls, circulation and motion remain auxiliary to gas heat. Harris joining kits, Sievert copper-bit soldering systems and stationary/spin/progressive/combination flame architectures support distinct conditional configurations. Empty-cylinder, retained fill, consumed factory trials and actual quench media remain separated; cutting-only, electric joining and independent parts have distinct boundaries. Gaseous oxygen is qualified cryogenic-at-plant Mass supply, not an ILCD elementary flow; LPG, acetylene and n-butane retain actual mixture/supply conditions.
+
+Every atomic identity has actual bounded UUID search evidence. Adoption requires independently reviewed published identity/type, supplied state, native reference property/unit, classification, chemical and provider interface; unresolved identities remain explicit gaps. The methodology preserves actual collected quantities, factory-only test burdens and accepted complete configuration, and has complete finite bilingual measurement coverage. Original source and extraction bytes plus verified fragments were independently checked. Source examples do not establish a universal factory recipe, lifetime or completed foreground/provider records.
+
+Decision: accepted by codex-direct-pcr-author at 2026-10-02T21:14:31.255674Z. This accepts the classification link to usable candidate methodology, without publishing it.
