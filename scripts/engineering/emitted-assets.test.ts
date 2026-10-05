@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, 
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test, { type TestContext } from 'node:test';
-import { stageTestRuntimeAssets, TEST_RUNTIME_SCHEMAS } from './emitted-assets.ts';
+import { stageTestRuntimeAssets, TEST_RUNTIME_SCHEMAS, TEST_BUILDER_SCHEMAS } from './emitted-assets.ts';
 function fixture(t: TestContext) {
   const root = mkdtempSync(path.join(tmpdir(), 'pcr-test-assets-contract-')); t.after(() => rmSync(root, { recursive: true, force: true }));
   const source = path.join(root, 'packages/pcr-core/schemas'), emitted = path.join(root, 'dist/test-engineering');
@@ -57,4 +57,15 @@ test('source and destination aliases cannot redirect schema staging', t => {
   rmSync(path.join(f.source, TEST_RUNTIME_SCHEMAS[0])); writeFileSync(path.join(f.source, TEST_RUNTIME_SCHEMAS[0]), '{}');
   mkdirSync(path.dirname(f.target), { recursive: true }); symlinkSync(elsewhere, f.target, 'dir');
   assert.throws(() => stageTestRuntimeAssets(f.root), /aliases/u); assert.equal(existsSync(path.join(elsewhere, TEST_RUNTIME_SCHEMAS[0])), false);
+});
+
+test('compiled content checks receive the exact Builder schema closure in its own owned directory', t => {
+  const f=fixture(t),source=path.join(f.root,'builder/schemas');mkdirSync(source,{recursive:true});
+  for(const name of TEST_BUILDER_SCHEMAS)writeFileSync(path.join(source,name),JSON.stringify({id:name}));
+  const core=stageTestRuntimeAssets(f.root),builder=stageTestRuntimeAssets(f.root,'builder');
+  assert.equal(builder.files,8);assert.notEqual(core.output,builder.output);
+  for(const name of TEST_BUILDER_SCHEMAS)assert.deepEqual(readFileSync(path.join(builder.output,name)),readFileSync(path.join(source,name)));
+  writeFileSync(path.join(builder.output,TEST_BUILDER_SCHEMAS[0]),'foreign');
+  assert.throws(()=>stageTestRuntimeAssets(f.root,'builder'),/modified/u);
+  assert.throws(()=>stageTestRuntimeAssets(f.root,'unknown' as 'core'),/Unknown/u);
 });

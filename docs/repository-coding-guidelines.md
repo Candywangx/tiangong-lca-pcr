@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 static TypeScript producer fixture and provider CI lane; strict source checks, exact test-only exclusion and preserved production import guards follow the engineering contract."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 isolated test owners and source-bound execution/coverage receipts; TypeScript, explicit side effects and production boundaries remain intact."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
@@ -76,3 +76,12 @@ validation entrypoint after installing both current dependency graphs. Each phas
 must distinguish native source tests, emitted code tests and installed-artifact
 qualification. Do not weaken production filesystem guards to accommodate test
 fixture aliases, or copy known semantic losses into expected output.
+
+Test fixtures should exercise production builders and integrity boundaries with
+bounded representative data. Keep independent full-corpus reproducibility in its
+own mandatory qualification test. `test:offline:portable` is the compact portable
+selection; complete `all`/`root` selections still include corpus qualification.
+Follow [CI qualification lanes](typescript-engineering.md#ci-qualification-lanes)
+for complete shard membership, fresh invocation-bound receipts and raw coverage.
+Do not infer test completeness from threshold success or a requested V8 flag,
+reuse old evidence for the data lane, or broaden its allowlist by path similarity.

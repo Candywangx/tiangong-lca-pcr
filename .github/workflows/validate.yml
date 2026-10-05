@@ -20,59 +20,95 @@ on:
 permissions:
   contents: read
 
-jobs:
-  validate:
-    outputs:
-      coverage_artifact_id: ${{ steps.validation-coverage.outputs.artifact-id }}
-    runs-on: ubuntu-latest
-    # Full source-fidelity qualification includes corpus, recovery and real package tests.
-    timeout-minutes: 90
+concurrency:
+  group: pcr-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  CI_EVENT_NAME: ${{ github.event_name }}
+  CI_WORKFLOW_INPUTS: ${{ toJSON(inputs) }}
+  CI_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+  CI_HEAD_SHA: ${{ github.sha }}
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      mode: ${{ steps.plan.outputs.mode }}
+      plan_artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Initialize validation evidence
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Classify the complete exact-source diff and freeze test membership
+        id: plan
         run: |
-          mkdir -p "$RUNNER_TEMP/pcr-validation"
-          printf 'Validation has not started.\n' > "$RUNNER_TEMP/pcr-validation/validation.log"
+          mkdir -p "$RUNNER_TEMP/pcr-plan"
+          node scripts/engineering/ci-plan.ts plan "$RUNNER_TEMP/pcr-plan/ci.json"
+          mode=$(jq -r '.mode' "$RUNNER_TEMP/pcr-plan/ci.json")
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          if [ "$mode" = full ]; then
+            node scripts/engineering/qualification-plan.ts plan "$RUNNER_TEMP/pcr-plan/qualification.json"
+          fi
+      - name: Preserve the exact qualification plan
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-qualification-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-plan/
+          if-no-files-found: error
+          retention-days: 14
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+  contracts:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
-
-      - name: Select the pinned validation package manager
-        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
-
-      - name: Install dependencies
-        run: npm ci && npm --prefix packages/pcr-docs ci
-
-      - name: Install browser qualification runtimes
-        run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
-
-      - name: Verify emitted TypeScript engineering tests
-        run: npm run test:engineering:compiled
-
-      - name: Install PDF text extractor
+          cache-dependency-path: |
+            package-lock.json
+            packages/pcr-docs/package-lock.json
+      - name: Install the pinned validation toolchain
         run: |
-          sudo apt-get update
-          sudo apt-get install -y poppler-utils
-          pdftotext -v
-
-      - name: Validate library contracts
+          npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+          npm ci
+          npm --prefix packages/pcr-docs ci
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
+      - name: Initialize contract evidence
         run: |
-          evidence="$RUNNER_TEMP/pcr-validation"
+          mkdir -p "$RUNNER_TEMP/pcr-content-contracts"
+          printf 'Validation has not started.\n' > "$RUNNER_TEMP/pcr-content-contracts/validation.log"
+      - name: Verify source and strict types
+        run: |
+          node scripts/engineering/ci-plan.ts verify "$RUNNER_TEMP/pcr-plan/ci.json"
+          npm run runtime:check
+          npm run migration:check
+          npm run typecheck:all
+      - name: Validate complete library contracts
+        run: |
+          evidence="$RUNNER_TEMP/pcr-content-contracts"
+          mkdir -p "$evidence"
           if [ -e .reports/pcr-lint.json ] || [ -L .reports/pcr-lint.json ]; then
             printf 'Refusing a pre-existing lint report; validation did not run.\n' > "$evidence/validation.log"
             cat "$evidence/validation.log"
             exit 1
           fi
           set +e
-          node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-coverage/validation" -- npm run validate > "$evidence/validation.log" 2>&1
+          npm run lint > "$evidence/validation.log" 2>&1
           validation_status=$?
           set -e
           cat "$evidence/validation.log"
@@ -83,36 +119,101 @@ jobs:
             if [ "$validation_status" -eq 0 ]; then validation_status=1; fi
           fi
           exit "$validation_status"
-
-      - name: Preserve exact test coverage inputs
-        id: validation-coverage
+      - name: Verify changed canonical records
+        run: node scripts/engineering/ci-content.ts "$RUNNER_TEMP/pcr-plan/ci.json" "$RUNNER_TEMP/pcr-content-contracts/selected-content.json"
+      - name: Verify emitted TypeScript engineering tests
+        if: needs.plan.outputs.mode == 'full'
+        run: npm run test:engineering:compiled
+      - name: Preserve content qualification evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: pcr-coverage-validation-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pcr-coverage/validation/
+          name: pcr-content-contracts-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-content-contracts/
           if-no-files-found: error
           retention-days: 14
 
-      - name: Preserve browser evidence
+  test-shards:
+    needs: plan
+    if: needs.plan.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [harness, core, builder, consumer, docs, engineering, corpus, general]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            packages/pcr-docs/package-lock.json
+      - name: Install pinned shard dependencies
+        run: |
+          npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+          npm ci
+          npm --prefix packages/pcr-docs ci
+      - name: Bind the actual pinned npm entry for direct shard children
+        run: |
+          npm_cli="$(readlink -f "$(command -v npm)")"
+          test "$(node "$npm_cli" --version)" = "$(jq -r '.npm' product-release.json)"
+          printf 'npm_execpath=%s\n' "$npm_cli" >> "$GITHUB_ENV"
+      - name: Install browser runtimes for the consumer shard
+        if: matrix.shard == 'consumer'
+        run: node node_modules/playwright/cli.js install --with-deps chromium firefox webkit
+      - name: Install PDF extraction for source-evidence tests
+        if: matrix.shard == 'harness'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
+      - name: Execute exactly the frozen shard
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/pcr-receipts"
+          if [ "$SHARD" = corpus ]; then
+            node scripts/engineering/qualification-plan.ts run "$RUNNER_TEMP/pcr-plan/qualification.json" "$SHARD" "$RUNNER_TEMP/pcr-receipts/$SHARD.json"
+          else
+            node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-coverage" --qualification-plan "$RUNNER_TEMP/pcr-plan/qualification.json" --selection "$SHARD" -- node scripts/engineering/qualification-plan.ts run "$RUNNER_TEMP/pcr-plan/qualification.json" "$SHARD" "$RUNNER_TEMP/pcr-receipts/$SHARD.json"
+          fi
+      - name: Preserve exact shard execution receipt
         if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-shard-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-receipts/${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Preserve isolated raw coverage inputs
+        if: always() && matrix.shard != 'corpus'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pcr-coverage-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-coverage/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Preserve browser diagnostics
+        if: always() && matrix.shard == 'consumer'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: pcr-browser-${{ github.run_id }}-${{ github.run_attempt }}
           path: .reports/browser/
+          include-hidden-files: true
           if-no-files-found: warn
           retention-days: 14
 
-      - name: Preserve complete validation diagnostics
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: pcr-validation-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pcr-validation/
-          if-no-files-found: error
-          retention-days: 14
-
   documentation:
+    needs: plan
     runs-on: ubuntu-latest
     # Instrumented full export runs here; EdgeOne only imports the sealed archive.
     timeout-minutes: 60
@@ -164,10 +265,11 @@ jobs:
         run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
       - name: Install locked dependencies
         run: npm ci && npm --prefix packages/pcr-docs ci
-      - name: Verify document transformations
-        run: npm --prefix packages/pcr-docs test
-      - name: Verify real product packing with the release npm version
-        run: npm run product:test
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
       - name: Identify the clean artifact candidate
         id: candidate
         run: node builder/scripts/product-release.ts identity
@@ -179,14 +281,20 @@ jobs:
           # Public ownership markers already served by the production site.
           PCR_GOOGLE_SITE_VERIFICATION: 4W5GYY5tOwicaRGTZr7AdfJ4VB8KB87r2ex-rZxP-fM
           PCR_BAIDU_SITE_VERIFICATION: codeva-IJKQ9SxWkZ
-        run: node scripts/engineering/coverage.ts collect "${{ runner.temp }}/pcr-coverage/documentation" -- npm --prefix packages/pcr-docs run build
+        run: |
+          node scripts/engineering/ci-plan.ts verify "$RUNNER_TEMP/pcr-plan/ci.json"
+          if [ "${{ needs.plan.outputs.mode }}" = full ]; then
+            node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-documentation-coverage" --qualification-plan "$RUNNER_TEMP/pcr-plan/qualification.json" --selection documentation -- npm --prefix packages/pcr-docs run build
+          else
+            npm --prefix packages/pcr-docs run build
+          fi
       - name: Preserve exact full-build coverage inputs
         id: documentation-coverage
-        if: always()
+        if: always() && needs.plan.outputs.mode == 'full'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: pcr-coverage-documentation-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pcr-coverage/documentation/
+          name: pcr-documentation-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-documentation-coverage/
           if-no-files-found: error
           retention-days: 14
       - name: Verify shared SEO invariants without rebuilding
@@ -222,6 +330,8 @@ jobs:
           retention-days: ${{ inputs.product_tag != '' && 30 || 7 }}
 
   offline-distribution:
+    needs: plan
+    if: needs.plan.outputs.mode == 'full'
     strategy:
       fail-fast: false
       matrix:
@@ -257,10 +367,8 @@ jobs:
         run: npm run runtime:release
       - name: Typecheck portable Node and Viewer projects
         run: npm run typecheck:node
-      - name: Verify native engineering boundaries
-        run: npm run test:engineering
-      - name: Verify complete offline distribution and reproducibility
-        run: npm run test:offline
+      - name: Verify compact real offline distribution and reproducibility
+        run: npm run test:offline:portable
 
 
   sealed-distribution:
@@ -347,6 +455,8 @@ jobs:
 
 
   provider-importer:
+    needs: plan
+    if: needs.plan.outputs.mode == 'full'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -377,7 +487,8 @@ jobs:
           node --test builder/scripts/product-web-materialize.test.ts packages/pcr-docs/scripts/hosting-contract.test.ts
 
   source-coverage:
-    needs: [validate, documentation]
+    needs: [plan, test-shards, documentation]
+    if: needs.plan.outputs.mode == 'full'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -393,25 +504,56 @@ jobs:
           npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
           npm ci --ignore-scripts --no-audit --no-fund
           npm --prefix packages/pcr-docs ci --ignore-scripts --no-audit --no-fund
-      - name: Download the exact test measurement
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
+      - name: Download every receipt without flattening shard directories
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
-          artifact-ids: ${{ needs.validate.outputs.coverage_artifact_id }}
-          merge-multiple: true
-          path: ${{ runner.temp }}/pcr-coverage/validation
-      - name: Download the exact full-build measurement
+          pattern: pcr-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-receipts
+      - name: Download isolated current-invocation raw measurements
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          pattern: pcr-coverage-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-measurements
+      - name: Download exact full-build measurement
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.documentation.outputs.coverage_artifact_id }}
+          path: ${{ runner.temp }}/pcr-documentation-coverage
           merge-multiple: true
-          path: ${{ runner.temp }}/pcr-coverage/documentation
-      - name: Enforce complete source and critical-file coverage
-        run: npm run coverage:report -- "${{ runner.temp }}/pcr-coverage/report" "${{ runner.temp }}/pcr-coverage/validation" "${{ runner.temp }}/pcr-coverage/documentation"
-      - name: Preserve source-accounted coverage and rejection ledger
+      - name: Enforce complete shard membership and source-accounted coverage
+        run: node scripts/engineering/coverage-ci.ts "$RUNNER_TEMP/pcr-plan/qualification.json" "$RUNNER_TEMP/pcr-receipts" "$RUNNER_TEMP/pcr-measurements" "$RUNNER_TEMP/pcr-documentation-coverage" "$RUNNER_TEMP/pcr-coverage-report"
+      - name: Preserve coverage and rejection evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: pcr-source-coverage-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pcr-coverage/report/
+          path: ${{ runner.temp }}/pcr-coverage-report/
           if-no-files-found: error
           retention-days: 30
+
+  validate:
+    if: always()
+    needs: [plan, contracts, test-shards, documentation, offline-distribution, provider-importer, sealed-distribution, sealed-web, source-coverage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
+      - name: Enforce the selected lane without hiding missing or failed jobs
+        env:
+          CI_JOB_RESULTS: ${{ toJSON(needs) }}
+        run: node scripts/engineering/ci-gate.ts "$RUNNER_TEMP/pcr-plan/ci.json"

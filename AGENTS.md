@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 provider-runtime recovery; repository ownership, canonical PCR identities, scientific/translation gates and immutable release boundaries are unchanged. Runtime separation is governed by the updated linked contracts."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 full/data qualification ownership, complete shard evidence and unchanged scientific/publication boundaries; hosted CI qualification remains required."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -317,6 +317,17 @@ npm run validate
 
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
+
+CI uses the stable `validate` aggregate gate under
+[the engineering qualification contract](docs/typescript-engineering.md#ci-qualification-lanes).
+Full mode requires all eight fresh source-bound shard receipts, independent
+full-corpus reproducibility and authenticated coverage measurements. A proven
+current-PCR-only data lane retains whole-library contracts, changed-record
+semantic/projection checks and complete fresh sealed-product acceptance; full
+code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+reusable release invocation select full mode, including empty product tags.
+Do not satisfy a failed qualification with prior-attempt shard artifacts or
+report compact portable tests as complete corpus qualification.
 
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)

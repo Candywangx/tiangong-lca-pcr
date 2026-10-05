@@ -12,6 +12,7 @@ export const TEST_RUNTIME_SCHEMAS = [
   'model-validation-input.schema.json', 'pcr-id-aliases.schema.json',
   'readiness.schema.json', 'structured-projection.schema.json', 'validation-output.schema.json',
 ] as const;
+export const TEST_BUILDER_SCHEMAS = ['catalog.schema.json','classification-mapping.schema.json','cpc-product-chain.schema.json','pcr-manifest.schema.json','pcr-markdown-frontmatter.schema.json','pcr-release-history.schema.json','pcr-release.schema.json','pcr-revision.schema.json'] as const;
 const MARKER = '.pcr-test-assets.json';
 const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 function object(value: unknown): value is Record<string, unknown> { return value !== null && typeof value === 'object' && !Array.isArray(value); }
@@ -34,7 +35,7 @@ function verifyOwned(directory: string, current: ReadonlyMap<string, Buffer>): v
     regular(path.join(directory, MARKER));
     const value: unknown = JSON.parse(readFileSync(path.join(directory, MARKER), 'utf8'));
     if (!object(value) || value.schema !== 1 || value.owner !== 'pcr-emitted-engineering-tests' || !object(value.files) ||
-      JSON.stringify(Object.keys(value.files).sort()) !== JSON.stringify([...TEST_RUNTIME_SCHEMAS].sort())) throw new Error('Existing test asset output lacks ownership.');
+      JSON.stringify(Object.keys(value.files).sort()) !== JSON.stringify([...current.keys()].sort())) throw new Error('Existing test asset output lacks ownership.');
     previous = value.files;
   }
   // resolveJsonModule may have just emitted a subset, including updated bytes.
@@ -52,13 +53,16 @@ function verifyOwned(directory: string, current: ReadonlyMap<string, Buffer>): v
 }
 
 /** Stage only the fs-loaded schema closure after tsc; never clean arbitrary output. */
-export function stageTestRuntimeAssets(inputRoot = process.cwd()): { files: number; output: string } {
+export function stageTestRuntimeAssets(inputRoot = process.cwd(), group: "core" | "builder" = "core"): { files: number; output: string } {
+  if (group !== "core" && group !== "builder") throw new Error("Unknown emitted test asset group.");
+  const prefix = group === "core" ? "packages/pcr-core" : "builder";
+  const names: readonly string[] = group === "core" ? TEST_RUNTIME_SCHEMAS : TEST_BUILDER_SCHEMAS;
   const root = realpathSync(inputRoot);
-  const source = directory(root, 'packages/pcr-core/schemas');
+  const source = directory(root, `${prefix}/schemas`);
   const output = directory(root, 'dist/test-engineering');
   regular(path.join(directory(output, 'scripts/engineering'), 'runtime.js'));
-  const bytes = new Map(TEST_RUNTIME_SCHEMAS.map(name => { const file = path.join(source, name); regular(file); return [name, readFileSync(file)] as const; }));
-  const parent = directory(output, 'packages/pcr-core', true), target = path.join(parent, 'schemas');
+  const bytes = new Map(names.map(name => { const file = path.join(source, name); regular(file); return [name, readFileSync(file)] as const; }));
+  const parent = directory(output, prefix, true), target = path.join(parent, 'schemas');
   if (lstatSync(target, { throwIfNoEntry: false })) { directory(parent, 'schemas'); verifyOwned(target, bytes); }
   const scratch = mkdtempSync(path.join(parent, '.pcr-test-assets-')), stage = path.join(scratch, 'assets'), previous = path.join(scratch, 'previous');
   let moved = false;
@@ -73,6 +77,6 @@ export function stageTestRuntimeAssets(inputRoot = process.cwd()): { files: numb
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
-  try { if (process.argv.length !== 2) throw new Error('Usage: node scripts/engineering/emitted-assets.ts'); process.stdout.write(JSON.stringify(stageTestRuntimeAssets()) + '\n'); }
+  try { if (process.argv.length !== 2) throw new Error('Usage: node scripts/engineering/emitted-assets.ts'); const core=stageTestRuntimeAssets(), builder=stageTestRuntimeAssets(process.cwd(),'builder'); process.stdout.write(JSON.stringify({files:core.files+builder.files,outputs:[core.output,builder.output]}) + '\n'); }
   catch (error) { process.stderr.write((error instanceof Error ? error.message : String(error)) + '\n'); process.exitCode = 1; }
 }

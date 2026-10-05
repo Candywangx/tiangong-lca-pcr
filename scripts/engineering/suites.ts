@@ -8,7 +8,7 @@ export const SUITE_NAMES = [
   "unit", "contracts", "integration", "recovery", "docs", "offline", "product", "engineering", "browser",
 ] as const;
 export type SuiteName = typeof SUITE_NAMES[number];
-export type SuiteSelector = SuiteName | "all" | "root";
+export type SuiteSelector = SuiteName | "all" | "root" | "portable-offline";
 export type SuiteInventory = Readonly<Record<SuiteName, readonly string[]>>;
 
 export const SUITE_DESCRIPTIONS: Readonly<Record<SuiteName, string>> = {
@@ -129,7 +129,7 @@ const LEGACY_TESTS: Readonly<Partial<Record<SuiteName, readonly string[]>>> = {
     "packages/pcr-docs/scripts/source-history.test",
     "packages/pcr-docs/scripts/summaries.test",
   ],
-  offline: ["packages/pcr-core/offline-library.test"],
+  offline: ["packages/pcr-core/offline-library.test", "packages/pcr-core/full-corpus.offline.test"],
   product: [
     "builder/scripts/npm-release.test",
     "builder/scripts/product-identity.test",
@@ -232,12 +232,21 @@ export function discoverSuites(root: string): SuiteInventory {
   return classifyTestFiles(files);
 }
 
+export const FULL_CORPUS_TEST = "packages/pcr-core/full-corpus.offline.test.ts";
+export const PORTABLE_OFFLINE_DISPOSITION = {
+  excludedTest: FULL_CORPUS_TEST,
+  reason: "The complete repository corpus is qualified separately by the mandatory Linux corpus shard; portable offline runs exercise bounded independent fixtures.",
+} as const;
+
 export function selectSuite(inventory: SuiteInventory, selector: string): readonly string[] {
+  if (selector === "portable-offline") {
+    return Object.freeze(inventory.offline.filter(file => file !== FULL_CORPUS_TEST));
+  }
   if (selector === "all" || selector === "root") {
     return Object.freeze(SUITE_NAMES.flatMap(suite => inventory[suite]).sort());
   }
   const suite = SUITE_NAMES.find(name => name === selector);
-  if (suite === undefined) throw new Error(`Unknown suite: ${selector}. Choose ${SUITE_NAMES.join(", ")}, all, or root.`);
+  if (suite === undefined) throw new Error(`Unknown suite: ${selector}. Choose ${SUITE_NAMES.join(", ")}, all, root, or portable-offline.`);
   return inventory[suite];
 }
 
@@ -268,7 +277,7 @@ export async function runEmittedSuite(root: string, selector: string): Promise<S
   return runTestFiles(root, files, ["--no-strip-types"]);
 }
 
-async function runTestFiles(root: string, files: readonly string[], flags: readonly string[] = []): Promise<SuiteRunResult> {
+export async function runTestFiles(root: string, files: readonly string[], flags: readonly string[] = []): Promise<SuiteRunResult> {
   // macOS exposes /var as an OS alias. Canonicalize only this runner-owned
   // temporary root; application inputs must still satisfy their no-follow rules.
   const temporaryRoot = mkdtempSync(path.join(realpathSync(tmpdir()), "pcr-test-suite-"));
@@ -314,18 +323,18 @@ function findRepositoryRoot(): string {
 }
 
 export const REPOSITORY_ROOT = findRepositoryRoot();
-const USAGE = "Usage: node scripts/engineering/suites.ts list [--json] | run <suite|all|root> | run-emitted engineering";
+const USAGE = "Usage: node scripts/engineering/suites.ts list [--json] | run <suite|all|root|portable-offline> | run-emitted engineering";
 
 export async function main(argv: readonly string[], root = REPOSITORY_ROOT): Promise<SuiteRunResult> {
   try {
     if (argv.length === 1 && (argv[0] === "--help" || argv[0] === "-h")) {
-      console.log(`${USAGE}\n${SUITE_NAMES.map(name => `${name}: ${SUITE_DESCRIPTIONS[name]}`).join("\n")}\nall/root: Every base suite exactly once, including docs and engineering.`);
+      console.log(`${USAGE}\n${SUITE_NAMES.map(name => `${name}: ${SUITE_DESCRIPTIONS[name]}`).join("\n")}\nall/root: Every base suite exactly once, including docs and engineering.\nportable-offline: ${PORTABLE_OFFLINE_DISPOSITION.reason}`);
       return { exitCode: 0, signal: null };
     }
     if (argv[0] === "list" && (argv.length === 1 || (argv.length === 2 && argv[1] === "--json"))) {
       const inventory = discoverSuites(root);
       if (argv[1] === "--json") {
-        console.log(JSON.stringify({ suites: inventory, aliases: { all: [...SUITE_NAMES], root: [...SUITE_NAMES] } }, null, 2));
+        console.log(JSON.stringify({ suites: inventory, aliases: { all: [...SUITE_NAMES], root: [...SUITE_NAMES] }, portableOffline: { files: selectSuite(inventory, "portable-offline"), disposition: PORTABLE_OFFLINE_DISPOSITION } }, null, 2));
       } else {
         for (const suite of SUITE_NAMES) console.log(`${suite}: ${inventory[suite].length} files — ${SUITE_DESCRIPTIONS[suite]}`);
         console.log(`all/root: ${selectSuite(inventory, "all").length} files`);
