@@ -1,0 +1,1613 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.transport-equipment.externally-powered-electric-locomotive"
+  classification_refs: "CPC 3.0 49511; narrower overhead AC-only route; context only"
+  covered_products: "Manufacture of new complete steel-bodied electric locomotives powered by overhead AC supply with traction transformer, power converter and asynchronous traction motors, from declared stock or bought-in bodies/modules to configuration-specific manufacturing acceptance. This is a narrower route within CPC 49511. Required running-gear/traction/outfit integration and acceptance are distinguished from optional in-house body fabrication, coating and packing. No transport service is supplied by the reference flow."
+  excluded_products: "Exclude DC-only/third-rail supply, multisystem DC-capable variants, diesel-electric/dual-mode/off-wire traction-battery configurations, self-propelled passenger coaches or EMUs, incomplete bodies/bogies, retrofits, repair, resale, operation, maintenance and end of life. Auxiliary control batteries do not expand the boundary to traction batteries. Mass alone does not establish equivalent power, haulage capacity or train-service performance."
+  representative_product: "One serial/configuration-linked accepted complete overhead AC electric locomotive with measured net M"
+  production_route: "Conditional body preparation/joining and coating, running gear and AC traction installation, outfitting, manufacturing acceptance, conditional protection"
+  market_state: "New accepted complete configured locomotive at declared manufacturing gate"
+functional_unit:
+  what: "Manufacture a complete configured overhead AC-supplied electric locomotive"
+  how_much: "1 kg accepted complete net locomotive mass; actual per-unit exchanges normalized with positive measured M"
+  how_well: "Actual vehicle-specific structural, electrical, brake and release requirements with applicable acceptance evidence; no equal-mass haulage equivalence"
+  how_long_or_cycle: "One manufacture and manufacturing-acceptance cycle; no operating lifetime assumed"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground
+      applies_to: "all stages"
+      rule: "Include actual manufacture, attributable rework and pre-gate factory acceptance runs. Treat test electricity, sand, support heat and waste separately when present. Exclude commercial hauling, post-gate delivery, fleet maintenance and lifetime regeneration. Include outsourced fabrication/support service only with explicit supplier scope, service unit and attribution; add each service separately."
+      source_ids: []
+    - rule_id: boundary_completeness
+      applies_to: "purchased assemblies"
+      rule: "Count each received physical assembly with its included constituent parts and fluids once. A complete bogie containing traction motors replaces duplicate motor/wheel/brake inputs. A received complete body replaces its included stock and processing, requiring a separately documented body input. Finish all actual BOM, fluid, gas, solvent, refrigerant, tooling and waste/emission identities before a completed dataset; these candidate cards are not a universal exhaustive bill."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received specified steel stock, bought-in complete bodies, bogies and traction/auxiliary modules with declared supplier scope"
+  starting_condition_role: "Foreground receipt-to-accepted manufacturing-gate release"
+  product_classification_scope: "Complete overhead AC-only electric locomotive, not train service"
+  recursive_input_rule: "Do not generate the finished locomotive as its own input. Bought-in bodies/modules bypass included operations; actual in-house parts require their own measured component inventories"
+  upstream_dataset_requirement: "Match actual material/formulation, electrical configuration, module completeness/property, site/period and supplier production; disclose unlinked upstream"
+  disclosure: "builder/model/serial and drawing revision; overhead AC voltage/frequency and pantograph configuration; transformer/converter/motor type, rating, cooling and supplier completeness; body steel grade/route; bogie/wheelset/gear/brake configuration; cab/control/auxiliary battery chemistry; actual first-filled fluids and fixed ballast; accepted complete net M in kg from traceable actual weighing records; packaging, persons, loose consumables, sand and temporary test/transport fixture exclusions; physically measured detached integral delivered fittings; acceptance test/gate/site/period; supplier upstream and shared-resource scope"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Rail locomotives powered from an external source of electricity"
+    uuid: "1532ccb7-1703-4ca3-bd21-bfe65dac7ded"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "builder/model/serial and drawing revision"
+    - "overhead AC voltage/frequency and pantograph configuration"
+    - "transformer/converter/motor type"
+    - rating
+    - "cooling and supplier completeness"
+    - "body steel grade/route"
+    - "bogie/wheelset/gear/brake configuration"
+    - "cab/control/auxiliary battery chemistry"
+    - "actual first-filled fluids and fixed ballast"
+    - "accepted complete net M in kg from traceable actual weighing records"
+    - packaging
+    - persons
+    - "loose consumables"
+    - "sand and temporary test/transport fixture exclusions"
+    - "physically measured detached integral delivered fittings"
+    - "acceptance test/gate/site/period"
+    - "supplier upstream and shared-resource scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: mass_record_provenance
+    applies_to: "cp_mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain original current calibrated actual complete-vehicle weighing or documented wheel/axle-load weighing covering all wheels of the same vehicle on the stated level method, with calibration, zero/tare, repeatability, serial/date/operator and uncertainty. Sum actual simultaneously applicable wheel/axle measurements, reconcile accepted configuration, measured fluid fills/fixed ballast and itemized temporary loads. Convert a working-order measurement to declared net scope only using traceable separately measured additions/deductions. No catalogue weight, design axle-load limit, gross/train weight or unexplained acceptance figure substitutes."
+  - id: unit_conversion
+    applies_to: "utilities and chemicals"
+    required_property_ref:
+      name: "original measured property"
+      uuid: ""
+    required_unit: "actual row unit"
+    rule: "Keep Mass, Volume, energy and count distinct. Meter electricity in kWh; 1 kWh = 3.6 MJ from the verified energy unit group. Convert volume or purchased item count to mass only with actual same-formulation density/temperature or measured same-configuration item mass; retain original data. No assumed fluid density or component mass."
+process_map:
+  - id: body_fabrication
+    name: "Carbody stock preparation and joining"
+    inclusion: "conditional"
+    inclusion_condition: "Actual in-house steel carbody fabrication."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+  - id: surface_finish
+    name: "Surface preparation and protective coating"
+    inclusion: "conditional"
+    inclusion_condition: "Actual foreground cleaning, blasting or coating."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+  - id: running_gear
+    name: "Bogie and running-gear integration"
+    inclusion: "required"
+    inclusion_condition: "Every complete accepted locomotive."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+  - id: traction_install
+    name: "Overhead AC traction-system installation"
+    inclusion: "required"
+    inclusion_condition: "Covered overhead AC-supplied configuration."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+  - id: outfitting
+    name: "Brake, cab and auxiliary integration"
+    inclusion: "required"
+    inclusion_condition: "Complete declared accepted configuration."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+  - id: acceptance
+    name: "Electrical, mechanical and complete-configuration acceptance"
+    inclusion: "required"
+    inclusion_condition: "Before declared manufacturing release gate."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+  - id: packing
+    name: "Delivery protection and detached integral fittings"
+    inclusion: "conditional"
+    inclusion_condition: "Actual removable protection or delivery-detached integral fittings."
+    role: "foreground"
+    quantitative_reference: "one accepted configured locomotive, normalized using M"
+process_inventory:
+  - id: body_fabrication
+    label: "Carbody stock preparation and joining"
+    inputs:
+      product:
+        - row_id: body_plate
+          role: "Hot-rolled low-alloy steel locomotive carbody plate"
+          name: "Hot-rolled low-alloy steel locomotive carbody plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: body_profile
+          role: "Hot-rolled steel locomotive underframe structural profile"
+          name: "Hot-rolled steel locomotive underframe structural profile"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: solid_wire
+          role: "Solid low-alloy steel gas-shielded welding wire"
+          name: "Solid low-alloy steel gas-shielded welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: co2_shield
+          role: "Carbon dioxide"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "Only pure supplied CO2 for actual Chinese plant welding matching the public route; not argon premix or an assumed fossil elementary release."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: argon_mix
+          role: "Argon/carbon-dioxide premixed welding shielding gas"
+          name: "Argon/carbon-dioxide premixed welding shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: body_fabrication_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut
+          role: "Steel scrap, offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Weigh segregated untreated cutting offcuts exported after internal reuse; retain recipient and exclude downstream treatment/avoided-production credit."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: weld_dust
+          role: "Captured iron-oxide-rich welding filter dust"
+          name: "Captured iron-oxide-rich welding filter dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_body_fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_fabrication
+              source_ids:
+                - siemens-electric
+            ranges: []
+      elementary:
+        []
+  - id: surface_finish
+    label: "Surface preparation and protective coating"
+    inputs:
+      product:
+        - row_id: clean_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Actual purchased treated process water for cleaning, not an environmental water resource or internally recirculated water."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: abrasive
+          role: "Spherical cast-steel blasting shot"
+          name: "Spherical cast-steel blasting shot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: epoxy_base
+          role: "Formulated epoxy rail-vehicle coating base component"
+          name: "Formulated epoxy rail-vehicle coating base component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: epoxy_hardener
+          role: "Polyamine rail-vehicle epoxy coating hardener formulation"
+          name: "Polyamine rail-vehicle epoxy coating hardener formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: surface_finish_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_abrasive
+          role: "Spent steel blasting shot with removed coating residue"
+          name: "Spent steel blasting shot with removed coating residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: clean_effluent
+          role: "Aqueous steel-carbody cleaning effluent transferred for treatment"
+          name: "Aqueous steel-carbody cleaning effluent transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - siemens-electric
+            ranges: []
+      elementary:
+        []
+  - id: running_gear
+    label: "Bogie and running-gear integration"
+    inputs:
+      product:
+        - row_id: body_received
+          role: "Complete finished steel locomotive carbody with underframe and roof"
+          name: "Complete finished steel locomotive carbody with underframe and roof"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_running_gear."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_running_gear
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: bogie_received
+          role: "Bogie assembly"
+          name: "Bogie assembly"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce7fe0f9-b245-44f1-a779-3a364f2234a9"
+          property_unit: "Mass / kg"
+          description: "Purchased complete locomotive bogie assembly of recorded configuration: declare wheelsets, brakes, traction motors and gearbox inclusions; count included parts once. Public generic bogie identity does not supply manufacturing factors or certify axle layout."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_running_gear."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_running_gear
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: wheelset
+          role: "Finished forged-steel locomotive wheelset with axle and wheels"
+          name: "Finished forged-steel locomotive wheelset with axle and wheels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_running_gear."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_running_gear
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: gear_oil
+          role: "Lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass / kg"
+          description: "Only separately issued petroleum-derived formulated lubricating oil actually first-filled in the gearbox; record grade and exclude any supplier prefill already in an assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_running_gear."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_running_gear
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: running_gear_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_running_gear."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_running_gear
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: traction_install
+    label: "Overhead AC traction-system installation"
+    inputs:
+      product:
+        - row_id: pantograph
+          role: "Complete overhead-wire locomotive pantograph current collector"
+          name: "Complete overhead-wire locomotive pantograph current collector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: main_breaker
+          role: "Complete rail-locomotive high-voltage vacuum main circuit breaker"
+          name: "Complete rail-locomotive high-voltage vacuum main circuit breaker"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: traction_transformer
+          role: "Complete oil-filled overhead-AC locomotive traction transformer"
+          name: "Complete oil-filled overhead-AC locomotive traction transformer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: traction_converter
+          role: "Complete locomotive IGBT traction converter assembly"
+          name: "Complete locomotive IGBT traction converter assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: traction_motor
+          role: "Traction motor"
+          name: "Traction motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c1704402-e49d-43aa-baef-c84209588243"
+          property_unit: "Mass / kg"
+          description: "Actual complete asynchronous locomotive traction motor supplied separately; omit when already inside the received bogie. Generic public rail traction motor is narrowed by actual type/power/cooling records; no candidate comment mass-share estimate is adopted."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: ester_fill
+          role: "Synthetic-ester transformer insulating liquid formulation"
+          name: "Synthetic-ester transformer insulating liquid formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: coolant_fill
+          role: "Inhibited ethylene-glycol/water traction-cooling fluid formulation"
+          name: "Inhibited ethylene-glycol/water traction-cooling fluid formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+        - row_id: traction_install_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_traction_install."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_traction_install
+              source_ids:
+                - siemens-environment
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: outfitting
+    label: "Brake, cab and auxiliary integration"
+    inputs:
+      product:
+        - row_id: copper_cable
+          role: "Insulated copper rail-locomotive cable harness"
+          name: "Insulated copper rail-locomotive cable harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: aux_lead_battery
+          role: "Filled lead-acid locomotive auxiliary-control battery"
+          name: "Filled lead-acid locomotive auxiliary-control battery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: aux_nicd_battery
+          role: "Filled nickel-cadmium locomotive auxiliary-control battery"
+          name: "Filled nickel-cadmium locomotive auxiliary-control battery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: air_compressor
+          role: "Complete electric locomotive brake-air compressor unit"
+          name: "Complete electric locomotive brake-air compressor unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: brake_valve
+          role: "Complete pneumatic locomotive brake-control valve block"
+          name: "Complete pneumatic locomotive brake-control valve block"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: cab_glass
+          role: "Laminated safety-glass locomotive cab windscreen"
+          name: "Laminated safety-glass locomotive cab windscreen"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: coupler
+          role: "Finished steel locomotive automatic coupler assembly"
+          name: "Finished steel locomotive automatic coupler assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: outfitting_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_outfitting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outfitting
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "Electrical, mechanical and complete-configuration acceptance"
+    inputs:
+      product:
+        - row_id: adhesion_sand
+          role: "Dry graded quartz locomotive adhesion sand"
+          name: "Dry graded quartz locomotive adhesion sand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: burner_gas
+          role: "Methane-rich fossil pipeline natural gas supplied to factory burner"
+          name: "Methane-rich fossil pipeline natural gas supplied to factory burner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this actual specified physical exchange where present; retain supplier specification/completeness and independently measured net issue or transfer. Demonstrated absence is not_applicable; missing quantity is a gap. Add different actual variants separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: acceptance_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Rail locomotives powered from an external source of electricity"
+          name: "Rail locomotives powered from an external source of electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1532ccb7-1703-4ca3-bd21-bfe65dac7ded"
+          property_unit: "Mass / kg"
+          description: "Accepted complete overhead AC-supplied electric locomotive with actual configuration and positive measured net M. Public broad locomotive identity is narrowed by all required qualifiers; no train service or locomotive mass is inferred."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: burner_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only independently evidenced fossil CO2 from attributable optional factory support combustion to air, unspecified, immediate release. Record actual species/method/outlet; no locomotive exhaust or total-NOx substitution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: burner_no
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only independently evidenced NO from attributable optional factory support combustion to air, unspecified, immediate release. Record actual species/method/outlet; no locomotive exhaust or total-NOx substitution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: burner_no2
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only independently evidenced NO2 from attributable optional factory support combustion to air, unspecified, immediate release. Record actual species/method/outlet; no locomotive exhaust or total-NOx substitution."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - siemens-electric
+            ranges: []
+  - id: packing
+    label: "Delivery protection and detached integral fittings"
+    inputs:
+      product:
+        - row_id: pe_protection
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual unlaminated non-adhesive LDPE protective film; independently weigh and exclude from M. Other packaging materials require separate exact cards."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - siemens-electric
+            ranges: []
+        - row_id: packing_electricity
+          role: "Alternating-current electricity at factory intake"
+          name: "Alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter actual attributable electricity in kWh and convert 1 kWh = 3.6 MJ within the energy unit group; test import/export and onsite generation remain separately measured."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - siemens-electric
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_orders
+    applies_to: "shared manufacture"
+    rule: "Separate serial/configuration orders; directly attribute measured issues/returns, meters, work hours, tests and rework first. For inseparable shared utilities use demonstrated measured causal operating time/load or coating area/layer requirement: share = order driver / sum of drivers over all covered orders. Keep period, denominator and causality. Equal vehicle count, nominal traction power or axle load is not an automatic allocation rule."
+    source_ids: []
+  - rule_id: allocation_recovery
+    applies_to: "reuse and exported exchanges"
+    rule: "Internal stock/water reuse is a transfer, not fresh input or automatic credit. Exported waste retains recipient and measured transfer, without presumed avoided production. Measure actual test electricity imports and exports separately; subtract export only under an explicit matching meter/system-boundary accounting rule with provider and timing, without a lifetime regeneration factor. Reconcile rejected/reworked units and work in progress to accepted output. Separate saleable co-products before reviewed residual allocation."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "accepted complete locomotive net mass"
+      record_type: "traceable_weighing_record"
+      raw_fields: "model; configuration; serial; accepted net mass M; original weighing record/date/method; calibrated instrument; wheel/axle measurements if used; measured fills/fixed ballast; measured additions/deductions; excluded persons/sand/test fixtures/packaging; detached integral parts; signed reconciliation; uncertainty"
+      collection_method: "Use traceable weighing records for the accepted complete unit of the same configuration."
+      unit: "kg"
+      frequency: "each accepted unit"
+      temporal_coverage: "actual manufacturing/acceptance period"
+      site_scope: "declared manufacturing acceptance gate"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "original calibrated physical measurements and signed configuration mass balance"
+    - protocol_id: cp_body_fabrication
+      process_id: "body_fabrication"
+      flow_role: "Carbody stock preparation and joining"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+    - protocol_id: cp_surface_finish
+      process_id: "surface_finish"
+      flow_role: "Surface preparation and protective coating"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+    - protocol_id: cp_running_gear
+      process_id: "running_gear"
+      flow_role: "Bogie and running-gear integration"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+    - protocol_id: cp_traction_install
+      process_id: "traction_install"
+      flow_role: "Overhead AC traction-system installation"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+    - protocol_id: cp_outfitting
+      process_id: "outfitting"
+      flow_role: "Brake, cab and auxiliary integration"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "Electrical, mechanical and complete-configuration acceptance"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "Delivery protection and detached integral fittings"
+      record_type: "foreground_record"
+      raw_fields: "serial/order/configuration; accepted count; exact exchange/formulation/property/unit; issues/returns/stock change; measured component masses; supplier inclusions/prefills; electricity kWh and intake/test import/export; species/outlet; waste recipient; shared driver/denominator; method/calibration"
+      collection_method: "Collect serial/configuration-linked drawings, supplier completeness, weighed issues/returns, calibrated meters, work orders and test/acceptance originals."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared plant and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "original weighing/meter/supplier receipt/test/transfer records"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished unit; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_mass
+      applies_to: "cp_mass"
+      requirement: "Implement mass_record_provenance using actual current traceable physical weighing and itemized net-configuration reconciliation. Every included wheel/axle belongs to the same unit and state; reconcile measured detachable fittings/fills and ensure no omitted/double-counted weight. Missing original method, calibration, state correction or positive M blocks a complete quantitative dataset and requires review/new measurement."
+      evidence: "original weighing and configuration correction ledger"
+    - id: quality_bom
+      applies_to: "complete configuration"
+      requirement: "Reconcile all actual body, bogie/wheelset, traction, brake, auxiliary/cab/control and service-fluid masses to accepted net M. Record purchased assembly inclusions; no duplicated motors in bogies or transformer/cooling prefills. Add actual omitted parts and exchanges before completion."
+      evidence: "complete drawings/BOM/receipts/weighing/SDS"
+    - id: quality_balance
+      applies_to: "amounts and species"
+      requirement: "Retain calibration, energy meters, issues/returns/reuse, measured fluid composition/density, waste manifests and actual emission method/species/medium. Define empirical QA limits from applicable measured records or verified comparable sources. No universal manufacturing intensity, vehicle mass or burner emission factor is supplied."
+      evidence: "actual meter/stock/mass balances and uncertainty"
+    - id: quality_coverage
+      applies_to: "dataset"
+      requirement: "Disclose period/site/configurations, conditional absence, subcontracting, identity/quantity uncertainty, range gaps and missing supplier upstream. Historical product/production examples do not establish present product certification or this locomotive M. This PCR specifies future record requirements; no actual locomotive weighing or plant inventory has been certified."
+      evidence: "coverage and evidence limitations register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require covered complete overhead AC configuration and positive actual net M from cp_mass with mass_record_provenance. Reject nominal axle load, catalogue mass, train weight, operating-service equivalents and missing configuration corrections. Missing actual record evidence requires scientific/data review before a completed quantitative dataset."
+    source_ids: []
+  - rule_id: validate_atomic
+    applies_to: "all exchanges"
+    rule: "Verify atomic physical/chemical identity, public reference property/unit group, route/composition/state and supplier boundary. Pantograph is not battery foil, traction transformer is not a rated distribution transformer, motor inside bogie is not a second input, ester is not mineral oil, process water is not environmental withdrawal/effluent. Keep unsupported UUID blank."
+    source_ids: []
+  - rule_id: validate_measurement
+    applies_to: "all amounts"
+    rule: "Verify amount, original unit, collection and q_item/M conversion, same serial/configuration/site/period, accepted count, calibration and justified allocation denominator. Energy, volume and item count never become mass by renaming the property. Unknown is not zero."
+    source_ids: []
+  - rule_id: validate_species
+    applies_to: "conditional elementary releases"
+    rule: "Require actual attributable factory-support species and medium. Selected fossil CO2, NO and NO2 are immediate air-unspecified releases; verify fossil provenance for CO2. Do not substitute total NOx, N2O, nitrogen/nitrite, biogenic CO2, water/soil or long-term flows. Captured filter dust is a waste; no exhaust is mandatory for this electric traction route."
+    source_ids: []
+  - rule_id: validate_release
+    applies_to: "vehicle acceptance"
+    rule: "Trace actual structural/electrical/brake test procedures, results, rework and release authorization for the same configuration and applicable jurisdiction when claimed. Historical brochure or other manufacturer/model certificate does not certify this vehicle. No universal voltage, brake threshold or test-energy saving is imposed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configuration-specific complete electric locomotive foreground manufacture"
+  downstream_use: "secondary_dataset; background_dataset after qualified review and declared upstream linkage"
+  allowed_use: "Manufacturing supply-chain models matching AC traction, complete configuration, measured net scope, supplier boundary, gate/site/period"
+  excluded_use: "Train-service/lifetime footprint, equal-mass haulage comparison, other power routes, or unsupported complete cradle-to-gate"
+  required_metadata: "builder/model/serial and drawing revision; overhead AC voltage/frequency and pantograph configuration; transformer/converter/motor type, rating, cooling and supplier completeness; body steel grade/route; bogie/wheelset/gear/brake configuration; cab/control/auxiliary battery chemistry; actual first-filled fluids and fixed ballast; accepted complete net M in kg from traceable actual weighing records; packaging, persons, loose consumables, sand and temporary test/transport fixture exclusions; physically measured detached integral delivered fittings; acceptance test/gate/site/period; supplier upstream and shared-resource scope"
+  required_quality_disclosure: "Identity/quantity/mass-provenance gaps, uncertainty, absence evidence, full BOM, allocation, acceptance and unlinked upstream"
+  update_trigger: "Supply/traction/cooling/auxiliary chemistry, body/bogie/finish, supplier completeness, measured M corrections, test boundary and manufacturing site/period changes"
+data_sources:
+  - id: "siemens-electric"
+    type: "literature"
+    reference: "[Siemens Vectron X AC/DC/MS](https://www.mobility.siemens.com/global/en/portfolio/rail/rolling-stock/locomotives/vectron/ac-dc-ms.html)"
+    used_for: "Publisher headings and paragraphs on AC/DC/MS variants, separated AC/DC main components and accessible control cables. Product-configuration context only; actual site records define this narrower AC route. No catalogue mass/rating or environmental factor adopted."
+  - id: "siemens-environment"
+    type: "literature"
+    reference: "[Siemens: Locomotives, Sustainability on track (2013)](https://static.dc.siemens.com/mobility/webfeature/green-mobility/files/brochure/brochure-locomotives-sustainability-on-track.pdf)"
+    used_for: "PDF/printed p.4 optional converter water-cooling and transformer ester; p.8 states features need individual contract confirmation. Historical design example only, not a current universal requirement. No 85 t example, recyclability, lifetime or regenerative-saving percentage adopted."
+  - id: "akiem-vectron"
+    type: "literature"
+    reference: "[Akiem: Vectron BR 193 technical sheet](https://www.akiem.com/wp-content/uploads/2020/09/Fiche-Technique-Vectron-EN.pdf)"
+    used_for: "PDF p.1 technical table identifies asynchronous traction motors and distinguishes the AC-only B18 column from multisystem columns. Operator/lessor product example only; do not transfer working-order 90 t, motor count, voltage, ratings or homologations to a generic locomotive or net M."
+  - id: "alstom-production"
+    type: "literature"
+    reference: "[Alstom: First Prima M4 for ONCF, 30 December 2019](https://www.alstom.com/sites/alstom.com/files/2019/12/30/20191230_PR_Locos_Morocco_EN_0.pdf)"
+    used_for: "PDF p.1 manufacturing/assembly and named site responsibilities for bogies, motors, traction components and electronics. Historical DC model is outside the covered AC route: used only to distinguish received modules, assembly and downstream testing/maintenance. No DC voltage, rated power or inferred recipe adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:dbffb857dca84505814bc81db3c55e334693b2c002cc5584dd7a0e9b4a8c778a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7089"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7089
+          line: 61
+          column: 1
+        end:
+          offset: 9614
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received specified steel stock, bought-in complete bodies, bogies and traction/auxiliary modules with declared supplier scope |\n| starting_condition_role | Foreground receipt-to-accepted manufacturing-gate release |\n| product_classification_scope | Complete overhead AC-only electric locomotive, not train service |\n| recursive_input_rule | Do not generate the finished locomotive as its own input. Bought-in bodies/modules bypass included operations; actual in-house parts require their own measured component inventories |\n| upstream_dataset_requirement | Match actual material/formulation, electrical configuration, module completeness/property, site/period and supplier production; disclose unlinked upstream |\n| disclosure | builder/model/serial and drawing revision; overhead AC voltage/frequency and pantograph configuration; transformer/converter/motor type, rating, cooling and supplier completeness; body steel grade/route; bogie/wheelset/gear/brake configuration; cab/control/auxiliary battery chemistry; actual first-filled fluids and fixed ballast; accepted complete net M in kg from traceable actual weighing records; packaging, persons, loose consumables, sand and temporary test/transport fixture exclusions; physically measured detached integral delivered fittings; acceptance test/gate/site/period; supplier upstream and shared-resource scope |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_foreground` | all stages | Include actual manufacture, attributable rework and pre-gate factory acceptance runs. Treat test electricity, sand, support heat and waste separately when present. Exclude commercial hauling, post-gate delivery, fleet maintenance and lifetime regeneration. Include outsourced fabrication/support service only with explicit supplier scope, service unit and attribution; add each service separately. |  |\n| `boundary_completeness` | purchased assemblies | Count each received physical assembly with its included constituent parts and fluids once. A complete bogie containing traction motors replaces duplicate motor/wheel/brake inputs. A received complete body replaces its included stock and processing, requiring a separately documented body input. Finish all actual BOM, fluid, gas, solvent, refrigerant, tooling and waste/emission identities before a completed dataset; these candidate cards are not a universal exhaustive bill. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 231
+              line: 8
+              column: 55
+          text: "# Overhead AC-supplied electric locomotive manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7089
+              line: 61
+              column: 1
+            end:
+              offset: 7110
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50492"
+      family: "allocation"
+      span:
+        start:
+          offset: 50492
+          line: 843
+          column: 1
+        end:
+          offset: 51693
+          line: 851
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_orders` | shared manufacture | Separate serial/configuration orders; directly attribute measured issues/returns, meters, work hours, tests and rework first. For inseparable shared utilities use demonstrated measured causal operating time/load or coating area/layer requirement: share = order driver / sum of drivers over all covered orders. Keep period, denominator and causality. Equal vehicle count, nominal traction power or axle load is not an automatic allocation rule. |  |\n| `allocation_recovery` | reuse and exported exchanges | Internal stock/water reuse is a transfer, not fresh input or automatic credit. Exported waste retains recipient and measured transfer, without presumed avoided production. Measure actual test electricity imports and exports separately; subtract export only under an explicit matching meter/system-boundary accounting rule with provider and timing, without a lifetime regeneration factor. Reconcile rejected/reworked units and work in progress to accepted output. Separate saleable co-products before reviewed residual allocation. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 231
+              line: 8
+              column: 55
+          text: "# Overhead AC-supplied electric locomotive manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50492
+              line: 843
+              column: 1
+            end:
+              offset: 50532
+              line: 843
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_61216"
+      family: "validation"
+      span:
+        start:
+          offset: 61216
+          line: 884
+          column: 1
+        end:
+          offset: 63241
+          line: 895
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference product | Require covered complete overhead AC configuration and positive actual net M from cp_mass with mass_record_provenance. Reject nominal axle load, catalogue mass, train weight, operating-service equivalents and missing configuration corrections. Missing actual record evidence requires scientific/data review before a completed quantitative dataset. |  |\n| `validate_atomic` | all exchanges | Verify atomic physical/chemical identity, public reference property/unit group, route/composition/state and supplier boundary. Pantograph is not battery foil, traction transformer is not a rated distribution transformer, motor inside bogie is not a second input, ester is not mineral oil, process water is not environmental withdrawal/effluent. Keep unsupported UUID blank. |  |\n| `validate_measurement` | all amounts | Verify amount, original unit, collection and q_item/M conversion, same serial/configuration/site/period, accepted count, calibration and justified allocation denominator. Energy, volume and item count never become mass by renaming the property. Unknown is not zero. |  |\n| `validate_species` | conditional elementary releases | Require actual attributable factory-support species and medium. Selected fossil CO2, NO and NO2 are immediate air-unspecified releases; verify fossil provenance for CO2. Do not substitute total NOx, N2O, nitrogen/nitrite, biogenic CO2, water/soil or long-term flows. Captured filter dust is a waste; no exhaust is mandatory for this electric traction route. |  |\n| `validate_release` | vehicle acceptance | Trace actual structural/electrical/brake test procedures, results, rework and release authorization for the same configuration and applicable jurisdiction when claimed. Historical brochure or other manufacturer/model certificate does not certify this vehicle. No universal voltage, brake threshold or test-energy saving is imposed. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 177
+              line: 8
+              column: 1
+            end:
+              offset: 231
+              line: 8
+              column: 55
+          text: "# Overhead AC-supplied electric locomotive manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 61216
+              line: 884
+              column: 1
+            end:
+              offset: 61238
+              line: 884
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 8637
+          line: 76
+          column: 1
+        end:
+          offset: 9078
+          line: 76
+          column: 442
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 9079
+          line: 77
+          column: 1
+        end:
+          offset: 9611
+          line: 77
+          column: 533
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_orders"
+      identity_kind: "explicit"
+      unit_id: "normative_50492"
+      source_span:
+        start:
+          offset: 50605
+          line: 847
+          column: 1
+        end:
+          offset: 51098
+          line: 847
+          column: 494
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_50492"
+      source_span:
+        start:
+          offset: 51099
+          line: 848
+          column: 1
+        end:
+          offset: 51690
+          line: 848
+          column: 592
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_61216"
+      source_span:
+        start:
+          offset: 61311
+          line: 888
+          column: 1
+        end:
+          offset: 61708
+          line: 888
+          column: 398
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_61216"
+      source_span:
+        start:
+          offset: 61709
+          line: 889
+          column: 1
+        end:
+          offset: 62125
+          line: 889
+          column: 417
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_61216"
+      source_span:
+        start:
+          offset: 62126
+          line: 890
+          column: 1
+        end:
+          offset: 62437
+          line: 890
+          column: 312
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_61216"
+      source_span:
+        start:
+          offset: 62438
+          line: 891
+          column: 1
+        end:
+          offset: 62857
+          line: 891
+          column: 420
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_release"
+      identity_kind: "explicit"
+      unit_id: "normative_61216"
+      source_span:
+        start:
+          offset: 62858
+          line: 892
+          column: 1
+        end:
+          offset: 63238
+          line: 892
+          column: 381
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 7089
+          line: 61
+          column: 1
+        end:
+          offset: 7110
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7089"
+      source_span:
+        start:
+          offset: 7138
+          line: 65
+          column: 1
+        end:
+          offset: 8564
+          line: 72
+          column: 648
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50492"
+      source_span:
+        start:
+          offset: 50492
+          line: 843
+          column: 1
+        end:
+          offset: 50532
+          line: 843
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_61216"
+      source_span:
+        start:
+          offset: 61216
+          line: 884
+          column: 1
+        end:
+          offset: 61238
+          line: 884
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:dbffb857dca84505814bc81db3c55e334693b2c002cc5584dd7a0e9b4a8c778a"
+  generated_content_sha256: "sha256:7f6d6ef08118e03a8e23bf273352c42aef4a6e6bdae74baa461731d7d52e0cb9"
