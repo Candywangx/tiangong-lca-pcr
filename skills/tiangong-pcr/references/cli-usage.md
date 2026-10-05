@@ -1,7 +1,12 @@
 # PCR consumer commands
 
 Use command-specific `--help` for input shapes, defaults and next actions. Commands
-below run without network access; provision tool/library/optional TIDAS tooling first.
+below are native PCR arguments and run without network access; provision the reader first.
+For a managed task, prepare once with `tiangong-lca pcr snapshot ensure`, then invoke
+`tiangong-lca pcr exec --task-dir <absolute-task-dir> -- <arguments below without tiangong-pcr>`.
+Preparation may discover/download public data for a new task; existing task pins
+never refresh. Require `task_usable: true`, retain the same task directory, and
+use absolute input/output paths when files are outside that directory.
 
 ```sh
 tiangong-pcr tree --format markdown
@@ -22,12 +27,15 @@ tiangong-pcr review check --pcr <id> --input process.json --related ./datasets -
 tiangong-pcr feedback draft --pcr <id> --type <feedback-type> --summary "<finding>"
 ```
 
-Use returned page commands. Topic/section selection and exact pointer reading are
+Use returned page/query arguments. In the task-managed route, remove the returned
+standalone executable and any source selectors before passing arguments to
+`pcr exec`; the wrapper supplies the retained library/hash and rejects overrides. Topic/section selection and exact pointer reading are
 exclusive. New inspection/selection results use previews; truncated values carry
 an explicit marker and a pointer for complete retrieval. Large complete output
 requires `--output <new-file>`; existing files are not overwritten. This saves an
 artifact and prints its path/hash. Input inspection and arithmetic do not need
-`--library`; PCR commands honor PCR_LIBRARY or explicit selection/pinning.
+`--library`; standalone PCR commands honor PCR_LIBRARY or explicit selection/pinning.
+The managed wrapper instead verifies its task pins and clears ambient source overrides.
 
 `--related` scans one explicitly supplied local directory, bounded to 200 JSON
 files, 64 MiB total, 12 directory levels and 5000 entries. Each JSON file is bounded

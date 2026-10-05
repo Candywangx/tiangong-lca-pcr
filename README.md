@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 public validation commands, portable compact tests, full corpus separation and conservative data lane; no runtime consumption or methodology status change."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 public task preparation through the bundled Skill and compatible reader/content versions; installation does not activate Skills or approve methodology."
 ---
 
 # TianGong LCA PCR Library
@@ -52,7 +52,7 @@ PCR records are canonical methodology documents. Classification systems such as 
 - `packages/pcr-docs/`: generated public Fumadocs documentation at https://pcr.tiangong.earth.
 - `packages/pcr-core/`: shared library for reading PCR catalog, mapping, guidance, validation, and feedback draft data.
 - `packages/tiangong-pcr-cli/`: public Agent-facing CLI for consuming PCR guidance during foreground data package construction.
-- `skills/tiangong-pcr/`: thin Agent skill for selecting PCRs, using guidance, validating drafts, and creating feedback.
+- `skills/tiangong-pcr/`: thin Agent skill for preparing an immutable task snapshot through Tiangong CLI, selecting PCRs, using guidance, validating drafts, and creating feedback.
 - `.github/workflows/`: repository validation gates for pull requests and main-branch updates.
 - `.github/ISSUE_TEMPLATE/`: structured PCR feedback and missing-PCR issue forms.
 - `docs/`: project-level architecture, authoring notes, release policy, and the phased optimization roadmap.

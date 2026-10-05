@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 complete/disjoint shard selection, qualification-bound raw coverage, separate independent corpus builds, full reusable release gate and honest data-only coverage disposition. Thresholds remain unchanged; hosted qualification and timing evidence remain required."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 on merged #86 lanes: capability declarations and staged importer dependency closure have independent negative tests; full source coverage, corpus and sealed platform/browser qualification remain unchanged."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md

@@ -1,3 +1,4 @@
+import type { ProductCompatibility } from "./reader-compatibility.ts";
 import type { ProductIdentity } from "./product-identity.ts";
 import type { WebProbes } from "./product-web.ts";
 /** Release transport boundaries stay dependency-free for the provider importer. */
@@ -46,6 +47,8 @@ export interface ProductWebArtifact extends ArtifactProof { files: number; uncom
 export interface ProductManifest {
   schema: 1; kind: "pcr-product-release"; identity: ProductIdentity;
   toolchain: { node: string; npm: string };
+  /** Absence is reserved for immutable historical manifests. */
+  compatibility?: ProductCompatibility;
   packages: Record<PackageKind, ProductPackageReceipt>; web: ProductWebArtifact; artifacts: ArtifactProof[];
 }
 export interface ArchiveEntry { path: string; bytes: number; sha256?: string }

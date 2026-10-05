@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 changed-record bilingual/measurement/projection gates and complete global invariants; authoring and scientific review requirements remain unchanged."
+lastReviewedCommit: 332ab813d6f4d6c0e0ec883e4a6c86b216ef2669
+lastReviewedNote: "Reviewed PCR #87 task snapshot adoption and compatibility on the merged #86 qualification policy; canonical authoring, bilingual/measurement/projection checks, scientific approval and immutable release history remain unchanged."
 ---
 
 # Authoring Guide

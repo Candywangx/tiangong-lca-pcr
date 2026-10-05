@@ -6,6 +6,7 @@ import path from "node:path";
 import test from "node:test";
 import type { TestContext } from "node:test";
 import { fileURLToPath } from "node:url";
+import { READER_CAPABILITIES } from "./reader-compatibility.ts";
 import { buildOfflineTool } from "./build-offline-packages.ts";
 
 function repositoryRoot(): string {
@@ -29,7 +30,7 @@ test("the sealed provider importer still loads without installed package depende
   const temp = mkdtempSync(path.join(realpathSync(tmpdir()), "pcr-provider-import-"));
   t.after(() => rmSync(temp, { recursive: true, force: true }));
   for (const relative of [
-    "builder/scripts/release-types.ts", "builder/scripts/product-web-materialize.ts", "builder/scripts/product-release.ts",
+    "builder/scripts/reader-compatibility.ts", "builder/scripts/release-types.ts", "builder/scripts/product-web-materialize.ts", "builder/scripts/product-release.ts",
     "builder/scripts/product-identity.ts", "builder/scripts/product-web.ts", "builder/scripts/npm-release.ts",
     "builder/lib/lifecycle-policy.ts", "builder/lib/lifecycle-vocab.ts",
     "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/vocabulary.ts", "packages/pcr-core/schemas/controlled-vocabulary.schema.json",
@@ -145,7 +146,7 @@ test("real compilation stages relocatable emitted runtime, assets, bin and locke
   assert.deepEqual(packageJson, {
     name: "@tiangong-lca/pcr", version: "1.2.3", type: "module", description: "Offline PCR consumer CLI and agent Skill",
     license: "MIT", engines: { node: ">=24.19.0" }, bin: { "tiangong-pcr": "packages/tiangong-pcr-cli/bin/tiangong-pcr.js" },
-    files: ["packages", "skills", "README.md", "LICENSE", "NOTICE.md"],
+    files: ["packages", "skills", "README.md", "LICENSE", "NOTICE.md", "reader-capabilities.json"],
     repository: { type: "git", url: "git+https://github.com/tiangong-lca/pcr.git" },
     dependencies: { "fixture-runtime": "1.0.0" }, bundleDependencies: ["fixture-runtime"],
   });
@@ -193,6 +194,7 @@ test("compiled tarball installs offline and runs from node_modules without TypeS
   npm(["pack", output, "--pack-destination", temp]);
   npm(["install", path.join(temp, "tiangong-lca-pcr-2.0.0.tgz")]);
   const installed = path.join(installation, "node_modules/@tiangong-lca/pcr");
+  assert.deepEqual(JSON.parse(readFileSync(path.join(installed, "reader-capabilities.json"), "utf8")), READER_CAPABILITIES);
   assert.ok(files(path.join(installed, "packages")).every(file => !/\.(?:ts|mts|cts)$/u.test(file)));
   const bin = path.join(installed, "packages/tiangong-pcr-cli/bin/tiangong-pcr.js");
   assert.equal(execFileSync(process.execPath, ["--no-strip-types", bin], { cwd: installation, encoding: "utf8" }).trim(), 'typed:{"asset":true}:runtime:nested');

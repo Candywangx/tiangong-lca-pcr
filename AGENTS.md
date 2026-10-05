@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 full/data qualification ownership, complete shard evidence and unchanged scientific/publication boundaries; hosted CI qualification remains required."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 ownership: PCR supplies capabilities and bundled thin Skill; Tiangong CLI owns discovery/cache/task locks. Canonical production, #86 CI gates and guarded publication remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -220,6 +220,12 @@ Generated PCR leaf scaffolds under `library/pcrs/**` are intentionally excluded 
 Offline packaging is governed by `docs/offline-distribution.md`. Build the tool and
 English-only SQLite content package as separate artifacts of one product version; never promote methodology status
 or alter source language declarations merely to package content.
+
+The bundled thin Skill uses Tiangong CLI to prepare and verify an immutable task
+snapshot, then delegates to this repository's offline reader. Tiangong CLI owns
+online discovery/cache/task locks. Reader/content compatibility follows declared
+capabilities rather than equal versions; continuing tasks retain their original
+pins. Explicit standalone/repository consumption remains supported.
 
 The public Agent-facing CLI lives under `packages/tiangong-pcr-cli/` and uses shared logic from `packages/pcr-core/`.
 

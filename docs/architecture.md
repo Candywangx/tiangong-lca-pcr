@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 qualification orchestration; Builder/core/CLI source ownership and canonical PCR identity remain unchanged."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 cross-repository preparation boundary and independent compatible reader/content versions; canonical assets and offline core stay PCR-owned."
 ---
 
 # PCR 资料库架构
@@ -549,6 +549,13 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 `@tiangong-lca/pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
+
+The bundled thin Skill delegates new-task preparation to Tiangong CLI, which owns
+latest-compatible stable discovery, verified download/cache and immutable task
+locks. PCR core remains offline/read-only. The reader and content may have different
+versions under the declared compatibility contract. Existing task pins do not
+refresh, and explicit standalone/repository selection remains available. This
+workflow does not install a universal host task-creation hook.
 
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
