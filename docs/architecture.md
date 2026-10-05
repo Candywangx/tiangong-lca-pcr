@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 provider-only import runtime and typed fixture; core/CLI/Builder ownership, canonical methodology and unified artifact identity remain unchanged. Detailed deployment pins remain in the site and engineering contracts."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 qualification orchestration; Builder/core/CLI source ownership and canonical PCR identity remain unchanged."
 ---
 
 # PCR 资料库架构

@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
-lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 complete/disjoint shard selection, qualification-bound raw coverage, separate independent corpus builds, full reusable release gate and honest data-only coverage disposition. Thresholds remain unchanged; hosted qualification and timing evidence remain required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md

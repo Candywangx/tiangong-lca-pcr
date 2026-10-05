@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 runtime recovery against authoring scope; deployment does not change methodology lifecycle, translation approval, canonical authoring or immutable history."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 changed-record bilingual/measurement/projection gates and complete global invariants; authoring and scientific review requirements remain unchanged."
 ---
 
 # Authoring Guide

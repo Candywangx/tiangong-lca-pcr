@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 patch recovery; immutable same-product snapshots, complete normative context, read sessions and public CLI contracts remain unchanged."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 compact test fixture and separate full-corpus qualification; public guidance, offline snapshot sessions, source identity and scientific review behavior remain unchanged."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

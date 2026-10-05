@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 provider-runtime recovery; repository ownership, canonical PCR identities, scientific/translation gates and immutable release boundaries are unchanged. Runtime separation is governed by the updated linked contracts."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 full/data qualification ownership, complete shard evidence and unchanged scientific/publication boundaries; hosted CI qualification remains required."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

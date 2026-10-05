@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 public workflow and deployment boundary; automatic previews remain disabled while bounded manual runtime qualification is explicit. CLI, nvm development pin and scientific approval remain unchanged."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
+lastReviewedNote: "Reviewed PCR #86 public validation commands, portable compact tests, full corpus separation and conservative data lane; no runtime consumption or methodology status change."
 ---
 
 # TianGong LCA PCR Library
