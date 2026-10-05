@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 runtime recovery against authoring scope; deployment does not change methodology lifecycle, translation approval, canonical authoring or immutable history."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: 332ab813d6f4d6c0e0ec883e4a6c86b216ef2669
+lastReviewedNote: "Reviewed PCR #87 task snapshot adoption and compatibility on the merged #86 qualification policy; canonical authoring, bilingual/measurement/projection checks, scientific approval and immutable release history remain unchanged."
 ---
 
 # Authoring Guide
@@ -221,6 +221,17 @@ measurement relationship using finite rules; missing conversion is an error and 
 Symbolic machine mass M is a collection requirement, not a fabricated numeric input. Goal contract-2 tasks additionally
 prepare their report from finalized receipts and submit its reference; follow the assigned Harness prompt and
 `builder/docs/tools/goal-harness.md`.
+
+CI may select the bounded data lane for proven changes to current canonical PCR
+files and supported associated derived/evidence files. Whole-library lint,
+immutable history and alias/catalog invariants, changed-PCR measurement and exact
+projection checks, and complete fresh sealed-product acceptance still apply.
+Optional-language, revision/history, shared-module, classification-system and
+unknown changes select full mode; all reusable release qualification is full.
+The data lane does not measure full code coverage or establish methodology
+approval. Keep the complete local `npm run validate` workflow above; see
+[CI qualification lanes](typescript-engineering.md#ci-qualification-lanes) for the
+exact evidence and retry contract.
 
 ## Offline consumer distribution
 

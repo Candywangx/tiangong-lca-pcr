@@ -81,7 +81,7 @@ test("all/root retain 89 existing root tests, nine docs tests, and every enginee
 test("registered baseline tests cannot disappear silently, while explicitly classified additions remain valid", () => {
   const files = discoverTestFiles(REPOSITORY_ROOT);
   assert.doesNotThrow(() => validateRegisteredTests(files));
-  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.ts"]) {
+  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.ts", "packages/pcr-core/full-corpus.offline.test.ts"]) {
     assert.throws(() => validateRegisteredTests(files.filter(file => file !== missing)), /Registered tests are missing/);
   }
   const expanded = [...files, "builder/lib/new.unit.test.ts"];
@@ -306,4 +306,14 @@ test("emitted child failure propagates and removes only its owned temporary evid
   assert.ok(observed !== null && typeof observed === "object" && "temporaryRoot" in observed && typeof observed.temporaryRoot === "string");
   assert.equal(existsSync(observed.temporaryRoot), false);
   assert.equal(existsSync(path.join(root, "dist/test-engineering/scripts/engineering/failing.test.js")), true);
+});
+
+test("portable offline selection excludes only the exact full corpus and preserves full membership", () => {
+  const corpus = "packages/pcr-core/full-corpus.offline.test.ts";
+  const fixtures = ["packages/pcr-core/offline-library.test.ts", "packages/pcr-core/new.offline.test.ts"];
+  const inventory = classifyTestFiles([...fixtures, corpus]);
+  assert.deepEqual(selectSuite(inventory, "portable-offline"), fixtures.sort());
+  assert.deepEqual(selectSuite(inventory, "offline"), [...fixtures, corpus].sort());
+  assert.deepEqual(selectSuite(inventory, "all"), [...fixtures, corpus].sort());
+  assert.deepEqual(selectSuite(inventory, "root"), [...fixtures, corpus].sort());
 });

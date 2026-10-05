@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
-lastReviewedNote: "Reviewed PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 on merged #86 lanes: capability declarations and staged importer dependency closure have independent negative tests; full source coverage, corpus and sealed platform/browser qualification remain unchanged."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -127,15 +127,18 @@ Root `validate` checks runtime, migration inventory, all scoped TypeScript proje
 whole-library lint and the complete test selection. Root `npm test` includes the
 site transformation tests previously invoked separately. `test:list` reports
 deterministic suite membership; every discovered test belongs to exactly one base
-suite, and unclassified tests fail discovery. Aggregate selections do not duplicate
-test files. New test placement/names must satisfy the suite contract.
+suite, and unclassified tests fail discovery. Aggregate `all`/`root` selections do not duplicate
+test files and still include the full-corpus test. `test:offline:portable` explicitly
+selects the compact offline tests; it does not claim complete corpus qualification.
+New test placement/names must satisfy the suite contract.
 
 | Command | Scope |
 | --- | --- |
 | `test:unit`, `test:contracts` | Pure operations and externally visible contracts |
 | `test:integration`, `test:recovery` | Storage/process boundaries, transactions and failure recovery |
 | `test:docs` | Site transformation, completeness and build-storage cases |
-| `test:offline` | Real SQLite and installed tool/library distribution |
+| `test:offline` | Complete offline suite, including independent full-corpus qualification |
+| `test:offline:portable` | Compact real-builder SQLite, reader, packing and network-free installation contracts |
 | `test:product` | Product sealing, publication and importer contracts |
 | `test:engineering` | Runtime, migration and test-discovery boundaries |
 | `test:browser` | Compiled Viewer interaction in Chromium, Firefox and WebKit |
@@ -217,6 +220,83 @@ classification and complete batch/failure output. Fourteen actual CLI calls
 include failures/retries; saved complete output avoids truncation. This is neither
 a blind model evaluation nor a statistical accuracy or general speedup claim.
 Formal sealed artifact and live publication evidence remain separate.
+
+## CI qualification lanes
+
+`.github/workflows/validate.yml` freezes an exact-source CI decision with
+`scripts/engineering/ci-plan.ts`. The stable `validate` job is the aggregate gate:
+`scripts/engineering/ci-gate.ts` requires every job selected by that decision to
+succeed and rejects unexpected skips, missing jobs and failed jobs. Local
+`npm run validate`, `npm test` and `all`/`root` remain complete entrypoints.
+
+Full qualification partitions the entire discovered test inventory into eight
+fixed shards: `harness`, `core`, `builder`, `consumer`, `docs`, `engineering`,
+`corpus` and `general`. `scripts/engineering/qualification-plan.ts` records test
+paths and hashes, source HEAD and content hash, configuration hash, Node version,
+plan hash and a fresh qualification ID. Each shard verifies the frozen plan
+before and after execution and produces a successful receipt for its exact
+membership; an empty shard still requires an explicit receipt. Missing,
+duplicate, changed or foreign-invocation receipts fail verification. New tests
+must be classified and included exactly once.
+
+The `corpus` shard runs `packages/pcr-core/full-corpus.offline.test.ts` without
+coverage instrumentation. It independently builds the complete current corpus
+twice, compares SQLite and sidecar bytes, and verifies record membership,
+required modules and classification artifacts, alias identity, stored source
+bytes, checksums and SQLite integrity. Its mandatory successful receipt proves
+functional qualification and contributes no CI coverage numerator. Compact
+behavioral tests use real catalog/SQLite builders and compiled packages against
+a bounded representative source; the full-mode portable matrix uses
+`npm run test:offline:portable` on Linux x64/ARM64, Windows x64 and macOS ARM64.
+
+The other seven shards and the complete documentation build produce fresh raw
+measurements. `coverage:collect` binds each planned measurement explicitly with
+`--qualification-plan <plan.json> --selection <shard|documentation>` before the
+normal `-- <command...>` argument. `scripts/engineering/coverage-ci.ts` verifies
+all eight execution receipts and the exact isolated set of measurement artifacts,
+then the coverage engine checks the qualification ID, plan hash and selection
+alongside source/configuration/runtime identity and authenticated bytes/maps.
+Keep shard raw/capture directories separate; flattening them can collide on
+process identities. Complete source denominator, critical scenarios and existing
+thresholds remain mandatory. A receipt or an instrumentation request alone is
+not raw coverage evidence.
+
+The reduced `data` lane is available only for a proven nonempty PR/main-push diff
+containing changed canonical PCR records. Its allowlist covers the four current
+files (`manifest.yaml`, `structured.yaml`, `pcr.en-US.md`, `pcr.zh-CN.md`), with
+supported associated catalog/material index, CPC 3.0 mapping/coverage, alias
+registry and `docs/adr/NNNN-<slug>.md` decision evidence. An ADR-only or derived-only
+change selects full mode. Unknown paths, shared modules, classification-system
+sources, code, schemas, vocabularies, dependencies, workflows, release history,
+revision workspaces and optional language files select full mode. Missing,
+unproven or non-ancestral base history also selects full mode. Reusable invocation
+or declared reusable inputs always select full mode, including an empty
+`product_tag`; a tag's truthiness never reduces formal release qualification.
+
+Both modes run runtime/migration/strict type checks and complete global lint,
+alias/catalog/chain freshness and source-history invariants. Changed current PCRs
+also pass `pcr:check` and exact deterministic canonical-Markdown projection
+comparison through `scripts/engineering/ci-content.ts`; removals are recorded
+explicitly and still require the global invariants. Both modes build the full
+real website and sealed tool/SQLite/web product from the current source, run SEO
+verification, install the exact seal on all four platforms and qualify its
+extracted web bytes in the three-browser desktop/mobile matrix. These checks
+retain scientific, translation and immutable-history boundaries.
+
+The data lane omits full code-test/coverage qualification and reports
+`not-measured-data-only-lane`. It does not claim a passing full source coverage
+gate or reuse previous receipts. Manual `npm run test:coverage` still collects
+complete `all`/`root` test execution and the documentation build; it is a separate
+complete measurement, not the CI policy that leaves corpus execution
+uninstrumented. Use the plan/run/verify and explicitly bound collection helpers
+when reproducing CI qualification.
+
+Coverage artifact discovery is bound to the current run and attempt. After a
+failed shard, start a fresh complete qualification attempt with its own plan,
+all receipts and all required measurements. Rerunning only failed shards cannot
+combine previous-attempt artifacts into a complete qualification. Publisher-only
+retry or resume of an already qualified immutable bundle remains governed by
+the existing publication contract and is a separate operation.
 
 ## Delivery and scientific boundaries
 

@@ -26,7 +26,7 @@ async function rewriteArchive(root:string,manifest:ProductManifest,kind:'tool'|'
 test('manifest gates retain exact transport, source and toolchain bindings for malformed public inputs',async t=>{
  const f=await sealedProductFixture(t,false);
  const cases:readonly [string,readonly string[],unknown][]=[
- ['unknown-schema',['schema'],2],['wrong-kind',['kind'],'unrelated'],['pins-absent',['toolchain'],null],['bad-node',['toolchain','node'],'24'],['bad-npm',['toolchain','npm'],null],
+ ['compatibility-null',['compatibility'],null],['compatibility-undefined',['compatibility'],undefined],['compatibility-extra-key',['compatibility'],{schema:1,libraryFormat:1,projectionContracts:['1','2'],minimumReaderVersion:'0.4.1',commandProtocol:1,extra:true}],['compatibility-duplicates',['compatibility','projectionContracts'],['1','1']],['unknown-schema',['schema'],2],['wrong-kind',['kind'],'unrelated'],['pins-absent',['toolchain'],null],['bad-node',['toolchain','node'],'24'],['bad-npm',['toolchain','npm'],null],
  ['packages-absent',['packages'],null],['unsafe-tool-filename',['packages','tool','filename'],'../tool.tgz'],['empty-artifact-set',['artifacts'],[]],
  ['web-zero-bytes',['web','bytes'],0],['web-zero-files',['web','files'],0],['web-fraction-files',['web','files'],1.5],['web-zero-total',['web','uncompressedBytes'],0],['web-bad-tree-hash',['web','treeSha256'],'sha256:invalid'],['web-foreign-origin',['web','origin'],'https://other.example'],
  ['probes-absent',['web','probes'],null],['counts-absent',['web','probes','counts'],null],['counts-negative',['web','probes','counts','pcrs'],-1],['counts-missing',['web','probes','counts'],{pcrs:1,pages:2,languages:2}],
@@ -54,6 +54,12 @@ test('resealed real tarballs cannot disguise mismatched inner source, package, w
  for(const key of ['name','version','gitHead'])await run('packed-'+key,(root,m)=>rewriteArchive(root,m,'tool',tree=>{const file=path.join(tree,'package/package.json'),data=json(file);data[key]=key==='gitHead'?'a'.repeat(40):'unrelated';writeJson(file,data);}),/Packed npm metadata differs/u);
  await run('packed-product-source',(root,m)=>rewriteArchive(root,m,'tool',tree=>{const file=path.join(tree,'package/product-release.json'),data=json(file);data.sourceCommit='a'.repeat(40);writeJson(file,data);}),/identities differ/u);
  await run('missing-packed-product-proof',(root,m)=>rewriteArchive(root,m,'tool',tree=>rmSync(path.join(tree,'package/product-release.json'))),/product identity|identities differ/iu);
+ await run('missing-reader-capabilities',(root,m)=>rewriteArchive(root,m,'tool',tree=>rmSync(path.join(tree,'package/reader-capabilities.json'))),/reader capabilities/u);
+ await run('false-reader-capabilities',(root,m)=>rewriteArchive(root,m,'tool',tree=>{const file=path.join(tree,'package/reader-capabilities.json'),data=json(file);data.libraryFormats=[1,2];writeJson(file,data);}),/implemented PCR reader/u);
+ await run('malformed-reader-capabilities',(root,m)=>rewriteArchive(root,m,'tool',tree=>put(path.join(tree,'package/reader-capabilities.json'),'null')),/reader capabilities/u);
+ await run('unsupported-required-contract',(root,m)=>{assert.ok(m.compatibility);m.compatibility.projectionContracts=['3'];persistManifest(root,m);},/do not satisfy/u);
+ await run('minimum-reader-too-new',(root,m)=>{assert.ok(m.compatibility);m.compatibility.minimumReaderVersion='0.4.2';persistManifest(root,m);},/minimumReaderVersion/u);
+ await run('consistent-wrong-sqlite-format',async(root,m)=>{const file=path.join(root,'library.sqlite.json'),data=json(file);data.format_version=2;writeJson(file,data);updateProof(root,m,'library.sqlite.json');await rewriteArchive(root,m,'library',tree=>writeJson(path.join(tree,'package/library.sqlite.json'),data));},/sidecar format/u);
  await run('foreign-npm-tree-entry',(root,m)=>rewriteArchive(root,m,'tool',tree=>put(path.join(tree,'outside.txt'),'not part of the npm package')),/non-package file/u);
  await run('archive-only-sqlite-replaced',(root,m)=>rewriteArchive(root,m,'library',tree=>put(path.join(tree,'package/library.sqlite'),'replacement database bytes')),/Portable SQLite assets differ/u);
  for(const key of ['source_commit','content_version'])await run('consistent-wrong-sqlite-'+key,async(root,m)=>{const sidecar=path.join(root,'library.sqlite.json'),data=json(sidecar);set(data,['snapshot',key],key==='source_commit'?'a'.repeat(40):'99.0.0');writeJson(sidecar,data);updateProof(root,m,'library.sqlite.json');await rewriteArchive(root,m,'library',tree=>writeJson(path.join(tree,'package/library.sqlite.json'),data));},/SQLite snapshot source\/version differs/u);
@@ -103,4 +109,19 @@ test('public release detection and CLI argument errors remain local and cannot d
  await assert.rejects(tagAndDispatchProduct(productReleaseSpec('v0.3.0'),'not-a-sha',async()=>assert.fail('Invalid commit must not reach even the stub transport.')),/full product source/u);
  await assert.rejects(tagAndDispatchProduct(productReleaseSpec('v0.3.0'),'a'.repeat(40),async(_url,method)=>method==='GET'?{status:404}:{status:500}),/Cannot create/u);
  await assert.rejects(tagAndDispatchProduct(productReleaseSpec('v0.3.0'),'a'.repeat(40),async(url,method)=>method==='GET'?{status:200,body:{object:{type:'commit',sha:'a'.repeat(40)}}}:{status:url.endsWith('dispatches')?500:201}),/dispatch failed/u);
+});
+
+
+test('historical compatibility-absent release manifests and tarballs remain unchanged and verifiable',async t=>{
+ const f=await sealedProductFixture(t,false),legacy=structuredClone(f.manifest);
+ delete legacy.compatibility;
+ await rewriteArchive(f.root,legacy,'tool',tree=>rmSync(path.join(tree,'package/reader-capabilities.json')));
+ const before=readFileSync(path.join(f.root,'release.json'));
+ assert.equal(Object.hasOwn(validateProductManifest(legacy),'compatibility'),false);
+ const verified=await verifyProductArtifacts(f.root);
+ assert.equal(Object.hasOwn(verified,'compatibility'),false);
+ assert.deepEqual(readFileSync(path.join(f.root,'release.json')),before);
+ await rewriteArchive(f.root,legacy,'tool',tree=>put(path.join(tree,'package/reader-capabilities.json'),'null'));
+ await assert.rejects(verifyProductArtifacts(f.root),/reader capabilities/u);
+ for(const malformed of [null,undefined,{},[],{schema:2}])assert.throws(()=>validateProductManifest({...legacy,compatibility:malformed}));
 });

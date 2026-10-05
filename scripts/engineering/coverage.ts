@@ -11,6 +11,9 @@ import { inventory, trimCoverage, zeroCoverage } from './coverage-inventory.ts';
 import {emit,emissionProofs,codeIdentity} from './coverage-emission.ts';
 import { proveMapping, excludedCapture, type ProvenMapping } from './coverage-mapping.ts';
 import { config, hash, executionRoute, object, text, capture, functions, parse, type CoverageConfig } from './coverage-types.ts';
+import { readCurrentQualificationPlan } from './qualification-plan.ts';
+import { assertCoverageQualificationBinding, parseCoverageCollectArguments, qualificationBinding, validateCoverageCommand } from './coverage-qualification.ts';
+import type { CoverageQualificationOptions } from './coverage-qualification.ts';
 export function measurementPath(root:string,requested:string):string{
  let ancestor=path.resolve(requested);const suffix:string[]=[];
  while(!lstatSync(ancestor,{throwIfNoEntry:false})){suffix.unshift(path.basename(ancestor));ancestor=path.dirname(ancestor);}
@@ -23,18 +26,37 @@ export function readConfig(root:string):CoverageConfig{return config(parse(readF
 function configurationHash(root:string):string{return hash(readFileSync(path.join(root,'config/coverage.json')));}
 function revision(root:string):string{return execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();}
 /** Source hashes are recorded before and after execution; no fixture is retained by changing its cleanup. */
-export async function collect(root:string,output:string,command:readonly string[]):Promise<number>{
- root=realpathSync(root);output=measurementPath(root,output);if(!command.length)throw new Error('Coverage collect requires a command.');mkdirSync(path.dirname(output),{recursive:true});mkdirSync(output);const sources=inventory(root,readConfig(root)),commit=revision(root),configSha256=configurationHash(root);
+export async function collect(root:string,output:string,command:readonly string[],qualification?:CoverageQualificationOptions):Promise<number>{
+ root=realpathSync(root);
+ output=measurementPath(root,output);
+ if(!command.length)throw new Error('Coverage collect requires a command.');
+ if(qualification)validateCoverageCommand(root,command,qualification);
+ const binding=qualification?qualificationBinding(readCurrentQualificationPlan(root,path.resolve(root,qualification.planFile)),qualification.selection):undefined;
+ mkdirSync(path.dirname(output),{recursive:true});mkdirSync(output);
+ const sources=inventory(root,readConfig(root)),commit=revision(root),configSha256=configurationHash(root);
  const raw=path.join(output,'raw'),captures=path.join(output,'captures');mkdirSync(raw);mkdirSync(captures);
  const toolRoot=execFileSync('git',['rev-parse','--show-toplevel'],{cwd:path.dirname(fileURLToPath(import.meta.url)),encoding:'utf8'}).trim();
  const preload=path.join(output,'preload');emit(toolRoot,preload,['scripts/engineering/coverage-capture.ts']);
  const hook=pathToFileURL(path.join(preload,'scripts/engineering/coverage-capture.js')).href;
  const executable=command[0];if(!executable)throw new Error('Missing coverage command.');
  const env={...process.env,NODE_V8_COVERAGE:raw,PCR_COVERAGE_CAPTURE:captures,PCR_COVERAGE_ROOT:root,NODE_OPTIONS:`${process.env.NODE_OPTIONS??''} --import ${JSON.stringify(hook)}`};
- write(path.join(output,'run.json'),{schemaVersion:1,commit,configSha256,node:process.version,sources,command,status:null});
- const child=spawn(executable,command.slice(1),{cwd:root,env,stdio:'inherit'});const status=await new Promise<number>((resolve,reject)=>{child.once('error',reject);child.once('close',code=>resolve(code??1));});
- const after=inventory(root,readConfig(root));const unchanged=configSha256===configurationHash(root)&&commit===revision(root)&&JSON.stringify(sources)===JSON.stringify(after);
- write(path.join(output,'run.json'),{schemaVersion:1,commit,configSha256,node:process.version,sources,command,status,unchanged});if(!unchanged)throw new Error('Coverage source changed during collection.');return status;
+ const metadata={schemaVersion:1,commit,configSha256,node:process.version,sources,command,...(binding?{qualification:binding}:{})};
+ write(path.join(output,'run.json'),{...metadata,status:null});
+ const child=spawn(executable,command.slice(1),{cwd:root,env,stdio:'inherit'});
+ const status=await new Promise<number>((resolve,reject)=>{child.once('error',reject);child.once('close',code=>resolve(code??1));});
+ const after=inventory(root,readConfig(root));
+ let qualificationError:string|undefined;
+ if(qualification&&binding){
+  try{
+   const current=qualificationBinding(readCurrentQualificationPlan(root,path.resolve(root,qualification.planFile)),qualification.selection);
+   assertCoverageQualificationBinding(current,binding);
+  }catch(error:unknown){qualificationError=error instanceof Error?error.message:String(error);}
+ }
+ const unchanged=configSha256===configurationHash(root)&&commit===revision(root)&&JSON.stringify(sources)===JSON.stringify(after)&&qualificationError===undefined;
+ write(path.join(output,'run.json'),{...metadata,status,unchanged,...(qualificationError?{qualificationError}:{})});
+ if(qualificationError)throw new Error(`Coverage qualification changed during collection: ${qualificationError}`);
+ if(!unchanged)throw new Error('Coverage source changed during collection.');
+ return status;
 }
 interface MeasuredScript {scriptId:string;url:string;functions:ReturnType<typeof functions>}
 interface MeasurementGroup {proof:ProvenMapping;filename:string;url:string;length:number;scripts:MeasuredScript[]}
@@ -99,5 +121,5 @@ export async function report(root:string,output:string,runs:readonly string[],en
  mkdirSync(output,{recursive:true});write(path.join(output,'coverage-final.json'),map.toJSON());write(path.join(output,'report.json'),result);
  if(enforce&&(failures.length||unmapped.length))throw new Error(`Coverage gates failed: ${failures.length} threshold failures; ${unmapped.length} unmapped scripts.`);return result;
 }
-async function main(){const [action,output,...args]=process.argv.slice(2);if(!output)throw new Error('Usage: coverage.ts collect <new-output> -- <command...> | report <output> <run...> | inspect <output> <run...>');if(action==='collect'){if(args.shift()!=='--')throw new Error('Coverage command requires --.');process.exitCode=await collect(process.cwd(),path.resolve(output),args);}else if(action==='report'||action==='inspect'){console.log(JSON.stringify(await report(process.cwd(),path.resolve(output),args.map(value=>path.resolve(value)),action==='report')));}else throw new Error('Unknown coverage command.');}
+async function main(){const [action,output,...args]=process.argv.slice(2);if(!output)throw new Error('Usage: coverage.ts collect <new-output> [--qualification-plan <plan> --selection <name>] -- <command...> | report <output> <run...> | inspect <output> <run...>');if(action==='collect'){const collected=parseCoverageCollectArguments(args);process.exitCode=await collect(process.cwd(),path.resolve(output),collected.command,collected.qualification);}else if(action==='report'||action==='inspect'){console.log(JSON.stringify(await report(process.cwd(),path.resolve(output),args.map(value=>path.resolve(value)),action==='report')));}else throw new Error('Unknown coverage command.');}
 if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href)main().catch(error=>{console.error(error instanceof Error?error.message:String(error));process.exitCode=1;});

@@ -54,7 +54,7 @@ Required qualifiers must be disclosed in foreground data-package metadata/refere
 | --- | --- | --- | --- | --- |
 | reference_mass | reference product | Mass | kg | M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass. |
 | native_quantities | all inventory rows | Actual native reference property | actual native unit | Preserve battery Item(s), cable m, flux/water/air m3 and heat/electricity actual energy datum where compatible; do not force kg or reinterpret reference internal IDs. Meter conversions require own calibration/T/P/density/assay. |
-| physical_ingredients | all inventory rows | Mass | kg | Whole bought hardware and local chemical ingredients are separate branches. Every actual chemical/alloy/solution uses its own assay/moisture/reaction/stocks/returns/retained quantity; module mass is not contained chemical mass. |
+| physical_ingredients | Material and chemical mass-balance quantities | Mass | kg | Whole bought hardware and local chemical ingredients are separate branches. Every actual chemical/alloy/solution uses its own assay/moisture/reaction/stocks/returns/retained quantity; module mass is not contained chemical mass. This mass-balance rule does not replace an inventory flow's native reference property or unit. Preserve compatible item, length, volume and energy quantities under native_quantities; derive any separately needed material mass only from measured, traceable conversion evidence. |
 
 
 ## 5. System Boundary
