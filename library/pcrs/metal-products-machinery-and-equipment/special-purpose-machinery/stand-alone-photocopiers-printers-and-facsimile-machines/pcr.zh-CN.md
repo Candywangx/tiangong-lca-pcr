@@ -54,7 +54,7 @@ Brother PT-H110明确不可连接PC/Mac是合格标签机例，非整个类别�
 | --- | --- | --- | --- | --- |
 | reference_mass | reference product | Mass | kg | M = 同一配置的一台完整机器的验收净质量，单位 kg；采用 cp_mass 采集。 |
 | native_quantities | all inventory rows | 真实原生基准属性 | 真实原生单位 | 兼容时保留电池Item(s)电缆米助焊剂水空气立方米热电真实能量基准，不强塞千克重释基准内部ID，表计换算须自身校准温压密度化验。 |
-| physical_ingredients | all inventory rows | Mass | kg | 完整外购硬件本地化学原料独立分支，各真实化学合金溶液自身化验水反应库存返还留存，模块质量非所含化学量。 |
+| physical_ingredients | 材料与化学品质量平衡数量 | Mass | kg | 完整外购硬件与本地化学原料采用独立分支。每种实际化学品、合金或溶液应分别记录其化验、含水率、反应、库存、返还和留存数量；模块质量不等于所含化学品质量。本质量平衡规则不替换清单流的原生基准属性或单位。按 native_quantities 保留兼容的件数、长度、体积和能量数量；仅在另行需要材料质量时，根据实测且可追溯的换算证据推导。 |
 
 
 ## 5. 系统边界
