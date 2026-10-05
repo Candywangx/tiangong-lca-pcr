@@ -32,6 +32,25 @@ The selection order is `--library`, then `PCR_LIBRARY`, then the installed
 content package. `--root` explicitly selects a source checkout and cannot be
 combined with `--library`.
 
+## Latest compatible content for a new task
+
+A released `@tiangong-lca/cli` with the PCR snapshot command family can manage
+content freshness separately from this offline reader. Select this installed
+package's absolute root once when preparing a dedicated task directory:
+
+```sh
+tiangong-lca pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <absolute-installed-PCR-package> --json
+tiangong-lca pcr exec --task-dir <absolute-task-dir> -- list --format json
+```
+
+Require `task_usable: true`. A new connected task selects the latest compatible
+published content, while an existing task retains its version/hash without
+network discovery. Explicit-version and offline modes remain available through
+command help. The wrapper injects the selected library/hash; do not pass native
+source overrides. It keeps the selected installed reader bytes fixed as well.
+This is an explicit workflow preparation boundary, not a hook into every chat or
+Foundry task. Standalone commands below preserve their existing behavior.
+
 ## Common commands
 
 ```sh

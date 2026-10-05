@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 provider-runtime recovery; repository ownership, canonical PCR identities, scientific/translation gates and immutable release boundaries are unchanged. Runtime separation is governed by the updated linked contracts."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 ownership: PCR supplies capabilities and bundled thin Skill; Tiangong CLI owns discovery/cache/task locks. Canonical production, #86 CI gates and guarded publication remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -221,6 +221,12 @@ Offline packaging is governed by `docs/offline-distribution.md`. Build the tool 
 English-only SQLite content package as separate artifacts of one product version; never promote methodology status
 or alter source language declarations merely to package content.
 
+The bundled thin Skill uses Tiangong CLI to prepare and verify an immutable task
+snapshot, then delegates to this repository's offline reader. Tiangong CLI owns
+online discovery/cache/task locks. Reader/content compatibility follows declared
+capabilities rather than equal versions; continuing tasks retain their original
+pins. Explicit standalone/repository consumption remains supported.
+
 The public Agent-facing CLI lives under `packages/tiangong-pcr-cli/` and uses shared logic from `packages/pcr-core/`.
 
 Use this CLI for general LCA authoring, optional TIDAS process authoring, and Agent-led review of native TIDAS
@@ -317,6 +323,17 @@ npm run validate
 
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
+
+CI uses the stable `validate` aggregate gate under
+[the engineering qualification contract](docs/typescript-engineering.md#ci-qualification-lanes).
+Full mode requires all eight fresh source-bound shard receipts, independent
+full-corpus reproducibility and authenticated coverage measurements. A proven
+current-PCR-only data lane retains whole-library contracts, changed-record
+semantic/projection checks and complete fresh sealed-product acceptance; full
+code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+reusable release invocation select full mode, including empty product tags.
+Do not satisfy a failed qualification with prior-attempt shard artifacts or
+report compact portable tests as complete corpus qualification.
 
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)

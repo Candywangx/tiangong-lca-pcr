@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: eeb4ee7cf444c5430284e562b4ea825ac6bd8815
-lastReviewedNote: "Reviewed PCR #82 provider-only import runtime and typed fixture; core/CLI/Builder ownership, canonical methodology and unified artifact identity remain unchanged. Detailed deployment pins remain in the site and engineering contracts."
+lastReviewedAt: 2026-10-05
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 cross-repository preparation boundary and independent compatible reader/content versions; canonical assets and offline core stay PCR-owned."
 ---
 
 # PCR 资料库架构
@@ -512,8 +512,14 @@ Schema、指纹和语义 preflight，
 workspace 追加 release。lint 同时检查 revision/release/history Schema、不可变 artifact digest、版本链与
 current/latest 一致性。
 
-pull request 和 main 分支 push 通过 GitHub Actions 运行 `npm run validate`，使本地合同、投影
-freshness 和自动测试成为合并门禁的统一入口。
+本地 `npm run validate` 保留完整验证入口。Pull request 和 main push 的 GitHub Actions
+通过固定 `validate` aggregate job 执行所选资格门禁：full mode 包含完整八分片测试、独立全库
+可重复构建及新鲜源绑定 coverage；受限 data mode 保留全库合同、变更 PCR 的语义及 exact
+projection 检查，以及完整新构建的 tool/SQLite/web seal、四平台离线安装和浏览器验收。
+Data mode 明确声明 full code coverage 未测量，不能复用旧测试或 coverage receipt。共享模块、
+未知路径及 runtime/toolchain 变更选择 full；所有 reusable release invocation 也必须选择 full。
+精确 allowlist、分片证据和完整 attempt 重试规则由
+[工程资格合同](typescript-engineering.md#ci-qualification-lanes) 管理。
 
 ## 公共静态文档站
 
@@ -543,6 +549,13 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 `@tiangong-lca/pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
+
+The bundled thin Skill delegates new-task preparation to Tiangong CLI, which owns
+latest-compatible stable discovery, verified download/cache and immutable task
+locks. PCR core remains offline/read-only. The reader and content may have different
+versions under the declared compatibility contract. Existing task pins do not
+refresh, and explicit standalone/repository selection remains available. This
+workflow does not install a universal host task-creation hook.
 
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)

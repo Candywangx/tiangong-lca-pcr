@@ -8,7 +8,7 @@ import test from "node:test";
 import { buildOfflineLibrary } from "../../builder/scripts/build-offline-library.ts";
 import { buildOfflineTool } from "../../builder/scripts/build-offline-packages.ts";
 import type { DatabaseSync } from "node:sqlite";
-import { buildRelease, parseNpmPackOutput } from "../../builder/scripts/npm-release.ts";
+import { buildPackageArtifact, releaseSpec, parseNpmPackOutput } from "../../builder/scripts/npm-release.ts";
 function database(library: OfflineLibrary): DatabaseSync { assert.ok(library.db); return library.db; }
 function sqlRow(value: unknown): Record<string, unknown> { return record(value); }
 function installedBin(installation: string): string {
@@ -21,6 +21,7 @@ import { withPcrSource } from "./src/source-context.ts";
 import { getPcrById, readPcrDistributionSnapshot, buildGuidance, listPcrs, resolveClassification, resolvePcrIdentity, validateDatasetAgainstGuidance, verifyDistributionCoverage, readPcrModuleDocumentBundle } from "./src/index.ts";
 import { runTiangongPcr } from "../tiangong-pcr-cli/src/commands.ts";
 
+import { createOfflineDistributionFixture } from "./fixtures/offline-distribution-fixture.ts";
 const root = path.resolve(".");
 
 
@@ -46,8 +47,11 @@ test("offline distribution preserves contracts and installs without network", { 
   const temp = realpathSync(mkdtempSync(path.join(tmpdir(), "pcr-offline-test-")));
   let library: OfflineLibrary | undefined;
   t.after(() => { library?.close(); rmSync(temp, { recursive: true, force: true }); });
+  const source = createOfflineDistributionFixture(t);
+  const repositoryRoot = root;
+  const sourceRoot = source.root;
   const output = path.join(temp, "data");
-  const manifest = buildOfflineLibrary({ root, output, version: "0.1.0" });
+  const manifest = buildOfflineLibrary({ root: sourceRoot, output, version: "0.1.0" });
   const filename = path.join(output, "library.sqlite");
   const reads: string[] = [];
   library = new OfflineLibrary(filename, { verify: true, onArtifactRead: (key) => reads.push(key) });
@@ -57,6 +61,10 @@ test("offline distribution preserves contracts and installs without network", { 
   await t.test("catalog needs no body reads; selected guidance uses shared readiness and integrity", () => {
     const records = run(() => listPcrs({ root: currentLibrary.root, scope: "material" }));
     assert.equal(records.length, manifest.snapshot.material_records);
+    assert.equal(manifest.snapshot.records, 3);
+    assert.equal(manifest.snapshot.material_records, 2);
+    assert.equal(manifest.snapshot.aliases, 1);
+    assert.equal(run(() => listPcrs({ root: currentLibrary.root, scope: "legacy" })).length, 1);
     assert.equal(reads.length, 0);
     assert.deepEqual(manifest.snapshot.available_languages, ["en-US"]);
     assert.equal(sqlRow(database(currentLibrary).prepare("SELECT COUNT(*) AS count FROM files WHERE key LIKE '%/pcr.%.md' AND key NOT LIKE '%/pcr.en-US.md'").get()).count, 0);
@@ -65,19 +73,21 @@ test("offline distribution preserves contracts and installs without network", { 
     match(unavailable.stderr, /PCR_LIBRARY_LANGUAGE_UNAVAILABLE/u);
     reads.length = 0;
     const actual = run(() => buildGuidance({ root: currentLibrary.root, pcrId: wheat }));
-    assert.deepEqual(actual, buildGuidance({ root, pcrId: wheat }));
+    assert.deepEqual(actual, buildGuidance({ root: sourceRoot, pcrId: wheat }));
     assert.equal(actual.readiness.status, "review_required");
     assert.ok(reads.length === 3 && reads.every((name) => name.includes("/wheat-seed/")));
     const dataset = { collection_records: [] };
-    assert.deepEqual(run(() => validateDatasetAgainstGuidance({ root: currentLibrary.root, pcrId: wheat, dataset })), validateDatasetAgainstGuidance({ root, pcrId: wheat, dataset }));
-    assert.deepEqual(run(() => readPcrModuleDocumentBundle({ root: currentLibrary.root, group: "core", moduleId: "allocation" })), readPcrModuleDocumentBundle({ root, group: "core", moduleId: "allocation" }));
+    assert.deepEqual(run(() => validateDatasetAgainstGuidance({ root: currentLibrary.root, pcrId: wheat, dataset })), validateDatasetAgainstGuidance({ root: sourceRoot, pcrId: wheat, dataset }));
+    assert.deepEqual(run(() => readPcrModuleDocumentBundle({ root: currentLibrary.root, group: "core", moduleId: "allocation" })), readPcrModuleDocumentBundle({ root: sourceRoot, group: "core", moduleId: "allocation" }));
   });
   await t.test("accepted mappings, known-unmapped leaves and aliases retain semantics", () => {
     // Coverage documents use uppercase CPC; physical source paths are lowercase.
     run(() => verifyDistributionCoverage({ root: currentLibrary.root, snapshot: library.coverageSnapshot("cpc", "3.0") }));
-    for (const code of ["01111", "99000"]) assert.deepEqual(run(() => resolveClassification({ root: currentLibrary.root, system: "cpc", version: "3.0", code })), resolveClassification({ root, system: "cpc", version: "3.0", code }));
+    assert.ok(run(() => resolveClassification({ root: currentLibrary.root, system: "cpc", version: "3.0", code: "01111" })).mapping);
+    assert.equal(run(() => resolveClassification({ root: currentLibrary.root, system: "cpc", version: "3.0", code: "99000" })).mapping, null);
+    for (const code of ["01111", "99000"]) assert.deepEqual(run(() => resolveClassification({ root: currentLibrary.root, system: "cpc", version: "3.0", code })), resolveClassification({ root: sourceRoot, system: "cpc", version: "3.0", code }));
     const alias = string(sqlRow(database(currentLibrary).prepare("SELECT key FROM aliases ORDER BY key LIMIT 1").get()).key);
-    assert.deepEqual(run(() => resolvePcrIdentity({ root: currentLibrary.root, pcrId: alias })), resolvePcrIdentity({ root, pcrId: alias }));
+    assert.deepEqual(run(() => resolvePcrIdentity({ root: currentLibrary.root, pcrId: alias })), resolvePcrIdentity({ root: sourceRoot, pcrId: alias }));
     const result = runTiangongPcr(["guidance", "--pcr", alias, "--library", filename, "--format", "json"]);
     assert.equal(errorEnvelope(result.stderr).code, "PCR_LEGACY_ID_REDIRECT");
     assert.ok(string(record(errorEnvelope(result.stderr).details).next_command).includes("--library"));
@@ -85,7 +95,7 @@ test("offline distribution preserves contracts and installs without network", { 
     match(show.stderr, /PCR_LEGACY_ID_REDIRECT/u);
   });
   await t.test("CLI pagination retains explicit pins and reports incompatible or conflicting selections", () => {
-    const result = runTiangongPcr(["list", "--library", filename, "--library-sha256", manifest.sha256, "--format", "json"]);
+    const result = runTiangongPcr(["list", "--library", filename, "--library-sha256", manifest.sha256, "--page-size", "1", "--format", "json"]);
     assert.equal(result.exitCode, 0, result.stderr);
     assert.ok(string(json(result.stdout).next_command).includes(`--library-sha256 ${manifest.sha256}`));
     assert.ok(string(json(result.stdout).next_command).startsWith("tiangong-pcr "));
@@ -93,9 +103,9 @@ test("offline distribution preserves contracts and installs without network", { 
     assert.throws(() => new OfflineLibrary(filename, { expectedSha256: `sha256:${"0".repeat(64)}` }), /SHA-256 mismatch/u);
   });
   await t.test("same sources and toolchain reproduce identical database bytes", () => {
-    const second = buildOfflineLibrary({ root, output: path.join(temp, "second"), version: "0.1.0" });
+    const second = buildOfflineLibrary({ root: sourceRoot, output: path.join(temp, "second"), version: "0.1.0" });
     assert.deepEqual(second, manifest);
-    assert.throws(() => buildOfflineLibrary({ root, output, version: "0.1.0" }), /already exists/u);
+    assert.throws(() => buildOfflineLibrary({ root: sourceRoot, output, version: "0.1.0" }), /already exists/u);
   });
   await t.test("corrupt body fails only when selected; full verify detects corruption", () => {
     const copy = path.join(temp, "corrupt.sqlite");
@@ -196,8 +206,10 @@ test("offline distribution preserves contracts and installs without network", { 
     const toolVersion = json(readFileSync(path.join(root, "packages/tiangong-pcr-cli/package.json"))).version;
     const libraryVersion = json(readFileSync(path.join(root, "packages/tiangong-pcr-library/package.json"))).version;
     const toolOutput = path.join(temp, "release-tool"); const libraryOutput = path.join(temp, "release-library");
-    const tool = await buildRelease(root, `pcr-v${toolVersion}`, toolOutput);
-    const data = await buildRelease(root, `library-v${libraryVersion}`, libraryOutput);
+    const tool = await buildPackageArtifact(sourceRoot, releaseSpec(`pcr-v${toolVersion}`), toolOutput, { builders: { tool: options => buildOfflineTool({ ...options, root: repositoryRoot }) } });
+    const data = await buildPackageArtifact(sourceRoot, releaseSpec(`library-v${libraryVersion}`), libraryOutput);
+    assert.equal(tool.source_commit, source.sourceCommit);
+    assert.equal(data.source_commit, source.sourceCommit);
     const installation = path.join(temp, "release-install"); mkdirSync(installation);
     writeFileSync(path.join(installation, "package.json"), '{"private":true}\n');
     execFileSync(process.execPath, [string(process.env.npm_execpath), "install", path.join(toolOutput, tool.filename), path.join(libraryOutput, data.filename), "--offline", "--ignore-scripts", "--no-audit", "--no-fund", "--cache", path.join(temp, "release-empty-cache")], { cwd: installation, env: { ...process.env, npm_config_registry: "http://127.0.0.1:1" }, stdio: "pipe" });
@@ -215,7 +227,8 @@ test("offline distribution preserves contracts and installs without network", { 
 });
 
 // Small real SQLite fixtures exercise storage boundaries independently of the
-// full-corpus packaging qualification above.
+// compact builder/packaging qualification above. Full-corpus source fidelity
+// and independent reproducibility have a separate mandatory offline test.
 function tinyLibrary(t: import("node:test").TestContext): { filename: string; bytes: Buffer; manifest: import("./src/types.ts").OfflineManifest } {
   const directory = realpathSync(mkdtempSync(path.join(tmpdir(), "pcr-offline-boundary-")));
   t.after(() => rmSync(directory, { recursive: true, force: true }));

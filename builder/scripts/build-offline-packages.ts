@@ -3,6 +3,8 @@ import { chmodSync, cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readF
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { READER_CAPABILITIES, READER_CAPABILITIES_FILENAME, assertImplementedReaderCapabilities } from "./reader-compatibility.ts";
+
 export interface OfflineToolOptions {
   readonly root: string;
   readonly output: string;
@@ -145,10 +147,11 @@ export function buildOfflineTool(options: OfflineToolOptions): OfflineToolResult
     writeFileSync(path.join(stage, "package.json"), `${JSON.stringify({
       name: "@tiangong-lca/pcr", version, type: "module", description: "Offline PCR consumer CLI and agent Skill",
       license: "MIT", engines: { node: ">=24.19.0" }, bin,
-      files: ["packages", "skills", "README.md", "LICENSE", "NOTICE.md"],
+      files: ["packages", "skills", "README.md", "LICENSE", "NOTICE.md", READER_CAPABILITIES_FILENAME],
       ...(repositoryMetadata === undefined ? {} : { repository: repositoryMetadata }),
       dependencies: graph.dependencies, bundleDependencies: Object.keys(graph.dependencies),
     }, null, 2)}\n`);
+    writeFileSync(path.join(stage, READER_CAPABILITIES_FILENAME), `${JSON.stringify(assertImplementedReaderCapabilities(READER_CAPABILITIES), null, 2)}\n`);
     cpSync(path.join(root, "packages/tiangong-pcr-cli/README.md"), path.join(stage, "README.md"));
     cpSync(path.join(root, "LICENSE"), path.join(stage, "LICENSE"));
     writeFileSync(path.join(stage, "NOTICE.md"), "# Tool distribution\n\nSource: https://github.com/tiangong-lca/pcr\n\nTianGong LCA code, schemas, documentation and Skill are distributed under the MIT License; see LICENSE. Bundled dependencies retain their own licenses and notices in node_modules.\n");
