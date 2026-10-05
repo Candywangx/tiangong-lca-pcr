@@ -1,0 +1,1361 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.transport-equipment.intermodal-freight-container"
+  classification_refs: "CPC 3.0 49221; narrower closed steel dry-container manufacture scope, context only"
+  covered_products: "New complete empty closed steel dry containers with plywood floor, declared dimensions and doors"
+  excluded_products: "Other container constructions, transport/storage services and modifications"
+  representative_product: "One serial-linked complete accepted empty container with measured net M"
+  production_route: "Conditional cutting/forming, frame/shell joining, conditional finishing, floor/door fitting and acceptance"
+  market_state: "Accepted empty complete container at declared dispatch gate"
+functional_unit:
+  what: "Manufacture a complete configured closed steel dry freight container"
+  how_much: "1 kg net accepted empty container; per-container records converted using measured M"
+  how_well: "Configuration-specific producer release acceptance; trace approval scheme when claimed. Equal mass does not imply equal cargo capacity or service performance"
+  how_long_or_cycle: "One manufacturing and acceptance cycle; no assumed service lifetime"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "all stages"
+      rule: "Include attributable production/rework and actual acceptance-support tests in the reporting period. Outsourced forming/coating requires a measured supplier module or disclosed gap. Exclude transport cycles, loading, repairs and owner periodic examination; CSC approval overview does not impose a universal manufacturing test load/frequency."
+      source_ids:
+        - imo-csc
+    - rule_id: boundary_components
+      applies_to: "received modules"
+      rule: "Count each stock or supplied finished module once. A purchased finished frame/shell/door replaces its included stock/hardware and completed operations. Add every actual missing component and chemistry before completing a dataset; the candidate card set is not an exhaustive BOM."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received specified stock, corner fittings, plywood and door components; declared supplier completeness"
+  starting_condition_role: "Foreground stock/component receipt to accepted empty container dispatch"
+  product_classification_scope: "Closed steel dry intermodal container with plywood floor"
+  recursive_input_rule: "No complete container input generated recursively from its own output; completed bought-in modules bypass performed constituent operations"
+  upstream_dataset_requirement: "Match grade/form, plywood bonding/treatment, coating, supply route and geography; disclose unlinked supplier production"
+  disclosure: "manufacturer/model; serial and drawing revision; closed steel dry-container type and dimensions; wall/roof/frame steel grade/thickness; corner-fitting and interface specification; plywood veneer/bonding/treatment/floor construction; door layout, hinges, locking and gasket/sealant formulation; coating layer/formulation and make-or-buy completeness; installed integral fittings and detached delivered parts; empty condition excluding cargo, removable protection and transport fixtures; positive measured net mass M, scale calibration and tare; applicable approval scheme and trace if claimed; actual manufacturing/outsourcing route, factory/period, dispatch gate and upstream coverage"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Containers specially designed and equipped for carriage by one or more modes of transport"
+    uuid: "89d4bb67-2735-4ecf-9672-539f6f94d8f4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer/model"
+    - "serial and drawing revision"
+    - "closed steel dry-container type and dimensions"
+    - "wall/roof/frame steel grade/thickness"
+    - "corner-fitting and interface specification"
+    - "plywood veneer/bonding/treatment/floor construction"
+    - "door layout"
+    - hinges
+    - "locking and gasket/sealant formulation"
+    - "coating layer/formulation and make-or-buy completeness"
+    - "installed integral fittings and detached delivered parts"
+    - "empty condition excluding cargo"
+    - "removable protection and transport fixtures"
+    - "positive measured net mass M"
+    - "scale calibration and tare"
+    - "applicable approval scheme and trace if claimed"
+    - "actual manufacturing/outsourcing route"
+    - "factory/period"
+    - "dispatch gate and upstream coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Collect actual factory intake/station kWh and convert by the verified unit-group identity 3.6 MJ/kWh. Nameplate kW is not energy; voltage-specific supply must match actual intake."
+  - id: gas_volume
+    applies_to: "curing_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Preserve the public volume reference property. Collect actual supplied pipeline gas m3 at recorded meter temperature/pressure; reconcile billing conversions and do not assume kg or a universal heating value."
+  - id: formulation_mass
+    applies_to: "liquid formulations"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh actual paint/sealant formulation; any volume-to-mass conversion requires foreground-measured density at declared composition/state/temperature. No catalogue coverage ratio is a manufacturing amount."
+process_map:
+  - id: stock_form
+    name: "Steel stock cutting and forming"
+    inclusion: "conditional"
+    inclusion_condition: "Unformed steel stock is processed in the declared foreground."
+    role: "foreground"
+    quantitative_reference: "one accepted configured container, normalized with M"
+  - id: shell_join
+    name: "Frame and shell assembly"
+    inclusion: "required"
+    inclusion_condition: "Each new complete container."
+    role: "foreground"
+    quantitative_reference: "one accepted configured container, normalized with M"
+  - id: surface_finish
+    name: "Surface preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Surface preparation/coating occurs within the declared foreground."
+    role: "foreground"
+    quantitative_reference: "one accepted configured container, normalized with M"
+  - id: floor_door
+    name: "Plywood floor and door fitting"
+    inclusion: "required"
+    inclusion_condition: "Each declared closed steel dry container with plywood floor."
+    role: "foreground"
+    quantitative_reference: "one accepted configured container, normalized with M"
+  - id: acceptance
+    name: "Empty-container acceptance"
+    inclusion: "required"
+    inclusion_condition: "Each finished accepted container."
+    role: "foreground"
+    quantitative_reference: "one accepted configured container, normalized with M"
+  - id: packing
+    name: "Conditional dispatch protection"
+    inclusion: "conditional"
+    inclusion_condition: "Removable protection is actually supplied at dispatch."
+    role: "foreground"
+    quantitative_reference: "one accepted configured container, normalized with M"
+process_inventory:
+  - id: stock_form
+    label: "Steel stock cutting and forming"
+    inputs:
+      product:
+        - row_id: weathering_sheet
+          role: "Hot-rolled weathering-steel thin sheet for container panels"
+          name: "Hot-rolled weathering-steel thin sheet for container panels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actually collected mixed waterborne zinc-rich epoxy-primer/acrylic-topcoat sludge leaving one declared collection outlet; measure wet mass, solids/moisture and recipient. Distinct segregated residues require separate rows, not summation into this mixed stream."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock_form."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock_form
+              source_ids: []
+            ranges: []
+        - row_id: weathering_profile
+          role: "Formed weathering-steel container rail profile"
+          name: "Formed weathering-steel container rail profile"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock_form."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock_form
+              source_ids: []
+            ranges: []
+        - row_id: electricity_stock_form
+          role: "Alternating-current electricity supplied at the declared factory intake"
+          name: "Alternating-current electricity supplied at the declared factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Collect actual station electricity kWh, shared-driver denominator, site intake voltage and geography; convert kWh to MJ by unit identity, not motor nameplate power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock_form."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock_form
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut
+          role: "Steel scrap, offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Segregated untreated steel cutting offcuts exported after internal reuse; weigh actual mass and retain recipient. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stock_form."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stock_form
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: shell_join
+    label: "Frame and shell assembly"
+    inputs:
+      product:
+        - row_id: corner_fitting
+          role: "Cast-steel intermodal-container corner fitting"
+          name: "Cast-steel intermodal-container corner fitting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shell_join."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_join
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: welding_wire
+          role: "Solid low-alloy steel gas-shielded welding wire"
+          name: "Solid low-alloy steel gas-shielded welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shell_join."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_join
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: co2_shield
+          role: "Carbon dioxide"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "Only supplied CO2 shielding gas actually used in a CO2 welding route matching the at-plant China identity, with measured consumed mass; excludes argon/CO2 premix and liquid CO2 handling if scope differs. No automatic fossil-emission assumption. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shell_join."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_join
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: argon_co2
+          role: "Argon/carbon-dioxide premixed welding shielding gas"
+          name: "Argon/carbon-dioxide premixed welding shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shell_join."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_join
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: electricity_shell_join
+          role: "Alternating-current electricity supplied at the declared factory intake"
+          name: "Alternating-current electricity supplied at the declared factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Collect actual station electricity kWh, shared-driver denominator, site intake voltage and geography; convert kWh to MJ by unit identity, not motor nameplate power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shell_join."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_join
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: weld_dust
+          role: "Captured iron-oxide-rich welding filter dust transferred as waste"
+          name: "Captured iron-oxide-rich welding filter dust transferred as waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shell_join."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_join
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+      elementary:
+        []
+  - id: surface_finish
+    label: "Surface preparation and coating"
+    inputs:
+      product:
+        - row_id: process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Supplied treated industrial process water used in actual cleaning/coating operations; measure fresh supplied amount, not internal recirculation or environmental withdrawal. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: steel_shot
+          role: "Cast-steel spherical blasting shot"
+          name: "Cast-steel spherical blasting shot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: epoxy_primer
+          role: "Waterborne zinc-rich epoxy container primer formulation"
+          name: "Waterborne zinc-rich epoxy container primer formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: acrylic_topcoat
+          role: "Waterborne acrylic container topcoat formulation"
+          name: "Waterborne acrylic container topcoat formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: curing_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Only actually supplied fossil pipeline natural gas used for curing, measured in m3 at declared meter temperature/pressure; preserve volume reference property and conditions. No universal curing fuel or calorific factor. Public identity retains reference flow property 93a60a56-a3c8-22da-a746-0800200c9a66, unit group 93a60a57-a3c8-12da-a746-0800200c9a66 and exchange unit m3."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: electricity_surface_finish
+          role: "Alternating-current electricity supplied at the declared factory intake"
+          name: "Alternating-current electricity supplied at the declared factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Collect actual station electricity kWh, shared-driver denominator, site intake voltage and geography; convert kWh to MJ by unit identity, not motor nameplate power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_shot
+          role: "Spent cast-steel blasting shot with removed iron-oxide coating residue"
+          name: "Spent cast-steel blasting shot with removed iron-oxide coating residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: paint_sludge
+          role: "Waste waterborne epoxy/acrylic coating sludge"
+          name: "Waste waterborne epoxy/acrylic coating sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+        - row_id: clean_effluent
+          role: "Aqueous steel-cleaning effluent transferred for treatment"
+          name: "Aqueous steel-cleaning effluent transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only attributable measured fossil combustion CO2 discharged to air, unspecified subcompartment, when actual curing fuel is demonstrably fossil. No inferred shielding-gas origin, biogenic substitution or unavoidable emission claim. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - seabox-manufacturing
+            ranges: []
+  - id: floor_door
+    label: "Plywood floor and door fitting"
+    inputs:
+      product:
+        - row_id: marine_plywood
+          role: "Phenolic-bonded marine plywood container floor panel"
+          name: "Phenolic-bonded marine plywood container floor panel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+        - row_id: floor_screw
+          role: "Steel threaded plywood-floor fixing screw"
+          name: "Steel threaded plywood-floor fixing screw"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+        - row_id: door_hinge
+          role: "Steel intermodal-container door hinge"
+          name: "Steel intermodal-container door hinge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+        - row_id: locking_rod
+          role: "Steel container-door locking cam rod assembly"
+          name: "Steel container-door locking cam rod assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+        - row_id: epdm_gasket
+          role: "EPDM rubber container-door sealing gasket"
+          name: "EPDM rubber container-door sealing gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+        - row_id: pu_sealant
+          role: "One-component polyurethane container-seam sealant"
+          name: "One-component polyurethane container-seam sealant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+        - row_id: electricity_floor_door
+          role: "Alternating-current electricity supplied at the declared factory intake"
+          name: "Alternating-current electricity supplied at the declared factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Collect actual station electricity kWh, shared-driver denominator, site intake voltage and geography; convert kWh to MJ by unit identity, not motor nameplate power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: plywood_offcut
+          role: "Phenolic-bonded plywood floor offcut transferred as waste"
+          name: "Phenolic-bonded plywood floor offcut transferred as waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_floor_door."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_floor_door
+              source_ids:
+                - seabox-dry
+            ranges: []
+      elementary:
+        []
+  - id: acceptance
+    label: "Empty-container acceptance"
+    inputs:
+      product:
+        - row_id: approval_plate
+          role: "Stamped aluminium container safety-approval plate"
+          name: "Stamped aluminium container safety-approval plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - imo-csc
+            ranges: []
+        - row_id: leak_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied treated process water for weather-tightness checking; not mandatory for every approval scheme. Record measured input, recycling and actual outlet separately. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - imo-csc
+            ranges: []
+        - row_id: electricity_acceptance
+          role: "Alternating-current electricity supplied at the declared factory intake"
+          name: "Alternating-current electricity supplied at the declared factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Collect actual station electricity kWh, shared-driver denominator, site intake voltage and geography; convert kWh to MJ by unit identity, not motor nameplate power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - imo-csc
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Containers specially designed and equipped for carriage by one or more modes of transport"
+          name: "Containers specially designed and equipped for carriage by one or more modes of transport"
+          flow_type: "product"
+          flow_ref:
+            uuid: "89d4bb67-2735-4ecf-9672-539f6f94d8f4"
+          property_unit: "Mass / kg"
+          description: "One kg of the accepted complete empty closed steel dry container with declared plywood floor and door configuration, at the declared manufacturing gate. Generic public container identity requires all product qualifiers. No cargo/transport service or complete upstream claim. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - imo-csc
+            ranges: []
+      waste:
+        - row_id: test_water_waste
+          role: "Collected container leak-test water transferred for treatment"
+          name: "Collected container leak-test water transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - imo-csc
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Conditional dispatch protection"
+    inputs:
+      product:
+        - row_id: film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only separately supplied removable, non-self-adhesive, non-cellular, unreinforced and unlaminated PE-LD protection foil matching the public classification; weigh issue-return balance and exclude from net M. Public identity retains reference flow property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66 and exchange unit kg."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: electricity_packing
+          role: "Alternating-current electricity supplied at the declared factory intake"
+          name: "Alternating-current electricity supplied at the declared factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Collect actual station electricity kWh, shared-driver denominator, site intake voltage and geography; convert kWh to MJ by unit identity, not motor nameplate power."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished unit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_orders
+    applies_to: "shared manufacture"
+    rule: "Separate orders by dimensions/door/floor/coating configuration. Directly attribute measured issues, returns, station meters, rejects and rework first. Inseparable shared utilities use a demonstrated measured causal driver such as coated area with layer/process load or station time: share = order driver / sum of all covered drivers. Retain period, denominator and justification; container count or nominal tare alone does not establish causality between different configurations."
+    source_ids: []
+  - rule_id: allocation_residues
+    applies_to: "reuse and exports"
+    rule: "Internal reused stock, abrasive and water are transfers; count fresh supply and actual exports without double counting circulation. Waste keeps measured mass and destination with no automatic avoided-product credit. Separate saleable co-products before a documented reviewed residual allocation. Attribute production rejects/rework to accepted output over the same period and reconcile work in progress."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "accepted empty-container net mass"
+      record_type: "weighing_record"
+      raw_fields: "model; configuration; serial; accepted net mass M; scale_id; calibration; empty condition; floor/door/corner fittings; detached integral parts; cargo exclusion; packaging/fixture tare; release record"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each container or representative same-configuration batch"
+      temporal_coverage: "same manufacturing order period"
+      site_scope: "declared factory"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "calibration, empty state, tare, configuration and release record"
+    - protocol_id: cp_stock_form
+      process_id: "stock_form"
+      flow_role: "Steel stock cutting and forming"
+      record_type: "foreground_record"
+      raw_fields: "serial/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; electricity kWh/intake voltage; pipeline gas m3/meter conditions; waste recipient; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Weigh grade-specific issues/returns and offcuts; record sheet thickness, tooling, order/drawing and station meters."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "BOM, weighing, meters, tests, transfers and acceptance"
+    - protocol_id: cp_shell_join
+      process_id: "shell_join"
+      flow_role: "Frame and shell assembly"
+      record_type: "foreground_record"
+      raw_fields: "serial/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; electricity kWh/intake voltage; pipeline gas m3/meter conditions; waste recipient; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Retain joining procedure, filler/gas SDS, measured consumption, weld/rework records, constituent completeness and dimensional inspection."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "BOM, weighing, meters, tests, transfers and acceptance"
+    - protocol_id: cp_surface_finish
+      process_id: "surface_finish"
+      flow_role: "Surface preparation and coating"
+      record_type: "foreground_record"
+      raw_fields: "serial/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; electricity kWh/intake voltage; pipeline gas m3/meter conditions; waste recipient; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Collect layer SDS, weighed formulation issues/returns, cleaning water, spent abrasive/paint outlet, actual curing meters and attributable emission measurements."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "BOM, weighing, meters, tests, transfers and acceptance"
+    - protocol_id: cp_floor_door
+      process_id: "floor_door"
+      flow_role: "Plywood floor and door fitting"
+      record_type: "foreground_record"
+      raw_fields: "serial/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; electricity kWh/intake voltage; pipeline gas m3/meter conditions; waste recipient; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Weigh plywood and hardware issues/returns, record supplier included components, floor treatment/SDS, serial-linked door operation and fit acceptance."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "BOM, weighing, meters, tests, transfers and acceptance"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "Empty-container acceptance"
+      record_type: "foreground_record"
+      raw_fields: "serial/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; electricity kWh/intake voltage; pipeline gas m3/meter conditions; waste recipient; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Retain serial/drawing, release criteria/results, approval/type-test trace if claimed, plate details, calibrated empty weighing, tare and dispatch completeness."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "BOM, weighing, meters, tests, transfers and acceptance"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "Conditional dispatch protection"
+      record_type: "foreground_record"
+      raw_fields: "serial/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; electricity kWh/intake voltage; pipeline gas m3/meter conditions; waste recipient; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Weigh protection, retain tare/returns and reconcile integral delivered parts."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted units"
+      quality_evidence: "BOM, weighing, meters, tests, transfers and acceptance"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished unit; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_completeness
+      applies_to: "complete container"
+      requirement: "Reconcile actual BOM/drawing, shell/frame/corners, floor, doors/hardware, coating and integral fittings to measured empty M. Resolve included supplier constituents and detached-part masses; add omitted actual exchanges before dataset completion."
+      evidence: "drawings, weighing and supplier scope"
+    - id: quality_balance
+      applies_to: "material and utilities"
+      requirement: "Retain calibration, stock/issue/return/reuse balances, SDS/state/density, coating uptake/residue, gas meter conditions, actual emission measurements and waste recipients. QA limits must arise from site records or comparable primary evidence; no invented yields, ranges or mandatory losses."
+      evidence: "stock, meters, measurements and transfers"
+    - id: quality_coverage
+      applies_to: "dataset"
+      requirement: "Disclose site/period, configuration/approval scope, conditional absences, outsourcing, identity/quantity uncertainty and supplier upstream gaps. Model examples and approval overviews do not establish actual certificates, universal recipes or net M. No boundary-compatible empirical intensity ranges are adopted here."
+      evidence: "coverage and evidence register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference"
+    rule: "Require positive measured M for the same complete empty closed steel dry-container configuration, including declared floor, fitted doors, corners and integral delivered parts. Reject cargo, nominal payload/gross weight, TEU or transport-service substitutions. Verify approval claims against actual scheme/plate records, not classification alone."
+    source_ids:
+      - imo-csc
+  - rule_id: validate_identity
+    applies_to: "all rows"
+    rule: "Check atomic material/form, exact public reference property/unit group, route, state and environmental medium. Pure CO2 gas is not argon mixture; process water is not environmental water; captured dust/waste transfer is not air or water release. Retain blank UUID where identity applicability is not established."
+    source_ids: []
+  - rule_id: validate_measurement
+    applies_to: "all rows"
+    rule: "Trace per-container or batch collection to the same measured M, configuration, site and period; verify unit conversions, gas meter conditions and shared-driver denominators. Prevent received-module constituent duplication and unknown-to-zero defaults."
+    source_ids: []
+  - rule_id: validate_emissions
+    applies_to: "elementary rows"
+    rule: "Use only demonstrated attributable factory species/origins and actual medium. Fossil CO2 applies to air-unspecified only with fossil provenance. Distinguish CO2, CO, NO, NO2, N2O, biogenic origin and captured residues; add each actual species separately."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured complete empty closed steel dry-container foreground manufacture dataset"
+  downstream_use: "secondary_dataset; background_dataset after qualified review and declared upstream linkage"
+  allowed_use: "Manufacturing supply-chain models matching container dimensions, material/floor/door/coating configuration, supplier completeness and gate/site/period"
+  excluded_use: "Freight service/lifetime equivalence, other container technologies, building conversion and unsupported complete cradle-to-gate claims"
+  required_metadata: "manufacturer/model; serial and drawing revision; closed steel dry-container type and dimensions; wall/roof/frame steel grade/thickness; corner-fitting and interface specification; plywood veneer/bonding/treatment/floor construction; door layout, hinges, locking and gasket/sealant formulation; coating layer/formulation and make-or-buy completeness; installed integral fittings and detached delivered parts; empty condition excluding cargo, removable protection and transport fixtures; positive measured net mass M, scale calibration and tare; applicable approval scheme and trace if claimed; actual manufacturing/outsourcing route, factory/period, dispatch gate and upstream coverage"
+  required_quality_disclosure: "Identity/quantity gaps, uncertainty, conditional absence, full-BOM completion, allocation, approval applicability and unlinked upstream"
+  update_trigger: "Material/dimensions/door/floor/coating, supplier module scope, M, manufacturing route, approval scheme, site/period or evidence changes"
+data_sources:
+  - id: "seabox-dry"
+    type: "literature"
+    reference: "[SEA BOX 20ft Dry Freight Container, All Access, SB894.0](https://www.seabox.com/products/detail/SB894.0-20ft-dry-freight-all-access)"
+    used_for: "Features list: corrugated steel roof, door layouts, marine plywood floor and fittings. Weight disclaimer: dimensions/weights nominal. Retrieved 2026-10-05; undated product example only, no floor thickness/load, nominal mass or coating recipe adopted as universal rule/factor."
+  - id: "seabox-manufacturing"
+    type: "literature"
+    reference: "[SEA BOX Manufacturing](https://www.seabox.com/services/manufacturing)"
+    used_for: "Manufacturing paragraphs: weld/fabricate, clean/paint/finish, alternative MIG/TIG/stick capability and documented quality procedures. Retrieved 2026-10-05; undated factory example, no mandatory weld method, recipe, capacity, certification or resource intensity inferred."
+  - id: "imo-csc"
+    type: "official_guidance"
+    reference: "[IMO: International Convention for Safe Containers (CSC)](https://www.imo.org/en/ourwork/safety/pages/containers-default.aspx)"
+    used_for: "Safety approval and Safety Approval Plate paragraphs: authority approval and traceable plate information for the applicable scheme. Retrieved 2026-10-05. Overview only, not full convention/test standard or proof of an actual product certificate; no numerical test threshold/frequency/lifetime adopted. Owner maintenance remains excluded."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:875f447a837ad45d6a5847aa961fc0c4422d761aabc6e09e049a4f048074bedc"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5567"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5567
+          line: 60
+          column: 1
+        end:
+          offset: 7800
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received specified stock, corner fittings, plywood and door components; declared supplier completeness |\n| starting_condition_role | Foreground stock/component receipt to accepted empty container dispatch |\n| product_classification_scope | Closed steel dry intermodal container with plywood floor |\n| recursive_input_rule | No complete container input generated recursively from its own output; completed bought-in modules bypass performed constituent operations |\n| upstream_dataset_requirement | Match grade/form, plywood bonding/treatment, coating, supply route and geography; disclose unlinked supplier production |\n| disclosure | manufacturer/model; serial and drawing revision; closed steel dry-container type and dimensions; wall/roof/frame steel grade/thickness; corner-fitting and interface specification; plywood veneer/bonding/treatment/floor construction; door layout, hinges, locking and gasket/sealant formulation; coating layer/formulation and make-or-buy completeness; installed integral fittings and detached delivered parts; empty condition excluding cargo, removable protection and transport fixtures; positive measured net mass M, scale calibration and tare; applicable approval scheme and trace if claimed; actual manufacturing/outsourcing route, factory/period, dispatch gate and upstream coverage |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_manufacture` | all stages | Include attributable production/rework and actual acceptance-support tests in the reporting period. Outsourced forming/coating requires a measured supplier module or disclosed gap. Exclude transport cycles, loading, repairs and owner periodic examination; CSC approval overview does not impose a universal manufacturing test load/frequency. | `imo-csc` |\n| `boundary_components` | received modules | Count each stock or supplied finished module once. A purchased finished frame/shell/door replaces its included stock/hardware and completed operations. Add every actual missing component and chemistry before completing a dataset; the candidate card set is not an exhaustive BOM. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 167
+              line: 8
+              column: 1
+            end:
+              offset: 226
+              line: 8
+              column: 60
+          text: "# Closed steel dry intermodal freight container manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5567
+              line: 60
+              column: 1
+            end:
+              offset: 5588
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39675"
+      family: "allocation"
+      span:
+        start:
+          offset: 39675
+          line: 703
+          column: 1
+        end:
+          offset: 40776
+          line: 711
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_orders` | shared manufacture | Separate orders by dimensions/door/floor/coating configuration. Directly attribute measured issues, returns, station meters, rejects and rework first. Inseparable shared utilities use a demonstrated measured causal driver such as coated area with layer/process load or station time: share = order driver / sum of all covered drivers. Retain period, denominator and justification; container count or nominal tare alone does not establish causality between different configurations. |  |\n| `allocation_residues` | reuse and exports | Internal reused stock, abrasive and water are transfers; count fresh supply and actual exports without double counting circulation. Waste keeps measured mass and destination with no automatic avoided-product credit. Separate saleable co-products before a documented reviewed residual allocation. Attribute production rejects/rework to accepted output over the same period and reconcile work in progress. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 167
+              line: 8
+              column: 1
+            end:
+              offset: 226
+              line: 8
+              column: 60
+          text: "# Closed steel dry intermodal freight container manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39675
+              line: 703
+              column: 1
+            end:
+              offset: 39715
+              line: 703
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48422"
+      family: "validation"
+      span:
+        start:
+          offset: 48422
+          line: 742
+          column: 1
+        end:
+          offset: 49867
+          line: 752
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference | Require positive measured M for the same complete empty closed steel dry-container configuration, including declared floor, fitted doors, corners and integral delivered parts. Reject cargo, nominal payload/gross weight, TEU or transport-service substitutions. Verify approval claims against actual scheme/plate records, not classification alone. | `imo-csc` |\n| `validate_identity` | all rows | Check atomic material/form, exact public reference property/unit group, route, state and environmental medium. Pure CO2 gas is not argon mixture; process water is not environmental water; captured dust/waste transfer is not air or water release. Retain blank UUID where identity applicability is not established. |  |\n| `validate_measurement` | all rows | Trace per-container or batch collection to the same measured M, configuration, site and period; verify unit conversions, gas meter conditions and shared-driver denominators. Prevent received-module constituent duplication and unknown-to-zero defaults. |  |\n| `validate_emissions` | elementary rows | Use only demonstrated attributable factory species/origins and actual medium. Fossil CO2 applies to air-unspecified only with fossil provenance. Distinguish CO2, CO, NO, NO2, N2O, biogenic origin and captured residues; add each actual species separately. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 167
+              line: 8
+              column: 1
+            end:
+              offset: 226
+              line: 8
+              column: 60
+          text: "# Closed steel dry intermodal freight container manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48422
+              line: 742
+              column: 1
+            end:
+              offset: 48444
+              line: 742
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_manufacture"
+      identity_kind: "explicit"
+      unit_id: "normative_5567"
+      source_span:
+        start:
+          offset: 7074
+          line: 75
+          column: 1
+        end:
+          offset: 7468
+          line: 75
+          column: 395
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_components"
+      identity_kind: "explicit"
+      unit_id: "normative_5567"
+      source_span:
+        start:
+          offset: 7469
+          line: 76
+          column: 1
+        end:
+          offset: 7797
+          line: 76
+          column: 329
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_orders"
+      identity_kind: "explicit"
+      unit_id: "normative_39675"
+      source_span:
+        start:
+          offset: 39788
+          line: 707
+          column: 1
+        end:
+          offset: 40318
+          line: 707
+          column: 531
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_residues"
+      identity_kind: "explicit"
+      unit_id: "normative_39675"
+      source_span:
+        start:
+          offset: 40319
+          line: 708
+          column: 1
+        end:
+          offset: 40773
+          line: 708
+          column: 455
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_48422"
+      source_span:
+        start:
+          offset: 48517
+          line: 746
+          column: 1
+        end:
+          offset: 48913
+          line: 746
+          column: 397
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_48422"
+      source_span:
+        start:
+          offset: 48914
+          line: 747
+          column: 1
+        end:
+          offset: 49266
+          line: 747
+          column: 353
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_48422"
+      source_span:
+        start:
+          offset: 49267
+          line: 748
+          column: 1
+        end:
+          offset: 49561
+          line: 748
+          column: 295
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_48422"
+      source_span:
+        start:
+          offset: 49562
+          line: 749
+          column: 1
+        end:
+          offset: 49864
+          line: 749
+          column: 303
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5567"
+      source_span:
+        start:
+          offset: 5567
+          line: 60
+          column: 1
+        end:
+          offset: 5588
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5567"
+      source_span:
+        start:
+          offset: 5616
+          line: 64
+          column: 1
+        end:
+          offset: 7001
+          line: 71
+          column: 702
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39675"
+      source_span:
+        start:
+          offset: 39675
+          line: 703
+          column: 1
+        end:
+          offset: 39715
+          line: 703
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48422"
+      source_span:
+        start:
+          offset: 48422
+          line: 742
+          column: 1
+        end:
+          offset: 48444
+          line: 742
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:875f447a837ad45d6a5847aa961fc0c4422d761aabc6e09e049a4f048074bedc"
+  generated_content_sha256: "sha256:8b4eac7de29cce178af3b5b62f883f3b6140c23109d7d5e45eb749665e549c32"

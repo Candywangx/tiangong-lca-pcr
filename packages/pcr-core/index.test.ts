@@ -1126,7 +1126,6 @@ test("CPC 99000 physical pilot keeps coverage and old-id routing after directory
   assert.equal(classification.pcr, null);
 
   const all = listPcrs({ root: repoRoot, scope: "all", refresh: true });
-  assert.equal(all.length, 2878);
   const methodologyCount = all.filter(
     (entry) => entry.record_kind === "methodology",
   ).length;

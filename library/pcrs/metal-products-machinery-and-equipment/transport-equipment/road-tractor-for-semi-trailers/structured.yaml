@@ -1,0 +1,1488 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.transport-equipment.road-tractor-for-semi-trailers"
+  classification_refs: "CPC 3.0 49111 Road tractors for semi-trailers; narrower diesel manufacture scope, classification context only"
+  covered_products: "New complete diesel fifth-wheel-equipped road tractors, with axle/cab/powertrain configuration declared"
+  excluded_products: "Trailers, rigid trucks, incomplete chassis, alternative propulsion tractors and transport services"
+  representative_product: "One VIN-linked accepted complete configured tractor, measured M, no assumed catalogue mass"
+  production_route: "Actual conditional frame/finishing, rolling-chassis and coupling assembly, diesel/cab and electrical integration, first fill and acceptance"
+  market_state: "Accepted complete tractor at declared factory dispatch gate"
+functional_unit:
+  what: "Manufacture the configured complete diesel tractor"
+  how_much: "1 kg net accepted complete tractor; convert actual per-machine records with measured M"
+  how_well: "Producer configuration-specific dimensional, installation, functional and release acceptance; equal mass does not imply equal towing capacity"
+  how_long_or_cycle: "One manufacture and factory acceptance cycle; no imposed vehicle lifetime"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory
+      applies_to: "all processes"
+      rule: "Include actual manufacturing, assembly, filling, rework and attributable release tests. Exclude freight operation and research/durability programmes not attributable to production batches; document any shared manufacturing development costs separately."
+      source_ids:
+        - scania-production
+    - rule_id: boundary_modules
+      applies_to: "supplier parts"
+      rule: "Count complete supplied cab, engine/gearbox, axle and filled battery once with included constituents/prefills; replace component cards if a complete rolling chassis is supplied. Add actual missing BOM components before dataset completion."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received stock and finished component modules, with supplier completeness declared"
+  starting_condition_role: "Foreground receipt-to-dispatch manufacture"
+  product_classification_scope: "Complete diesel road tractor with fifth wheel; no semi-trailer or transport service"
+  recursive_input_rule: "Do not recursively generate a supplied complete tractor from its same reference output; bought-in complete modules bypass their performed internal stages"
+  upstream_dataset_requirement: "Match actual stock/module scope, propulsion, finish, formulation, geography and properties; disclose unmatched supplier production"
+  disclosure: "VIN configuration, actual manufacturing/outsourcing, first fills, M, factory testing, gate/period/site and upstream omissions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted configured complete diesel road tractor for semi-trailers"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer/model"
+    - "VIN and configuration/drawing revision"
+    - "diesel engine family and fuel compatibility"
+    - "gearbox type and supplier prefill"
+    - "axle arrangement"
+    - "wheelbase and suspension"
+    - "cab type and fitted completeness"
+    - "fifth-wheel material"
+    - "mounting and lock interface"
+    - "braking/steering architecture"
+    - "tyre/rim specification"
+    - "installed battery/controller/harness"
+    - "cooling and exhaust-aftertreatment completeness"
+    - "installed options"
+    - "actual retained fuel"
+    - "urea and service fluids"
+    - "measured net M and scale calibration/tare"
+    - "separately weighed detached integral components"
+    - "actual make-or-buy route"
+    - "site/period"
+    - "gate and upstream coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: engine_mass
+    applies_to: "diesel_engine"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Collect net installed supplied engine-assembly mass in kg using cp_engine_mass; this mass is the engine q_item numerator per accepted finished machine. Keep engine count/serial for traceability only. Independently reconcile engine body, supplier-included components and retained prefilled fluids with the complete vehicle M; exclude duplicated component/first-fill inputs. No fixed kg per engine is assumed."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert actual measured kWh with verified unit-group factor 3.6 MJ/kWh; record intake supply/voltage. Rated engine kW is not test energy."
+  - id: liquid_mass
+    applies_to: "liquid exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh the actual supplied formulation or use measured density at declared composition/concentration/temperature for volume conversion; catalogue capacity is not fill amount."
+process_map:
+  - id: frame_prepare
+    name: "Frame preparation"
+    inclusion: "conditional"
+    inclusion_condition: "The frame is fabricated in the reporting foreground."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+  - id: surface_finish
+    name: "Conditional surface preparation and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Frame or cab parts undergo finishing within the declared foreground."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+  - id: chassis
+    name: "Rolling chassis and fifth-wheel assembly"
+    inclusion: "required"
+    inclusion_condition: "Every complete road tractor."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+  - id: powertrain
+    name: "Diesel powertrain and cab integration"
+    inclusion: "required"
+    inclusion_condition: "Every declared diesel tractor configuration."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+  - id: electrical
+    name: "Vehicle electrical installation"
+    inclusion: "required"
+    inclusion_condition: "Every complete configured diesel tractor."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+  - id: acceptance
+    name: "First fill and factory acceptance"
+    inclusion: "required"
+    inclusion_condition: "Every accepted finished tractor."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+  - id: packing
+    name: "Dispatch protection"
+    inclusion: "conditional"
+    inclusion_condition: "Actual protection materials cross the dispatch gate."
+    role: "foreground"
+    quantitative_reference: "one accepted configured tractor, normalized with M"
+process_inventory:
+  - id: frame_prepare
+    label: "Frame preparation"
+    inputs:
+      product:
+        - row_id: frame_plate
+          role: "Steel Plate"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Only documented hot-rolled low-alloy high-strength thick plate for actual frame parts; not generic high-strength sheet or galvanized cab sheet. Retain grade/thickness and weighed stock."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_frame_prepare."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_prepare
+              source_ids: []
+            ranges: []
+        - row_id: electricity_frame_prepare
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_frame_prepare."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_prepare
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut
+          role: "Steel scrap, offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Only segregated untreated steel cutting offcuts exported after internal reuse, with measured mass and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_frame_prepare."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_prepare
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface_finish
+    label: "Conditional surface preparation and finishing"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only treated supplied industrial process water actually used; internal circulation is not fresh resource withdrawal."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: waterborne_basecoat
+          role: "Waterborne automotive cab basecoat formulation"
+          name: "Waterborne automotive cab basecoat formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: electricity_surface_finish
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - scania-production
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_effluent
+          role: "Aqueous metal-part cleaning effluent transferred for treatment"
+          name: "Aqueous metal-part cleaning effluent transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish
+              source_ids:
+                - scania-production
+            ranges: []
+      elementary:
+        []
+  - id: chassis
+    label: "Rolling chassis and fifth-wheel assembly"
+    inputs:
+      product:
+        - row_id: frame
+          role: "Finished steel ladder-frame assembly"
+          name: "Finished steel ladder-frame assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: front_axle
+          role: "Finished truck steering-axle assembly"
+          name: "Finished truck steering-axle assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: rear_axle
+          role: "Finished truck driven-axle assembly"
+          name: "Finished truck driven-axle assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: rim
+          role: "Finished steel road-tractor wheel rim"
+          name: "Finished steel road-tractor wheel rim"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: tyre
+          role: "New radial pneumatic rubber heavy-truck tyre"
+          name: "New radial pneumatic rubber heavy-truck tyre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: suspension
+          role: "Truck pneumatic air-spring suspension module"
+          name: "Truck pneumatic air-spring suspension module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: disc_brake
+          role: "Truck pneumatic disc-brake caliper assembly"
+          name: "Truck pneumatic disc-brake caliper assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: fifth_wheel
+          role: "Finished cast-steel tractor fifth-wheel coupling assembly"
+          name: "Finished cast-steel tractor fifth-wheel coupling assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+        - row_id: electricity_chassis
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_chassis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis
+              source_ids:
+                - jost-fifth
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: powertrain
+    label: "Diesel powertrain and cab integration"
+    inputs:
+      product:
+        - row_id: diesel_engine
+          role: "Diesel engine"
+          name: "Compression-ignition internal combustion piston engines, of a kind used for the propulsion of vehicles other than railway or tramway rolling stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2bc283a7-36f3-40f7-9e15-54851b888d33"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One individually supplied assembled compression-ignition piston engine for propulsion of the declared road tractor, narrowed from the public motor-vehicle engine category; excludes railway/tramway, non-propulsion and non-motor-vehicle engines. Collect net installed supplied engine-assembly mass in kg with cp_engine_mass: q_item is that measured mass per accepted finished machine, normalized by the same M. Count and serial identify the actual supplied design, not its exchange unit. Record engine body, included accessories and actual retained prefilled fluids; independently reconcile their masses with installed assembly and vehicle M. Supplier-included components and prefilled fluid are counted within this engine input, without second component/first-fill inputs; actual separately added fluid is a separate exchange. No catalogue or assumed per-engine mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_engine_mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_engine_mass
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: gearbox
+          role: "Finished truck automated mechanical gearbox assembly"
+          name: "Finished truck automated mechanical gearbox assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: shaft
+          role: "Finished steel truck propeller-shaft assembly"
+          name: "Finished steel truck propeller-shaft assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: cab
+          role: "Finished painted and fitted truck cab assembly"
+          name: "Finished painted and fitted truck cab assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: fuel_tank
+          role: "Finished aluminium road-tractor diesel tank"
+          name: "Finished aluminium road-tractor diesel tank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: radiator
+          role: "Finished truck engine-cooling radiator assembly"
+          name: "Finished truck engine-cooling radiator assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: exhaust
+          role: "Finished diesel-truck SCR exhaust-aftertreatment assembly"
+          name: "Finished diesel-truck SCR exhaust-aftertreatment assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+        - row_id: electricity_powertrain
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powertrain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powertrain
+              source_ids:
+                - volvo-spec
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: electrical
+    label: "Vehicle electrical installation"
+    inputs:
+      product:
+        - row_id: harness
+          role: "Finished insulated-copper vehicle wiring harness"
+          name: "Finished insulated-copper vehicle wiring harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_electrical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical
+              source_ids:
+                - scania-spii
+            ranges: []
+        - row_id: starter_battery
+          role: "Filled lead-acid truck starter battery"
+          name: "Filled lead-acid truck starter battery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_electrical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical
+              source_ids:
+                - scania-spii
+            ranges: []
+        - row_id: vehicle_ecu
+          role: "Finished road-tractor electronic engine controller"
+          name: "Finished road-tractor electronic engine controller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_electrical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical
+              source_ids:
+                - scania-spii
+            ranges: []
+        - row_id: electricity_electrical
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_electrical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical
+              source_ids:
+                - scania-spii
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "First fill and factory acceptance"
+    inputs:
+      product:
+        - row_id: mineral_oil
+          role: "Lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass / kg"
+          description: "Only actual petroleum-derived lubricating oil first fill matching formulation and independently supplied scope; not PAO synthetic oil. Weigh retained amount and net issue; descriptive calorific value is not a quantity factor. Different engine/gear oils require distinct formulation cards."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: glycol_coolant
+          role: "Formulated inhibited ethylene-glycol/water engine coolant premix"
+          name: "Formulated inhibited ethylene-glycol/water engine coolant premix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: lithium_grease
+          role: "Lithium-soap mineral-oil fifth-wheel grease"
+          name: "Lithium-soap mineral-oil fifth-wheel grease"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: test_diesel
+          role: "Fossil low-sulphur diesel fuel supplied for factory testing"
+          name: "Fossil low-sulphur diesel fuel supplied for factory testing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: urea_solution
+          role: "Aqueous automotive urea solution, 32.5 mass percent"
+          name: "Aqueous automotive urea solution, 32.5 mass percent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+        - row_id: electricity_acceptance
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Accepted configured complete diesel road tractor for semi-trailers"
+          name: "Accepted configured complete diesel road tractor for semi-trailers"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Reference output: complete declared tractor including fifth wheel, cab, drivetrain, installed equipment and documented retained first fills; net 1 kg after normalization with measured M."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - scania-production
+            ranges: []
+      waste:
+        - row_id: spent_coolant
+          role: "Spent ethylene-glycol/water engine coolant sent to treatment"
+          name: "Spent ethylene-glycol/water engine coolant sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the specifically declared actual exchange; collect measured issue-return balance, exact state/composition and supplier/outlet completeness."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only measured attributable fossil CO2 from actual factory fuel combustion released to air, unspecified subcompartment. Separate fossil and biogenic origins; do not infer universal emissions or apply an invented factor."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - scania-production
+            ranges: []
+  - id: packing
+    label: "Dispatch protection"
+    inputs:
+      product:
+        - row_id: film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual removable LDPE protection foil dispatched with the tractor; measured separately and excluded from M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: electricity_packing
+          role: "Grid alternating-current electricity at the factory intake"
+          name: "Grid alternating-current electricity at the factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual attributable measured stage electricity, including rework; record intake voltage, geography/provider and kWh-to-MJ conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_orders
+    applies_to: "shared manufacture"
+    rule: "Separate orders by VIN configuration and directly assign measured issues, returns, station meters and rework first. Inseparable shared resources use a measured causal driver such as station time/load: share = order driver / sum of drivers for all covered orders. Retain denominator, period and demonstrated causality; equal count between different cab/axle/powertrain configurations requires justification."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "recoveries and rejects"
+    rule: "Internal reusable stock or test fluids are transfers, not repeated new inputs or automatic credits. Exported waste retains its measured amount and outlet with no assumed avoided-product benefit. Separate saleable co-products before documented reviewed residual allocation. Attribute rejected/reworked unit burdens to accepted output in the covered period and reconcile work in progress."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "accepted net machine mass"
+      record_type: "weighing_record"
+      raw_fields: "model; configuration; VIN; accepted net mass M; scale_id; calibration; fifth_wheel; detached_integral_parts; retained_fuel_urea_service_fluids; operator_tare; packaging_tare"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each machine or representative same-configuration batch"
+      temporal_coverage: "same manufacturing order period"
+      site_scope: "declared factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration, tare, configuration, release record"
+    - protocol_id: cp_frame_prepare
+      process_id: "frame_prepare"
+      flow_role: "Frame preparation"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Collect rail grade/thickness and drawing revision, weighed issues/returns/offcuts, operation time, dimensional acceptance and station meters."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+    - protocol_id: cp_surface_finish
+      process_id: "surface_finish"
+      flow_role: "Conditional surface preparation and finishing"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Retain paint SDS and layer recipe, weighed issues/returns, water/effluent transfers, coated part completeness, curing meter and actual emission measurements if present."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+    - protocol_id: cp_chassis
+      process_id: "chassis"
+      flow_role: "Rolling chassis and fifth-wheel assembly"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Trace serial BOM, supplier included parts, independent module masses, bolt torque/alignment, brake circuit and coupling installation acceptance."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+    - protocol_id: cp_engine_mass
+      process_id: "powertrain"
+      flow_role: "diesel_engine"
+      record_type: "weighing_record"
+      raw_fields: "VIN/order; configuration; engine model/serial; installed supplied engine mass kg; engine-body mass kg; included accessory masses kg; prefill formulations and actual retained kg; actual drained/returned kg; separately added fluid kg; count for traceability; accepted machine count; scale/calibration/tare; supplier gate"
+      collection_method: "Weigh each net supplied engine assembly on a calibrated scale in its declared installed state, excluding shipping fixtures. Use independent traceable engine-body/component and actual retained-prefill weighing records to reconcile assembly scope; verify installed assembly mass against the same VIN BOM and accepted complete-vehicle M. Record actual drained/returned and separately added fluids, without a catalogue/default kg per engine. Exclude duplicate accessory and prefill inputs."
+      unit: "kg"
+      frequency: "each supply lot and installed configuration"
+      temporal_coverage: "same declared manufacturing period"
+      site_scope: "declared powertrain integrating factory"
+      aggregation_rule: "attributable installed supplied engine mass / accepted machines"
+      quality_evidence: "calibrated engine weighing; supplier BOM/scope; component/prefill balance; VIN installation and cp_mass record"
+    - protocol_id: cp_powertrain
+      process_id: "powertrain"
+      flow_role: "Diesel powertrain and cab integration"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Use cp_engine_mass for independently weighed installed supplied engine kg, with count/serial only for traceability and prefill/inclusion reconciliation; collect gearbox/cab scope, fittings, exhaust architecture, tank material and station meters."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+    - protocol_id: cp_electrical
+      process_id: "electrical"
+      flow_role: "Vehicle electrical installation"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Retain wiring revision, battery chemistry/capacity and supplier condition, independent installed masses, software configuration and wiring test records."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "First fill and factory acceptance"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Record serial-linked fill/return/retained balances, actual fuel origin and test log, calibration, measured emissions, release record and accepted net M with packaging/operator tare."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "Dispatch protection"
+      record_type: "foreground_record"
+      raw_fields: "VIN/order; configuration; accepted count; exchange name/state/property/unit; issue; return; stock change; supplier included constituents; retained fill; electricity kWh; installed supplied engine mass kg; engine count for traceability; waste outlet; actual emissions; shared driver/denominator; calibration"
+      collection_method: "Weigh material-specific protection, record tare/returns and exact dispatch completeness."
+      unit: "actual unit for each row"
+      frequency: "each order/batch"
+      temporal_coverage: "declared manufacturing period"
+      site_scope: "declared factory and disclosed subcontractors"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "BOM, weighing, meters, transfers and acceptance"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_bom
+      applies_to: "complete tractor"
+      requirement: "Reconcile VIN BOM, fifth wheel, frame/axles/wheels/brakes, engine/transmission, fitted cab, electrical installation, cooling/exhaust and retained first fills to measured net M. Resolve supplier module overlap and add omitted actual components."
+      evidence: "weighing, configuration and supplier scope"
+    - id: quality_balance
+      applies_to: "flows and testing"
+      requirement: "Retain calibration, issues/returns/stock balances, installed versus consumed fluid and test fuel, measured emission species/origins, waste outlet receipts and actual recipe/density conversions. Set QA limits from site records; no invented universal yield or test consumption."
+      evidence: "stock, meters, test and transfers"
+    - id: quality_coverage
+      applies_to: "dataset"
+      requirement: "Disclose geography/period, configurations, conditional absence, outsourcing, identity/quantity uncertainty and missing supplier upstream. Sources support examples of architecture/process, not manufacturer-wide recipes or current completion of old announced investments."
+      evidence: "coverage and evidence register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference"
+    rule: "Require positive measured M and complete VIN configuration including fifth wheel, drivetrain, fitted cab, installed equipment and retained fills. Reject semi-trailer, cargo, gross train weight and transport service substitutions."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all rows"
+    rule: "Verify atomic exchange, public identity, actual reference property/unit group, supply route, material state and medium. Road propulsion must match the motor-vehicle engine category and original Mass/kg reference; class43110 excludes motor vehicles and aircraft. Engine count is not the mass numerator; supplier prefill/components must not be counted twice. Trailer hitch is not a verified fifth wheel; cutting emulsion is not engine coolant; fertiliser as N is not automotive urea solution. Keep incompatible identities blank."
+    source_ids: []
+  - rule_id: validate_measurement
+    applies_to: "all rows"
+    rule: "Verify collection/conversion against same configuration/period and measured M. Reconcile supplier prefills, retained test fuel and component masses without duplication, with no unknown-to-zero defaults."
+    source_ids: []
+  - rule_id: validate_emissions
+    applies_to: "elementary rows"
+    rule: "Use only demonstrated attributable factory species and actual medium. Fossil CO2 is air-unspecified and requires fossil provenance; biogenic emissions, NO, NO2, N2O and captured wastes cannot be substituted or merged. Add actual species separately before dataset completion."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configured complete diesel road-tractor foreground manufacture dataset"
+  downstream_use: "secondary_dataset; background_dataset following qualified review and declared upstream linkage"
+  allowed_use: "Supply-chain manufacturing models matching diesel architecture, axle/cab/coupling configuration, first-fill state, gate/site/period"
+  excluded_use: "Freight service or lifetime comparison, equal-mass towing equivalence, alternative propulsion, trailers and unsupported complete cradle-to-gate claims"
+  required_metadata: "manufacturer/model; VIN and configuration/drawing revision; diesel engine family and fuel compatibility; gearbox type and supplier prefill; axle arrangement, wheelbase and suspension; cab type and fitted completeness; fifth-wheel material, mounting and lock interface; braking/steering architecture; tyre/rim specification; installed battery/controller/harness; cooling and exhaust-aftertreatment completeness; installed options; actual retained fuel, urea and service fluids; measured net M and scale calibration/tare; separately weighed detached integral components; actual make-or-buy route, site/period, gate and upstream coverage"
+  required_quality_disclosure: "Identity/quantity gaps, uncertainty, conditional absence, full-BOM completion, source limitations, allocation and unlinked upstream"
+  update_trigger: "Propulsion/fuel, axle/cab/coupling specification, supplier module scope, fills/M, manufacturing route, site/period and evidence resolution changes"
+data_sources:
+  - id: "scania-production"
+    type: "literature"
+    reference: "[Scania Asia P&L](https://www.scania.com/asia/en/home/our-business/p_l.html)"
+    used_for: "Press Shop/BiW/Paint/Cab/Chassis paragraphs: separate cab preparation, component integration and end-flow functional inspection. Retrieved 2026-10-05. Example only, not compulsory automation or recipes. Powertrain future 2025 Q4 statement is not evidence of completed/current production; no quantities adopted."
+  - id: "volvo-spec"
+    type: "literature"
+    reference: "[Volvo FH specifications, UK](https://www.volvotrucks.co.uk/en-gb/trucks/models/volvo-fh/specifications.html)"
+    used_for: "Diesel engine/powertrain tables; Chassis/Rear suspension/Fuel tanks/AdBlue/Brakes sections. Retrieved 2026-10-05. Configuration alternatives, not universal capacities or material routes. Oil-change volumes, load ratings and maintenance interval are not first-fill amount, net M or life requirements."
+  - id: "jost-fifth"
+    type: "literature"
+    reference: "[JOST truck and trailer fifth-wheel couplings](https://www.jost-world.com/en/products/jost.html)"
+    used_for: "Truck and Trailer paragraphs identify pressed-sheet and cast-steel coupling alternatives. Retrieved 2026-10-05. No universal casting, net mass, load rating, performance equivalence or lifetime inferred."
+  - id: "scania-spii"
+    type: "official_guidance"
+    reference: "[SPII - Scania Product Individual Information](https://bodybuilder.scania.com/trucks/en/tools-and-services/individual-chassis-information.html)"
+    used_for: "SPII paragraph describes complete specifications and chassis-number lookup. Retrieved 2026-10-05. Supports serial-specific traceability; no specific vehicle record or certificate has been retrieved or validated."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:257a24943af9a39d41ddd9da2b27ee6b7a26726b8cfb38ab532b2f623c9b6bb5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5858"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5858
+          line: 60
+          column: 1
+        end:
+          offset: 7412
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received stock and finished component modules, with supplier completeness declared |\n| starting_condition_role | Foreground receipt-to-dispatch manufacture |\n| product_classification_scope | Complete diesel road tractor with fifth wheel; no semi-trailer or transport service |\n| recursive_input_rule | Do not recursively generate a supplied complete tractor from its same reference output; bought-in complete modules bypass their performed internal stages |\n| upstream_dataset_requirement | Match actual stock/module scope, propulsion, finish, formulation, geography and properties; disclose unmatched supplier production |\n| disclosure | VIN configuration, actual manufacturing/outsourcing, first fills, M, factory testing, gate/period/site and upstream omissions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_factory` | all processes | Include actual manufacturing, assembly, filling, rework and attributable release tests. Exclude freight operation and research/durability programmes not attributable to production batches; document any shared manufacturing development costs separately. | `scania-production` |\n| `boundary_modules` | supplier parts | Count complete supplied cab, engine/gearbox, axle and filled battery once with included constituents/prefills; replace component cards if a complete rolling chassis is supplied. Add actual missing BOM components before dataset completion. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 169
+              line: 8
+              column: 1
+            end:
+              offset: 220
+              line: 8
+              column: 52
+          text: "# Diesel road tractor for semi-trailers manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5858
+              line: 60
+              column: 1
+            end:
+              offset: 5879
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41276"
+      family: "allocation"
+      span:
+        start:
+          offset: 41276
+          line: 756
+          column: 1
+        end:
+          offset: 42288
+          line: 764
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_orders` | shared manufacture | Separate orders by VIN configuration and directly assign measured issues, returns, station meters and rework first. Inseparable shared resources use a measured causal driver such as station time/load: share = order driver / sum of drivers for all covered orders. Retain denominator, period and demonstrated causality; equal count between different cab/axle/powertrain configurations requires justification. |  |\n| `allocation_scrap` | recoveries and rejects | Internal reusable stock or test fluids are transfers, not repeated new inputs or automatic credits. Exported waste retains its measured amount and outlet with no assumed avoided-product benefit. Separate saleable co-products before documented reviewed residual allocation. Attribute rejected/reworked unit burdens to accepted output in the covered period and reconcile work in progress. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 169
+              line: 8
+              column: 1
+            end:
+              offset: 220
+              line: 8
+              column: 52
+          text: "# Diesel road tractor for semi-trailers manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41276
+              line: 756
+              column: 1
+            end:
+              offset: 41316
+              line: 756
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_52447"
+      family: "validation"
+      span:
+        start:
+          offset: 52447
+          line: 798
+          column: 1
+        end:
+          offset: 53952
+          line: 808
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference | Require positive measured M and complete VIN configuration including fifth wheel, drivetrain, fitted cab, installed equipment and retained fills. Reject semi-trailer, cargo, gross train weight and transport service substitutions. |  |\n| `validate_identity` | all rows | Verify atomic exchange, public identity, actual reference property/unit group, supply route, material state and medium. Road propulsion must match the motor-vehicle engine category and original Mass/kg reference; class43110 excludes motor vehicles and aircraft. Engine count is not the mass numerator; supplier prefill/components must not be counted twice. Trailer hitch is not a verified fifth wheel; cutting emulsion is not engine coolant; fertiliser as N is not automotive urea solution. Keep incompatible identities blank. |  |\n| `validate_measurement` | all rows | Verify collection/conversion against same configuration/period and measured M. Reconcile supplier prefills, retained test fuel and component masses without duplication, with no unknown-to-zero defaults. |  |\n| `validate_emissions` | elementary rows | Use only demonstrated attributable factory species and actual medium. Fossil CO2 is air-unspecified and requires fossil provenance; biogenic emissions, NO, NO2, N2O and captured wastes cannot be substituted or merged. Add actual species separately before dataset completion. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 169
+              line: 8
+              column: 1
+            end:
+              offset: 220
+              line: 8
+              column: 52
+          text: "# Diesel road tractor for semi-trailers manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 52447
+              line: 798
+              column: 1
+            end:
+              offset: 52469
+              line: 798
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_factory"
+      identity_kind: "explicit"
+      unit_id: "normative_5858"
+      source_span:
+        start:
+          offset: 6810
+          line: 75
+          column: 1
+        end:
+          offset: 7125
+          line: 75
+          column: 316
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_modules"
+      identity_kind: "explicit"
+      unit_id: "normative_5858"
+      source_span:
+        start:
+          offset: 7126
+          line: 76
+          column: 1
+        end:
+          offset: 7409
+          line: 76
+          column: 284
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_orders"
+      identity_kind: "explicit"
+      unit_id: "normative_41276"
+      source_span:
+        start:
+          offset: 41389
+          line: 760
+          column: 1
+        end:
+          offset: 41845
+          line: 760
+          column: 457
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_scrap"
+      identity_kind: "explicit"
+      unit_id: "normative_41276"
+      source_span:
+        start:
+          offset: 41846
+          line: 761
+          column: 1
+        end:
+          offset: 42285
+          line: 761
+          column: 440
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_52447"
+      source_span:
+        start:
+          offset: 52542
+          line: 802
+          column: 1
+        end:
+          offset: 52813
+          line: 802
+          column: 272
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_52447"
+      source_span:
+        start:
+          offset: 52814
+          line: 803
+          column: 1
+        end:
+          offset: 53380
+          line: 803
+          column: 567
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_52447"
+      source_span:
+        start:
+          offset: 53381
+          line: 804
+          column: 1
+        end:
+          offset: 53626
+          line: 804
+          column: 246
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_52447"
+      source_span:
+        start:
+          offset: 53627
+          line: 805
+          column: 1
+        end:
+          offset: 53949
+          line: 805
+          column: 323
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5858"
+      source_span:
+        start:
+          offset: 5858
+          line: 60
+          column: 1
+        end:
+          offset: 5879
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5858"
+      source_span:
+        start:
+          offset: 5907
+          line: 64
+          column: 1
+        end:
+          offset: 6737
+          line: 71
+          column: 143
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41276"
+      source_span:
+        start:
+          offset: 41276
+          line: 756
+          column: 1
+        end:
+          offset: 41316
+          line: 756
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_52447"
+      source_span:
+        start:
+          offset: 52447
+          line: 798
+          column: 1
+        end:
+          offset: 52469
+          line: 798
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:257a24943af9a39d41ddd9da2b27ee6b7a26726b8cfb38ab532b2f623c9b6bb5"
+  generated_content_sha256: "sha256:d6ae5eb13d1fbee97bd1f37d9cd3d0da5c7026a91b0024d8c740d1c711c8aaf8"

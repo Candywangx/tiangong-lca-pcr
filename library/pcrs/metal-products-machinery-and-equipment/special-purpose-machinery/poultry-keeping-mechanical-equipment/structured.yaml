@@ -1,0 +1,1362 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.poultry-keeping-mechanical-equipment"
+  classification_refs: "CPC 3.0 44194 Poultry-keeping machinery; narrower automatic dry-feed equipment scope; context only"
+  covered_products: "Complete configured automatic auger/pan line or chain/trough circuit for poultry dry feed"
+  excluded_products: "Other poultry-keeping functions; incomplete kits/spares; feed preparation; farm operation and installation services"
+  representative_product: "One accepted equipment set tied to an order and layout BOM; measured M without a typical equipment weight"
+  production_route: "Actual sheet/strip fabrication and polymer molding when in-house, purchased-module integration, controls, factory acceptance and dispatch"
+  market_state: "Complete accepted delivery set with defined inlet/outlet and support boundary; feed and packaging excluded; site commissioning disclosed separately"
+functional_unit:
+  what: "Manufacture the stated complete automatic poultry dry-feed distribution equipment"
+  how_much: "1 kg net accepted complete equipment; per-machine collection converted with measured M"
+  how_well: "Meets documented configured completeness, dimensional, drive, sensor/interlock and guarding factory acceptance criteria; site-only tests are disclosed"
+  how_long_or_cycle: "One manufacture and factory acceptance cycle; no assumed farm life"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_actual
+      applies_to: "all processes"
+      rule: "Include actual operations, rejects/rework and factory tests attributable to the delivered configuration. Bought-in assemblies bypass their stock/molding operations; unlinked supplier manufacture and outsourcing remain explicit gaps."
+      source_ids: []
+    - rule_id: boundary_complete
+      applies_to: "all inventory rows"
+      rule: "Reconcile the entire configured BOM. Add omitted actual pigments, mold-release formulation, process lubricant, fasteners, legs, anti-roost wire, drive oil, guards, terminals, test-feed formulation, packaging and wastes as separate specific atomic cards. Unknown quantities are not zero; this list is not proof of absence."
+      source_ids: []
+    - rule_id: boundary_farm
+      applies_to: "reference product"
+      rule: "Separate manufacturing from poultry operation and installed farm services. No feed intake, animal yield or farm manure emission belongs to this equipment manufacturing reference."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased specified sheet/strip/resin and finished components received at the equipment manufacturing site"
+  starting_condition_role: "foreground manufacturing module"
+  product_classification_scope: "Configured automatic poultry dry-feed equipment only; broader poultry machinery reference is qualified to this scope"
+  recursive_input_rule: "Record a bought-in same-category feeding module once with supplier completeness and property; count only added foreground work and exclude duplicate constituent purchases"
+  upstream_dataset_requirement: "Match supplied metal finish, polymer grade, component completeness, geography, period and reference property; disclose missing supplier links and any reviewed proxies"
+  disclosure: "State factory receipt-to-dispatch gates, in-house versus outsourced routes, transport coverage, utilities and missing upstream stages. This foreground module alone is not complete cradle-to-gate"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Poultry-keeping machinery"
+    uuid: "f1ec443d-7549-4c44-b840-802dc1d73c5c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer/model"
+    - "order/serial and configuration revision"
+    - "poultry dry-feed function"
+    - "auger/pan or chain/trough architecture"
+    - "line/circuit length and shape"
+    - "tube/trough cross-section and coating"
+    - "feed-point count"
+    - "pan geometry/material and nylon grade"
+    - "hopper/extension"
+    - "auger or chain link specification"
+    - "drive rating"
+    - phase
+    - "reduction and completeness"
+    - "corner wheels and bearings"
+    - "fixed or suspended support"
+    - "winch/rope/guards"
+    - "dedicated sensor/controller and wiring"
+    - "supplier assembly boundaries"
+    - "delivered sectional quantities"
+    - "net M and packing tare"
+    - "excluded silo/building/shared systems"
+    - "factory acceptance and site-test gaps"
+    - "site/period/gates"
+    - "outsourcing and upstream coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: meter_conversion
+    applies_to: "utilities and length records"
+    required_property_ref:
+      name: "Mass; Net calorific value"
+      uuid: ""
+    required_unit: "kg; MJ"
+    rule: "Use the row reference property. Verified energy unit-group conversion is 3.6 MJ/kWh. A length-based component record requires measured construction-specific mass per length; water volume requires measured density/reference conditions. A flow-property meanValue is not a generic density."
+process_map:
+  - id: metal
+    name: "Sheet fabrication and auger forming"
+    inclusion: "conditional"
+    inclusion_condition: "These operations actually occur at the reporting site."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized using M"
+  - id: molding
+    name: "Polymer part molding"
+    inclusion: "conditional"
+    inclusion_condition: "Declared polymer parts are molded in the foreground; bought-in finished parts bypass molding."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized using M"
+  - id: mechanical
+    name: "Feed-distribution mechanical assembly"
+    inclusion: "required"
+    inclusion_condition: "Each complete feeding-equipment configuration."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized using M"
+  - id: controls
+    name: "Dedicated controls and wiring integration"
+    inclusion: "required"
+    inclusion_condition: "Each automatic feeding-equipment configuration; sensor/control architecture must be stated."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized using M"
+  - id: acceptance
+    name: "Factory acceptance and completeness reconciliation"
+    inclusion: "required"
+    inclusion_condition: "Every accepted complete equipment set."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized using M"
+  - id: packing
+    name: "Dispatch packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Packaging crosses the defined factory dispatch gate."
+    role: "foreground"
+    quantitative_reference: "one accepted configured machine, normalized using M"
+process_inventory:
+  - id: metal
+    label: "Sheet fabrication and auger forming"
+    inputs:
+      product:
+        - row_id: galvanized_sheet
+          role: "Hot-dip-zinc-coated carbon-steel sheet"
+          name: "Hot-dip-zinc-coated carbon-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual sheet for in-house hopper/trough fabrication; record steel grade, thickness and zinc coating mass per area, including zinc in input mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_metal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: carbon_strip
+          role: "Uncoated cold-rolled carbon-steel strip for feed auger forming"
+          name: "Uncoated cold-rolled carbon-steel strip for feed auger forming"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual in-house spiral manufacture; record steel grade, temper and dimensions; no assumed upstream heat-treatment recipe."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_metal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: metal_power
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter only attributable work of this stage and document factory intake voltage, geography and provider. Include factory dry-run/test power, not farm feeding operation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_metal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal
+              source_ids:
+                - roxell-pan
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut
+          role: "Steel scrap, offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Only untreated clean uncoated steel cutting offcuts leaving the process; record destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_metal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: zinc_steel_offcut
+          role: "Zinc-coated carbon-steel cutting offcuts"
+          name: "Zinc-coated carbon-steel cutting offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only coated sheet offcuts; segregate from uncoated strip and record zinc content and treatment destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_metal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal
+              source_ids:
+                - roxell-pan
+            ranges: []
+      elementary:
+        []
+  - id: molding
+    label: "Polymer part molding"
+    inputs:
+      product:
+        - row_id: pp_resin
+          role: "Polypropylene"
+          name: "Polypropylene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "54802cfb-bd58-4f85-9ebf-9e0616529c1c"
+          property_unit: "Mass / kg"
+          description: "Only actual unfilled PP polymer feedstock; specify grade and supplier resin formulation. Separate actual pigment or additive inputs; do not include finished pans as resin."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: pa6_resin
+          role: "Unfilled polyamide-6 molding granulate"
+          name: "Unfilled polyamide-6 molding granulate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual documented PA6 grade, not inferred from the words nylon or polyamide; record drying and conditioning if performed."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: cooling_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only fresh treated industrial water crossing the molding boundary for cooling makeup; internal recirculation is not repeated input. Record quantity and actual water specification."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: molding_power
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter only attributable work of this stage and document factory intake voltage, geography and provider. Include factory dry-run/test power, not farm feeding operation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pp_purge
+          role: "Polypropylene Wastes"
+          name: "Polypropylene Wastes"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "88215d1b-e6b6-4ec7-af7f-83375e80637b"
+          property_unit: "Mass / kg"
+          description: "Only separately collected PP purge and trim exported to mechanical recycling after internal regrind subtraction; mixed polymers or contaminated disposal routes require another defined waste."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: pa6_scrap
+          role: "Segregated polyamide-6 molding scrap"
+          name: "Segregated polyamide-6 molding scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only measured PA6 trim/purge exported after internal reuse; identify actual moisture, contamination and destination."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: cooling_effluent
+          role: "Molding cooling-water blowdown sent to treatment"
+          name: "Molding cooling-water blowdown sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual transfer of cooling-water blowdown to treatment; specify dissolved treatment chemicals and contamination. Not a water-resource withdrawal or direct river discharge."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_molding."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_molding
+              source_ids:
+                - roxell-pan
+            ranges: []
+      elementary:
+        []
+  - id: mechanical
+    label: "Feed-distribution mechanical assembly"
+    inputs:
+      product:
+        - row_id: galvanized_tube
+          role: "Finished galvanized-steel poultry-feed conveying tube"
+          name: "Finished galvanized-steel poultry-feed conveying tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought-in conveying tube of actual diameter, wall, coupling and coating; no simultaneous sheet input for the same purchased tube."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: conveying_auger
+          role: "Finished steel poultry-feed conveying auger"
+          name: "Finished steel poultry-feed conveying auger"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought-in spiral matching tube and drive; omit purchase when made internally from the recorded strip."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: feed_chain
+          role: "Finished steel poultry-feed conveying chain"
+          name: "Finished steel poultry-feed conveying chain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only installed chain circuit, with link design and measured length/mass; exclude auger under this exchange."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-chain
+            ranges: []
+        - row_id: feed_hopper
+          role: "Finished galvanized-steel poultry-feed inlet hopper"
+          name: "Finished galvanized-steel poultry-feed inlet hopper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought-in complete hopper; record upper/lower section and extension inclusion; internally fabricated sheet parts are not counted again."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: feed_trough
+          role: "Finished galvanized-steel poultry-feed trough section"
+          name: "Finished galvanized-steel poultry-feed trough section"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought-in chain-feed trough with stated section geometry and mass; omit if formed from the foreground sheet."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-chain
+            ranges: []
+        - row_id: pan_body
+          role: "Finished polypropylene poultry-feed pan body"
+          name: "Finished polypropylene poultry-feed pan body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only separately purchased PP pan body, with grill/hinge inclusion declared; omit when molded internally. A complete bought-in pan with nylon support needs one exact assembly exchange rather than duplicated constituents."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: nylon_support
+          role: "Finished nylon poultry-feed pan top support"
+          name: "Finished nylon poultry-feed pan top support"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only separately purchased top support of supplier-specified nylon grade; avoid duplicating a support included in the pan assembly."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-pan
+            ranges: []
+        - row_id: trough_connector
+          role: "Finished polyamide poultry-feed trough connector"
+          name: "Finished polyamide poultry-feed trough connector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only installed separate molded connector; declare actual polymer grade and weighed mass, or record its internal molding transfer."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-chain
+            ranges: []
+        - row_id: corner_wheel
+          role: "Poultry-feed chain corner-wheel bearing assembly"
+          name: "Poultry-feed chain corner-wheel bearing assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an installed chain corner unit of declared geometry and included bearing; do not impose grease use or grease absence on all other components."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - roxell-chain
+            ranges: []
+        - row_id: gear_motor
+          role: "Complete poultry-feeder electric gearmotor assembly"
+          name: "Complete poultry-feeder electric gearmotor assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only bought-in dedicated motor with reduction gear and declared rating/phase/casing completeness; no power-to-mass conversion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: suspension_winch
+          role: "Manual steel feeding-line suspension winch"
+          name: "Manual steel feeding-line suspension winch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only installed manual winch in the delivery; fixed support legs or motorized winches require their own exact cards and are not represented by this row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: suspension_rope
+          role: "Galvanized-steel suspension wire rope"
+          name: "Galvanized-steel suspension wire rope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual stranded galvanized rope, with construction, diameter and mass; a bare single steel wire is not the rope."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: steel_screw
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Only steel screws actually issued to assembly; nuts, bolts and other fasteners must have separate exact exchanges if used."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: mechanical_power
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter only attributable work of this stage and document factory intake voltage, geography and provider. Include factory dry-run/test power, not farm feeding operation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mechanical."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - bd-feeder
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: controls
+    label: "Dedicated controls and wiring integration"
+    inputs:
+      product:
+        - row_id: feed_sensor
+          role: "Capacitive poultry-feed level sensor"
+          name: "Capacitive poultry-feed level sensor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only this documented installed sensing technology; other sensing principles require their own row. State housing/cable inclusion."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_controls
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: feeding_controller
+          role: "Dedicated poultry-feeding motor controller module"
+          name: "Dedicated poultry-feeding motor controller module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only separate dedicated controller of actual hardware/software revision; omit when included in a purchased drive module."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_controls
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: control_cable
+          role: "Insulated copper feeding-equipment control cable"
+          name: "Insulated copper feeding-equipment control cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only installed copper cable of declared insulation and mass; measured length requires construction-specific measured linear mass."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_controls
+              source_ids:
+                - bd-feeder
+            ranges: []
+        - row_id: controls_power
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter only attributable work of this stage and document factory intake voltage, geography and provider. Include factory dry-run/test power, not farm feeding operation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_controls
+              source_ids:
+                - bd-feeder
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "Factory acceptance and completeness reconciliation"
+    inputs:
+      product:
+        - row_id: acceptance_power
+          role: "Grid alternating-current electricity at factory intake"
+          name: "Grid alternating-current electricity at factory intake"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter only attributable work of this stage and document factory intake voltage, geography and provider. Include factory dry-run/test power, not farm feeding operation."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_acceptance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - bd-feeder
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Poultry-keeping machinery"
+          name: "Poultry-keeping machinery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f1ec443d-7549-4c44-b840-802dc1d73c5c"
+          property_unit: "Mass / kg"
+          description: "Exactly 1 kg net complete accepted configured feeding equipment. Installed delivery components are included; feed, packaging and building fabric are excluded."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - bd-feeder
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: packing
+    label: "Dispatch packaging"
+    inputs:
+      product:
+        - row_id: timber_support
+          role: "Kiln-dried sawn coniferous timber, at mill"
+          name: "Kiln-dried sawn coniferous timber, at mill"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50904047-e5b0-4110-990a-53751d250267"
+          property_unit: "Mass / kg"
+          description: "Only actual kiln-dried sawn coniferous shipping support, with species/route recorded; exclude from M."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - roxell-chain
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Only actual LDPE protective film crossing dispatch; record polymer/thickness and mass; other polymers are separate exchanges."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_packing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - roxell-chain
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_orders
+    applies_to: "shared operations"
+    rule: "Separate orders by line architecture and exact layout/BOM. Prefer directly measured stock, molding cycles and utility records. For a shared operation, collect and justify a causal order driver such as actual metered load or machine-hours, and allocate the attributable total in proportion to each order driver divided by the complete covered driver sum. Preserve all covered orders and unfinished stock; do not use unmeasured birds served as a driver."
+    source_ids: []
+  - rule_id: allocation_recovery
+    applies_to: "regrind and waste"
+    rule: "Reconcile internal resin regrind and metal returns without treating each circulation as fresh purchase. Exported offcuts/purge carry actual mass and destination; no automatic avoided-material credit is assigned. Separately identify any saleable co-product, first divide physical operations where possible, and review residual allocation with the collected basis."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "accepted net equipment set"
+      record_type: "weighing_record"
+      raw_fields: "model; configuration; serial number; accepted net mass M; layout_BOM; sectional_delivery; scale_id; packing_tare; completeness; acceptance_id"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each set or representative same-configuration batch"
+      temporal_coverage: "same continuous reporting manufacturing period"
+      site_scope: "declared factory and same configured delivery set"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibrated weighing, tare, complete sectional BOM and acceptance receipts"
+    - protocol_id: cp_metal
+      process_id: "metal"
+      flow_role: "each specific atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/layout; exact_item/grade; supplier_boundary; issues; returns; stock_change; exchange_amount; accepted_count; part_mass; meter_unit; waste_destination; shared_driver"
+      collection_method: "Weigh drawing-specific sheet/strip issues and returns, reconcile good part mass and separately collected coated/uncoated offcuts; meter cutting/forming stations."
+      unit: "kg or MJ as the row declares"
+      frequency: "each order and batch"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Sheet fabrication and auger forming"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "part weighing, order BOM, calibrated meters and outlet receipts"
+    - protocol_id: cp_molding
+      process_id: "molding"
+      flow_role: "each specific atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/layout; exact_item/grade; supplier_boundary; issues; returns; stock_change; exchange_amount; accepted_count; part_mass; meter_unit; waste_destination; shared_driver"
+      collection_method: "Record mold/cavity, polymer grade, fresh resin issues, internal regrind, good parts, purge/trim waste and reject mass by resin; meter press/drying power and only fresh treated cooling-water makeup and actual effluent."
+      unit: "kg or MJ as the row declares"
+      frequency: "each order and batch"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Polymer part molding"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "part weighing, order BOM, calibrated meters and outlet receipts"
+    - protocol_id: cp_mechanical
+      process_id: "mechanical"
+      flow_role: "each specific atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/layout; exact_item/grade; supplier_boundary; issues; returns; stock_change; exchange_amount; accepted_count; part_mass; meter_unit; waste_destination; shared_driver"
+      collection_method: "Trace supplier module boundaries, quantities and measured net part masses to the layout BOM; reconcile in-house transfers separately from purchases, fastener issues and actual assembly power."
+      unit: "kg or MJ as the row declares"
+      frequency: "each order and batch"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Feed-distribution mechanical assembly"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "part weighing, order BOM, calibrated meters and outlet receipts"
+    - protocol_id: cp_controls
+      process_id: "controls"
+      flow_role: "each specific atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/layout; exact_item/grade; supplier_boundary; issues; returns; stock_change; exchange_amount; accepted_count; part_mass; meter_unit; waste_destination; shared_driver"
+      collection_method: "Record electronics revision and supplier completeness, copper cable construction and actual mass, terminal/connector additions and electrical test records; distinguish embedded controls already in the drive from separately supplied controls."
+      unit: "kg or MJ as the row declares"
+      frequency: "each order and batch"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Dedicated controls and wiring integration"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "part weighing, order BOM, calibrated meters and outlet receipts"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "each specific atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/layout; exact_item/grade; supplier_boundary; issues; returns; stock_change; exchange_amount; accepted_count; part_mass; meter_unit; waste_destination; shared_driver"
+      collection_method: "Collect serialized or order-linked factory test results and measured electricity; weigh all delivered equipment components with calibrated scales and packing tare records, reconcile exact layout and reject/rework records."
+      unit: "kg or MJ as the row declares"
+      frequency: "each order and batch"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Factory acceptance and completeness reconciliation"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "part weighing, order BOM, calibrated meters and outlet receipts"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "each specific atomic exchange"
+      record_type: "measured_order_record"
+      raw_fields: "order; serial/layout; exact_item/grade; supplier_boundary; issues; returns; stock_change; exchange_amount; accepted_count; part_mass; meter_unit; waste_destination; shared_driver"
+      collection_method: "Weigh supplied timber and LDPE film per dispatch set and record returns; distinguish equipment supports from transport supports."
+      unit: "kg or MJ as the row declares"
+      frequency: "each order and batch"
+      temporal_coverage: "declared continuous manufacturing period"
+      site_scope: "Dispatch packaging"
+      aggregation_rule: "attributable exchange amount / accepted machines"
+      quality_evidence: "part weighing, order BOM, calibrated meters and outlet receipts"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_configuration
+      applies_to: "all rows"
+      requirement: "Trace full layout, feed-point count, delivered sections, polymer grades, metal coatings and module completeness. Retain unresolved supplier material specifications as gaps rather than assuming a universal recipe."
+      evidence: "drawings, BOM and supplier specifications"
+    - id: quality_balance
+      applies_to: "stock and utilities"
+      requirement: "Reconcile metal, polymer, purchased assemblies, accepted net mass, regrind, rejects, waste and stock change. Explain uncertainty and measured length/density conversions. Account for drive/control tests without counting farm power."
+      evidence: "weighing, issues/returns, meters and waste transfer"
+    - id: quality_coverage
+      applies_to: "all processes"
+      requirement: "State site and continuous period, provider links and outsourced gates. Establish configuration-specific QA limits from measured records; these product descriptions provide no manufacturing intensity or net equipment mass range. Missing important amounts remain pending collection."
+      evidence: "order coverage, calibration, boundary and gap list"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require complete configured automatic dry-feed equipment, positive measured M and all declared delivered sections/supports. Reject incomplete spares and other poultry-keeping functions. Disclose unperformed site tests and exclude feed/packaging from net equipment mass."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Require one atomic physical exchange and matching public flow identity, property, unit, polymer grade, metal finish and component completeness. Do not substitute generic resin for a finished part, galvanizing for sheet stock, or energy-property cable for cable mass. Resolve absent identities before releasing a fully linked dataset."
+    source_ids: []
+  - rule_id: validate_collection
+    applies_to: "all inventory rows"
+    rule: "Verify linked protocols, q_item/M normalization, same layout denominator, stock/rework allocation and utility meter coverage. Purchased complete modules and internal molding/fabrication transfers are not double counted; extend the inventory to every actual omitted atomic input/output."
+    source_ids: []
+  - rule_id: validate_release
+    applies_to: "measured environmental releases"
+    rule: "Add demonstrated manufacturing releases individually with substance, fossil/biogenic origin where relevant, receiving medium/subcompartment and measured quantity or verified applicable factor. Treatment wastewater is a technosphere outlet; poultry manure and farm dust are outside this manufacture gate. No inferred zero for unmeasured relevant releases."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground configured automatic poultry dry-feed equipment manufacturing dataset"
+  downstream_use: "secondary_dataset; background_dataset after qualified review and explicit upstream coverage"
+  allowed_use: "Supply-chain manufacture for matching layout, polymer/metal specification, module completeness, site/period and gates"
+  excluded_use: "Per-bird feed/yield comparison; installed house-service equivalence; drinking/manure/egg/climate/incubation proxy; complete cradle-to-gate without supplier linkage"
+  required_metadata: "Reference qualifiers; measured M; layout and sectional delivery completeness; supplier material grades and boundaries; factory/site-test evidence; actual route, period/gates, collection/allocation and background links"
+  required_quality_disclosure: "Missing identities/amounts, measurement uncertainty, inactive routes, untested site functions, source date/scope, outsourcing and upstream gaps"
+  update_trigger: "Changed layout/feed-point count, drive/control architecture, polymer grade or metal coating, module completeness, measured M, site/supply or resolved evidence gaps"
+data_sources:
+  - id: "bd-feeder"
+    type: "handbook"
+    reference: "[AugerMatic — The feeding system for successful poultry growing](https://cdn.bigdutchman.com/fileadmin/content/poultry/products/en/poultry-growing-Augermatic-Big-Dutchman-en.pdf)"
+    used_for: "en 11/2015, PDF page 2 component list/diagram: hopper, tube/auger, pan, drive/sensor and suspension. Historical configuration example only; no current capacity, farm benefit, net machine weight or manufacturing amount inferred."
+  - id: "roxell-pan"
+    type: "handbook"
+    reference: "[Boozzter technical information](https://www.roxell.com/sites/default/files/roxell/TD_Boozzter_EN.pdf)"
+    used_for: "Undated sheet, PDF creation metadata 2025-02-10; PDF page 1 Technical info material rows identify a PP pan, nylon support and galvanized steel tube. Grade/formulation, manufacturing quantities and complete-equipment mass are not supplied. Feed contents and animal weights are not equipment mass."
+  - id: "roxell-chain"
+    type: "literature"
+    reference: "[Fortena chain feeding system for broiler breeders](https://www.roxell.com/fortena-chain-feeding-system)"
+    used_for: "Named management/support, trough-connector and corner-wheel paragraphs: separate chain/trough architecture, polyamide connectors, bearing corner units and control/support options. Product example, not universal PA6 grade, maintenance prescription or manufacturing range."
+  - id: "roxell-factory"
+    type: "literature"
+    reference: "[Innovation, a cornerstone of Roxell’s corporate culture](https://www.roxell.com/innovation)"
+    used_for: "Infrastructure for innovation: injection molding and molds in the development facility. Candidate technique only; no claim of mandatory commercial molding, machine energy intensity or industry production recipe."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:bba69a8d561c5023cdd422e3e90a2eac102f8328b397695629b702827cc2ee60"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5298"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5298
+          line: 58
+          column: 1
+        end:
+          offset: 7292
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased specified sheet/strip/resin and finished components received at the equipment manufacturing site |\n| starting_condition_role | foreground manufacturing module |\n| product_classification_scope | Configured automatic poultry dry-feed equipment only; broader poultry machinery reference is qualified to this scope |\n| recursive_input_rule | Record a bought-in same-category feeding module once with supplier completeness and property; count only added foreground work and exclude duplicate constituent purchases |\n| upstream_dataset_requirement | Match supplied metal finish, polymer grade, component completeness, geography, period and reference property; disclose missing supplier links and any reviewed proxies |\n| disclosure | State factory receipt-to-dispatch gates, in-house versus outsourced routes, transport coverage, utilities and missing upstream stages. This foreground module alone is not complete cradle-to-gate |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_actual` | all processes | Include actual operations, rejects/rework and factory tests attributable to the delivered configuration. Bought-in assemblies bypass their stock/molding operations; unlinked supplier manufacture and outsourcing remain explicit gaps. |  |\n| `boundary_complete` | all inventory rows | Reconcile the entire configured BOM. Add omitted actual pigments, mold-release formulation, process lubricant, fasteners, legs, anti-roost wire, drive oil, guards, terminals, test-feed formulation, packaging and wastes as separate specific atomic cards. Unknown quantities are not zero; this list is not proof of absence. |  |\n| `boundary_farm` | reference product | Separate manufacturing from poultry operation and installed farm services. No feed intake, animal yield or farm manure emission belongs to this equipment manufacturing reference. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 181
+              line: 8
+              column: 1
+            end:
+              offset: 244
+              line: 8
+              column: 64
+          text: "# Automatic poultry dry-feed distribution equipment manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5298
+              line: 58
+              column: 1
+            end:
+              offset: 5319
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35204"
+      family: "allocation"
+      span:
+        start:
+          offset: 35204
+          line: 669
+          column: 1
+        end:
+          offset: 36234
+          line: 677
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_orders` | shared operations | Separate orders by line architecture and exact layout/BOM. Prefer directly measured stock, molding cycles and utility records. For a shared operation, collect and justify a causal order driver such as actual metered load or machine-hours, and allocate the attributable total in proportion to each order driver divided by the complete covered driver sum. Preserve all covered orders and unfinished stock; do not use unmeasured birds served as a driver. |  |\n| `allocation_recovery` | regrind and waste | Reconcile internal resin regrind and metal returns without treating each circulation as fresh purchase. Exported offcuts/purge carry actual mass and destination; no automatic avoided-material credit is assigned. Separately identify any saleable co-product, first divide physical operations where possible, and review residual allocation with the collected basis. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 181
+              line: 8
+              column: 1
+            end:
+              offset: 244
+              line: 8
+              column: 64
+          text: "# Automatic poultry dry-feed distribution equipment manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35204
+              line: 669
+              column: 1
+            end:
+              offset: 35244
+              line: 669
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43569"
+      family: "validation"
+      span:
+        start:
+          offset: 43569
+          line: 708
+          column: 1
+        end:
+          offset: 45125
+          line: 718
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference product | Require complete configured automatic dry-feed equipment, positive measured M and all declared delivered sections/supports. Reject incomplete spares and other poultry-keeping functions. Disclose unperformed site tests and exclude feed/packaging from net equipment mass. |  |\n| `validate_identity` | all inventory rows | Require one atomic physical exchange and matching public flow identity, property, unit, polymer grade, metal finish and component completeness. Do not substitute generic resin for a finished part, galvanizing for sheet stock, or energy-property cable for cable mass. Resolve absent identities before releasing a fully linked dataset. |  |\n| `validate_collection` | all inventory rows | Verify linked protocols, q_item/M normalization, same layout denominator, stock/rework allocation and utility meter coverage. Purchased complete modules and internal molding/fabrication transfers are not double counted; extend the inventory to every actual omitted atomic input/output. |  |\n| `validate_release` | measured environmental releases | Add demonstrated manufacturing releases individually with substance, fossil/biogenic origin where relevant, receiving medium/subcompartment and measured quantity or verified applicable factor. Treatment wastewater is a technosphere outlet; poultry manure and farm dust are outside this manufacture gate. No inferred zero for unmeasured relevant releases. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 181
+              line: 8
+              column: 1
+            end:
+              offset: 244
+              line: 8
+              column: 64
+          text: "# Automatic poultry dry-feed distribution equipment manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43569
+              line: 708
+              column: 1
+            end:
+              offset: 43591
+              line: 708
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_5298"
+      source_span:
+        start:
+          offset: 6418
+          line: 73
+          column: 1
+        end:
+          offset: 6693
+          line: 73
+          column: 276
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5298"
+      source_span:
+        start:
+          offset: 6694
+          line: 74
+          column: 1
+        end:
+          offset: 7065
+          line: 74
+          column: 372
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_farm"
+      identity_kind: "explicit"
+      unit_id: "normative_5298"
+      source_span:
+        start:
+          offset: 7066
+          line: 75
+          column: 1
+        end:
+          offset: 7289
+          line: 75
+          column: 224
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_orders"
+      identity_kind: "explicit"
+      unit_id: "normative_35204"
+      source_span:
+        start:
+          offset: 35317
+          line: 673
+          column: 1
+        end:
+          offset: 35817
+          line: 673
+          column: 501
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_35204"
+      source_span:
+        start:
+          offset: 35818
+          line: 674
+          column: 1
+        end:
+          offset: 36231
+          line: 674
+          column: 414
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_43569"
+      source_span:
+        start:
+          offset: 43664
+          line: 712
+          column: 1
+        end:
+          offset: 43983
+          line: 712
+          column: 320
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43569"
+      source_span:
+        start:
+          offset: 43984
+          line: 713
+          column: 1
+        end:
+          offset: 44367
+          line: 713
+          column: 384
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_collection"
+      identity_kind: "explicit"
+      unit_id: "normative_43569"
+      source_span:
+        start:
+          offset: 44368
+          line: 714
+          column: 1
+        end:
+          offset: 44705
+          line: 714
+          column: 338
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_release"
+      identity_kind: "explicit"
+      unit_id: "normative_43569"
+      source_span:
+        start:
+          offset: 44706
+          line: 715
+          column: 1
+        end:
+          offset: 45122
+          line: 715
+          column: 417
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5298"
+      source_span:
+        start:
+          offset: 5298
+          line: 58
+          column: 1
+        end:
+          offset: 5319
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5298"
+      source_span:
+        start:
+          offset: 5347
+          line: 62
+          column: 1
+        end:
+          offset: 6345
+          line: 69
+          column: 212
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35204"
+      source_span:
+        start:
+          offset: 35204
+          line: 669
+          column: 1
+        end:
+          offset: 35244
+          line: 669
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43569"
+      source_span:
+        start:
+          offset: 43569
+          line: 708
+          column: 1
+        end:
+          offset: 43591
+          line: 708
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bba69a8d561c5023cdd422e3e90a2eac102f8328b397695629b702827cc2ee60"
+  generated_content_sha256: "sha256:f696cb0e0b412366b269581ce268231654a74db62c61cb74e3362beb2c8f4103"
