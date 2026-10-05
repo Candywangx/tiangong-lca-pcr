@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 qualification orchestration; Builder/core/CLI source ownership and canonical PCR identity remain unchanged."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 cross-repository preparation boundary and independent compatible reader/content versions; canonical assets and offline core stay PCR-owned."
 ---
 
 # PCR 资料库架构

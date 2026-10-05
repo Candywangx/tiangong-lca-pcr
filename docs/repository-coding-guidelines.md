@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 isolated test owners and source-bound execution/coverage receipts; TypeScript, explicit side effects and production boundaries remain intact."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 strict TypeScript compatibility validators, actual artifact metadata and thin task Skill; core remains offline and transport policy remains separate from scientific semantics."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

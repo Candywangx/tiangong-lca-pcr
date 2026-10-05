@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 97fc34e988072f38d832d34a8686ffac79716ca1
-lastReviewedNote: "Reviewed PCR #86 compact test fixture and separate full-corpus qualification; public guidance, offline snapshot sessions, source identity and scientific review behavior remain unchanged."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 explicit new-task preparation and retained pins with independent Skill rehearsal; complete normative guidance, applicability judgment and review limits are preserved."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: d0198577159e82bcc12df14bfe59f8ed060e089a
-lastReviewedNote: "Reviewed PCR #87 reader capability and product compatibility transport bindings; retained historical immutable assets. PCR #82 provider-only Node 24.18 import pin, retained Node 24.19 construction, actual cross-runtime fixture qualification and immutable 0.4.1 recovery. Real provider selection and final live acceptance remain required."
+lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
+lastReviewedNote: "Reviewed PCR #87 reader/content compatibility, sealed capability proof, legacy immutability and CLI-owned task snapshot preparation; publication remains guarded and no methodology approval is implied."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
