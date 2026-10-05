@@ -12,8 +12,14 @@ applicability and evidence. The CLI supplies source-addressable facts and arithm
 
 ## Prepare and pin the PCR task
 
-Use a released Tiangong CLI providing `pcr snapshot ensure`, plus an explicitly
-selected installed `@tiangong-lca/pcr` reader under the qualified Node 24 runtime.
+Use released `@tiangong-lca/cli` 0.1.25 or later providing `pcr snapshot ensure`;
+0.1.25 is the qualified minimum for this preparation workflow. Use the qualified
+Node 24.19.0 runtime; Tiangong CLI supports `>=24.19.0 <25`. Select the installed
+`@tiangong-lca/pcr` reader independently. Content's
+declared compatibility, including the current 0.4.1 minimum reader, determines
+whether that reader can consume it; matching product versions are not required.
+Confirm the required versions are published before installing them; source or
+release-preparation metadata does not establish registry availability.
 Provision these tools before going offline. This Skill ships with the PCR reader;
 install its complete directory following the host's Skill setup. npm installation
 alone does not activate it, and it is not an automatic runtime hook. No account

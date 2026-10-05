@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: 332ab813d6f4d6c0e0ec883e4a6c86b216ef2669
-lastReviewedNote: "Reviewed PCR #87 task snapshot adoption and compatibility on the merged #86 qualification policy; canonical authoring, bilingual/measurement/projection checks, scientific approval and immutable release history remain unchanged."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedNote: "Reviewed PCR #90 release-only metadata and consumer installation examples; canonical authoring, projection, bilingual review and immutable release history are unchanged."
 ---
 
 # Authoring Guide

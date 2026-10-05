@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 explicit new-task preparation and retained pins with independent Skill rehearsal; complete normative guidance, applicability judgment and review limits are preserved."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedNote: "Reviewed PCR #90 qualified CLI 0.1.25 preparation and pending PCR 0.4.2 examples; reader minimum 0.4.1, immutable existing task pins and review limits are preserved."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
@@ -139,7 +139,11 @@ protocol and minimum reader version decide compatibility, not equal SemVers.
 Historical releases without declarations require an audited consumer profile.
 See [the distribution contract](offline-distribution.md) for these declarations.
 
-The bundled thin Skill prepares a dedicated PCR task with Tiangong CLI's
+The qualified task-preparation runtime is Node 24.19.0; Tiangong CLI supports
+`>=24.19.0 <25`. The minimum preparation CLI is released `@tiangong-lca/cli` 0.1.25;
+confirm publication before installing it. Product 0.4.2 preparation does not prove
+registry or website availability, and its compatibility minimum remains reader
+0.4.1. The bundled thin Skill prepares a dedicated PCR task with Tiangong CLI's
 `pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <installed-reader> --json`.
 A new connected task obtains the latest compatible complete stable release and
 requires `task_usable: true` before consumption. Explicit version/local selections

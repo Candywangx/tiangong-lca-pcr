@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 cross-repository preparation boundary and independent compatible reader/content versions; canonical assets and offline core stay PCR-owned."
+lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedNote: "Reviewed PCR #90 release metadata and bound task examples; independent reader/content compatibility, canonical ownership and publication architecture are unchanged."
 ---
 
 # PCR 资料库架构
