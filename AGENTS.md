@@ -221,6 +221,12 @@ Offline packaging is governed by `docs/offline-distribution.md`. Build the tool 
 English-only SQLite content package as separate artifacts of one product version; never promote methodology status
 or alter source language declarations merely to package content.
 
+The bundled thin Skill uses Tiangong CLI to prepare and verify an immutable task
+snapshot, then delegates to this repository's offline reader. Tiangong CLI owns
+online discovery/cache/task locks. Reader/content compatibility follows declared
+capabilities rather than equal versions; continuing tasks retain their original
+pins. Explicit standalone/repository consumption remains supported.
+
 The public Agent-facing CLI lives under `packages/tiangong-pcr-cli/` and uses shared logic from `packages/pcr-core/`.
 
 Use this CLI for general LCA authoring, optional TIDAS process authoring, and Agent-led review of native TIDAS

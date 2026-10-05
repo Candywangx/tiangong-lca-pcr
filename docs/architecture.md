@@ -550,6 +550,13 @@ The [offline distribution contract](offline-distribution.md) defines the separat
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
+The bundled thin Skill delegates new-task preparation to Tiangong CLI, which owns
+latest-compatible stable discovery, verified download/cache and immutable task
+locks. PCR core remains offline/read-only. The reader and content may have different
+versions under the declared compatibility contract. Existing task pins do not
+refresh, and explicit standalone/repository selection remains available. This
+workflow does not install a universal host task-creation hook.
+
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.

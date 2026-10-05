@@ -208,8 +208,14 @@ reviewed product release rather than modifying an existing release.
 ## Skill and publication
 
 Copy `skills/tiangong-pcr/` from the tool package into the host agent's configured
-Skill directory. npm does not activate Skills. The Skill teaches explicit selection,
-pinning, readiness, general LCA authoring, optional TIDAS authoring and Agent-led
+Skill directory. npm does not activate Skills. The thin Skill prepares a dedicated
+PCR task through Tiangong CLI, then routes native reader commands through its
+verified immutable task pin. Tiangong CLI owns compatible published-snapshot
+discovery, downloads, cache and task locks; PCR does not acquire a network runtime
+dependency. Existing tasks never refresh implicitly. Explicit standalone/repository
+selection remains available. See `docs/agentic-consumption.md` for the preparation
+boundary and `skills/tiangong-pcr/SKILL.md` for commands.
+The Skill teaches readiness, general LCA authoring, optional TIDAS authoring and Agent-led
 process/model review. The tool bundles inspection, cited guidance, arithmetic and
 review-envelope support; no model runtime or TIDAS schema implementation is embedded.
 Inspection and arithmetic do not require a PCR library. Review preparation/checking

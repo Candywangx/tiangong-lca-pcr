@@ -132,13 +132,35 @@ provided by the caller.
 
 ## Product release selection
 
-For unified product releases, provision the tool and SQLite package from the same
-complete product release. Both packages carry `product-release.json`,
-matching the website identity at `/generated/product-release.json`. Preserve that
-product version, source commit and full-source fingerprint alongside the existing
-PCR/readiness and SQLite payload hashes. Historical independently versioned packages
-remain readable under their existing compatibility contracts; installing a package
-does not activate its Skill or approve methodology.
+A product release gives its reader, SQLite package and website one immutable
+version/source identity. Consumption can select a newer content release with an
+older capable reader: the declared library format, projection contracts, command
+protocol and minimum reader version decide compatibility, not equal SemVers.
+Historical releases without declarations require an audited consumer profile.
+See [the distribution contract](offline-distribution.md) for these declarations.
+
+The bundled thin Skill prepares a dedicated PCR task with Tiangong CLI's
+`pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <installed-reader> --json`.
+A new connected task obtains the latest compatible complete stable release and
+requires `task_usable: true` before consumption. Explicit version/local selections
+and offline requests take precedence. Existing task directories retain their data
+and reader pins without discovery; continuing a task never upgrades its methodology.
+Preserve the lock files and invoke native PCR arguments through
+`pcr exec --task-dir <absolute-task-dir> -- ...`. The wrapper verifies the retained
+context and supplies the library/hash; follow-up pagination retains query arguments
+but does not forward standalone source overrides. Paths resolve from the task
+folder, so use absolute paths for inputs elsewhere.
+
+Tiangong CLI owns discovery, download, cache and task bindings. PCR core remains
+an offline read-only consumer; this Skill is an explicit preparation workflow, not
+a hook intercepting every host's task creation. A requested standalone or repository
+workflow keeps its explicit source selection and is not described as auto-updating.
+Installing an npm package does not activate its Skill or approve methodology.
+
+Retain content version, source commit and full-source fingerprint independently
+from individual PCR/readiness and SQLite payload hashes. The product fingerprint
+and English-only SQLite source hash cover different domains. A newer website or
+published snapshot does not invalidate or silently replace an existing task's pin.
 
 ## Normative source context
 

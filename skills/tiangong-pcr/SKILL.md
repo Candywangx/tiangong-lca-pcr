@@ -10,22 +10,58 @@ route from the user's task. General LCA authoring has no mandatory data-package
 format; native TIDAS inputs can be reviewed directly. The Agent interprets scope,
 applicability and evidence. The CLI supplies source-addressable facts and arithmetic.
 
-## Prepare the local tools
+## Prepare and pin the PCR task
 
-`@tiangong-lca/pcr` bundles this Skill; copy its complete directory to the host's
-configured skills directory. npm installation does not activate it. Provision
-Node 24.19+ and the tool before going offline; do not fetch tools with npx.
-The separate `@tiangong-lca/pcr-library` supplies English-only methodology.
+Use a released Tiangong CLI providing `pcr snapshot ensure`, plus an explicitly
+selected installed `@tiangong-lca/pcr` reader under the qualified Node 24 runtime.
+Provision these tools before going offline. This Skill ships with the PCR reader;
+install its complete directory following the host's Skill setup. npm installation
+alone does not activate it, and it is not an automatic runtime hook. No account
+login is required for public PCR snapshots or local consumption.
 
-Set `PCR_LIBRARY` to the absolute `library.sqlite` path, or use `--library` on PCR
-commands. Run `tiangong-pcr library verify --format json`, retaining the tool/content
-versions and snapshot hash. Keep the same immutable snapshot throughout the task;
-`--library-sha256 sha256:<hex>` adds strict byte pinning. `inspect` and `calculate`
-use local inputs without a library selector. Repository maintainers may use
-`npm --silent run tiangong-pcr -- ... --root <repo>`.
+At the preparation boundary of a new PCR-guided task, use its dedicated absolute
+task directory. Reuse the supplied task directory when continuing work; never
+silently create a new directory merely to refresh an existing task. If there is
+no task directory yet, create one dedicated to this task and retain its path with
+the work artifacts. Do not use a shared project root as every task's identity.
 
-The CLI never calls a model or retrieves missing datasets. Fully offline semantic
-work requires the host Agent/model to be available offline too.
+```sh
+tiangong-lca pcr snapshot ensure --task-dir <absolute-task-dir> --tool-root <absolute-installed-PCR-package> --json
+tiangong-lca pcr snapshot status --task-dir <absolute-task-dir> --json
+tiangong-lca pcr exec --task-dir <absolute-task-dir> -- guidance --pcr <id> --topic overview --format json
+```
+
+For a new connected task, ensure checks the latest compatible stable published
+snapshot, verifies it and records immutable data/tool pins. Continue only when
+`task_usable` is true. A prior task lock is reused without checking latest;
+repeated ensure may finish verification of the same partial preparation but
+cannot upgrade that task. Preserve the lock files with the task. Tool and
+content versions may differ when their explicit compatibility contract permits it.
+
+Honor an explicit version, selected local snapshot or offline request rather than
+using default online discovery. Use ensure's `--version`, or `--library` with an
+independently trusted `--library-sha256`; add `--offline` for verified cached
+selection without network. Read its help for supported legacy/local profiles.
+Offline selection is not proof of publisher latest. Missing compatibility,
+corrupted cache/tool bytes or failed native verification must be resolved before
+consumption; do not bypass the task lock by switching to an unpinned command.
+
+In the task-managed route, invoke the PCR arguments in the sections below through
+`tiangong-lca pcr exec --task-dir <absolute-task-dir> -- ...`. Follow-up/page
+commands returned by the standalone reader may include `--library` or
+`--library-sha256`; retain their query/page arguments but remove source selectors
+and route them through pcr exec, which injects the verified task pin. Do not
+forward `PCR_LIBRARY` or `--root` into this route. Native command help works after
+`--`. Inputs and output paths are relative to the task directory; use absolute
+paths when the work artifacts live elsewhere.
+
+An explicitly requested standalone or repository-maintainer workflow remains
+available: use `tiangong-pcr` with explicit snapshot/hash selectors, or the
+repository command with `--root`. Preserve the user's source choice and its
+identity; do not call it an automatically updated published-snapshot task.
+`inspect` and `calculate` use local inputs; the task wrapper still verifies its
+retained context. Neither CLI calls an LLM or approves methodology. Fully offline
+semantic work also requires the host Agent/model to be available offline.
 
 ## Select applicable methodology
 
@@ -52,7 +88,7 @@ for large results. Full `guidance` remains available for a saved complete view. 
 
 For several known PCRs, save `{ "schema_version": 1, "pcr_ids": ["<id>"] }`
 and prefer `guidance batch --input <request.json> --output <new-result.json> --format json`
-with the same library selector. The fresh output file holds the complete result;
+through the same task wrapper (or the same explicit standalone library selector). The fresh output file holds the complete result;
 stdout is its receipt. Read the needed complete units and ancestor context from
 that file. At most 100 IDs share one verified session; order is preserved and a
 failed item rejects the whole batch.
