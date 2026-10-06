@@ -24,7 +24,7 @@ system_boundary:
         - jcb-backhoe-loader-2015
     - rule_id: boundary_bom
       applies_to: "all inventory rows"
-      rule: "Crosswalk every actual BOM item and operation to one atomic exchange or justified exclusion. Expand separately supplied cooling radiator, fuel tank, exhaust aftertreatment, filters, seals, pins, hoses/fittings, wiring/sensors, brakes, steering, seat, glazing and counterweights where present; never duplicate internals inside bought engine/cab/axle modules. Add each actual cleaner, welding-gas constituent, heat fuel, DEF formulation, test fixture consumable, waste and monitored release individually. Initial cards are not a universal complete BOM."
+      rule: "Crosswalk every actual BOM item and operation to one atomic exchange or justified exclusion. Expand separately supplied cooling radiator, fuel tank, exhaust aftertreatment, filters, seals, pins, hoses/fittings, wiring/sensors, brakes, steering, seat, glazing and counterweights where present; never duplicate internals inside bought engine/cab/axle modules. Add each actual cleaner, separately supplied welding gas or composition-specific purchased premix, heat fuel, DEF formulation, test fixture consumable, waste and monitored release individually. Initial cards are not a universal complete BOM."
       source_ids: []
     - rule_id: boundary_test
       applies_to: "factory_test"
@@ -178,7 +178,7 @@ process_inventory:
           name: "Pure carbon dioxide welding shielding gas"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only for an actual pure-CO2 welding procedure. Weigh gas net issues or convert measured volume using actual pressure, temperature and evidenced density. Mixtures need individual identified constituents and their own delivery records; no mandatory welding gas."
+          description: "Only for an actual pure-CO2 welding procedure. Weigh gas net issues or convert measured volume using actual pressure, temperature and evidenced density. Separately purchased pure gases used for onsite blending need separate input rows and their own delivery records. A purchased premix needs one composition-specific supplied-mixture exchange with actual issue, return and delivery evidence; do not also record its contained constituents as pure-gas purchases. No mandatory welding gas."
           amount:
             expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
             value_mode: "calculated_value"
@@ -1547,7 +1547,7 @@ data_sources:
     used_for: "Separate loader/backhoe/stabilizer cylinder functions, operator-station/tyre options, refill and operating-weight boundary. No cylinder count/dimension, fluid capacity, factory consumption, compliance threshold or operating factor adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a23bd187f444a2a1a4e03751587358efe717f9b0b1d8949b3fbd5c27d4dc5d4d"
+  source_sha256: "sha256:233abd161e118720e104695265b47a5213e65a3f9f5faf39f940ee233825989c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5748"
@@ -1558,10 +1558,10 @@ normative_context:
           line: 56
           column: 1
         end:
-          offset: 8892
+          offset: 8941
           line: 76
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Specified stock and separately specified finished assemblies received at the backhoe-loader factory |\n| starting_condition_role | Foreground manufacturing inputs with supplier production and incoming transport separately linked |\n| product_classification_scope | Backhoe-loader subset of CPC44427, excluding other n.e.c. machinery |\n| recursive_input_rule | A purchased complete machine is supplier-gated input, not a repeated assembly module. Purchased finished chassis/arms/cylinders replace local stock and their fabrication |\n| upstream_dataset_requirement | Match grade/state, purchased completeness, tyre and cylinder designs, fluid chemistry, energy source, geography and supplier/transport/receiver gates |\n| disclosure | This foreground module is not complete cradle-to-gate. Declare actual site operations, make-or-buy, outsourcing, shared services, packaging and missing supplier/transport/treatment links |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_operations` | manufacturing | Include receipt inspection and actual plate cutting/forming, joining, pivot/interface machining, grinding/cleaning/finishing, drivetrain/hydraulic/working-equipment assembly, wiring, first fill, acceptance, attributable rejects/rework and dispatch protection. Welding at JCB2015 does not require robot welding at every factory. Do not infer an on-site foundry, heat treatment, cylinder manufacture or engine manufacture from bought parts; actual local/outsourced routes need their own exchanges and gates. | jcb-backhoe-loader-2015 |\n| `boundary_bom` | all inventory rows | Crosswalk every actual BOM item and operation to one atomic exchange or justified exclusion. Expand separately supplied cooling radiator, fuel tank, exhaust aftertreatment, filters, seals, pins, hoses/fittings, wiring/sensors, brakes, steering, seat, glazing and counterweights where present; never duplicate internals inside bought engine/cab/axle modules. Add each actual cleaner, welding-gas constituent, heat fuel, DEF formulation, test fixture consumable, waste and monitored release individually. Initial cards are not a universal complete BOM. |  |\n| `boundary_test` | factory_test | Record actual steering/braking, hydraulic leak/pressure, loader/backhoe motions, stabilizers, controls and functional acceptance; retain applied load, test duration and results from the actual plan. Include factory engine running, electrical support, fill/makeup/drain and retests only as performed. Factory test fuel is not an operating-life profile; no universal test duration or excavation cycle. |  |\n| `boundary_semantic` | reference_product | Independent bucket PCR owns separately delivered attachments and excludes host machine; agricultural tractor PCR owns agricultural traction units; cylinder PCR owns separately supplied cylinders. This integrated front/rear backhoe-loader manufacturing boundary does not duplicate those products. Keep the old classification scaffold/id unchanged and assert no accepted mapping. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Specified stock and separately specified finished assemblies received at the backhoe-loader factory |\n| starting_condition_role | Foreground manufacturing inputs with supplier production and incoming transport separately linked |\n| product_classification_scope | Backhoe-loader subset of CPC44427, excluding other n.e.c. machinery |\n| recursive_input_rule | A purchased complete machine is supplier-gated input, not a repeated assembly module. Purchased finished chassis/arms/cylinders replace local stock and their fabrication |\n| upstream_dataset_requirement | Match grade/state, purchased completeness, tyre and cylinder designs, fluid chemistry, energy source, geography and supplier/transport/receiver gates |\n| disclosure | This foreground module is not complete cradle-to-gate. Declare actual site operations, make-or-buy, outsourcing, shared services, packaging and missing supplier/transport/treatment links |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_operations` | manufacturing | Include receipt inspection and actual plate cutting/forming, joining, pivot/interface machining, grinding/cleaning/finishing, drivetrain/hydraulic/working-equipment assembly, wiring, first fill, acceptance, attributable rejects/rework and dispatch protection. Welding at JCB2015 does not require robot welding at every factory. Do not infer an on-site foundry, heat treatment, cylinder manufacture or engine manufacture from bought parts; actual local/outsourced routes need their own exchanges and gates. | jcb-backhoe-loader-2015 |\n| `boundary_bom` | all inventory rows | Crosswalk every actual BOM item and operation to one atomic exchange or justified exclusion. Expand separately supplied cooling radiator, fuel tank, exhaust aftertreatment, filters, seals, pins, hoses/fittings, wiring/sensors, brakes, steering, seat, glazing and counterweights where present; never duplicate internals inside bought engine/cab/axle modules. Add each actual cleaner, separately supplied welding gas or composition-specific purchased premix, heat fuel, DEF formulation, test fixture consumable, waste and monitored release individually. Initial cards are not a universal complete BOM. |  |\n| `boundary_test` | factory_test | Record actual steering/braking, hydraulic leak/pressure, loader/backhoe motions, stabilizers, controls and functional acceptance; retain applied load, test duration and results from the actual plan. Include factory engine running, electrical support, fill/makeup/drain and retests only as performed. Factory test fuel is not an operating-life profile; no universal test duration or excavation cycle. |  |\n| `boundary_semantic` | reference_product | Independent bucket PCR owns separately delivered attachments and excludes host machine; agricultural tractor PCR owns agricultural traction units; cylinder PCR owns separately supplied cylinders. This integrated front/rear backhoe-loader manufacturing boundary does not duplicate those products. Keep the old classification scaffold/id unchanged and assert no accepted mapping. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1598,15 +1598,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_66760"
+    - unit_id: "normative_67036"
       family: "allocation"
       span:
         start:
-          offset: 66760
+          offset: 67036
           line: 1066
           column: 1
         end:
-          offset: 67956
+          offset: 68232
           line: 1074
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct` | shared_operations | Subdivide by work order, stage and configuration first. Assign traceable stock/component issues, fabrication, rework and tests directly. Different cab, bucket, drivetrain and option configurations cannot share an assumed per-machine inventory. |  |\n| `allocation_physical` | shared_energy_support | Use measured causal drivers: actual load/power with fabrication or assembly/test hours, coating-batch load, consumable use across served orders, or fuel issues/burn/retention. Reconcile assignments to measured totals and accepted same-configuration count. Unsupported relationships require review/sensitivity; no default mass split, equal-count split or economic percentage. |  |\n| `allocation_recovery` | rejects_waste | Include attributable failed units, rejected parts, rework and retests per accepted same-configuration output in the same period. Net documented returns and internal recovery. Waste exports do not automatically earn avoided-primary-material credits. Genuine co-products need documented market/boundary decisions. |  |\n\n"
@@ -1626,11 +1626,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 66760
+              offset: 67036
               line: 1066
               column: 1
             end:
-              offset: 66800
+              offset: 67076
               line: 1066
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1646,15 +1646,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_76755"
+    - unit_id: "normative_77031"
       family: "validation"
       span:
         start:
-          offset: 76755
+          offset: 77031
           line: 1104
           column: 1
         end:
-          offset: 78209
+          offset: 78485
           line: 1113
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference` | reference_flow | Require one positive measured M with installed front/rear equipment, stabilizers, operator-station completeness, actual retained fill/fuel and exclusions. Reference output is1kg; other rows explicitly use normalize_mass with kg, MJ or m3 numerators. |  |\n| `validation_bom` | inventory | Reconcile each actual chassis, drivetrain, wheel/steering/brake system, hydraulic system, loader, backhoe, stabilizer, cab/control and installed option. Verify purchased-internal exclusions, make-or-buy, tests/retests/rejects, fuel balance and receiver gates. Initial cards require actual BOM expansion before a completeness claim. |  |\n| `validation_identity` | all inventory rows | Check public type, delivered grade/state/concentration, route/geography, actual reference property/unit group and official localized names. NO is not NO2/N2O/NOx equivalent; unspecified air is not long-term air/soil; resource water is not wastewater; energy and component counts are not total mass. |  |\n| `validation_claims` | dataset_claims | No full cradle-to-gate claim without actual route and supplier/transport/treatment coverage. Manufacturing mass cannot establish earthmoving-service equivalence, productivity, service life, regulatory conformity or scientific approval. This candidate requires independent methodology review. |  |\n\n"
@@ -1674,11 +1674,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 76755
+              offset: 77031
               line: 1104
               column: 1
             end:
-              offset: 76777
+              offset: 77053
               line: 1104
               column: 23
           text: "## 9. Validation Rules"
@@ -1718,20 +1718,20 @@ normative_context:
           line: 72
           column: 1
         end:
-          offset: 8023
+          offset: 8072
           line: 72
-          column: 596
+          column: 645
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_test"
       identity_kind: "explicit"
       unit_id: "normative_5748"
       source_span:
         start:
-          offset: 8024
+          offset: 8073
           line: 73
           column: 1
         end:
-          offset: 8463
+          offset: 8512
           line: 73
           column: 440
     - pointer: "/system_boundary/rules/3"
@@ -1740,102 +1740,102 @@ normative_context:
       unit_id: "normative_5748"
       source_span:
         start:
-          offset: 8464
+          offset: 8513
           line: 74
           column: 1
         end:
-          offset: 8890
+          offset: 8939
           line: 74
           column: 427
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_direct"
       identity_kind: "explicit"
-      unit_id: "normative_66760"
+      unit_id: "normative_67036"
       source_span:
         start:
-          offset: 66873
+          offset: 67149
           line: 1070
           column: 1
         end:
-          offset: 67165
+          offset: 67441
           line: 1070
           column: 293
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_66760"
+      unit_id: "normative_67036"
       source_span:
         start:
-          offset: 67166
+          offset: 67442
           line: 1071
           column: 1
         end:
-          offset: 67595
+          offset: 67871
           line: 1071
           column: 430
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_66760"
+      unit_id: "normative_67036"
       source_span:
         start:
-          offset: 67596
+          offset: 67872
           line: 1072
           column: 1
         end:
-          offset: 67954
+          offset: 68230
           line: 1072
           column: 359
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference"
       identity_kind: "explicit"
-      unit_id: "normative_76755"
+      unit_id: "normative_77031"
       source_span:
         start:
-          offset: 76850
+          offset: 77126
           line: 1108
           column: 1
         end:
-          offset: 77148
+          offset: 77424
           line: 1108
           column: 299
     - pointer: "/validation_rules/1"
       rule_id: "validation_bom"
       identity_kind: "explicit"
-      unit_id: "normative_76755"
+      unit_id: "normative_77031"
       source_span:
         start:
-          offset: 77149
+          offset: 77425
           line: 1109
           column: 1
         end:
-          offset: 77518
+          offset: 77794
           line: 1109
           column: 370
     - pointer: "/validation_rules/2"
       rule_id: "validation_identity"
       identity_kind: "explicit"
-      unit_id: "normative_76755"
+      unit_id: "normative_77031"
       source_span:
         start:
-          offset: 77519
+          offset: 77795
           line: 1110
           column: 1
         end:
-          offset: 77869
+          offset: 78145
           line: 1110
           column: 351
     - pointer: "/validation_rules/3"
       rule_id: "validation_claims"
       identity_kind: "explicit"
-      unit_id: "normative_76755"
+      unit_id: "normative_77031"
       source_span:
         start:
-          offset: 77870
+          offset: 78146
           line: 1111
           column: 1
         end:
-          offset: 78207
+          offset: 78483
           line: 1111
           column: 338
   diagnostics:
@@ -1865,26 +1865,26 @@ normative_context:
           column: 204
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_66760"
+      unit_id: "normative_67036"
       source_span:
         start:
-          offset: 66760
+          offset: 67036
           line: 1066
           column: 1
         end:
-          offset: 66800
+          offset: 67076
           line: 1066
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_76755"
+      unit_id: "normative_77031"
       source_span:
         start:
-          offset: 76755
+          offset: 77031
           line: 1104
           column: 1
         end:
-          offset: 76777
+          offset: 77053
           line: 1104
           column: 23
 projection_metadata:
@@ -1894,5 +1894,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a23bd187f444a2a1a4e03751587358efe717f9b0b1d8949b3fbd5c27d4dc5d4d"
-  generated_content_sha256: "sha256:f4812032d06c2732bc177cb25793eefacd7293cda50ea64bcaab0b6ffa99091b"
+    sha256: "sha256:233abd161e118720e104695265b47a5213e65a3f9f5faf39f940ee233825989c"
+  generated_content_sha256: "sha256:b2db3a9ad6b6e0fdd4d1bc607f2d860c2b297ab36933f9bcfeb52c9ea3d21c05"

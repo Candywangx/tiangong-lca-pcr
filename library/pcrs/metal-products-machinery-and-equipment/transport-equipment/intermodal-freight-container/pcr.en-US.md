@@ -101,7 +101,7 @@ Cut and form actual grade/thickness sheet into wall/roof/door panels and structu
 
 ###### Hot-rolled weathering-steel thin sheet for container panels (`weathering_sheet`)
 
-Only an actually collected mixed waterborne zinc-rich epoxy-primer/acrylic-topcoat sludge leaving one declared collection outlet; measure wet mass, solids/moisture and recipient. Distinct segregated residues require separate rows, not summation into this mixed stream.
+Only actual supplier-certified hot-rolled weathering-steel thin sheet of one declared grade, thickness and delivery state used for local container-panel forming. Weigh net stock issues and returns and retain supplier scope; purchased formed panels replace their contained sheet and completed forming. No universal steel grade, thickness or sheet yield is prescribed.
 
 - Selected flow: Hot-rolled weathering-steel thin sheet for container panels
 - Flow property / unit: Mass / kg
@@ -388,7 +388,7 @@ Only the specifically declared actual exchange; measure issues/returns or outlet
 
 ###### Waste waterborne epoxy/acrylic coating sludge (`paint_sludge`)
 
-Only the specifically declared actual exchange; measure issues/returns or outlet mass and retain exact composition, state, supplier scope and destination.
+Only an actually collected mixed waterborne zinc-rich epoxy-primer/acrylic-topcoat sludge leaving one declared collection outlet; measure wet mass, solids/moisture and recipient. Distinct segregated residues require separate rows, not summation into this mixed stream.
 
 - Selected flow: Waste waterborne epoxy/acrylic coating sludge
 - Flow property / unit: Mass / kg

@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
-lastReviewedNote: "Reviewed PCR #90 release-only 0.4.2 metadata and CLI 0.1.25 preparation examples; canonical methodology, ownership, runtime and guarded publication remain unchanged."
+lastReviewedAt: 2026-10-06
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedNote: "Reviewed PCR #95 unified 0.4.3 version/examples preparation; PCR ownership, canonical candidate and scientific/translation gates, runtime pins and guarded publication boundaries remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
