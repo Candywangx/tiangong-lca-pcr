@@ -162,8 +162,8 @@ Only exported soil classified as waste; record composition, moisture and receivi
 
 Only an actual discharge to fresh surface water; state recipient, treatment and sampling. Suspended solids and dissolved species require separate measured atomic rows, not an assumed clean-water discharge.
 
-- Selected flow: Water from construction dewatering discharged to river
-- Flow property / unit: Volume / m3
+- Selected flow: Water `5e50fc01-19c6-4377-a1cc-bc65a12498ea`
+- Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - Amount rule: Measure discharge volume and report separately from abstraction and contained liquid waste.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
