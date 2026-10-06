@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-05
-lastReviewedNote: "Reviewed PCR #90 documentation package/lock version mirror only; complete source export, provider Node 24.18 import, Node 24.19 construction and guarded live acceptance remain unchanged."
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
+lastReviewedAt: 2026-10-06
+lastReviewedNote: "Reviewed PCR #95 documentation package/lock 0.4.3 mirror only; complete source export, provider Node 24.18.0 import, Node 24.19.0 construction and full release/live qualification remain unchanged."
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
