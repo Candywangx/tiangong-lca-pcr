@@ -744,8 +744,8 @@ Only actual spent pao oil waste crossing the site gate. Determine composition, m
 
 Only actual release to the receiving freshwater river; record treatment and actual composition, suspended solids and dissolved constituents as separate measured rows. A contained treatment-bound waste is not this release.
 
-- Selected flow: Construction drainage water discharged to river
-- Flow property / unit: Volume / m3
+- Selected flow: Water `5e50fc01-19c6-4377-a1cc-bc65a12498ea`
+- Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - Amount rule: Measure actual discharge, reconcile ingress/abstraction/reuse and water retained or exported.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
