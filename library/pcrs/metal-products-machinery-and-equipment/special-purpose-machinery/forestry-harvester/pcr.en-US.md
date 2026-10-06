@@ -132,7 +132,7 @@ Only if actual qualified weld procedure uses this specification; exact net issue
 
 ###### Gaseous argon welding shielding supply (`argon`)
 
-Only actual gaseous argon supply measured net consumption; each blend constituent separate, no default gas density or liquid-argon substitution.
+Only actual pure gaseous argon supply with measured net consumption. Separately purchased pure gases used for onsite blending need separate input rows and their own delivery records. A purchased shielding-gas premix needs one composition-specific supplied-mixture exchange with actual issue, return and delivery evidence; do not also record its contained constituents as pure-gas purchases. No default gas density or liquid-argon substitution.
 
 - Selected flow: Gaseous argon welding shielding supply
 - Flow property / unit: Mass / kg

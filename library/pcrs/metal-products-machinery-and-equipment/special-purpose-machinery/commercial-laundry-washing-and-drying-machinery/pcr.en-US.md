@@ -162,7 +162,7 @@ Only for an actual certified ER308L solid-wire procedure. Weigh net issues and r
 
 ###### Pure argon welding shielding gas (`argon`)
 
-Only if an actual procedure uses pure argon. Weigh net supplied gas or explicitly convert measured volume with actual pressure/temperature and evidenced density. Mixed shielding gas requires separate identified constituent/delivery records; no compulsory gas route.
+Only if an actual procedure uses pure argon. Weigh net supplied gas or explicitly convert measured volume with actual pressure/temperature and evidenced density. Separately purchased pure gases used for onsite blending need separate input rows and their own delivery records. A purchased shielding-gas premix needs one composition-specific supplied-mixture exchange with actual issue, return and delivery evidence; do not also record its contained constituents as pure-gas purchases. No compulsory gas route.
 
 - Selected flow: Pure argon welding shielding gas
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
