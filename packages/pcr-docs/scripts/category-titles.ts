@@ -1,5 +1,16 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
+  "business-and-production-services": "商业与生产服务",
+  "research-and-development-services": "研究与开发服务",
+  "digital-original-assets": "数字原创资产",
+  "geological-information-assets": "地质信息资产",
+  "data-products": "数据产品",
+  "design-assets": "设计资产",
+  "brand-assets": "品牌资产",
+  "digital-content": "数字内容",
+  "digital-software-deliveries": "数字软件交付",
+  "broadcast-content-originals": "广播内容原创作品",
+  "telecommunications-broadcasting-and-information-supply-services": "电信、广播与信息提供服务",
   "agriculture-forestry-and-fishery-products": "农业、林业和渔业产品",
   "basic-chemicals": "基础化学品",
   "basic-metals": "基本金属",
