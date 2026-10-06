@@ -193,8 +193,8 @@ Only the actually specified 16/32 crushed-stone fraction for bedding or drainage
 
 Conditional actual trench/pit dewatering or direct site abstraction from fresh groundwater. Identify aquifer, salinity, location and external intake meter. Purchased treated water is a product input; contaminated groundwater is not silently mapped to fresh water.
 
-- Selected flow: Fresh groundwater withdrawn from the natural groundwater resource
-- Flow property / unit: Volume / m3
+- Selected flow: ground water `4f462198-40cd-4184-8733-86648a20dc3f`
+- Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - Amount rule: Measured net attributable exchange quantity in the declared physical state; retain original operation records and reconciliation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
