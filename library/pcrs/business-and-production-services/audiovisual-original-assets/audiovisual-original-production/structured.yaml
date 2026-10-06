@@ -1,0 +1,1193 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.business-and-production-services.audiovisual-original-assets.audiovisual-original-production"
+  classification_refs: "CPC:3.0:84612; CPC:3.0:96123 (audiovisual subset; not whole-leaf coverage)"
+  covered_products: "Broadcast and non-broadcast motion-picture, video and television audiovisual originals; actual recorded, animated, live and hybrid routes"
+  excluded_products: "Radio-only originals; bare service or licence; replication, channel, transmission, exhibition, viewing and equipment activities"
+  representative_product: "Accepted complete audiovisual original"
+  production_route: "Development → actual capture/digital creation → actual finishing → verified acceptance; resource ledger covers all included stages"
+  market_state: "Content/technically accepted original asset with declared edition, completeness, rights and cinema/home-video/broadcast/other use; not a download copy"
+functional_unit:
+  what: "Create and accept the declared complete audiovisual original"
+  how_much: "One complete identified work, programme/episode or bounded live edition; disclose actual running time, content and deliverable coverage"
+  how_well: "Content, picture/sound, metadata, rights and asset-dependency completeness meet the actual current recipient brief; disclose captions/audio description and delivered versions"
+  how_long_or_cycle: "One complete original production cycle from development through acceptance, including attributable retries; no assumed viewing or archive lifetime"
+  reference_flow_link: "accepted_original"
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "dataset"
+      rule: "Include actual pre-production, production and post-production resources through acceptance. EBU Tech3367 printed p.5 explicitly separates production from broadcast/distribution; its 2014 examples provide historical decomposition only. No historic benchmark or factor is adopted."
+      source_ids:
+        - ebu-production-scope
+    - rule_id: boundary_routes
+      applies_to: "processes"
+      rule: "Document capture, animation and live route decisions. Include attempts, rehearsals, retakes, renders, corrections and failed portions attributable to the accepted original. Conditional exchanges absent in a route need recorded absence evidence; no compulsory diesel/set/wastewater assumption."
+      source_ids: []
+    - rule_id: boundary_delivery
+      applies_to: "acceptance"
+      rule: "Include encoding, checking and actual bounded transfer needed for initial acceptance, with supplier transfer scope and measured electricity. Transmitter operation, recurrent network distribution, audience devices and post-acceptance archives are separate modules. Equipment manufacture is separately disclosed; this foreground alone is not complete cradle-to-gate."
+      source_ids:
+        - dci-master-lineage
+        - sony-imf-lineage
+    - rule_id: boundary_versions
+      applies_to: "acceptance"
+      rule: "Record source master, master conversion, picture/sound/subtitle assets, edition IDs and acceptance tests for the actual delivery interface. Resolve DCP CPL/essence dependencies and IMF base/supplemental assets; a supplemental package alone is not a complete original. Retain actual incremental edition work while counting base creation once."
+      source_ids:
+        - dci-master-lineage
+        - sony-imf-lineage
+boundary_abstraction:
+  declared_starting_condition: "Start of attributable original development; incoming licensed clips, finished set materials, services and equipment interfaces are separately declared"
+  starting_condition_role: "foreground_production"
+  product_classification_scope: "Broadcast/non-broadcast audiovisual original creation; no channel, transmission or exhibition service; not whole CPC96123 coverage"
+  recursive_input_rule: "Record an existing original used as a licensed clip at its actual acquired-asset interface, with source original ID and attributed upstream burden. Do not recursively reproduce its whole production or count a reused clip as a new whole original. Add one atomic input per actual clip asset."
+  upstream_dataset_requirement: "Match electricity geography/voltage, fuel formulation, material production state and supplier-service scope; disclose missing upstream and capital assets. Foreign supply cannot inherit the CN flow."
+  disclosure: "Development/capture/digital/finishing/acceptance sites and period; failed work; outsourcing; production storage and bounded acceptance transfer; excluded transmitter/distribution/exhibition/use/archive; capital manufacture included only with declared coverage and cp_assets evidence, otherwise excluded and disclosed"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted complete audiovisual original"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "original ID"
+    - "work/episode/edition/version"
+    - "actual duration"
+    - "cinema/home-video/broadcast/other intent and territory"
+    - "digital/photochemical/videotape/animation/live route"
+    - "picture format/frame rate"
+    - "audio tracks"
+    - accessibility
+    - "source-master and delivery-master/package relationship"
+    - "asset dependencies and checksums"
+    - "rights and reuse permissions"
+    - "commissioned/outright-sale interface"
+    - "acceptance brief and result"
+    - "sites/dates"
+    - "production storage interval"
+    - "owned/supplier boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: original_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Exactly one accepted original; use cp_original. Reference count is not the number of encodings, viewers or transmissions. Record actual duration in seconds as a qualifier, not a substitute denominator."
+  - id: energy_preserve
+    applies_to: "grid_cn, grid_other"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the confirmed electricity reference property; the energy unit group is 93a60a57-a3c8-11da-a746-0800200c9a66. Its kWh conversion is 3.6 MJ/kWh. Use cp_energy actual readings; neither runtime nor network bytes proves electricity. For unresolved grid_other verify its own property before adopting identity."
+  - id: atomic_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual exchange property"
+      uuid: ""
+    required_unit: "Declared row unit"
+    rule: "Retain native supplier count, energy, mass or passenger-distance property. Conversion from volume to mass requires actual density/temperature. Do not rewrite a public property to match a preferred unit. cp_services defines a job/session/contract/item before counting it."
+process_map:
+  - id: production_resources
+    name: "Development and attributable production resource ledger"
+    inclusion: "required"
+    inclusion_condition: "All originals; stages individually recorded"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+  - id: capture
+    name: "Studio, location and live picture/sound capture"
+    inclusion: "conditional"
+    inclusion_condition: "Actual recorded or live capture route"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+  - id: digital_creation
+    name: "Animation, graphics and production data handling"
+    inclusion: "conditional"
+    inclusion_condition: "Actual digital creation or purchased storage/rendering"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+  - id: postproduction
+    name: "Editing, grading, sound and version finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual finishing, including live gallery mixing; no compulsory offline edit"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+  - id: acceptance
+    name: "Content, rights and technical acceptance"
+    inclusion: "required"
+    inclusion_condition: "All originals; route-specific live or file acceptance"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+process_inventory:
+  - id: production_resources
+    label: "Development and attributable production resource ledger"
+    inputs:
+      product:
+        - row_id: grid_cn
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only for metered China grid-average consumption at the user interface below 1 kV. Account for development, lighting, cameras, gallery, workstations, rendering, cooling, production storage and acceptance by stage in one resource ledger; exclude their electricity from purchased services that already include it."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_energy; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: grid_other
+          role: "Alternating-current electricity at another documented user supply interface"
+          name: "Alternating-current electricity at another documented user supply interface"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on a supply geography, voltage or generation mix outside grid_cn. Keep every distinct actual supply as a separate instantiated atomic row; never substitute the China low-voltage identity. Amounts are disjoint from grid_cn."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_energy; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: camera_capital
+          role: "Configured digital motion-picture camera"
+          name: "Television cameras"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce2c0eb5-09e4-487a-a0f9-0c8e9844f999"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The public camera identity is a manufactured finished-camera interface with Mass, not item count. This row applies only to an actual professional digital video/motion-picture camera with identified model/configuration matching the public television/professional-video-camera category. Camcorders, web cameras, still-image-optimized digital cameras and photochemical film cameras require distinct verified identities; the word cinema does not by itself establish the camera category. Under cp_assets measure net camera mass using a calibrated scale or traceable net-mass records for the same actual configuration, excluding packaging and separately listed accessories. Original equipment counts use that measured net mass to establish the manufacturing inventory kg quantity before applying the reconciled cross-project manufacturing share to this original. Preserve public Mass; invent no per-camera weight or lifetime. Only where declared equipment manufacture is included: allocate the actual camera manufacturing quantity/share to this original using the cross-project conservation register. Record model and accessories separately; a rental whose supplier already includes manufacturing is not a second camera input. Unknown lifetime denominator remains review, not an invented whole camera per project."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_assets; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: generator_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only diesel actually consumed by a production-controlled generator; disclose fuel grade, fossil and biogenic fractions, supplier, location and combustion equipment. The generic material identity does not supply a refinery inventory or establish a fossil fraction. Other fuels require separate rows."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_fuel; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: camera_rental
+          role: "Rental of one configured digital motion-picture camera for one day"
+          name: "Rental of one configured digital motion-picture camera for one day"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only an actual rented digital-camera-day service. Record model, included accessories, day definition, supplier energy and asset coverage; customer electricity remains separately measured. An owned camera is not a rental input."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+        - row_id: bus_travel
+          role: "Diesel coach passenger transport"
+          name: "Diesel coach passenger transport"
+          flow_type: "product"
+          property_unit: "Passenger transport / passenger-km"
+          description: "Conditional on actual production-attributable coach travel. Declare occupied passenger count, route distance and service coverage. Add actual rail, air, car and freight interfaces separately; absence of those example rows is not a cutoff permission."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+        - row_id: hotel_night
+          role: "One occupied hotel room-night"
+          name: "One occupied hotel room-night"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only attributable overnight accommodation; define occupancy, room type, location, included utilities and meals. Food, costume, makeup, props and administrative purchases require distinct physically specific rows when actually used, rather than one composite materials flow."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: direct_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only evidenced immediate fossil-carbon dioxide releases from controlled combustion to air with unspecified subcompartment. Where urban near-ground or non-urban/high-stack location is known, resolve the corresponding compartment instead. Never use soil, water, long-term or biogenic identities. Purchased electricity does not produce this direct exchange."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_emissions; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: direct_no2
+          role: "Nitrogen dioxide released immediately to air"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on species-specific measurement or a documented applicable combustion calculation; immediate release to air, unspecified subcompartment only. Known release subcompartments require their own matching identity. NOx reported as NO2-equivalent is not actual NO2 mass; retain unresolved species separately. Do not substitute NO, nitrogen, nitrate, nitrite or N2O. Add other evidenced pollutants separately."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_emissions; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+  - id: capture
+    label: "Studio, location and live picture/sound capture"
+    inputs:
+      product:
+        - row_id: film_stock
+          role: "Unexposed colour-negative motion-picture camera film"
+          name: "Unexposed colour-negative motion-picture camera film"
+          flow_type: "product"
+          property_unit: "Length / m"
+          description: "Only actual photochemical capture. Declare gauge, support/emulsion, lot, length issued/returned and measured consumption. Neither silver content nor developing recipe is inferred from length. The stock supplier dataset must match the purchased film state and unit; do not substitute finished video content or digital storage."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_film; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film
+              source_ids:
+                - kodak-film-route
+            ranges: []
+        - row_id: set_plywood
+          role: "Finished plywood panel for audiovisual set construction"
+          name: "Finished plywood panel for audiovisual set construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual plywood set construction. Record wood species, adhesive, thickness, moisture and purchased finished state; upstream forestry and panel manufacture belong to the supplier dataset. Charge consumed panels separately from reused panels; reusable manufacturing shares require cp_assets lifetime/activity denominator and cross-project conservation, never a full panel manufacturing burden reset per project."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_materials; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: supplied_water
+          role: "Treated municipal tap water supplied to the production location"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This tap-water identity has primary Mass. Under cp_materials measure actual treated supply mass; volume records require an applicable measured/supplier density and temperature conversion, not automatic use of the record screening conversion. Match actual supply geography, treatment, user/plant interface and upstream water inventory; raw water, Hong Kong-specific Volume and viscose-process CTUe identities are not substitutes. Conditional on actual water used for the production location, set operation or cleaning. Record supplier and use; measured volume requires documented density and temperature conversion. This is a technosphere water product, not freshwater resource abstraction."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_materials; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: discarded_negative
+          role: "Discarded exposed colour-negative motion-picture film"
+          name: "Discarded exposed colour-negative motion-picture film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only producer-controlled film physically sent to a waste handler; weigh net discarded film and declare support, emulsion, contamination and actual treatment. Preserve accepted negatives/assets separately. Do not double-count laboratory waste already included by the purchased processing supplier; do not equate film metres with kg."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_materials; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: discarded_plywood
+          role: "Discarded glued plywood set panel"
+          name: "Discarded glued plywood set panel"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only panels crossing the production boundary to a waste handler. Record adhesive, coatings, contamination, recipient and actual treatment; reuse retained within the production is not waste. No avoided-production credit follows merely from sending material for recycling."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_materials; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: sanitary_wastewater
+          role: "Production-location sanitary wastewater sent to municipal treatment"
+          name: "Untreated municipal wastewater influent"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "41eb8873-6852-40fe-8b5d-b792fe4d4754"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Only actual project-attributable untreated sanitary influent received at a municipal treatment plant. Reconcile production sanitation, sewer/transport boundaries, infiltration and transfer losses with the measured recipient volume and composition; site discharge alone does not prove this inlet quantity. Industrial or laboratory effluent is a separate row. No wastewater-treatment service or direct freshwater emission is implied."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_wastewater; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: digital_creation
+    label: "Animation, graphics and production data handling"
+    inputs:
+      product:
+        - row_id: render_job
+          role: "Completed audiovisual animation rendering job"
+          name: "Completed audiovisual animation rendering job"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on externally rendered animation, graphics or virtual sets. Define job identifier, frames, resolution, software, compute time, site and included electricity/cooling/storage. One item is one actual documented job, not one arbitrary GPU-hour or one GB. In-house rendering is measured in cp_energy."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+        - row_id: storage_contract
+          role: "One defined production digital storage service contract"
+          name: "One defined production digital storage service contract"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only purchased production-period storage; define provider, bytes stored, actual retention interval, replication, backups and allocation. Do not equate GB or GB-days to kWh. Long-term archival storage after acceptance is separate and excluded unless an explicit additional module is declared."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: postproduction
+    label: "Editing, grading, sound and version finishing"
+    inputs:
+      product:
+        - row_id: film_lab
+          role: "Completed laboratory processing job for exposed colour-negative motion-picture film"
+          name: "Completed laboratory processing job for exposed colour-negative motion-picture film"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only purchased actual film processing, including declared development, scanning and waste handling coverage. Define one job by order, gauge, emulsion, measured footage, processing route and accepted result; separately purchased scans are separate exchanges. Require supplier primary chemical/water/energy/waste records and disclose gaps. If processing is in-house, do not enter a fictitious purchased job: instantiate each actual atomic laboratory exchange under postproduction."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids:
+                - kodak-film-route
+            ranges: []
+        - row_id: sound_mix
+          role: "Completed audiovisual sound mixing session"
+          name: "Completed audiovisual sound mixing session"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on externally supplied mixing. Define programme/version, session duration, delivered tracks, sample rate, channel layout, supplier scope and acceptance. Editing, grading, dubbing and captioning supplied separately must each have their own delivery row. Rejected mixes and revisions remain attributed to the final original."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: acceptance
+    label: "Content, rights and technical acceptance"
+    inputs:
+      product:
+        - row_id: mastering_job
+          role: "Completed mastering job for one declared audiovisual edition"
+          name: "Completed mastering job for one declared audiovisual edition"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only separately purchased first-acceptance mastering: identify source master, actual target edition, encode/colour/audio/subtitle scope, dependency files, verification and acceptance. One job is one accepted bounded supplier order, not a copy/viewing. Provider metering and asset coverage must be retained; own metered encoding is recorded only in grid_cn/grid_other, never again as a purchased job."
+          amount:
+            expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_original
+          role: "Complete accepted original"
+          name: "Accepted complete audiovisual original"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One identified accepted complete audiovisual work, programme/episode or bounded live edition. Retain source-master or analogue carrier identity, complete picture/sound and required metadata, rights evidence and route-specific acceptance. Record actual delivery-master, edition and dependency relationships. Extra encodings and dependent packages are deliverables, not extra originals. A new substantive cut declares its parent and incremental work rather than silently duplicating base creation. Live acceptance retains actual verification without demanding an offline master."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_original
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_trace
+    applies_to: "all inventory rows"
+    rule: "Use direct original/stage metering and supplier task records first. Where a shared studio, edit suite, render cluster or storage system is unavoidable, retain a measured resource total, a causal job/use driver and the allocation schedule, reconciling all shares to that total. Validate idle/base load and cooling coverage explicitly. Price, copyright value and audience cannot stand in for a causal energy relationship."
+    source_ids: []
+  - rule_id: allocation_original
+    applies_to: "accepted_original"
+    rule: "One original-production ledger serves the accepted edition and its technical copies. Attribute separately measured additional versions and reuse work once; record reusable asset ownership and actual reuse history. Do not divide original production by future downloads or broadcasts without a separately justified downstream model."
+    source_ids: []
+  - rule_id: allocation_failures
+    applies_to: "dataset"
+    rule: "Retakes and rejected intermediate work are attributable production burdens, not saleable co-products. If genuinely separate saleable originals are jointly produced, disclose their distinct outputs and a measured subdivision or causal allocation; unresolved allocation requires review. No speculative avoided-burden credit for reusable sets or digital copies."
+    source_ids: []
+  - rule_id: allocation_assets
+    applies_to: "camera_capital; set_plywood"
+    rule: "Allocate equipment and reusable-set manufacturing using a unique asset ID, manufacturing inventory and an evidenced actual cumulative service life/activity or justified expected lifetime denominator. Measured project use is only the numerator. Cumulative manufacturing shares across every project and period must not exceed one or reset. Expected denominators require sensitivity and later reconciliation. A period allocation distributes only the manufacturing share already attributable to that period, never automatically the full asset inventory each period. Unknown life/activity denominator requires review; invent no default. Separate consumed material from reused capital and prevent duplicate supplier-rental manufacturing shares."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_original
+      process_id: "acceptance"
+      flow_role: "accepted_original"
+      record_type: "acceptance_record"
+      raw_fields: "original ID; accepted version; source-master/carrier; intended outlet; dependent picture/audio/text assets; delivery-master/package/CPL lineage; duration seconds; content inventory; rights; recipient specification and live/file QC; route tasks; revisions; sites/dates"
+      collection_method: "Retain actual commissioning/content brief, creative task ledger, rights record and accepted file checksum or live edition verification record. Count each complete original once."
+      unit: "item"
+      frequency: "Each accepted original"
+      temporal_coverage: "Entire development-to-acceptance cycle"
+      site_scope: "All actual sites and suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Acceptance and rights records; version lineage"
+    - protocol_id: cp_energy
+      process_id: "production_resources"
+      flow_role: "electricity"
+      record_type: "meter_record"
+      raw_fields: "meter ID; site; voltage; mix; stage; original ID; start/end readings; unit; shared-job driver; cooling/idle; outsourced overlap"
+      collection_method: "Calibrated submeter or reconciled facility meter with actual causal allocation records; convert recorded kWh using the verified unit-group factor. Measure production-period rendering/storage, not assumed GB-to-energy factors."
+      unit: "MJ"
+      frequency: "Per task/day and acceptance"
+      temporal_coverage: "Complete included cycle including idle and rework"
+      site_scope: "Actual offices, studios, locations and digital sites"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Calibration, invoices, meter reconciliation and allocation schedule"
+    - protocol_id: cp_fuel
+      process_id: "production_resources"
+      flow_role: "generator_diesel"
+      record_type: "consumption_record"
+      raw_fields: "fuel lot; grade; blend; mass; opening/closing stock; generator; original; dates; density/temperature if volume"
+      collection_method: "Reconcile issue/return and tank measurements to consumed diesel; retain real supplier composition. Volume conversion uses measured or supplier-certified applicable density, never an invented constant."
+      unit: "kg"
+      frequency: "Each actual generator run"
+      temporal_coverage: "All attributable runs"
+      site_scope: "Actual production-controlled generators"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Fuel receipts, stock ledger and composition evidence"
+    - protocol_id: cp_materials
+      process_id: "capture"
+      flow_role: "material_water_waste"
+      record_type: "material_record"
+      raw_fields: "row ID; product state; grade; moisture; mass; volume/density; source/recipient; reuse history; treatment; original ID"
+      collection_method: "Weigh issued/returned/discarded plywood and discarded exposed film separately; reconcile actual water and wastewater records separately. Retain composition, waste contamination and treatment. Measure actual reused share with documented use history; no assumed lifespan."
+      unit: "kg"
+      frequency: "Each issue and boundary transfer"
+      temporal_coverage: "Full included production and dismantling"
+      site_scope: "Actual capture locations and waste handlers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Weighing, supplier specifications, water meters and transfer notes"
+    - protocol_id: cp_services
+      process_id: "production_resources"
+      flow_role: "purchased_service"
+      record_type: "supplier_record"
+      raw_fields: "row ID; contract/job/session; supplier; count; duration; bytes/frames where relevant; native unit; transport occupancy/distance; included assets/energy; original allocation"
+      collection_method: "Obtain actual accepted service deliverable and supplier primary activity/boundary records. Disaggregate transport modes and hotel nights; define each rental day, render job, storage contract and mix session. Track supplier and own energy overlap. Acceptance transfer requires its own actual service row if purchased."
+      unit: "Native row unit"
+      frequency: "Each service and invoice"
+      temporal_coverage: "Full attributable production interval"
+      site_scope: "All actual suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Contract, acceptance, job logs and supplier boundary evidence"
+    - protocol_id: cp_emissions
+      process_id: "production_resources"
+      flow_role: "direct_species_release"
+      record_type: "measurement_record"
+      raw_fields: "chemical species; fossil fraction; fuel; equipment; released kg; time; medium/submedium; measurement uncertainty; calculation inputs"
+      collection_method: "Use actual species measurement or independently documented applicable fuel-carbon and combustion calculation. Retain the complete formula, carbon oxidation evidence and fossil share. NOx as equivalent needs species resolution; verify immediate air subcompartment. Electricity/background emission factors cannot be entered as direct releases."
+      unit: "kg"
+      frequency: "Each evidenced release/campaign"
+      temporal_coverage: "Only actual included combustion events"
+      site_scope: "Controlled production sites"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Species report, calculation evidence and compartment record"
+    - protocol_id: cp_film
+      process_id: "capture"
+      flow_role: "film_stock"
+      record_type: "stock_record"
+      raw_fields: "original/take ID; gauge; support/emulsion; lot; issued/returned/exposed/discarded length; carrier ID; processing order"
+      collection_method: "Reconcile traceable roll labels, length metering and issue/return records to actual consumed length including tests, failures and rework. Retain separately weighed kg waste-film records; length is not waste mass. Reconcile laboratory order coverage."
+      unit: "m"
+      frequency: "Each roll and issue/return"
+      temporal_coverage: "Full included capture and processing"
+      site_scope: "Actual capture locations and laboratories"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Roll labels, meter records, processing and returns evidence"
+    - protocol_id: cp_assets
+      process_id: "production_resources"
+      flow_role: "camera_capital; set_plywood"
+      record_type: "asset_register"
+      raw_fields: "unique asset ID; configuration; actual manufacturing inventory and count/mass; measured net camera mass and weighing method; cumulative projects/periods; measured use activity; evidenced cumulative service denominator; period-attributed share; expected life evidence; cumulative shares and residual"
+      collection_method: "Retain manufacturing and all-project asset-use register; reconcile cumulative manufacturing shares at no more than one, with no project/period reset. Expected denominator requires sensitivity and later actual reconciliation. Unknown denominator stops completeness claims and requires review."
+      unit: "Native row unit"
+      frequency: "Each use, period close and lifetime update"
+      temporal_coverage: "Across every project/period until asset retirement"
+      site_scope: "All shared assets and rental suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Manufacturing inventory, service/life evidence, conservation ledger and uncertainty"
+    - protocol_id: cp_wastewater
+      process_id: "capture"
+      flow_role: "sanitary_wastewater"
+      record_type: "transfer_record"
+      raw_fields: "original/site; sanitary influent composition; discharge and recipient volume-meter readings; period; sewer/transport scope; infiltration/losses; treatment-plant inlet; allocation schedule"
+      collection_method: "Reconcile actual received untreated-influent volume and project attribution. Distinguish sanitary from laboratory/industrial wastewater. Do not infer wastewater volume from purchased water or equate site pipe discharge automatically to plant influent."
+      unit: "m3"
+      frequency: "Each transfer and receiving interval"
+      temporal_coverage: "All included actual sanitary transfers"
+      site_scope: "Production locations, transfer route and recipient treatment plant"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Meters, composition, transfer and receiving records"
+  calculation_rules:
+    - id: same_original_basis
+      applies_to: "all inventory rows"
+      rule: "Retain actual attributable numerator quantity per declared reference flow. For a shared production pool, record the actual accepted-original register and causal allocation schedule before deriving each original inventory; never average incompatible editions without stratification."
+      inputs:
+        - cp_original
+        - cp_energy
+        - cp_fuel
+        - cp_materials
+        - cp_services
+        - cp_emissions
+        - cp_film
+        - cp_assets
+        - cp_wastewater
+      output: "Exchange quantity per declared reference flow in the original row unit"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "accepted_original"
+      requirement: "Preserve accepted edition, duration, configuration, rights and reproduction conditions; a file checksum proves byte identity, not content completeness or lawful rights."
+      evidence: "cp_original"
+    - id: quality_complete
+      applies_to: "dataset"
+      requirement: "Reconcile every actual stage and supplier; expand specific consumable, food, travel, waste and direct-release rows where present. Describe capital-asset coverage, storage interval, failed work and all exclusions. Record omissions and uncertainty without declaring full life-cycle coverage."
+      evidence: "cp_original; cp_services"
+    - id: quality_energy
+      applies_to: "grid_cn, grid_other"
+      requirement: "Verified voltage/geography/mix, calibration and measured allocation; no arbitrary monetary, GB, CPU-time or runtime conversion to energy. Supplier job records must show the actual resource relationship and site boundary."
+      evidence: "cp_energy; cp_services"
+    - id: quality_comparability
+      applies_to: "dataset"
+      requirement: "Original counts are only comparable for declared equivalent duration, genre, production route, picture/sound/accessibility and rights/delivery conditions; no automatic intensity ranking across programmes. Report temporal, geographic and technology representativeness."
+      evidence: "cp_original"
+    - id: quality_master
+      applies_to: "accepted_original"
+      requirement: "Bind source-master and delivery-master/package editions and asset dependencies. Check cinema/IMF completeness only for the actual selected interface; current recipient specifications supersede historical examples. New encodings, CPLs or rights transfers are not new originals; a substantive new cut declares its burden relationship to the base original."
+      evidence: "cp_original; dci-master-lineage; sony-imf-lineage"
+validation_rules:
+  - rule_id: validation_original
+    applies_to: "accepted_original"
+    rule: "Require 1 item complete accepted original, same reference-product and output names, cp_original and actual edition qualifiers. Candidate blank product UUID must be precisely registered against accepted_original. Do not replace it with a physical carrier or generic service UUID."
+    source_ids: []
+  - rule_id: validation_ledger
+    applies_to: "all inventory rows"
+    rule: "Verify atomic exchange, native property/unit, same-original denominator and real collection protocol; audit CN low-voltage conditional use and disjoint other electricity. Reject double-counted service energy, fake density, unsupported emissions or storage-to-energy coefficients."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "dataset"
+    rule: "Require a declared broadcast/non-broadcast audiovisual original asset and route-specific acceptance evidence. Check commissioned-service/outright-sale interfaces and multi-use originals for duplication. No broadcast/distribution/user-device/long-term archive activity silently belongs to original production."
+    source_ids:
+      - cpc-tv-original
+      - cpc-sale-original
+  - rule_id: validation_species
+    applies_to: "direct_co2, direct_no2"
+    rule: "Actual release evidence, fossil/biogenic distinction, species and immediate medium/submedium are mandatory. NO2-equivalent totals and purchased power emissions cannot be inserted as direct NO2 or direct CO2. Unresolved identity or causal allocation remains a disclosed review need."
+    source_ids: []
+  - rule_id: validation_assets
+    applies_to: "camera_capital; set_plywood"
+    rule: "Check unique asset ID, actual same-configuration net mass/manufacturing quantity, evidenced cumulative life/service denominator, project/period share register and residual. Cumulative manufacturing shares cannot exceed one or reset. Expected denominator needs sensitivity and later reconciliation; period attribution must not input a full asset inventory each period. Missing denominator remains review without complete capital-coverage claims."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Identified audiovisual-original production input to separately scoped distribution/broadcast/exhibition models; comparisons only for equivalent editions"
+  excluded_use: "Emission per viewer/download/broadcast; complete broadcast-service footprint; arbitrary mass of intellectual property; automatic equipment-inclusive cradle-to-gate"
+  required_metadata: "Original and edition IDs; duration; content and rights; route; sites/dates; configuration; accepted deliverables; energy interfaces; supplier/capital/transport/storage coverage; source and collection protocols"
+  required_quality_disclosure: "Identity gaps; meter/allocation uncertainty; failed work; supplier overlap; omissions; historical-source limits; content and acceptance representativeness; review status"
+  update_trigger: "New accepted edition or substantive route/site/supplier/format/rights/boundary change; revised measurements or resolved identity/causal allocation"
+data_sources:
+  - id: "cpc-tv-original"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 subclass 84612 explanatory note; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/84612"
+    used_for: "Broadcast-intended original scope; no numerical factors"
+  - id: "cpc-sale-original"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 subclass 96123 explanatory note; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/96123"
+    used_for: "Non-commissioned outright-sale audiovisual intersection; not whole-leaf coverage"
+  - id: "ebu-production-scope"
+    type: "official_guidance"
+    reference: "EBU Tech3367, Sustainable Production—Overview, November 2014, printed p.5; https://tech.ebu.ch/docs/tech/tech3367.pdf"
+    used_for: "Historical TV production/distribution separation and stage example only; no film energy or emission extrapolation"
+  - id: "dci-master-lineage"
+    type: "standard"
+    reference: "DCI Digital Cinema System Specification, definitive HTML, snapshot 2026-10-06, §§2.1.1.1–2.1.1.4, 3.1.1, 3.1.3, 5.2.3 and 5.5.1; https://dcss.dcimovies.com/latest/dcss.html"
+    used_for: "Source/derived master relationships, CPL and distribution-package completeness; selected cinema interfaces only"
+  - id: "sony-imf-lineage"
+    type: "standard"
+    reference: "Sony Pictures IMF Deliverable Specification v2.1, printed publication date 09-06-2018, pp.4–5; https://partnerzone.sonypictures.com/assets/downloads/Sony_Pictures_IMF_Specification_v2.1.pdf"
+    used_for: "Historical supplier base/supplemental asset and edition example; not universal current format, lifetime or quality threshold"
+  - id: "kodak-film-route"
+    type: "handbook"
+    reference: "Kodak VISION3 500T Color Negative Film 5219/7219, Technical Data, March 2026, H-1-5219, p.2, Processing/Identification/Post-Production; https://www.kodak.com/content/products-brochures/motion-picture/KODAK-VISION3-5219-7219-technical-information.pdf"
+    used_for: "Real colour-negative film, processing-service and postproduction-scan route example; ECN-2 applies only to specified manufacturer film, not all film, recipes, temperature or energy"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f04ecefdba350acd38ed625d5602983f2ade2eb0d229c8a2ed2b3732e2a36f91"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7753"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7753
+          line: 63
+          column: 1
+        end:
+          offset: 10721
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Start of attributable original development; incoming licensed clips, finished set materials, services and equipment interfaces are separately declared |\n| starting_condition_role | foreground_production |\n| product_classification_scope | Broadcast/non-broadcast audiovisual original creation; no channel, transmission or exhibition service; not whole CPC96123 coverage |\n| recursive_input_rule | Record an existing original used as a licensed clip at its actual acquired-asset interface, with source original ID and attributed upstream burden. Do not recursively reproduce its whole production or count a reused clip as a new whole original. Add one atomic input per actual clip asset. |\n| upstream_dataset_requirement | Match electricity geography/voltage, fuel formulation, material production state and supplier-service scope; disclose missing upstream and capital assets. Foreign supply cannot inherit the CN flow. |\n| disclosure | Development/capture/digital/finishing/acceptance sites and period; failed work; outsourcing; production storage and bounded acceptance transfer; excluded transmitter/distribution/exhibition/use/archive; capital manufacture included only with declared coverage and cp_assets evidence, otherwise excluded and disclosed |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_production | dataset | Include actual pre-production, production and post-production resources through acceptance. EBU Tech3367 printed p.5 explicitly separates production from broadcast/distribution; its 2014 examples provide historical decomposition only. No historic benchmark or factor is adopted. | ebu-production-scope |\n| boundary_routes | processes | Document capture, animation and live route decisions. Include attempts, rehearsals, retakes, renders, corrections and failed portions attributable to the accepted original. Conditional exchanges absent in a route need recorded absence evidence; no compulsory diesel/set/wastewater assumption. |  |\n| boundary_delivery | acceptance | Include encoding, checking and actual bounded transfer needed for initial acceptance, with supplier transfer scope and measured electricity. Transmitter operation, recurrent network distribution, audience devices and post-acceptance archives are separate modules. Equipment manufacture is separately disclosed; this foreground alone is not complete cradle-to-gate. | dci-master-lineage; sony-imf-lineage |\n| boundary_versions | acceptance | Record source master, master conversion, picture/sound/subtitle assets, edition IDs and acceptance tests for the actual delivery interface. Resolve DCP CPL/essence dependencies and IMF base/supplemental assets; a supplemental package alone is not a complete original. Retain actual incremental edition work while counting base creation once. | dci-master-lineage; sony-imf-lineage |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 172
+              line: 8
+              column: 1
+            end:
+              offset: 205
+              line: 8
+              column: 34
+          text: "# Audiovisual original production"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7753
+              line: 63
+              column: 1
+            end:
+              offset: 7774
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37060"
+      family: "allocation"
+      span:
+        start:
+          offset: 37060
+          line: 501
+          column: 1
+        end:
+          offset: 39215
+          line: 510
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace | all inventory rows | Use direct original/stage metering and supplier task records first. Where a shared studio, edit suite, render cluster or storage system is unavoidable, retain a measured resource total, a causal job/use driver and the allocation schedule, reconciling all shares to that total. Validate idle/base load and cooling coverage explicitly. Price, copyright value and audience cannot stand in for a causal energy relationship. |  |\n| allocation_original | accepted_original | One original-production ledger serves the accepted edition and its technical copies. Attribute separately measured additional versions and reuse work once; record reusable asset ownership and actual reuse history. Do not divide original production by future downloads or broadcasts without a separately justified downstream model. |  |\n| allocation_failures | dataset | Retakes and rejected intermediate work are attributable production burdens, not saleable co-products. If genuinely separate saleable originals are jointly produced, disclose their distinct outputs and a measured subdivision or causal allocation; unresolved allocation requires review. No speculative avoided-burden credit for reusable sets or digital copies. |  |\n| allocation_assets | camera_capital; set_plywood | Allocate equipment and reusable-set manufacturing using a unique asset ID, manufacturing inventory and an evidenced actual cumulative service life/activity or justified expected lifetime denominator. Measured project use is only the numerator. Cumulative manufacturing shares across every project and period must not exceed one or reset. Expected denominators require sensitivity and later reconciliation. A period allocation distributes only the manufacturing share already attributable to that period, never automatically the full asset inventory each period. Unknown life/activity denominator requires review; invent no default. Separate consumed material from reused capital and prevent duplicate supplier-rental manufacturing shares. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 172
+              line: 8
+              column: 1
+            end:
+              offset: 205
+              line: 8
+              column: 34
+          text: "# Audiovisual original production"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37060
+              line: 501
+              column: 1
+            end:
+              offset: 37100
+              line: 501
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48469"
+      family: "validation"
+      span:
+        start:
+          offset: 48469
+          line: 542
+          column: 1
+        end:
+          offset: 50440
+          line: 552
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_original | accepted_original | Require 1 item complete accepted original, same reference-product and output names, cp_original and actual edition qualifiers. Candidate blank product UUID must be precisely registered against accepted_original. Do not replace it with a physical carrier or generic service UUID. |  |\n| validation_ledger | all inventory rows | Verify atomic exchange, native property/unit, same-original denominator and real collection protocol; audit CN low-voltage conditional use and disjoint other electricity. Reject double-counted service energy, fake density, unsupported emissions or storage-to-energy coefficients. |  |\n| validation_boundary | dataset | Require a declared broadcast/non-broadcast audiovisual original asset and route-specific acceptance evidence. Check commissioned-service/outright-sale interfaces and multi-use originals for duplication. No broadcast/distribution/user-device/long-term archive activity silently belongs to original production. | cpc-tv-original; cpc-sale-original |\n| validation_species | direct_co2, direct_no2 | Actual release evidence, fossil/biogenic distinction, species and immediate medium/submedium are mandatory. NO2-equivalent totals and purchased power emissions cannot be inserted as direct NO2 or direct CO2. Unresolved identity or causal allocation remains a disclosed review need. |  |\n| validation_assets | camera_capital; set_plywood | Check unique asset ID, actual same-configuration net mass/manufacturing quantity, evidenced cumulative life/service denominator, project/period share register and residual. Cumulative manufacturing shares cannot exceed one or reset. Expected denominator needs sensitivity and later reconciliation; period attribution must not input a full asset inventory each period. Missing denominator remains review without complete capital-coverage claims. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 172
+              line: 8
+              column: 1
+            end:
+              offset: 205
+              line: 8
+              column: 34
+          text: "# Audiovisual original production"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48469
+              line: 542
+              column: 1
+            end:
+              offset: 48491
+              line: 542
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_production"
+      identity_kind: "explicit"
+      unit_id: "normative_7753"
+      source_span:
+        start:
+          offset: 9193
+          line: 78
+          column: 1
+        end:
+          offset: 9530
+          line: 78
+          column: 338
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_routes"
+      identity_kind: "explicit"
+      unit_id: "normative_7753"
+      source_span:
+        start:
+          offset: 9531
+          line: 79
+          column: 1
+        end:
+          offset: 9860
+          line: 79
+          column: 330
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_delivery"
+      identity_kind: "explicit"
+      unit_id: "normative_7753"
+      source_span:
+        start:
+          offset: 9861
+          line: 80
+          column: 1
+        end:
+          offset: 10301
+          line: 80
+          column: 441
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_versions"
+      identity_kind: "explicit"
+      unit_id: "normative_7753"
+      source_span:
+        start:
+          offset: 10302
+          line: 81
+          column: 1
+        end:
+          offset: 10719
+          line: 81
+          column: 418
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_trace"
+      identity_kind: "explicit"
+      unit_id: "normative_37060"
+      source_span:
+        start:
+          offset: 37173
+          line: 505
+          column: 1
+        end:
+          offset: 37639
+          line: 505
+          column: 467
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_original"
+      identity_kind: "explicit"
+      unit_id: "normative_37060"
+      source_span:
+        start:
+          offset: 37640
+          line: 506
+          column: 1
+        end:
+          offset: 38019
+          line: 506
+          column: 380
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_failures"
+      identity_kind: "explicit"
+      unit_id: "normative_37060"
+      source_span:
+        start:
+          offset: 38020
+          line: 507
+          column: 1
+        end:
+          offset: 38417
+          line: 507
+          column: 398
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_37060"
+      source_span:
+        start:
+          offset: 38418
+          line: 508
+          column: 1
+        end:
+          offset: 39213
+          line: 508
+          column: 796
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_original"
+      identity_kind: "explicit"
+      unit_id: "normative_48469"
+      source_span:
+        start:
+          offset: 48564
+          line: 546
+          column: 1
+        end:
+          offset: 48891
+          line: 546
+          column: 328
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_48469"
+      source_span:
+        start:
+          offset: 48892
+          line: 547
+          column: 1
+        end:
+          offset: 49219
+          line: 547
+          column: 328
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_48469"
+      source_span:
+        start:
+          offset: 49220
+          line: 548
+          column: 1
+        end:
+          offset: 49601
+          line: 548
+          column: 382
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_species"
+      identity_kind: "explicit"
+      unit_id: "normative_48469"
+      source_span:
+        start:
+          offset: 49602
+          line: 549
+          column: 1
+        end:
+          offset: 49936
+          line: 549
+          column: 335
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_48469"
+      source_span:
+        start:
+          offset: 49937
+          line: 550
+          column: 1
+        end:
+          offset: 50438
+          line: 550
+          column: 502
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7753"
+      source_span:
+        start:
+          offset: 7753
+          line: 63
+          column: 1
+        end:
+          offset: 7774
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7753"
+      source_span:
+        start:
+          offset: 7802
+          line: 67
+          column: 1
+        end:
+          offset: 9120
+          line: 74
+          column: 334
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37060"
+      source_span:
+        start:
+          offset: 37060
+          line: 501
+          column: 1
+        end:
+          offset: 37100
+          line: 501
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48469"
+      source_span:
+        start:
+          offset: 48469
+          line: 542
+          column: 1
+        end:
+          offset: 48491
+          line: 542
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f04ecefdba350acd38ed625d5602983f2ade2eb0d229c8a2ed2b3732e2a36f91"
+  generated_content_sha256: "sha256:ff8224e95f26764abbaefa17822c6ad58dfd821fbd39a59687000a15036f2609"
