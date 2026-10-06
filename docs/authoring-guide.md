@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
-lastReviewedNote: "Reviewed PCR #90 release-only metadata and consumer installation examples; canonical authoring, projection, bilingual review and immutable release history are unchanged."
+lastReviewedAt: 2026-10-06
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedNote: "Reviewed PCR #95 distribution-only 0.4.3 preparation; no canonical PCR edits, lifecycle promotion, scientific approval or translation-review changes."
 ---
 
 # Authoring Guide

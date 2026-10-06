@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
-lastReviewedNote: "Reviewed PCR #90 release metadata and bound task examples; independent reader/content compatibility, canonical ownership and publication architecture are unchanged."
+lastReviewedAt: 2026-10-06
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedNote: "Reviewed PCR #95 single product version and three package mirrors; canonical content ownership, independent reader compatibility and immutable scientific release boundaries remain unchanged."
 ---
 
 # PCR 资料库架构

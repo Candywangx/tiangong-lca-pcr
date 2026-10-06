@@ -752,7 +752,7 @@ Only for separately issued non-cellular, non-adhesive, unreinforced LDPE protect
 | --- | --- | --- | --- |
 | `allocation_direct` | shared_operations | First subdivide by work order, stage and configuration. Assign actual stock issues, purchased components, test fuel and measured releases to their own model before allocating shared services. |  |
 | `allocation_physical` | shared_energy_and_support | Use measured driver relationships: machine electricity profiles times actual machine hours, curing-load energy, test-bench metering and test time, or weighed stock throughput where causal. Collect driver totals and reconcile allocated sums to meters; do not allocate different engine/clutch configurations equally by count or by catalogue mass. If no physical relationship is established, disclose unresolved allocation and sensitivity; no universal economic split is imposed. |  |
-| `allocation_rejects` | waste_rework | Include attributable failed tests, rework and rejects in the accepted output denominator for the same configuration and period. Exports of scrap and spent oil are explicit waste at the receiver gate; no automatic avoided-production credit. Record actual receiver route and any co-product decision separately with evidence. |  |
+| `allocation_rejects` | waste_rework | Retain attributable failed-test, rework and reject burdens in campaign exchange totals (the numerator); divide only by accepted units of the same configuration and period before applying normalize_mass. Exports of scrap and spent oil are explicit waste at the receiver gate; no automatic avoided-production credit. Record actual receiver route and any co-product decision separately with evidence. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
