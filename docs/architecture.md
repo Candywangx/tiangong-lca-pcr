@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
-lastReviewedNote: "Reviewed PCR #90 release metadata and bound task examples; independent reader/content compatibility, canonical ownership and publication architecture are unchanged."
+lastReviewedAt: 2026-10-06
+lastReviewedCommit: 250bf9ca918da27ad9e62e69d559cb2737713aff
+lastReviewedNote: "Reviewed PCR #94 canonical candidate additions and regenerated index; classification references do not become accepted mappings, and material/legacy catalog boundaries remain intact."
 ---
 
 # PCR 资料库架构
