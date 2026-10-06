@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-06
-lastReviewedCommit: 250bf9ca918da27ad9e62e69d559cb2737713aff
-lastReviewedNote: "Reviewed PCR #94 canonical candidate additions and regenerated index; classification references do not become accepted mappings, and material/legacy catalog boundaries remain intact."
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedNote: "Reviewed PCR #95 single product version and three package mirrors; canonical content ownership, independent reader compatibility and immutable scientific release boundaries remain unchanged."
 ---
 
 # PCR 资料库架构

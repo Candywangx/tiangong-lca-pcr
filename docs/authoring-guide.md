@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-06
-lastReviewedCommit: 250bf9ca918da27ad9e62e69d559cb2737713aff
-lastReviewedNote: "Reviewed PCR #94 paired English/Chinese corrections and deterministic projection regeneration; candidate/authored/aligned states and unresolved scientific evidence remain truthful."
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedNote: "Reviewed PCR #95 distribution-only 0.4.3 preparation; no canonical PCR edits, lifecycle promotion, scientific approval or translation-review changes."
 ---
 
 # Authoring Guide

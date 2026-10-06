@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-06
-lastReviewedCommit: 250bf9ca918da27ad9e62e69d559cb2737713aff
-lastReviewedNote: "Reviewed PCR #94 / PR #92: 91 added authored candidates and five bounded bilingual corrections; canonical ownership, scientific review gates, accepted mappings and immutable published records are preserved."
+lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedNote: "Reviewed PCR #95 unified 0.4.3 version/examples preparation; PCR ownership, canonical candidate and scientific/translation gates, runtime pins and guarded publication boundaries remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
