@@ -1,5 +1,11 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
+  "audiovisual-original-assets": "视听原创资产",
+  "constructions": "建筑实体",
+  "constructions-and-construction-services": "建筑与建筑服务",
+  "creative-original-assets": "文学艺术原创资产",
+  "audio-original-assets": "录音原创资产",
+  "community-social-and-personal-services": "社区、社会和个人服务",
   "business-and-production-services": "商业与生产服务",
   "research-and-development-services": "研究与开发服务",
   "digital-original-assets": "数字原创资产",
