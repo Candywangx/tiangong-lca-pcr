@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
-lastReviewedNote: "Reviewed PCR #90 qualified CLI 0.1.25 preparation and pending PCR 0.4.2 examples; reader minimum 0.4.1, immutable existing task pins and review limits are preserved."
+lastReviewedAt: 2026-10-06
+lastReviewedCommit: 250bf9ca918da27ad9e62e69d559cb2737713aff
+lastReviewedNote: "Reviewed PCR #94 candidate guidance additions and denominator/premix corrections; source-faithful read-only consumption, compatibility and immutable task pins are unchanged."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

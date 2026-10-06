@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: d096f33792df7192bb346f3f9e83cca129692657
-lastReviewedNote: "Reviewed PCR #90 release-only metadata and consumer installation examples; canonical authoring, projection, bilingual review and immutable release history are unchanged."
+lastReviewedAt: 2026-10-06
+lastReviewedCommit: 250bf9ca918da27ad9e62e69d559cb2737713aff
+lastReviewedNote: "Reviewed PCR #94 paired English/Chinese corrections and deterministic projection regeneration; candidate/authored/aligned states and unresolved scientific evidence remain truthful."
 ---
 
 # Authoring Guide
