@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-06
-lastReviewedNote: "Reviewed PCR #95 documentation package/lock 0.4.3 mirror only; complete source export, provider Node 24.18.0 import, Node 24.19.0 construction and full release/live qualification remain unchanged."
-lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedAt: 2026-10-07
+lastReviewedNote: "Reviewed version 2 search shards with lossless native JSON arrays and version 1 reader compatibility; shard grouping, ranking, corpus completeness and browser size budgets remain unchanged."
+lastReviewedCommit: 059405e463f7cc7af87a01cb7a4e302e967575ea
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -302,11 +302,20 @@ actual provider still owns packaging, configured routing/headers and final publi
 live checks are required after its processing.
 
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
-indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
-current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
+indexes must stay under 20 MB and the gzip transfer for each language under 4 MB. The
 Worker and tokenization module are compiled TypeScript browser modules shipped with the pinned
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
+
+New search manifests use `schemaVersion: 2`: each shard's `entries` object stores
+the pinned FlexSearch export as native JSON arrays. Generation requires every
+export value to parse as an array and stringify back to the exact original engine
+string. The Worker stringifies those arrays before engine import and also accepts
+version 1 manifests with their original string entries. Unsupported manifest
+versions and entry types inconsistent with the declared version fail initialization;
+failed loads remain retryable. This representation preserves export key order,
+terms, postings, IDs and complete records. The 2 MB text buckets, tokenization,
+30-candidate limit per shard, global ranking and browser size budgets are unchanged.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
