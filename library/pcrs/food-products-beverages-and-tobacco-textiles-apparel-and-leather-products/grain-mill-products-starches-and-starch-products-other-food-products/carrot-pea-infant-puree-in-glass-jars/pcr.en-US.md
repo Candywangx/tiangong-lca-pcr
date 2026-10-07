@@ -636,7 +636,7 @@ Record dilute wastewater actually collected from the final rinse and sent to tre
 | rule_id | Rule | Sources |
 | --- | --- | --- |
 | allocation_direct | First separate batches and directly meter stage utilities. For shared retort, cooking or cleaning duty use measured attributable energy/time/load records with stated causal basis, including changeover and rejects. If separation cannot be supported, disclose and review the allocation; do not invent an industry factor. | foreground-records |
-| allocation_rework | Internal reusable puree is a tracked loop; only net fresh inputs and net accepted output enter the aggregate denominator. Failed lots remain part of the production burden. No avoided-product credit for waste. A sold carrot peel coproduct requires separate product status, measured wet/dry mass and an explicitly reviewed allocation basis. | foreground-records |
+| allocation_rework | Internal reusable puree is a tracked loop; net fresh inputs enter their exchange numerators and the aggregate inventory; only accepted net food output in kg enters the normalization denominator. Retain all failed-batch and rework burdens, and count the final accepted food once. Failed lots remain part of the production burden. No avoided-product credit for waste. A sold carrot peel coproduct requires separate product status, measured wet/dry mass and an explicitly reviewed allocation basis. | foreground-records |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 

@@ -13,7 +13,7 @@ functional_unit:
   what: "Manufacture a specified natural fur outer garment."
   how_much: "1 kg net accepted finished coat output."
   how_well: "Complete coat meeting the declared factory dimensional, seam, lining and closure acceptance specification; no certification inferred."
-  how_long_or_cycle: "One factory production cycle; wearing life is outside this manufacturing basis and must be specified separately for service comparisons."
+  how_long_or_cycle: "One declared factory manufacturing reporting pool covering all included batches and cycles, failed work and rework; wearing life is outside this manufacturing basis and must be specified separately for service comparisons."
   reference_flow_link: "finished_coat"
 system_boundary:
   rules:
@@ -81,12 +81,19 @@ measurement_rules:
     required_unit: "MJ"
     rule: "Retain the public electricity reference property and energy unit; meter kWh and convert with exactly 3.6 MJ/kWh. Never rewrite the property as Mass."
   - id: water_mass
-    applies_to: "blocking_water; blocking_vapour"
+    applies_to: "blocking_water"
     required_property_ref:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
     rule: "Weigh water directly; volume readings require measured density at the recorded temperature, not an assumed density. Do not confuse product water, resource withdrawal, effluent and air vapour."
+  - id: vapour_mass
+    applies_to: "blocking_vapour"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate actual air-vapour mass from the independently measured liquid/moisture records in cp_water and water_balance; direct weighing of vapour is not required. Retain uncertainty, receiving air medium and investigation of negative/unexplained residuals; do not equate all supplied water with evaporation."
 process_map:
   - id: cut
     name: "Receipt, matching and manual cutting"
@@ -124,7 +131,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Issue pelts separately by species and grade; retain species, dressing, dye and moisture state and hair direction. Raw, salted, wet-white and wet-blue skins are not equivalent inputs."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -150,7 +157,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Weigh unsaleable dressed hair-on skin offcuts separately, recording species, dressing chemistry and receiving treatment. Reusable pieces are not automatically wastes."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -176,7 +183,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "For water-only blocking, weigh water sprayed onto the skin side and reconcile overspray and recovered water. This is purchased technosphere water, not elementary resource withdrawal."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_water; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_water; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -206,7 +213,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Record only water actually evaporated and released to environmental air. Reconcile measured water against retained moisture, recovered liquid and drainage. The selected compartment is immediate air emission, unspecified; water, soil and long-term identities are not substitutes."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_water; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Attributable air-vapour exchange calculated from measured water-balance records using cp_water per 1 kg reference flow; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -228,7 +235,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "This route uses 100% cotton lining received in its supplier-declared dyed/finished state. Measure net issues and returns; the lining is not a cotton-growing input."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -246,7 +253,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Record finished polyester sewing thread consumed in fur and lining seams, including attributable spool losses. Filament polymer and non-sewing yarn are not substitutes."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -264,7 +271,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Include cotton hem reinforcement tape only when specified in the actual garment bill of materials; weigh net issues. Elastic tape is not a substitute."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -282,7 +289,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Include each specified steel hook-and-eye closure as one complete physical assembly; declare steel grade, plating and mass. Other closure types require their own atomic rows."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -302,7 +309,7 @@ process_inventory:
           property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
           description: "Apply this identity only to CN grid-average consumption supplied to the sewing workstation below 1 kV. Meter attributable idle loads too. Other geography or voltage requires a separately verified supply identity; preserve the public Net calorific value property."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_electricity; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_electricity; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -320,7 +327,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Include lubricant only when required by actual equipment maintenance. Record oil grade and net replenishment attributable to this batch; sealed maintenance-free equipment may document absence of this exchange."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -346,7 +353,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Weigh unsaleable cotton-cloth offcuts separately from fur, thread and oil, recording their receiving recycling or disposal route."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -364,7 +371,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Weigh waste thread ends and spool residues separately; no default loss percentage is assumed."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -382,7 +389,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Include only actual maintenance oil drainage; record attributable drained mass, contamination and waste destination. Drained oil is not equated with lubricant input."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -408,7 +415,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Include only a cut, folded and laminated paper box matching the public identity; weigh net box mass and disclose fibre and coating composition. Coat net output excludes packaging; films and hangers require separate rows."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -451,7 +458,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Include only irreparably rejected finished coats sent as waste, retaining measured composite composition. Record actual rework inputs within the boundary; output is not accepted product before inspection."
           amount:
-            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg."
+            expression: "Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -485,8 +492,8 @@ dataset_production:
       process_id: "pack"
       flow_role: "accepted finished output"
       record_type: "weighing and acceptance record"
-      raw_fields: "batch; species; size; configuration; accepted net coat mass; moisture; rejects; packaging tare"
-      collection_method: "Weigh accepted complete conditioned coats on calibrated scale, excluding all packaging; reconcile batch acceptance and count for completeness only."
+      raw_fields: "batch; species; size; configuration; accepted net coat mass; moisture; rejects; packaging tare; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage"
+      collection_method: "Weigh accepted complete conditioned coats on calibrated scale, excluding all packaging; reconcile batch acceptance and count for completeness only. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator."
       unit: "kg"
       frequency: "each batch and attributable maintenance event"
       temporal_coverage: "declared representative reporting period covering all batches and rework"
@@ -497,8 +504,8 @@ dataset_production:
       process_id: "cut_sew_pack"
       flow_role: "individual material issues"
       record_type: "issue and return record"
-      raw_fields: "batch; row_id; supplier lot; composition; incoming state; issued mass; returned mass"
-      collection_method: "Calibrated weighing of each atomic material, thread spool before/after and box tare; reconcile stores and bill of materials."
+      raw_fields: "batch; row_id; supplier lot; composition; incoming state; issued mass; returned mass; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage"
+      collection_method: "Calibrated weighing of each atomic material, thread spool before/after and box tare; reconcile stores and bill of materials. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator."
       unit: "kg"
       frequency: "each batch and attributable maintenance event"
       temporal_coverage: "declared representative reporting period covering all batches and rework"
@@ -509,8 +516,8 @@ dataset_production:
       process_id: "block"
       flow_role: "blocking water and vapour"
       record_type: "water balance"
-      raw_fields: "batch; applied water mass; retained moisture change; recovered water; runoff; vent destination"
-      collection_method: "Weigh application container before/after; measure retained/recovered/discharged water independently; attribute evaporation only to water balance closure, retain uncertainty."
+      raw_fields: "batch; applied water mass; retained moisture change; recovered water; runoff; vent destination; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage"
+      collection_method: "Weigh application container before/after; measure retained/recovered/discharged water independently; attribute evaporation only to water balance closure, retain uncertainty. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator."
       unit: "kg"
       frequency: "each batch and attributable maintenance event"
       temporal_coverage: "declared representative reporting period covering all batches and rework"
@@ -521,8 +528,8 @@ dataset_production:
       process_id: "sew"
       flow_role: "workstation electricity"
       record_type: "meter reading"
-      raw_fields: "batch; CN geography; voltage; meter readings; run/idle time; measured loads; allocation fractions"
-      collection_method: "Read calibrated workstation meter; reconcile bills and shared-load assignment before converting kWh to MJ."
+      raw_fields: "batch; CN geography; voltage; meter readings; run/idle time; measured loads; allocation fractions; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage"
+      collection_method: "Read calibrated workstation meter; reconcile bills and shared-load assignment before converting kWh to MJ. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator."
       unit: "kWh"
       frequency: "each batch and attributable maintenance event"
       temporal_coverage: "declared representative reporting period covering all batches and rework"
@@ -533,8 +540,8 @@ dataset_production:
       process_id: "cut_sew_pack"
       flow_role: "each separate waste stream"
       record_type: "weighing and transfer note"
-      raw_fields: "batch; row_id; mass; composition; reuse status; recipient; treatment; rejects; maintenance period"
-      collection_method: "Weigh each identified stream independently; document delayed oil drain attribution and rework, never net waste mass against raw input."
+      raw_fields: "batch; row_id; mass; composition; reuse status; recipient; treatment; rejects; maintenance period; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage"
+      collection_method: "Weigh each identified stream independently; document delayed oil drain attribution and rework, never net waste mass against raw input. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator."
       unit: "kg"
       frequency: "each batch and attributable maintenance event"
       temporal_coverage: "declared representative reporting period covering all batches and rework"
@@ -544,11 +551,12 @@ dataset_production:
   calculation_rules:
     - id: normalize_batch
       applies_to: "all inventory rows"
-      rule: "q_ref = q_batch / m_finished; q_batch is the attributable batch exchange in its row unit; m_finished is the accepted net finished-coat mass in kg for the same batch."
+      rule: "q_ref = Q_pool / M_accepted. Define one homogeneous reporting pool by site, period, species, supplied state and declared coat configuration/size mix. Q_pool sums each row’s attributable measured or calculated quantities in its native unit across every included batch, including wholly rejected batches, rework and attributable maintenance; exclude duplicate internal transfers. M_accepted is the sum of accepted net finished-coat kg from cp_output for the same pool, counting finally accepted reworked output once. Never divide a zero-output batch separately or omit its burdens. M_accepted must be positive; if the whole pool has no accepted output, retain absolute quantities, report normalization unavailable and require review, not zero or a fabricated denominator."
       inputs:
-        - q_batch
-        - m_finished
+        - Q_pool
+        - M_accepted
         - cp_output
+        - "batch and reporting-pool ledger"
       output: "exchange per 1 kg reference flow"
       source_ids: []
     - id: electricity_conversion
@@ -587,7 +595,7 @@ validation_rules:
       - cpc30-notes
   - rule_id: validate_rows
     applies_to: "all inventory rows"
-    rule: "Require atomic identity, same accepted-output denominator, compatible public reference property/unit and attributable collection records. Every active exchange needs an amount; unresolved UUIDs are declared identity gaps, not automatic proxies."
+    rule: "Require atomic identity, same accepted-output denominator, compatible public reference property/unit and attributable collection records. Every active exchange needs an amount; unresolved UUIDs are declared identity gaps, not automatic proxies. Verify pool membership and inclusion of wholly rejected batches; require positive M_accepted before producing any normalized result, and retain absolute inventories when no accepted output exists."
     source_ids: []
   - rule_id: validate_route
     applies_to: "block; sew"
@@ -624,19 +632,19 @@ data_sources:
     used_for: "Historical general allocation hierarchy applied by author judgment; no fur-specific factors or certification."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a26e66f91af13025991a0b92007e2e34d5bbc8ca9f63b9862b3f5262cda16bb5"
+  source_sha256: "sha256:19424a3008880fad324f32dc5857c556a94bcec2a7304d2c79df2058a3019357"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4211"
+    - unit_id: "normative_4638"
       family: "system_boundary"
       span:
         start:
-          offset: 4211
-          line: 57
+          offset: 4638
+          line: 58
           column: 1
         end:
-          offset: 6477
-          line: 76
+          offset: 6904
+          line: 77
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Dry dressed hair-on skins and finished lining/components received at garment factory. All tanning, dyeing and supplier finishing already completed. |\n| starting_condition_role | manufacturing_input |\n| product_classification_scope | Narrower whole-pelt lined-coat route within CPC 3.0 28320; no accepted classification edge implied. |\n| recursive_input_rule | Purchased same-category coat or preassembled shell must be separately declared as an intermediate with its upstream burden; do not recursively apply virgin-pelt input quantities or count that shell twice. Used coats are excluded. |\n| upstream_dataset_requirement | If extending beyond this gate-to-gate boundary, link state/species/origin-compatible dressed-pelt, finished-fabric, component, electricity and water supply datasets, and actual transport. Farming/trapping, skin dressing and cotton/fibre production are upstream, not zero burden. |\n| disclosure | Declare operations, incoming processing state, supplier boundaries, exclusions, outsourced sewing and wastewater handling. Do not label the foreground inventory complete cradle-to-gate. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route` | all processes | Include matching, cutting, actual rework, seam sewing, lining/closure assembly and acceptance/packing. Blocking is conditional; drying here is passive. Other chemicals, active dryers or steam operations require added explicit process and atomic exchanges before use. | `usu-fur-2025`; `fic-coat` |\n| `boundary_releases` | site releases | Purchased water is a technosphere input. No washing bath or routine process effluent is assumed in this route. If blocking runoff is discharged, identify its actual receiving treatment, amount and chemistry separately; wastewater treatment is not direct freshwater emission. Meter site cleaning separately and disclose its boundary. |  |\n| `boundary_end` | factory gate | Retail delivery, wearing, cleaning, cold storage by consumers and end-of-life are excluded; no longevity or avoided-product credit is claimed. Manufacturing transport and supplier modules must be disclosed if appended. |  |\n\n"
       headings:
@@ -655,12 +663,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4211
-              line: 57
+              offset: 4638
+              line: 58
               column: 1
             end:
-              offset: 4232
-              line: 57
+              offset: 4659
+              line: 58
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -675,16 +683,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_20187"
+    - unit_id: "normative_23213"
       family: "allocation"
       span:
         start:
-          offset: 20187
-          line: 375
+          offset: 23213
+          line: 376
           column: 1
         end:
-          offset: 21304
-          line: 383
+          offset: 24330
+          line: 384
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide` | shared equipment | Use batch submetering and separately weighed issues first. For unavoidable shared electricity, collect workstation operating and idle times and measured loads to justify attribution; record total and assigned quantities and residual. | `ghg-product-2011` |\n| `allocation_offcuts` | saleable offcuts | Distinguish retained internal offcuts, externally saleable co-products and discarded waste. Internal reuse is an internal transfer. Avoid co-product allocation through subdivision; otherwise justify a physical relationship, or documented economic allocation when no physical basis is defensible. Disclose prices/period, masses, fractions and sensitivity; no automatic avoided-product credit. | `ghg-product-2011` |\n| `allocation_upstream` | dressed pelts | Retain the upstream dataset allocation for animal production and dressing, documenting its scope and origin. Garment assembly does not establish agricultural co-product allocation by coat mass. |  |\n\n"
       headings:
@@ -703,12 +711,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 20187
-              line: 375
+              offset: 23213
+              line: 376
               column: 1
             end:
-              offset: 20227
-              line: 375
+              offset: 23253
+              line: 376
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -723,18 +731,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26493"
+    - unit_id: "normative_31245"
       family: "validation"
       span:
         start:
-          offset: 26493
-          line: 411
+          offset: 31245
+          line: 412
           column: 1
         end:
-          offset: 27632
-          line: 420
+          offset: 32581
+          line: 421
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | `finished_coat` | Verify 1 kg complete accepted conditioned coat net output with all qualifiers and cp_output; dressed pelt, artificial fur and headgear cannot substitute for the coat. | `cpc30-notes` |\n| `validate_rows` | all inventory rows | Require atomic identity, same accepted-output denominator, compatible public reference property/unit and attributable collection records. Every active exchange needs an amount; unresolved UUIDs are declared identity gaps, not automatic proxies. |  |\n| `validate_route` | block; sew | Check conditional blocking, oil and waste applicability against actual records; verify immediate air-vapour medium and CN <1 kV electricity. Any added chemical or effluent route needs explicit exchanges and treatment boundary before dataset acceptance. |  |\n| `validate_balance` | batch records | Investigate mass/water residuals, output acceptance and rework; retain calibration and uncertainty. Factory quality acceptance does not establish health, legal or methodological approval. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | `finished_coat` | Verify 1 kg complete accepted conditioned coat net output with all qualifiers and cp_output; dressed pelt, artificial fur and headgear cannot substitute for the coat. | `cpc30-notes` |\n| `validate_rows` | all inventory rows | Require atomic identity, same accepted-output denominator, compatible public reference property/unit and attributable collection records. Every active exchange needs an amount; unresolved UUIDs are declared identity gaps, not automatic proxies. Verify pool membership and inclusion of wholly rejected batches; require positive M_accepted before producing any normalized result, and retain absolute inventories when no accepted output exists. |  |\n| `validate_route` | block; sew | Check conditional blocking, oil and waste applicability against actual records; verify immediate air-vapour medium and CN <1 kV electricity. Any added chemical or effluent route needs explicit exchanges and treatment boundary before dataset acceptance. |  |\n| `validate_balance` | batch records | Investigate mass/water residuals, output acceptance and rework; retain calibration and uncertainty. Factory quality acceptance does not establish health, legal or methodological approval. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -751,12 +759,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 26493
-              line: 411
+              offset: 31245
+              line: 412
               column: 1
             end:
-              offset: 26515
-              line: 411
+              offset: 31267
+              line: 412
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -775,181 +783,181 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_4211"
+      unit_id: "normative_4638"
       source_span:
         start:
-          offset: 5505
-          line: 72
+          offset: 5932
+          line: 73
           column: 1
         end:
-          offset: 5839
-          line: 72
+          offset: 6266
+          line: 73
           column: 335
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_releases"
       identity_kind: "explicit"
-      unit_id: "normative_4211"
+      unit_id: "normative_4638"
       source_span:
         start:
-          offset: 5840
-          line: 73
+          offset: 6267
+          line: 74
           column: 1
         end:
-          offset: 6217
-          line: 73
+          offset: 6644
+          line: 74
           column: 378
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_end"
       identity_kind: "explicit"
-      unit_id: "normative_4211"
+      unit_id: "normative_4638"
       source_span:
         start:
-          offset: 6218
-          line: 74
+          offset: 6645
+          line: 75
           column: 1
         end:
-          offset: 6475
-          line: 74
+          offset: 6902
+          line: 75
           column: 258
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_20187"
+      unit_id: "normative_23213"
       source_span:
         start:
-          offset: 20300
-          line: 379
+          offset: 23326
+          line: 380
           column: 1
         end:
-          offset: 20602
-          line: 379
+          offset: 23628
+          line: 380
           column: 303
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_offcuts"
       identity_kind: "explicit"
-      unit_id: "normative_20187"
+      unit_id: "normative_23213"
       source_span:
         start:
-          offset: 20603
-          line: 380
+          offset: 23629
+          line: 381
           column: 1
         end:
-          offset: 21061
-          line: 380
+          offset: 24087
+          line: 381
           column: 459
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_20187"
+      unit_id: "normative_23213"
       source_span:
         start:
-          offset: 21062
-          line: 381
+          offset: 24088
+          line: 382
           column: 1
         end:
-          offset: 21302
-          line: 381
+          offset: 24328
+          line: 382
           column: 241
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_26493"
+      unit_id: "normative_31245"
       source_span:
         start:
-          offset: 26588
-          line: 415
+          offset: 31340
+          line: 416
           column: 1
         end:
-          offset: 26815
-          line: 415
+          offset: 31567
+          line: 416
           column: 228
     - pointer: "/validation_rules/1"
       rule_id: "validate_rows"
       identity_kind: "explicit"
-      unit_id: "normative_26493"
+      unit_id: "normative_31245"
       source_span:
         start:
-          offset: 26816
-          line: 416
+          offset: 31568
+          line: 417
           column: 1
         end:
-          offset: 27106
-          line: 416
-          column: 291
+          offset: 32055
+          line: 417
+          column: 488
     - pointer: "/validation_rules/2"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_26493"
+      unit_id: "normative_31245"
       source_span:
         start:
-          offset: 27107
-          line: 417
+          offset: 32056
+          line: 418
           column: 1
         end:
-          offset: 27398
-          line: 417
+          offset: 32347
+          line: 418
           column: 292
     - pointer: "/validation_rules/3"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_26493"
+      unit_id: "normative_31245"
       source_span:
         start:
-          offset: 27399
-          line: 418
+          offset: 32348
+          line: 419
           column: 1
         end:
-          offset: 27630
-          line: 418
+          offset: 32579
+          line: 419
           column: 232
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4211"
+      unit_id: "normative_4638"
       source_span:
         start:
-          offset: 4211
-          line: 57
+          offset: 4638
+          line: 58
           column: 1
         end:
-          offset: 4232
-          line: 57
+          offset: 4659
+          line: 58
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4211"
+      unit_id: "normative_4638"
       source_span:
         start:
-          offset: 4260
-          line: 61
+          offset: 4687
+          line: 62
           column: 1
         end:
-          offset: 5432
-          line: 68
+          offset: 5859
+          line: 69
           column: 203
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_20187"
+      unit_id: "normative_23213"
       source_span:
         start:
-          offset: 20187
-          line: 375
+          offset: 23213
+          line: 376
           column: 1
         end:
-          offset: 20227
-          line: 375
+          offset: 23253
+          line: 376
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26493"
+      unit_id: "normative_31245"
       source_span:
         start:
-          offset: 26493
-          line: 411
+          offset: 31245
+          line: 412
           column: 1
         end:
-          offset: 26515
-          line: 411
+          offset: 31267
+          line: 412
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -958,5 +966,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a26e66f91af13025991a0b92007e2e34d5bbc8ca9f63b9862b3f5262cda16bb5"
-  generated_content_sha256: "sha256:d4ff1cec58f243c9c135477b4e9c20e84e56e797c90e37bd0d06bbd037aac48c"
+    sha256: "sha256:19424a3008880fad324f32dc5857c556a94bcec2a7304d2c79df2058a3019357"
+  generated_content_sha256: "sha256:e25c2ce11603cf88d9a3824e9b8c9742e983b2aa1dc419c04be3d6b1f02417f2"

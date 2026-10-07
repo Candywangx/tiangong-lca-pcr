@@ -55,7 +55,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | `reference_item` | reference product | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | item | 1 件是一项实际完整验收的声明厂／系统实体或完整交付扩建阶段。件为公开Item(s)的显示别名；实际几何及处理／输送／处置工况是实有配置的适用限定信息；没有的字段须有据not_applicable。它们不是默认乘数或全寿命产出。 |
-| `physical_quantities` | all inventory rows | Declared original property | kg; m3; m; item | 保留实际干湿／物料／总成范围；体积转质量须同批密度及状态。Mass计量的泵按件采集须同配置实测净质量。不能猜全厂质量或强制1kg参考。 |
+| `physical_quantities` | all inventory rows | Declared original property | kg; m3; m; item; MJ; tkm | 保留实际干湿／物料／总成范围；体积转质量须同批密度及状态。Mass计量的泵按件采集须同配置实测净质量。不能猜全厂质量或强制1kg参考。 单位逐行对应原属性：质量/kg、体积/m3、长度/m、物品数量/item、energy_units下的能量/MJ及cp_transport下的货物运输（质量×距离）/tkm。保留实测能量换算和真实货运活动；所列单位按量纲分别适用，不是同时施加的要求。 |
 | `energy_units` | diesel; cn_lv_electricity; cn_mv_electricity; other_electricity | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | MJ | 公开主属性仍为Net calorific value及能量单位组。电力MJ=记录kWh×3.6，来自核实单位定义；燃料MJ=实际kg×批次净热值(MJ/kg)。不能把能量改为kg或混淆高低位热值。 |
 | `water_physical_state` | river_intake; groundwater_intake; sea_intake; freshwater_discharge; marine_water_discharge | Original Volume or Mass | m3; kg | 河／地下水及淡水排放保留Volume。海水资源保留Mass，必要时用实测体积×同盐度／温度下有依据密度，并保留双台账。供水、资源取用、技术圈出水及实际基础释放是不同跨界。 |
 | `nonadditive_qualifiers` | reference product; acceptance tests | Measured function and geometry | m; m2; m3; m3/day | 分列池体／建筑／网络范围，注明占地与建筑面积、有效与总体积、水力工况及测试时长。不能相加不同维度，或从面积、造价、人口、默认寿命推断处理功能。 |

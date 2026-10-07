@@ -463,7 +463,7 @@ status: candidate
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | validate_reference | reference_download | 要求完整声明本地存储版本及一份验收交付记录。拒绝仅流媒体会话、不完整分段、原创权利转移以及以字节/用户/收入单位替代产品。 | un-cpc3-video; apple-video-download |
-| validate_basis | all inventory rows | 要求双语具有相同每声明的参考流分母、链接协议及保留分子单位。每阶段归属池与验收输出计数必须核对；使用 kg 或任意字节转能源换算不通过。 | gsf-sci110 |
+| validate_basis | all inventory rows | 要求双语具有相同每声明的参考流分母、链接协议及保留分子单位。每阶段归属池与验收输出计数必须核对。仅在kg被用于替代完整视频参考输出或item分母时拒绝；有证据的原生质量/kg投入、废物及直接排放仍作为同一验收item的分子。任意字节到能源换算不通过。 | gsf-sci110 |
 | validate_scope | all processes | 要求源站、缓存、网络、本地接收、自有/供应商电力/冷却/设备及源原创范围。任何实际路线、直接交换或上游数据集缺失均使数据集覆盖不完整。条件行缺失须有依据。 | gsf-sci110; un-cpc3-video |
 | validate_conservation | allocation | 跨所有受益对象核对复用与共享资源账本。拒绝重复计算供应商/自有电力或硬件，以及每下载重复计入完整原创负担。未知原创份额不得静默设零。 | gsf-sci110 |
 | validate_claim | dataset | 报告已执行/跳过检查、覆盖、身份缺口、分配不确定性及上游排除。候选方法及结构检查不构成科学批准、合法权利、完整生命周期覆盖或符合 SCI 的评分。 | un-cpc3-video; gsf-sci110 |

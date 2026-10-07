@@ -1038,7 +1038,7 @@ One whole building at the surveyed site and signed declared delivery configurati
 
 ## 11. Data Sources
 
-| source_id | type | reference | PCR use and limitations |
+| Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
 | un-cpc-3-53112 | official_guidance | UN Statistics Division, CPC Version 3.0 subclass 53112 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/53112 | Category boundary: three or more dwellings and community residences. Classification establishes neither construction recipe nor legal permission. |
 | jrc-levels-boq-2021 | official_guidance | European Commission JRC, Level(s) indicator 2.1 Bill of Quantities, publication v1.1 January 2021, PDF/printed pp.23–24, Table 2. https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/2021-01/UM3_Indicator_2.1_v1.1_34pp.pdf | Element/installed-system coverage prompts only; no example quantities, default material intensity or lifespans adopted. Actual project records determine every quantity. |

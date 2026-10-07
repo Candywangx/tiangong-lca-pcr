@@ -51,7 +51,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | reference_mass | finished_roll | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 以校准秤称量验收调湿卷材，扣除实测卷芯与包膜皮重。汇总统计期验收净产量；不含废品，返工后可售产量只计一次。 |
-| area_mass | finished_roll; taffeta_input; wadding_input | Mass / Area | kg; m2 | 以实测完整成品净质量除以实测验收面积。仅絮片的标称g/m2不是复合成品单位面积质量；幅宽和长度须对应验收修边后的输出。 |
+| area_mass | finished_roll | Mass / Area | kg; m2 | 以实测完整成品净质量除以实测验收面积。仅絮片的标称g/m2不是复合成品单位面积质量；幅宽和长度须对应验收修边后的输出。 完整成品的该比值仅用于成品输出。taffeta_input 与 wadding_input 各自保留独立实测的实际 kg；需要面积换算时，采用该输入自身实测供货状态克重、领退面积及损耗记录，不采用复合成品比值。 |
 | electricity_conversion | quilting_electricity; finishing_electricity | Net calorific value | MJ | 保留公开流的引用属性。按1 kWh = 3.6 MJ换算校准电表读数；记录计量范围及分配。 |
 | basis_consistency | 所有清单行 | 各行指定属性 | 各行指定单位 | 所有交换使用同一验收纺织品净质量及统计期。面积和卷数作为补充，未有实测质量换算时不得替代kg分母。 |
 

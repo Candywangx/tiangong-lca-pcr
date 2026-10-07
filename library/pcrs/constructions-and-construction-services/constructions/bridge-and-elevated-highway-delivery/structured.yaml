@@ -1128,7 +1128,7 @@ allocation_rules:
     source_ids: []
   - rule_id: allocation_rule_4
     applies_to: "foreground_burden_allocation"
-    rule: "Manufacture inputs for shared equipment and reusable components retain their actual mass or count property; link measured same-configuration quantity, asset manufacture data and a dimensionless attributable share. cp_assets retains the actual beneficiary entity count and cumulative cross-project fractions; equipment mass never changes the bridge reference flow. Unknown lifetime, cumulative activity or beneficiary relation requires review, not a zero burden."
+    rule: "Manufacture inputs for shared equipment and reusable components retain the manufacturing dataset’s actual native reference property: mass, count or area as applicable. For formwork distinguish deployed panel area from the reusable panel stock and its dimensionless manufacture share f. If manufacture is natively per m2, the attributed area exchange is measured same-configuration panel stock area A multiplied by f, not each pour’s full deployed area. If upstream manufacture is per kg or item, link that same stock area to independently measured mass M (kg/m2 = M/A) or panel count N (item/m2 = N/A), recording panel ID, dimensions, thickness, state and source inventory; multiply the corresponding stock quantity by the same f once. Keep installation/use records separate from the manufacture exchange and never add both native-area and converted manufacture burdens. cp_assets stores the stock quantity, conversion evidence, upstream reference and fraction; unsupported conversions require review, with no default density or panel mass. cp_assets retains the actual beneficiary entity count and cumulative cross-project fractions; equipment mass never changes the bridge reference flow. Unknown lifetime, cumulative activity or beneficiary relation requires review, not a zero burden."
     source_ids: []
 dataset_production:
   collection_protocols:
@@ -1244,9 +1244,9 @@ dataset_production:
       process_id: "temporary_utilities"
       flow_role: "Shared manufacture/activity allocation"
       record_type: "foreground_records"
-      raw_fields: "Asset id; manufacture burden; project/period allocations; actual hours/cycles; evidenced lifetime or cumulative denominator; numerator and prior cumulative fraction"
+      raw_fields: "Asset id; manufacture burden; project/period allocations; actual hours/cycles; evidenced lifetime or cumulative denominator; numerator and prior cumulative fraction; native manufacturing reference property/unit; panel stock area A; same-stock measured mass M or panel count N; configuration/state and conversion evidence"
       collection_method: "Reconcile one persistent asset ledger against all project records; missing denominator is review"
-      unit: "fraction; hours; cycles"
+      unit: "fraction; hours; cycles; m2; kg; item"
       frequency: "Each use and allocation update"
       temporal_coverage: "All covered projects and asset service periods"
       site_scope: "Shared asset and all uses"
@@ -1368,7 +1368,7 @@ data_sources:
     used_for: "Historical qualitative activity, soil/moisture and dust relationship only; no generic area/month emission factor adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:96a8e967248982efb6d1df341a7ef1b1e8bde3abfbcc7740de828363a035ca05"
+  source_sha256: "sha256:92e31236e226caa6253f85dd17883100aad96db9ccd20dc15b7ae8017608dc14"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5459"
@@ -1427,10 +1427,10 @@ normative_context:
           line: 788
           column: 1
         end:
-          offset: 47803
+          offset: 48630
           line: 798
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| partition_first | all processes | Separate work packages, equipment meters, deliveries and shared assets before allocation. Direct measured activity is preferred; allocate only unresolved shared quantities with documented causal machine-hours, load, distance or actual work quantities from cp_assets, and preserve a balance. No default cost or mass shares. |  |\n| reuse_conservation | temporary; utilities | For each reusable form, cofferdam member, crane or launching asset, preserve one manufacture-burden ledger across projects, periods and uses. Cumulative allocated fraction must not exceed one; service denominator needs actual cumulative activity or source-supported life. Unknown denominator requires review. Operation and consumable loss are measured separately; do not reset manufacture to 100% every project. |  |\n| waste_gate | waste; ground | Retain waste at actual export gate and distinguish reuse, recycling, treatment and disposal. No automatic avoided-material credit. If shared outputs require allocation, justify the actual relation and disclose sensitivity; no assumed scrap price/yield. |  |\n\nManufacture inputs for shared equipment and reusable components retain their actual mass or count property; link measured same-configuration quantity, asset manufacture data and a dimensionless attributable share. cp_assets retains the actual beneficiary entity count and cumulative cross-project fractions; equipment mass never changes the bridge reference flow. Unknown lifetime, cumulative activity or beneficiary relation requires review, not a zero burden.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| partition_first | all processes | Separate work packages, equipment meters, deliveries and shared assets before allocation. Direct measured activity is preferred; allocate only unresolved shared quantities with documented causal machine-hours, load, distance or actual work quantities from cp_assets, and preserve a balance. No default cost or mass shares. |  |\n| reuse_conservation | temporary; utilities | For each reusable form, cofferdam member, crane or launching asset, preserve one manufacture-burden ledger across projects, periods and uses. Cumulative allocated fraction must not exceed one; service denominator needs actual cumulative activity or source-supported life. Unknown denominator requires review. Operation and consumable loss are measured separately; do not reset manufacture to 100% every project. |  |\n| waste_gate | waste; ground | Retain waste at actual export gate and distinguish reuse, recycling, treatment and disposal. No automatic avoided-material credit. If shared outputs require allocation, justify the actual relation and disclose sensitivity; no assumed scrap price/yield. |  |\n\nManufacture inputs for shared equipment and reusable components retain the manufacturing dataset’s actual native reference property: mass, count or area as applicable. For formwork distinguish deployed panel area from the reusable panel stock and its dimensionless manufacture share f. If manufacture is natively per m2, the attributed area exchange is measured same-configuration panel stock area A multiplied by f, not each pour’s full deployed area. If upstream manufacture is per kg or item, link that same stock area to independently measured mass M (kg/m2 = M/A) or panel count N (item/m2 = N/A), recording panel ID, dimensions, thickness, state and source inventory; multiply the corresponding stock quantity by the same f once. Keep installation/use records separate from the manufacture exchange and never add both native-area and converted manufacture burdens. cp_assets stores the stock quantity, conversion evidence, upstream reference and fraction; unsupported conversions require review, with no default density or panel mass. cp_assets retains the actual beneficiary entity count and cumulative cross-project fractions; equipment mass never changes the bridge reference flow. Unknown lifetime, cumulative activity or beneficiary relation requires review, not a zero burden.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1467,15 +1467,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_58608"
+    - unit_id: "normative_59605"
       family: "validation"
       span:
         start:
-          offset: 58608
+          offset: 59605
           line: 835
           column: 1
         end:
-          offset: 59909
+          offset: 60906
           line: 844
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_entity | reference_bridge | Require one accepted whole entity with all reference qualifiers, actual surveyed geometry, span/approach interfaces and declared traffic use; partial span/material-kit data cannot claim this reference product. | un-cpc-bridges-2025 |\n| validate_basis | all rows | All numerator properties/units, output 1 item, protocols and calculations must use the same declared reference flow; reject unsupported conversions or nonconserved reusable-asset shares. |  |\n| validate_completeness | dataset | Check actual foundation/substructure, superstructure, temporary erection support, deck/fixed works, transport, utilities, waste and handover against as-built work packages. Every actual exchange must be atomic and collected; absence requires evidence, unknown scope requires review. | fhwa-fp24-bridges |\n| validate_environment | utilities; waste | Check species/fossil origin, immediate versus long-term, medium/submedium and actual route. Contained waste is not environmental discharge; diesel combustion and embedded upstream combustion cannot both be charged. NO, NO2, N2O and PM size fractions remain distinct. | epa-concrete-washout-2012; epa-construction-dust-2010 |\n\n"
@@ -1495,11 +1495,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 58608
+              offset: 59605
               line: 835
               column: 1
             end:
-              offset: 58630
+              offset: 59627
               line: 835
               column: 23
           text: "## 9. Validation Rules"
@@ -1604,59 +1604,59 @@ normative_context:
           line: 796
           column: 1
         end:
-          offset: 47801
+          offset: 48628
           line: 796
-          column: 462
+          column: 1289
     - pointer: "/validation_rules/0"
       rule_id: "validate_entity"
       identity_kind: "explicit"
-      unit_id: "normative_58608"
+      unit_id: "normative_59605"
       source_span:
         start:
-          offset: 58703
+          offset: 59700
           line: 839
           column: 1
         end:
-          offset: 58975
+          offset: 59972
           line: 839
           column: 273
     - pointer: "/validation_rules/1"
       rule_id: "validate_basis"
       identity_kind: "explicit"
-      unit_id: "normative_58608"
+      unit_id: "normative_59605"
       source_span:
         start:
-          offset: 58976
+          offset: 59973
           line: 840
           column: 1
         end:
-          offset: 59197
+          offset: 60194
           line: 840
           column: 222
     - pointer: "/validation_rules/2"
       rule_id: "validate_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_58608"
+      unit_id: "normative_59605"
       source_span:
         start:
-          offset: 59198
+          offset: 60195
           line: 841
           column: 1
         end:
-          offset: 59538
+          offset: 60535
           line: 841
           column: 341
     - pointer: "/validation_rules/3"
       rule_id: "validate_environment"
       identity_kind: "explicit"
-      unit_id: "normative_58608"
+      unit_id: "normative_59605"
       source_span:
         start:
-          offset: 59539
+          offset: 60536
           line: 842
           column: 1
         end:
-          offset: 59907
+          offset: 60904
           line: 842
           column: 369
   diagnostics:
@@ -1698,14 +1698,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_58608"
+      unit_id: "normative_59605"
       source_span:
         start:
-          offset: 58608
+          offset: 59605
           line: 835
           column: 1
         end:
-          offset: 58630
+          offset: 59627
           line: 835
           column: 23
 projection_metadata:
@@ -1715,5 +1715,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:96a8e967248982efb6d1df341a7ef1b1e8bde3abfbcc7740de828363a035ca05"
-  generated_content_sha256: "sha256:e068eb2997ed4f736a40723aba70de5d0ab564805fd371cf6c2b47f806b2123b"
+    sha256: "sha256:92e31236e226caa6253f85dd17883100aad96db9ccd20dc15b7ae8017608dc14"
+  generated_content_sha256: "sha256:f983f335f1abaa58e06e8227c11f53fd8340252945361d7943c1c2660fd38b8c"

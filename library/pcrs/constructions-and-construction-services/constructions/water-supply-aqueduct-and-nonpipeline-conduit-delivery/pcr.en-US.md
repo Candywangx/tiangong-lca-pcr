@@ -52,7 +52,7 @@ Include the complete declared new or fully rebuilt reach and integral foundation
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | reference_count | reference product | Number of items | item | Reference output is 1 item for the same complete accepted work, collected using cp_delivery. All inventories and collection aggregates use per declared reference flow. No assumed per-metre or per-work mass. |
-| actual_quantities | all inventory rows | Mass; Volume; Energy; Mass*distance | kg; m3; MJ; kg*km | Preserve each verified identity primary property/unit. Weigh mass and survey geometry/volume; area/length/volume-to-mass requires measured areal mass or density in the same lot/state. Never default to 1000 kg/m3. |
+| actual_quantities | all inventory rows | Mass; Volume; Energy; Mass*distance; Number of items | kg; m3; MJ; kg*km; item | Preserve each verified identity primary property/unit. Weigh mass and survey geometry/volume; area/length/volume-to-mass requires measured areal mass or density in the same lot/state. Never default to 1000 kg/m3. Match the property to each exchange: mass/kg, volume/m3, energy/MJ, mass-distance/kg*km, and Number of items/item for the complete delivered conduit and counted excavator manufacture share. Their auxiliary physical records do not replace native item exchanges; unknown equipment lifetime or total activity still requires review. |
 | electricity_conversion | electricity_cn_lv | Net calorific value | MJ | Convert meter kWh using 1 kWh = 3.6 MJ; preserve public Net calorific value, not Mass. |
 
 ## 5. System Boundary

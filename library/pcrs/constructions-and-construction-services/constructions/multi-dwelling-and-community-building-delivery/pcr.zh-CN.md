@@ -1038,7 +1038,7 @@ item 表示公开 Item(s) 单位：一栋建筑，而非一户或一名住户。
 
 ## 11. 数据源
 
-| source_id | type | reference | PCR 用途及限制 |
+| 来源 id | 类型 | 引用 | 用途 |
 | --- | --- | --- | --- |
 | un-cpc-3-53112 | official_guidance | UN Statistics Division, CPC Version 3.0 subclass 53112 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/53112 | 类别边界：三户及以上住宅和共同居住住所。分类不证明施工配方或法定许可。 |
 | jrc-levels-boq-2021 | official_guidance | European Commission JRC, Level(s) indicator 2.1 Bill of Quantities, publication v1.1 January 2021, PDF/printed pp.23–24, Table 2. https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/2021-01/UM3_Indicator_2.1_v1.1_34pp.pdf | 仅采用要素/安装系统覆盖提示，不采用案例数量、默认材料强度或寿命。每项数量由真实工程记录决定。 |

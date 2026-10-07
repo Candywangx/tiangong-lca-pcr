@@ -55,9 +55,9 @@ Here item is a display alias of Item(s) in the public item unit group and counts
 | --- | --- | --- | --- | --- |
 | `reference_count` | reference product and accepted output | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | item | Reference amount is 1 item; inventory, collection and calculation use per declared reference flow, excluding purchase contracts and unfinished works. |
 | `geometry_and_cable_length` | route and cable qualifiers | Length `838aaa23-0117-11db-92e3-0800200c9a66` | m | As-built survey distinguishes route length, cable length, fibre length, parallel circuits and slack; m does not substitute kg or item. |
-| `physical_mass` | materials, offcuts and equipment attribution | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Weigh actual state with wet/dry basis; volume/length-to-mass needs matching batch density or measured kg/m. Equipment mass supports manufacture attribution, not reference-entity mass. |
+| `physical_mass` | auxiliary mass-balance and equipment-attribution records linked to materials and offcuts | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Weigh actual state with wet/dry basis; volume/length-to-mass needs matching batch density or measured kg/m. Equipment mass supports manufacture attribution, not reference-entity mass. The required Mass/kg is an auxiliary record, not a replacement primary property for length- or count-based exchanges. Keep pipes/cables in Length/m and complete joints/transformers in Number of items/item; link row, batch, configuration, issued quantity and independently measured kg or supported conversion in cp_materials/cp_cables. Never count the auxiliary mass as a second manufacturing exchange. |
 | `energy_basis` | fuel and construction electricity | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | MJ | Preserve public net-calorific-value property; measured kWh times 3.6 gives MJ. Fuel kg times batch MJ/kg; volume fuel first uses actual density to kg. Unknown LHV/density cannot be guessed. |
-| `water_basis` | supply, abstraction, discharge and liquid waste | Volume `93a60a56-a3c8-22da-a746-0800200c9a66` | m3 | Meter true liquid volume by separate interface, retaining quality, origin and receiver; resource, technosphere and emission water are distinct. |
+| `water_basis` | water supply, abstraction, direct water discharge and volume-based liquid-waste rows; excludes wet-mass drill_slurry | Volume `93a60a56-a3c8-22da-a746-0800200c9a66` | m3 | Meter true liquid volume by separate interface, retaining quality, origin and receiver; resource, technosphere and emission water are distinct. Spent drill_slurry retains Mass/kg on the measured wet basis, including retained water and mineral solids under cp_waste; any auxiliary volume requires same-state density and does not replace or duplicate this waste exchange. |
 
 ## 5. System Boundary
 
@@ -286,7 +286,7 @@ Only actual liquid water directly entering an identified fresh-water receiving b
 
 - Selected flow: Water `5e50fc01-19c6-4377-a1cc-bc65a12498ea`
 - Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
-- Amount rule: Measured direct-discharge m3 at the release point after any on-site treatment
+- Amount rule: Measured actual direct-discharge m3 at the receiving-water release point; if on-site treatment occurs, measure after it, and if no treatment occurs, retain the untreated direct release.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per declared reference flow
@@ -352,7 +352,7 @@ Only actual factory hot-rolled low-alloy rebar with C ≤ 0.2% and matching unco
 
 - Selected flow: Hot rolled rebar steel `43050e3b-42be-465c-a021-17f606484151`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Weighed installed-plus-consumed-cutting kg, separately reconcile steel offcuts
+- Amount rule: Weighed attributable steel kg consumed, including cutting losses and damaged/rejected material before installation; use the cp_materials receipts/stock/returns balance and reconcile installed kg and each waste stream separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per declared reference flow
@@ -628,7 +628,7 @@ Only actual complete factory-gate 400 kVA, 10/0.4 kV transformer matching constr
 
 - Selected flow: Transformer `734249ea-34e6-471b-a05a-f5b26b818167`
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / item
-- Amount rule: Count of matching installed transformers; other ratings remain separately unresolved
+- Amount rule: Count all matching transformers actually consumed for this delivery under cp_materials, including pre-installation damage and failed/rejected replacements; reconcile receipts, returns/transfers and stocks. Keep installed accepted count separately; other ratings retain separate unresolved identities.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per declared reference flow
@@ -643,7 +643,7 @@ Only actual 11-kV unit of declared insulation medium and protection configuratio
 
 - Selected flow: 11-kV ring-main switchgear unit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / item
-- Amount rule: Actual complete units installed
+- Amount rule: Actual attributable complete units consumed, including units damaged or rejected before installation/acceptance and replaced, using the cp_materials receipts/stock/returns balance; retain installed accepted units separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per declared reference flow
@@ -687,7 +687,7 @@ Only actual prefab GRP enclosure; define included roof, doors and floors to prev
 
 - Selected flow: Glass-fibre-reinforced polymer substation enclosure
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured accepted enclosure net kg and dimensions
+- Amount rule: Measured attributable enclosure net kg consumed, including damaged/rejected enclosures replaced before acceptance; reconcile receipts, returns/transfers and stock changes under cp_materials. Retain accepted enclosure kg and dimensions separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per declared reference flow
@@ -716,7 +716,7 @@ Only actual antenna on the locally serving tower with frequency band, ports and 
 
 - Selected flow: Outdoor radio transmission antenna assembly
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / item
-- Amount rule: Actual accepted complete antenna units
+- Amount rule: Actual attributable complete antenna units consumed, including failed/rejected replacements, net of verified returns/transfers and closing reusable stock under cp_materials; record accepted installed units separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per declared reference flow
@@ -871,7 +871,7 @@ One actually accepted, uniquely identified local cable-network or ancillary civi
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_handover | acceptance | accepted entity | acceptance dossier | entity_id; endpoints; site boundary; route_m; cable_m by circuit; station_m2; tower_m; voltage/capacity/fibre specification; installed scope; completion/acceptance dates; test state | Survey as-built geometry; reconcile signed handover, circuit schedule and actual tests, recording energised or ready-only state | item; m; m2 | Each acceptance with revisions | actual construction start to acceptance, including rework | declared entity and attributed activity | per declared reference flow | original tickets, calibration, samples, signed work records and gap register |
-| cp_materials | underground-civil; aerial-support; cable-placement; station-tower; reinstatement | individual material input | delivery and installation ledger | row_id; batch; supplier; grade; state; net_kg; m or item; density; moisture; receipt; return; location; included components | Weigh tickets and net deliveries; reconcile design quantities, actual placement, returns and offcuts; independently support each volume/length conversion | kg; m; item | Each batch and placement | actual construction start to acceptance, including rework | declared entity and attributed activity | per declared reference flow | original tickets, calibration, samples, signed work records and gap register |
+| cp_materials | underground-civil; aerial-support; cable-placement; station-tower; reinstatement | individual material input | delivery and installation ledger | row_id; batch; supplier; grade; state; net_kg; m or item; density; moisture; receipt; return; location; included components; component tags; failed/replaced quantities; opening/closing attributable stocks; verified transfers | Weigh tickets and net deliveries; reconcile design quantities, actual placement, returns and offcuts; independently support each volume/length conversion; input quantity in each native unit = attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock. Include pre-acceptance failure/rework consumption; reconcile accepted installed quantities and waste separately without cancelling manufacturing burdens. | kg; m; item | Each batch and placement | actual construction start to acceptance, including rework | declared entity and attributed activity | per declared reference flow | original tickets, calibration, samples, signed work records and gap register |
 | cp_cables | cable-placement | individual cable input | reel and circuit ledger | reel_id; specification; cable_metres; route_metres; cores; circuit; slack; returned_m; rejected_m; joint/termination positions | Measure reel markings with calibrated counter and as-built circuit survey; record non-installed losses and actual replacement before acceptance | m; kg | Each reel and circuit | actual construction start to acceptance, including rework | declared entity and attributed activity | per declared reference flow | original tickets, calibration, samples, signed work records and gap register |
 | cp_utilities | site-operations; underground-civil; aerial-support; cable-placement; station-tower; marine-placement; reinstatement; acceptance | individual fuel and electricity | meter and fuel log | equipment_id; process_id; dates; start/end meter; kWh; fuel_kg; fuel_volume; actual density; batch_MJ_per_kg; geography; voltage; renewable/fossil fraction | Read actual meters and weigh/refuel tickets; assign operations including idling and rework once; vessel activity separately tagged | MJ; kWh; kg | Each shift, meter interval and fuel batch | actual construction start to acceptance, including rework | declared entity and attributed activity | per declared reference flow | original tickets, calibration, samples, signed work records and gap register |
 | cp_water | site-operations; underground-civil | supply, abstraction and dispatch | separate water meters and samples | interface; origin; aquifer; receiver; m3; quality; sample; treatment; recirculation; dates; direction; no-transfer versus dispatch | Meter supply, pumping, treatment dispatch and direct release separately; reconcile wet process water and retained moisture; record saline/fresh receivers | m3 | Each interval and discharge batch | actual construction start to acceptance, including rework | declared entity and attributed activity | per declared reference flow | original tickets, calibration, samples, signed work records and gap register |
@@ -888,7 +888,7 @@ One actually accepted, uniquely identified local cable-network or ancillary civi
 | `geometric_material_conversion` | materials recorded by geometry | kg = measured m3 × matching batch kg/m3, or measured m × same-configuration kg/m; density, moisture and state must match. Preserve wet kg and geometric m3 for ready-mix without inferring recipe. | cp_materials; cp_cables | converted real material mass |  |
 | `energy_conversion` | electricity and fuel | MJ = kWh × 3.6; fuel MJ = measured kg × batch LHV MJ/kg. Fuel volume first uses actual kg/volume density; no invented default. | cp_utilities | MJ for each fuel and voltage tier |  |
 | `freight_activity` | cable reel freight | t*km = sum of actual leg net t × route km, with return and sharing explicit. Do not add the same transport fuel/emissions when already included in the freight background. | cp_logistics | freight activity attributed to declared entity |  |
-| `species_emission` | conditional elementary flows | Release kg uses representative species concentration × integrated actual external exhaust flow or total released volume over the same representative interval, with units converted, or supported species mass balance; temperature/pressure and dry/wet basis must match. Sample volume supports sample mass and representativeness only, not total process exhaust volume. Fossil CO2 may use measured fossil carbon × evidenced oxidation fraction × 44/12; unknown concentration, total release volume or other inputs remain review. Particle cut and compartment must match. | cp_emissions | kg with defined species and compartment |  |
+| `species_emission` | conditional mass-based pollutant elementary emissions; excludes volume-based water resources and releases | Release kg uses representative species concentration × integrated actual external exhaust flow or total released volume over the same representative interval, with units converted, or supported species mass balance; temperature/pressure and dry/wet basis must match. Sample volume supports sample mass and representativeness only, not total process exhaust volume. Fossil CO2 may use measured fossil carbon × evidenced oxidation fraction × 44/12; unknown concentration, total release volume or other inputs remain review. Particle cut and compartment must match. Water supply, abstraction and carrier-water release retain their separately metered m3 and receiving interfaces under water_basis and cp_water; any pollutants in that water use separate species mass rows. | cp_emissions | kg with defined species and compartment |  |
 | `water_balance` | actual liquid water | Reconcile supply + abstraction + other measured inflow = direct release + liquid treatment dispatch + retained moisture + evidenced evaporation ± measured storage change; internal circulation is not counted twice. Incompatible volume states need real conversion; pollutant mass is not water mass. | cp_water; cp_waste | water-interface closure and residual disclosure |  |
 
 ### Data Quality Requirements

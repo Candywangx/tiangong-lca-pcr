@@ -53,7 +53,7 @@ status: candidate
 | reference_count | reference product | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` | 件 | 采用cp_acceptance核实一完整验收实体；所有记录保持同一声明参考流；不强加数值质量M。 |
 | actual_geometry | reference product | 面积 `93a60a56-a3c8-19da-a746-0800200c9a66` | m2 | 按声明方法竣工尺寸测绘面积；筒仓可用体积m3独立保留；几何描述功能配置，不自动换算输出。 |
 | energy_identity | lv_electricity; mv_electricity; diesel | 净热值, 低位热值 `93a60a56-a3c8-11da-a746-0800200c9a66` | MJ | 保留公开净热值参考及能量组。电力kWh按3.6 MJ/kWh；柴油kg至MJ须实际低位热值，升至kg须声明状态实际密度；保留原始记录不确定性。 |
-| transport_basis | road_freight |  `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | cp_transport保留实际载质量各段距离；有记录吨公里是同一实体输入服务分子。 |
+| transport_basis | road_freight | 货物运输（质量×距离） `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | cp_transport保留实际载质量各段距离；有记录吨公里是同一实体输入服务分子。 |
 
 ## 5. 系统边界
 
@@ -787,7 +787,7 @@ status: candidate
 仅用于匹配该服务身份的实际通用公路货运：保留分段载荷质量距离和空返分配；到货与外运废物分阶段标记；避免重复供货数据内含运输。
 
 - 选定流： 货车 `d55f1329-cd61-44c0-8000-9367d38d5634`
-- 流属性/单位：  `838aaa20-0117-11db-92e3-0800200c9a66` / t*km
+- 流属性/单位：货物运输（质量×距离） `838aaa20-0117-11db-92e3-0800200c9a66` / t*km
 - 数量规则： 从cp_transport采集实测归属交换总量；保留本行单位有记录路线，不设默认数值
 - 数值来源模式：前景记录 (`foreground_record`)
 - 适用范围：场址特定 (`site_specific`)

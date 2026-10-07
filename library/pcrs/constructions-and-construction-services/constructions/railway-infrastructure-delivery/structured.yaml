@@ -75,12 +75,12 @@ measurement_rules:
     required_unit: "m"
     rule: "cp_delivery collects as-built chainage, each track length/count, gradient, cross-section and configuration; route-km differs from track-km and cost cannot convert to mass."
   - id: material_state
-    applies_to: "all inventory rows"
+    applies_to: "mass-based material and waste inventory rows"
     required_property_ref:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Use actual supplied/waste mass state; dry/wet state, embedded component scope and certified linear mass require cp_materials/cp_waste; m3 to kg requires actual same-batch density, never a universal density."
+    rule: "Use actual supplied/waste mass state; dry/wet state, embedded component scope and certified linear mass require cp_materials/cp_waste; m3 to kg requires actual same-batch density, never a universal density. This mass rule does not replace the native MJ, m3 or item property/unit of energy, volume or count exchanges. Any auxiliary mass reconciliation for those rows is separately linked to the original exchange and supported by actual matching-state evidence."
   - id: energy_units
     applies_to: "electricity_lv, electricity_mv, test_power"
     required_property_ref:
@@ -570,7 +570,7 @@ process_inventory:
           property_unit: "Number of items / item"
           description: "When the commissioned scope includes a transformer, retain actual rating, voltage, cooling system and manufacturer boundary. Its manufacture belongs to a separate upstream equipment dataset."
           amount:
-            expression: "Record actual installed and accepted units with equipment tags; no capacity-based default mass."
+            expression: "Count actual attributable units consumed by this delivery, including units damaged or rejected before acceptance and replaced. Reconcile gross receipts plus opening attributable stock minus verified returns/transfers and closing reusable stock; retain equipment tags and installed/accepted counts separately. No capacity-based default mass."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -623,7 +623,7 @@ process_inventory:
           property_unit: "Number of items / item"
           description: "Where installed, record hardware/software scope, cabinet identifier, interface functions and acceptance test; no generic locomotive subsystem substitution."
           amount:
-            expression: "Count installed and accepted cabinets in the declared delivery boundary."
+            expression: "Count actual attributable cabinets consumed in the declared delivery boundary, including failed or damaged cabinets replaced before acceptance. Reconcile receipts, returns/transfers and stock changes under cp_materials; retain installed and accepted counts separately as configuration evidence."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -695,7 +695,7 @@ process_inventory:
           property_unit: "Number of items / item"
           description: "Only where a drive is installed/replaced; record motor, gearbox, braking, power supply and drive-system boundaries. Overhaul consumables use separate rows rather than a new complete drive."
           amount:
-            expression: "Count actually accepted complete drive units; preserve measured installed configuration."
+            expression: "Count all attributable complete drive units consumed, including rejected or failed units replaced before acceptance, net of verified returns/transfers and remaining reusable stock. Preserve measured installed configuration and accepted-unit count separately; overhaul consumables remain distinct exchanges."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1095,8 +1095,8 @@ dataset_production:
       process_id: "all_foreground_processes"
       flow_role: "each supplied material/component"
       record_type: "delivery_record"
-      raw_fields: "row_id; work package; batch; supplied state; composition; mass/volume/count; certified density or linear mass; returns; stocks; installed amount; loss"
-      collection_method: "Reconcile delivery tickets, calibrated weights/batch certificates and measured installed geometry row by row; split different grades/states"
+      raw_fields: "row_id; work package; batch; supplied state; composition; mass/volume/count; certified density or linear mass; returns; stocks; installed amount; loss; equipment tags; failed/replaced-unit counts; opening and closing attributable stock; verified returns/transfers"
+      collection_method: "Reconcile delivery tickets, calibrated weights/batch certificates and measured installed geometry row by row; split different grades/states; input count = gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock. Include units consumed by pre-acceptance failures/rework; reconcile accepted installed count and actual waste separately without cancelling the input manufacturing burden."
       unit: "kg; m3; item"
       frequency: "each batch"
       temporal_coverage: "actual construction start through acceptance including rework"
@@ -1129,10 +1129,10 @@ dataset_production:
       quality_evidence: "raw tickets, calibration, as-built surveys, batch certificates and scope reconciliation"
     - protocol_id: cp_waste
       process_id: "earthwork_site_operation"
-      flow_role: "each segregated waste"
+      flow_role: "segregated mass-based waste streams; excludes volume-based washout collected under cp_water"
       record_type: "dispatch_record"
       raw_fields: "row_id; source task; classification; composition; moisture; weight; destination; receiver; reuse; stock"
-      collection_method: "Reconcile calibrated weighbridge and receiving records for each stream; split hazardous material, old demolition debris and new construction waste"
+      collection_method: "Reconcile calibrated weighbridge and receiving records for each mass-based stream; split hazardous material, old demolition debris and new construction waste. Captured washout retains metered Volume/m3 under cp_water and is not forced into this kg ledger; separately removed solids are distinct measured mass streams without duplicating their presence in exported liquid."
       unit: "kg"
       frequency: "each dispatch"
       temporal_coverage: "actual construction start through acceptance including rework"
@@ -1277,18 +1277,18 @@ data_sources:
     used_for: "Qualitative construction-stage separation of site activities, temporary works and waste. This carbon-accounting guidance is not proof of a complete multi-impact LCI or emission factor; no generic percentages or durations used."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:37c0eb23acdbe0b5764d53b1dc3a653a3921073416e11a90a7b264a6312fd491"
+  source_sha256: "sha256:29318b5a91dbfbf1fcec0dcc248d7aeed74ebed7ac653e412a8064111bedb4da"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6566"
+    - unit_id: "normative_6846"
       family: "system_boundary"
       span:
         start:
-          offset: 6566
+          offset: 6846
           line: 62
           column: 1
         end:
-          offset: 8544
+          offset: 8824
           line: 79
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Measured site baseline and receiving gate for each material/equipment; retained roadbed/equipment and previously completed bridge/tunnel shells explicitly declared |\n| starting_condition_role | user_defined_foreground_boundary |\n| product_classification_scope | CPC 3.0 53212; physical railway infrastructure |\n| recursive_input_rule | Inputs are upstream products in an explicit supply state; never recursively presume all manufacture is included; verify gates, units and component scope when linking datasets |\n| upstream_dataset_requirement | Match material/equipment manufacture datasets to actual specification separately; transport by load/mode/distance; link waste transport/treatment separately; disclose missing contributions pending completion |\n| disclosure | Report site construction-to-delivery, separately linked manufacture/transport/disposal and uncovered scope; never presume complete cradle-to-gate or whole life |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_work_packages | foreground_system_boundary | Prior demolition/site clearance, contaminated-soil remediation, blasting, tunnelling and bridge construction need separate work packages and specific inventories when the study actually includes them. Account for ground improvement, waterproofing, geotextiles, coatings, street paving, fencing and restoration by the real design and actual supplied states; the example cards are not a complete universal bill. For every additional actual exchange create one specific atomic row with a protocol and denominator; unsupported work remains visibly incomplete. Actual maintenance/renewal after the delivery and end-of-life removal are distinct later stages with dated activities and destinations, not multiplied by a guessed lifetime. `rics-wlca-2024`, `cpc3-notes-2025`. | cpc3-notes-2025, rics-wlca-2024 |\n\n"
@@ -1308,11 +1308,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6566
+              offset: 6846
               line: 62
               column: 1
             end:
-              offset: 6587
+              offset: 6867
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -1328,15 +1328,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46022"
+    - unit_id: "normative_46987"
       family: "allocation"
       span:
         start:
-          offset: 46022
+          offset: 46987
           line: 881
           column: 1
         end:
-          offset: 47697
+          offset: 48662
           line: 888
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_task_attribution | all inventory rows | Avoid allocation by assigning delivery notes, submeter readings, machine task hours and waste tickets to the actual delivery. Retain shared-site totals and a reconciled attribution ledger. Where a shared input cannot be directly assigned, document the measured causal activity (e.g. actual pumping hours or hauled load) and the complete denominator across all deliveries; do not allocate rail works by cost or arbitrary equal shares. Losses and rework before acceptance belong to the delivered unit. Reused cut/fill inside the boundary is not a co-product; actual reusable export is a separate product with explicit quality, destination and burden allocation, not negative waste. No automatic avoided-production credits. `rics-wlca-2024`. | rics-wlca-2024 |\n| allocation_asset_conservation | all inventory rows | Construction equipment manufacture and reusable temporary components are separate upstream contributions where included. cp_equipment records each physical asset, its evidenced total lifetime activity or actual cumulative use, prior allocations and the attributable project activity. A project share must be between zero and one, and cumulative shares across projects/periods/reuses must never exceed one; never reset the full manufacturing burden at each project. Unknown total activity/use history requires explicit review and sensitivity disclosure, not an invented lifetime or reuse count. Fixed permanent components installed in this delivery retain their actual supplied burden once. |  |\n\n"
@@ -1356,11 +1356,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46022
+              offset: 46987
               line: 881
               column: 1
             end:
-              offset: 46062
+              offset: 47027
               line: 881
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1376,15 +1376,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55204"
+    - unit_id: "normative_56863"
       family: "validation"
       span:
         start:
-          offset: 55204
+          offset: 56863
           line: 921
           column: 1
         end:
-          offset: 56516
+          offset: 58175
           line: 931
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_delivery | all inventory rows | Confirm reference product name equals reference_railway, amount is 1 item, and cp_delivery measured geometry/configuration/acceptance matches every inventory denominator. |  |\n| validate_route | all inventory rows | Determine conditional processes from actual work; ballast/slab, overhead/third rail and steel-wheel/cable routes must match supplies and tasks, without narrowing the category for checking convenience. | hs2-phase1-2013, hs2-phase2a-2017 |\n| validate_balance | all inventory rows | Reconcile soil cut/reuse/import/export/stock and installed materials/losses; same equipment/component and meter burdens conserve cumulative shares without duplicate accounting. |  |\n| validate_emissions | all inventory rows | Elementary flows require measurement or a site-applicable model with correct species, fossil/biogenic origin and medium; NO, NO₂, N₂O, dust size, resource water and waste liquid are not interchangeable. |  |\n| validate_coverage | all inventory rows | Missing tasks/identity/measurement/background links and unsupported conversions must explicitly retain incompleteness; machine checks do not imply scientific or engineering acceptance approval. |  |\n\n"
@@ -1404,11 +1404,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55204
+              offset: 56863
               line: 921
               column: 1
             end:
-              offset: 55226
+              offset: 56885
               line: 921
               column: 23
           text: "## 9. Validation Rules"
@@ -1428,154 +1428,154 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_work_packages"
       identity_kind: "explicit"
-      unit_id: "normative_6566"
+      unit_id: "normative_6846"
       source_span:
         start:
-          offset: 7684
+          offset: 7964
           line: 77
           column: 1
         end:
-          offset: 8542
+          offset: 8822
           line: 77
           column: 859
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_task_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_46022"
+      unit_id: "normative_46987"
       source_span:
         start:
-          offset: 46135
+          offset: 47100
           line: 885
           column: 1
         end:
-          offset: 46945
+          offset: 47910
           line: 885
           column: 811
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_asset_conservation"
       identity_kind: "explicit"
-      unit_id: "normative_46022"
+      unit_id: "normative_46987"
       source_span:
         start:
-          offset: 46946
+          offset: 47911
           line: 886
           column: 1
         end:
-          offset: 47695
+          offset: 48660
           line: 886
           column: 750
     - pointer: "/validation_rules/0"
       rule_id: "validate_delivery"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_56863"
       source_span:
         start:
-          offset: 55299
+          offset: 56958
           line: 925
           column: 1
         end:
-          offset: 55517
+          offset: 57176
           line: 925
           column: 219
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_56863"
       source_span:
         start:
-          offset: 55518
+          offset: 57177
           line: 926
           column: 1
         end:
-          offset: 55796
+          offset: 57455
           line: 926
           column: 279
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_56863"
       source_span:
         start:
-          offset: 55797
+          offset: 57456
           line: 927
           column: 1
         end:
-          offset: 56020
+          offset: 57679
           line: 927
           column: 224
     - pointer: "/validation_rules/3"
       rule_id: "validate_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_56863"
       source_span:
         start:
-          offset: 56021
+          offset: 57680
           line: 928
           column: 1
         end:
-          offset: 56272
+          offset: 57931
           line: 928
           column: 252
     - pointer: "/validation_rules/4"
       rule_id: "validate_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_56863"
       source_span:
         start:
-          offset: 56273
+          offset: 57932
           line: 929
           column: 1
         end:
-          offset: 56514
+          offset: 58173
           line: 929
           column: 242
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6566"
+      unit_id: "normative_6846"
       source_span:
         start:
-          offset: 6566
+          offset: 6846
           line: 62
           column: 1
         end:
-          offset: 6587
+          offset: 6867
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6566"
+      unit_id: "normative_6846"
       source_span:
         start:
-          offset: 6615
+          offset: 6895
           line: 66
           column: 1
         end:
-          offset: 7611
+          offset: 7891
           line: 73
           column: 177
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46022"
+      unit_id: "normative_46987"
       source_span:
         start:
-          offset: 46022
+          offset: 46987
           line: 881
           column: 1
         end:
-          offset: 46062
+          offset: 47027
           line: 881
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55204"
+      unit_id: "normative_56863"
       source_span:
         start:
-          offset: 55204
+          offset: 56863
           line: 921
           column: 1
         end:
-          offset: 55226
+          offset: 56885
           line: 921
           column: 23
 projection_metadata:
@@ -1585,5 +1585,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:37c0eb23acdbe0b5764d53b1dc3a653a3921073416e11a90a7b264a6312fd491"
-  generated_content_sha256: "sha256:c86d702876040af6b11ee61c32a4dfd47e281d191baab8b45f0ff3f6ae0321fe"
+    sha256: "sha256:29318b5a91dbfbf1fcec0dcc248d7aeed74ebed7ac653e412a8064111bedb4da"
+  generated_content_sha256: "sha256:501639a5f354076fe476950c86ab1044f4f049a6615322b873200099ea38ae13"

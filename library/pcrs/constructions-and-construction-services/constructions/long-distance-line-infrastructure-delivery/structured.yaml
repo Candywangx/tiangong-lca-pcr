@@ -24,6 +24,10 @@ system_boundary:
         - national-grid-overhead-2025
         - eirgrid-underground-2026
         - itu-submarine-g971-2024
+    - rule_id: boundary_qualifiers
+      applies_to: "all reference qualifiers, cp_delivery geometry/fields, dq_geometry and publication metadata"
+      rule: "Every object requires its identity, site/country, real dates, long-distance function, delivered physical interfaces, applicable dimensions and signed acceptance. Line sections require actual endpoints/chainage/route length and all delivered cable/conductor lengths/counts. For separately delivered stations or supports, measure the actual station/support geometry and interfaces; attributes of genuinely absent route/cable/rating branches are explicitly not_applicable with drawings/scope evidence, not zero or missing measurements. This exception applies to the required-qualifier list, all collection fields, geometry requirements and required_metadata. Unknown applicable values remain gaps; do not borrow an adjacent line or invent length/capacity."
+      source_ids: []
     - rule_id: boundary_upstream
       applies_to: "Purchased materials, equipment and logistics"
       rule: "Manufacturing, quarrying/refining and supplier packaging are upstream. Link complete supplied components at their declared gate and actual transport legs; prevent counting embedded copper, steel, insulation, oil or gas again. A service dataset containing construction must not be added on top of this same foreground construction. Missing links must be disclosed before any expanded cradle-to-gate claim."
@@ -79,6 +83,7 @@ reference_flow_definition:
     - "supply state"
     - "applicable test results and signed acceptance"
     - "foreground/upstream/transport/operation/demolition coverage"
+    - "applicability evidence under boundary_qualifiers for genuinely absent route/cable/rating attributes"
 reference_flows:
   []
 measurement_rules:
@@ -90,19 +95,19 @@ measurement_rules:
     required_unit: "item"
     rule: "The fixed reference output is 1 item, one complete declared accepted object; cp_delivery verifies configuration and count. No mass conversion is implied."
   - id: measurement_components
-    applies_to: "Every input/output"
+    applies_to: "material, component and waste rows whose native properties are mass, length, volume or count"
     required_property_ref:
       name: "Mass; Length; Volume; Number of items"
       uuid: ""
     required_unit: "kg; m; m3; item"
-    rule: "Retain each actual primary property/state. Measure component mass, physical cable length, wet concrete volume and device count separately; conversion requires actual same-design/state records in cp_materials, not public secondary screening factors."
+    rule: "Retain each actual primary property/state. Measure component mass, physical cable length, wet concrete volume and device count separately; component conversion requires actual same-design/state records in cp_materials; waste conversion uses cp_waste with its measured same-state volume, bulk density, moisture and provenance. Do not use public secondary screening factors. Exchanges declared in energy, transport and land units retain Net calorific value/MJ, Goods transport (mass*distance)/t*km and area-time/m2*a under their specific rules. This does not impose MJ on a mass-based fuel: marine_fuel retains Mass/kg under cp_marine, with batch density for any volume conversion; component-specific cp_materials requirements do not apply to that separately collected fuel. No conversion of those quantities into material mass is implied."
   - id: measurement_energy
-    applies_to: "Electricity/diesel"
+    applies_to: "electricity and diesel rows declared with the native Net calorific value/MJ; excludes marine_fuel"
     required_property_ref:
       name: "Net calorific value"
       uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
     required_unit: "MJ"
-    rule: "Retain public primary property; actual meter/batch data in cp_energy support kWh or mass/volume to MJ, with no assigned demand/density/heating value."
+    rule: "Retain public primary property; actual meter/batch data in cp_energy support kWh or mass/volume to MJ, with no assigned demand/density/heating value. The separately supplied marine_fuel retains its declared Mass/kg and cp_marine tank/bunker balance; volume conversion requires actual same-batch density. Auxiliary heating-value data do not create a second fuel input or replace that native kg exchange."
   - id: measurement_resources
     applies_to: "Water and land"
     required_property_ref:
@@ -314,7 +319,7 @@ process_inventory:
           name: "Uncontaminated surplus mineral excavation soil"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only surplus soil exported as waste after contamination testing and legal destination determination. Survey excavated/reused/exported volumes separately; mass requires weighbridge tickets or measured same-state bulk density. Contaminated soil needs its own row."
+          description: "Actual surplus soil exported as waste; retain contamination tests and actual destination/compliance evidence. Missing testing or destination evidence remains a disclosed gap, not a reason to omit actual exported quantity or assume uncontaminated soil. Survey excavated/reused/exported volumes separately; mass requires weighbridge tickets or measured same-state bulk density. Contaminated soil needs its own row."
           amount:
             expression: "Actual measured quantity attributable to the declared accepted object, in the stated unit, reconciled by the linked collection protocol; include only when the row condition is evidenced"
             value_mode: "foreground_record"
@@ -579,7 +584,7 @@ process_inventory:
           name: "Galvanized-steel line earth conductor"
           flow_type: "product"
           property_unit: "Length 838aaa23-0117-11db-92e3-0800200c9a66 / m"
-          description: "Only actual separately installed steel earth conductor with measured section and length, including railway buried earth conductor when present. Not copper wire, optical ground wire or bare aluminium phase conductor."
+          description: "Actual separately supplied steel earth conductor consumed for the declared work, including cutting, damage and rejected/replaced material before acceptance; retain measured section, consumed and installed lengths separately, including railway buried earth conductor when present. Not copper wire, optical ground wire or bare aluminium phase conductor."
           amount:
             expression: "Actual measured quantity attributable to the declared accepted object, in the stated unit, reconciled by the linked collection protocol; include only when the row condition is evidenced"
             value_mode: "foreground_record"
@@ -1137,7 +1142,7 @@ process_inventory:
           name: "Submarine optical terminal transponder"
           flow_type: "product"
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
-          description: "Only actual accepted terminal equipment within the declared project interface; record model, fibre/wavelength configuration and supply boundary. Other power feeding and terminal devices require separate actual rows; exclude subsequent telecom service energy."
+          description: "Actual complete terminal equipment consumed within the declared project interface includes failed/rejected units replaced before acceptance. Reconcile gross receipts, opening/closing reusable stock and verified returns/transfers under cp_materials; keep accepted installed count, model, fibre/wavelength configuration and supply boundary separately. Other power feeding and terminal devices require separate actual rows; exclude subsequent telecom service energy."
           amount:
             expression: "Actual measured quantity attributable to the declared accepted object, in the stated unit, reconciled by the linked collection protocol; include only when the row condition is evidenced"
             value_mode: "foreground_record"
@@ -1368,7 +1373,7 @@ process_inventory:
           name: "Discarded solid-wood cable drum"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only actually discarded drum after installation; distinguish supplier take-back/reuse from waste and subtract embedded packaging only once. Metal drum fittings and plastic film leaving separately require separate waste rows. A broad wood packaging product cannot identify this waste."
+          description: "Only actual drums discarded during the included delivery/construction cycle, including pre-installation damage; distinguish supplier take-back/reuse from waste. Do not add another packaging manufacture input when the supplied cable inventory already includes that drum. Keep the actual discarded drum quantity and its collection, transport and treatment burdens. Any subtraction is limited to an evidenced duplicate input in the identified overlapping supply ledger, never the actual waste quantity. Metal drum fittings and plastic film leaving separately require separate waste rows. A broad wood packaging product cannot identify this waste."
           amount:
             expression: "Actual measured quantity attributable to the declared accepted object, in the stated unit, reconciled by the linked collection protocol; include only when the row condition is evidenced"
             value_mode: "foreground_record"
@@ -1536,7 +1541,7 @@ process_inventory:
           flow_ref:
             uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "Only actual permitted direct discharge to a identified freshwater receptor; separately quantify specific dissolved/suspended contaminants as atomic releases from sampling. Do not count the same parcel as treatment wastewater; water resource input is not a discharge identity. Marine discharge needs another compartment row. Public identity is molecular water CAS 7732-18-5, immediate emissions to fresh water, Volume/m3; it does not identify any dissolved pollutant."
+          description: "All actual direct discharge to an identified freshwater receptor, including unpermitted or incident releases; record permit/compliance status separately without excluding a physical release. separately quantify specific dissolved/suspended contaminants as atomic releases from sampling. Do not count the same parcel as treatment wastewater; water resource input is not a discharge identity. Marine discharge needs another compartment row. Public identity is molecular water CAS 7732-18-5, immediate emissions to fresh water, Volume/m3; it does not identify any dissolved pollutant."
           amount:
             expression: "Actual measured quantity attributable to the declared accepted object, in the stated unit, reconciled by the linked collection protocol; include only when the row condition is evidenced"
             value_mode: "foreground_record"
@@ -1612,8 +1617,8 @@ dataset_production:
       process_id: "handover"
       flow_role: "reference_line and delivered geometry"
       record_type: "actual measured records"
-      raw_fields: "object ID; site/endpoints; as-built chainage/length; cable/circuit/fibre counts; actual dimensions; ratings; component interfaces; acceptance date/tests; retained existing assets"
-      collection_method: "Survey/measure actual delivered scope and cross-check signed drawings, test records and handover inventory; no invented mass or design data"
+      raw_fields: "object ID; site/endpoints; as-built chainage/length; cable/circuit/fibre counts; actual dimensions; ratings; component interfaces; acceptance date/tests; retained existing assets; qualifier applicability and absent-branch drawing evidence"
+      collection_method: "Survey/measure actual delivered scope and cross-check signed drawings, test records and handover inventory; no invented mass or design data; apply boundary_qualifiers to standalone station/support fields as well as line sections; absent attributes require evidenced not_applicable, never fabricated geometry"
       unit: "item; m; m2; kV; MVA; fibre count"
       frequency: "Each task/load/batch/meter event; delivery close-out"
       temporal_coverage: "All actual work from baseline to acceptance/restoration; recorded real dates"
@@ -1624,8 +1629,8 @@ dataset_production:
       process_id: "site_operation"
       flow_role: "each actual purchased component"
       record_type: "actual measured records"
-      raw_fields: "supplier; batch/model/specification; complete supply scope; received/installed/returned/offcut count/length/volume/mass; moisture; actual density/linear mass; tests"
-      collection_method: "Match design BOM, weighbridge/drum/ticket/meter records and installed survey; separately measure conversion support and embedded materials"
+      raw_fields: "supplier; batch/model/specification; complete supply scope; received/installed/returned/offcut count/length/volume/mass; moisture; actual density/linear mass; tests; pre-acceptance failed/replaced components; opening/closing reusable stocks; verified transfers"
+      collection_method: "Match design BOM, weighbridge/drum/ticket/meter records and installed survey; separately measure conversion support and embedded materials; native-unit inputs include attributable consumed failures/replacements: gross receipts + opening stock - verified returns/transfers - closing reusable stock; accepted installed configuration and actual waste are separate, without cancelling input manufacture"
       unit: "kg; m; m3; item"
       frequency: "Each task/load/batch/meter event; delivery close-out"
       temporal_coverage: "All actual work from baseline to acceptance/restoration; recorded real dates"
@@ -1660,9 +1665,9 @@ dataset_production:
       process_id: "site_operation"
       flow_role: "each actual exported waste"
       record_type: "actual measured records"
-      raw_fields: "atomic waste composition; wet/dry state; tare/gross/net mass or volume; contamination; load/date; receiver/treatment; returns/reuse"
-      collection_method: "Weigh/meter each actual waste load and reconcile material tickets and receiver records; do not combine unrelated waste materials"
-      unit: "kg; m3"
+      raw_fields: "atomic waste composition; wet/dry state; tare/gross/net mass or volume; contamination; load/date; receiver/treatment; returns/reuse; same-state measured volume and bulk density; moisture; conversion measurement/provenance and uncertainty"
+      collection_method: "Weigh/meter each actual waste load and reconcile material tickets and receiver records; do not combine unrelated waste materials; for native-mass waste measured volumetrically, retain same-lot/state volume and independently measured bulk density with moisture and units; unknown density requires review, never a default. Waste conversion evidence belongs here, not solely to purchased-component cp_materials."
+      unit: "kg; m3; kg/m3"
       frequency: "Each task/load/batch/meter event; delivery close-out"
       temporal_coverage: "All actual work from baseline to acceptance/restoration; recorded real dates"
       site_scope: "One declared object and linked actual work sites/voyages; shared beneficiaries explicit"
@@ -1810,7 +1815,7 @@ dataset_production:
   data_quality_requirements:
     - id: dq_geometry
       applies_to: "Delivered configuration"
-      requirement: "Declare actual route versus cable/conductor length, branch endpoints, each cable/circuit/fibre count, voltage/rating/function, support/foundation/duct/shore/station dimensions, soil/seabed conditions and included assets. No design load, size, component mass or life is supplied by this PCR."
+      requirement: "Declare actual route versus cable/conductor length, branch endpoints, each cable/circuit/fibre count, voltage/rating/function, support/foundation/duct/shore/station dimensions, soil/seabed conditions and included assets. No design load, size, component mass or life is supplied by this PCR. Apply boundary_qualifiers: measure actual delivered object attributes, and record genuinely absent station/support route or cable attributes as evidenced not_applicable; unknown applicable values remain gaps."
       evidence: "cp_delivery drawings/surveys, actual design and signed acceptance"
     - id: dq_coverage
       applies_to: "Complete actual foreground"
@@ -1871,7 +1876,7 @@ published_dataset_profile:
   downstream_use: "Transparent assembly of a declared line/station/railway or other infrastructure study with one-count asset interfaces"
   allowed_use: "The documented site/configuration/period and verified functional object; compatible comparison only after function and stage alignment"
   excluded_use: "Generic per-km/per-kg default; local distribution; component manufacture replacement; operational transmission service; unqualified whole-life or methodology/compliance approval"
-  required_metadata: "All section 3 qualifiers; supplier/component gates and geography; actual drawings/BOM; stage/route task records; field units/conversions; allocation/asset history; direct-release media; waste/treatment routes; source versions and test acceptance"
+  required_metadata: "All section 3 qualifiers; supplier/component gates and geography; actual drawings/BOM; stage/route task records; field units/conversions; allocation/asset history; direct-release media; waste/treatment routes; source versions and test acceptance; documented applicability under boundary_qualifiers"
   required_quality_disclosure: "Measurement/certificate coverage and uncertainty, actual missing atomic rows/UUIDs/upstream links, environmental/noise/habitat gaps, retained/reused assets, historic/local-source applicability and excluded lifecycle stages"
   update_trigger: "Changed design/geometry/route, voltage/fibre/capacity, actual materials/supplier, installation equipment/process, accepted scope/tests, incident or new verified flow/evidence"
 data_sources:
@@ -1909,21 +1914,21 @@ data_sources:
     used_for: "Historical named railway example distinguishing mast/foundation, feeder, contact/catenary wire and earth conductors, with existing-asset suitability. No speed, alloy, size, tension, wind loading, spacing or lifetime is imposed on this category; actual project evidence controls."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fa5cd015d9386a20fe4cbd1dd0877915aac09dabf06ddee1f6e1094cd96aac6f"
+  source_sha256: "sha256:ac0bfab3037961c35ebd29ca8bb3a2aa0f65dfb8c61b14eec735f7dd1e54686a"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7269"
+    - unit_id: "normative_8365"
       family: "system_boundary"
       span:
         start:
-          offset: 7269
+          offset: 8365
           line: 70
           column: 1
         end:
-          offset: 11163
-          line: 91
+          offset: 13136
+          line: 92
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Documented actual site/route baseline and existing assets before this delivery work, with separately supplied completed materials/equipment received at their stated gates |\n| starting_condition_role | Construction foreground start; existing condition and upstream receipts are not assumed burden-free |\n| product_classification_scope | Complete delivered long-distance communication/high-tension/railway-power lines and transmission stations/pylons; excludes local low-tension distribution |\n| recursive_input_rule | Record any in-category purchased/reused line section or station once with its source/interface and attributed prior burden; no recursive duplication of its construction |\n| upstream_dataset_requirement | Link each actual material/component production gate, packaging, external transport and waste treatment separately with representative records; retain unlinked gaps |\n| disclosure | Declare route branches, site, period, new/retained/replaced geometry, supply gate, actual work stages and tests, restoration, temporary/capital assets, allocation, environmental and lifecycle coverage, cutoffs and missing links |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_delivery` | Foreground stages | Include actual receiving/unloading, project survey/preparation, civil works, relevant line/station installation, site tests/commissioning, temporary removal and restoration through the signed delivery interface. Map all real branches; an absent branch needs documented not_applicable, not guessed zero. | `national-grid-overhead-2025`; `eirgrid-underground-2026`; `itu-submarine-g971-2024` |\n| `boundary_upstream` | Purchased materials, equipment and logistics | Manufacturing, quarrying/refining and supplier packaging are upstream. Link complete supplied components at their declared gate and actual transport legs; prevent counting embedded copper, steel, insulation, oil or gas again. A service dataset containing construction must not be added on top of this same foreground construction. Missing links must be disclosed before any expanded cradle-to-gate claim. | `eirgrid-underground-2026`; `national-grid-overhead-2025` |\n| `boundary_existing` | Existing line assets and shared interfaces | Document pre-existing retained assets separately from new/replaced work. A purchased or reused in-category line section is one input with its source burden and interface; do not recursively re-create its installation or count it again in railway, station, wind farm or adjacent line datasets. Brownfield demolition needed before this delivery is identified separately; future demolition is outside. | `rdso-rail-ohe-2020`; `cpc3-explanatory-notes-2025` |\n| `boundary_later_stages` | Operation, maintenance and end of life | Network transmission losses, delivered energy/traffic service, vegetation maintenance, leakage during use, repairs, replacements and end-of-life demolition/recycling are outside the default delivery inventory. Any extension declares actual scenario, dates, evidenced life/activity, replaced quantities and destinations separately; no default lifetime, salvage credit or full-life claim follows from acceptance. | `itu-submarine-g971-2024`; `ifc-power-ehs-2007` |\n| `boundary_environment` | Environmental coverage | Separate technosphere water, direct freshwater/groundwater abstraction, contained waste liquids and actual direct receiving-medium releases. Inventory only evidenced chemical species/particle fractions with matching media and timing. Add actual route-specific contaminants, land changes, marine transfers and noise/habitat observations; unresolved identities or unmeasured potentially relevant releases are explicit gaps, not assumed absence. | `ifc-power-ehs-2007`; `eirgrid-submarine-2022` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Documented actual site/route baseline and existing assets before this delivery work, with separately supplied completed materials/equipment received at their stated gates |\n| starting_condition_role | Construction foreground start; existing condition and upstream receipts are not assumed burden-free |\n| product_classification_scope | Complete delivered long-distance communication/high-tension/railway-power lines and transmission stations/pylons; excludes local low-tension distribution |\n| recursive_input_rule | Record any in-category purchased/reused line section or station once with its source/interface and attributed prior burden; no recursive duplication of its construction |\n| upstream_dataset_requirement | Link each actual material/component production gate, packaging, external transport and waste treatment separately with representative records; retain unlinked gaps |\n| disclosure | Declare route branches, site, period, new/retained/replaced geometry, supply gate, actual work stages and tests, restoration, temporary/capital assets, allocation, environmental and lifecycle coverage, cutoffs and missing links |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_delivery` | Foreground stages | Include actual receiving/unloading, project survey/preparation, civil works, relevant line/station installation, site tests/commissioning, temporary removal and restoration through the signed delivery interface. Map all real branches; an absent branch needs documented not_applicable, not guessed zero. | `national-grid-overhead-2025`; `eirgrid-underground-2026`; `itu-submarine-g971-2024` |\n| `boundary_qualifiers` | all reference qualifiers, cp_delivery geometry/fields, dq_geometry and publication metadata | Every object requires its identity, site/country, real dates, long-distance function, delivered physical interfaces, applicable dimensions and signed acceptance. Line sections require actual endpoints/chainage/route length and all delivered cable/conductor lengths/counts. For separately delivered stations or supports, measure the actual station/support geometry and interfaces; attributes of genuinely absent route/cable/rating branches are explicitly not_applicable with drawings/scope evidence, not zero or missing measurements. This exception applies to the required-qualifier list, all collection fields, geometry requirements and required_metadata. Unknown applicable values remain gaps; do not borrow an adjacent line or invent length/capacity. | |\n| `boundary_upstream` | Purchased materials, equipment and logistics | Manufacturing, quarrying/refining and supplier packaging are upstream. Link complete supplied components at their declared gate and actual transport legs; prevent counting embedded copper, steel, insulation, oil or gas again. A service dataset containing construction must not be added on top of this same foreground construction. Missing links must be disclosed before any expanded cradle-to-gate claim. | `eirgrid-underground-2026`; `national-grid-overhead-2025` |\n| `boundary_existing` | Existing line assets and shared interfaces | Document pre-existing retained assets separately from new/replaced work. A purchased or reused in-category line section is one input with its source burden and interface; do not recursively re-create its installation or count it again in railway, station, wind farm or adjacent line datasets. Brownfield demolition needed before this delivery is identified separately; future demolition is outside. | `rdso-rail-ohe-2020`; `cpc3-explanatory-notes-2025` |\n| `boundary_later_stages` | Operation, maintenance and end of life | Network transmission losses, delivered energy/traffic service, vegetation maintenance, leakage during use, repairs, replacements and end-of-life demolition/recycling are outside the default delivery inventory. Any extension declares actual scenario, dates, evidenced life/activity, replaced quantities and destinations separately; no default lifetime, salvage credit or full-life claim follows from acceptance. | `itu-submarine-g971-2024`; `ifc-power-ehs-2007` |\n| `boundary_environment` | Environmental coverage | Separate technosphere water, direct freshwater/groundwater abstraction, contained waste liquids and actual direct receiving-medium releases. Inventory only evidenced chemical species/particle fractions with matching media and timing. Add actual route-specific contaminants, land changes, marine transfers and noise/habitat observations; unresolved identities or unmeasured potentially relevant releases are explicit gaps, not assumed absence. | `ifc-power-ehs-2007`; `eirgrid-submarine-2022` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1940,11 +1945,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7269
+              offset: 8365
               line: 70
               column: 1
             end:
-              offset: 7290
+              offset: 8386
               line: 70
               column: 22
           text: "## 5. System Boundary"
@@ -1960,16 +1965,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_91399"
+    - unit_id: "normative_94339"
       family: "allocation"
       span:
         start:
-          offset: 91399
-          line: 1309
+          offset: 94339
+          line: 1310
           column: 1
         end:
-          offset: 93214
-          line: 1317
+          offset: 96154
+          line: 1318
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct` | Tasks and delivered objects | Use direct task/component metering first. If a campaign serves distinct objects, separate their measured quantities; allocate only irreducible shared work by a documented causal physical driver such as actual lift-hours, pulling time, vessel task-hours or serviced work volume. Shares are nonnegative and sum to one over all beneficiaries; explain standby/empty return. Route length alone is not an automatic allocator for dissimilar civil conditions or conductor configurations. | `national-grid-overhead-2025`; `eirgrid-submarine-2022` |\n| `allocation_reuse` | Reusable machinery, formwork and temporary components | Keep one asset identity and manufacture boundary. When manufacture is included, attribute measured same-configuration mass/count multiplied by an evidenced dimensionless project share of total service; retain the public property. Maintain a cross-project/period/reuse ledger whose cumulative manufacture shares never exceed one. Unknown life or total service remains review; do not reset complete manufacture to every project. Site fuel/maintenance activities are separate and never reduced by the manufacture share. |  |\n| `allocation_waste` | Scrap, excavated soil and recovered components | Waste export, supplier returns, internal reuse and a qualified recovered product have distinct gates. No automatic avoided-metal, avoided-fill or energy credit is applied. Keep collection/transport/treatment burdens and destination evidence; any separately justified recycling/substitution scenario states actual quality, recovery yield and counterfactual with independent review. | `eirgrid-underground-2026`; `ifc-power-ehs-2007` |\n\n"
       headings:
@@ -1988,12 +1993,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 91399
-              line: 1309
+              offset: 94339
+              line: 1310
               column: 1
             end:
-              offset: 91439
-              line: 1309
+              offset: 94379
+              line: 1310
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -2008,16 +2013,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_109594"
+    - unit_id: "normative_113720"
       family: "validation"
       span:
         start:
-          offset: 109594
-          line: 1360
+          offset: 113720
+          line: 1361
           column: 1
         end:
-          offset: 113015
-          line: 1371
+          offset: 117141
+          line: 1372
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_object` | Reference object | Reject missing object ID, signed delivery state, defined endpoints/interfaces, actual geometry, configuration or relevant functional tests. One item is one complete declared object; do not use a service fee, cable mass or arbitrary work stage as its output. Different objects may not be compared without compatible function/configuration/boundary. | `cpc3-explanatory-notes-2025`; `eirgrid-underground-2026` |\n| `validation_completeness` | Actual route/process inventory | Reconcile every actual drawing/BOM/work/utility/waste item to an atomic row and supplier/process boundary, including support, chambers/boxes, station structures, auxiliaries, railway/optical devices, temporary crossings and reinstatement. Baseline cards are conditional examples, never a universal complete BOM. Missing actual rows, unmeasured significant tasks, unknown shared denominators or unavailable upstream/treatment links remain incomplete/review; do not assert complete expanded lifecycle coverage. | `eirgrid-underground-2026`; `itu-submarine-g971-2024`; `rdso-rail-ohe-2020` |\n| `validation_units` | Quantities and bases | All amounts must be finite, nonnegative and linked to real records for the same declared reference flow. Verify physical cable versus route length, count scope, same-state density/linear mass, fuel heating value, meter boundaries and gas/water/soil destination reconciliation. Do not infer fixed project mass, per-km intensity, concrete recipe, losses, demand or life. Record justified tolerances from actual instruments/specifications, not fabricated universal QA ranges. | `eirgrid-underground-2026`; `eirgrid-submarine-2022` |\n| `validation_identity` | Selected public flow identities | Verify substance/material, fossil/biogenic origin, product/waste/elementary role, geography, route/state, primary property/unit group and compartment/subcompartment/timing before linking. Preserve exact public Chinese names and shared UUID/row IDs. A blank product reference identity remains the precise declared reference_line gap for this candidate; actual data must disclose every missing identity and dataset link. Neither an identity UUID nor a passed builder check approves methodology. |  |\n| `validation_emissions` | Measured releases and environmental evidence | Reject inferred mandatory spill, SF6 leak or emission quantity from fuel/equipment presence. Molecular NO, NO2 and N2O and NOx-as-NO2 are different; immediate/outdoor and long-term/indoor are different; particle fractions must not overlap. Captured dust/slurry and treatment water are not direct environmental emissions. Missing quantified noise/habitat/marine coverage must be disclosed. | `ifc-power-ehs-2007` |\n| `validation_acceptance` | Engineering and environmental acceptance | Use the actual applicable authority, project specification revision and test programme for this geography/AC-DC/optical/railway branch, with measured results and independent acceptance records. Sources here support process/method scope and give bounded examples; historic IFC/ITU/RDSO and another operator's numerical criteria are not current legal approval or automatic design compliance. | `national-grid-overhead-2025`; `eirgrid-underground-2026`; `eirgrid-submarine-2022`; `itu-submarine-g971-2024`; `rdso-rail-ohe-2020` |\n\n"
       headings:
@@ -2036,12 +2041,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 109594
-              line: 1360
+              offset: 113720
+              line: 1361
               column: 1
             end:
-              offset: 109616
-              line: 1360
+              offset: 113742
+              line: 1361
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2060,233 +2065,246 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_delivery"
       identity_kind: "explicit"
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 8586
+          offset: 9682
           line: 85
           column: 1
         end:
-          offset: 9021
+          offset: 10117
           line: 85
           column: 436
     - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_qualifiers"
+      identity_kind: "explicit"
+      unit_id: "normative_8365"
+      source_span:
+        start:
+          offset: 10118
+          line: 86
+          column: 1
+        end:
+          offset: 10994
+          line: 86
+          column: 877
+    - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 9022
-          line: 86
+          offset: 10995
+          line: 87
           column: 1
         end:
-          offset: 9559
-          line: 86
+          offset: 11532
+          line: 87
           column: 538
-    - pointer: "/system_boundary/rules/2"
+    - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_existing"
       identity_kind: "explicit"
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 9560
-          line: 87
+          offset: 11533
+          line: 88
           column: 1
         end:
-          offset: 10083
-          line: 87
+          offset: 12056
+          line: 88
           column: 524
-    - pointer: "/system_boundary/rules/3"
+    - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_later_stages"
       identity_kind: "explicit"
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 10084
-          line: 88
+          offset: 12057
+          line: 89
           column: 1
         end:
-          offset: 10615
-          line: 88
+          offset: 12588
+          line: 89
           column: 532
-    - pointer: "/system_boundary/rules/4"
+    - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_environment"
       identity_kind: "explicit"
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 10616
-          line: 89
+          offset: 12589
+          line: 90
           column: 1
         end:
-          offset: 11161
-          line: 89
+          offset: 13134
+          line: 90
           column: 546
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_direct"
       identity_kind: "explicit"
-      unit_id: "normative_91399"
+      unit_id: "normative_94339"
       source_span:
         start:
-          offset: 91512
-          line: 1313
+          offset: 94452
+          line: 1314
           column: 1
         end:
-          offset: 92105
-          line: 1313
+          offset: 95045
+          line: 1314
           column: 594
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_reuse"
       identity_kind: "explicit"
-      unit_id: "normative_91399"
+      unit_id: "normative_94339"
       source_span:
         start:
-          offset: 92106
-          line: 1314
+          offset: 95046
+          line: 1315
           column: 1
         end:
-          offset: 92706
-          line: 1314
+          offset: 95646
+          line: 1315
           column: 601
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_waste"
       identity_kind: "explicit"
-      unit_id: "normative_91399"
+      unit_id: "normative_94339"
       source_span:
         start:
-          offset: 92707
-          line: 1315
+          offset: 95647
+          line: 1316
           column: 1
         end:
-          offset: 93212
-          line: 1315
+          offset: 96152
+          line: 1316
           column: 506
     - pointer: "/validation_rules/0"
       rule_id: "validation_object"
       identity_kind: "explicit"
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 109689
-          line: 1364
+          offset: 113815
+          line: 1365
           column: 1
         end:
-          offset: 110141
-          line: 1364
+          offset: 114267
+          line: 1365
           column: 453
     - pointer: "/validation_rules/1"
       rule_id: "validation_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 110142
-          line: 1365
+          offset: 114268
+          line: 1366
           column: 1
         end:
-          offset: 110793
-          line: 1365
+          offset: 114919
+          line: 1366
           column: 652
     - pointer: "/validation_rules/2"
       rule_id: "validation_units"
       identity_kind: "explicit"
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 110794
-          line: 1366
+          offset: 114920
+          line: 1367
           column: 1
         end:
-          offset: 111369
-          line: 1366
+          offset: 115495
+          line: 1367
           column: 576
     - pointer: "/validation_rules/3"
       rule_id: "validation_identity"
       identity_kind: "explicit"
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 111370
-          line: 1367
+          offset: 115496
+          line: 1368
           column: 1
         end:
-          offset: 111927
-          line: 1367
+          offset: 116053
+          line: 1368
           column: 558
     - pointer: "/validation_rules/4"
       rule_id: "validation_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 111928
-          line: 1368
+          offset: 116054
+          line: 1369
           column: 1
         end:
-          offset: 112415
-          line: 1368
+          offset: 116541
+          line: 1369
           column: 488
     - pointer: "/validation_rules/5"
       rule_id: "validation_acceptance"
       identity_kind: "explicit"
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 112416
-          line: 1369
+          offset: 116542
+          line: 1370
           column: 1
         end:
-          offset: 113013
-          line: 1369
+          offset: 117139
+          line: 1370
           column: 598
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 7269
+          offset: 8365
           line: 70
           column: 1
         end:
-          offset: 7290
+          offset: 8386
           line: 70
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7269"
+      unit_id: "normative_8365"
       source_span:
         start:
-          offset: 7318
+          offset: 8414
           line: 74
           column: 1
         end:
-          offset: 8513
+          offset: 9609
           line: 81
           column: 245
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_91399"
+      unit_id: "normative_94339"
       source_span:
         start:
-          offset: 91399
-          line: 1309
+          offset: 94339
+          line: 1310
           column: 1
         end:
-          offset: 91439
-          line: 1309
+          offset: 94379
+          line: 1310
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_109594"
+      unit_id: "normative_113720"
       source_span:
         start:
-          offset: 109594
-          line: 1360
+          offset: 113720
+          line: 1361
           column: 1
         end:
-          offset: 109616
-          line: 1360
+          offset: 113742
+          line: 1361
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2295,5 +2313,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fa5cd015d9386a20fe4cbd1dd0877915aac09dabf06ddee1f6e1094cd96aac6f"
-  generated_content_sha256: "sha256:29af57074ef59280e706114f166185c822333cb2075dcf31c7a92e4781cbabdc"
+    sha256: "sha256:ac0bfab3037961c35ebd29ca8bb3a2aa0f65dfb8c61b14eec735f7dd1e54686a"
+  generated_content_sha256: "sha256:2175f93678947daf2072abe80d18ca08943d1ec977418578693a22494e739fc1"

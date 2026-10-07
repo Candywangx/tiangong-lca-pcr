@@ -54,7 +54,7 @@ The foreground starts at documented preconstruction site/retained-asset conditio
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | reference_count | reference product | Number of items | item | Output is 1 item of the same complete accepted construction, verified using cp_delivery. All inventory and collection aggregates are per declared reference flow; no invented per-project/per-kilometre mass. |
-| measured_physical_basis | all inventory rows | Mass; Volume; Length; Net calorific value | kg; m3; m; MJ | Preserve each direct-read reference property and unit group. Weigh same-lot net masses; meter volume at recorded temperature/pressure; survey cable/pipe lengths and geometry. Volume-to-mass or length-to-mass needs independently measured density or linear mass for that exact state; never change a public property to Mass or use a default density. |
+| measured_physical_basis | all inventory rows | Mass; Volume; Length; Net calorific value; Number of items | kg; m3; m; MJ; item | Preserve each direct-read reference property and unit group. Weigh same-lot net masses; meter volume at recorded temperature/pressure; survey cable/pipe lengths and geometry. Volume-to-mass or length-to-mass needs independently measured density or linear mass for that exact state; never change a public property to Mass or use a default density. Use Number of items/item for one complete accepted pipeline entity under reference_count and cp_delivery. The listed property/unit pairs apply to their respective exchanges; auxiliary quantities do not replace the reference output count. |
 | electricity_units | cn_lv_power; cn_mv_power | Net calorific value | MJ | Public electricity retains Net calorific value and Units of energy. Convert metered kWh using the defined identity 1 kWh = 3.6 MJ; record which user-voltage interface is present. |
 | asset_share_basis | timber_mat; crawler_excavator; pipelay_vessel | Mass | kg | Collect actual same-configuration net asset mass and an independently supported dimensionless manufacture share in cp_assets. Lifetime or cumulative activity unknown requires explicit review; no full manufacture burden is reset per project. |
 
@@ -713,7 +713,7 @@ Only actual post-test water sent across a technosphere treatment interface; reco
 
 ###### Water directly released to fresh water (`freshwater_discharge`)
 
-Only actual measured direct release of the water substance to identified freshwater receiving body after any foreground treatment. Pollutant substances are additional exact elementary rows based on analysis. This is not waste sent to sewer/treatment, marine release, withdrawal or consumed water; do not infer harmlessness from this row.
+Only actual measured direct release of the water substance to an identified freshwater receiving body. If foreground treatment occurs, measure the release after that treatment; if no treatment occurs, retain the actual direct release. Pollutant substances are additional exact elementary rows based on analysis. This is not waste sent to sewer/treatment, marine release, withdrawal or consumed water; do not infer harmlessness from this row.
 
 - Selected flow: Water `5e50fc01-19c6-4377-a1cc-bc65a12498ea`
 - Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3

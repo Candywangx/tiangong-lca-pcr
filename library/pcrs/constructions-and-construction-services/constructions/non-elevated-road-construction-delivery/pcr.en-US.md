@@ -52,7 +52,7 @@ Exclude elevated highways, standalone bridges/viaducts, highway tunnels, railway
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | reference_count | reference product | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | item | Reference output is 1 item for the same complete accepted work; count using cp_delivery. All inventory rows and collection aggregates use per declared reference flow. No assumed mass, length or area is a substitute denominator. |
-| physical_quantities | all inventory rows | Mass; Volume; energy; mass*distance | kg; m3; MJ; kg*km | Preserve each public identity reference property and unit. Weigh material mass; use surveyed volume only with measured lot density for mass conversion. Meter water as volume. Preserve wet/dry state, fuel calorific basis and actual transport activity. Do not rewrite energy or volume into Mass. |
+| physical_quantities | all inventory rows | Mass; Volume; energy; mass*distance; Number of items | kg; m3; MJ; kg*km; item | Preserve each public identity reference property and unit. Weigh material mass; use surveyed volume only with measured lot density for mass conversion. Meter water as volume. Preserve wet/dry state, fuel calorific basis and actual transport activity. Do not rewrite energy or volume into Mass. These are row-specific property/unit pairs: mass/kg, volume/m3, energy/MJ, mass-distance/kg*km and the complete accepted road reference output Number of items/item; auxiliary material quantities do not replace that output count. |
 
 ## 5. System Boundary
 

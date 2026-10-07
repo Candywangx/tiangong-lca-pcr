@@ -82,12 +82,12 @@ measurement_rules:
     required_unit: "m"
     rule: "As-built survey distinguishes route length, cable length, fibre length, parallel circuits and slack; m does not substitute kg or item."
   - id: physical_mass
-    applies_to: "materials, offcuts and equipment attribution"
+    applies_to: "auxiliary mass-balance and equipment-attribution records linked to materials and offcuts"
     required_property_ref:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Weigh actual state with wet/dry basis; volume/length-to-mass needs matching batch density or measured kg/m. Equipment mass supports manufacture attribution, not reference-entity mass."
+    rule: "Weigh actual state with wet/dry basis; volume/length-to-mass needs matching batch density or measured kg/m. Equipment mass supports manufacture attribution, not reference-entity mass. The required Mass/kg is an auxiliary record, not a replacement primary property for length- or count-based exchanges. Keep pipes/cables in Length/m and complete joints/transformers in Number of items/item; link row, batch, configuration, issued quantity and independently measured kg or supported conversion in cp_materials/cp_cables. Never count the auxiliary mass as a second manufacturing exchange."
   - id: energy_basis
     applies_to: "fuel and construction electricity"
     required_property_ref:
@@ -96,12 +96,12 @@ measurement_rules:
     required_unit: "MJ"
     rule: "Preserve public net-calorific-value property; measured kWh times 3.6 gives MJ. Fuel kg times batch MJ/kg; volume fuel first uses actual density to kg. Unknown LHV/density cannot be guessed."
   - id: water_basis
-    applies_to: "supply, abstraction, discharge and liquid waste"
+    applies_to: "water supply, abstraction, direct water discharge and volume-based liquid-waste rows; excludes wet-mass drill_slurry"
     required_property_ref:
       name: "Volume"
       uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
     required_unit: "m3"
-    rule: "Meter true liquid volume by separate interface, retaining quality, origin and receiver; resource, technosphere and emission water are distinct."
+    rule: "Meter true liquid volume by separate interface, retaining quality, origin and receiver; resource, technosphere and emission water are distinct. Spent drill_slurry retains Mass/kg on the measured wet basis, including retained water and mineral solids under cp_waste; any auxiliary volume requires same-state density and does not replace or duplicate this waste exchange."
 process_map:
   - id: site_operations
     name: "Receipt, survey, logistics and site operations"
@@ -412,7 +412,7 @@ process_inventory:
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
           description: "Only actual liquid water directly entering an identified fresh-water receiving body, CAS 7732-18-5. Excludes resource withdrawal, supply, vapour, saline receivers and effluent sent for treatment. Record dissolved pollutants separately if measured; this row represents water only."
           amount:
-            expression: "Measured direct-discharge m3 at the release point after any on-site treatment"
+            expression: "Measured actual direct-discharge m3 at the receiving-water release point; if on-site treatment occurs, measure after it, and if no treatment occurs, retain the untreated direct release."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -492,7 +492,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Only actual factory hot-rolled low-alloy rebar with C ≤ 0.2% and matching uncoated state; embedded reinforcement of a purchased precast product is not counted again."
           amount:
-            expression: "Weighed installed-plus-consumed-cutting kg, separately reconcile steel offcuts"
+            expression: "Weighed attributable steel kg consumed, including cutting losses and damaged/rejected material before installation; use the cp_materials receipts/stock/returns balance and reconcile installed kg and each waste stream separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -853,7 +853,7 @@ process_inventory:
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
           description: "Only actual complete factory-gate 400 kVA, 10/0.4 kV transformer matching construction, cooling and supplied-component scope. This identifier does not cover another rating or a complete station. Actual oil already contained in the purchased transformer is not purchased again."
           amount:
-            expression: "Count of matching installed transformers; other ratings remain separately unresolved"
+            expression: "Count all matching transformers actually consumed for this delivery under cp_materials, including pre-installation damage and failed/rejected replacements; reconcile receipts, returns/transfers and stocks. Keep installed accepted count separately; other ratings retain separate unresolved identities."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -872,7 +872,7 @@ process_inventory:
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
           description: "Only actual 11-kV unit of declared insulation medium and protection configuration. A 220-kV GIS identity is unsuitable. Record measured filling or leakage of each gas separately only when it occurs."
           amount:
-            expression: "Actual complete units installed"
+            expression: "Actual attributable complete units consumed, including units damaged or rejected before installation/acceptance and replaced, using the cp_materials receipts/stock/returns balance; retain installed accepted units separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -928,7 +928,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Only actual prefab GRP enclosure; define included roof, doors and floors to prevent duplicate building constituent rows. Masonry route is not simultaneously assumed."
           amount:
-            expression: "Measured accepted enclosure net kg and dimensions"
+            expression: "Measured attributable enclosure net kg consumed, including damaged/rejected enclosures replaced before acceptance; reconcile receipts, returns/transfers and stock changes under cp_materials. Retain accepted enclosure kg and dimensions separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -965,7 +965,7 @@ process_inventory:
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
           description: "Only actual antenna on the locally serving tower with frequency band, ports and configuration declared; separately record feeder cable and mounting items not contained in the assembly."
           amount:
-            expression: "Actual accepted complete antenna units"
+            expression: "Actual attributable complete antenna units consumed, including failed/rejected replacements, net of verified returns/transfers and closing reusable stock under cp_materials; record accepted installed units separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1189,8 +1189,8 @@ dataset_production:
       process_id: "underground_civil_aerial_support_cable_placement_station_tower_reinstatement"
       flow_role: "individual material input"
       record_type: "delivery and installation ledger"
-      raw_fields: "row_id; batch; supplier; grade; state; net_kg; m or item; density; moisture; receipt; return; location; included components"
-      collection_method: "Weigh tickets and net deliveries; reconcile design quantities, actual placement, returns and offcuts; independently support each volume/length conversion"
+      raw_fields: "row_id; batch; supplier; grade; state; net_kg; m or item; density; moisture; receipt; return; location; included components; component tags; failed/replaced quantities; opening/closing attributable stocks; verified transfers"
+      collection_method: "Weigh tickets and net deliveries; reconcile design quantities, actual placement, returns and offcuts; independently support each volume/length conversion; input quantity in each native unit = attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock. Include pre-acceptance failure/rework consumption; reconcile accepted installed quantities and waste separately without cancelling manufacturing burdens."
       unit: "kg; m; item"
       frequency: "Each batch and placement"
       temporal_coverage: "actual construction start to acceptance, including rework"
@@ -1313,8 +1313,8 @@ dataset_production:
       output: "freight activity attributed to declared entity"
       source_ids: []
     - id: species_emission
-      applies_to: "conditional elementary flows"
-      rule: "Release kg uses representative species concentration × integrated actual external exhaust flow or total released volume over the same representative interval, with units converted, or supported species mass balance; temperature/pressure and dry/wet basis must match. Sample volume supports sample mass and representativeness only, not total process exhaust volume. Fossil CO2 may use measured fossil carbon × evidenced oxidation fraction × 44/12; unknown concentration, total release volume or other inputs remain review. Particle cut and compartment must match."
+      applies_to: "conditional mass-based pollutant elementary emissions; excludes volume-based water resources and releases"
+      rule: "Release kg uses representative species concentration × integrated actual external exhaust flow or total released volume over the same representative interval, with units converted, or supported species mass balance; temperature/pressure and dry/wet basis must match. Sample volume supports sample mass and representativeness only, not total process exhaust volume. Fossil CO2 may use measured fossil carbon × evidenced oxidation fraction × 44/12; unknown concentration, total release volume or other inputs remain review. Particle cut and compartment must match. Water supply, abstraction and carrier-water release retain their separately metered m3 and receiving interfaces under water_basis and cp_water; any pollutants in that water use separate species mass rows."
       inputs:
         - cp_emissions
       output: "kg with defined species and compartment"
@@ -1404,18 +1404,18 @@ data_sources:
     used_for: "Historical component-operation dust limitations/control context; no old average factor or TSP-to-PM2.5 substitution. Current releases need actual evidence."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:317809cec0589117916938a3994a5231e6a8943218f382dfde83be04d721c96e"
+  source_sha256: "sha256:52d401fc40e264266af5c649ae7ac0cba93b9e3d5bf780aef88f4deb9be9dfa5"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6269"
+    - unit_id: "normative_7010"
       family: "system_boundary"
       span:
         start:
-          offset: 6269
+          offset: 7010
           line: 62
           column: 1
         end:
-          offset: 8783
+          offset: 9524
           line: 82
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Material/equipment supply interface, actual transport origin and initial site condition; retained infrastructure has measured interfaces |\n| starting_condition_role | foreground construction and delivery |\n| product_classification_scope | local cable-network and ancillary civil entities |\n| recursive_input_rule | Do not recurse a purchased existing same-category work into new construction output; declare its delivered interface/historical burden and record actual modification separately |\n| upstream_dataset_requirement | Match real factory-gate manufacture backgrounds and required transport separately; missing backgrounds mean uncovered upstream, not complete cradle-to-delivery |\n| disclosure | Declare site-construction-to-acceptance foreground module; disclose upstream, transport, retained components, off-site treatment, operation/maintenance and dismantling coverage separately |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `construction_boundary` | Include actual receipt/logistics, setting-out, site preparation, earthworks, placement/jointing, foundations, station/tower erection, tests, corrective rework and reinstatement through the documented acceptance boundary. Record actual equipment and utility activity by operation; shared site-operations rows must not duplicate downstream stage totals. | `spen-secondary-civil-2026` |\n| `upstream_interface` | Keep manufacture of cables, ducts, concrete, transformer and other purchased items upstream; construction does not automatically reproduce factory inventories. Transport and external waste treatment remain separately linked stages with coverage disclosure. |  |\n| `later_stages` | Operation energy, network losses, future maintenance/replacement and terminal dismantling are excluded from the default construction module. If required, model actual supported periods or explicit scenarios separately, with compatible reference function, maintenance geometry, removal activity and waste destinations; no default lifetime or end-of-life credit. |  |\n| `special_routes` | For trenchless or submarine segments retain actual bore/lay/burial geometry, fluid recipe, vessel/equipment hours, spoil, losses and receiving media. Do not replace these branches with open-trench assumptions or declare ecological/noise effects absent merely because no characterized elementary identity is available. | `itu-optical-cables-2009` |\n\n"
@@ -1435,11 +1435,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6269
+              offset: 7010
               line: 62
               column: 1
             end:
-              offset: 6290
+              offset: 7031
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -1455,15 +1455,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54438"
+    - unit_id: "normative_56222"
       family: "allocation"
       span:
         start:
-          offset: 54438
+          offset: 56222
           line: 859
           column: 1
         end:
-          offset: 55833
+          offset: 57617
           line: 867
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `shared_works_allocation` | This delivered entity is the construction output. Separate measured branch activity for joint power/communication trenches, shared poles, stations and mobilisation before allocation. For inseparable residuals use a disclosed causal driver derived from actual work, such as excavated cross-section times length or measured equipment time, with denominator covering every beneficiary. A voltage, cost or cable-count share is not automatically causal. |  |\n| `reusable_capital_conservation` | Reusable equipment and drums retain a serial-bound cumulative manufacture ledger. Share = project attributed activity / supported total life activity, only when compatible activity and denominator are evidenced; all project/period/reuse shares sum to at most one. Attribute measured same-configuration mass or count with that share, separately from operating activity. Unknown total life activity remains review, never reset full manufacture per project. |  |\n| `waste_and_recovery` | Construction scrap and removed soil are not automatically co-products. Record waste state and destination; do not deduct a guessed avoided virgin-material burden. A separately evidenced product/recovery boundary requires a disclosed allocation model and an independent destination dataset. |  |\n\n"
@@ -1483,11 +1483,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54438
+              offset: 56222
               line: 859
               column: 1
             end:
-              offset: 54478
+              offset: 56262
               line: 859
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1503,15 +1503,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_66468"
+    - unit_id: "normative_68926"
       family: "validation"
       span:
         start:
-          offset: 66468
+          offset: 68926
           line: 905
           column: 1
         end:
-          offset: 67860
+          offset: 70318
           line: 914
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `reference_and_function_check` | Require one identified accepted entity and all applicable function/configuration/geometry qualifiers. Reference output is exactly 1 item and every inventory/collection/calculation denominator is per declared reference flow. Do not compare differently configured entities without an explicit functional equivalence study. |  |\n| `identity_check` | Reject a UUID whose direct public identity conflicts with substance, geography, voltage, construction, compartment or primary property; retain exact unresolved rows. Reference-product identity remains unresolved for candidate use and must be resolved before publication. |  |\n| `physical_and_coverage_check` | Check measured dimensions and material balances, density/LHV conversions, conditional process selection, waste destinations, water interfaces and non-overlapping particle fractions. Missing actual data, unknown manufacture denominator, unsupported emissions or characterized-noise gaps require review or incomplete coverage, not a passing physical validation. |  |\n| `handover_check` | Require actual route-appropriate inspection and handover evidence; do not infer permission to energise or operate from this inventory. Verify separate foreground and upstream/later-stage coverage before any broader lifecycle claim. |  |\n\n"
@@ -1531,11 +1531,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 66468
+              offset: 68926
               line: 905
               column: 1
             end:
-              offset: 66490
+              offset: 68948
               line: 905
               column: 23
           text: "## 9. Validation Rules"
@@ -1555,193 +1555,193 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "construction_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_6269"
+      unit_id: "normative_7010"
       source_span:
         start:
-          offset: 7329
+          offset: 8070
           line: 77
           column: 1
         end:
-          offset: 7740
+          offset: 8481
           line: 77
           column: 412
     - pointer: "/system_boundary/rules/1"
       rule_id: "upstream_interface"
       identity_kind: "explicit"
-      unit_id: "normative_6269"
+      unit_id: "normative_7010"
       source_span:
         start:
-          offset: 7741
+          offset: 8482
           line: 78
           column: 1
         end:
-          offset: 8027
+          offset: 8768
           line: 78
           column: 287
     - pointer: "/system_boundary/rules/2"
       rule_id: "later_stages"
       identity_kind: "explicit"
-      unit_id: "normative_6269"
+      unit_id: "normative_7010"
       source_span:
         start:
-          offset: 8028
+          offset: 8769
           line: 79
           column: 1
         end:
-          offset: 8412
+          offset: 9153
           line: 79
           column: 385
     - pointer: "/system_boundary/rules/3"
       rule_id: "special_routes"
       identity_kind: "explicit"
-      unit_id: "normative_6269"
+      unit_id: "normative_7010"
       source_span:
         start:
-          offset: 8413
+          offset: 9154
           line: 80
           column: 1
         end:
-          offset: 8781
+          offset: 9522
           line: 80
           column: 369
     - pointer: "/allocation_rules/0"
       rule_id: "shared_works_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_54438"
+      unit_id: "normative_56222"
       source_span:
         start:
-          offset: 54532
+          offset: 56316
           line: 863
           column: 1
         end:
-          offset: 55015
+          offset: 56799
           line: 863
           column: 484
     - pointer: "/allocation_rules/1"
       rule_id: "reusable_capital_conservation"
       identity_kind: "explicit"
-      unit_id: "normative_54438"
+      unit_id: "normative_56222"
       source_span:
         start:
-          offset: 55016
+          offset: 56800
           line: 864
           column: 1
         end:
-          offset: 55511
+          offset: 57295
           line: 864
           column: 496
     - pointer: "/allocation_rules/2"
       rule_id: "waste_and_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_54438"
+      unit_id: "normative_56222"
       source_span:
         start:
-          offset: 55512
+          offset: 57296
           line: 865
           column: 1
         end:
-          offset: 55831
+          offset: 57615
           line: 865
           column: 320
     - pointer: "/validation_rules/0"
       rule_id: "reference_and_function_check"
       identity_kind: "explicit"
-      unit_id: "normative_66468"
+      unit_id: "normative_68926"
       source_span:
         start:
-          offset: 66544
+          offset: 69002
           line: 909
           column: 1
         end:
-          offset: 66904
+          offset: 69362
           line: 909
           column: 361
     - pointer: "/validation_rules/1"
       rule_id: "identity_check"
       identity_kind: "explicit"
-      unit_id: "normative_66468"
+      unit_id: "normative_68926"
       source_span:
         start:
-          offset: 66905
+          offset: 69363
           line: 910
           column: 1
         end:
-          offset: 67201
+          offset: 69659
           line: 910
           column: 297
     - pointer: "/validation_rules/2"
       rule_id: "physical_and_coverage_check"
       identity_kind: "explicit"
-      unit_id: "normative_66468"
+      unit_id: "normative_68926"
       source_span:
         start:
-          offset: 67202
+          offset: 69660
           line: 911
           column: 1
         end:
-          offset: 67600
+          offset: 70058
           line: 911
           column: 399
     - pointer: "/validation_rules/3"
       rule_id: "handover_check"
       identity_kind: "explicit"
-      unit_id: "normative_66468"
+      unit_id: "normative_68926"
       source_span:
         start:
-          offset: 67601
+          offset: 70059
           line: 912
           column: 1
         end:
-          offset: 67858
+          offset: 70316
           line: 912
           column: 258
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6269"
+      unit_id: "normative_7010"
       source_span:
         start:
-          offset: 6269
+          offset: 7010
           line: 62
           column: 1
         end:
-          offset: 6290
+          offset: 7031
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6269"
+      unit_id: "normative_7010"
       source_span:
         start:
-          offset: 6318
+          offset: 7059
           line: 66
           column: 1
         end:
-          offset: 7275
+          offset: 8016
           line: 73
           column: 205
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54438"
+      unit_id: "normative_56222"
       source_span:
         start:
-          offset: 54438
+          offset: 56222
           line: 859
           column: 1
         end:
-          offset: 54478
+          offset: 56262
           line: 859
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_66468"
+      unit_id: "normative_68926"
       source_span:
         start:
-          offset: 66468
+          offset: 68926
           line: 905
           column: 1
         end:
-          offset: 66490
+          offset: 68948
           line: 905
           column: 23
 projection_metadata:
@@ -1751,5 +1751,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:317809cec0589117916938a3994a5231e6a8943218f382dfde83be04d721c96e"
-  generated_content_sha256: "sha256:195f3ba7c51730c95112caea5880d21d8c36c8b074fe4d7814375760b12a5e0b"
+    sha256: "sha256:52d401fc40e264266af5c649ae7ac0cba93b9e3d5bf780aef88f4deb9be9dfa5"
+  generated_content_sha256: "sha256:6712c23696f09b01191ce9ef0e3662ad45ea810f6639d2811ea1b643b20cab67"

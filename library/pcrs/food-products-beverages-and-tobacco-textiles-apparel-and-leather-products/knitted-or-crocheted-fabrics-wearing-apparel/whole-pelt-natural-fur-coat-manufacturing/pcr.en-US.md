@@ -32,7 +32,7 @@ This method covers new whole-pelt natural fur coats made from purchased dry dres
 | What | Manufacture a specified natural fur outer garment. |
 | How much | 1 kg net accepted finished coat output. |
 | How well | Complete coat meeting the declared factory dimensional, seam, lining and closure acceptance specification; no certification inferred. |
-| How long or cycle | One factory production cycle; wearing life is outside this manufacturing basis and must be specified separately for service comparisons. |
+| How long or cycle | One declared factory manufacturing reporting pool covering all included batches and cycles, failed work and rework; wearing life is outside this manufacturing basis and must be specified separately for service comparisons. |
 | reference_flow_link | `finished_coat` |
 
 | Field | Value |
@@ -52,7 +52,8 @@ Declare every required qualifier in the dataset. The mass basis is a manufacturi
 | --- | --- | --- | --- | --- |
 | `reference_mass` | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use calibrated net batch weighing of accepted conditioned coats, excluding packaging. Do not convert pelt count or garment count to mass without actual same-batch weighing. |
 | `energy_identity` | `sewing_electricity` | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | MJ | Retain the public electricity reference property and energy unit; meter kWh and convert with exactly 3.6 MJ/kWh. Never rewrite the property as Mass. |
-| `water_mass` | `blocking_water`; `blocking_vapour` | Mass | kg | Weigh water directly; volume readings require measured density at the recorded temperature, not an assumed density. Do not confuse product water, resource withdrawal, effluent and air vapour. |
+| `water_mass` | `blocking_water` | Mass | kg | Weigh water directly; volume readings require measured density at the recorded temperature, not an assumed density. Do not confuse product water, resource withdrawal, effluent and air vapour. |
+| `vapour_mass` | `blocking_vapour` | Mass | kg | Calculate actual air-vapour mass from the independently measured liquid/moisture records in cp_water and water_balance; direct weighing of vapour is not required. Retain uncertainty, receiving air medium and investigation of negative/unexplained residuals; do not equate all supplied water with evaporation. |
 
 ## 5. System Boundary
 
@@ -98,7 +99,7 @@ Issue pelts separately by species and grade; retain species, dressing, dye and m
 
 - Selected flow: Dry dressed natural hair-on furskin
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -117,7 +118,7 @@ Weigh unsaleable dressed hair-on skin offcuts separately, recording species, dre
 
 - Selected flow: Dressed natural furskin cutting offcut
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -139,7 +140,7 @@ For water-only blocking, weigh water sprayed onto the skin side and reconcile ov
 
 - Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_water; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_water; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -158,7 +159,7 @@ Record only water actually evaporated and released to environmental air. Reconci
 
 - Selected flow: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_water; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Attributable air-vapour exchange calculated from measured water-balance records using cp_water per 1 kg reference flow; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `calculated_value`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -180,7 +181,7 @@ This route uses 100% cotton lining received in its supplier-declared dyed/finish
 
 - Selected flow: Finished woven cotton lining fabric
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -195,7 +196,7 @@ Record finished polyester sewing thread consumed in fur and lining seams, includ
 
 - Selected flow: Polyester sewing thread
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -210,7 +211,7 @@ Include cotton hem reinforcement tape only when specified in the actual garment 
 
 - Selected flow: Non-elastic woven cotton reinforcing tape
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -225,7 +226,7 @@ Include each specified steel hook-and-eye closure as one complete physical assem
 
 - Selected flow: Steel garment hook-and-eye fastener
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -240,7 +241,7 @@ Apply this identity only to CN grid-average consumption supplied to the sewing w
 
 - Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_electricity; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_electricity; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -255,7 +256,7 @@ Include lubricant only when required by actual equipment maintenance. Record oil
 
 - Selected flow: Mineral sewing-machine lubricating oil
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -274,7 +275,7 @@ Weigh unsaleable cotton-cloth offcuts separately from fur, thread and oil, recor
 
 - Selected flow: Cotton lining cutting offcut
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -289,7 +290,7 @@ Weigh waste thread ends and spool residues separately; no default loss percentag
 
 - Selected flow: Polyester sewing-thread waste
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -304,7 +305,7 @@ Include only actual maintenance oil drainage; record attributable drained mass, 
 
 - Selected flow: Spent mineral lubricating oil
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -326,7 +327,7 @@ Include only a cut, folded and laminated paper box matching the public identity;
 
 - Selected flow: Paper box `12d5d744-7725-4dbc-b102-43c80547f777`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_material; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -362,7 +363,7 @@ Include only irreparably rejected finished coats sent as waste, retaining measur
 
 - Selected flow: Rejected natural-fur cotton-lined coat
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; batch quantity divided by the same accepted net finished-coat mass in kg.
+- Amount rule: Measured attributable exchange per 1 kg reference flow using cp_waste; sum attributable quantities across the declared homogeneous reporting pool, including wholly rejected batches and rework, and divide once by that pool’s total accepted net finished-coat mass in kg under the declared reporting-pool calculation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
@@ -386,17 +387,17 @@ Include only irreparably rejected finished coats sent as waste, retaining measur
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_output` | pack | accepted finished output | weighing and acceptance record | batch; species; size; configuration; accepted net coat mass; moisture; rejects; packaging tare | Weigh accepted complete conditioned coats on calibrated scale, excluding all packaging; reconcile batch acceptance and count for completeness only. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
-| `cp_material` | cut; sew; pack | individual material issues | issue and return record | batch; row_id; supplier lot; composition; incoming state; issued mass; returned mass | Calibrated weighing of each atomic material, thread spool before/after and box tare; reconcile stores and bill of materials. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
-| `cp_water` | block | blocking water and vapour | water balance | batch; applied water mass; retained moisture change; recovered water; runoff; vent destination | Weigh application container before/after; measure retained/recovered/discharged water independently; attribute evaporation only to water balance closure, retain uncertainty. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
-| `cp_electricity` | sew | workstation electricity | meter reading | batch; CN geography; voltage; meter readings; run/idle time; measured loads; allocation fractions | Read calibrated workstation meter; reconcile bills and shared-load assignment before converting kWh to MJ. | kWh | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
-| `cp_waste` | cut; sew; pack | each separate waste stream | weighing and transfer note | batch; row_id; mass; composition; reuse status; recipient; treatment; rejects; maintenance period | Weigh each identified stream independently; document delayed oil drain attribution and rework, never net waste mass against raw input. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
+| `cp_output` | pack | accepted finished output | weighing and acceptance record | batch; species; size; configuration; accepted net coat mass; moisture; rejects; packaging tare; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage | Weigh accepted complete conditioned coats on calibrated scale, excluding all packaging; reconcile batch acceptance and count for completeness only. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
+| `cp_material` | cut; sew; pack | individual material issues | issue and return record | batch; row_id; supplier lot; composition; incoming state; issued mass; returned mass; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage | Calibrated weighing of each atomic material, thread spool before/after and box tare; reconcile stores and bill of materials. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
+| `cp_water` | block | blocking water and vapour | water balance | batch; applied water mass; retained moisture change; recovered water; runoff; vent destination; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage | Weigh application container before/after; measure retained/recovered/discharged water independently; attribute evaporation only to water balance closure, retain uncertainty. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
+| `cp_electricity` | sew | workstation electricity | meter reading | batch; CN geography; voltage; meter readings; run/idle time; measured loads; allocation fractions; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage | Read calibrated workstation meter; reconcile bills and shared-load assignment before converting kWh to MJ. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator. | kWh | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
+| `cp_waste` | cut; sew; pack | each separate waste stream | weighing and transfer note | batch; row_id; mass; composition; reuse status; recipient; treatment; rejects; maintenance period; reporting-pool ID; included batch IDs; wholly rejected batch and rework linkage | Weigh each identified stream independently; document delayed oil drain attribution and rework, never net waste mass against raw input. Aggregate every included batch under normalize_batch; preserve native row units and use the same positive total accepted kg denominator. | kg | each batch and attributable maintenance event | declared representative reporting period covering all batches and rework | garment factory and declared sewing contractors | per 1 kg reference flow | calibration, travellers, acceptance, invoices and reconciliation worksheets |
 
 ### Calculation Rules
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `normalize_batch` | all inventory rows | q_ref = q_batch / m_finished; q_batch is the attributable batch exchange in its row unit; m_finished is the accepted net finished-coat mass in kg for the same batch. | q_batch; m_finished; cp_output | exchange per 1 kg reference flow |  |
+| `normalize_batch` | all inventory rows | q_ref = Q_pool / M_accepted. Define one homogeneous reporting pool by site, period, species, supplied state and declared coat configuration/size mix. Q_pool sums each row’s attributable measured or calculated quantities in its native unit across every included batch, including wholly rejected batches, rework and attributable maintenance; exclude duplicate internal transfers. M_accepted is the sum of accepted net finished-coat kg from cp_output for the same pool, counting finally accepted reworked output once. Never divide a zero-output batch separately or omit its burdens. M_accepted must be positive; if the whole pool has no accepted output, retain absolute quantities, report normalization unavailable and require review, not zero or a fabricated denominator. | Q_pool; M_accepted; cp_output; batch and reporting-pool ledger | exchange per 1 kg reference flow |  |
 | `electricity_conversion` | `sewing_electricity` | MJ = kWh × 3.6; use attributable measured electricity, retaining its public Net calorific value reference property. | kWh; cp_electricity | MJ |  |
 | `water_balance` | `blocking_vapour` | Evaporated water = applied water minus retained moisture increase, recovered water and independently measured runoff; a negative residual or unexplained imbalance requires investigation, not zero clipping. | cp_water | batch air water-vapour mass before normalize_batch |  |
 
@@ -413,7 +414,7 @@ Include only irreparably rejected finished coats sent as waste, retaining measur
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference` | `finished_coat` | Verify 1 kg complete accepted conditioned coat net output with all qualifiers and cp_output; dressed pelt, artificial fur and headgear cannot substitute for the coat. | `cpc30-notes` |
-| `validate_rows` | all inventory rows | Require atomic identity, same accepted-output denominator, compatible public reference property/unit and attributable collection records. Every active exchange needs an amount; unresolved UUIDs are declared identity gaps, not automatic proxies. |  |
+| `validate_rows` | all inventory rows | Require atomic identity, same accepted-output denominator, compatible public reference property/unit and attributable collection records. Every active exchange needs an amount; unresolved UUIDs are declared identity gaps, not automatic proxies. Verify pool membership and inclusion of wholly rejected batches; require positive M_accepted before producing any normalized result, and retain absolute inventories when no accepted output exists. |  |
 | `validate_route` | block; sew | Check conditional blocking, oil and waste applicability against actual records; verify immediate air-vapour medium and CN <1 kV electricity. Any added chemical or effluent route needs explicit exchanges and treatment boundary before dataset acceptance. |  |
 | `validate_balance` | batch records | Investigate mass/water residuals, output acceptance and rework; retain calibration and uncertainty. Factory quality acceptance does not establish health, legal or methodological approval. |  |
 

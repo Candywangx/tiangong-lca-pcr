@@ -96,10 +96,10 @@ measurement_rules:
   - id: measured_physical_basis
     applies_to: "all inventory rows"
     required_property_ref:
-      name: "Mass; Volume; Length; Net calorific value"
+      name: "Mass; Volume; Length; Net calorific value; Number of items"
       uuid: ""
-    required_unit: "kg; m3; m; MJ"
-    rule: "Preserve each direct-read reference property and unit group. Weigh same-lot net masses; meter volume at recorded temperature/pressure; survey cable/pipe lengths and geometry. Volume-to-mass or length-to-mass needs independently measured density or linear mass for that exact state; never change a public property to Mass or use a default density."
+    required_unit: "kg; m3; m; MJ; item"
+    rule: "Preserve each direct-read reference property and unit group. Weigh same-lot net masses; meter volume at recorded temperature/pressure; survey cable/pipe lengths and geometry. Volume-to-mass or length-to-mass needs independently measured density or linear mass for that exact state; never change a public property to Mass or use a default density. Use Number of items/item for one complete accepted pipeline entity under reference_count and cp_delivery. The listed property/unit pairs apply to their respective exchanges; auxiliary quantities do not replace the reference output count."
   - id: electricity_units
     applies_to: "cn_lv_power; cn_mv_power"
     required_property_ref:
@@ -892,7 +892,7 @@ process_inventory:
           flow_ref:
             uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "Only actual measured direct release of the water substance to identified freshwater receiving body after any foreground treatment. Pollutant substances are additional exact elementary rows based on analysis. This is not waste sent to sewer/treatment, marine release, withdrawal or consumed water; do not infer harmlessness from this row."
+          description: "Only actual measured direct release of the water substance to an identified freshwater receiving body. If foreground treatment occurs, measure the release after that treatment; if no treatment occurs, retain the actual direct release. Pollutant substances are additional exact elementary rows based on analysis. This is not waste sent to sewer/treatment, marine release, withdrawal or consumed water; do not infer harmlessness from this row."
           amount:
             expression: "Use the measured, reconciled attributable quantity from the linked protocol; aggregate per declared reference flow; no default amount."
             value_mode: "foreground_record"
@@ -1674,18 +1674,18 @@ data_sources:
     used_for: "Historical manufacturer steel-water-pipe supply, joint, lining/coating and inspection states; actual water-project specifications independently verified, not every material/latest standard"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:9445c694475939f6cebc20918c2815ae67e8e4be84e74006a3d552fe8dc78709"
+  source_sha256: "sha256:d950f0f6912733d0cb87257329b2e4df01df67d2e908e6c72130bd75b364ee4a"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8204"
+    - unit_id: "normative_8465"
       family: "system_boundary"
       span:
         start:
-          offset: 8204
+          offset: 8465
           line: 68
           column: 1
         end:
-          offset: 11636
+          offset: 11897
           line: 89
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Documented site, existing retained line/station/interfaces and actual supplier-gate delivered material/assembly state before construction |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Complete long-distance pipeline physical delivery and identified related structures, excluding local distribution |\n| recursive_input_rule | Retained line/station is starting stock, not new reference output. A purchased same-category accepted work is linked once at its own delivery boundary, never recursively regenerated as onsite pipe manufacture. |\n| upstream_dataset_requirement | Verify supplier product/state, route/geography/period, primary property, transport interface and module coverage. Link separate material, equipment, utility and actual waste-management datasets; no automatic complete upstream coverage. |\n| disclosure | Construction foreground through actual acceptance; report every linked upstream module and omission independently. Do not claim complete cradle-to-gate or whole-life coverage from a construction account. |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| b_complete_delivery | Include actual mobilisation, route/working-area preparation, topsoil segregation, trench or support works, pipe receipt/stringing/bending, jointing and NDT, applicable coating repair, lowering/laying/anchorage, backfill, station civil/equipment installation, testing/retest, tie-in, required handover restoration and cleanup. Shared utility/emission records are task tagged and counted once. | ferc-construction-2017; ferc-upland-2013; saipem-subsea |\n| b_routes | Derive open-cut/HDD/tunnel/overland-supported/submarine and station requirements from actual design/as-built records. Include actual water control, drilling-fluid management, lay/support vessels, trench/protection works and shore approach. Missing route materials or processes must be added as atomic rows before a complete project dataset; conditional cards cannot delete actual scope. | ferc-wetland-2013; saipem-subsea; un-cpc3-2025 |\n| b_supplied_state | Separate supplied-pipe/coating/assembly manufacture from field joining, protection, transport and installation. Supplier factory testing is upstream; actual construction tests are foreground. Record actual onsite fabrication/batching as distinct inputs/processes; never duplicate embedded steel/concrete/water or coating ingredients. | ferc-construction-2017; nwpipe-steel-water-2019; phmsa-hydrotest |\n| b_stages | Include removal of existing obstructions and temporary works actually needed for construction, without pretending it is future final demolition. Exclude posthandover transport operation, routine pumping/compression, maintenance/renewal and final demolition; extend separately with actual activity/duration/fate evidence. | ferc-construction-2017; phmsa-hydrotest |\n| b_environment | Direct water-resource inputs, purchased technosphere water, wastewater to treatment and elemental discharge are different interfaces. Record emissions only for actual substance/media and evidenced occurrence. Noise, vibration, land/ecology, waterbody disturbance and drainage are surveyed impact context; lack of an applicable quantified flow is an explicit coverage gap, not zero impact. | ferc-construction-2017; ferc-wetland-2013; ferc-upland-2013 |\n\n"
@@ -1705,11 +1705,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8204
+              offset: 8465
               line: 68
               column: 1
             end:
-              offset: 8225
+              offset: 8486
               line: 68
               column: 22
           text: "## 5. System Boundary"
@@ -1725,15 +1725,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_65572"
+    - unit_id: "normative_65937"
       family: "allocation"
       span:
         start:
-          offset: 65572
+          offset: 65937
           line: 1124
           column: 1
         end:
-          offset: 67007
+          offset: 67372
           line: 1133
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| a_direct | Measure direct attribution by unit/reach/station/task. Separate shared equipment, water and logistics meters/activities first; any remaining allocation follows actual load/activity and conserves totals. Cost, default length or design load is not an arbitrary allocation key. | ferc-construction-2017 |\n| a_stock | Same-site soil, water and drilling-fluid reuse is an internal transfer: retain balances without repeatedly counting external purchases/withdrawals. Material manufacture and downstream waste treatment are separate; scrap labels grant no automatic substitution credit. | ferc-wetland-2013; ferc-upland-2013 |\n| a_reuse | Attribute asset/component manufacture from actual same-configuration net mass and supported dimensionless beneficiary shares, each share in [0,1] and cumulatively <=1 across all projects/periods/reuses. Record actual activity denominator and evidence; unknown lifetime/beneficiaries require review, never full manufacture reset per project. | ferc-construction-2017 |\n| a_product | The reference output is only the declared complete entity. Retained existing assets and transferred equipment are not newly manufactured co-products. Actual independently delivered co-products require process/measurement separation first, followed by physically evidenced allocation and review. | un-cpc3-2025 |\n\n"
@@ -1753,11 +1753,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 65572
+              offset: 65937
               line: 1124
               column: 1
             end:
-              offset: 65612
+              offset: 65977
               line: 1124
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1773,15 +1773,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_80793"
+    - unit_id: "normative_81158"
       family: "validation"
       span:
         start:
-          offset: 80793
+          offset: 81158
           line: 1171
           column: 1
         end:
-          offset: 82518
+          offset: 82883
           line: 1182
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| v_complete | All required and actually applicable conditional processes, complete reference delivery, bilingual row_id/rule_id sequences, correct basis and protocols must be present. Missing actually applicable measured line/station geometry or testing information makes the dataset incomplete; require evidenced not_applicable for genuinely nonincluded entity attributes. | un-cpc3-2025 |\n| v_boundary | Check supplied/site state, upstream/construction and pre/posthandover boundaries; prevent duplicate embedded materials, utilities, transport fuel, emissions and internal recycles. | ferc-construction-2017; ferc-wetland-2013 |\n| v_identity | Every adopted identity must meet public substance, route, geography, voltage, primary property/unit and environmental compartment limits. Exact empty-UUID rows remain review; do not claim complete flow identity. | ferc-construction-2017 |\n| v_tests | Check actual medium/state, test sections, results and repair/retest. Mill testing does not replace site acceptance; a passed test is not a PCR guarantee of no defects or regulatory approval. | phmsa-hydrotest |\n| v_balance | Measured material/energy/water/waste and shared activities conserve totals; each asset cumulative manufacture share <=1. Unknown lifetime/activity/relationships remain disclosed review, not default-filled balances. | ferc-construction-2017 |\n| v_emissions | Quantify only actual substance/compartment with applicable evidence. NO, NO2, NOx equivalents, particle fractions, fossil/biogenic carbon, liquid water/wastewater/resource water are not interchangeable; unsupported amounts remain unknown. | ferc-construction-2017 |\n\n"
@@ -1801,11 +1801,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 80793
+              offset: 81158
               line: 1171
               column: 1
             end:
-              offset: 80815
+              offset: 81180
               line: 1171
               column: 23
           text: "## 9. Validation Rules"
@@ -1825,245 +1825,245 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "b_complete_delivery"
       identity_kind: "explicit"
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 9435
+          offset: 9696
           line: 83
           column: 1
         end:
-          offset: 9910
+          offset: 10171
           line: 83
           column: 476
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_routes"
       identity_kind: "explicit"
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 9911
+          offset: 10172
           line: 84
           column: 1
         end:
-          offset: 10361
+          offset: 10622
           line: 84
           column: 451
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_supplied_state"
       identity_kind: "explicit"
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 10362
+          offset: 10623
           line: 85
           column: 1
         end:
-          offset: 10785
+          offset: 11046
           line: 85
           column: 424
     - pointer: "/system_boundary/rules/3"
       rule_id: "b_stages"
       identity_kind: "explicit"
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 10786
+          offset: 11047
           line: 86
           column: 1
         end:
-          offset: 11163
+          offset: 11424
           line: 86
           column: 378
     - pointer: "/system_boundary/rules/4"
       rule_id: "b_environment"
       identity_kind: "explicit"
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 11164
+          offset: 11425
           line: 87
           column: 1
         end:
-          offset: 11634
+          offset: 11895
           line: 87
           column: 471
     - pointer: "/allocation_rules/0"
       rule_id: "a_direct"
       identity_kind: "explicit"
-      unit_id: "normative_65572"
+      unit_id: "normative_65937"
       source_span:
         start:
-          offset: 65666
+          offset: 66031
           line: 1128
           column: 1
         end:
-          offset: 65980
+          offset: 66345
           line: 1128
           column: 315
     - pointer: "/allocation_rules/1"
       rule_id: "a_stock"
       identity_kind: "explicit"
-      unit_id: "normative_65572"
+      unit_id: "normative_65937"
       source_span:
         start:
-          offset: 65981
+          offset: 66346
           line: 1129
           column: 1
         end:
-          offset: 66299
+          offset: 66664
           line: 1129
           column: 319
     - pointer: "/allocation_rules/2"
       rule_id: "a_reuse"
       identity_kind: "explicit"
-      unit_id: "normative_65572"
+      unit_id: "normative_65937"
       source_span:
         start:
-          offset: 66300
+          offset: 66665
           line: 1130
           column: 1
         end:
-          offset: 66679
+          offset: 67044
           line: 1130
           column: 380
     - pointer: "/allocation_rules/3"
       rule_id: "a_product"
       identity_kind: "explicit"
-      unit_id: "normative_65572"
+      unit_id: "normative_65937"
       source_span:
         start:
-          offset: 66680
+          offset: 67045
           line: 1131
           column: 1
         end:
-          offset: 67005
+          offset: 67370
           line: 1131
           column: 326
     - pointer: "/validation_rules/0"
       rule_id: "v_complete"
       identity_kind: "explicit"
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 80869
+          offset: 81234
           line: 1175
           column: 1
         end:
-          offset: 81260
+          offset: 81625
           line: 1175
           column: 392
     - pointer: "/validation_rules/1"
       rule_id: "v_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 81261
+          offset: 81626
           line: 1176
           column: 1
         end:
-          offset: 81501
+          offset: 81866
           line: 1176
           column: 241
     - pointer: "/validation_rules/2"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 81502
+          offset: 81867
           line: 1177
           column: 1
         end:
-          offset: 81755
+          offset: 82120
           line: 1177
           column: 254
     - pointer: "/validation_rules/3"
       rule_id: "v_tests"
       identity_kind: "explicit"
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 81756
+          offset: 82121
           line: 1178
           column: 1
         end:
-          offset: 81978
+          offset: 82343
           line: 1178
           column: 223
     - pointer: "/validation_rules/4"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 81979
+          offset: 82344
           line: 1179
           column: 1
         end:
-          offset: 82234
+          offset: 82599
           line: 1179
           column: 256
     - pointer: "/validation_rules/5"
       rule_id: "v_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 82235
+          offset: 82600
           line: 1180
           column: 1
         end:
-          offset: 82516
+          offset: 82881
           line: 1180
           column: 282
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 8204
+          offset: 8465
           line: 68
           column: 1
         end:
-          offset: 8225
+          offset: 8486
           line: 68
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8204"
+      unit_id: "normative_8465"
       source_span:
         start:
-          offset: 8253
+          offset: 8514
           line: 72
           column: 1
         end:
-          offset: 9381
+          offset: 9642
           line: 79
           column: 221
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_65572"
+      unit_id: "normative_65937"
       source_span:
         start:
-          offset: 65572
+          offset: 65937
           line: 1124
           column: 1
         end:
-          offset: 65612
+          offset: 65977
           line: 1124
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_80793"
+      unit_id: "normative_81158"
       source_span:
         start:
-          offset: 80793
+          offset: 81158
           line: 1171
           column: 1
         end:
-          offset: 80815
+          offset: 81180
           line: 1171
           column: 23
 projection_metadata:
@@ -2073,5 +2073,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:9445c694475939f6cebc20918c2815ae67e8e4be84e74006a3d552fe8dc78709"
-  generated_content_sha256: "sha256:750c201c057e3d44b6be8148188b882d4049fe75a4e85a6732f828d497d12483"
+    sha256: "sha256:d950f0f6912733d0cb87257329b2e4df01df67d2e908e6c72130bd75b364ee4a"
+  generated_content_sha256: "sha256:d2c421cd5d57bd3f9d6e24ff25b804420726bb555f1133fc2f56e01d8c84d29e"

@@ -81,10 +81,10 @@ measurement_rules:
   - id: physical_quantities
     applies_to: "all inventory rows"
     required_property_ref:
-      name: "Mass; Volume; energy; mass*distance"
+      name: "Mass; Volume; energy; mass*distance; Number of items"
       uuid: ""
-    required_unit: "kg; m3; MJ; kg*km"
-    rule: "Preserve each public identity reference property and unit. Weigh material mass; use surveyed volume only with measured lot density for mass conversion. Meter water as volume. Preserve wet/dry state, fuel calorific basis and actual transport activity. Do not rewrite energy or volume into Mass."
+    required_unit: "kg; m3; MJ; kg*km; item"
+    rule: "Preserve each public identity reference property and unit. Weigh material mass; use surveyed volume only with measured lot density for mass conversion. Meter water as volume. Preserve wet/dry state, fuel calorific basis and actual transport activity. Do not rewrite energy or volume into Mass. These are row-specific property/unit pairs: mass/kg, volume/m3, energy/MJ, mass-distance/kg*km and the complete accepted road reference output Number of items/item; auxiliary material quantities do not replace that output count."
 process_map:
   - id: earthworks
     name: "Site preparation, excavation and embankment"
@@ -1165,18 +1165,18 @@ data_sources:
     used_for: "Construction dust is activity/weather dependent and needs operation-specific assessment. Historical TSP factor limitations support rejecting unqualified transfer to PM10; no numerical factor is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:36169054cb0d3b12231b485f0d811419907c320d056e66579a1eb37497afd10c"
+  source_sha256: "sha256:3c82f5ee302ab32f59bfabf3143e1a47eae268917bc8313512d0bc8916ca362b"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5435"
+    - unit_id: "normative_5687"
       family: "system_boundary"
       span:
         start:
-          offset: 5435
+          offset: 5687
           line: 57
           column: 1
         end:
-          offset: 8177
+          offset: 8429
           line: 77
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Documented site before initial construction and supplied construction products at their declared supplier gate |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Complete non-elevated road work within the actual project perimeter; CPC 53211 is coverage context |\n| recursive_input_rule | Existing road retained in place is starting stock, not newly produced road input; disclose its physical extent and intervention. Separately acquired same-category work needs its own bounded upstream dataset; do not recurse into this output or double-count existing construction. |\n| upstream_dataset_requirement | Link separately verified material/utility/equipment datasets with explicit production and transport boundary, route, geography and units. Supplier gate inventories alone do not prove complete upstream impact coverage. |\n| disclosure | Foreground initial construction and acceptance only; linked upstream modules reported separately with completeness. Not an unqualified cradle-to-gate or whole-life result. |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| b_construction | Include actual mobilization, site preparation, excavation/cut-fill, subgrade/base, paving, drainage, crossings, safety, site water/energy, corrections, temporary works and waste transfers required to deliver the configured entity. Record activity per task; site support rows cover that task energy once. | fhwa-pavement-lca-2016; fhwa-fp24-construction |\n| b_upstream | Purchased mixes/assemblies enter in their actual supplied state; extraction, cement/steel/bitumen manufacture, batch mixing and equipment fabrication stay upstream unless actually performed onsite and explicitly added as separate processes. Never count a purchased mixture and its ingredients simultaneously. | fhwa-pavement-lca-2016 |\n| b_later | Traffic operation, future maintenance/replacement and final demolition are excluded from this initial-construction dataset. Distinguish removal of existing assets during site preparation from future demolition. Work-zone diversion/delay and land-use/biodiversity are disclosed assessment gaps unless independently modeled; no inference of zero impact. | fhwa-pavement-lca-2016 |\n| b_extensions | For a route or structural component absent from the cards, extend the actual process and atomic exchanges using project quantities, original method evidence and identity checks before claiming complete project coverage. Blasting, piling, retaining structures, steel crossings, landscaping, lighting or electronic safety equipment cannot be silently omitted when installed. | fhwa-fp24-construction |\n\n"
@@ -1196,11 +1196,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5435
+              offset: 5687
               line: 57
               column: 1
             end:
-              offset: 5456
+              offset: 5708
               line: 57
               column: 22
           text: "## 5. System Boundary"
@@ -1216,15 +1216,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40979"
+    - unit_id: "normative_41231"
       family: "allocation"
       span:
         start:
-          offset: 40979
+          offset: 41231
           line: 710
           column: 1
         end:
-          offset: 42512
+          offset: 42764
           line: 718
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| a_task | Prefer separately metered task quantities and identifiable material lots. For shared utilities or haulage, partition using measured equipment hours with load/fuel evidence, metered volumes or actual consignments; preserve the denominator ledger and reconcile allocated totals to the original measured totals. Do not allocate by contract price or assumed equal lengths. | fhwa-pavement-lca-2016 |\n| a_reuse | Equipment fabrication is outside the default construction foreground; disclose this gap. When linked in an extended dataset, and for reusable temporary works, maintain one cross-project manufacturing-burden ledger: a use share equals attributable actual activity divided by evidenced cumulative service activity for the same asset and manufacturing scope. Cumulative shares over projects, periods and repeated use must not exceed one. Unknown denominator, future reuse or lifetime stays review; no full-burden reset each project. Report damage/replacement separately and reconcile stock. | fhwa-pavement-lca-2016 |\n| a_recycling | Separate internal reuse, exported waste and separately verified recovered product. No automatic avoided-production credit; retain transfer/treatment burden and disclose the actual recycling allocation boundary. Any separate substitution claim requires reviewed counterfactual, quality and destination evidence; do not create a fictitious co-product from spoil. | fhwa-pavement-lca-2016 |\n\n"
@@ -1244,11 +1244,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40979
+              offset: 41231
               line: 710
               column: 1
             end:
-              offset: 41019
+              offset: 41271
               line: 710
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1264,15 +1264,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50606"
+    - unit_id: "normative_50858"
       family: "validation"
       span:
         start:
-          offset: 50606
+          offset: 50858
           line: 750
           column: 1
         end:
-          offset: 51997
+          offset: 52249
           line: 759
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| v_reference | Reject incomplete/partial delivery, absent geometry/configuration/acceptance qualifiers, inconsistent work count or a mass/material-only output. Keep finished_road reference quantity, protocols and inventories on the same basis. | un-cpc3-constructions-2025; fhwa-pavement-lca-2016 |\n| v_routes | Check every as-built process and component against the declared perimeter and route; resolve absent cards before calling a concrete dataset complete. Validate layer/volume/receipt consistency, rejected work, water routes and waste destinations from actual records. | fhwa-fp24-construction |\n| v_identity | Verify UUID-specific chemical/physical identity, geography, voltage, medium/submedium, fossil/biogenic source and reference property/unit. No NO/NO2/N2O substitution, no resource-water/wastewater conflation and no composite emissions placeholder. |  |\n| v_completeness | Report construction coverage, linked upstream completeness, unquantified emissions/noise, work-zone effects and excluded later stages. Construction noise needs a documented acoustic indicator, method and receiving context; do not express dB as additive energy/mass or fabricate an elementary flow. Measurement consistency alone establishes neither scientific approval nor whole-life performance. | fhwa-pavement-lca-2016 |\n\n"
@@ -1292,11 +1292,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50606
+              offset: 50858
               line: 750
               column: 1
             end:
-              offset: 50628
+              offset: 50880
               line: 750
               column: 23
           text: "## 9. Validation Rules"
@@ -1316,193 +1316,193 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "b_construction"
       identity_kind: "explicit"
-      unit_id: "normative_5435"
+      unit_id: "normative_5687"
       source_span:
         start:
-          offset: 6643
+          offset: 6895
           line: 72
           column: 1
         end:
-          offset: 7016
+          offset: 7268
           line: 72
           column: 374
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_5435"
+      unit_id: "normative_5687"
       source_span:
         start:
-          offset: 7017
+          offset: 7269
           line: 73
           column: 1
         end:
-          offset: 7367
+          offset: 7619
           line: 73
           column: 351
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_later"
       identity_kind: "explicit"
-      unit_id: "normative_5435"
+      unit_id: "normative_5687"
       source_span:
         start:
-          offset: 7368
+          offset: 7620
           line: 74
           column: 1
         end:
-          offset: 7758
+          offset: 8010
           line: 74
           column: 391
     - pointer: "/system_boundary/rules/3"
       rule_id: "b_extensions"
       identity_kind: "explicit"
-      unit_id: "normative_5435"
+      unit_id: "normative_5687"
       source_span:
         start:
-          offset: 7759
+          offset: 8011
           line: 75
           column: 1
         end:
-          offset: 8175
+          offset: 8427
           line: 75
           column: 417
     - pointer: "/allocation_rules/0"
       rule_id: "a_task"
       identity_kind: "explicit"
-      unit_id: "normative_40979"
+      unit_id: "normative_41231"
       source_span:
         start:
-          offset: 41073
+          offset: 41325
           line: 714
           column: 1
         end:
-          offset: 41479
+          offset: 41731
           line: 714
           column: 407
     - pointer: "/allocation_rules/1"
       rule_id: "a_reuse"
       identity_kind: "explicit"
-      unit_id: "normative_40979"
+      unit_id: "normative_41231"
       source_span:
         start:
-          offset: 41480
+          offset: 41732
           line: 715
           column: 1
         end:
-          offset: 42106
+          offset: 42358
           line: 715
           column: 627
     - pointer: "/allocation_rules/2"
       rule_id: "a_recycling"
       identity_kind: "explicit"
-      unit_id: "normative_40979"
+      unit_id: "normative_41231"
       source_span:
         start:
-          offset: 42107
+          offset: 42359
           line: 716
           column: 1
         end:
-          offset: 42510
+          offset: 42762
           line: 716
           column: 404
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_50606"
+      unit_id: "normative_50858"
       source_span:
         start:
-          offset: 50682
+          offset: 50934
           line: 754
           column: 1
         end:
-          offset: 50981
+          offset: 51233
           line: 754
           column: 300
     - pointer: "/validation_rules/1"
       rule_id: "v_routes"
       identity_kind: "explicit"
-      unit_id: "normative_50606"
+      unit_id: "normative_50858"
       source_span:
         start:
-          offset: 50982
+          offset: 51234
           line: 755
           column: 1
         end:
-          offset: 51286
+          offset: 51538
           line: 755
           column: 305
     - pointer: "/validation_rules/2"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_50606"
+      unit_id: "normative_50858"
       source_span:
         start:
-          offset: 51287
+          offset: 51539
           line: 756
           column: 1
         end:
-          offset: 51553
+          offset: 51805
           line: 756
           column: 267
     - pointer: "/validation_rules/3"
       rule_id: "v_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_50606"
+      unit_id: "normative_50858"
       source_span:
         start:
-          offset: 51554
+          offset: 51806
           line: 757
           column: 1
         end:
-          offset: 51995
+          offset: 52247
           line: 757
           column: 442
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5435"
+      unit_id: "normative_5687"
       source_span:
         start:
-          offset: 5435
+          offset: 5687
           line: 57
           column: 1
         end:
-          offset: 5456
+          offset: 5708
           line: 57
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5435"
+      unit_id: "normative_5687"
       source_span:
         start:
-          offset: 5484
+          offset: 5736
           line: 61
           column: 1
         end:
-          offset: 6589
+          offset: 6841
           line: 68
           column: 189
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40979"
+      unit_id: "normative_41231"
       source_span:
         start:
-          offset: 40979
+          offset: 41231
           line: 710
           column: 1
         end:
-          offset: 41019
+          offset: 41271
           line: 710
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50606"
+      unit_id: "normative_50858"
       source_span:
         start:
-          offset: 50606
+          offset: 50858
           line: 750
           column: 1
         end:
-          offset: 50628
+          offset: 50880
           line: 750
           column: 23
 projection_metadata:
@@ -1512,5 +1512,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:36169054cb0d3b12231b485f0d811419907c320d056e66579a1eb37497afd10c"
-  generated_content_sha256: "sha256:3d37f6147826656fb4dc1fb1aaad135a036c4c6f9f4cdbf4384f31a3282987b5"
+    sha256: "sha256:3c82f5ee302ab32f59bfabf3143e1a47eae268917bc8313512d0bc8916ca362b"
+  generated_content_sha256: "sha256:7bb99ce018f1af9c37635d7289f68054272c5f64471091373c2e7f0be7e0c27b"

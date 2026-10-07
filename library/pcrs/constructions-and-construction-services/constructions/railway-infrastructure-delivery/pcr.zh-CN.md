@@ -53,7 +53,7 @@ item 是公开 Item(s) 数量单位的显示别名。一个单元为精确定义
 | --- | --- | --- | --- | --- |
 | delivery_count | reference_railway | 物品数量 | item | 1 件对应 cp_delivery 确认的一个完整声明交付单元；所有清单行采用每声明的参考流基准。 |
 | geometry | reference_railway | 实测几何 | m | cp_delivery 采集竣工链程、各轨长度/数量、坡度、断面及配置；路线公里不等于轨道公里，不能据造价换算质量。 |
-| material_state | all inventory rows | 质量 | kg | 按实际供货/废物状态计质量；干湿状态、部件内含范围和证书线密度均须 cp_materials/cp_waste 支持；m3 转 kg 须同批次实际密度，不设通用密度。 |
+| material_state | 以质量为主属性的物料及废物清单行 | 质量 | kg | 按实际供货/废物状态计质量；干湿状态、部件内含范围和证书线密度均须 cp_materials/cp_waste 支持；m3 转 kg 须同批次实际密度，不设通用密度。 本质量规则不替代能量、体积或件数交换的原生 MJ、m3 或 item 属性与单位。对这些行进行辅助质量核对时，须单独关联原交换并采用实际匹配状态的证据。 |
 | energy_units | electricity_lv, electricity_mv, test_power | 净热值 | MJ | 保留公开净热值属性及能量单位组；kWh × 3.6 = MJ；柴油质量不是 MJ，热值须批次实测/证书支持。 |
 | water_identity | mains_water, river_water, drain_return, washout | 体积 | m3 | 供水、河流资源取水、河流排水及收集冲洗液分别计量；净取水不能代替各总交换。 |
 
@@ -462,7 +462,7 @@ item 是公开 Item(s) 数量单位的显示别名。一个单元为精确定义
 
 - 选定流：完整铁路牵引变压器
 - 流属性/单位：物品数量 / item
-- 数量规则：按设备位号记录实际安装和验收数量；无基于容量的默认质量。
+- 数量规则：统计本次交付实际消耗的可归属台数，包括验收前损坏、报废并被替换的台数。核对总收货加可归属期初库存，减经核实退回或转移及期末可复用库存；设备位号和安装验收台数另行保留。不按容量推定默认质量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
@@ -512,7 +512,7 @@ item 是公开 Item(s) 数量单位的显示别名。一个单元为精确定义
 
 - 选定流：完整铁路联锁控制机柜
 - 流属性/单位：物品数量 / item
-- 数量规则：统计声明交付边界内安装并验收的机柜。
+- 数量规则：统计声明交付边界内实际消耗的可归属机柜，包含验收前失效、损坏并被替换的机柜。按cp_materials核对收货、退回或转移及库存变化；安装验收件数另作配置证据保留。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
@@ -577,7 +577,7 @@ item 是公开 Item(s) 数量单位的显示别名。一个单元为精确定义
 
 - 选定流：完整电动索道驱动单元
 - 流属性/单位：物品数量 / item
-- 数量规则：统计实际验收完整驱动单元，保留实测安装配置。
+- 数量规则：统计全部实际消耗的可归属完整驱动单元，包含验收前被拒收或失效且被替换的单元，扣除经核实退回、转移及剩余可复用库存。实测安装配置和验收台数另行保留；检修耗材仍为独立交换。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
@@ -892,10 +892,10 @@ item 是公开 Item(s) 数量单位的显示别名。一个单元为精确定义
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_delivery | handover | reference_railway | acceptance_record | 合同边界；场址；配置；链程；实测路线和各轨道长度/数量；轨距；断面；系统范围；验收状态 | 核对竣工测量、合同清单、设备标识、测试和签署验收记录；确认一个交付单元 | item | 每次交付 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
-| cp_materials | all foreground processes | each supplied material/component | delivery_record | row_id；工程包；批次；供货状态；组成；质量/体积/件数；证书密度或线密度；退货；库存；安装量；损耗 | 逐行核对供货票据、校准称量/批次证书及实测安装几何；不同牌号/状态分开 | kg; m3; item | 逐批次 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
+| cp_materials | all foreground processes | each supplied material/component | delivery_record | row_id；工程包；批次；供货状态；组成；质量/体积/件数；证书密度或线密度；退货；库存；安装量；损耗；设备位号；失效及替换件数；可归属期初期末库存；经核实退回及转移 | 逐行核对供货票据、校准称量/批次证书及实测安装几何；不同牌号/状态分开；输入件数=可归属总收货+期初库存−经核实退回或转移−期末可复用库存。纳入验收前失效或返工消耗的设备；安装验收件数及实际废物分别核对，不抵消投入制造负担。 | kg; m3; item | 逐批次 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
 | cp_energy | site_operation; handover | each fuel and electricity connection | meter_record | row_id；设备；任务；时间；读数；燃料批次密度/化石份额；地区；电压；分表；退回/库存变化 | 核对校准电表/油表、领退记录与设备任务日志；焊接、压实、抽水、吊装、运输与测试分别归属 | kg; MJ | 每班及测试 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
 | cp_water | earthwork; site_operation | mains_water; river_water; drain_return; washout | water_record | row_id；来源；受纳体；量；时间；用途；取水/排水门；处理；液体组成；储罐库存；复用 | 各流独立校准流量计或实测储罐体积；核对采样、去向和取水/排水记录 | m3 | 每日及外运 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
-| cp_waste | earthwork; site_operation | each segregated waste | dispatch_record | row_id；来源工序；分类；组成；含水率；称重；去向；接收者；返用；库存 | 逐物流核对校准地磅票与合法接收记录；危险物、旧拆除料和新施工废料分开 | kg | 每次外运 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
+| cp_waste | earthwork; site_operation | 按质量计量的分类废物流；不包括由cp_water采集的体积型washout | dispatch_record | row_id；来源工序；分类；组成；含水率；称重；去向；接收者；返用；库存 | 逐质量型物流核对校准地磅票与合法接收记录；危险物、旧拆除料和新施工废料分开。收集washout按cp_water保留实测体积/m3，不强制纳入本kg台账；另行分离的固体作为独立实测质量流，不与外运液体所含固体重复计入。 | kg | 每次外运 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
 | cp_emissions | site_operation | co2; no; no2; pm10; additional actual species | emission_record | row_id；物种/CAS；介质/子介质；即时/长期；活动；方法；因子来源；浓度；流率；持续时间；控制；不确定性 | 采用现场代表性采样或可追溯场址/设备模型与实际活动；记录未测项，禁止把总 NOx 强拆为 NO/NO₂ | kg | 按事件/代表性工况 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
 | cp_equipment | all foreground processes | equipment and reusable temporary component burdens | asset_ledger | 资产标识；制造负担边界；累计活动/使用证据；项目活动；历史与本次份额；剩余份额；临设处置 | 核对同一资产跨项目活动台账及供应方证据，独立检查累计份额不超过一；未知值标记审查 | item; h | 每次使用/交付 | 实际施工起点至验收，包括返工 | 声明场址和交付单元 | 每声明的参考流 | 原始票据、校准、竣工测量、批次证书与范围核对 |
 

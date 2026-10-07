@@ -52,7 +52,7 @@ content_maturity: authored_methodology
 | rule_id | 适用于 | 要求属性 | 要求单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | reference_count | 参考产品 | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | item | 同一完整验收工程的参考产出为 1 件，采用 cp_delivery 计数。所有清单行及采集汇总按每声明的参考流。不以假定质量、长度或面积替代分母。 |
-| physical_quantities | all inventory rows | Mass; Volume; energy; mass*distance | kg; m3; MJ; kg*km | 保留每个公开身份主属性及单位。称量材料质量；仅在有批次实测密度时将测量体积换算为质量。水按体积计量；保留干湿状态、燃料热值基准与实际运输活动。不将能量或体积改写为 Mass。 |
+| physical_quantities | all inventory rows | Mass; Volume; energy; mass*distance; Number of items | kg; m3; MJ; kg*km; item | 保留每个公开身份主属性及单位。称量材料质量；仅在有批次实测密度时将测量体积换算为质量。水按体积计量；保留干湿状态、燃料热值基准与实际运输活动。不将能量或体积改写为 Mass。 属性与单位按行对应：质量/kg、体积/m3、能量/MJ、质量距离/kg*km，完整验收道路参考输出采用物品数量（Number of items）/item；辅助物量不替代该输出件数。 |
 
 ## 5. 系统边界
 

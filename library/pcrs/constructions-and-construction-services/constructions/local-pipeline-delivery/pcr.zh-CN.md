@@ -54,7 +54,7 @@ content_maturity: authored_methodology
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | reference_count | reference product | Number of items | item | 产出为同一完整验收配置的1件，由cp_delivery证明。全部清单和协议汇总均为每声明的参考流。 |
-| preserve_physical_units | all inventory rows | Mass; Volume; Length | kg; m3; m | 保留真实主属性。称净量、测实际长度、按声明条件计量液体或气体体积。仅以同批实测密度或线质量及校准依据换算；不改写公开属性，不用筛查密度。 |
+| preserve_physical_units | 原生主属性为质量、体积或长度的清单行 | Mass; Volume; Length | kg; m3; m | 保留真实主属性。称净量、测实际长度、按声明条件计量液体或气体体积。仅以同批实测密度或线质量及校准依据换算；不改写公开属性，不用筛查密度。 电力按electricity_basis保留净热值/MJ及实测kWh到MJ换算；完整验收管网参考输出保留物品数量/item。这些能量交换及件数输出不适用本物料单位规则，并保留各自分子和参考量作用。 |
 | electricity_basis | cn_lv_power; cn_mv_power | Net calorific value | MJ | 保留已核实能量属性及单位组；实测kWh×3.6=MJ。分开用户电压接口，排除变压或发电机重复计入。 |
 | asset_share | shoring_steel; excavator_share; wood_pallet | Mass | kg | 实测同配置资产质量乘以有据的无量纲制造份额，得到归属投入而非参考产品质量。各受益者或重复使用累计份额须<=1；寿命或活动未知时须审查。 |
 | chemical_fraction | hypochlorite_solution; no_air; no2_air; pm25_air; pm_coarse_air | Mass | kg | 溶液质量与有效氯分开；分子物种及不重叠颗粒粒级分开。没有有据换算及实际流量及时间，总NOx、总尘或单个浓度不能证明这些交换。 |
@@ -1350,7 +1350,6 @@ content_maturity: authored_methodology
 | calc_water | all water and test-medium rows | 每声明参考流核对各外部取水或供应、真实回用、保留储存或管存、返还、废物转移及最终释放。密度或气体条件换算仅用真实记录的相容状态，Volume不自动等于Normal Volume。 | cp_water; cp_testing | 每声明参考流的独立m3或kg |  |
 | calc_analytes | chloride_freshwater | 每声明参考流在明确浓度转kg后，求和实测氯离子浓度×匹配真实最终排水体积；总释放及有据背景修正分开报告。不得假定将游离氯转为氯离子。 | cp_water | 每声明参考流的氯离子kg |  |
 | calc_air | all elementary air emission rows | 每声明参考流在同条件积分匹配物种或粒级浓度×气体体积，或有据适用因子×实测真实活动，并换算kg。通过碳平衡计算化石CO2须有实际化石碳含量及氧化证据；不提供固定率、完全氧化或无据物种拆分。 | cp_air | 每声明参考流的独立真实物种kg |  |
-
 | calc_thermal_test | test_hot_water; test_hot_water_return; test_steam; condensate_return | 每声明参考流，按真实同一试验回路质量流量与时间、实测供回状态及有据适用焓差计算传递热量；体积转质量须实际同状态密度。热水供回温度、蒸汽品质及回收路径分别核对，明确换算为MJ，未知物性、量值或供应边界保持审查；此热量台账不再加计购入完整已加热流体的内含热量。 | cp_testing; cp_energy; cp_water | 每声明参考流的实测状态与有据试验热量MJ记录 | `ufgs-heat-2024` |
 
 ### 数据质量要求

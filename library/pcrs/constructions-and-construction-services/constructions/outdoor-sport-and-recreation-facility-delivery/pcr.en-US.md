@@ -55,7 +55,7 @@ Type-specific qualifiers apply to the declared configuration: document sport/cou
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | reference_count | reference product | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | item | Exactly 1 item complete accepted facility, collected with cp_handover; all inventory/protocols per declared reference flow. |
-| physical_records | materials and geometry | Mass; Volume; Area; Length | kg; m3; m2; m | Measured/certified deliveries/geometry; volume/area-to-mass needs same-material/state measured density/areal mass, no invented facility mass. |
+| physical_records | materials and geometry | Mass; Volume; Area; Length; Number of items | kg; m3; m2; m; item | Measured/certified deliveries/geometry; volume/area-to-mass needs same-material/state measured density/areal mass, no invented facility mass. Number of items/item applies to live planting materials garden_tree and garden_shrub under cp_plant; retain actual species, specification and counted quantity. Mass/kg, volume/m3, area/m2 and length/m apply only to matching native quantities. Convert only with measured applicable evidence; do not force living plants into mass or geometry. |
 | energy_property | electricity and diesel | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66`; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | MJ; kg | Electricity MJ, metered kWh times 3.6; diesel kg, volume-to-mass needs batch density. Property coefficients are not physical density/heat content. |
 | cable_length | `cable` | Length `838aaa23-0117-11db-92e3-0800200c9a66` | m | Preserve public Length/m; reconcile installed/cut/return length, never rewrite to Mass. |
 | water_state | water interfaces | Volume `93a60a56-a3c8-22da-a746-0800200c9a66`; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | m3; kg | Conserve volume ledger separately; sea-resource primary Mass/kg needs weighing or supported same-salinity/temperature density, discharge Volume/m3; constituents separate. |
@@ -76,6 +76,7 @@ Type-specific qualifiers apply to the declared configuration: document sport/cou
 | rule_id | Rule | source_ids |
 | --- | --- | --- |
 | b_delivery | Include actual preparation, selected drainage/surfaces/planting/structures/installations, utilities/logistics/testing/correction through declared final acceptance including contractual establishment. Select the real complete configuration and evidence absent alternatives. | un-cpc3-2025; cedd-landscape-2026; se-natural-2025 |
+| b_consumed_inputs | All purchased input rows retain actual attributable consumption, including damage, rejects, cutoffs and replacements before final acceptance. Local installed/applied/planted wording identifies intended route/configuration and has this explicit exception for consumed pre-installation or establishment losses; it does not restrict inputs to successful installation. In native units reconcile gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock, keeping installed/accepted quantities and actual waste separate. Preserve exact supplied state and assembly boundaries; do not add embedded constituents again. | |
 | b_supplied_state | Material and assembly manufacture are separate upstream links at actual supplied gates. Onsite concrete batching, soil stabilization, hydroseeding, rubber mixing, welding/coating need actual ingredients/equipment/releases separately; do not charge complete purchased assembly plus its embodied ingredients. | se-artificial-2013; cedd-landscape-2026 |
 | b_interfaces | Integral works count once. Independent complete building/road/harbour/pipeline/cable works need bounded upstream interfaces; their methods may inform components but do not replace complete recreation-facility methodology. Retained assets are starting stock. | un-cpc3-2025; epa-marina-2001 |
 | b_environment | Separate supply/abstraction/discharge/treatment liquid and waste sediment/plume. Actual contaminants, infill losses, chemical releases and soil/land-use carbon require evidence and individual rows. Noise/vibration/habitat/occupation need independently bounded assessment; unmeasured is not zero. | epa-marina-2001; epa-heavy-construction-1995 |
@@ -182,17 +183,17 @@ Choose actual undrained/piped/supplementary/engineered-rootzone profile from sit
 
 ###### Perforated high-density polyethylene land-drain pipe (`drain_pipe`)
 
-Actual installed HDPE perforated pipe only; document resin, holes, diameter/wall/length and mass. Generic plastic-pipe or unformed polymer identity is insufficient.
+Actual supplied drainage pipe consumed for the declared route, including pre-installation damage, cutoffs and rejected/replaced pipe. Retain exact polymer, perforation, diameter, wall, supplier state and measured mass; record installed length separately. Preserve HDPE resin and perforation evidence; a generic plastic-pipe or unformed-polymer identity is insufficient. Do not substitute pressure irrigation pipe for the specified drain.
 
 - Selected flow: Perforated high-density polyethylene land-drain pipe
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_drainage; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_drainage`
 - Sources: `se-natural-2025`; `cedd-landscape-2026`
 
 ###### Washed angular mineral drainage gravel (`drain_gravel`)
@@ -201,13 +202,13 @@ Only the actual specified drainage profile; project/laboratory grading and perme
 
 - Selected flow: Washed angular mineral drainage gravel
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_drainage; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_drainage`
 - Sources: `se-natural-2025`; `cedd-landscape-2026`
 
 ###### Silica sand (`drain_sand`)
@@ -216,13 +217,13 @@ Only actual supplied silica sand for the selected drainage/rootzone profile. Ind
 
 - Selected flow: Silica sand
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_drainage; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_drainage`
 - Sources: `se-natural-2025`; `cedd-landscape-2026`
 
 ###### Nonwoven polypropylene separation geotextile (`geotextile`)
@@ -231,28 +232,28 @@ Actual specified filter/separation fabric; document polymer, areal mass, permeab
 
 - Selected flow: Nonwoven polypropylene separation geotextile
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_drainage; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_drainage`
 - Sources: `se-natural-2025`; `cedd-landscape-2026`
 
 ###### High-density polyethylene irrigation pressure pipe (`irrigation_pipe`)
 
-Only actual installed pipe; grade/pressure/fittings and gate are required. Separate perforated drains and add actual sprinkler/valve assemblies individually.
+Actual supplied irrigation pipe consumed for the declared route, including pre-installation damage, cutoffs and rejected/replaced pipe; grade, pressure, fittings and supply gate remain required. Record consumed quantity and installed length separately. Perforated drains and actual sprinkler/valve assemblies remain separate rows.
 
 - Selected flow: High-density polyethylene irrigation pressure pipe
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_drainage; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_drainage`
 - Sources: `se-natural-2025`; `cedd-landscape-2026`
 
 ### Process: Sport/racing surfaces and establishment (`surface`)
@@ -269,28 +270,28 @@ Use public Mass/kg identity only for actual matching 16/32 crushed-stone layer; 
 
 - Selected flow: crushed stone 16/32 `4f197bee-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Perennial ryegrass seed (Lolium perenne) (`grass_seed`)
 
-Only actual seed-established ryegrass; record cultivar/purity/germination and application. Actual other taxa or seed-mixture components need separate rows; not a compulsory one-species route.
+Only actual separately supplied ryegrass seed; record cultivar, purity, germination and application. Separately purchased seeds of other taxa and inputs actually mixed onsite require their own rows, with real mixing activity retained. A purchased preblended seed mixture instead requires one row for that actual supplied mixture with supplier composition, batch and upstream mixing/supply boundary; its embedded seed species are composition evidence, not additional purchased input rows. Separately added seed outside the purchased mixture remains an extra exchange. No compulsory one-species route is assumed.
 
 - Selected flow: Perennial ryegrass seed (Lolium perenne)
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Perennial ryegrass turf sod (`turf_sod`)
@@ -299,13 +300,13 @@ Conditional actual sod; retain backing soil, moisture, cultivar, area and measur
 
 - Selected flow: Perennial ryegrass turf sod
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Artificial grass carpet (`artificial_carpet`)
@@ -314,13 +315,13 @@ Only an actual supplied synthetic carpet assembly with independently verified su
 
 - Selected flow: Artificial grass carpet
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Silica sand (`infill_sand`)
@@ -329,13 +330,13 @@ Conditional actual silica-sand infill for a specified installed sports surface; 
 
 - Selected flow: Silica sand
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Recycled tyre-derived SBR rubber infill granules (`sbr_infill`)
@@ -344,13 +345,13 @@ Only actual specified recycled tyre SBR infill; retain composition/size, contami
 
 - Selected flow: Recycled tyre-derived SBR rubber infill granules
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Vulcanized EPDM sport-surface granules (`epdm_granules`)
@@ -359,13 +360,13 @@ Only actual EPDM surface; colour/additives and virgin/recycled origin are record
 
 - Selected flow: Vulcanized EPDM sport-surface granules
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Two-component polyurethane sports-surface binder (`surface_binder`)
@@ -374,13 +375,13 @@ Only actual two-component supplied formulation with declared components/ratio/cu
 
 - Selected flow: Two-component polyurethane sports-surface binder
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Prefabricated recycled SBR rubber shockpad sheet (`shockpad`)
@@ -389,13 +390,13 @@ Actual specified supplied sheet with thickness/areal mass/binder and tests. An i
 
 - Selected flow: Prefabricated recycled SBR rubber shockpad sheet
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ###### Asphalt mixture (`asphalt_course`)
@@ -404,13 +405,13 @@ Actual factory-supplied aggregate/binder/filler mix for courts, racing course, t
 
 - Selected flow: Asphalt mixture `ad29a865-2fd6-41da-99d2-9669b9c7984d`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_surface; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_surface`
 - Sources: `se-natural-2025`; `se-artificial-2013`; `usga-green-2018`
 
 ### Process: Garden, habitat and planting establishment (`landscape`)
@@ -457,13 +458,13 @@ Only actual tested rootzone amendment with feedstock, maturity, moisture and act
 
 - Selected flow: Mature screened green-waste compost
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_landscape; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_landscape`
 - Sources: `cedd-landscape-2026`; `defra-zoo-2012`; `usga-green-2018`
 
 ###### Ammonium nitrate fertilizer (`fertilizer`)
@@ -472,13 +473,13 @@ Only actual test/agronomy-based establishment application; retain formulation/N 
 
 - Selected flow: Ammonium nitrate fertilizer
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_landscape; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_landscape`
 - Sources: `cedd-landscape-2026`; `defra-zoo-2012`; `usga-green-2018`
 
 ###### Clean untreated wood-chip landscape mulch (`wood_mulch`)
@@ -487,13 +488,13 @@ Only actual mulching with provenance, contamination/moisture and applied/returne
 
 - Selected flow: Clean untreated wood-chip landscape mulch
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_landscape; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_landscape`
 - Sources: `cedd-landscape-2026`; `defra-zoo-2012`; `usga-green-2018`
 
 ### Process: Civil structures, enclosures and coastal access (`structure`)
@@ -510,13 +511,13 @@ Actual delivered concrete for slabs/kerbs/foundations or marina structures; reta
 
 - Selected flow: Fresh ready-mixed Portland-cement concrete
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Hot rolled rebar steel (`reinforcing_bar`)
@@ -525,13 +526,13 @@ Only public-factory-matched hot-rolled low-alloy bar with C≤0.2%; verify grade
 
 - Selected flow: Hot rolled rebar steel `43050e3b-42be-465c-a021-17f606484151`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Galvanized welded steel enclosure mesh panel (`enclosure_mesh`)
@@ -540,28 +541,28 @@ Actual sports/zoo species-specific containment panel with aperture/coating/size 
 
 - Selected flow: Galvanized welded steel enclosure mesh panel
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Laminated safety-glass zoo viewing panel (`viewing_glass`)
 
-Only actual installed laminate with composition/thickness/fixings and species-specific resistance acceptance. Generic sheet glass is not this assembly; no assumed load.
+Actual supplied viewing laminate consumed for the declared enclosure, including pre-installation damage and rejected/replaced panels. Preserve composition, thickness, fixings and species-specific resistance acceptance evidence; record installed accepted geometry separately. Generic sheet glass is not this assembly; no assumed load.
 
 - Selected flow: Laminated safety-glass zoo viewing panel
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Preservative-treated softwood decking plank (`deck_plank`)
@@ -570,13 +571,13 @@ Actual park/beach/marina decking with species, preservative/retention, moisture,
 
 - Selected flow: Preservative-treated softwood decking plank
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Galvanized steel tubular marina guide pile (`steel_pile`)
@@ -585,13 +586,13 @@ Only actual pile route; retain steel/coating, dimensions/mass, driving/drilling 
 
 - Selected flow: Galvanized steel tubular marina guide pile
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Precast reinforced-concrete floating marina pontoon (`pontoon`)
@@ -600,13 +601,13 @@ Actual factory floating assembly with flotation core, shell/reinforcement/hardwa
 
 - Selected flow: Precast reinforced-concrete floating marina pontoon
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### AISI 316 stainless-steel mooring cleat (`mooring_cleat`)
@@ -615,13 +616,13 @@ Only actual alloy-matched installed cleat; specification, mass and fixings are c
 
 - Selected flow: AISI 316 stainless-steel mooring cleat
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Graded native-mineral beach nourishment sand (`beach_sand`)
@@ -630,13 +631,13 @@ Only actual beach-installation nourishment with compatible source/receiver sedim
 
 - Selected flow: Graded native-mineral beach nourishment sand
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_structure; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_structure`
 - Sources: `cedd-landscape-2026`; `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ### Process: Installed lighting and site equipment (`services`)
@@ -653,13 +654,13 @@ Only matching complete manufactured factory-gate LED-only luminaire; retain powe
 
 - Selected flow: Luminaires and lighting fittings, designed for use solely with light-emitting diode (LED) light sources `3253c9d6-cf81-41e6-8997-f59f437c3f2d`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_material_services; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_services`
 - Sources: `se-artificial-2013`; `defra-zoo-2012`; `epa-marina-2001`
 
 ###### Low-voltage cable (`cable`)
@@ -817,13 +818,13 @@ Actual separately collected washout with pH/solids/water and recipient; not dire
 
 - Selected flow: Concrete washout alkaline suspension for treatment
 - Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste_support; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_support`
 - Sources: `cedd-landscape-2026`; `epa-marina-2001`; `epa-heavy-construction-1995`
 
 ###### Used mineral hydraulic oil (`used_oil`)
@@ -832,13 +833,13 @@ Only actual onsite servicing/leak collection; retain composition and contained r
 
 - Selected flow: Used mineral hydraulic oil
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste_support; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_support`
 - Sources: `cedd-landscape-2026`; `epa-marina-2001`; `epa-heavy-construction-1995`
 
 ##### Elementary flows
@@ -1032,13 +1033,13 @@ Only actual offcut assembly with backing/fibre and recipient; detached infill/ot
 
 - Selected flow: Artificial grass carpet offcuts
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste_handover; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_handover`
 - Sources: `un-cpc3-2025`; `cedd-landscape-2026`; `se-natural-2025`
 
 ###### Hardened Portland-cement concrete offcuts (`concrete_offcuts`)
@@ -1047,20 +1048,20 @@ Actual non-hazardous solid waste from placing/correction; separate reinforcement
 
 - Selected flow: Hardened Portland-cement concrete offcuts
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste; preserve lot/state/unit, only when the stated physical condition occurs.
+- Amount rule: Measure the actual attributable atomic exchange for this facility using cp_waste_handover; preserve lot/state/unit, only when the stated physical condition occurs.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_handover`
 - Sources: `un-cpc3-2025`; `cedd-landscape-2026`; `se-natural-2025`
 
 ## 7. Allocation and Co-product Handling
 
 | rule_id | Rule | source_ids |
 | --- | --- | --- |
-| a_direct | Use cp_material/cp_energy/cp_transport to assign measured task/location/lot records before shared allocation. Use actual submetering or supported causal activity for shared plant/utilities; disclose residual and denominator. Cost/area is not automatically appropriate. |  |
+| a_direct | Use cp_material; cp_material_drainage; cp_material_surface; cp_material_landscape; cp_material_structure; cp_material_services/cp_energy/cp_transport to assign measured task/location/lot records before shared allocation. Use actual submetering or supported causal activity for shared plant/utilities; disclose residual and denominator. Cost/area is not automatically appropriate. |  |
 | a_reuse | Use cp_reuse as a persistent machine/formwork/component ledger across projects/periods/reuse scenarios; supported activity/service denominator and manufacture shares summing≤1 for same asset. Unknown denominator stays review. Do not restart full manufacture per project; loss/retirement/refurbishment separately evidenced. |  |
 | a_destination | Same-site reuse is internal transfer; external beneficial-use and disposal destinations are exclusive per portion. No automatic avoided virgin material/recycling/biogenic-carbon credit. Extended credits need reviewed method, equivalence and conservation. | cedd-landscape-2026; epa-marina-2001 |
 
@@ -1071,13 +1072,20 @@ Actual non-hazardous solid waste from placing/correction; separate reinforcement
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_handover | handover | Facility acceptance | acceptance_record | site/perimeter/functions; retained assets; original/as-built geometry; layers/track/course; taxa/enclosures/berth; tests/defects; final acceptance/establishment endpoint | Signed acceptance, surveyed geometry and full installed/established schedule, corrected defects | item | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
-| cp_material | applicable processes | Each atomic construction input | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
-| cp_plant | landscape | Each live taxon | nursery_planting_record | taxon/cultivar/rooting/container/size; received/planted/replaced count; geometry; dated inspection/acceptance and rejected destinations | Nursery counts and actual planting/replacement inspections through final acceptance | item | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_material | earth | imported_fill; topsoil | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted; pre-installation damaged/rejected/replaced quantities; opening/closing reusable stock; verified transfers | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation; apply b_consumed_inputs to all material/component inputs, retaining all actual consumed losses before installation/acceptance, separately from installed geometry; This protocol covers earth only, including these declared rows and any additionally evidenced atomic inputs occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_material_drainage | drainage | drain_pipe; drain_gravel; drain_sand; geotextile; irrigation_pipe | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted; pre-installation damaged/rejected/replaced quantities; opening/closing reusable stock; verified transfers | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation; apply b_consumed_inputs to all material/component inputs, retaining all actual consumed losses before installation/acceptance, separately from installed geometry; This protocol covers drainage only, including these declared rows and any additionally evidenced atomic inputs occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_material_surface | surface | base_stone; grass_seed; turf_sod; artificial_carpet; infill_sand; sbr_infill; epdm_granules; surface_binder; shockpad; asphalt_course | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted; pre-installation damaged/rejected/replaced quantities; opening/closing reusable stock; verified transfers | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation; apply b_consumed_inputs to all material/component inputs, retaining all actual consumed losses before installation/acceptance, separately from installed geometry; This protocol covers surface only, including these declared rows and any additionally evidenced atomic inputs occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_material_landscape | landscape | compost; fertilizer; wood_mulch | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted; pre-installation damaged/rejected/replaced quantities; opening/closing reusable stock; verified transfers | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation; apply b_consumed_inputs to all material/component inputs, retaining all actual consumed losses before installation/acceptance, separately from installed geometry; This protocol covers landscape only, including these declared rows and any additionally evidenced atomic inputs occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_material_structure | structure | wet_concrete; reinforcing_bar; enclosure_mesh; viewing_glass; deck_plank; steel_pile; pontoon; mooring_cleat; beach_sand | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted; pre-installation damaged/rejected/replaced quantities; opening/closing reusable stock; verified transfers | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation; apply b_consumed_inputs to all material/component inputs, retaining all actual consumed losses before installation/acceptance, separately from installed geometry; This protocol covers structure only, including these declared rows and any additionally evidenced atomic inputs occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_material_services | services | luminaire | delivery_installation_record | row/lot; composition/state/supplier gate; specifications; delivered/returned/installed/wasted and stocks; original unit; same-lot moisture/density/areal mass if converted; pre-installation damaged/rejected/replaced quantities; opening/closing reusable stock; verified transfers | Calibrated weighing, delivery certificates, surveyed layer/rootzone and same-lot conversion reconciliation; apply b_consumed_inputs to all material/component inputs, retaining all actual consumed losses before installation/acceptance, separately from installed geometry; This protocol covers services only, including these declared rows and any additionally evidenced atomic inputs occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_plant | landscape | Each live taxon | nursery_planting_record | taxon/cultivar/rooting/container/size; received/planted/replaced count; geometry; dated inspection/acceptance and rejected destinations; pre-planting losses; opening/closing reusable stock; verified returns/transfers | Nursery counts and actual planting/replacement inspections through final acceptance; count all attributable nursery plants consumed through final acceptance, including pre-planting losses and failed establishment/replacements, under b_consumed_inputs; record successful planted count and dead-plant waste separately | item | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 | cp_services | services | Each cable/equipment | installation_test_record | component/specification/assembly boundary; supplier/geography; actual installed length/count; cut/return; commissioned connections/tests | Traced delivery, measured length/count and configuration-test reconciliation | m; item | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 | cp_energy | support | Fuel and electricity separately | meter_device_record | task/device/date; grid/voltage/meter readings; fuel delivery/stocks/returns/grade/composition/density if converted; supplier boundary | Calibrated task meters/fuel logs; actual batch density/heat content when needed, not public property coefficients | kg; kWh; MJ | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 | cp_water | support | Supply/intake/discharge separately | meter_receiver_record | task/date; actual origin/geography/receiver; freshwater/sea; volume/flux/time; salinity/temperature/matched density for sea kg; storage/reuse; separate pollutant samples/treatment destination | Meter each interface/conserve water volumes; sea mass by weighing or same-condition density; independently monitor contaminants, never assume purity | m3; kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 | cp_release | support | Each substance/fraction | measurement_reviewed_model | source/task; species/CAS/origin; medium/submedium/time; particle fraction; control state; measured flux/activity/factor original; background and uncertainty | Representative species/fraction measurement or independently reviewed matching model; integrate actual net flux, identify unmeasured releases | kg | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
-| cp_waste | applicable processes | Each segregated waste | destination_record | row/lot/composition/hazard tests/wet-dry state/mass-volume; actual origin/recipient/transport/treatment/cleanup | Separate weigh/meter lots and signed receipts; soil/sediment/oil/washout distinct, no default treatment/recycle efficiency | kg; m3 | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_waste | earth | soil_waste; sediment_waste | destination_record | row/lot/composition/hazard tests/wet-dry state/mass-volume; actual origin/recipient/transport/treatment/cleanup | Separate weigh/meter lots and signed receipts; soil/sediment/oil/washout distinct, no default treatment/recycle efficiency; This protocol covers earth only, including these declared rows and any additionally evidenced atomic wastes occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg; m3 | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_waste_support | support | washout; used_oil | destination_record | row/lot/composition/hazard tests/wet-dry state/mass-volume; actual origin/recipient/transport/treatment/cleanup | Separate weigh/meter lots and signed receipts; soil/sediment/oil/washout distinct, no default treatment/recycle efficiency; This protocol covers support only, including these declared rows and any additionally evidenced atomic wastes occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg; m3 | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
+| cp_waste_handover | handover | carpet_offcuts; concrete_offcuts | destination_record | row/lot/composition/hazard tests/wet-dry state/mass-volume; actual origin/recipient/transport/treatment/cleanup | Separate weigh/meter lots and signed receipts; soil/sediment/oil/washout distinct, no default treatment/recycle efficiency; This protocol covers handover only, including these declared rows and any additionally evidenced atomic wastes occurring in this process. Reconcile the related stage protocols against the same source ledgers; attribute each physical quantity once and retain actual failed/rework consumption and waste. | kg; m3 | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 | cp_transport | logistics | Real freight fuel/legs | load_route_fuel_record | cargo/device/origin/destination/leg; actual mass-distance-load-return/fuel; supplier-included legs and assigned share | Actual load/route/fuel logs with embodied delivery reconciliation; no full service plus full fuel double charge | kg; km | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 | cp_reuse | logistics | Reused asset manufacture share | cross_project_ledger | asset/configuration/measured mass; actual activity; supported cumulative service denominator; previous/current shares; transfers/returns/loss/refurbishment | Persistent cross-project physical ledger and supported denominator, sum shares≤1; unknown denominator is review | kg; h; dimensionless | Each lot/task/meter/inspection | Actual construction through contractual final acceptance, including establishment/correction/commissioning/cleanup | Same site/facility perimeter and declared external supplies/destinations | per declared reference flow | Calibration/originals/representativeness/signed reconciliation/uncertainty |
 
@@ -1085,8 +1093,8 @@ Actual non-hazardous solid waste from placing/correction; separate reinforcement
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| c_project | all inventory rows | Reconcile each actual attributable task/lot once for the single declared reference flow, retaining each physical unit and stocks/returns/installed/waste destinations; no division by assumed facility mass/life | cp_handover; cp_material; cp_plant; cp_services; cp_energy; cp_water; cp_release; cp_waste; cp_transport; cp_reuse | Exchange per declared reference flow | un-cpc3-2025 |
-| c_state | Material state conversion | Volume-to-mass needs same-material/state measured density; area-to-mass needs same-product measured areal mass. Preserve moisture/temperature/salinity, units and uncertainty; retain original units if unproved | cp_material; cp_water | Traceable physical quantity, never fabricated facility mass | cedd-landscape-2026 |
+| c_project | all inventory rows | Reconcile each actual attributable task/lot once for the single declared reference flow, retaining each physical unit and stocks/returns/installed/waste destinations; no division by assumed facility mass/life | cp_handover; cp_material; cp_material_drainage; cp_material_surface; cp_material_landscape; cp_material_structure; cp_material_services; cp_plant; cp_services; cp_energy; cp_water; cp_release; cp_waste; cp_waste_support; cp_waste_handover; cp_transport; cp_reuse | Exchange per declared reference flow | un-cpc3-2025 |
+| c_state | Material state conversion | Volume-to-mass needs same-material/state measured density; area-to-mass needs same-product measured areal mass. Preserve moisture/temperature/salinity, units and uncertainty; retain original units if unproved | cp_material; cp_material_drainage; cp_material_surface; cp_material_landscape; cp_material_structure; cp_material_services; cp_water | Traceable physical quantity, never fabricated facility mass | cedd-landscape-2026 |
 | c_energy | Electricity conversion | Metered kWh multiplied by 3.6 gives MJ; preserve adopted Net calorific value. Diesel here is Mass/kg and is not automatically converted to energy | cp_energy | Measured MJ per declared reference flow |  |
 | c_release | Specific releases | Use substance/fraction-resolved measurement or independently reviewed matching activity-factor model; integrate net flux over actual time with background correction. Concentration/NTU/dB/excavated mass alone is not release mass | cp_release; cp_water; cp_energy | Specific substance-medium exchange; unsupported basis remains review | epa-marina-2001; epa-heavy-construction-1995 |
 | c_share | Equipment/temporary manufacture | Actual asset manufacture inventory times supported causal activity share from persistent ledger; preserve physical mass and cumulative shares≤1 across projects/periods/reuses. Unknown denominator remains review | cp_reuse | Supported manufacture inventory per declared reference flow |  |
@@ -1096,7 +1104,7 @@ Actual non-hazardous solid waste from placing/correction; separate reinforcement
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_entity | reference entity | Same site/perimeter/function/measured geometry/configuration/complete acceptance/establishment; no fabricated mass/life/recipe/certification | cp_handover |
-| dq_material | each material/waste | Traceable lot/composition/state/gate/physical quantity/destination; disclose identity/range evidence gaps | cp_material; cp_plant; cp_services; cp_waste |
+| dq_material | each material/waste | Traceable lot/composition/state/gate/physical quantity/destination; disclose identity/range evidence gaps | cp_material; cp_material_drainage; cp_material_surface; cp_material_landscape; cp_material_structure; cp_material_services; cp_plant; cp_services; cp_waste; cp_waste_support; cp_waste_handover |
 | dq_environment | environmental inventory | Actual receiver/species/fraction/time/representativeness; separate contaminants, unmeasured not zero, dB/NTU not forced to exchange quantity | cp_water; cp_release |
 | dq_reuse | reused equipment/components | Persistent cross-project physical ledger/supported denominator/cumulative shares≤1; unknown life/activity requires review | cp_reuse |
 | dq_completeness | project package | All actual routes/tasks/exchanges, individual non-applicability and separate upstream/downstream/measurement/identity coverage; candidate checks do not establish actual measured data/scientific approval | actual BOM/task ledger; cp_handover |

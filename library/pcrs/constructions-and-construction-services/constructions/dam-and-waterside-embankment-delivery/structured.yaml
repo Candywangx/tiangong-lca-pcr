@@ -88,12 +88,12 @@ measurement_rules:
     required_unit: "item"
     rule: "cp_handover records 1 item complete accepted entity; all protocols, rows and calculations use per declared reference flow, without assigning a dam mass."
   - id: physical_states
-    applies_to: "materials, liquids and wastes"
+    applies_to: "mass-based material, liquid and waste exchanges"
     required_property_ref:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Retain each row state/property; volume-to-kg requires same-lot/state measured density and wet/dry conversion needs actual moisture basis; entity geometry does not imply material mass."
+    rule: "Retain each row state/property; volume-to-kg requires same-lot/state measured density and wet/dry conversion needs actual moisture basis; entity geometry does not imply material mass. Volume-based exchanges, including fresh ready-mixed concrete, dewatering effluent and concrete washout liquid, retain Volume/m3. Any auxiliary kg closure is a separate linked record supported by measured same-lot/state density; it does not replace their native volume exchange."
   - id: water_volume
     applies_to: "resource intake and volume rows"
     required_property_ref:
@@ -214,9 +214,9 @@ process_inventory:
           name: "Steel sheet-pile section"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only actual temporary diversion/cofferdam or permanent retaining section. Separate installed permanent mass from the conserved manufacture share of a reusable temporary pile."
+          description: "Only actual temporary diversion/cofferdam or permanent retaining section. Separate actual permanent-route consumption from the conserved manufacture share of a reusable temporary pile. Under cp_sheet_piles, permanent input includes cutting, damage, rejection and replacement before installation/acceptance; accepted installed mass is recorded separately."
           amount:
-            expression: "Measured permanent mass plus evidenced attributable temporary manufacture mass; operating/removal work remains in utilities."
+            expression: "Under cp_sheet_piles, sum measured permanent-route attributable consumed kg and the separately evidenced temporary manufacture kg from cp_assets. For new permanent sections, consumed kg = attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock, including pre-installation/acceptance losses and failed replacements. Keep accepted installed mass and waste separate. Reused stock converted to permanent service requires the prior asset ledger and evidenced remaining manufacture attribution, without resetting or duplicating earlier shares; unresolved attribution remains a review gap. Operating/removal work remains in utilities."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -224,7 +224,7 @@ process_inventory:
               kind: "process_output"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_assets
+              collection_protocol_id: cp_sheet_piles
               source_ids:
                 - usace-embankment-dams-2004
             ranges: []
@@ -775,7 +775,7 @@ process_inventory:
           name: "Plasticized polyvinyl-chloride waterstop strip"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional actual PVC formulation/profile installed at specified joints; record length, cross-section, actual mass and placement checks. Rubber, copper or other actual waterstops need separate atomic identities."
+          description: "Conditional actual supplied PVC formulation/profile consumed for specified joints, including cutting, damage and rejected/replaced material before handover; record native input mass, length/cross-section and separate placement checks. Rubber, copper or other actual waterstops need separate atomic identities."
           amount:
             expression: "Measured quantity attributable to the declared completed entity; retain actual material state and avoid counting internal transfers twice."
             value_mode: "foreground_record"
@@ -814,7 +814,7 @@ process_inventory:
           name: "High-density polyethylene perforated drainage pipe"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only actual installed pipe of declared diameter, wall, perforation and joints at the project-defined drain interface. Record toe/gallery layout and settlement compatibility; do not infer placement inside every embankment."
+          description: "Actual supplied pipe consumed for the project-defined drain interface, including pre-installation damage, rejection and replacement; retain declared diameter, wall, perforation and joints, and record installed accepted quantity separately. Record toe/gallery layout and settlement compatibility; do not infer placement inside every embankment."
           amount:
             expression: "Measured quantity attributable to the declared completed entity; retain actual material state and avoid counting internal transfers twice."
             value_mode: "foreground_record"
@@ -848,11 +848,11 @@ process_inventory:
                 - usace-embankment-dams-2004
             ranges: []
         - row_id: piezometer
-          role: "Installed vibrating-wire piezometer"
-          name: "Installed vibrating-wire piezometer"
+          role: "Vibrating-wire piezometer supplied for permanent installation"
+          name: "Vibrating-wire piezometer supplied for permanent installation"
           flow_type: "product"
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
-          description: "Conditional actual installed sensor of documented type, cable/interface and acceptance calibration; instruments used only temporarily belong in the asset ledger."
+          description: "Actual supplied complete sensor for permanent installation, with documented type and cable/interface. Count all attributable consumed units, including pre-installation damage and failed/rejected replacements; installation and acceptance/calibration are actual foreground activities and separate records, not embedded supplier installation. Instruments used only temporarily belong in the asset ledger."
           amount:
             expression: "Measured quantity attributable to the declared completed entity; retain actual material state and avoid counting internal transfers twice."
             value_mode: "foreground_record"
@@ -1449,13 +1449,13 @@ dataset_production:
       quality_evidence: "mix certificates, scales, acceptance test results, lift cards and as-built geometry"
     - protocol_id: cp_fixed
       process_id: "fixed"
-      flow_role: "installed seals/drains/gates/instruments"
-      record_type: "installed_configuration_register"
-      raw_fields: "component_id; grade/form; count; measured kg; dimensions; installed length/area; contained components; joint/interface; calibration/acceptance"
-      collection_method: "Reconcile supplier/component certificates and surveyed installed schedule; check joint continuity, gate interface and sensor calibration."
-      unit: "kg; item; m; m2 Aggregation details: Sum installed attributable exchange quantities per declared reference flow; do not duplicate assembly contents."
-      frequency: "each actual installed component/lot"
-      temporal_coverage: "installation through handover"
+      flow_role: "actual consumed permanent seals/drains/gates/instruments and separate installed configuration"
+      record_type: "component_consumption_and_installation_register"
+      raw_fields: "component_id; grade/form; count; measured kg; dimensions; installed length/area; contained components; joint/interface; calibration/acceptance; gross attributable receipts; opening/closing reusable stock; verified returns/transfers; damaged/rejected/replaced quantities"
+      collection_method: "Reconcile supplier certificates, receipts and stocks with installed schedule and waste. In each row’s native unit, input = gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock, including cutting losses and components consumed in pre-installation/acceptance failures and replacements. Installation quantity is separate configuration evidence, not the consumed-input total. Check joint continuity, gate interface and sensor calibration; retain actual installation work once, without duplicate assembly contents."
+      unit: "kg; item; m; m2"
+      frequency: "each receipt, return, failed/replaced component and installed component/lot"
+      temporal_coverage: "entire attributable construction period through handover, including pre-installation losses and rework"
       site_scope: "signed permanent dam interfaces"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "signed installation records, component specs, traceable mass and acceptance/calibration"
@@ -1473,16 +1473,28 @@ dataset_production:
       quality_evidence: "calibrations, supplier tickets, stock balance and load/work logs"
     - protocol_id: cp_assets
       process_id: "utilities"
-      flow_role: "reusable machines, timber forms and sheet piles"
+      flow_role: "reusable machines, timber forms and temporary sheet-pile manufacture shares"
       record_type: "cross_project_asset_ledger"
       raw_fields: "asset_id; configuration; original manufacture amount/property; project activity; cumulative activity; supported H; all prior shares; losses/replacements; beneficiaries"
-      collection_method: "Retain serialized manufacture/supplier record and time/area/cycle activity evidence; reconcile every project attribution against original manufacture. Unknown H or prior shares stays unresolved."
+      collection_method: "Retain serialized manufacture/supplier record and time/area/cycle activity evidence; reconcile every project attribution against original manufacture. Unknown H or prior shares stays unresolved. Permanent-route sheet-pile consumption is collected separately under cp_sheet_piles. For a formerly reused pile retained permanently, carry forward prior shares and evidence the remaining attribution; do not count full manufacture again."
       unit: "item; kg; h Aggregation details: Project share times original property quantity per declared reference flow; all cumulative shares at most one, no per-project reset."
       frequency: "each use/project and retirement update"
       temporal_coverage: "entire evidenced cumulative asset history"
       site_scope: "all beneficiaries including prior and subsequent projects"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "serialized ledger, supported service denominator, prior allocation receipts and loss/replacement records"
+    - protocol_id: cp_sheet_piles
+      process_id: "foundation"
+      flow_role: "sheet_pile"
+      record_type: "sheet_pile_consumption_and_asset_reconciliation"
+      raw_fields: "section_id; configuration; permanent/temporary route; new/reused status; gross attributable receipts kg; opening/closing reusable stock kg; verified returns/transfers kg; cutting/damage/rejection/replacement kg; accepted installed kg; waste kg; cp_assets ledger and prior shares"
+      collection_method: "Measure permanent-route consumption with calibrated weighing and the receipts/stock/returns balance in the sheet_pile card. Retain pre-installation/acceptance losses, accepted installed mass and waste separately. For temporary piles use only the conserved manufacture kg established by cp_assets. Track transfers between temporary and permanent service by the same asset identity and supported remaining attribution, with no repeated manufacture; unknown prior shares require review. Sum the two disjoint contributions once."
+      unit: "kg"
+      frequency: "each receipt/use/transfer/loss and asset attribution update"
+      temporal_coverage: "entire actual construction through handover, with full earlier asset history where reused stock is involved"
+      site_scope: "actual foundation/diversion/cofferdam and related stock/asset interfaces"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibrated weights; supplier/stock records; accepted installation and waste records; prior manufacture allocation ledger"
     - protocol_id: cp_transport
       process_id: "utilities"
       flow_role: "external truck freight"
@@ -1592,15 +1604,15 @@ dataset_production:
       source_ids:
         - usace-embankment-dams-2004
     - id: asset_manufacture
-      applies_to: "serialized assets"
+      applies_to: "reusable serialized assets; permanent-route sheet-pile inputs follow cp_sheet_piles"
       rule: "share_j = h_j/H; attributed original-property quantity = original measured quantity × share_j. Track all beneficiaries and prior shares; sum shares ≤ 1. Unknown H or original configuration requires review and missing-burden disclosure."
       inputs:
         - cp_assets
       output: "item or kg manufacture share per declared reference flow"
       source_ids: []
     - id: species_release
-      applies_to: "individual elementary release"
-      rule: "Integrate actual compatible concentration × measured release volume for each substance, or use a species/equipment-specific evidenced factor × actual activity. Preserve units, phase, origin, recipient and time. Total NOx cannot be split or treated as NO/NO2 without evidence; PM fractions cannot overlap."
+      applies_to: "individual mass-based pollutant elementary releases; excludes freshwater_return and seawater_return"
+      rule: "Integrate actual compatible concentration × measured release volume for each substance, or use a species/equipment-specific evidenced factor × actual activity. Preserve units, phase, origin, recipient and time. Total NOx cannot be split or treated as NO/NO2 without evidence; PM fractions cannot overlap. Water-carrier returns freshwater_return and seawater_return retain measured Volume/m3 under cp_water; dissolved/suspended pollutants are additional mass rows, not a replacement for water volume."
       inputs:
         - cp_emissions
         - cp_water
@@ -1683,18 +1695,18 @@ data_sources:
     used_for: "Conditional gas origin/pathway and baseline/attribution review for actual pre-acceptance inundation only; national annual defaults and 20-year categories are not applied directly to this construction event, and establish neither lifetime nor inevitable emissions."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:2c1f5ab52cff940fe8d117c3aaf39a8a540e375bd13ec87ada7f5b0ee7ac22ae"
+  source_sha256: "sha256:6311e099401a368433e0a3b78a15b0f0def125c9a899f9eaaffcf2834f15d9f8"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7263"
+    - unit_id: "normative_7559"
       family: "system_boundary"
       span:
         start:
-          offset: 7263
+          offset: 7559
           line: 69
           column: 1
         end:
-          offset: 11494
+          offset: 11790
           line: 90
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual preconstruction site and supplied material/equipment at explicit received state/gate; onsite borrow processing expressly bounded |\n| starting_condition_role | foreground_starting_point |\n| product_classification_scope | Complete dam or waterside retaining embankment entity within declared component interfaces |\n| recursive_input_rule | Record received state, inherited burden and new interventions once for existing dam sections/reused retaining components; do not recursively rebuild the same entity |\n| upstream_dataset_requirement | Verify/link material/component manufacturing gates, actual transport and equipment manufacture attribution separately; missing links disclosed, no complete cradle-to-gate claim |\n| disclosure | All actual construction to acceptance; conditional temporary removal/initial filling tests; operation/maintenance/renewal, reservoir operation, later dam removal and final fate separately declared uncovered |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| construction_scope | declared dataset | Collect all actual site preparation, borrow/aggregate processing inside the declared boundary, temporary diversion/foundation/body/fixed-work construction, testing, rework and temporary removal through signed acceptance. Supplier manufacture and actual transport links are separate; a component embedded upstream is not counted again. | usace-embankment-dams-2004; usace-concrete-civil-works-1994; usace-rcc-dams-2000 |\n| route_completeness | declared dataset | Required steps follow actual specifications and field records. Do not require a clay core, grout curtain, RCC, drain pipe, cooling system or steel gate universally. Add each actual missing constituent as a chemically/physically specific row, including other binder, aggregate fraction, stone masonry, asphalt core, sheet/cutoff material, joint metal, seal, refrigerant and waste as present; no default quantities. | usace-embankment-dams-2004; usace-concrete-civil-works-1994; usace-rcc-dams-2000 |\n| adjacent_interfaces | declared dataset | Declare integral spillway/outlet/diversion galleries and actual initial filling/test boundary. Exclude independent canals, navigation locks/breakwaters, traffic bridges, powerhouses, independent turbines and complete generating plants. A signed contract alone cannot bring them into the dam category; only shared physical dam-body/foundation components with reviewed actual dam function can be attributed once across explicit interfaces. Coastal retaining banks remain in scope; a combined port/flood-control project requires component applicability review and no duplicate counting. | un-cpc-dams-2025 |\n| later_stages | declared dataset | Later operation, maintenance, renewal, operating-reservoir inundation/biogeochemical emissions, power generation, later dam removal and final material fate are separately modelled stages, excluded from this construction handover inventory. Actual pre-acceptance initial filling/testing stays inside its declared site/time boundary, including measured water/energy and relevant inundation, land-carbon and release pathways. Record actual beginning/end, flooded extent, baseline and monitoring; missing measurements stay explicit and inconclusive. Do not move these construction-test impacts into excluded operation merely because they occur in a reservoir. Include actual preconstruction demolition and temporary decommissioning only as declared work packages. No complete life-cycle or cradle-to-gate claim without verified stage coverage/upstream links. | usace-embankment-dams-2004; ipcc-flooded-land-2019 |\n| water_releases | declared dataset | Separate supplied technical water, natural resource withdrawal, throughflow, internal recirculation, captured effluent, treatment and actual release. Never replace effluent by a water-resource exchange. Retain actual noise/vibration, turbidity/sediment, site occupation and pre/post land/ecology observations; dB is not a mass emission and monitoring alone is not quantified LCIA. Unmeasured relevant pathways remain explicit gaps. | epa-concrete-washout-2012 |\n\n"
@@ -1714,11 +1726,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7263
+              offset: 7559
               line: 69
               column: 1
             end:
-              offset: 7284
+              offset: 7580
               line: 69
               column: 22
           text: "## 5. System Boundary"
@@ -1734,15 +1746,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_68576"
+    - unit_id: "normative_70113"
       family: "allocation"
       span:
         start:
-          offset: 68576
+          offset: 70113
           line: 1090
           column: 1
         end:
-          offset: 70472
+          offset: 72009
           line: 1100
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nThe following physical attribution and share conservation are declared foreground collection constraints of this PCR, not LCA factors prescribed by the cited construction manuals. Original manufacture quantities, activity, H and beneficiaries require actual measurements or supported records; absent evidence requires review. Emission concentration integration likewise relies on actual foreground measurements; engineering process sources supply no default emission factors.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| dedicated_entity | declared dataset | Attribute dedicated construction to its actual delivered entity. Split shared plant, haul, pumping or testing by measured physical activity and recorded beneficiaries with conservation; costs alone do not establish physical allocation. State unresolved shared relations and sensitivity instead of invented ratios. | |\n| reuse_conservation | declared dataset | For each serialized machine, form or temporary pile, keep its original manufacture burden and cumulative cross-project/period/use shares. Let h_j be evidenced project activity and H the evidenced lifetime cumulative activity or justified supported denominator: share_j=h_j/H. All cumulative shares must be nonnegative and sum at most one. Unknown H or beneficiary relation requires review; do not reset manufacture for each project. Replacement parts are separate actual inputs. | |\n| internal_and_recovery | declared dataset | Excavation reused as fill, recovered washwater and temporary assets leaving for further use are traced internal/reuse transfers, not new resource inputs or automatic coproduct credits. Exported reusable products and segregated wastes retain actual mass/state/destination; downstream treatment and substitution need separately verified boundaries. | epa-concrete-washout-2012 |\n\n"
@@ -1762,11 +1774,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 68576
+              offset: 70113
               line: 1090
               column: 1
             end:
-              offset: 68616
+              offset: 70153
               line: 1090
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1782,16 +1794,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_84382"
+    - unit_id: "normative_88419"
       family: "validation"
       span:
         start:
-          offset: 84382
-          line: 1139
+          offset: 88419
+          line: 1140
           column: 1
         end:
-          offset: 85946
-          line: 1148
+          offset: 89983
+          line: 1149
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| complete_reference | declared dataset | One accepted entity output equals the declared reference product name and 1 item, with actual site, surveyed geometry, route, hydraulic/retaining purpose and complete permanent interfaces. No cost-, average-mass-, lifetime- or energy-output substitute. | un-cpc-dams-2025 |\n| inventory_unit_gate | declared dataset | Each selected exchange is one physical/chemical flow with its correct type, material state, direction and unit; verified identities require exact primary property and supplier/route/compartment fit. Treat non-applicable with evidence, never aggregate labels or silent omission. | usace-concrete-civil-works-1994 |\n| quantities_and_shares | declared dataset | Reconcile each route material/stock/reject ledger, fill geometry and moisture/density measurements, energy and water balances, real transport legs and serialized reusable shares. Unknown H, unproved conversion or inconsistent reference denominator makes the dataset incomplete and requires review. | usace-embankment-dams-2004 |\n| releases_and_fates | declared dataset | Verify actual fuel origin and measured species/size/phase/compartment. Captured effluent and sludge cannot masquerade as pure water. Distinguish construction removal from later demolition, and unknown release from zero. Missing required measurements or identities remain inconclusive; do not claim full lifecycle, safety or methodological approval. | epa-concrete-washout-2012 |\n\n"
       headings:
@@ -1810,12 +1822,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 84382
-              line: 1139
+              offset: 88419
+              line: 1140
               column: 1
             end:
-              offset: 84404
-              line: 1139
+              offset: 88441
+              line: 1140
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1834,268 +1846,268 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "construction_scope"
       identity_kind: "explicit"
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 8396
+          offset: 8692
           line: 84
           column: 1
         end:
-          offset: 8857
+          offset: 9153
           line: 84
           column: 462
     - pointer: "/system_boundary/rules/1"
       rule_id: "route_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 8858
+          offset: 9154
           line: 85
           column: 1
         end:
-          offset: 9398
+          offset: 9694
           line: 85
           column: 541
     - pointer: "/system_boundary/rules/2"
       rule_id: "adjacent_interfaces"
       identity_kind: "explicit"
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 9399
+          offset: 9695
           line: 86
           column: 1
         end:
-          offset: 10046
+          offset: 10342
           line: 86
           column: 648
     - pointer: "/system_boundary/rules/3"
       rule_id: "later_stages"
       identity_kind: "explicit"
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 10047
+          offset: 10343
           line: 87
           column: 1
         end:
-          offset: 10992
+          offset: 11288
           line: 87
           column: 946
     - pointer: "/system_boundary/rules/4"
       rule_id: "water_releases"
       identity_kind: "explicit"
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 10993
+          offset: 11289
           line: 88
           column: 1
         end:
-          offset: 11492
+          offset: 11788
           line: 88
           column: 500
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 68618
+          offset: 70155
           line: 1092
           column: 1
         end:
-          offset: 69093
+          offset: 70630
           line: 1092
           column: 476
     - pointer: "/allocation_rules/1"
       rule_id: "dedicated_entity"
       identity_kind: "explicit"
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 69166
+          offset: 70703
           line: 1096
           column: 1
         end:
-          offset: 69523
+          offset: 71060
           line: 1096
           column: 358
     - pointer: "/allocation_rules/2"
       rule_id: "reuse_conservation"
       identity_kind: "explicit"
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 69524
+          offset: 71061
           line: 1097
           column: 1
         end:
-          offset: 70048
+          offset: 71585
           line: 1097
           column: 525
     - pointer: "/allocation_rules/3"
       rule_id: "internal_and_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 70049
+          offset: 71586
           line: 1098
           column: 1
         end:
-          offset: 70470
+          offset: 72007
           line: 1098
           column: 422
     - pointer: "/validation_rules/0"
       rule_id: "complete_reference"
       identity_kind: "explicit"
-      unit_id: "normative_84382"
+      unit_id: "normative_88419"
       source_span:
         start:
-          offset: 84477
-          line: 1143
+          offset: 88514
+          line: 1144
           column: 1
         end:
-          offset: 84792
-          line: 1143
+          offset: 88829
+          line: 1144
           column: 316
     - pointer: "/validation_rules/1"
       rule_id: "inventory_unit_gate"
       identity_kind: "explicit"
-      unit_id: "normative_84382"
+      unit_id: "normative_88419"
       source_span:
         start:
-          offset: 84793
-          line: 1144
+          offset: 88830
+          line: 1145
           column: 1
         end:
-          offset: 85149
-          line: 1144
+          offset: 89186
+          line: 1145
           column: 357
     - pointer: "/validation_rules/2"
       rule_id: "quantities_and_shares"
       identity_kind: "explicit"
-      unit_id: "normative_84382"
+      unit_id: "normative_88419"
       source_span:
         start:
-          offset: 85150
-          line: 1145
+          offset: 89187
+          line: 1146
           column: 1
         end:
-          offset: 85523
-          line: 1145
+          offset: 89560
+          line: 1146
           column: 374
     - pointer: "/validation_rules/3"
       rule_id: "releases_and_fates"
       identity_kind: "explicit"
-      unit_id: "normative_84382"
+      unit_id: "normative_88419"
       source_span:
         start:
-          offset: 85524
-          line: 1146
+          offset: 89561
+          line: 1147
           column: 1
         end:
-          offset: 85944
-          line: 1146
+          offset: 89981
+          line: 1147
           column: 421
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 7263
+          offset: 7559
           line: 69
           column: 1
         end:
-          offset: 7284
+          offset: 7580
           line: 69
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7263"
+      unit_id: "normative_7559"
       source_span:
         start:
-          offset: 7312
+          offset: 7608
           line: 73
           column: 1
         end:
-          offset: 8323
+          offset: 8619
           line: 80
           column: 224
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 68576
+          offset: 70113
           line: 1090
           column: 1
         end:
-          offset: 68616
+          offset: 70153
           line: 1090
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 68618
+          offset: 70155
           line: 1092
           column: 1
         end:
-          offset: 69093
+          offset: 70630
           line: 1092
           column: 476
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 69166
+          offset: 70703
           line: 1096
           column: 1
         end:
-          offset: 69523
+          offset: 71060
           line: 1096
           column: 358
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 69524
+          offset: 71061
           line: 1097
           column: 1
         end:
-          offset: 70048
+          offset: 71585
           line: 1097
           column: 525
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_68576"
+      unit_id: "normative_70113"
       source_span:
         start:
-          offset: 70049
+          offset: 71586
           line: 1098
           column: 1
         end:
-          offset: 70470
+          offset: 72007
           line: 1098
           column: 422
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_84382"
+      unit_id: "normative_88419"
       source_span:
         start:
-          offset: 84382
-          line: 1139
+          offset: 88419
+          line: 1140
           column: 1
         end:
-          offset: 84404
-          line: 1139
+          offset: 88441
+          line: 1140
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2104,5 +2116,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:2c1f5ab52cff940fe8d117c3aaf39a8a540e375bd13ec87ada7f5b0ee7ac22ae"
-  generated_content_sha256: "sha256:c231bb7f3aeebf272d820b3349ba6e651e67096782b8c85b0032aa2871d1aaa0"
+    sha256: "sha256:6311e099401a368433e0a3b78a15b0f0def125c9a899f9eaaffcf2834f15d9f8"
+  generated_content_sha256: "sha256:1145cf248affc3155223424205b6455ab862cfd9589fb457cb1b92fcb2ea1ca2"

@@ -139,7 +139,7 @@ process_inventory:
           flow_ref:
             uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
           property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
-          description: "Only for metered China grid-average consumption at the user interface below 1 kV. Account for development, lighting, cameras, gallery, workstations, rendering, cooling, production storage and acceptance by stage in one resource ledger; exclude their electricity from purchased services that already include it."
+          description: "Only for metered China grid-average consumption at the user interface below 1 kV. Account for development, lighting, cameras, gallery, workstations, rendering, cooling, production storage and acceptance by stage in one resource ledger; count owned metered electricity and supplier-embedded burdens once each. Remove only evidenced overlap from the identified ledger that duplicates an already represented quantity, documenting both boundaries and the deduction basis. Do not remove independent electricity at a different supplier site merely because it is electricity."
           amount:
             expression: "Actual attributable exchange quantity for the identified original, measured using cp_energy; absent conditional exchange requires recorded route evidence."
             value_mode: "foreground_record"
@@ -251,7 +251,7 @@ process_inventory:
           name: "One occupied hotel room-night"
           flow_type: "product"
           property_unit: "Number of items / item"
-          description: "Only attributable overnight accommodation; define occupancy, room type, location, included utilities and meals. Food, costume, makeup, props and administrative purchases require distinct physically specific rows when actually used, rather than one composite materials flow."
+          description: "Only attributable overnight accommodation; define occupancy, room type, location, included utilities and meals. Record every actual food burden once: meals demonstrably covered by the accommodation environmental inventory remain within that service, with supplier/menu and coverage evidence, and are not additional food inputs. Food outside that verified inventory requires separate physically specific rows, even when financially included in the room bill. Billing inclusion alone does not prove environmental coverage; unknown coverage requires review and a disclosed gap, not assumed omission or unsupported subtraction. Separately purchased costume, makeup, props and administrative materials require their own physically specific rows, not a composite materials flow."
           amount:
             expression: "Actual attributable exchange quantity for the identified original, measured using cp_services; absent conditional exchange requires recorded route evidence."
             value_mode: "foreground_record"
@@ -665,8 +665,8 @@ dataset_production:
       process_id: "production_resources"
       flow_role: "purchased_service"
       record_type: "supplier_record"
-      raw_fields: "row ID; contract/job/session; supplier; count; duration; bytes/frames where relevant; native unit; transport occupancy/distance; included assets/energy; original allocation"
-      collection_method: "Obtain actual accepted service deliverable and supplier primary activity/boundary records. Disaggregate transport modes and hotel nights; define each rental day, render job, storage contract and mix session. Track supplier and own energy overlap. Acceptance transfer requires its own actual service row if purchased."
+      raw_fields: "row ID; contract/job/session; supplier; count; duration; bytes/frames where relevant; native unit; transport occupancy/distance; included assets/energy; original allocation; room-night occupancy/menu; financial meal inclusion; environmental meal coverage; separately covered food and overlap evidence"
+      collection_method: "Obtain actual accepted service deliverable and supplier primary activity/boundary records. Disaggregate transport modes and hotel nights; define each rental day, render job, storage contract and mix session. Track supplier and own energy overlap. Acceptance transfer requires its own actual service row if purchased.; verify accommodation inventory boundaries independently of billing; reconcile food burdens once under hotel_night, retaining unresolved coverage as a gap"
       unit: "Native row unit"
       frequency: "Each service and invoice"
       temporal_coverage: "Full attributable production interval"
@@ -744,7 +744,7 @@ dataset_production:
       evidence: "cp_original"
     - id: quality_complete
       applies_to: "dataset"
-      requirement: "Reconcile every actual stage and supplier; expand specific consumable, food, travel, waste and direct-release rows where present. Describe capital-asset coverage, storage interval, failed work and all exclusions. Record omissions and uncertainty without declaring full life-cycle coverage."
+      requirement: "Reconcile every actual stage and supplier; expand specific consumable, travel, waste and direct-release rows where present. Reconcile actual food burdens under the hotel_night supplier-coverage rule: retain verified service-inclusive meals once, add separate food rows for meals outside that environmental inventory, and disclose unresolved coverage. Describe capital-asset coverage, storage interval, failed work and all exclusions. Record omissions and uncertainty without declaring full life-cycle coverage."
       evidence: "cp_original; cp_services"
     - id: quality_energy
       applies_to: "grid_cn, grid_other"
@@ -816,7 +816,7 @@ data_sources:
     used_for: "Real colour-negative film, processing-service and postproduction-scan route example; ECN-2 applies only to specified manufacturer film, not all film, recipes, temperature or energy"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f04ecefdba350acd38ed625d5602983f2ade2eb0d229c8a2ed2b3732e2a36f91"
+  source_sha256: "sha256:23808d21c488c10b63a52fec6a38494a703333dfc866233c40fba629530d31ea"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7753"
@@ -867,15 +867,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_37060"
+    - unit_id: "normative_37817"
       family: "allocation"
       span:
         start:
-          offset: 37060
+          offset: 37817
           line: 501
           column: 1
         end:
-          offset: 39215
+          offset: 39972
           line: 510
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace | all inventory rows | Use direct original/stage metering and supplier task records first. Where a shared studio, edit suite, render cluster or storage system is unavoidable, retain a measured resource total, a causal job/use driver and the allocation schedule, reconciling all shares to that total. Validate idle/base load and cooling coverage explicitly. Price, copyright value and audience cannot stand in for a causal energy relationship. |  |\n| allocation_original | accepted_original | One original-production ledger serves the accepted edition and its technical copies. Attribute separately measured additional versions and reuse work once; record reusable asset ownership and actual reuse history. Do not divide original production by future downloads or broadcasts without a separately justified downstream model. |  |\n| allocation_failures | dataset | Retakes and rejected intermediate work are attributable production burdens, not saleable co-products. If genuinely separate saleable originals are jointly produced, disclose their distinct outputs and a measured subdivision or causal allocation; unresolved allocation requires review. No speculative avoided-burden credit for reusable sets or digital copies. |  |\n| allocation_assets | camera_capital; set_plywood | Allocate equipment and reusable-set manufacturing using a unique asset ID, manufacturing inventory and an evidenced actual cumulative service life/activity or justified expected lifetime denominator. Measured project use is only the numerator. Cumulative manufacturing shares across every project and period must not exceed one or reset. Expected denominators require sensitivity and later reconciliation. A period allocation distributes only the manufacturing share already attributable to that period, never automatically the full asset inventory each period. Unknown life/activity denominator requires review; invent no default. Separate consumed material from reused capital and prevent duplicate supplier-rental manufacturing shares. |  |\n\n"
@@ -895,11 +895,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 37060
+              offset: 37817
               line: 501
               column: 1
             end:
-              offset: 37100
+              offset: 37857
               line: 501
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -915,15 +915,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48469"
+    - unit_id: "normative_49730"
       family: "validation"
       span:
         start:
-          offset: 48469
+          offset: 49730
           line: 542
           column: 1
         end:
-          offset: 50440
+          offset: 51701
           line: 552
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_original | accepted_original | Require 1 item complete accepted original, same reference-product and output names, cp_original and actual edition qualifiers. Candidate blank product UUID must be precisely registered against accepted_original. Do not replace it with a physical carrier or generic service UUID. |  |\n| validation_ledger | all inventory rows | Verify atomic exchange, native property/unit, same-original denominator and real collection protocol; audit CN low-voltage conditional use and disjoint other electricity. Reject double-counted service energy, fake density, unsupported emissions or storage-to-energy coefficients. |  |\n| validation_boundary | dataset | Require a declared broadcast/non-broadcast audiovisual original asset and route-specific acceptance evidence. Check commissioned-service/outright-sale interfaces and multi-use originals for duplication. No broadcast/distribution/user-device/long-term archive activity silently belongs to original production. | cpc-tv-original; cpc-sale-original |\n| validation_species | direct_co2, direct_no2 | Actual release evidence, fossil/biogenic distinction, species and immediate medium/submedium are mandatory. NO2-equivalent totals and purchased power emissions cannot be inserted as direct NO2 or direct CO2. Unresolved identity or causal allocation remains a disclosed review need. |  |\n| validation_assets | camera_capital; set_plywood | Check unique asset ID, actual same-configuration net mass/manufacturing quantity, evidenced cumulative life/service denominator, project/period share register and residual. Cumulative manufacturing shares cannot exceed one or reset. Expected denominator needs sensitivity and later reconciliation; period attribution must not input a full asset inventory each period. Missing denominator remains review without complete capital-coverage claims. |  |\n\n"
@@ -943,11 +943,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48469
+              offset: 49730
               line: 542
               column: 1
             end:
-              offset: 48491
+              offset: 49752
               line: 542
               column: 23
           text: "## 9. Validation Rules"
@@ -1019,118 +1019,118 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_trace"
       identity_kind: "explicit"
-      unit_id: "normative_37060"
+      unit_id: "normative_37817"
       source_span:
         start:
-          offset: 37173
+          offset: 37930
           line: 505
           column: 1
         end:
-          offset: 37639
+          offset: 38396
           line: 505
           column: 467
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_original"
       identity_kind: "explicit"
-      unit_id: "normative_37060"
+      unit_id: "normative_37817"
       source_span:
         start:
-          offset: 37640
+          offset: 38397
           line: 506
           column: 1
         end:
-          offset: 38019
+          offset: 38776
           line: 506
           column: 380
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_failures"
       identity_kind: "explicit"
-      unit_id: "normative_37060"
+      unit_id: "normative_37817"
       source_span:
         start:
-          offset: 38020
+          offset: 38777
           line: 507
           column: 1
         end:
-          offset: 38417
+          offset: 39174
           line: 507
           column: 398
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_assets"
       identity_kind: "explicit"
-      unit_id: "normative_37060"
+      unit_id: "normative_37817"
       source_span:
         start:
-          offset: 38418
+          offset: 39175
           line: 508
           column: 1
         end:
-          offset: 39213
+          offset: 39970
           line: 508
           column: 796
     - pointer: "/validation_rules/0"
       rule_id: "validation_original"
       identity_kind: "explicit"
-      unit_id: "normative_48469"
+      unit_id: "normative_49730"
       source_span:
         start:
-          offset: 48564
+          offset: 49825
           line: 546
           column: 1
         end:
-          offset: 48891
+          offset: 50152
           line: 546
           column: 328
     - pointer: "/validation_rules/1"
       rule_id: "validation_ledger"
       identity_kind: "explicit"
-      unit_id: "normative_48469"
+      unit_id: "normative_49730"
       source_span:
         start:
-          offset: 48892
+          offset: 50153
           line: 547
           column: 1
         end:
-          offset: 49219
+          offset: 50480
           line: 547
           column: 328
     - pointer: "/validation_rules/2"
       rule_id: "validation_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_48469"
+      unit_id: "normative_49730"
       source_span:
         start:
-          offset: 49220
+          offset: 50481
           line: 548
           column: 1
         end:
-          offset: 49601
+          offset: 50862
           line: 548
           column: 382
     - pointer: "/validation_rules/3"
       rule_id: "validation_species"
       identity_kind: "explicit"
-      unit_id: "normative_48469"
+      unit_id: "normative_49730"
       source_span:
         start:
-          offset: 49602
+          offset: 50863
           line: 549
           column: 1
         end:
-          offset: 49936
+          offset: 51197
           line: 549
           column: 335
     - pointer: "/validation_rules/4"
       rule_id: "validation_assets"
       identity_kind: "explicit"
-      unit_id: "normative_48469"
+      unit_id: "normative_49730"
       source_span:
         start:
-          offset: 49937
+          offset: 51198
           line: 550
           column: 1
         end:
-          offset: 50438
+          offset: 51699
           line: 550
           column: 502
   diagnostics:
@@ -1160,26 +1160,26 @@ normative_context:
           column: 334
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_37060"
+      unit_id: "normative_37817"
       source_span:
         start:
-          offset: 37060
+          offset: 37817
           line: 501
           column: 1
         end:
-          offset: 37100
+          offset: 37857
           line: 501
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48469"
+      unit_id: "normative_49730"
       source_span:
         start:
-          offset: 48469
+          offset: 49730
           line: 542
           column: 1
         end:
-          offset: 48491
+          offset: 49752
           line: 542
           column: 23
 projection_metadata:
@@ -1189,5 +1189,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f04ecefdba350acd38ed625d5602983f2ade2eb0d229c8a2ed2b3732e2a36f91"
-  generated_content_sha256: "sha256:ff8224e95f26764abbaefa17822c6ad58dfd821fbd39a59687000a15036f2609"
+    sha256: "sha256:23808d21c488c10b63a52fec6a38494a703333dfc866233c40fba629530d31ea"
+  generated_content_sha256: "sha256:02939c7fbbbdf83018b4f4ba4a8c0003882726d02dc0cb81801c5caf4e84887b"
