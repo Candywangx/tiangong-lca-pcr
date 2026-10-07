@@ -188,6 +188,18 @@ test("real generator preserves multilingual released snapshots and excludes open
       ["zh-CN", "en-US"],
     );
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
+      const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
+      assert.ok(isUnknownRecord(search));
+      assert.equal(search.schemaVersion, 2, "new indexes use native JSON export arrays");
+      assert.equal(search.language, language);
+      assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
+      for (const shard of search.shards) {
+        assert.ok(isUnknownRecord(shard) && typeof shard.url === "string");
+        const data: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", shard.url), "utf8"));
+        assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
+        assert.ok(Object.values(data.entries).length > 0);
+        assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
+      }
       const currentPages = recordPages(site, site.records[0]!, language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);
       assert.ok(currentPages.every((page) => page.recordVersion === undefined));
