@@ -509,7 +509,7 @@ sync_with: pcr.en-US.md
 | validate_identity | reference_product | 要求准确的单件产出链接及名称、声明版本及限定信息、溯源和所有权。披露候选未解决身份；它们不代表已核验产品供应方或方法学批准。 | un-cpc3-exploration |
 | validate_scope | all processes | 将每项实际调查、钻孔、试验、失败分支、化验、运输、计算、交付及收尾与过程覆盖及自营外购台账核对。未知供应方或路线清单使生命周期完整性无结论。 | un-sna2008-exploration |
 | validate_measurement | all inventory rows | 要求双语一致的每声明的参考流、完整协议、分子单位、能量及密度换算、共享份额及库存平衡。不以千克或货币归一化信息。 |  |
-| validate_release | all elementary and waste rows | 要求实际发生证据及物种或物理身份、化石或生物来源、介质及子介质、即时或长期区分。废液不是环境水。不悄然将未知排放置零，也不以总氮氧化物代替二氧化氮。使用 `cp_emission`、`cp_water` 和 `cp_waste` 采集协议提供所需证据。 |  |
+| validate_release | all elementary and waste rows | 每项基本流或废物交换均须有实际发生证据及物种或物理身份。直接环境排放须区分介质及子介质、即时或长期排放；碳排放还须区分化石或生物来源。河水取用保留河流及流域、取水日期和体积，并另记回流地点、体积及水质。技术系统内的废物移交保留组成及状态、数量、去向和移交记录。废液不是环境水。不悄然将未知排放置零，也不以总氮氧化物代替分子态二氧化氮。分别使用 `cp_emission`、`cp_water` 和 `cp_waste` 提供排放、取水和废物移交证据。 |  |
 
 ## 10. 发布数据集画像
 

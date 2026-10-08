@@ -145,7 +145,7 @@ Electricity attributable to observation work, including allocated reserved idle/
 
 ###### Existing observation dataset package (`source_data`)
 
-Conditional: one identified acquired observation-data version enters compilation. Bind its manifest, source variables, coverage, quality flags and reuse rights. Count actual scoped packages; carry the justified upstream creation share, rather than copying their bytes as newly observed facts. Primary owned observations instead require the actual observation-route inventory.
+Conditional: one identified existing observation-data version is acquired, received (including free or open data) or reused in compilation. Bind its manifest, source variables, coverage, quality flags and reuse rights. Count actual scoped packages; carry the justified upstream creation share, rather than copying their bytes as newly observed facts. New primary observations on own account in the current creation cycle instead require the actual observation-route inventory.
 
 - Selected flow: Existing observation dataset package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / item
