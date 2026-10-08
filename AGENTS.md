@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
-lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
+lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
+lastReviewedNote: "Reviewed PCR #106 / PR #97: 37 candidate records, bilingual mass/allocation corrections, compatible search v2 and unified 0.4.5 preparation. No mapping acceptance, methodology approval, compatibility minimum change or completed publication is implied. Preserved main PR #105 bilingual guide and navigation changes during integration."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

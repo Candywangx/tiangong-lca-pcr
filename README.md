@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
-lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
+lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
+lastReviewedNote: "Reviewed PCR #106 / PR #97 candidate content and search compatibility; installation examples prepare unified 0.4.5. Task snapshots, source-language requirements and release/integration gates remain unchanged. Preserved main PR #105 bilingual guide and navigation changes during integration."
 ---
 
 # TianGong LCA PCR Library
@@ -387,7 +387,7 @@ The [offline distribution contract](docs/offline-distribution.md) defines the se
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-The 0.4.4 release-preparation examples target PCR tool/content 0.4.4 and the
+The 0.4.5 release-preparation examples target PCR tool/content 0.4.5 and the
 qualified minimum `@tiangong-lca/cli` 0.1.25. Confirm the corresponding registry
 versions are available before installation; source metadata or a preparing release
 does not establish completed publication. Offline consumer targets include Linux

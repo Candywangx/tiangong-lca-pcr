@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
-lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
+lastReviewedCommit: f5089dd6cdacfe224cd3badd396106a903634508
+lastReviewedNote: "Reviewed PCR #106 / PR #97 content and bilingual pectin/TV accounting corrections against the update workflow. Candidate maturity, pending scientific review, unresolved identities and mapping authorization are preserved; unified 0.4.5 is product preparation only."
 ---
 
 # Authoring Guide

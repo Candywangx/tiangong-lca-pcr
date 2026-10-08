@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
-lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
+lastReviewedNote: "Reviewed PCR #106 / PR #97 native-array search v2 with v1 reader compatibility and unchanged aggregate budgets, preserving current-main onboarding and language preferences. Unified 0.4.5 publication remains subject to fresh qualification and live verification. Preserved main PR #105 bilingual guide and navigation changes during integration."
+lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -344,11 +344,20 @@ actual provider still owns packaging, configured routing/headers and final publi
 live checks are required after its processing.
 
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
-indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
-current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
+indexes must stay under 20 MB and the gzip transfer for each language under 4 MB. The
 Worker and tokenization module are compiled TypeScript browser modules shipped with the pinned
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
+
+New search manifests use `schemaVersion: 2`: each shard's `entries` object stores
+the pinned FlexSearch export as native JSON arrays. Generation requires every
+export value to parse as an array and stringify back to the exact original engine
+string. The Worker stringifies those arrays before engine import and also accepts
+version 1 manifests with their original string entries. Unsupported manifest
+versions and entry types inconsistent with the declared version fail initialization;
+failed loads remain retryable. This representation preserves export key order,
+terms, postings, IDs and complete records. The 2 MB text buckets, tokenization,
+30-candidate limit per shard, global ranking and browser size budgets are unchanged.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
