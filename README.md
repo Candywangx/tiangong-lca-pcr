@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 Agent getting-started entry and release-scoped availability; existing package installation and snapshot compatibility remain unchanged."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #100 unified 0.4.4 version mirrors and installation examples, including the merged Agent getting-started entry; canonical methodology, reader compatibility, release qualification and provider contracts remain unchanged. Publication pending."
 ---
 
 # TianGong LCA PCR Library
@@ -377,7 +377,7 @@ The [offline distribution contract](docs/offline-distribution.md) defines the se
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-The 0.4.3 release-preparation examples target PCR tool/content 0.4.3 and the
+The 0.4.4 release-preparation examples target PCR tool/content 0.4.4 and the
 qualified minimum `@tiangong-lca/cli` 0.1.25. Confirm the corresponding registry
 versions are available before installation; source metadata or a preparing release
 does not establish completed publication. Offline consumer targets include Linux

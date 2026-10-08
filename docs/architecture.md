@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 authored Markdown entry, byte-preserving website export and inline hosting policy; consumer and publication ownership remain unchanged."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #100 unified 0.4.4 version mirrors and installation examples, including the merged Agent getting-started entry; canonical methodology, reader compatibility, release qualification and provider contracts remain unchanged. Publication pending."
 ---
 
 # PCR 资料库架构
