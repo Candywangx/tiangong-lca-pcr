@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 consumer onboarding: no canonical PCR edits, lifecycle promotion or changes to scientific and translation review."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 presentation-only browser language selection; required source languages, optional declaration/review rules, canonical authoring and immutable publication workflow are unchanged."
 ---
 
 # Authoring Guide

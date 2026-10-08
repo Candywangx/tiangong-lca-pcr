@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 getting-started guide against task snapshot, three-route Skill, native TIDAS and standalone offline contracts."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 website-local language preferences; task-pinned snapshots, offline English content, reader compatibility, CLI inspection and Agent review boundaries are unchanged."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

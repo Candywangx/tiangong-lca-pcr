@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 authored Markdown entry, byte-preserving website export and inline hosting policy; consumer and publication ownership remain unchanged."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 client-side public-site preferences and explicit localized URLs; canonical truth, read-only consumption, static export, sealed publication and workspace integration boundaries remain unchanged."
 ---
 
 # PCR 资料库架构

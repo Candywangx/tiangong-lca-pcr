@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 Agent getting-started entry and release-scoped availability; existing package installation and snapshot compatibility remain unchanged."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 neutral-entry browser language negotiation and persisted manual selection against the linked site contract; package installation, task snapshots and canonical language requirements are unchanged."
 ---
 
 # TianGong LCA PCR Library

@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
-lastReviewedNote: "Reviewed PCR #98 static Agent onboarding entry: PCR ownership, canonical content, offline reader and scientific/translation gates are unchanged."
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 public-documentation browser language preferences; canonical PCR identity, authoring/scientific/translation gates, offline consumption and release/integration authorization are unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
