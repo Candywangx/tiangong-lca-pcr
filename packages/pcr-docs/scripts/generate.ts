@@ -36,6 +36,7 @@ import {
   assertMarkdownFrontmatter,
 } from "../../../builder/lib/schema-contracts.ts";
 import { routeFor, publicLanguage } from "./language-policy.ts";
+import { gettingStartedGuides } from "../lib/getting-started.ts";
 import { categoryTitle } from "./category-titles.ts";
 import { ensureSourceHistory } from "./source-history.ts";
 import {
@@ -105,7 +106,7 @@ for (const line of git(
   "--",
   "library",
   "classifications",
-  "packages/pcr-docs/public/getting-started.md",
+  ...gettingStartedGuides.map(guide => guide.sourcePath),
 ).split("\n")) {
   if (line.startsWith("@")) changeDate = line.slice(1);
   else if (line && changeDate && !modified.has(line))
@@ -182,7 +183,7 @@ function publishSummary(summary: {titleOnly:boolean;contextDropped:boolean;clipp
   return summary.text;
 }
 const tracked = new Map(
-  git("ls-tree", "-r", commit, "--", "library", "classifications", "packages/pcr-docs/public/getting-started.md")
+  git("ls-tree", "-r", commit, "--", "library", "classifications", ...gettingStartedGuides.map(guide => guide.sourcePath))
     .split("\n")
     .filter(Boolean)
     .map((line) => {
@@ -742,21 +743,24 @@ async function generate() {
       }
     },
   });
-  // The operational guide is one English source, distinct from bilingual PCR methodology.
-  const guidePath = "packages/pcr-docs/public/getting-started.md";
-  if (tracked.has(guidePath)) {
+  // Only authored, pinned translations become real counterparts.
+  const guides = gettingStartedGuides.filter(guide => tracked.has(guide.sourcePath));
+  const guideAlternates = Object.fromEntries(guides.map(guide => [guide.language, origin + guide.url]));
+  for (const guide of guides) {
+    const guidePath = guide.sourcePath;
     const bytes = fs.readFileSync(path.join(root, guidePath));
     bindSource(guidePath, bytes);
-    if (!codes.includes("en-US")) {
-      codes.push("en-US");
-      manifest.languages.push({ code: "en-US", route: "en", label: "English", htmlLang: "en-US", required: true });
+    if (!codes.includes(guide.language)) {
+      codes.push(guide.language);
+      manifest.languages.push({ code: guide.language, route: guide.locale, label: guide.locale === "zh" ? "简体中文" : "English", htmlLang: guide.language, required: true });
     }
-    sourceRoutes.set(guidePath, urlFor("en-US", ["getting-started"]));
+    sourceRoutes.set(guidePath, guide.url);
     renderDocument({
       artifact: { path: guidePath, text: bytes.toString("utf8"), sha256: sha256(bytes) },
-      language: "en-US",
+      language: guide.language,
       slugs: ["getting-started"],
       extra: { kind: "guide" },
+      alternates: guideAlternates,
     });
   }
   const modules = new Set(

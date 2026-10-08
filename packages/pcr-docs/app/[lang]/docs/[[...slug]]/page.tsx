@@ -101,7 +101,7 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
         {doc.kind === 'module' ? <ModuleScaffold locale={lang} /> : null}
         {doc.kind === 'guide' ? (
           <>
-            <CopyAgentPrompt />
+            <CopyAgentPrompt locale={lang} />
             <div id="getting-started-content"><DocumentBody html={html} /></div>
           </>
         ) : <DocumentBody html={html} />}

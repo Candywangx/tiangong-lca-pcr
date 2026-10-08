@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
-lastReviewedNote: "Reviewed PCR #104 normal English getting-started documentation, prompt copy and exact raw resource verification after merging #103 language preferences. Preserve explicit locale URLs, emitted-language probes and sealed browser qualification; canonical methodology, CLI, dependencies and product publication remain unchanged."
+lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
+lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -438,9 +438,10 @@ source identity, browser versions, all selected routes and screenshots, and chec
 that export bytes remain unchanged. Page-route assertion failures are recorded
 while subsequent route cases continue; missing engines or required input fail rather than skip.
 The final CI uses this browser engine through `qualify:web` on the extracted sealed archive, after verifying the exact candidate tree.
-The English getting-started guide is a planned route in that same desktop/mobile
-matrix. It checks the home-to-guide path, scoped prompt copy from displayed text,
-manual-copy feedback after clipboard rejection and guide search/navigation.
+The Chinese and English getting-started guides are planned routes in that same
+desktop/mobile matrix. Checks cover language-matched home entry, verified guide
+counterpart switching, one main navigation entry per section, localized copying
+of displayed prompt text, clipboard-denial feedback and guide search/navigation.
 Clipboard transport is mocked for repeatable cross-browser acceptance; no host
 clipboard permission or live website publication is claimed by those checks.
 

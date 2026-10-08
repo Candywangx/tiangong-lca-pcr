@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 import {chromium, firefox, webkit} from 'playwright';
 import type {Page, Browser, BrowserType, Request} from 'playwright';
+import { gettingStartedGuide } from '../../packages/pcr-docs/lib/getting-started.ts';
 import { LANGUAGE_PREFERENCE_KEY, preferredRoute } from '../../packages/pcr-docs/lib/language-preference.ts';
 
 export class SiteBrowserError extends Error {
@@ -42,13 +43,13 @@ export function inspectSiteExport(input:string):SiteExport {
  function visit(relative:string){for(const entry of readdirSync(path.join(canonical,relative),{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name,'en'))){const key=relative?relative+'/'+entry.name:entry.name;if(entry.isSymbolicLink())failure('SITE_EXPORT_PATH','Export inputs must not contain symbolic links.');if(entry.isDirectory())visit(key);else if(entry.isFile()){const bytes=readRegular(canonical,key);files.push({path:key,bytes:bytes.length,sha256:hash(bytes)});}else failure('SITE_EXPORT_PATH','Export inputs must be regular files or directories.');}}
  visit('');
  const fileSet=new Set(files.map(file=>file.path));if(files.some(file=>/\.(?:ts|tsx|mts|cts)$/u.test(file.path)))failure('SITE_EXPORT_INPUT','Browser exports must not contain raw TypeScript source.');
- for(const key of ['index.html','en/index.html','zh/index.html','en/docs/pcr/index.html','zh/docs/pcr/index.html','generated/version.json','generated/product-release.json','generated/search-worker.mjs','en/docs/getting-started/index.html'])if(!fileSet.has(key))failure('SITE_EXPORT_INPUT','Missing required exported input: '+key);
+ for(const key of ['index.html','en/index.html','zh/index.html','en/docs/pcr/index.html','zh/docs/pcr/index.html','generated/version.json','generated/product-release.json','generated/search-worker.mjs','en/docs/getting-started/index.html','zh/docs/getting-started/index.html'])if(!fileSet.has(key))failure('SITE_EXPORT_INPUT','Missing required exported input: '+key);
  const source=readIdentityJson(canonical,'generated/version.json');
  if(!object(source)||typeof source.sourceCommit!=='string'||! /^[a-f0-9]{40,64}$/u.test(source.sourceCommit)||typeof source.sourceFingerprint!=='string'||!/^sha256:[a-f0-9]{64}$/u.test(source.sourceFingerprint))failure('SITE_EXPORT_IDENTITY','Version metadata must bind sourceCommit and sourceFingerprint.');
  const release=readIdentityJson(canonical,'generated/product-release.json');
  if(!object(release)||release.sourceCommit!==source.sourceCommit||release.sourceFingerprint!==source.sourceFingerprint)failure('SITE_EXPORT_IDENTITY','Version and product identity disagree.');
- const routes:SiteRoute[]=[{kind:'home',locale:'default',path:'/'},{kind:'guide',locale:'en',path:'/en/docs/getting-started/'}],availability:SiteExport['availability']=[];
- for(const locale of ['en','zh'] as const){routes.push({kind:'home',locale,path:`/${locale}/`},{kind:'catalog',locale,path:`/${locale}/docs/pcr/`});
+ const routes:SiteRoute[]=[{kind:'home',locale:'default',path:'/'}],availability:SiteExport['availability']=[];
+ for(const locale of ['en','zh'] as const){routes.push({kind:'guide',locale,path:gettingStartedGuide(locale).url},{kind:'home',locale,path:`/${locale}/`},{kind:'catalog',locale,path:`/${locale}/docs/pcr/`});
   const candidates=files.filter(file=>file.path.startsWith(`${locale}/docs/pcr/`)&&file.path.endsWith('/index.html')&&file.path.split('/').length===7).sort((a,b)=>b.bytes-a.bytes||a.path.localeCompare(b.path,'en'));
   if(!candidates[0])failure('SITE_EXPORT_INPUT','No exported PCR leaf for '+locale);routes.push({kind:'pcr',locale,path:'/'+candidates[0].path.slice(0,-10)});
   for(const kind of ['module','history'] as const){const candidate=files.filter(file=>file.path.startsWith(`${locale}/docs/`)&&file.path.endsWith('/index.html')&&(kind==='module'?file.path.includes('/modules/'):file.path.includes('/versions/'))).sort((a,b)=>b.bytes-a.bytes||a.path.localeCompare(b.path,'en'))[0];availability.push({locale,kind,present:!!candidate});if(candidate)routes.push({kind,locale,path:'/'+candidate.path.slice(0,-10)});}
@@ -102,17 +103,21 @@ async function checkPage(page:Page,origin:string,route:SiteRoute,viewport:string
  const brand=expectedLocale==='zh'?'天工产品类别规则':'TianGong PCR';assert.equal(await page.locator('.pcr-brand-name').first().innerText(),brand);evidence.assertions.push('locale brand');
  const dimensions=await page.evaluate(()=>({viewport:window.innerWidth,width:document.documentElement.scrollWidth}));assert.ok(dimensions.width<=dimensions.viewport+1,`Horizontal overflow: ${dimensions.width} > ${dimensions.viewport}`);evidence.assertions.push('no horizontal overflow');
  if(route.kind==='guide'){
-  const prompt=await page.locator('#getting-started-content pre code').first().textContent();assert.ok(prompt?.includes('help me create LCA data for [product]'));
+  const guide=gettingStartedGuide(expectedLocale),chinese=expectedLocale==='zh',button=chinese?'复制 Agent 提示词':'Copy Agent prompt';
+  const prompt=await page.locator('#getting-started-content pre code').first().textContent();assert.ok(prompt?.includes(chinese?'创建 [产品] 的 LCA 数据':'help me create LCA data for [product]'));
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async(text:string)=>{document.documentElement.dataset.copiedPrompt=text;}}}));
-  await page.getByRole('button',{name:'Copy Agent prompt',exact:true}).click();await page.getByRole('status').filter({hasText:'Agent prompt copied.'}).waitFor();assert.equal(await page.locator('html').getAttribute('data-copied-prompt'),prompt);evidence.assertions.push('copy invokes clipboard with exact displayed Agent prompt');
+  await page.getByRole('button',{name:button,exact:true}).click();await page.getByRole('status').filter({hasText:chinese?'提示词已复制':'Agent prompt copied.'}).waitFor();assert.equal(await page.locator('html').getAttribute('data-copied-prompt'),prompt);evidence.assertions.push('copy invokes clipboard with exact displayed Agent prompt');
   await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw new Error('Clipboard denied');}}}));
-  await page.getByRole('button',{name:'Copy Agent prompt',exact:true}).click();await page.getByRole('status').filter({hasText:'Copy was unavailable.'}).waitFor();evidence.assertions.push('clipboard denial shows manual-copy fallback');
-  assert.equal(await page.getByRole('link',{name:'Read Markdown',exact:true}).getAttribute('href'),'/getting-started.md');
+  await page.getByRole('button',{name:button,exact:true}).click();await page.getByRole('status').filter({hasText:chinese?'无法自动复制':'Copy was unavailable.'}).waitFor();evidence.assertions.push('clipboard denial shows manual-copy fallback');
+  assert.equal(await page.getByRole('link',{name:chinese?'阅读 Markdown':'Read Markdown',exact:true}).getAttribute('href'),guide.rawUrl);
  }
  if(route.kind!=='home'){
   const toc=await page.evaluate(()=>Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')).filter(a=>a.getAttribute('href')!=='#').map(a=>({href:a.getAttribute('href')!,found:!!document.getElementById(decodeURIComponent(a.hash.slice(1)))})));
   if(route.kind==='pcr')assert.ok(toc.length>0,'Document must expose anchors');assert.ok(toc.every(anchor=>anchor.found),'TOC/local anchor points to a missing element');evidence.assertions.push(`local TOC anchors resolve (${toc.length})`);
   if(viewport==='mobile'){await page.getByRole('button',{name:expectedLocale==='zh'?'打开侧栏':'Open sidebar',exact:true}).first().click();await page.locator('#nd-sidebar-mobile').waitFor({state:'visible'});}
+  const mainLinks=await page.locator((viewport==='mobile'?'#nd-sidebar-mobile':'#nd-sidebar')+' a[href]').evaluateAll(links=>links.map(link=>link.getAttribute('href')!));
+  for(const target of [gettingStartedGuide(expectedLocale).url,`/${expectedLocale}/docs/pcr/`])assert.equal(mainLinks.filter(href=>href===target).length,1,'Main documentation entry must appear exactly once: '+target);
+  assert.equal(mainLinks.filter(href=>href.startsWith(`/${expectedLocale}/docs/coverage/`)).length,1,'Classification coverage must appear once');evidence.assertions.push('single guide, library and coverage sidebar entries');
   const sidebar=await page.locator((viewport==='mobile'?'#nd-sidebar-mobile':'#nd-sidebar')+' a[href]').evaluateAll(links=>links.map(link=>link.getAttribute('href')!).filter(href=>/^\/(?:en|zh)\/docs\/pcr\/[^/]+\/[^/]+\/[^/]+\/?$/u.test(href)));
   if(route.kind==='pcr')assert.ok(sidebar.length>0,'Sidebar must expose PCR leaf links');for(const href of sidebar)assert.ok(exported.files.some(file=>file.path===href.replace(/^\//u,'').replace(/\/?$/u,'/')+'index.html'),'Missing sidebar leaf '+href);evidence.assertions.push(`sidebar PCR leaves resolve (${sidebar.length})`);
   if(viewport==='mobile'){await page.locator('#nd-sidebar-mobile').getByRole('button',{name:expectedLocale==='zh'?'关闭侧栏':'Close sidebar',exact:true}).click();await page.locator('#nd-sidebar-mobile').waitFor({state:'hidden'});evidence.assertions.push('mobile sidebar opens and closes');}
@@ -136,6 +141,17 @@ async function openLanguageSelector(page:Page):Promise<void> {
  for(let index=0;index<await menus.count();index++)if(await menus.nth(index).isVisible()){await menus.nth(index).click();break;}
  await page.waitForFunction(()=>Array.from(document.querySelectorAll<HTMLElement>('[data-pcr-language-trigger]')).some(button=>button.getBoundingClientRect().width>0));
  assert.ok(await clickVisible(),'Language selector must be visible');
+}
+async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evidence:BrowserEvidence):Promise<void> {
+ const counterpart=gettingStartedGuide(route.locale==='zh'?'en':'zh');
+ await page.goto(origin+route.path+'?from=getting-started',{waitUntil:'networkidle'});
+ await openLanguageSelector(page);
+ await page.getByRole('button',{name:counterpart.locale==='zh'?'中文':'English',exact:true}).last().click();
+ await page.waitForURL(origin+counterpart.url+'?from=getting-started');await settleLanguage(page,counterpart.language);
+ await page.getByRole('button',{name:counterpart.locale==='zh'?'复制 Agent 提示词':'Copy Agent prompt',exact:true}).waitFor({state:'visible'});
+ assert.ok((await page.locator('#getting-started-content pre code').first().textContent())?.includes(counterpart.rawUrl));
+ evidence.assertions.push('language selector opens authored guide counterpart and preserves query');
+ await page.goto(origin+route.path,{waitUntil:'networkidle'});
 }
 async function settleLanguage(page:Page,language:string):Promise<void> {
  await page.waitForFunction(expected=>document.documentElement.lang===expected,language);
@@ -256,7 +272,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
      page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});
      page.on('request',request=>{if(request.headers()['next-router-prefetch']==='1')prefetchUrls.push(request.url());});page.on('response',response=>{responses.set(response.request(),response.status());if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});
      page.on('requestfailed',request=>{failedRequests.push({url:request.url(),reason:request.failure()?.errorText??'unknown',method:request.method(),headers:request.headers(),status:responses.get(request)});});
-     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='home'){await page.locator('.pcr-hero-actions a[href="/en/docs/getting-started/"]').click();await page.locator('#getting-started-content').waitFor();assert.equal(new URL(page.url()).pathname,'/en/docs/getting-started/');evidence.assertions.push('home entry navigates to English documentation guide');}if(route.kind==='pcr'||route.kind==='guide')await checkSearch(page,route,evidence);for(const request of failedRequests){if(isCancelledSitePrefetch(request,prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}assert.deepEqual(evidence.errors,[],'Browser reported errors');}
+     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='home'){const guide=gettingStartedGuide(route.locale==='default'?'zh':route.locale);await page.locator('.pcr-hero-actions a[href="'+guide.url+'"]').click();await page.locator('#getting-started-content').waitFor();assert.equal(new URL(page.url()).pathname,guide.url);evidence.assertions.push('home entry navigates to corresponding documentation language');}if(route.kind==='guide')await checkGuideCounterpart(page,origin,route,evidence);if(route.kind==='pcr'||route.kind==='guide')await checkSearch(page,route,evidence);for(const request of failedRequests){if(isCancelledSitePrefetch(request,prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}assert.deepEqual(evidence.errors,[],'Browser reported errors');}
      catch(error){evidence.failure=message(error);try{writeFileSync(path.join(report,evidence.screenshot+'.html'),await page.content());}catch(diagnostic){evidence.diagnosticError=message(diagnostic);}}
      finally {try{if(!existsSync(path.join(report,evidence.screenshot)))evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);}catch(diagnostic){evidence.diagnosticError=message(diagnostic);if(!evidence.failure)throw diagnostic;}finally{await page.close();}}
     }}finally{await context.close();}

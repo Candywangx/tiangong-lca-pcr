@@ -145,6 +145,7 @@ test("real generator preserves multilingual released snapshots and excludes open
     const guidePath = "packages/pcr-docs/public/getting-started.md";
     fs.mkdirSync(path.dirname(path.join(root, guidePath)), { recursive: true });
     fs.copyFileSync(new URL("../public/getting-started.md", import.meta.url), path.join(root, guidePath));
+    fs.copyFileSync(new URL("../public/getting-started.zh-CN.md", import.meta.url), path.join(root, "packages/pcr-docs/public/getting-started.zh-CN.md"));
     git("init", "-q", "-b", "main");
     git("add", "-A");
     git(
@@ -168,13 +169,18 @@ test("real generator preserves multilingual released snapshots and excludes open
       fs.readFileSync(path.join(output, ".generated/site.json")),
     );
     const guides = site.pages.filter(page => page.kind === "guide");
-    assert.equal(guides.length, 1);
-    const guide = guides[0]!;
+    assert.equal(guides.length, 2);
+    const guide = guides.find(page => page.language === "en-US")!;
+    const chineseGuide = guides.find(page => page.language === "zh-CN")!;
+    assert.equal(chineseGuide.url, "/zh/docs/getting-started/");
+    assert.equal(chineseGuide.sourceSha256, hash(fs.readFileSync(path.join(root, "packages/pcr-docs/public/getting-started.zh-CN.md"))));
+    assert.match(fs.readFileSync(path.join(output, ".generated", chineseGuide.htmlPath!), "utf8"), /创建.*LCA 数据/);
     assert.equal(guide.url, "/en/docs/getting-started/");
     assert.equal(guide.language, "en-US");
     assert.equal(guide.sourcePath, guidePath);
     assert.equal(guide.sourceSha256, hash(fs.readFileSync(path.join(root, guidePath))));
-    assert.deepEqual(guide.alternates, { "en-US": site.origin + guide.url });
+    assert.deepEqual(guide.alternates, { "en-US": site.origin + guide.url, "zh-CN": site.origin + chineseGuide.url });
+    assert.deepEqual(chineseGuide.alternates, guide.alternates);
     const guideHtml = fs.readFileSync(path.join(output, ".generated", guide.htmlPath!), "utf8");
     assert.match(guideHtml, /help me create LCA data for/);
     assert.match(guideHtml, /id="pcr-fully-offline-use"/);
@@ -381,6 +387,7 @@ test("metadata summaries describe the page they belong to, and report title-only
     const guidePath = "packages/pcr-docs/public/getting-started.md";
     fs.mkdirSync(path.dirname(path.join(root, guidePath)), { recursive: true });
     fs.copyFileSync(new URL("../public/getting-started.md", import.meta.url), path.join(root, guidePath));
+    fs.copyFileSync(new URL("../public/getting-started.zh-CN.md", import.meta.url), path.join(root, "packages/pcr-docs/public/getting-started.zh-CN.md"));
     git("init", "-q", "-b", "main");
     git("add", "-A");
     git(

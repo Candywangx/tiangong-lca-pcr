@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
-lastReviewedNote: "Reviewed PCR #104 normal English getting-started documentation, prompt copy and exact raw resource verification after merging #103 language preferences. Preserve explicit locale URLs, emitted-language probes and sealed browser qualification; canonical methodology, CLI, dependencies and product publication remain unchanged."
+lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
+lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

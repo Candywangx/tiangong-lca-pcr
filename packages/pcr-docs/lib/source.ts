@@ -4,6 +4,7 @@ import type { DocPage, Download, Language, PcrRecord, SiteManifest } from './typ
 import { DEFAULT_ROUTE } from './i18n';
 import { getSiteManifest } from './generated';
 import { recordPages, recordNavigationNode } from './record-navigation.ts';
+import { gettingStartedGuide } from './getting-started';
 
 export type PcrSourcePage = {
   path: string;
@@ -359,8 +360,9 @@ export function navigationTree(context: NavContext): Root {
   const library = catalogPage?.url ?? libraryUrl(locale);
   const children: PageTreeNode[] = [];
 
-  const guide = manifest.pages.find(page => page.kind === 'guide' && page.slugs.join('/') === 'getting-started');
-  if (guide) children.push({ type: 'page', name: locale === 'zh' ? '开始使用（英文）' : 'Getting started', url: guide.url });
+  const guideEntry = gettingStartedGuide(locale);
+  const guide = manifest.pages.find(page => page.kind === 'guide' && page.url === guideEntry.url);
+  if (guide) children.push({ type: 'page', name: guideEntry.label, url: guide.url });
 
   if (catalogPage) children.push({ type: 'page', name: messages.library, url: catalogPage.url });
   if (coverage) children.push({ type: 'page', name: messages.coverage, url: coverage.url });

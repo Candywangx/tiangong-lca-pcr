@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
-lastReviewedNote: "Reviewed PCR #104 normal English getting-started documentation, prompt copy and exact raw resource verification after merging #103 language preferences. Preserve explicit locale URLs, emitted-language probes and sealed browser qualification; canonical methodology, CLI, dependencies and product publication remain unchanged."
+lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
+lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -301,11 +301,14 @@ Formats are enforced per command: `resolve`, `guidance`, and validation are JSON
 
 ## Public PCR Documentation
 
-The [Getting started page](https://pcr.tiangong.earth/en/docs/getting-started/)
-explains installation, Skill discovery and LCA/TIDAS tasks, with a copyable Agent
-prompt. Its [raw Markdown](https://pcr.tiangong.earth/getting-started.md) is generated
-from the same authored source for direct Agent reading. Website availability
-follows the next qualified product release containing this documentation page.
+The [English Getting started page](https://pcr.tiangong.earth/en/docs/getting-started/)
+and [Chinese guide](https://pcr.tiangong.earth/zh/docs/getting-started/)
+explain installation, Skill discovery and LCA/TIDAS tasks, with localized copyable
+Agent prompts. Their [English raw Markdown](https://pcr.tiangong.earth/getting-started.md)
+and [Chinese raw Markdown](https://pcr.tiangong.earth/getting-started.zh-CN.md) are
+exported from the corresponding authored sources for direct Agent reading. Website availability
+follows the next qualified product release containing these documentation pages.
+Website guide translations do not change the English-only npm methodology content.
 
 
 The public site in `packages/pcr-docs/` reads the canonical library through the core

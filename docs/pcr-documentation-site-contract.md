@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #104 normal English getting-started documentation, prompt copy and exact raw resource verification after merging #103 language preferences. Preserve explicit locale URLs, emitted-language probes and sealed browser qualification; canonical methodology, CLI, dependencies and product publication remain unchanged."
-lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
+lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
+lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -162,19 +162,26 @@ PCR records. The hosting contract serves it inline as UTF-8 Markdown with cache
 revalidation. Export verification checks its bytes and required header policy;
 actual availability follows the normal qualified website publication.
 
-The same authored source, including its Markdown frontmatter, renders as the
-indexable English documentation page `/en/docs/getting-started/`. It uses the
-normal document shell, source-block inventory, table of contents, sitemap and
-English search index. Home, header and sidebar link to that page; Chinese
-controls label the entry as English instead of claiming a translated body.
-The prompt copy action reads the displayed first code block and reports success
-or a manual-copy fallback. The raw entry remains available from the page.
-The generator binds the guide to the pinned Git source like other documents;
-export verification checks the page, source fidelity and discovery links.
-Sealed browser qualification covers navigation, responsive reading, search and
-both accepted and denied clipboard writes. The clipboard transport is mocked
-for deterministic cross-browser checks; actual host permission remains a browser
-concern. This guide does not enter the methodology-record catalog.
+The authored English source and its complete Chinese counterpart
+`packages/pcr-docs/public/getting-started.zh-CN.md` render as the normal
+indexable pages `/en/docs/getting-started/` and `/zh/docs/getting-started/`.
+Each page uses its own pinned Markdown source, block inventory, table of
+contents, sitemap and language search index. The Chinese raw entry
+`/getting-started.zh-CN.md` is also exported byte-for-byte with the same inline
+Markdown headers. Only actual authored counterparts appear in hreflang and the
+language selector; switching keeps the guide and preserves query/fragment.
+Homepage entries follow the reading language. Documentation navigation keeps
+one sidebar list for Getting started, the PCR library and classification
+coverage; the shell retains the related-sites menu without repeating that list.
+The prompt copy action reads the displayed first code block and gives localized
+success or manual-copy feedback. Each page links to its corresponding raw guide.
+The generator binds every translation to the pinned Git source, and export
+verification checks source fidelity, discovery links and unique sidebar entries.
+Sealed desktop/mobile browser qualification covers both languages, counterpart
+switching, unique navigation, search and accepted/denied clipboard writes.
+Clipboard transport is mocked for deterministic cross-browser checks; actual
+host permission remains a browser concern. Website guide translations do not
+change the English-only npm methodology package or the methodology catalog.
 
 
 The library index keeps every record link in static HTML behind native subdomain

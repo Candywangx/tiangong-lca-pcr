@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { gettingStartedGuide } from '@/lib/getting-started';
 import type { PcrRecord, SiteManifest } from '@/lib/types';
 import { StatusBadge, lifecycleStatus, maturityLabel, toneFor } from '@/components/status-badge';
 import {
@@ -21,7 +22,7 @@ const copy = {
     description:
       '产品类别规则（PCR）为特定产品类别规定核算范围、参考流、数据收集与验证要求。本库收录天工 LCA 的 PCR 记录，中英双语对照，并提供逐字节可校验的源文件。',
     browse: '浏览 PCR 目录',
-    gettingStarted: '开始使用（英文）',
+    gettingStarted: '开始使用',
     search: '搜索 PCR',
     statusTitle: '当前库状态',
     domains: '行业领域',
@@ -198,7 +199,7 @@ export function HomeContent({
             <h1 className="pcr-display">{text.claim}</h1>
             <p className="pcr-lede">{text.description}</p>
             <div className="pcr-hero-actions">
-              <Link className="pcr-action" href="/en/docs/getting-started/">
+              <Link className="pcr-action" href={gettingStartedGuide(locale).url}>
                 {text.gettingStarted}
               </Link>
               <Link className="pcr-action pcr-action--primary" href={library}>
