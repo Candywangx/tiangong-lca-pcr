@@ -368,7 +368,7 @@ for (const page of manifest.pages) {
     const value = node.getAttribute("href");
     if (!value || !value.startsWith("/") || value.startsWith("//")) continue;
     const target = new URL(value, manifest.origin);
-    if (target.pathname.startsWith("/generated/")) {
+    if (target.pathname.startsWith("/generated/") || target.pathname === "/getting-started.md") {
       requireThat(
         fs.existsSync(path.join(out, decodeURIComponent(target.pathname))),
         "Broken download " + value,
