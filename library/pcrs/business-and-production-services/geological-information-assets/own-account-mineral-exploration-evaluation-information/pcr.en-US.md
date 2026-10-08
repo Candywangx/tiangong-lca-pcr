@@ -509,7 +509,7 @@ Conditional actual contracted exploration closure for named holes and pads. Scop
 | validate_identity | reference_product | Require exact one-item output link/name, declared version and qualifiers, provenance and ownership. Candidate unresolved identities are disclosed; they are not verified product providers or methodology approval. | un-cpc3-exploration |
 | validate_scope | all processes | Reconcile every actual survey, borehole, test, failed branch, assay, transport, computation, delivery and closure with process coverage and make/buy ledger. Unknown provider/route inventories make lifecycle completeness inconclusive. | un-sna2008-exploration |
 | validate_measurement | all inventory rows | Require consistent per declared reference flow, complete protocols, numerator units, energy/density conversions, shared shares and stock balances in both languages. Do not normalize information by kg or money. |  |
-| validate_release | all elementary and waste rows | Require demonstrated occurrence and species/physical identity, fossil/biogenic source, medium/submedium and immediate/long-term distinction. Waste fluid is not environmental water. Never silently set unavailable emissions to zero or use NOx as NO2. | cp_emission; cp_water; cp_waste |
+| validate_release | all elementary and waste rows | Require demonstrated occurrence and species/physical identity, fossil/biogenic source, medium/submedium and immediate/long-term distinction. Waste fluid is not environmental water. Never silently set unavailable emissions to zero or use NOx as NO2. Use the `cp_emission`, `cp_water` and `cp_waste` collection protocols to supply the required evidence. |  |
 
 ## 10. Published Dataset Profile
 
