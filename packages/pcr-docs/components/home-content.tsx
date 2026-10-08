@@ -21,6 +21,7 @@ const copy = {
     description:
       '产品类别规则（PCR）为特定产品类别规定核算范围、参考流、数据收集与验证要求。本库收录天工 LCA 的 PCR 记录，中英双语对照，并提供逐字节可校验的源文件。',
     browse: '浏览 PCR 目录',
+    gettingStarted: '开始使用（英文）',
     search: '搜索 PCR',
     statusTitle: '当前库状态',
     domains: '行业领域',
@@ -53,6 +54,7 @@ const copy = {
     description:
       'Product category rules define the scope, reference flow, data collection and validation requirements for a product category. This library publishes TianGong LCA PCR records in Chinese and English, with byte-verifiable source files.',
     browse: 'Browse the PCR catalog',
+    gettingStarted: 'Getting started',
     search: 'Search PCRs',
     statusTitle: 'Library state',
     domains: 'Domains',
@@ -196,6 +198,9 @@ export function HomeContent({
             <h1 className="pcr-display">{text.claim}</h1>
             <p className="pcr-lede">{text.description}</p>
             <div className="pcr-hero-actions">
+              <Link className="pcr-action" href="/en/docs/getting-started/">
+                {text.gettingStarted}
+              </Link>
               <Link className="pcr-action pcr-action--primary" href={library}>
                 {text.browse}
               </Link>

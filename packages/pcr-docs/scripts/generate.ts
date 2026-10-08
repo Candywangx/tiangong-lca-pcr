@@ -105,6 +105,7 @@ for (const line of git(
   "--",
   "library",
   "classifications",
+  "packages/pcr-docs/public/getting-started.md",
 ).split("\n")) {
   if (line.startsWith("@")) changeDate = line.slice(1);
   else if (line && changeDate && !modified.has(line))
@@ -181,7 +182,7 @@ function publishSummary(summary: {titleOnly:boolean;contextDropped:boolean;clipp
   return summary.text;
 }
 const tracked = new Map(
-  git("ls-tree", "-r", commit, "--", "library", "classifications")
+  git("ls-tree", "-r", commit, "--", "library", "classifications", "packages/pcr-docs/public/getting-started.md")
     .split("\n")
     .filter(Boolean)
     .map((line) => {
@@ -741,6 +742,23 @@ async function generate() {
       }
     },
   });
+  // The operational guide is one English source, distinct from bilingual PCR methodology.
+  const guidePath = "packages/pcr-docs/public/getting-started.md";
+  if (tracked.has(guidePath)) {
+    const bytes = fs.readFileSync(path.join(root, guidePath));
+    bindSource(guidePath, bytes);
+    if (!codes.includes("en-US")) {
+      codes.push("en-US");
+      manifest.languages.push({ code: "en-US", route: "en", label: "English", htmlLang: "en-US", required: true });
+    }
+    sourceRoutes.set(guidePath, urlFor("en-US", ["getting-started"]));
+    renderDocument({
+      artifact: { path: guidePath, text: bytes.toString("utf8"), sha256: sha256(bytes) },
+      language: "en-US",
+      slugs: ["getting-started"],
+      extra: { kind: "guide" },
+    });
+  }
   const modules = new Set(
     manifest.records.flatMap((r) =>
       Object.entries(r.modules).flatMap(([group, ids]) =>

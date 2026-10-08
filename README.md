@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
-lastReviewedNote: "Reviewed PCR #100 unified 0.4.4 version mirrors and installation examples, including the merged Agent getting-started entry; canonical methodology, reader compatibility, release qualification and provider contracts remain unchanged. Publication pending."
+lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
+lastReviewedNote: "Reviewed PCR #104: one English getting-started Markdown source renders as a navigable guide with copyable Agent prompt, truthful locale entry and sealed-browser checks. Canonical methodology, CLI behavior, dependencies and publication workflow remain unchanged; website release is separate."
 ---
 
 # TianGong LCA PCR Library
@@ -300,6 +300,13 @@ Use `npm --silent run tiangong-pcr -- --help` for the global Agent workflow and 
 Formats are enforced per command: `resolve`, `guidance`, and validation are JSON; `show` is Markdown; `tree` supports JSON or Markdown; `list` supports JSON, Markdown, or table output; feedback drafts support JSON or Markdown. With `--format json`, usage or runtime failures leave stdout empty and return a stable `{ "error": { "code", "message", "details", "exit_code" } }` envelope on stderr.
 
 ## Public PCR Documentation
+
+The [Getting started page](https://pcr.tiangong.earth/en/docs/getting-started/)
+explains installation, Skill discovery and LCA/TIDAS tasks, with a copyable Agent
+prompt. Its [raw Markdown](https://pcr.tiangong.earth/getting-started.md) is generated
+from the same authored source for direct Agent reading. Website availability
+follows the next qualified product release containing this documentation page.
+
 
 The public site in `packages/pcr-docs/` reads the canonical library through the core
 consistent document API and the shared immutable-history verifier. It renders

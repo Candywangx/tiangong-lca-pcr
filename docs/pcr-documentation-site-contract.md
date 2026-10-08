@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #100 unified 0.4.4 version mirrors and installation examples, including the merged Agent getting-started entry; canonical methodology, reader compatibility, release qualification and provider contracts remain unchanged. Publication pending."
-lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #104: one English getting-started Markdown source renders as a navigable guide with copyable Agent prompt, truthful locale entry and sealed-browser checks. Canonical methodology, CLI behavior, dependencies and publication workflow remain unchanged; website release is separate."
+lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -151,6 +151,21 @@ and never supplies canonical methodology or changes the language requirements fo
 PCR records. The hosting contract serves it inline as UTF-8 Markdown with cache
 revalidation. Export verification checks its bytes and required header policy;
 actual availability follows the normal qualified website publication.
+
+The same authored source, including its Markdown frontmatter, renders as the
+indexable English documentation page `/en/docs/getting-started/`. It uses the
+normal document shell, source-block inventory, table of contents, sitemap and
+English search index. Home, header and sidebar link to that page; Chinese
+controls label the entry as English instead of claiming a translated body.
+The prompt copy action reads the displayed first code block and reports success
+or a manual-copy fallback. The raw entry remains available from the page.
+The generator binds the guide to the pinned Git source like other documents;
+export verification checks the page, source fidelity and discovery links.
+Sealed browser qualification covers navigation, responsive reading, search and
+both accepted and denied clipboard writes. The clipboard transport is mocked
+for deterministic cross-browser checks; actual host permission remains a browser
+concern. This guide does not enter the methodology-record catalog.
+
 
 The library index keeps every record link in static HTML behind native subdomain
 disclosures. Domain catalog pages group the same exact record set by subdomain,

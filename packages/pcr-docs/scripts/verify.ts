@@ -54,6 +54,15 @@ requireThat(
   ),
   "Agent getting-started guide must be exported byte-for-byte",
 );
+const guide = manifest.pages.find(page => page.kind === "guide" && page.slugs.join("/") === "getting-started");
+requireThat(guide?.url === "/en/docs/getting-started/" && guide.language === "en-US", "Missing English getting-started documentation page");
+requireThat(guide.sourcePath === "packages/pcr-docs/public/getting-started.md", "Guide must render its raw Markdown source");
+const guideDocument = readPage(guide.url);
+requireThat(guideDocument.querySelector('button[aria-controls="getting-started-content"]'), "Missing Agent prompt copy button");
+requireThat(guideDocument.querySelector('a[href="/getting-started.md"]'), "Missing raw Markdown entry link");
+for (const url of ["/", ...manifest.languages.map(language => "/" + language.route + "/")]) {
+  requireThat(readPage(url).querySelector('a[href="/en/docs/getting-started/"]'), "Missing home/navigation guide entry: " + url);
+}
 if (fs.existsSync(path.join(root, "product-release.json"))) {
   const expected = readProductIdentity(root, { requireClean: false });
   const rawActual: unknown = JSON.parse(fs.readFileSync(path.join(out, "generated/product-release.json"), "utf8"));

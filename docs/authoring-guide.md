@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
-lastReviewedNote: "Reviewed PCR #100 unified 0.4.4 version mirrors and installation examples, including the merged Agent getting-started entry; canonical methodology, reader compatibility, release qualification and provider contracts remain unchanged. Publication pending."
+lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
+lastReviewedNote: "Reviewed PCR #104: one English getting-started Markdown source renders as a navigable guide with copyable Agent prompt, truthful locale entry and sealed-browser checks. Canonical methodology, CLI behavior, dependencies and publication workflow remain unchanged; website release is separate."
 ---
 
 # Authoring Guide

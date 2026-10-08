@@ -142,6 +142,9 @@ test("real generator preserves multilingual released snapshots and excludes open
         ],
       }),
     );
+    const guidePath = "packages/pcr-docs/public/getting-started.md";
+    fs.mkdirSync(path.dirname(path.join(root, guidePath)), { recursive: true });
+    fs.copyFileSync(new URL("../public/getting-started.md", import.meta.url), path.join(root, guidePath));
     git("init", "-q", "-b", "main");
     git("add", "-A");
     git(
@@ -164,6 +167,17 @@ test("real generator preserves multilingual released snapshots and excludes open
     const site = parseSiteManifest(
       fs.readFileSync(path.join(output, ".generated/site.json")),
     );
+    const guides = site.pages.filter(page => page.kind === "guide");
+    assert.equal(guides.length, 1);
+    const guide = guides[0]!;
+    assert.equal(guide.url, "/en/docs/getting-started/");
+    assert.equal(guide.language, "en-US");
+    assert.equal(guide.sourcePath, guidePath);
+    assert.equal(guide.sourceSha256, hash(fs.readFileSync(path.join(root, guidePath))));
+    assert.deepEqual(guide.alternates, { "en-US": site.origin + guide.url });
+    const guideHtml = fs.readFileSync(path.join(output, ".generated", guide.htmlPath!), "utf8");
+    assert.match(guideHtml, /help me create LCA data for/);
+    assert.match(guideHtml, /id="pcr-fully-offline-use"/);
     assert.equal(site.records.length, 1);
     assert.equal(site.historicalRecords!.length, 2);
     assert.equal(site.historicalRecords![0]!.version, "1.0.0");
@@ -364,6 +378,9 @@ test("metadata summaries describe the page they belong to, and report title-only
         pcrs: [{ id: "pcr.agriculture.crops.wheat-seed", path: fixture.libraryPath }],
       }),
     );
+    const guidePath = "packages/pcr-docs/public/getting-started.md";
+    fs.mkdirSync(path.dirname(path.join(root, guidePath)), { recursive: true });
+    fs.copyFileSync(new URL("../public/getting-started.md", import.meta.url), path.join(root, guidePath));
     git("init", "-q", "-b", "main");
     git("add", "-A");
     git(
@@ -430,7 +447,7 @@ test("metadata summaries describe the page they belong to, and report title-only
     assert.equal(
       report.summaries.pages,
       site.pages.filter(
-        (page) => page.kind === "pcr" || (page.kind === "catalog" && page.slugs.length > 1),
+        (page) => page.kind === "pcr" || page.kind === "guide" || (page.kind === "catalog" && page.slugs.length > 1),
       ).length,
       "every document and category page is counted",
     );

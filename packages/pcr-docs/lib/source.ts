@@ -359,6 +359,9 @@ export function navigationTree(context: NavContext): Root {
   const library = catalogPage?.url ?? libraryUrl(locale);
   const children: PageTreeNode[] = [];
 
+  const guide = manifest.pages.find(page => page.kind === 'guide' && page.slugs.join('/') === 'getting-started');
+  if (guide) children.push({ type: 'page', name: locale === 'zh' ? '开始使用（英文）' : 'Getting started', url: guide.url });
+
   if (catalogPage) children.push({ type: 'page', name: messages.library, url: catalogPage.url });
   if (coverage) children.push({ type: 'page', name: messages.coverage, url: coverage.url });
 

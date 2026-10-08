@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 on merged #86 lanes: capability declarations and staged importer dependency closure have independent negative tests; full source coverage, corpus and sealed platform/browser qualification remain unchanged."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
+lastReviewedNote: "Reviewed PCR #104: one English getting-started Markdown source renders as a navigable guide with copyable Agent prompt, truthful locale entry and sealed-browser checks. Canonical methodology, CLI behavior, dependencies and publication workflow remain unchanged; website release is separate."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -438,6 +438,12 @@ source identity, browser versions, all selected routes and screenshots, and chec
 that export bytes remain unchanged. All available planned route cases are recorded
 even after a failure; missing engines or required input fail rather than skip.
 The final CI uses this browser engine through `qualify:web` on the extracted sealed archive, after verifying the exact candidate tree.
+The English getting-started guide is a planned route in that same desktop/mobile
+matrix. It checks the home-to-guide path, scoped prompt copy from displayed text,
+manual-copy feedback after clipboard rejection and guide search/navigation.
+Clipboard transport is mocked for repeatable cross-browser acceptance; no host
+clipboard permission or live website publication is claimed by those checks.
+
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
 actual receiving runtime tree. They retain the original receipt behavior while

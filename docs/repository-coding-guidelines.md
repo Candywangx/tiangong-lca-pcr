@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 strict TypeScript compatibility validators, actual artifact metadata and thin task Skill; core remains offline and transport policy remains separate from scientific semantics."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
+lastReviewedNote: "Reviewed PCR #104: one English getting-started Markdown source renders as a navigable guide with copyable Agent prompt, truthful locale entry and sealed-browser checks. Canonical methodology, CLI behavior, dependencies and publication workflow remain unchanged; website release is separate."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
