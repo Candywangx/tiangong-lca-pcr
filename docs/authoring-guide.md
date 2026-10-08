@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-06
-lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
-lastReviewedNote: "Reviewed PCR #95 distribution-only 0.4.3 preparation; no canonical PCR edits, lifecycle promotion, scientific approval or translation-review changes."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
+lastReviewedNote: "Reviewed PCR #98 consumer onboarding: no canonical PCR edits, lifecycle promotion or changes to scientific and translation review."
 ---
 
 # Authoring Guide

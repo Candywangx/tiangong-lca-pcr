@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-06
-lastReviewedNote: "Reviewed PCR #95 documentation package/lock 0.4.3 mirror only; complete source export, provider Node 24.18.0 import, Node 24.19.0 construction and full release/live qualification remain unchanged."
-lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
+lastReviewedAt: 2026-10-08
+lastReviewedNote: "Reviewed PCR #98 static getting-started source, export byte check and explicit Markdown hosting headers; no new HTML routes or methodology language changes."
+lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -141,6 +141,16 @@ indexing targets. Raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation
+
+The Agent onboarding entry `/getting-started.md` is authored in
+`packages/pcr-docs/public/getting-started.md` and exported byte-for-byte. It is a
+single English operational guide, available without JavaScript or authentication,
+with installation, bundled Skill discovery, immutable task preparation, the three
+consumption routes and explicit offline use. It links to the consumer contracts
+and never supplies canonical methodology or changes the language requirements for
+PCR records. The hosting contract serves it inline as UTF-8 Markdown with cache
+revalidation. Export verification checks its bytes and required header policy;
+actual availability follows the normal qualified website publication.
 
 The library index keeps every record link in static HTML behind native subdomain
 disclosures. Domain catalog pages group the same exact record set by subdomain,
