@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-07
-lastReviewedNote: "Reviewed version 2 search shards with lossless native JSON arrays and version 1 reader compatibility; shard grouping, ranking, corpus completeness and browser size budgets remain unchanged."
-lastReviewedCommit: 059405e463f7cc7af87a01cb7a4e302e967575ea
+lastReviewedAt: 2026-10-08
+lastReviewedNote: "Reviewed PR #97 version 2 search shards and version 1 reader compatibility together with the merged Agent getting-started entry and PCR #100 unified 0.4.4 version mirrors and installation examples. Lossless search exports, shard grouping, ranking, corpus completeness, browser size budgets, canonical methodology, release qualification and provider contracts remain unchanged. Publication pending."
+lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -141,6 +141,16 @@ indexing targets. Raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation
+
+The Agent onboarding entry `/getting-started.md` is authored in
+`packages/pcr-docs/public/getting-started.md` and exported byte-for-byte. It is a
+single English operational guide, available without JavaScript or authentication,
+with installation, bundled Skill discovery, immutable task preparation, the three
+consumption routes and explicit offline use. It links to the consumer contracts
+and never supplies canonical methodology or changes the language requirements for
+PCR records. The hosting contract serves it inline as UTF-8 Markdown with cache
+revalidation. Export verification checks its bytes and required header policy;
+actual availability follows the normal qualified website publication.
 
 The library index keeps every record link in static HTML behind native subdomain
 disclosures. Domain catalog pages group the same exact record set by subdomain,
