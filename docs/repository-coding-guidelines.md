@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
-lastReviewedNote: "Reviewed PCR #104: one English getting-started Markdown source renders as a navigable guide with copyable Agent prompt, truthful locale entry and sealed-browser checks. Canonical methodology, CLI behavior, dependencies and publication workflow remain unchanged; website release is separate."
+lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
+lastReviewedNote: "Reviewed PCR #104 normal English getting-started documentation, prompt copy and exact raw resource verification after merging #103 language preferences. Preserve explicit locale URLs, emitted-language probes and sealed browser qualification; canonical methodology, CLI, dependencies and product publication remain unchanged."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
