@@ -273,9 +273,9 @@ process_inventory:
           name: "Broadcast playout server"
           flow_type: "product"
           property_unit: "Number of items / item"
-          description: "Only for capital-equipment inclusion declared by the study. One item is the actual complete specified server configuration. Attribute its production dataset using measured workload and documented actual service capacity over the chosen observation/service period; no default lifetime. Split monitors, storage arrays and replacement parts as separate configuration-specific exchanges when present."
+          description: "Only for capital-equipment inclusion declared by the study. One item is the actual complete specified server configuration. Attribute its production dataset using the evidenced whole installed-service or compatible cumulative-service denominator and persistent manufacture-share ledger under allocation_equipment. An observation period distributes only its already justified manufacture fraction; it does not reset the complete server production burden. Unknown service denominator or ledger coverage requires review and prevents a final attributed quantity; no default lifetime. Split monitors, storage arrays and replacement parts as separate configuration-specific exchanges when present."
           amount:
-            expression: "Collect actual attributable quantity per declared reference flow under cp_equipment; no default quantity."
+            expression: "Actual server count multiplied by the evidenced dimensionless manufacture share attributable to this declared reference flow under allocation_equipment and cp_equipment; unknown share remains under review, with no default quantity."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -311,6 +311,10 @@ allocation_rules:
   - rule_id: allocation_versions
     applies_to: "foreground_burden_allocation"
     rule: "Include main-version, rework and actual redundant-handoff resources. Multiple channels/languages/configurations use explainable actual resource attribution. Do not count incomplete line-ups as complete output."
+    source_ids: []
+  - rule_id: allocation_equipment
+    applies_to: "foreground_burden_allocation"
+    rule: "Under cp_equipment retain one same-asset manufacture boundary and persistent ledger across every project, period and beneficiary. The share uses actual attributable service activity divided by an evidenced whole installed-service or compatible cumulative-service denominator, with matching activity units; a justified forecast requires sensitivity and later reconciliation. Cumulative assigned manufacture shares must not exceed one. Within an observation period distribute only the manufacture fraction already justified for that period, never the complete asset production burden anew. Unknown denominator, prior shares or ledger coverage requires review and prohibits a final attributed manufacture quantity or complete equipment-coverage claim. These are foreground-accounting controls, not a prescribed numeric life or classification factor."
     source_ids: []
 dataset_production:
   collection_protocols:
@@ -354,14 +358,14 @@ dataset_production:
       process_id: "utility_support"
       flow_role: "server_share"
       record_type: "equipment record"
-      raw_fields: "server configuration; upstream production dataset; actual service period; all job usage; allocated share"
-      collection_method: "Reconcile asset register and actual usage logs with service capacity over selected period; no assumed lifetime"
-      unit: "item"
-      frequency: "per asset and study period"
-      temporal_coverage: "disclosed actual equipment observation/service horizon"
-      site_scope: "capital equipment declared included"
+      raw_fields: "persistent asset id; server configuration/count; upstream manufacture boundary; actual attributable service activity and units; evidenced whole installed-service or compatible cumulative-service denominator; all projects/periods/beneficiaries; prior shares; current dimensionless share; justified period manufacture fraction; cumulative assigned/remaining share; forecast sensitivity and later reconciliation"
+      collection_method: "Reconcile the same-asset register and full usage/allocation ledger against the supported total service denominator; cap cumulative manufacture shares at one and period allocations at their previously justified fraction. Unknown denominator or ledger coverage requires review, not an assumed lifetime or reset"
+      unit: "item; dimensionless share; actual service activity units"
+      frequency: "per asset and study period, with cumulative ledger updates"
+      temporal_coverage: "declared channel-day observation plus evidenced whole-service/cumulative-service horizon"
+      site_scope: "capital equipment declared included; all beneficiary periods retained"
       aggregation_rule: "per declared reference flow"
-      quality_evidence: "asset and usage-denominator evidence"
+      quality_evidence: "asset identity/configuration, supported denominator, cumulative conservation and period-fraction evidence"
     - protocol_id: cp_acceptance
       process_id: "quality_handoff"
       flow_role: "reference_product_lineup"
@@ -417,6 +421,10 @@ validation_rules:
     applies_to: "foreground_dataset_conformance"
     rule: "Reconcile asset production, outsourced services, equipment and transfer dataset boundaries and attribution totals; foreground handoff results do not establish full lifecycle coverage or methodology approval."
     source_ids: []
+  - rule_id: validate_equipment
+    applies_to: "foreground_dataset_conformance"
+    rule: "For server_share verify the same configuration, supported whole-service denominator and persistent ledger across all beneficiaries/periods; cumulative manufacture shares must not exceed one and within-period allocations must not exceed the justified period fraction. Reject manufacture reset at each day/project/period. Unknown denominator or prior-share coverage requires review and prevents final equipment attribution and complete equipment-coverage claims."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground channel-day assembly to accepted other-distributor handoff dataset"
   downstream_use: "secondary_dataset; background_dataset"
@@ -436,7 +444,7 @@ data_sources:
     used_for: "Historical AS-11 file QC and acceptance example only; not current universal criteria or channel-day energy. Dataset production uses the actual current delivery agreement."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:096ad22d8565e0fba2bd40dd1e18312f7337e8e1c45ac00ddd6f96d8d214c641"
+  source_sha256: "sha256:e389b8ca53ee7f5bcc27259fc17c3506bba827858dff034fe35401f3a3f56444"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4183"
@@ -487,18 +495,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_14108"
+    - unit_id: "normative_14529"
       family: "allocation"
       span:
         start:
-          offset: 14108
+          offset: 14529
           line: 265
           column: 1
         end:
-          offset: 15178
-          line: 273
+          offset: 16476
+          line: 274
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_resource | Prefer separate metering. Attribute shared workstations, servers, storage, monitoring and facility electricity using measured job consumption or log-verified resource occupancy; retain total energy, all occupants, allocation denominator, idle/redundancy treatment and reconciliation. GB is not kWh; do not allocate by assumed price or audience. |  |\n| allocation_content | Rights are not physical production quantities. Under cp_content disclose separate original-production datasets, versions and shares attributable under the actual use/reuse plan; an unsupported reuse denominator remains an upstream gap and sensitivity, not a full original-production charge to every repeat delivery. | cpc-tv-lineup-2025 |\n| allocation_versions | Include main-version, rework and actual redundant-handoff resources. Multiple channels/languages/configurations use explainable actual resource attribution. Do not count incomplete line-ups as complete output. |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_resource | Prefer separate metering. Attribute shared workstations, servers, storage, monitoring and facility electricity using measured job consumption or log-verified resource occupancy; retain total energy, all occupants, allocation denominator, idle/redundancy treatment and reconciliation. GB is not kWh; do not allocate by assumed price or audience. |  |\n| allocation_content | Rights are not physical production quantities. Under cp_content disclose separate original-production datasets, versions and shares attributable under the actual use/reuse plan; an unsupported reuse denominator remains an upstream gap and sensitivity, not a full original-production charge to every repeat delivery. | cpc-tv-lineup-2025 |\n| allocation_versions | Include main-version, rework and actual redundant-handoff resources. Multiple channels/languages/configurations use explainable actual resource attribution. Do not count incomplete line-ups as complete output. |  |\n| allocation_equipment | Under cp_equipment retain one same-asset manufacture boundary and persistent ledger across every project, period and beneficiary. The share uses actual attributable service activity divided by an evidenced whole installed-service or compatible cumulative-service denominator, with matching activity units; a justified forecast requires sensitivity and later reconciliation. Cumulative assigned manufacture shares must not exceed one. Within an observation period distribute only the manufacture fraction already justified for that period, never the complete asset production burden anew. Unknown denominator, prior shares or ledger coverage requires review and prohibits a final attributed manufacture quantity or complete equipment-coverage claim. These are foreground-accounting controls, not a prescribed numeric life or classification factor. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -515,11 +523,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 14108
+              offset: 14529
               line: 265
               column: 1
             end:
-              offset: 14148
+              offset: 14569
               line: 265
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -535,18 +543,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_19398"
+    - unit_id: "normative_21419"
       family: "validation"
       span:
         start:
-          offset: 19398
-          line: 300
+          offset: 21419
+          line: 301
           column: 1
         end:
-          offset: 20148
-          line: 308
+          offset: 22658
+          line: 310
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_reference | Reference name matches output row; output is 1 item complete channel day; absent asset manifest, timezone/window, revision, rights or acceptance makes the definition incomplete. | cpc-tv-lineup-2025 |\n| validate_inventory | Each row is one exchange; choose actual supply rows without duplication; upstream emissions cannot be direct elementary flows; missing identity or measurement cannot be treated as data. |  |\n| validate_boundary | Reconcile asset production, outsourced services, equipment and transfer dataset boundaries and attribution totals; foreground handoff results do not establish full lifecycle coverage or methodology approval. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_reference | Reference name matches output row; output is 1 item complete channel day; absent asset manifest, timezone/window, revision, rights or acceptance makes the definition incomplete. | cpc-tv-lineup-2025 |\n| validate_inventory | Each row is one exchange; choose actual supply rows without duplication; upstream emissions cannot be direct elementary flows; missing identity or measurement cannot be treated as data. |  |\n| validate_boundary | Reconcile asset production, outsourced services, equipment and transfer dataset boundaries and attribution totals; foreground handoff results do not establish full lifecycle coverage or methodology approval. |  |\n| validate_equipment | For server_share verify the same configuration, supported whole-service denominator and persistent ledger across all beneficiaries/periods; cumulative manufacture shares must not exceed one and within-period allocations must not exceed the justified period fraction. Reject manufacture reset at each day/project/period. Unknown denominator or prior-share coverage requires review and prevents final equipment attribution and complete equipment-coverage claims. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -563,12 +571,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 19398
-              line: 300
+              offset: 21419
+              line: 301
               column: 1
             end:
-              offset: 19420
-              line: 300
+              offset: 21441
+              line: 301
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -626,81 +634,107 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_resource"
       identity_kind: "explicit"
-      unit_id: "normative_14108"
+      unit_id: "normative_14529"
       source_span:
         start:
-          offset: 14202
+          offset: 14623
           line: 269
           column: 1
         end:
-          offset: 14575
+          offset: 14996
           line: 269
           column: 374
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_content"
       identity_kind: "explicit"
-      unit_id: "normative_14108"
+      unit_id: "normative_14529"
       source_span:
         start:
-          offset: 14576
+          offset: 14997
           line: 270
           column: 1
         end:
-          offset: 14937
+          offset: 15358
           line: 270
           column: 362
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_versions"
       identity_kind: "explicit"
-      unit_id: "normative_14108"
+      unit_id: "normative_14529"
       source_span:
         start:
-          offset: 14938
+          offset: 15359
           line: 271
           column: 1
         end:
-          offset: 15176
+          offset: 15597
           line: 271
           column: 239
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_equipment"
+      identity_kind: "explicit"
+      unit_id: "normative_14529"
+      source_span:
+        start:
+          offset: 15598
+          line: 272
+          column: 1
+        end:
+          offset: 16474
+          line: 272
+          column: 877
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_19398"
+      unit_id: "normative_21419"
       source_span:
         start:
-          offset: 19474
-          line: 304
+          offset: 21495
+          line: 305
           column: 1
         end:
-          offset: 19697
-          line: 304
+          offset: 21718
+          line: 305
           column: 224
     - pointer: "/validation_rules/1"
       rule_id: "validate_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_19398"
+      unit_id: "normative_21419"
       source_span:
         start:
-          offset: 19698
-          line: 305
+          offset: 21719
+          line: 306
           column: 1
         end:
-          offset: 19911
-          line: 305
+          offset: 21932
+          line: 306
           column: 214
     - pointer: "/validation_rules/2"
       rule_id: "validate_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_19398"
+      unit_id: "normative_21419"
       source_span:
         start:
-          offset: 19912
-          line: 306
+          offset: 21933
+          line: 307
           column: 1
         end:
-          offset: 20146
-          line: 306
+          offset: 22167
+          line: 307
           column: 235
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_equipment"
+      identity_kind: "explicit"
+      unit_id: "normative_21419"
+      source_span:
+        start:
+          offset: 22168
+          line: 308
+          column: 1
+        end:
+          offset: 22656
+          line: 308
+          column: 489
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -728,27 +762,27 @@ normative_context:
           column: 155
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_14108"
+      unit_id: "normative_14529"
       source_span:
         start:
-          offset: 14108
+          offset: 14529
           line: 265
           column: 1
         end:
-          offset: 14148
+          offset: 14569
           line: 265
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_19398"
+      unit_id: "normative_21419"
       source_span:
         start:
-          offset: 19398
-          line: 300
+          offset: 21419
+          line: 301
           column: 1
         end:
-          offset: 19420
-          line: 300
+          offset: 21441
+          line: 301
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -757,5 +791,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:096ad22d8565e0fba2bd40dd1e18312f7337e8e1c45ac00ddd6f96d8d214c641"
-  generated_content_sha256: "sha256:62af6d09d600bdc85683bae564d804d0ef2c64c6ce80c8c09d3afdaa8c59d390"
+    sha256: "sha256:e389b8ca53ee7f5bcc27259fc17c3506bba827858dff034fe35401f3a3f56444"
+  generated_content_sha256: "sha256:6005456634f104a9f37cac307f0ea1f0306fc165a8285ba7f70739d517f39cb9"
