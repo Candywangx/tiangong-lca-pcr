@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PR #97 version 2 search shards and version 1 reader compatibility together with the merged Agent getting-started entry and PCR #100 unified 0.4.4 version mirrors and installation examples. Lossless search exports, shard grouping, ranking, corpus completeness, browser size budgets, canonical methodology, release qualification and provider contracts remain unchanged. Publication pending."
-lastReviewedCommit: 5a6be4c11604010d9550b79f9716ef865963b55c
+lastReviewedNote: "PCR #106 resolves the review-metadata conflict against main9028d18e while preserving PR97's reviewed v2 search/v1 reader contract and upstream browser-language negotiation, manual preferences, Chinese aliases, Agent onboarding and 0.4.4 release contract. Contract bodies remain intact; combined implementation and publication qualification remain required."
+lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -126,9 +126,19 @@ descriptions are not evidence about methodology quality or coverage.
 The complete default Chinese home is `/`. Localized homes and document routes use
 the registry's URL aliases, initially `/zh/`, `/en/` and `/{locale}/docs/**`.
 `/zh` and `/zh/` carry that same Chinese home: they are generated, canonicalized
-to `/`, kept out of the sitemap, and redirected to `/` by the provider, so the
-Chinese home never competes with an indexable duplicate. `/en/` is a real
+to `/` and kept out of the sitemap. The provider preserves these explicit language
+URLs. `/en/` is a real
 localized home, and the document routes keep their locale segment.
+In a JavaScript-enabled browser, only `/` negotiates a reading language: a valid
+manual `pcr-docs-language` localStorage value wins, then the browser's language
+list is checked in preference order against emitted route/code identities and
+regional aliases, with English as the final fallback. Static Chinese HTML and
+its SEO identity remain unchanged. Explicit localized URLs override detection
+and saved preferences. Only a language-selector click writes the preference;
+automatic navigation and ordinary localized links never write it. Storage denial
+does not stop reading or switching. A manual Chinese home switch uses `/zh/`,
+including when persistence is unavailable. All language navigation preserves the
+current query string and fragment; a document switch prefers a verified counterpart.
 PCR document slugs retain semantic domain/subdomain/record identity under
 `docs/pcr/`. Exceptionally long documents may have stable subpages with a complete
 chapter inventory. All normative content remains in the HTML of those pages.
@@ -357,7 +367,7 @@ Historical navigation uses each record's exact emitted chapter URLs, never a sha
 PCR-ID-only page set. Current and historical sidebars use distinct cache identities,
 and every historical record links the complete immutable version list. Home-page
 language alternatives point to canonical homes; the default Chinese alternative
-and x-default both use `/`, while `/zh/` redirects permanently to it.
+and x-default both use `/`, while `/zh/` remains an explicit Chinese reader URL.
 
 Production resource checks fail when memory measurement is unavailable or empty.
 POSIX builds inspect process-tree RSS; Windows uses its native CIM working-set
