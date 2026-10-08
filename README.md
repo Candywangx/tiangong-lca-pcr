@@ -28,7 +28,7 @@ checkPaths:
   - docs/**
 lastReviewedAt: 2026-10-08
 lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
-lastReviewedNote: "Reviewed PCR #106 / PR #97 candidate content and search compatibility; installation examples prepare unified 0.4.5. Task snapshots, source-language requirements and release/integration gates remain unchanged."
+lastReviewedNote: "Reviewed PCR #106 / PR #97 candidate content and search compatibility; installation examples prepare unified 0.4.5. Task snapshots, source-language requirements and release/integration gates remain unchanged. Preserved main PR #105 bilingual guide and navigation changes during integration."
 ---
 
 # TianGong LCA PCR Library
@@ -300,6 +300,16 @@ Use `npm --silent run tiangong-pcr -- --help` for the global Agent workflow and 
 Formats are enforced per command: `resolve`, `guidance`, and validation are JSON; `show` is Markdown; `tree` supports JSON or Markdown; `list` supports JSON, Markdown, or table output; feedback drafts support JSON or Markdown. With `--format json`, usage or runtime failures leave stdout empty and return a stable `{ "error": { "code", "message", "details", "exit_code" } }` envelope on stderr.
 
 ## Public PCR Documentation
+
+The [English Getting started page](https://pcr.tiangong.earth/en/docs/getting-started/)
+and [Chinese guide](https://pcr.tiangong.earth/zh/docs/getting-started/)
+explain installation, Skill discovery and LCA/TIDAS tasks, with localized copyable
+Agent prompts. Their [English raw Markdown](https://pcr.tiangong.earth/getting-started.md)
+and [Chinese raw Markdown](https://pcr.tiangong.earth/getting-started.zh-CN.md) are
+exported from the corresponding authored sources for direct Agent reading. Website availability
+follows the next qualified product release containing these documentation pages.
+Website guide translations do not change the English-only npm methodology content.
+
 
 The public site in `packages/pcr-docs/` reads the canonical library through the core
 consistent document API and the shared immutable-history verifier. It renders

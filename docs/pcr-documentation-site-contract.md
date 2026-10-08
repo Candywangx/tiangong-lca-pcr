@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #106 / PR #97 native-array search v2 with v1 reader compatibility and unchanged aggregate budgets, preserving current-main onboarding and language preferences. Unified 0.4.5 publication remains subject to fresh qualification and live verification."
+lastReviewedNote: "Reviewed PCR #106 / PR #97 native-array search v2 with v1 reader compatibility and unchanged aggregate budgets, preserving current-main onboarding and language preferences. Unified 0.4.5 publication remains subject to fresh qualification and live verification. Preserved main PR #105 bilingual guide and navigation changes during integration."
 lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -161,6 +161,28 @@ and never supplies canonical methodology or changes the language requirements fo
 PCR records. The hosting contract serves it inline as UTF-8 Markdown with cache
 revalidation. Export verification checks its bytes and required header policy;
 actual availability follows the normal qualified website publication.
+
+The authored English source and its complete Chinese counterpart
+`packages/pcr-docs/public/getting-started.zh-CN.md` render as the normal
+indexable pages `/en/docs/getting-started/` and `/zh/docs/getting-started/`.
+Each page uses its own pinned Markdown source, block inventory, table of
+contents, sitemap and language search index. The Chinese raw entry
+`/getting-started.zh-CN.md` is also exported byte-for-byte with the same inline
+Markdown headers. Only actual authored counterparts appear in hreflang and the
+language selector; switching keeps the guide and preserves query/fragment.
+Homepage entries follow the reading language. Documentation navigation keeps
+one sidebar list for Getting started, the PCR library and classification
+coverage; the shell retains the related-sites menu without repeating that list.
+The prompt copy action reads the displayed first code block and gives localized
+success or manual-copy feedback. Each page links to its corresponding raw guide.
+The generator binds every translation to the pinned Git source, and export
+verification checks source fidelity, discovery links and unique sidebar entries.
+Sealed desktop/mobile browser qualification covers both languages, counterpart
+switching, unique navigation, search and accepted/denied clipboard writes.
+Clipboard transport is mocked for deterministic cross-browser checks; actual
+host permission remains a browser concern. Website guide translations do not
+change the English-only npm methodology package or the methodology catalog.
+
 
 The library index keeps every record link in static HTML behind native subdomain
 disclosures. Domain catalog pages group the same exact record set by subdomain,

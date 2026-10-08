@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
 lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
-lastReviewedNote: "Reviewed PCR #106 / PR #97 candidate content and unified 0.4.5 preparation; immutable task pins, reader 0.4.1 compatibility minimum, English offline content and Agent review boundaries remain unchanged."
+lastReviewedNote: "Reviewed PCR #106 / PR #97 candidate content and unified 0.4.5 preparation; immutable task pins, reader 0.4.1 compatibility minimum, English offline content and Agent review boundaries remain unchanged. Preserved main PR #105 bilingual guide and navigation changes during integration."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
