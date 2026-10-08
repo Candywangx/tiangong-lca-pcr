@@ -7,7 +7,8 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 import {chromium, firefox, webkit} from 'playwright';
-import type {Page, BrowserType, Request} from 'playwright';
+import type {Page, Browser, BrowserType, Request} from 'playwright';
+import { LANGUAGE_PREFERENCE_KEY, preferredRoute } from '../../packages/pcr-docs/lib/language-preference.ts';
 
 export class SiteBrowserError extends Error {
   readonly code:string;
@@ -118,13 +119,130 @@ async function checkSearch(page:Page,route:SiteRoute,evidence:BrowserEvidence){
  await page.waitForFunction(()=>{const dialog=document.querySelector('[data-pcr-search]');return !!dialog?.querySelector('.pcr-search-footer, .pcr-search-error')||/^(没有匹配的 PCR|No PCR matches)/u.test(dialog?.querySelector('[role="status"]')?.textContent??'');},{},{timeout:45_000});assert.ok(await dialog.locator('.pcr-search-footer').count(),`Search returned no results for ${query}: ${await dialog.innerText()}`);const links=dialog.locator('button[aria-selected]');const hits=await links.count();assert.ok(hits>0,'Search must return actual result buttons');assert.ok(workers.some(url=>new URL(url,page.url()).href===new URL('/generated/search-worker.mjs',page.url()).href),'Search must use the emitted Worker');
  evidence.search={query,hits,workerUrls:workers};evidence.assertions.push('emitted Worker returns search results');const origin=new URL(page.url()).origin;await links.first().click();await page.waitForLoadState('networkidle');assert.equal(new URL(page.url()).origin,origin);assert.ok(new URL(page.url()).pathname.startsWith(`/${locale}/docs/`));await page.locator('h1').first().waitFor();evidence.assertions.push('search result navigation');
 }
+/** Exercise the shipped selector and neutral entry rather than a second implementation. */
+async function openLanguageSelector(page:Page):Promise<void> {
+ const triggers=page.locator('[data-pcr-language-trigger]');
+ async function clickVisible(){for(let index=0;index<await triggers.count();index++){const trigger=triggers.nth(index);if(await trigger.isVisible()){await trigger.click();return true;}}return false;}
+ if(await clickVisible())return;
+ const menus=page.getByRole('button',{name:/^(Toggle menu|切换菜单|Open sidebar|打开侧栏)$/iu});
+ for(let index=0;index<await menus.count();index++)if(await menus.nth(index).isVisible()){await menus.nth(index).click();break;}
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll<HTMLElement>('[data-pcr-language-trigger]')).some(button=>button.getBoundingClientRect().width>0));
+ assert.ok(await clickVisible(),'Language selector must be visible');
+}
+async function settleLanguage(page:Page,language:string):Promise<void> {
+ await page.waitForFunction(expected=>document.documentElement.lang===expected,language);
+ await page.locator('h1').first().waitFor({state:'visible'});
+ await page.waitForLoadState('networkidle');
+}
+export function emittedLanguageCodes(exported:Pick<SiteExport,'root'|'files'>):Record<string,string> {
+ const codes:Record<string,string>={};
+ for(const file of exported.files){
+  const route=/^([a-z]{2,3}(?:-[a-z0-9]{2,8})*)\/index\.html$/iu.exec(file.path)?.[1];
+  if(!route)continue;
+  const tag=/<html\b[^>]*\blang=(?:"([^"]+)"|'([^']+)')/iu.exec(readRegular(exported.root,file.path).toString('utf8'));
+  const language=tag?.[1]??tag?.[2];assert.ok(language,'Exported locale home must declare its HTML language: '+route);
+  codes[route]=language;
+ }
+ assert.ok(codes.en&&codes.zh,'Qualification requires the emitted English and Chinese homes');
+ return codes;
+}
+/** Bounded probes never call a registered optional language unsupported. */
+export function browserLanguageScenarios(languageCodes:Readonly<Record<string,string>>) {
+ const supportedBases=new Set([...Object.keys(languageCodes),...Object.values(languageCodes)].map(code=>code.split('-')[0]?.toLowerCase()));
+ const unsupported=['fr-FR','ja-JP','ko-KR','ru-RU','ar-SA','hi-IN','sw-KE','eo'].filter(code=>!supportedBases.has(code.split('-')[0]?.toLowerCase())).slice(0,2);
+ const inputs:{name:string;languages:string[];saved?:string}[]=[
+  {name:'regional English',languages:['en-GB']},
+  {name:'ordered regional Chinese',languages:[...unsupported.slice(0,1),'zh-HK','en-US']},
+  {name:unsupported.length?'unsupported language fallback':'missing browser language fallback',languages:unsupported},
+  {name:'invalid saved preference',languages:['en-US'],saved:'deleted-language'},
+  {name:'saved English overrides Chinese browser',languages:['zh-CN'],saved:'en'},
+  {name:'saved Chinese overrides English browser',languages:['en-GB'],saved:'zh'},
+ ];
+ return inputs.map(scenario=>{
+  const route=preferredRoute(languageCodes,scenario.languages,scenario.saved??null),language=languageCodes[route];
+  assert.ok(language,'Browser scenario must resolve to an emitted language');
+  return {...scenario,expected:route==='zh'?'/':`/${route}/`,htmlLanguage:language};
+ });
+}
+/** SPA navigation can retain Playwright's old networkidle lifecycle. Observe current requests. */
+function currentNetworkIdle(page:Page):()=>Promise<void> {
+ const active=new Set<Request>();let lastActivity=Date.now();
+ page.on('request',request=>{active.add(request);lastActivity=Date.now();});
+ const finished=(request:Request)=>{active.delete(request);lastActivity=Date.now();};
+ page.on('requestfinished',finished);page.on('requestfailed',finished);
+ return async()=>{
+  await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
+  const deadline=Date.now()+30_000;
+  while(active.size>0||Date.now()-lastActivity<500){assert.ok(Date.now()<deadline,'Current browser requests did not settle');await new Promise<void>(resolve=>setTimeout(resolve,50));}
+ };
+}
+async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>):Promise<{checks:string[];ignoredPrefetchAborts:string[]}> {
+ const checks:string[]=[],ignoredPrefetchAborts:string[]=[];
+ for(const scenario of browserLanguageScenarios(languageCodes)){
+  const context=await browser.newContext({viewport,locale:scenario.languages[0]??languageCodes.en!});
+  try {
+   await context.addInitScript(({languages,saved,key})=>{
+    Object.defineProperty(navigator,'languages',{configurable:true,get:()=>languages});
+    Object.defineProperty(navigator,'language',{configurable:true,get:()=>languages[0]??''});
+    if(saved)window.localStorage.setItem(key,saved);
+   },{languages:[...scenario.languages],saved:scenario.saved??null,key:LANGUAGE_PREFERENCE_KEY});
+   const page=await context.newPage();await page.goto(origin+'/?from=language-check#reader',{waitUntil:'networkidle'});
+   await page.waitForURL(origin+scenario.expected+'?from=language-check#reader');
+   await settleLanguage(page,scenario.htmlLanguage);
+   assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),scenario.saved??null,'Automatic detection must not save a preference');
+   checks.push(scenario.name+' preserves query/fragment without persisting detection');
+  }finally{await context.close();}
+ }
+ const context=await browser.newContext({viewport,locale:'en-US'});
+ try {
+  const page=await context.newPage();await page.goto(origin+'/en/?from=manual#reader',{waitUntil:'networkidle'});
+  async function selectLanguage(name:string){
+   await openLanguageSelector(page);await page.getByRole('button',{name,exact:true}).last().click();await page.waitForLoadState('networkidle');
+  }
+  await selectLanguage('中文');await page.waitForURL(origin+'/zh/?from=manual#reader');
+  await settleLanguage(page,languageCodes.zh!);
+  assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'zh');
+  await page.reload({waitUntil:'networkidle'});assert.equal(new URL(page.url()).pathname,'/zh/');
+  checks.push('manual Chinese switch and reload stay explicit and preserve query/fragment');
+  await page.goto(origin+'/en/',{waitUntil:'networkidle'});assert.equal(new URL(page.url()).pathname,'/en/');
+  assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'zh');
+  checks.push('explicit English URL overrides remembered Chinese without changing preference');
+  const reopened=await browser.newContext({viewport,locale:'en-US',storageState:await context.storageState()});
+  try {const next=await reopened.newPage();await next.goto(origin+'/',{waitUntil:'networkidle'});assert.equal(new URL(next.url()).pathname,'/');checks.push('reopened browser restores manual Chinese over English browser language');}finally{await reopened.close();}
+  await page.goto(origin+documentPath+'?from=document#reader',{waitUntil:'networkidle'});
+  assert.equal(new URL(page.url()).pathname,documentPath,'Explicit document language must override saved preference');
+  await selectLanguage('中文');await page.waitForURL(origin+documentPath.replace(/^\/en\//u,'/zh/')+'?from=document#reader');
+  await settleLanguage(page,languageCodes.zh!);
+  checks.push('manual document switch retains verified counterpart identity, query and fragment');
+  await page.goto(origin+'/en/',{waitUntil:'networkidle'});
+  await selectLanguage('English');assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'en');
+  await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');checks.push('manual English selection persists for next neutral entry');
+ }finally{await context.close();}
+ const blocked=await browser.newContext({viewport,locale:'en-US'});
+ try {
+  await blocked.addInitScript(()=>{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>{throw new Error('Storage blocked for qualification');}});});
+  const page=await blocked.newPage(),errors:string[]=[],failedRequests:CancelledRequest[]=[],prefetchUrls:string[]=[],responses=new WeakMap<Request,number>();page.on('pageerror',error=>errors.push(error.message));
+  page.on('request',request=>{if(request.headers()['next-router-prefetch']==='1')prefetchUrls.push(request.url());});
+  page.on('response',response=>responses.set(response.request(),response.status()));
+  page.on('requestfailed',request=>failedRequests.push({url:request.url(),reason:request.failure()?.errorText??'unknown',method:request.method(),headers:request.headers(),status:responses.get(request)}));
+  const waitForCurrentRequests=currentNetworkIdle(page);
+  await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');
+  await settleLanguage(page,languageCodes.en!);
+  await openLanguageSelector(page);
+  await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();await page.reload({waitUntil:'networkidle'});
+  for(const request of failedRequests)if(isCancelledSitePrefetch(request,prefetchUrls))ignoredPrefetchAborts.push(request.url);
+  assert.equal(new URL(page.url()).pathname,'/zh/');assert.deepEqual(errors,[]);assert.deepEqual(failedRequests.filter(request=>!isCancelledSitePrefetch(request,prefetchUrls)),[]);checks.push('blocked storage permits fallback, manual Chinese and localized reload');
+ }finally{await blocked.close();}
+ return {checks,ignoredPrefetchAborts};
+}
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.63.0')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.63.0.');
- const exported=inspectSiteExport(options.root),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.63.0',results,status:'running',completedAt:'',failure:''};
+ const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
+ const languagePreferences:{engine:string;viewport:string;checks:string[];ignoredPrefetchAborts:string[]}[]=[];
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.63.0',results,languagePreferences,status:'running',completedAt:'',failure:''};
  try {await withSiteExportServer(exported.root,async origin=>{
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
-   try {for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size});
+   try {for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
     try {for(const route of exported.routes){const page=await context.newPage();const evidence:BrowserEvidence={engine:name,engineVersion:browser.version(),viewport,route,assertions:[],errors:[],ignoredPrefetchAborts:[],screenshot:`${name}-${viewport}-${route.locale}-${route.kind}.png`};results.push(evidence);
      const consoleErrors:{text:string;url:string}[]=[],failedRequests:CancelledRequest[]=[],prefetchUrls:string[]=[],responses=new WeakMap<Request,number>();
      page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});
@@ -134,6 +252,10 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
      catch(error){evidence.failure=message(error);try{writeFileSync(path.join(report,evidence.screenshot+'.html'),await page.content());}catch(diagnostic){evidence.diagnosticError=message(diagnostic);}}
      finally {try{if(!existsSync(path.join(report,evidence.screenshot)))evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);}catch(diagnostic){evidence.diagnosticError=message(diagnostic);if(!evidence.failure)throw diagnostic;}finally{await page.close();}}
     }}finally{await context.close();}
+    const documentPath=exported.routes.find(route=>route.kind==='pcr'&&route.locale==='en')?.path;
+    assert.ok(documentPath,'Language qualification requires an English PCR document');
+    const evidence=await checkLanguagePreferences(browser,origin,size,documentPath,languageCodes);
+    languagePreferences.push({engine:name,viewport,...evidence});
    }}finally{await browser.close();}
   }
  });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;

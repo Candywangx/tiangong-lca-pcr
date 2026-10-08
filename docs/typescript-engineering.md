@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 on merged #86 lanes: capability declarations and staged importer dependency closure have independent negative tests; full source coverage, corpus and sealed platform/browser qualification remain unchanged."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 real-export language preference matrix, emitted-language-aware probes and navigation/request settling; complete TypeScript source checks, coverage, platform/corpus qualification and sealed-release gates remain unchanged."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -435,9 +435,18 @@ overlay is not release evidence.
 `docs:browser` reads an existing export and never rebuilds it. Its new evidence
 directory must be outside the export. The receipt records exact file-tree hashes,
 source identity, browser versions, all selected routes and screenshots, and checks
-that export bytes remain unchanged. All available planned route cases are recorded
-even after a failure; missing engines or required input fail rather than skip.
+that export bytes remain unchanged. Page-route assertion failures are recorded
+while subsequent route cases continue; missing engines or required input fail rather than skip.
 The final CI uses this browser engine through `qualify:web` on the extracted sealed archive, after verifying the exact candidate tree.
+
+The same browser/viewport matrix checks neutral-entry language negotiation,
+manual preference persistence, explicit localized URLs, document counterparts,
+query/fragment retention and denied storage. Probes called unsupported are selected
+against the actual emitted language registry; bounded probe exhaustion tests absent
+browser language information instead. Regional expectations and HTML language
+assertions use the emitted route/code mapping, including optional translations.
+Language-preference failures fail qualification and are retained in the receipt;
+completed matrices preserve their checks and specifically classified prefetch aborts.
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
 actual receiving runtime tree. They retain the original receipt behavior while

@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-05
-lastReviewedCommit: da222b6d95b3ab5c36ffd0627b681da35ffae57b
-lastReviewedNote: "Reviewed PCR #87 strict TypeScript compatibility validators, actual artifact metadata and thin task Skill; core remains offline and transport policy remains separate from scientific semantics."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
+lastReviewedNote: "Reviewed PCR #102 strict TypeScript language preference helpers and browser qualification; storage side effects remain explicit and builder/core/CLI, integrity and scientific-semantic boundaries are unchanged."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
