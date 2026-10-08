@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
-lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
+lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -454,6 +454,26 @@ browser language information instead. Regional expectations and HTML language
 assertions use the emitted route/code mapping, including optional translations.
 Language-preference failures fail qualification and are retained in the receipt;
 completed matrices preserve their checks and specifically classified prefetch aborts.
+
+Browser request receipts retain engine, viewport, exact URL, method, resource
+kind, navigation flag, observed HTTP status, start/failure timestamps and phases,
+actual page URL, and an allowlist of routing/prefetch headers. Cookies and
+credentials are not collected. Partial language-preference evidence survives
+failure. The classifier accepts only the pinned engine's exact cancellation
+reason (`net::ERR_ABORTED`, `NS_BINDING_ABORTED`, or WebKit `cancelled` /
+`Load request cancelled`), a non-navigation GET/HEAD fetch/xhr/other request,
+no failed observed HTTP response, and explicit prefetch metadata. A successful
+HEAD probe additionally may use an observed explicit same-origin/path segment
+prefetch companion. An RSC URL or header alone is insufficient. Unknown reasons,
+missing metadata, document/asset/navigation failures and failed HTTP responses
+remain blocking; case counts and functional assertions are unchanged.
+
+The Playwright [Request contract](https://playwright.dev/docs/api/class-request)
+and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
+provide request identity and engine cancellation semantics. Exact WebKit strings
+and prefetch evidence were also reproduced against the pinned browser runtime in
+[PCR #106](https://github.com/tiangong-lca/pcr/issues/106#issuecomment-6064168510).
+Historical failed receipts lacking those fields are not retroactively qualified.
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
 actual receiving runtime tree. They retain the original receipt behavior while

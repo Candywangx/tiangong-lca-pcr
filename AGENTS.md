@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
-lastReviewedNote: "Reviewed PCR #106 / PR #97: 37 candidate records, bilingual mass/allocation corrections, compatible search v2 and unified 0.4.5 preparation. No mapping acceptance, methodology approval, compatibility minimum change or completed publication is implied. Preserved main PR #105 bilingual guide and navigation changes during integration."
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
+lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

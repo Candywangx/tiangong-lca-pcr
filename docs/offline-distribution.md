@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
-lastReviewedNote: "Reviewed PCR #106 / PR #97 unified 0.4.5 authority, three mirrors and examples. Preparation baseline is verified completed 0.4.4; fresh qualification and coordinated publication remain required. Reader compatibility and provider contracts are unchanged."
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
+lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -66,10 +66,10 @@ network calls or implicit content downloads are used.
 
 ## Build and transport
 
-The release-preparation examples below target product 0.4.5. At preparation on
-2026-10-08, the latest completed GitHub product release and the verified live
+The release-preparation examples below target product 0.4.6. At preparation on
+2026-10-09, the latest completed GitHub product release and the verified live
 website identity were 0.4.4.
-Verify completed guarded publication before using 0.4.5 registry instructions;
+Verify completed guarded publication before using 0.4.6 registry instructions;
 source version metadata and a preparing release do not prove public availability.
 
 For production transport, take the two tarballs from one completed product
@@ -83,8 +83,8 @@ output must not be published as the complete product. Run them from a validated
 source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.5
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.5
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.4.6
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.4.6
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -103,7 +103,7 @@ Transfer both verified product tarballs and a suitable Node runtime to the offli
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.5.tgz ./tiangong-lca-pcr-library-0.4.5.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.4.6.tgz ./tiangong-lca-pcr-library-0.4.6.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -225,7 +225,7 @@ The qualified preparation runtime is Node 24.19.0; Tiangong CLI supports
 `>=24.19.0 <25`. Its qualified minimum package is released `@tiangong-lca/cli` 0.1.25.
 Confirm its publication before installation. It selects the installed PCR reader
 independently; the compatibility minimum remains 0.4.1 rather than being raised
-to the new content release's 0.4.5 version.
+to the new content release's 0.4.6 version.
 The Skill teaches readiness, general LCA authoring, optional TIDAS authoring and Agent-led
 process/model review. The tool bundles inspection, cited guidance, arithmetic and
 review-envelope support; no model runtime or TIDAS schema implementation is embedded.
@@ -389,7 +389,7 @@ The initial `v0.3.0` attempt exposed a missing filesystem constraint on the prov
 memory-backed clone. Its two npm candidate packages and sealed assets remain
 unchanged and the release remains incomplete. The reviewed repair uses product
 `0.3.1`; that recovery remains immutable. The current TypeScript release examples
-below target `0.4.5`. Never repair this by moving the old
+below target `0.4.6`. Never repair this by moving the old
 tag, replacing sealed assets, or overriding source guards in the provider console.
 
 ### Provider runtime selection and v0.4.0 recovery
@@ -410,6 +410,21 @@ provider log for runtime selection before claiming the configuration is effectiv
 Official references: [build guide](https://pages.edgeone.ai/document/build-guide)
 and [configuration](https://pages.edgeone.ai/document/edgeone-json).
 
+### Browser cancellation qualification and v0.4.5 recovery
+
+The immutable `v0.4.5` preparing release has original sealed assets and a verified
+accepted tool upload. Subsequent full qualification stopped before coordinated
+publication on explicit Firefox/WebKit prefetch cancellations. Its tag, accepted
+package, sealed bytes and failed receipts remain unchanged; neither a preparing
+release nor the accepted tool alone establishes completed product publication.
+
+Product `0.4.6` repairs classification only when an engine-specific cancellation
+has explicit non-navigation prefetch evidence. Real navigation, resource, HTTP
+and unmarked failures remain blocking. Fresh complete qualification and the same
+coordinated npm/web publication contract apply to the new immutable tag. See
+[the request evidence contract](typescript-engineering.md#site-and-release-runtime-cutover).
+Canonical candidate PCR status and English-only npm methodology are unchanged.
+
 ### Build and operator commands
 
 Use the pinned Node/npm versions from `product-release.json`. On a clean reviewed
@@ -419,7 +434,7 @@ checkout, prepare artifacts without any remote publication:
 npm ci --ignore-scripts --no-audit --no-fund
 npm --prefix packages/pcr-docs ci
 npm run docs:build
-npm run product:build -- v0.4.5 dist/product-release packages/pcr-docs/out
+npm run product:build -- v0.4.6 dist/product-release packages/pcr-docs/out
 npm run product:verify -- dist/product-release
 ```
 
@@ -434,13 +449,13 @@ After activation, create/resume the first product tag from the exact current mai
 version through the guarded workflow:
 
 ```sh
-gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.5
+gh workflow run tag-release-from-merge.yml --repo tiangong-lca/pcr --ref main -f tag_name=v0.4.6
 ```
 
 Retry an existing unified release without moving its tag:
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.5 -f tag_name=v0.4.5
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref v0.4.6 -f tag_name=v0.4.6
 ```
 
 A `retry_web=true` dispatch is an explicit provider-terminal confirmation, not an

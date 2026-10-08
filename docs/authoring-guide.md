@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-08
-lastReviewedCommit: f5089dd6cdacfe224cd3badd396106a903634508
-lastReviewedNote: "Reviewed PCR #106 / PR #97 content and bilingual pectin/TV accounting corrections against the update workflow. Candidate maturity, pending scientific review, unresolved identities and mapping authorization are preserved; unified 0.4.5 is product preparation only."
+lastReviewedAt: 2026-10-09
+lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
+lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
 ---
 
 # Authoring Guide

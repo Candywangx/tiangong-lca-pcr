@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #106 / PR #97 native-array search v2 with v1 reader compatibility and unchanged aggregate budgets, preserving current-main onboarding and language preferences. Unified 0.4.5 publication remains subject to fresh qualification and live verification. Preserved main PR #105 bilingual guide and navigation changes during integration."
-lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
+lastReviewedAt: 2026-10-09
+lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
+lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
