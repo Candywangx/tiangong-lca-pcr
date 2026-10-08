@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
-lastReviewedNote: "Reviewed PCR #102 public-documentation browser language preferences; canonical PCR identity, authoring/scientific/translation gates, offline consumption and release/integration authorization are unchanged. Incorporated the existing main 0.4.4 release metadata from PR #101 without changing its publication or compatibility contract."
+lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
+lastReviewedNote: "Reviewed PCR #106 / PR #97: 37 candidate records, bilingual mass/allocation corrections, compatible search v2 and unified 0.4.5 preparation. No mapping acceptance, methodology approval, compatibility minimum change or completed publication is implied."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

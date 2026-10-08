@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "PCR #106 resolves the review-metadata conflict against main9028d18e while preserving PR97's reviewed v2 search/v1 reader contract and upstream browser-language negotiation, manual preferences, Chinese aliases, Agent onboarding and 0.4.4 release contract. Contract bodies remain intact; combined implementation and publication qualification remain required."
-lastReviewedCommit: 9028d18ed952503888c9e6057c984553e90f29a3
+lastReviewedNote: "Reviewed PCR #106 / PR #97 native-array search v2 with v1 reader compatibility and unchanged aggregate budgets, preserving current-main onboarding and language preferences. Unified 0.4.5 publication remains subject to fresh qualification and live verification."
+lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
