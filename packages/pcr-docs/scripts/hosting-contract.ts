@@ -1,5 +1,6 @@
 import {isUnknownRecord,unknownField} from "../../pcr-core/src/types.ts";
 import assert from "node:assert/strict";
+import { gettingStartedGuides } from "../lib/getting-started.ts";
 /** EdgeOne documents one URL-path wildcard (including nested paths), with optional suffix. */
 export function matchesPath(pattern: string, pathname: string) {
   if (
@@ -42,11 +43,13 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
       && matchesPath(rule.source, source)), "Explicit Chinese-home URL must remain readable: " + source);
   // Specific rules carry their complete required headers, avoiding reliance on overlap precedence.
   for (const firstMatch of [false, true]) {
-    const guideHeaders = headersFor(config, "/getting-started.md", { firstMatch });
+    for (const guide of gettingStartedGuides) {
+    const guideHeaders = headersFor(config, guide.rawUrl, { firstMatch });
     assert.equal(guideHeaders["content-type"], "text/markdown; charset=utf-8");
     assert.equal(guideHeaders["content-disposition"], "inline");
     assert.equal(guideHeaders["x-content-type-options"], "nosniff");
     assert.equal(guideHeaders["cache-control"], "public, max-age=0, must-revalidate");
+    }
     for (const raw of downloads) {
       const headers = headersFor(config, raw.url, { firstMatch });
       assert.equal(

@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
-lastReviewedNote: "Reviewed PCR #102 website-local language preferences; task-pinned snapshots, offline English content, reader compatibility, CLI inspection and Agent review boundaries are unchanged. Incorporated the existing main 0.4.4 release metadata from PR #101 without changing its publication or compatibility contract."
+lastReviewedCommit: 42a1e3f1a1d6c242066567b4337eddcfa77f8e18
+lastReviewedNote: "Reviewed PCR #104 bilingual getting-started sources, localized copy feedback and verified counterpart switching, plus one sidebar entry per main section. Preserve #103 reading-language preferences, source fidelity, English-only npm methodology and separate qualified publication; canonical methodology and CLI behavior remain unchanged."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
