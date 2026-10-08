@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #102 browser-language negotiation, explicit manual preferences and readable Chinese URL aliases; static Chinese SEO, canonical source languages and publication authorization are unchanged."
+lastReviewedNote: "Reviewed PCR #102 browser-language negotiation, explicit manual preferences and readable Chinese URL aliases; static Chinese SEO, canonical source languages and publication authorization are unchanged. Incorporated the existing main 0.4.4 release metadata from PR #101 without changing its publication or compatibility contract."
 lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
 title: Generated PCR Documentation Site Contract
 docType: contract

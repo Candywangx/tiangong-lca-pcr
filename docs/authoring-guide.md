@@ -26,7 +26,7 @@ checkPaths:
   - library/modules/**
 lastReviewedAt: 2026-10-08
 lastReviewedCommit: ca3aa2b64f6899ace5e5996ba25bff32652235c8
-lastReviewedNote: "Reviewed PCR #102 presentation-only browser language selection; required source languages, optional declaration/review rules, canonical authoring and immutable publication workflow are unchanged."
+lastReviewedNote: "Reviewed PCR #102 presentation-only browser language selection; required source languages, optional declaration/review rules, canonical authoring and immutable publication workflow are unchanged. Incorporated the existing main 0.4.4 release metadata from PR #101 without changing its publication or compatibility contract."
 ---
 
 # Authoring Guide
