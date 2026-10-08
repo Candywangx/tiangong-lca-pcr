@@ -28,9 +28,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-06
-lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
-lastReviewedNote: "Reviewed PCR #95 unified 0.4.3 version/examples preparation; PCR ownership, canonical candidate and scientific/translation gates, runtime pins and guarded publication boundaries remain unchanged."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 5d9320445f4c792821a988b5c24e0de5b5245559
+lastReviewedNote: "Reviewed PCR #98 static Agent onboarding entry: PCR ownership, canonical content, offline reader and scientific/translation gates are unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
