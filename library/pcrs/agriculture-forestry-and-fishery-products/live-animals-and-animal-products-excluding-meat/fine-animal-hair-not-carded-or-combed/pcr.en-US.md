@@ -597,6 +597,7 @@ Denominator and scope requirements：per reference flow
 | v_allocation | animal periods/shared services | Check actual animal output set, period attribution and shared-asset consumers; reject missing upstream burden and duplicated service. | fao-animal-fibre-harvesting |
 | v_route | optional condition | Require operation evidence for washing, dehairing or drying and class confirmation for sold state; reject default yield or obligatory processing across species. | fao-animal-fibre-processing |
 | v_binding | generated exchanges | Resolve conditional product inputs to exact verified UUIDs from foreground records; other UUIDs remain unresolved until detail/property/unit-group confirmation. | |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 

@@ -799,6 +799,7 @@ sync_with: pcr.en-US.md
 | `source_match` | animal and removal | 按动物 ID、路线和实测质量一次性匹配活体 Product 或倒毙尸体 Waste 交接；核对剥皮产物及有记录损失，不得把整具动物再列为另一联产品。 | `fao-hides-statistics` |
 | `period_shared` | animal and facility | 核实动物及共享资产期间只归属一次，分摊份额之和为一 | `fao-hides-statistics` |
 | `uuid_gate` | concrete exchanges | 具体交换需核实实际状态和交付点；农场门口混合流不可替代保藏场所交付 |  |
+| `v_foreground_emission_responsibility` | 实际运行节点及链接服务 | 适用时记录现场燃料燃烧及制冷剂泄漏的核算责任：须为量化前景排放，或明确覆盖它们的具名链接过程，不能仅凭燃料供应或电力生产投入视为已包含。特殊类群生物及残余物排放须依物种/路线证据评估，不套通用畜牧因子。标明尚未落实的路径，不宣称清单完整；记录有依据的不存在结论并防止上/下游重复核算。 | |
 
 ## 10. 发布数据集画像
 

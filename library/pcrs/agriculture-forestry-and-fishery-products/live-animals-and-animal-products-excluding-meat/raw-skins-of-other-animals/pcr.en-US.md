@@ -751,6 +751,7 @@ Denominator and scope requirements：per reference flow
 | v_balance | each lot | Reconcile fresh, accepted, downgrade, reject, cure medium and net sold states to measured uncertainty; investigate unexplained residual. | fao-hides-skins |
 | v_allocation | phases and shared assets | Reject unsupported zero/whole-animal burden, duplicate product, repeated asset period or arbitrary universal co-product rule. | fao-hides-skins |
 | v_identity | concrete final exchange | A broad unresolved card is not a final UUID; verify species, part, raw state, property, actual gate and direction. Goat skin, furskin or whole fish cannot substitute. |  |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 

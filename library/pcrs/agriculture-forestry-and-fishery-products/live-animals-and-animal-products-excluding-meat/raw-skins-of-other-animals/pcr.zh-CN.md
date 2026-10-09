@@ -350,7 +350,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：称量来料并核对清理票据。 原始采集分母类型：process_output。
 
-- 选定流： Species-qualified first-cleaned raw skin (UUID unresolved)
+- 选定流：按物种限定的初次清理生皮（UUID 未解析）
 - 流属性/单位： Mass / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -751,6 +751,7 @@ sync_with: pcr.en-US.md
 | v_balance | 各批 | 将新鲜、合格、降级、拒收、保藏介质和净出售状态核对至实测不确定度；调查不明残差。 | fao-hides-skins |
 | v_allocation | 阶段与共用资产 | 拒绝无据零负担/全动物负担、重复产品、重复资产期间或任意通用联产品规则。 | fao-hides-skins |
 | v_identity | 具体最终交换 | 广义未解析卡并非最终 UUID；核实物种、部位、原皮状态、属性、实际 gate 及方向。山羊皮、毛皮或整鱼流不能替代。 |  |
+| `v_foreground_emission_responsibility` | 实际运行节点及链接服务 | 适用时记录现场燃料燃烧及制冷剂泄漏的核算责任：须为量化前景排放，或明确覆盖它们的具名链接过程，不能仅凭燃料供应或电力生产投入视为已包含。特殊类群生物及残余物排放须依物种/路线证据评估，不套通用畜牧因子。标明尚未落实的路径，不宣称清单完整；记录有依据的不存在结论并防止上/下游重复核算。 | |
 
 ## 10. 发布数据集画像
 

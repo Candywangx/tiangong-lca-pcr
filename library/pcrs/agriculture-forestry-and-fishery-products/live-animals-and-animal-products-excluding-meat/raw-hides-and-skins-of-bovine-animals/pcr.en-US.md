@@ -776,6 +776,7 @@ Raw quantity and calculation requirements: Weigh discard to handler. Original co
 | v_balance | all lots | Reconcile removal, preparation, grades, preservation and final mass, with trims, salt/brine and moisture loss; investigate residual by site tolerance. | fao-hides |
 | v_attribution | animal and shared assets | Reject duplicated animal phases or plant service periods and missing output handovers or attribution decisions. | fao-hides |
 | v_binding | all cards | Resolve the broad final output to one concrete Product UUID only after actual state, gate and Mass are evidenced; no narrower plant flow can be imposed on every lot. All other concrete UUIDs and set members require independent verification before exchange generation. |  |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 

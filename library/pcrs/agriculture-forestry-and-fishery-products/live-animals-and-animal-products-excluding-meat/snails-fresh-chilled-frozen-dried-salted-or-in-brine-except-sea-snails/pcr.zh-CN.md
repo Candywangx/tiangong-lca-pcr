@@ -123,27 +123,29 @@ sync_with: pcr.en-US.md
 
 ###### 适于物种的饲料（`rear_feed`）
 
-称量购入或场内饲料消耗；场内种植负担在上游或前景只归属一次。
+称量供应的购入或场内饲料，分开核对采食及剩余料；场内种植负担在上游或前景只归属一次。
 
 分母与范围要求：每 kg 养殖待采收蜗牛
 
-原始数量及计算要求：发放减剩余及库存变化。 原始采集分母类型：process_output。
+原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output.
 
 - 选定流：陆生蜗牛饲料或作物残余，按供应商限定（UUID 未解析）
 - 流属性/单位：Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
+- 数量规则：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集计算（`calculated_from_collection`）
 - 采集协议：`cp_rearing`
+本卡 QA 对象：下方摄入量范围仅校验按 calc_feed_supply_and_intake 单独记录并重建的生物摄入量，沿用该范围声明的单位及分母；不用于限定或替代饲料供应交换量，后者保留边界内未食用损失及其生产负担。不得用摄入量上下限校验供应量，也不得为满足范围而扣除损失。供应量专用范围须有独立证据；摄入及损失记录缺失时，此项摄入量 QA 未评估，不视为通过。
+
 - 数量范围：暂定饲料完整性筛查
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
   - 上限：1000
   - 单位：kg/kg
-  - 基准：每 kg 待采收产出的消耗饲料；异常值需调查
+  - 基准：每 kg 待采收产出的消耗饲料；异常值需调查；QA 变量仅为实录生物摄入量，不是饲料供应清单数量
   - 基准类型：过程产出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
@@ -791,13 +793,14 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_rearing | rear | 批次存量、饲料及产出 | 养殖日志 | species,cohort,stock,feed,mortality,ready_mass,dates | 日志及校准称；原始汇总要求：按批次净投入产出求和。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | item;kg | 每事件 | 完整养殖批次与期间 | 实际养殖设施 | 每参考流 | 供应商凭据、库存簿、校准记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| cp_rearing | rear | 批次存量、饲料及产出 | 养殖日志 | species,cohort,stock,feed,mortality,ready_mass,dates | 日志及校准称；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | item;kg | 每事件 | 完整养殖批次与期间 | 实际养殖设施 | 每参考流 | 供应商凭据、库存簿、校准记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_harvest | gather | 来源及原料批次 | 采集日志 | route,permit,site,cohort,event,raw_mass,incidental,dates | 批次称及采集记录；原始汇总要求：原料批次不重复求和。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每事件 | 完整采集事件 | 实际农场或野外地点 | 每参考流 | 采集单、许可、称量；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_preparation | prepare | 吐沙、清洗与等级 | 批次日志 | incoming,water,accepted,downgraded,reject,shell,destination | 表计、称量、等级日志；原始汇总要求：每批质量平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每批 | 全部准备批次 | 初级加工地点 | 每参考流 | 等级规范、称及水表记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_preservation | preserve | 路线及状态转换 | 配方与批次日志 | initial,final,temperature,time,moisture,salt,brine,reject,energy | 称量、表计、配方、检测；原始汇总要求：按状态批次平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;kWh | 每实际处理 | 全部保藏批次 | 实际工厂 | 每参考流 | 配方、水分检测、能源账单；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_utilities | rear;gather;prepare;preserve | 水及能源 | 表计或燃料记录 | meter,carrier,node,period,shared_driver | 表计与发票核对；原始汇总要求：按实测驱动量归属一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;kWh;MJ | 每计量期 | 完整批次或服务期 | 消费节点 | 每参考流 | 校准、账单、分配表；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_handover | pack | 包装及最终批次 | 发运记录 | state,net_mass,tare,reuse,gate,handover | 校准称及交付单；原始汇总要求：按状态求和合格净销售质量。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每批 | 全部合格销售批次 | 实际交付地点 | 每参考流 | 称量单及追溯；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_residues | rear;gather;prepare;preserve;pack | 废物及损失 | 处置和平衡日志 | composition,mass,destination,reason,period | 称量及处置凭证；原始汇总要求：每个分流去向仅求和一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg | 每事件 | 全部前景期间 | 实际节点 | 每参考流 | 凭证及平衡记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_feed_supply_and_intake` | `rear` | 饲料投入、采食及损失 | 库存、收货、发料及损失台账 | 饲料身份/来源；群体/阶段；期间；期初/期末库存；收货；自产供给；未用退回/转出；未食用/变质质量及去向；原物/干物质；实际采食量；负担归属；合格最终产出 | 按 calc_feed_supply_and_intake 核对匹配的库存、称重、日粮/采草估算及处置记录。保留原始总量及阶段分母，生产与处理负担各归属一次，再对合格最终产出归一化。 | kg as-fed; kg DM | 每次发料及期间结算 | 完整所代表群体/期间 | 实际运行饲喂节点 | 每参考流 | 库存及供应商记录；水分证据；损失及无重复核算核对 |
 
 ### 计算规则
 
@@ -807,6 +810,7 @@ sync_with: pcr.en-US.md
 | c_balance | 准备及保藏 | 实测投入质量加进入产品的水/盐＝合格＋降级＋剔除＋实测损失＋库存变化；报告未解释残差。 | cp_preparation;cp_preservation;cp_residues | kg 平衡残差 | fao-improved-snail-farming |
 | c_dry | 状态比较 | 蜗牛干固形物＝实测蜗牛质量乘以（1－实测水分分数），另辨识盐固形物；不使用统一鲜/干换算。 | cp_preservation | kg 蜗牛干固形物 | fao-improved-snail-farming |
 | c_unit | 所有投入 | 归一化投入＝同状态和同批次可归属的实测投入除合格净质量；分母为零则失败。 | cp_rearing;cp_harvest;cp_utilities;cp_handover | 每 kg 参考产品投入 |  |
+| `calc_feed_supply_and_intake` | `rear_feed` | 所代表作业使用的饲料投入 = 期初饲料库存 + 收货 + 进入本作业的自产饲料 - 期末饲料库存 - 有记录的未用退回或转出。该投入保留边界内变质、拒食及被丢弃的剩余料。实际采食量 = 该投入 - 实测未食用/丢弃损失，并匹配水分/干物质与期间；采食量仅用于营养及代谢计算。期初库存承接原有负担，不是再次采购。追溯未用退回或转出的物料及负担去向，不自动给予替代抵扣。同一饲料的生产负担由采购饲料数据集或已建模自产作物/采集节点承担一次，不得两者并计。实际废料处理及粪污贡献计一次，不再次添加饲料生产负担。 | `cp_feed_supply_and_intake` | 同一原物/干物质基准下分开的饲料投入、采食及损失数量 | `fao-feed-loss-accounting-2018` |
 
 ### 数据质量要求
 
@@ -826,6 +830,8 @@ sync_with: pcr.en-US.md
 | v_balance | 每批 | 要求非负实测净产品、明确剔除及水分/盐水平衡；超场址测量容差的残差需调查，不强制统一出率。 | fao-improved-snail-farming |
 | v_attribution | 期间与共享资产 | 不得重复计入批次投入或共享养殖设施、洗涤、冷库及包装负担；记录驱动量、期间及消费节点。 | fao-improved-snail-farming |
 | v_uuid | 全部交换 | 不得从未解析语义卡直接发布具体流交换；最终使用前核实产品状态、交付门、属性及单位。 |  |
+| `v_foreground_emission_responsibility` | 实际运行节点及链接服务 | 适用时记录现场燃料燃烧及制冷剂泄漏的核算责任：须为量化前景排放，或明确覆盖它们的具名链接过程，不能仅凭燃料供应或电力生产投入视为已包含。特殊类群生物及残余物排放须依物种/路线证据评估，不套通用畜牧因子。标明尚未落实的路径，不宣称清单完整；记录有依据的不存在结论并防止上/下游重复核算。 | |
+| `v_feed_supply_intake_separation` | 全部饲料投入 | 拒绝扣除边界内拒食、变质或丢弃剩余料且未保留其生产负担的上游饲料清单。按 calc_feed_supply_and_intake 核对投入、采食、库存、转移及损失去向。不得把采食量当作饲料投入，不得假设自产饲料零负担或自动给予替代产品抵扣。 | `fao-feed-loss-accounting-2018` |
 
 ## 10. 发布数据集画像
 
@@ -846,3 +852,4 @@ sync_with: pcr.en-US.md
 | `un-cpc-3-notes` | official_guidance | [联合国 CPC 3.0 解释性说明](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf) | 类别定义及海螺排除。 |
 | `fao-improved-snail-farming` | official_guidance | [FAO，改进蜗牛养殖](https://www.fao.org/4/aq106e/aq106e00.pdf) | 人工养殖、采收、处理和产品路线分解。 |
 | `fao-snail-farming-gathering` | official_guidance | [FAO，蜗牛养殖与采集](https://www.fao.org/4/v6200t/v6200T0c.htm) | 区分人工养殖与野外采集。 |
+| `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |

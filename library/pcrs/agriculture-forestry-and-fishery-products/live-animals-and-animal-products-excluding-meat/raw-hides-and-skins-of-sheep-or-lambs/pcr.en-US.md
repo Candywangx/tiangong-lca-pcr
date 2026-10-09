@@ -822,6 +822,7 @@ Raw quantity and calculation requirements: Measure actual lot and reconcile node
 | v_balance | each batch | Reconcile accepted, downgraded and rejected skin, residue, stock and moisture/salt change, investigating residual against site measurement uncertainty. | fao-hides-skins |
 | v_attribution | products, phases and shared services | Reject unsupported zero-burden skin, duplicated attached fleece/detached wool, repeated animal phase or shared plant burden, or absent allocation evidence. | fao-hides-skins |
 | v_uuid | concrete dataset exchanges | Unresolved cards cannot become final exchanges; CPC label alone cannot make tanned sheepskin or manufactured leather an exact raw Mass flow. |  |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 

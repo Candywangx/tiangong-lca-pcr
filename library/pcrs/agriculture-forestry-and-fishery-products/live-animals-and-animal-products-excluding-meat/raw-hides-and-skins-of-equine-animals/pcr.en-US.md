@@ -799,6 +799,7 @@ Raw quantity and calculation requirements: Record only when end-of-use occurs be
 | `source_match` | animal and removal | Match each live-Product or fallen-body-Waste handoff once by animal ID, route and measured mass; reconcile the removal outputs and documented losses without double-counting the body as another co-product. | `fao-hides-statistics` |
 | `period_shared` | animal and facility | Check animal and shared-asset periods counted once and allocation shares sum to one | `fao-hides-statistics` |
 | `uuid_gate` | concrete exchanges | Concrete exchange needs actual state and gate; farm-gate mix is not a curing-site substitute |  |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 

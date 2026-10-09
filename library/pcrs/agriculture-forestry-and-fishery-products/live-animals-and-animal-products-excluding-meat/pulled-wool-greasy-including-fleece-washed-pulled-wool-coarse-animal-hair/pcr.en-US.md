@@ -775,6 +775,7 @@ Denominator and scope requirements：per reference flow
 | v_mass | each batch | Reconcile all grades, pelt, rejects, utilities and moisture within measured uncertainty; reject undocumented raw-to-clean factors. | fao-animal-fibres-ch4 |
 | v_attribution | animal and shared services | Reject duplicate attached/detached wool, unsupported zero-burden skin, repeated animal period, pelt or shared-asset burden. | fao-animal-fibres-ch4 |
 | v_uuid | final exchanges | Unresolved cards remain semantic only; each final exchange requires one detail-verified concrete UUID and compatible property/unit group. |  |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 

@@ -781,6 +781,7 @@ Denominator and scope requirements：per actual recorded lot; final result norma
 | `route_balance` | all nodes | Match lot IDs and measured masses from removal to final single handover; reconcile accepted, downgraded, rejected, retained salt, free brine and explained moisture change. | `fao-small-ruminant` |
 | `outputs_periods` | allocation | Confirm actual meat/milk/fibre/breeding output sets, periods, shared consumers and attribution shares; prevent zero/whole-hide burden defaults and double count. | `fao-hides` |
 | `identity_resolution` | concrete dataset exchange | Resolve each unresolved product/waste/elementary identity to a detail-verified compatible flow before generating a final exchange; conditional flow scope is provisional, not a UUID. |  |
+| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |
 
 ## 10. Published Dataset Profile
 
