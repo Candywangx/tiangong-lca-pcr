@@ -11,14 +11,16 @@ sync_with: pcr.zh-CN.md
 
 This rule covers unprocessed goat milk accepted at the producing dairy farm gate, either warm after first farm conditioning or cooled by that farm. It covers managed lactating goats and replacements, feed and water, enteric and manure pathways, milking capture, first straining and quality acceptance, and conditional farm cooling. Grazing and housed management are alternative implementations of the same herd node: record grazed feed and pasture manure for the former; delivered feed and collected manure for the latter; mixed systems report both without duplicating animal-days. Exclude independent collection/cooling centres, post-gate transport, pasteurization, standardization, and consumer packaging. Do not silently substitute sheep, cow or buffalo milk.
 
+For the accepted exact mapping to CPC 3.0 02292, the final reference product must be unskimmed and not partly skimmed, with a measured milk-fat mass fraction of at least 3.5% (35 g/kg milk). Milk below this classification boundary is outside this PCR's declared CPC-linked product scope, including when its low fat content is natural. This is a classification eligibility condition, not a general milk-quality pass limit, an emission factor, or an instruction to standardize the milk. Retain the actual composition and state; do not replace measured net milk mass with fat-corrected milk. Source: `un-cpc-3-02292`.
+
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-goats` |
 | classification_refs | CPC 3.0 `02292` |
-| covered_products | Warm raw goat milk and farm-chilled raw goat milk transferred at the producing farm gate |
-| excluded_products | Other species' milk; processed milk; milk from independent collection or cooling centres |
+| covered_products | Warm raw goat milk and farm-chilled raw goat milk transferred at the producing farm gate; unskimmed/not partly skimmed, measured milk-fat mass fraction at least 3.5% (35 g/kg milk) |
+| excluded_products | Other species' milk; processed milk; milk from independent collection or cooling centres; milk with fat content below 3.5%, skimmed or partly skimmed milk |
 | representative_product | As-collected accepted unprocessed goat milk |
 | production_route | Managed goat herd → separate milking capture → first farm conditioning → optional farm cooling; grazing, housed or mixed herd management documented |
 | market_state | Unprocessed liquid milk, warm or farm-chilled, at producing farm handover |
@@ -40,7 +42,7 @@ This rule covers unprocessed goat milk accepted at the producing dairy farm gate
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | goat species; farm identifier; lactation and replacement period; herd route; accepted and rejected mass; warm or farm-chilled state; milk temperature; fat/protein or solids; transfer gate |
+| Required qualifiers | goat species; farm identifier; lactation and replacement period; herd route; accepted and rejected mass; warm or farm-chilled state; milk temperature; fat/protein or solids; transfer gate; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date |
 
 Instantiate one foreground reference from the actual handed-over lot, with all required qualifiers. The category may cover alternative states and producer gates, but each package has one declared species/state/gate/grade stratum and one measured accepted reference-output denominator. Do not pool incompatible states or claim equal service from equal mass. Route-specific source rows and reference_handover describe the same physical boundary event; their linked internal transfer is not another sale or another physical operation.
 
@@ -50,6 +52,7 @@ The broad warm-or-chilled reference has no verified single flow UUID. The chille
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | final reference milk | Milk-fat mass fraction, wet-milk basis | % or g/kg milk | Verify at least 3.5% (35 g/kg) on a sample matched to the actual handover lot, with method, sampling date and skimmed/not-skimmed state. Below-threshold or skimmed/partly skimmed milk is outside the declared CPC-linked scope. Missing or incomparable composition evidence prevents a classification claim; never assume eligibility from species, breed or a default fat content. This condition does not change net-mass normalization. |
 | `accepted_mass` | reference milk | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Normalize all inventories to measured accepted milk; subtract rejected or lost milk once. |
 | `milk_quality` | accepted milk | measured fat/protein or solids | reported concentration basis | Retain the sampled composition and temperature with the exact lot or period; do not silently standardize milk mass. |
 | `period_link` | herd and milk | Mass and time | kg, days | Link animal-days, feed, replacement and manure records to the milk reporting period before normalization. |
@@ -663,7 +666,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_milk`, `chilled_milk`
 
-Required product-instance qualifiers: goat species; farm identifier; lactation and replacement period; herd route; accepted and rejected mass; warm or farm-chilled state; milk temperature; fat/protein or solids; transfer gate
+Required product-instance qualifiers: goat species; farm identifier; lactation and replacement period; herd route; accepted and rejected mass; warm or farm-chilled state; milk temperature; fat/protein or solids; transfer gate; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw milk of goats at producing farm gate for actual producer-handover linkage
 - Flow property / unit: Mass / kg
@@ -700,7 +703,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_milk`, `chilled_milk`
 
-Required product-instance qualifiers: goat species; farm identifier; lactation and replacement period; herd route; accepted and rejected mass; warm or farm-chilled state; milk temperature; fat/protein or solids; transfer gate
+Required product-instance qualifiers: goat species; farm identifier; lactation and replacement period; herd route; accepted and rejected mass; warm or farm-chilled state; milk temperature; fat/protein or solids; transfer gate; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw milk of goats at producing farm gate
 - Flow property / unit: Mass / kg
@@ -769,6 +772,7 @@ Required product-instance qualifiers: goat species; farm identifier; lactation a
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02292` |
 | `gate_check` | reference | Confirm goat raw milk is warm or cooled by the producing farm; reject independent-centre or processed milk as this reference. | `fao-small-ruminant-2016` |
 | `route_check` | herd | Verify grazing, housed or mixed route against feed origin, manure location and animal-days; no route label without changed records. | `fao-small-ruminant-2016` |
 | `balance_check` | milk | Require lot balance and distinct warm/chilled gate destinations; zero double booking across conditioning and cooling. | `fao-small-ruminant-2016` |
@@ -791,6 +795,7 @@ Required product-instance qualifiers: goat species; farm identifier; lactation a
 
 | source_id | type | citation | use |
 | --- | --- | --- | --- |
+| `un-cpc-3-02292` | official_guidance | [UN Statistics Division, CPC 3.0 02292: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02292) | Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold |
 | `cpc-3-2025` | `official_guidance` | UN Statistics Division, CPC Version 3.0 Explanatory Notes (2025), https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Classification product scope |
 | `fao-small-ruminant-2016` | `official_guidance` | FAO LEAP, Greenhouse gas emissions and fossil energy use from small ruminant supply chains (2016), https://www.fao.org/partnerships/leap/resources/publications/ | Farm route, boundary, allocation and reporting questions |
 | `fao-small-ruminant-dairy` | `official_guidance` | FAO, Small ruminants: dairy production and products, https://www.fao.org/dairy-production-products/dairy/small-ruminants/en | Goat milk production context |

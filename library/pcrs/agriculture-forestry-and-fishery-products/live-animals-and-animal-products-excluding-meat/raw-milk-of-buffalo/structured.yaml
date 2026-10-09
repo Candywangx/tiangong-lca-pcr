@@ -4,8 +4,8 @@ source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-buffalo"
   classification_refs: "CPC 3.0 02212, Raw milk of buffalo"
-  covered_products: "unprocessed buffalo milk, warm or farm-chilled, at producing farm gate"
-  excluded_products: "other species' milk, processed milk, milk from independent cooling centre"
+  covered_products: "unprocessed buffalo milk, warm or farm-chilled, at producing farm gate; unskimmed/not partly skimmed, measured milk-fat mass fraction at least 3.5% (35 g/kg milk)"
+  excluded_products: "other species' milk, processed milk, milk from independent cooling centre; milk with fat content below 3.5%, skimmed or partly skimmed milk"
   representative_product: "accepted raw buffalo milk at its declared final farm-gate state"
   production_route: "managed buffalo dairy herd → milking capture → first conditioning → optional farm cooling"
   market_state: "warm or farm-chilled raw milk, with temperature and composition declared"
@@ -72,9 +72,19 @@ reference_flow_definition:
     - "fat/protein or solids"
     - "accepted and rejected mass"
     - "herd and lactation period"
+    - "unskimmed/not partly skimmed"
+    - "measured milk-fat mass fraction at least 3.5% (35 g/kg milk)"
+    - "with lot-matched assay method and sampling date"
 reference_flows:
   []
 measurement_rules:
+  - id: cpc_milk_scope
+    applies_to: "final reference milk"
+    required_property_ref:
+      name: "Milk-fat mass fraction, wet-milk basis"
+      uuid: ""
+    required_unit: "% or g/kg milk"
+    rule: "Verify at least 3.5% (35 g/kg) on a sample matched to the actual handover lot, with method, sampling date and skimmed/not-skimmed state. Below-threshold or skimmed/partly skimmed milk is outside the declared CPC-linked scope. Missing or incomparable composition evidence prevents a classification claim; never assume eligibility from species, breed or a default fat content. This condition does not change net-mass normalization."
   - id: m_reference
     applies_to: "accepted final milk"
     required_property_ref:
@@ -703,7 +713,7 @@ process_inventory:
           name: "Raw milk of buffalo, warm or farm-chilled, producing farm gate for actual producer-handover linkage"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This input matches the accepted goods represented by warm_milk, chilled_milk under their unchanged route conditions. It is an internal source-to-handover linkage, not a newly purchased same-category good and not extra production. The matching source and input cancel at the package boundary. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_milk, chilled_milk Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period"
+          description: "This input matches the accepted goods represented by warm_milk, chilled_milk under their unchanged route conditions. It is an internal source-to-handover linkage, not a newly purchased same-category good and not extra production. The matching source and input cancel at the package boundary. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_milk, chilled_milk Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date"
           amount:
             expression: "Use measured accepted same-lot quantity reconciled to the linked source rows; normalize once to the declared reference flow."
             value_mode: "calculated_value"
@@ -735,7 +745,7 @@ process_inventory:
           name: "Raw milk of buffalo, warm or farm-chilled, producing farm gate"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This is the actual accepted reference product at the declared producer boundary, measured under cp_reference_handover. It is the sole external reference output; instantiate its real identity from the lot, not a broad fixed UUID. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_milk, chilled_milk Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period"
+          description: "This is the actual accepted reference product at the declared producer boundary, measured under cp_reference_handover. It is the sole external reference output; instantiate its real identity from the lot, not a broad fixed UUID. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_milk, chilled_milk Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date"
           amount:
             expression: "1 kg"
             value_mode: "calculated_value"
@@ -911,6 +921,11 @@ dataset_production:
       requirement: "Preserve substance, medium, buffalo class, manure pathway and factor tier."
       evidence: "factor/activity sheet"
 validation_rules:
+  - rule_id: v_cpc_milk_scope
+    applies_to: "final reference product and classification"
+    rule: "Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition."
+    source_ids:
+      - un-cpc-3-02212
   - rule_id: v_reference
     applies_to: "final milk"
     rule: "One final handover state per batch; normalize 1 kg accepted mass. Chilled-only UUID cannot stand for broad warm-or-chilled reference."
@@ -950,6 +965,10 @@ published_dataset_profile:
   required_quality_disclosure: "activity coverage, reasoned-estimate screens, factor tier and uncertainty, balances and unresolved identities"
   update_trigger: "changed herd/feeding route, cooling ownership, state, co-product attribution, factor method or verified identity"
 data_sources:
+  - id: "un-cpc-3-02212"
+    type: "official_guidance"
+    reference: "[UN Statistics Division, CPC 3.0 02212: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02212)"
+    used_for: "Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold"
   - id: "fao-large-ruminants-2016"
     type: "official_guidance"
     reference: "FAO LEAP, Environmental performance of large ruminant supply chains, 2016, https://openknowledge.fao.org/handle/20.500.14283/i6494en"
@@ -960,19 +979,19 @@ data_sources:
     used_for: "buffalo emission and manure pathways"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:21f306762281a366ab803b4abcc8f0ce63c40d9b70260e2839d15fcf54011d01"
+  source_sha256: "sha256:fff2a49f39e92979b6513702e7362b66b3aaafcef9a498ff1af530a8bcecfe6d"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6996"
+    - unit_id: "normative_8445"
       family: "system_boundary"
       span:
         start:
-          offset: 6996
-          line: 63
+          offset: 8445
+          line: 66
           column: 1
         end:
-          offset: 10010
-          line: 88
+          offset: 11459
+          line: 91
           column: 1
       markdown: "## 5. System Boundary\n\nThe boundary begins with declared opening buffalo stock and purchased replacements with preceding burden. Managed herd production covers feed, water, housing, enteric and manure pathways. Independent milking captures gross raw milk; first farm conditioning strains and accepts it. Optional cooling preserves already usable raw milk before farm handover; it is not pasteurization. Shared housing, pumps, parlour, tank and meters are attributed once among consuming nodes and periods.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | opening buffalo herd by class, lactation state, origin and prior burden; purchased replacements separately declared |\n| starting_condition_role | multi-period biological stock supporting milk, reproduction and eventual live-animal transfer |\n| product_classification_scope | CPC 3.0 `02212` raw milk of buffalo |\n| recursive_input_rule | purchased same-category milk retains supplier origin and upstream burden, never relabelled as farm-produced reference output |\n| upstream_dataset_requirement | supplier evidence for feed, replacements, energy, water and hygiene inputs or disclosed gaps |\n| disclosure | herd/route/period, milk state and temperature, losses, manure pathways, independent co-products, shared assets and unresolved identities |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `b_farm_gate` | final milk | Include producing-farm activities only; independent cooling, post-gate haulage, pasteurization and packaging are excluded. | `fao-large-ruminants-2016` |\n| `b_capture` | milk stages | Distinguish biological milk production, physical milking capture, first raw-milk conditioning and optional cooling by handoff state. | `fao-large-ruminants-2016` |\n| `b_route` | pasture/housed variants | Parent is managed buffalo herd. Record route deltas for feed origin, manure deposition versus storage, housing energy and corresponding checks; variants may coexist. | `fao-large-ruminants-2016`; `ipcc-livestock-2019` |\n| `b_manure` | excreta | Distinguish pasture deposition, collection, storage, on-farm return and independent export with N and volatile solids by pathway. | `ipcc-livestock-2019` |\n| `reference_handover_linkage` | actual reference-product boundary | Record reference_handover as the same physical producer handover already represented by its source rows. It must not extend the gate or insert new processing, capture, storage, transport, service or capital burdens. For a unit-process projection, keep the actually operated stage references; the handover record may be a boundary interface in the resulting foreground package, not an invented standalone operation. Select one actual qualified route/output stratum; trace matching source and input as internal transfers and expose the accepted reference product once. If the source already ended at this gate, partition its existing handover responsibility without counting it again. |  |\n\n"
       headings:
@@ -991,12 +1010,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6996
-              line: 63
+              offset: 8445
+              line: 66
               column: 1
             end:
-              offset: 7017
-              line: 63
+              offset: 8466
+              line: 66
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1011,16 +1030,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42929"
+    - unit_id: "normative_44660"
       family: "allocation"
       span:
         start:
-          offset: 42929
-          line: 759
+          offset: 44660
+          line: 762
           column: 1
         end:
-          offset: 44347
-          line: 768
+          offset: 46078
+          line: 771
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_outputs` | milk, live buffalo/calf transfer and usable manure | Separate output-specific operations first. For residual milk/live-animal herd burdens, use documented buffalo class-period energy requirements for milk production and live growth as biophysical allocation drivers; shares sum to one. Disclose price-based sensitivity separately. Treat exported usable manure with an explicit documented burden decision, never automatic avoided-product credit. No credit for retained replacements, rejects or untransferred manure, and no double counting with a live-buffalo PCR. | `fao-large-ruminants-2016` |\n| `a_period` | lactation, dry, replacement, birth and culling phases | Link inputs, herd assets, milk and animal events to animal class-periods. Opening and replacement burdens, retirement and transfers enter exactly once. | `fao-large-ruminants-2016` |\n| `a_shared` | housing, pump, parlour, tank and utility meter | Name every consuming node and service period; allocate one total using measured service hours, throughput or a defended causal driver, with fractions summing to one. | `fao-large-ruminants-2016` |\n| `a_residue` | rejected milk, residual manure | Reconcile physical mass and actual treatment; residues and waste receive no independent product credit. | `ipcc-livestock-2019` |\n\n"
       headings:
@@ -1039,12 +1058,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42929
-              line: 759
+              offset: 44660
+              line: 762
               column: 1
             end:
-              offset: 42969
-              line: 759
+              offset: 44700
+              line: 762
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1059,18 +1078,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50450"
+    - unit_id: "normative_52181"
       family: "validation"
       span:
         start:
-          offset: 50450
-          line: 800
+          offset: 52181
+          line: 803
           column: 1
         end:
-          offset: 51691
-          line: 812
+          offset: 53890
+          line: 816
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_reference` | final milk | One final handover state per batch; normalize 1 kg accepted mass. Chilled-only UUID cannot stand for broad warm-or-chilled reference. | |\n| `v_route` | pasture/housed route | Require feed, manure, energy and animal-period evidence for each route delta; a route label alone is insufficient. | `fao-large-ruminants-2016` |\n| `v_outputs` | milk, live animals, manure | Require explicit independent handover and attribution for each co-product; neither residue nor internal transfer is credited twice. | `fao-large-ruminants-2016` |\n| `v_period` | herd phases | Opening and replacement burdens, birth, milk and cull events have one class-period attribution. | |\n| `v_shared` | shared infrastructure | Housing, pump, parlour, tank and meter fractions sum to one across herd, milking, conditioning and cooling in each service period. | |\n| `v_balance` | milk/manure | Gross, accepted and rejected milk and manure pathway balances reconcile; direct warm and chilled outputs do not overlap. | |\n| `v_uuid` | identity | Fixed UUID requires exact type, property, state, gate and medium; unresolved identity stays blank. | |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02212` |\n| `v_reference` | final milk | One final handover state per batch; normalize 1 kg accepted mass. Chilled-only UUID cannot stand for broad warm-or-chilled reference. | |\n| `v_route` | pasture/housed route | Require feed, manure, energy and animal-period evidence for each route delta; a route label alone is insufficient. | `fao-large-ruminants-2016` |\n| `v_outputs` | milk, live animals, manure | Require explicit independent handover and attribution for each co-product; neither residue nor internal transfer is credited twice. | `fao-large-ruminants-2016` |\n| `v_period` | herd phases | Opening and replacement burdens, birth, milk and cull events have one class-period attribution. | |\n| `v_shared` | shared infrastructure | Housing, pump, parlour, tank and meter fractions sum to one across herd, milking, conditioning and cooling in each service period. | |\n| `v_balance` | milk/manure | Gross, accepted and rejected milk and manure pathway balances reconcile; direct warm and chilled outputs do not overlap. | |\n| `v_uuid` | identity | Fixed UUID requires exact type, property, state, gate and medium; unresolved identity stays blank. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1087,12 +1106,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50450
-              line: 800
+              offset: 52181
+              line: 803
               column: 1
             end:
-              offset: 50472
-              line: 800
+              offset: 52203
+              line: 803
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1111,272 +1130,285 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 7019
-          line: 65
+          offset: 8468
+          line: 68
           column: 1
         end:
-          offset: 7501
-          line: 65
+          offset: 8950
+          line: 68
           column: 483
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_farm_gate"
       identity_kind: "explicit"
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 8432
-          line: 82
+          offset: 9881
+          line: 85
           column: 1
         end:
-          offset: 8616
-          line: 82
+          offset: 10065
+          line: 85
           column: 185
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_capture"
       identity_kind: "explicit"
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 8617
-          line: 83
+          offset: 10066
+          line: 86
           column: 1
         end:
-          offset: 8810
-          line: 83
+          offset: 10259
+          line: 86
           column: 194
     - pointer: "/system_boundary/rules/3"
       rule_id: "b_route"
       identity_kind: "explicit"
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 8811
-          line: 84
+          offset: 10260
+          line: 87
           column: 1
         end:
-          offset: 9070
-          line: 84
+          offset: 10519
+          line: 87
           column: 260
     - pointer: "/system_boundary/rules/4"
       rule_id: "b_manure"
       identity_kind: "explicit"
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 9071
-          line: 85
+          offset: 10520
+          line: 88
           column: 1
         end:
-          offset: 9251
-          line: 85
+          offset: 10700
+          line: 88
           column: 181
     - pointer: "/system_boundary/rules/5"
       rule_id: "reference_handover_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 9252
-          line: 86
+          offset: 10701
+          line: 89
           column: 1
         end:
-          offset: 10008
-          line: 86
+          offset: 11457
+          line: 89
           column: 757
     - pointer: "/allocation_rules/0"
       rule_id: "a_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_42929"
+      unit_id: "normative_44660"
       source_span:
         start:
-          offset: 43042
-          line: 763
+          offset: 44773
+          line: 766
           column: 1
         end:
-          offset: 43651
-          line: 763
+          offset: 45382
+          line: 766
           column: 610
     - pointer: "/allocation_rules/1"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_42929"
+      unit_id: "normative_44660"
       source_span:
         start:
-          offset: 43652
-          line: 764
+          offset: 45383
+          line: 767
           column: 1
         end:
-          offset: 43905
-          line: 764
+          offset: 45636
+          line: 767
           column: 254
     - pointer: "/allocation_rules/2"
       rule_id: "a_shared"
       identity_kind: "explicit"
-      unit_id: "normative_42929"
+      unit_id: "normative_44660"
       source_span:
         start:
-          offset: 43906
-          line: 765
+          offset: 45637
+          line: 768
           column: 1
         end:
-          offset: 44166
-          line: 765
+          offset: 45897
+          line: 768
           column: 261
     - pointer: "/allocation_rules/3"
       rule_id: "a_residue"
       identity_kind: "explicit"
-      unit_id: "normative_42929"
+      unit_id: "normative_44660"
       source_span:
         start:
-          offset: 44167
-          line: 766
+          offset: 45898
+          line: 769
           column: 1
         end:
-          offset: 44345
-          line: 766
+          offset: 46076
+          line: 769
           column: 179
     - pointer: "/validation_rules/0"
+      rule_id: "v_cpc_milk_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_52181"
+      source_span:
+        start:
+          offset: 52276
+          line: 807
+          column: 1
+        end:
+          offset: 52743
+          line: 807
+          column: 468
+    - pointer: "/validation_rules/1"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 50545
-          line: 804
+          offset: 52744
+          line: 808
           column: 1
         end:
-          offset: 50713
-          line: 804
+          offset: 52912
+          line: 808
           column: 169
-    - pointer: "/validation_rules/1"
+    - pointer: "/validation_rules/2"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 50714
-          line: 805
+          offset: 52913
+          line: 809
           column: 1
         end:
-          offset: 50896
-          line: 805
+          offset: 53095
+          line: 809
           column: 183
-    - pointer: "/validation_rules/2"
+    - pointer: "/validation_rules/3"
       rule_id: "v_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 50897
-          line: 806
+          offset: 53096
+          line: 810
           column: 1
         end:
-          offset: 51104
-          line: 806
+          offset: 53303
+          line: 810
           column: 208
-    - pointer: "/validation_rules/3"
+    - pointer: "/validation_rules/4"
       rule_id: "v_period"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 51105
-          line: 807
+          offset: 53304
+          line: 811
           column: 1
         end:
-          offset: 51233
-          line: 807
+          offset: 53432
+          line: 811
           column: 129
-    - pointer: "/validation_rules/4"
+    - pointer: "/validation_rules/5"
       rule_id: "v_shared"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 51234
-          line: 808
+          offset: 53433
+          line: 812
           column: 1
         end:
-          offset: 51407
-          line: 808
+          offset: 53606
+          line: 812
           column: 174
-    - pointer: "/validation_rules/5"
+    - pointer: "/validation_rules/6"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 51408
-          line: 809
+          offset: 53607
+          line: 813
           column: 1
         end:
-          offset: 51562
-          line: 809
+          offset: 53761
+          line: 813
           column: 155
-    - pointer: "/validation_rules/6"
+    - pointer: "/validation_rules/7"
       rule_id: "v_uuid"
       identity_kind: "explicit"
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 51563
-          line: 810
+          offset: 53762
+          line: 814
           column: 1
         end:
-          offset: 51689
-          line: 810
+          offset: 53888
+          line: 814
           column: 127
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 6996
-          line: 63
+          offset: 8445
+          line: 66
           column: 1
         end:
-          offset: 7017
-          line: 63
+          offset: 8466
+          line: 66
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6996"
+      unit_id: "normative_8445"
       source_span:
         start:
-          offset: 7529
-          line: 69
+          offset: 8978
+          line: 72
           column: 1
         end:
-          offset: 8339
-          line: 76
+          offset: 9788
+          line: 79
           column: 154
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42929"
+      unit_id: "normative_44660"
       source_span:
         start:
-          offset: 42929
-          line: 759
+          offset: 44660
+          line: 762
           column: 1
         end:
-          offset: 42969
-          line: 759
+          offset: 44700
+          line: 762
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50450"
+      unit_id: "normative_52181"
       source_span:
         start:
-          offset: 50450
-          line: 800
+          offset: 52181
+          line: 803
           column: 1
         end:
-          offset: 50472
-          line: 800
+          offset: 52203
+          line: 803
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1385,5 +1417,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:21f306762281a366ab803b4abcc8f0ce63c40d9b70260e2839d15fcf54011d01"
-  generated_content_sha256: "sha256:054d755c4e741bb5403b2895f066b7830c420b069d493f6d0cca4e391d24561a"
+    sha256: "sha256:fff2a49f39e92979b6513702e7362b66b3aaafcef9a498ff1af530a8bcecfe6d"
+  generated_content_sha256: "sha256:b1cda8420a796c61f4df6a86484b4775d4fdf1a43abf2cdac6efb607c654e9d7"

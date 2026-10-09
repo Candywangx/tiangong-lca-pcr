@@ -9,7 +9,9 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
-本 PCR 涵盖奶用绵羊群在实际生产农场交付的未加工绵羊生乳。温态生乳与场内冷却生乳是互斥最终状态，每批仅选一个。排除热处理奶、配制奶、独立脱脂或部分脱脂奶、收集中心加工及下游乳制品。CPC 的低脂排除条款不是天然未加工生乳脂肪含量的通用测量阈值。记录品种、羊群、泌乳期、温度、首次调理及冷却状态。来源：`un-cpc-3-2025`、`fao-small-ruminant-dairy`、`fao-leap-small-ruminants-2016`。
+本 PCR 涵盖奶用绵羊群在实际生产农场交付的未加工绵羊生乳。温态生乳与场内冷却生乳是互斥最终状态，每批仅选一个。排除热处理奶、配制奶、独立脱脂或部分脱脂奶、收集中心加工及下游乳制品。记录品种、羊群、泌乳期、温度、首次调理及冷却状态。来源：`un-cpc-3-2025`、`fao-small-ruminant-dairy`、`fao-leap-small-ruminants-2016`。
+
+为与 CPC 3.0 02291 的已接受 exact 映射保持一致，最终参考产品必须为未脱脂、未部分脱脂的生乳，且实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳）。低于该分类边界的乳不属于本 PCR 声明的 CPC 关联产品范围，即使低脂来自天然成分差异也不例外。这是分类适用条件，不是通用乳质量合格线、排放因子，也不要求人为标准化乳成分。保留实际成分与状态，不得以脂肪校正乳替代实测净乳质量。来源：`un-cpc-3-02291`。
 
 ## 2. 产品类别识别
 
@@ -17,8 +19,8 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-sheep |
 | classification_refs | CPC 3.0 02291 绵羊生乳 |
-| covered_products | 生产农场交付的未加工绵羊生乳，包括温态或场内冷却状态。 |
-| excluded_products | 巴氏杀菌或其他热处理、配制、独立脱脂或部分脱脂奶及下游乳制品。 |
+| covered_products | 生产农场交付的未加工绵羊生乳，包括温态或场内冷却状态。；未脱脂、未部分脱脂，实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳） |
+| excluded_products | 巴氏杀菌或其他热处理、配制、独立脱脂或部分脱脂奶及下游乳制品。；脂肪含量低于 3.5% 的乳、脱脂乳或部分脱脂乳 |
 | representative_product | 在实际生产农场门交付的 1 kg 实测绵羊生乳。 |
 | production_route | 受控奶用母羊生物生产；独立挤奶/收集；可选首次筛滤/过滤；可选场内冷却；最终一次交付。放牧与舍饲/精料型为同一受控羊群主体的有证据替代路线。 |
 | market_state | 在生产农场门交付的温态或冷却态绵羊液态生乳。 |
@@ -40,7 +42,7 @@ sync_with: pcr.en-US.md
 | Reference flow property | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | 质量 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | 绵羊物种与奶用品种；羊群/农场；挤奶批次；温态/冷却状态；实际温度；首次过滤/冷却；实际生产者交付点；泌乳期；质量或体积-密度方法 |
+| Required qualifiers | 绵羊物种与奶用品种；羊群/农场；挤奶批次；温态/冷却状态；实际温度；首次过滤/冷却；实际生产者交付点；泌乳期；质量或体积-密度方法；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期 |
 
 从实际交付批次实例化一个前景参考，声明全部必需限定项。类别可以覆盖不同状态及生产者交付门，但每个数据包只有一个声明物种／状态／交付门／等级分层，以及一个实测合格参考产出分母。不得汇总不相容状态，也不得以质量相同推定服务等价。路线专属来源行与 reference_handover 描述同一实际边界事件；关联内部移交不是另一次销售，也不是新增实体操作。
 
@@ -50,6 +52,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | 最终参考乳 | 乳脂肪质量分数，湿乳质量基准 | % 或 g/kg 乳 | 以实际交付批次的匹配样品核实不低于 3.5%（35 g/kg），保留方法、采样日期及脱脂状态。低于阈值、脱脂或部分脱脂乳不在声明的 CPC 关联范围内。成分证据缺失或不可比时不得声称分类适用；不能依据物种、品种或默认脂肪含量假定适用。该条件不改变净质量归一化。 |
 | `milk_mass` | 最终生乳 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 在生产农场门实测验收质量；由体积换算时记录密度与温度。 |
 | `milk_state` | 温态/冷却路线 | 质量与温度 | kg; °C | 保留实际状态；不得仅由笼统生乳名称推定冷却身份。 |
 | `feed_basis` | 母羊饲料/牧草 | 原样或干物质基准 | kg | 汇总前明确饲料含水量与放牧采食方法。 |
@@ -992,7 +995,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_final_milk`, `chilled_final_milk`
 
-必需产品实例限定项：绵羊物种与奶用品种；羊群/农场；挤奶批次；温态/冷却状态；实际温度；首次过滤/冷却；实际生产者交付点；泌乳期；质量或体积-密度方法
+必需产品实例限定项：绵羊物种与奶用品种；羊群/农场；挤奶批次；温态/冷却状态；实际温度；首次过滤/冷却；实际生产者交付点；泌乳期；质量或体积-密度方法；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：生产农场交付的温态或冷却绵羊生乳；宽口径 UUID 未解析（实际生产者交付关联）
 - 流属性 / 单位：质量 / kg
@@ -1029,7 +1032,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_final_milk`, `chilled_final_milk`
 
-必需产品实例限定项：绵羊物种与奶用品种；羊群/农场；挤奶批次；温态/冷却状态；实际温度；首次过滤/冷却；实际生产者交付点；泌乳期；质量或体积-密度方法
+必需产品实例限定项：绵羊物种与奶用品种；羊群/农场；挤奶批次；温态/冷却状态；实际温度；首次过滤/冷却；实际生产者交付点；泌乳期；质量或体积-密度方法；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：生产农场交付的温态或冷却绵羊生乳；宽口径 UUID 未解析
 - 流属性 / 单位：质量 / kg
@@ -1103,6 +1106,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | 最终参考产品与分类 | 核对同批实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），且未脱脂、未部分脱脂。低脂或分离乳不得使用本 exact CPC 关联范围；缺失证据时分类适用性未定，不得假定满足。不得将其解释为质量验收限值或改变实际成分。 | `un-cpc-3-02291` |
 | `validate_raw_state` | 最终参考 | 核实未加热、未分离的绵羊生乳和唯一温态/冷却农场门产品；冷却 UUID 不得填入宽口径参考或温奶产出。 | `un-cpc-3-2025` |
 | `validate_balance` | 奶节点 | 核对收集、过滤、冷却与验收批次及剔除；中间奶不得两次作为最终售出。 | `mass-balance-identity` |
 | `validate_outputs` | 羊群分配 | 分配前检查奶、销售羔羊/淘汰羊、实际羊毛/粪肥转出、死亡和未售粪污状态/交付点。 | `fao-small-ruminant-dairy` |
@@ -1126,6 +1130,7 @@ sync_with: pcr.en-US.md
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `un-cpc-3-02291` | official_guidance | [联合国统计司，CPC 3.0 02291 分类说明](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02291) | 物种分类范围及低脂、脱脂、部分脱脂排除；不是通用质量或排放阈值 |
 | `un-cpc-3-2025` | `official_guidance` | https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 绵羊生乳分类与排除。 |
 | `fao-small-ruminant-dairy` | `official_guidance` | https://www.fao.org/dairy-production-products/dairy/small-ruminants/en | 奶用绵羊路线及多产出背景。 |
 | `fao-leap-small-ruminants-2016` | `official_guidance` | https://openknowledge.fao.org/handle/20.500.14283/i6434en | 小反刍动物 LCA 边界、分配及活动数据。 |

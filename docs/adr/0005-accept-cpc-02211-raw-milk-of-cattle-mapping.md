@@ -63,3 +63,9 @@ guidance, the IPCC 2019 Refinement, and the ILCD reference unit group for its me
 - The legacy alias registry becomes 2,872 terminal locators.
 - The PCR remains `candidate / authored_methodology` with an aligned Chinese rendering until a separate methodology
   review authorizes `active / reviewed_methodology`.
+
+## Current scope clarification (2026-10-09)
+
+The current candidate PCR implements the [official CPC 3.0 02211 explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02211): the final species-specific raw-milk product is unskimmed/not partly skimmed and has a measured milk-fat mass fraction of at least 3.5% (35 g/kg milk). Lower-fat milk is outside this declared CPC-linked scope, including naturally lower-fat lots. Composition must be evidenced for the actual handover lot; missing evidence does not establish eligibility. This is a classification boundary, not a milk-quality pass limit or an instruction to alter composition. Reference normalization remains the actual measured net milk mass.
+
+This dated clarification aligns the current scope with the retained exact relation. It does not rewrite the historical decision attribution or time, create another mapping edge, or establish methodology/translation approval or publication readiness.

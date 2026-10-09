@@ -11,14 +11,16 @@ sync_with: pcr.en-US.md
 
 本规则覆盖生产奶羊场门交付的、未经加工且被验收的山羊生乳：初次农场处理后的温奶，以及由该农场冷却的奶。范围包括泌乳与更新羊群、饲料与水、肠道发酵与粪污路径、独立挤奶采集、初次过滤与质量验收，以及有条件的农场冷却。放牧和舍饲是同一羊群节点的不同实施路线：前者记录采食草量和牧场排粪，后者记录交付饲料和收集粪污；混合路线两者均记但羊只日数不可重复。排除独立收奶或冷却中心、出门后运输、巴氏杀菌、标准化和消费包装。不得代用绵羊、牛或水牛乳。
 
+为与 CPC 3.0 02292 的已接受 exact 映射保持一致，最终参考产品必须为未脱脂、未部分脱脂的生乳，且实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳）。低于该分类边界的乳不属于本 PCR 声明的 CPC 关联产品范围，即使低脂来自天然成分差异也不例外。这是分类适用条件，不是通用乳质量合格线、排放因子，也不要求人为标准化乳成分。保留实际成分与状态，不得以脂肪校正乳替代实测净乳质量。来源：`un-cpc-3-02292`。
+
 ## 2. 产品类别识别
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-goats` |
 | classification_refs | CPC 3.0 `02292` |
-| covered_products | 生产奶羊场门交付的温山羊生乳或农场冷却山羊生乳 |
-| excluded_products | 其他畜种乳、加工乳、独立收奶或冷却中心交付的乳 |
+| covered_products | 生产奶羊场门交付的温山羊生乳或农场冷却山羊生乳；未脱脂、未部分脱脂，实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳） |
+| excluded_products | 其他畜种乳、加工乳、独立收奶或冷却中心交付的乳；脂肪含量低于 3.5% 的乳、脱脂乳或部分脱脂乳 |
 | representative_product | 按实收质量验收的未加工山羊乳 |
 | production_route | 受管理羊群 → 独立挤奶采集 → 农场初次处理 → 可选农场冷却；说明放牧、舍饲或混合路线 |
 | market_state | 生产农场门交付的未加工液态温奶或农场冷却奶 |
@@ -40,7 +42,7 @@ sync_with: pcr.en-US.md
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | 山羊种属；农场标识；泌乳与更新期间；羊群路线；验收与拒收质量；温奶或农场冷却状态；乳温；脂肪/蛋白或固形物；交付门点 |
+| Required qualifiers | 山羊种属；农场标识；泌乳与更新期间；羊群路线；验收与拒收质量；温奶或农场冷却状态；乳温；脂肪/蛋白或固形物；交付门点；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期 |
 
 从实际交付批次实例化一个前景参考，声明全部必需限定项。类别可以覆盖不同状态及生产者交付门，但每个数据包只有一个声明物种／状态／交付门／等级分层，以及一个实测合格参考产出分母。不得汇总不相容状态，也不得以质量相同推定服务等价。路线专属来源行与 reference_handover 描述同一实际边界事件；关联内部移交不是另一次销售，也不是新增实体操作。
 
@@ -50,6 +52,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | 最终参考乳 | 乳脂肪质量分数，湿乳质量基准 | % 或 g/kg 乳 | 以实际交付批次的匹配样品核实不低于 3.5%（35 g/kg），保留方法、采样日期及脱脂状态。低于阈值、脱脂或部分脱脂乳不在声明的 CPC 关联范围内。成分证据缺失或不可比时不得声称分类适用；不能依据物种、品种或默认脂肪含量假定适用。该条件不改变净质量归一化。 |
 | `accepted_mass` | 参考乳 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 所有清单按实测验收奶归一；拒收与损耗仅扣除一次。 |
 | `milk_quality` | 验收乳 | 实测脂肪/蛋白或固形物 | 报告的浓度基准 | 保留与具体批次或期间对应的成分、温度和抽样依据；不得暗中标准化乳质量。 |
 | `period_link` | 羊群与乳 | 质量和时间 | kg, days | 归一前把羊只日数、饲料、更新和粪污记录关联到产乳报告期。 |
@@ -663,7 +666,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_milk`, `chilled_milk`
 
-必需产品实例限定项：山羊种属；农场标识；泌乳与更新期间；羊群路线；验收与拒收质量；温奶或农场冷却状态；乳温；脂肪/蛋白或固形物；交付门点
+必需产品实例限定项：山羊种属；农场标识；泌乳与更新期间；羊群路线；验收与拒收质量；温奶或农场冷却状态；乳温；脂肪/蛋白或固形物；交付门点；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：生产奶羊场门山羊生乳（实际生产者交付关联）
 - 流属性 / 单位：质量 / kg
@@ -700,7 +703,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_milk`, `chilled_milk`
 
-必需产品实例限定项：山羊种属；农场标识；泌乳与更新期间；羊群路线；验收与拒收质量；温奶或农场冷却状态；乳温；脂肪/蛋白或固形物；交付门点
+必需产品实例限定项：山羊种属；农场标识；泌乳与更新期间；羊群路线；验收与拒收质量；温奶或农场冷却状态；乳温；脂肪/蛋白或固形物；交付门点；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：生产奶羊场门山羊生乳
 - 流属性 / 单位：质量 / kg
@@ -769,6 +772,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | 最终参考产品与分类 | 核对同批实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），且未脱脂、未部分脱脂。低脂或分离乳不得使用本 exact CPC 关联范围；缺失证据时分类适用性未定，不得假定满足。不得将其解释为质量验收限值或改变实际成分。 | `un-cpc-3-02292` |
 | `gate_check` | 参考流 | 确认山羊生乳为温奶或由生产农场冷却；不得以独立中心乳或加工乳作为本参考流。 | `fao-small-ruminant-2016` |
 | `route_check` | 羊群 | 将放牧、舍饲或混合路线与饲料来源、粪污地点及羊只日数核对；没有记录差异的路线标签无效。 | `fao-small-ruminant-2016` |
 | `balance_check` | 乳 | 要求批次平衡及互斥温奶/冷却奶场门去向；初次处理和冷却不得重复记账。 | `fao-small-ruminant-2016` |
@@ -791,6 +795,7 @@ sync_with: pcr.en-US.md
 
 | source_id | type | citation | use |
 | --- | --- | --- | --- |
+| `un-cpc-3-02292` | official_guidance | [联合国统计司，CPC 3.0 02292 分类说明](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02292) | 物种分类范围及低脂、脱脂、部分脱脂排除；不是通用质量或排放阈值 |
 | `cpc-3-2025` | `official_guidance` | 联合国统计司，CPC Version 3.0 Explanatory Notes (2025)，https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 分类产品范围 |
 | `fao-small-ruminant-2016` | `official_guidance` | FAO LEAP，Greenhouse gas emissions and fossil energy use from small ruminant supply chains (2016)，https://www.fao.org/partnerships/leap/resources/publications/ | 农场路线、边界、分配与报告问题 |
 | `fao-small-ruminant-dairy` | `official_guidance` | FAO，Small ruminants: dairy production and products，https://www.fao.org/dairy-production-products/dairy/small-ruminants/en | 山羊乳生产情境 |

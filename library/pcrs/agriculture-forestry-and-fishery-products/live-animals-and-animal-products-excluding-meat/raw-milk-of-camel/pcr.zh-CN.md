@@ -11,14 +11,16 @@ sync_with: pcr.en-US.md
 
 本 PCR 涵盖单峰驼或双峰驼未经加工的乳，边界止于产乳驼群的实际交付点。移动牧场营地不等于固定农场门；温乳和牧场内冷却乳是互斥的交付状态。排除热处理、分离、配制、集乳中心加工及交付后的运输。幼驼吸乳为驼群内部用途，不是可售乳。[fao-camel-dairy; fao-camel-production; un-cpc-3]
 
+为与 CPC 3.0 02293 的已接受 exact 映射保持一致，最终参考产品必须为未脱脂、未部分脱脂的生乳，且实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳）。低于该分类边界的乳不属于本 PCR 声明的 CPC 关联产品范围，即使低脂来自天然成分差异也不例外。这是分类适用条件，不是通用乳质量合格线、排放因子，也不要求人为标准化乳成分。保留实际成分与状态，不得以脂肪校正乳替代实测净乳质量。来源：`un-cpc-3-02293`。
+
 ## 2. 产品类别识别
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-camel` |
 | classification_refs | CPC 3.0 `02293` |
-| covered_products | 在实际产乳驼群交付点的单峰驼与双峰驼生乳 |
-| excluded_products | 巴氏杀菌、发酵、分离、脱脂或配制乳；集乳中心作业及后续运输 |
+| covered_products | 在实际产乳驼群交付点的单峰驼与双峰驼生乳；未脱脂、未部分脱脂，实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳） |
+| excluded_products | 巴氏杀菌、发酵、分离、脱脂或配制乳；集乳中心作业及后续运输；脂肪含量低于 3.5% 的乳、脱脂乳或部分脱脂乳 |
 | representative_product | 指定驼群交付点净交付的 1 kg 骆驼生乳 |
 | production_route | 驼群生物生产后设独立挤乳采集；移动放牧与固定圈养/集约管理按互斥驼日记录。首次调理与冷却是条件过程。 |
 | market_state | 温乳或驼群内冷却乳；披露驼种、交付点、温度和调理状态 |
@@ -40,7 +42,7 @@ sync_with: pcr.en-US.md
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | 驼种；移动或固定交付点；温乳/冷却温度与状态；调理；挤乳方式；报告期；体积换算所用实测密度 |
+| Required qualifiers | 驼种；移动或固定交付点；温乳/冷却温度与状态；调理；挤乳方式；报告期；体积换算所用实测密度；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期 |
 
 从实际交付批次实例化一个前景参考，声明全部必需限定项。类别可以覆盖不同状态及生产者交付门，但每个数据包只有一个声明物种／状态／交付门／等级分层，以及一个实测合格参考产出分母。不得汇总不相容状态，也不得以质量相同推定服务等价。路线专属来源行与 reference_handover 描述同一实际边界事件；关联内部移交不是另一次销售，也不是新增实体操作。
 
@@ -48,6 +50,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | 最终参考乳 | 乳脂肪质量分数，湿乳质量基准 | % 或 g/kg 乳 | 以实际交付批次的匹配样品核实不低于 3.5%（35 g/kg），保留方法、采样日期及脱脂状态。低于阈值、脱脂或部分脱脂乳不在声明的 CPC 关联范围内。成分证据缺失或不可比时不得声称分类适用；不能依据物种、品种或默认脂肪含量假定适用。该条件不改变净质量归一化。 |
 | `net_mass` | 基准乳 | Mass | kg | 扣除损失后称重；体积仅按批次温度和实测密度换算。 |
 | `milk_partition` | 挤乳 | Mass | kg | 核对采集、幼驼吸食、拒收和最终乳；标明估算的吸乳量。 |
 | `period_link` | 驼群 | 各卡属性 | 各卡单位 | 归一化前将驼日、服务和产品对应到实际路线及阶段。 |
@@ -896,7 +899,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_gate_milk`, `chilled_mobile_gate_milk`, `chilled_farm_gate_milk`
 
-必需产品实例限定项：驼种；移动或固定交付点；温乳/冷却温度与状态；调理；挤乳方式；报告期；体积换算所用实测密度
+必需产品实例限定项：驼种；移动或固定交付点；温乳/冷却温度与状态；调理；挤乳方式；报告期；体积换算所用实测密度；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：移动营地或固定农场实际驼群交付的骆驼生乳（实际生产者交付关联）
 - 流属性 / 单位：质量 / kg
@@ -933,7 +936,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_gate_milk`, `chilled_mobile_gate_milk`, `chilled_farm_gate_milk`
 
-必需产品实例限定项：驼种；移动或固定交付点；温乳/冷却温度与状态；调理；挤乳方式；报告期；体积换算所用实测密度
+必需产品实例限定项：驼种；移动或固定交付点；温乳/冷却温度与状态；调理；挤乳方式；报告期；体积换算所用实测密度；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：移动营地或固定农场实际驼群交付的骆驼生乳
 - 流属性 / 单位：质量 / kg
@@ -1003,6 +1006,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | 最终参考产品与分类 | 核对同批实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），且未脱脂、未部分脱脂。低脂或分离乳不得使用本 exact CPC 关联范围；缺失证据时分类适用性未定，不得假定满足。不得将其解释为质量验收限值或改变实际成分。 | `un-cpc-3-02293` |
 | `v_gate` | 基准乳 | 温乳、移动营地、交付点不明或加工乳不得绑定固定冷却农场 UUID；宽口径基准仍留空。 | `un-cpc-3`; `fao-camel-dairy` |
 | `v_mass` | 乳阶段 | 核对采集、幼驼吸食、调理、冷却、拒收及交付质量，每批只有一个最终产出。 | `fao-camel-production`; `mass-balance-identity` |
 | `v_route` | 混合驼群 | 核实路线特定饲料、水、能源、粪污及互斥驼日；条件步骤需要批次证据。 | `fao-camel-dairy`; `fao-camel-production` |
@@ -1025,6 +1029,7 @@ sync_with: pcr.en-US.md
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `un-cpc-3-02293` | official_guidance | [联合国统计司，CPC 3.0 02293 分类说明](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02293) | 物种分类范围及低脂、脱脂、部分脱脂排除；不是通用质量或排放阈值 |
 | `un-cpc-3` | `official_guidance` | [联合国 CPC 3.0 说明](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf) | 分类边界 |
 | `fao-camel-dairy` | `official_guidance` | [FAO 骆驼乳业](https://www.fao.org/dairy-production-products/dairy/camels/en) | 驼种、移动路线、联产品 |
 | `fao-camel-production` | `handbook` | [FAO 骆驼乳生产](https://www.fao.org/4/t0755e/t0755e01.htm) | 分奶、变动产量及挤乳 |

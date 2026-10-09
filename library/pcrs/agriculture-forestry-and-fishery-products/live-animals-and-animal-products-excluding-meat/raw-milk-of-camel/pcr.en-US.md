@@ -11,14 +11,16 @@ sync_with: pcr.zh-CN.md
 
 Unprocessed dromedary or Bactrian milk at the actual producing-herd handover, warm or on-herd chilled. A mobile pastoral camp is not a fixed farm gate. Exclude heat treatment, separation, formulation, collection-centre processing and downstream delivery. Calf suckling is internal herd use, not saleable milk. [fao-camel-dairy; fao-camel-production; un-cpc-3]
 
+For the accepted exact mapping to CPC 3.0 02293, the final reference product must be unskimmed and not partly skimmed, with a measured milk-fat mass fraction of at least 3.5% (35 g/kg milk). Milk below this classification boundary is outside this PCR's declared CPC-linked product scope, including when its low fat content is natural. This is a classification eligibility condition, not a general milk-quality pass limit, an emission factor, or an instruction to standardize the milk. Retain the actual composition and state; do not replace measured net milk mass with fat-corrected milk. Source: `un-cpc-3-02293`.
+
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-camel` |
 | classification_refs | CPC 3.0 `02293` |
-| covered_products | Raw dromedary and Bactrian milk at actual producing-herd handover |
-| excluded_products | Pasteurized, fermented, separated, skimmed or formulated milk; collection-centre work and later transport |
+| covered_products | Raw dromedary and Bactrian milk at actual producing-herd handover; unskimmed/not partly skimmed, measured milk-fat mass fraction at least 3.5% (35 g/kg milk) |
+| excluded_products | Pasteurized, fermented, separated, skimmed or formulated milk; collection-centre work and later transport; milk with fat content below 3.5%, skimmed or partly skimmed milk |
 | representative_product | 1 kg net raw camel milk at declared herd gate |
 | production_route | Managed herd followed by independent milking capture; mobile pastoral and fixed housed/intensive management use mutually exclusive animal-day records. Conditional first conditioning and cooling are distinct. |
 | market_state | Warm or on-herd chilled; disclose species, gate, temperature and conditioning |
@@ -40,7 +42,7 @@ Unprocessed dromedary or Bactrian milk at the actual producing-herd handover, wa
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | species; mobile or fixed gate; warm/chilled temperature; conditioning; milking method; period; measured density if converting volume |
+| Required qualifiers | species; mobile or fixed gate; warm/chilled temperature; conditioning; milking method; period; measured density if converting volume; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date |
 
 Instantiate one foreground reference from the actual handed-over lot, with all required qualifiers. The category may cover alternative states and producer gates, but each package has one declared species/state/gate/grade stratum and one measured accepted reference-output denominator. Do not pool incompatible states or claim equal service from equal mass. Route-specific source rows and reference_handover describe the same physical boundary event; their linked internal transfer is not another sale or another physical operation.
 
@@ -48,6 +50,7 @@ Instantiate one foreground reference from the actual handed-over lot, with all r
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | final reference milk | Milk-fat mass fraction, wet-milk basis | % or g/kg milk | Verify at least 3.5% (35 g/kg) on a sample matched to the actual handover lot, with method, sampling date and skimmed/not-skimmed state. Below-threshold or skimmed/partly skimmed milk is outside the declared CPC-linked scope. Missing or incomparable composition evidence prevents a classification claim; never assume eligibility from species, breed or a default fat content. This condition does not change net-mass normalization. |
 | `net_mass` | reference milk | Mass | kg | Weigh after loss; convert volume only with batch temperature and measured density. |
 | `milk_partition` | milking | Mass | kg | Reconcile collected, calf-consumed, rejected and final milk; flag inferred suckling. |
 | `period_link` | herd | row-specific | row unit | Link animal-days, services and outputs to actual route and phase before per-kg normalization. |
@@ -896,7 +899,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_gate_milk`, `chilled_mobile_gate_milk`, `chilled_farm_gate_milk`
 
-Required product-instance qualifiers: species; mobile or fixed gate; warm/chilled temperature; conditioning; milking method; period; measured density if converting volume
+Required product-instance qualifiers: species; mobile or fixed gate; warm/chilled temperature; conditioning; milking method; period; measured density if converting volume; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw camel milk at mobile-camp or fixed-farm herd gate for actual producer-handover linkage
 - Flow property / unit: Mass / kg
@@ -933,7 +936,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_gate_milk`, `chilled_mobile_gate_milk`, `chilled_farm_gate_milk`
 
-Required product-instance qualifiers: species; mobile or fixed gate; warm/chilled temperature; conditioning; milking method; period; measured density if converting volume
+Required product-instance qualifiers: species; mobile or fixed gate; warm/chilled temperature; conditioning; milking method; period; measured density if converting volume; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw camel milk at mobile-camp or fixed-farm herd gate
 - Flow property / unit: Mass / kg
@@ -1003,6 +1006,7 @@ Required product-instance qualifiers: species; mobile or fixed gate; warm/chille
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02293` |
 | `v_gate` | reference milk | Reject the fixed chilled-farm UUID for warm, mobile, unspecified-gate or processed milk. Broad reference remains unbound. | `un-cpc-3`; `fao-camel-dairy` |
 | `v_mass` | milk stages | Reconcile collected, calf-consumed, conditioned, chilled, rejected and handed-over milk, with one final output per batch. | `fao-camel-production`; `mass-balance-identity` |
 | `v_route` | mixed herd | Verify route-specific feed, water, energy, manure and mutually exclusive animal-days; conditional interventions need batch records. | `fao-camel-dairy`; `fao-camel-production` |
@@ -1025,6 +1029,7 @@ Required product-instance qualifiers: species; mobile or fixed gate; warm/chille
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `un-cpc-3-02293` | official_guidance | [UN Statistics Division, CPC 3.0 02293: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02293) | Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold |
 | `un-cpc-3` | `official_guidance` | [UN CPC 3.0 explanatory notes](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf) | classification boundary |
 | `fao-camel-dairy` | `official_guidance` | [FAO camel dairy](https://www.fao.org/dairy-production-products/dairy/camels/en) | species, mobile route, co-products |
 | `fao-camel-production` | `handbook` | [FAO camel milk production](https://www.fao.org/4/t0755e/t0755e01.htm) | calf sharing, variable yield, milking |

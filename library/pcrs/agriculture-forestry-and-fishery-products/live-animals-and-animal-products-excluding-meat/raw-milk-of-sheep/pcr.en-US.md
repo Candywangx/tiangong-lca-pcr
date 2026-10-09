@@ -9,7 +9,9 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
-This PCR covers unprocessed ovine milk from a dairy sheep herd at the actual producing-farm handover. Warm raw and on-farm chilled raw milk are alternative final states, with exactly one selected per lot. Exclude heat-treated, formulated, independently skimmed or partly skimmed milk, collection-centre processing and downstream dairy products. The CPC low-fat exclusion is not a universal measured-fat cut-off for naturally variable unprocessed milk. Record breed, herd, lactation phase, temperature, first conditioning and cooling status. Sources: `un-cpc-3-2025`, `fao-small-ruminant-dairy`, `fao-leap-small-ruminants-2016`.
+This PCR covers unprocessed ovine milk from a dairy sheep herd at the actual producing-farm handover. Warm raw and on-farm chilled raw milk are alternative final states, with exactly one selected per lot. Exclude heat-treated, formulated, independently skimmed or partly skimmed milk, collection-centre processing and downstream dairy products. Record breed, herd, lactation phase, temperature, first conditioning and cooling status. Sources: `un-cpc-3-2025`, `fao-small-ruminant-dairy`, `fao-leap-small-ruminants-2016`.
+
+For the accepted exact mapping to CPC 3.0 02291, the final reference product must be unskimmed and not partly skimmed, with a measured milk-fat mass fraction of at least 3.5% (35 g/kg milk). Milk below this classification boundary is outside this PCR's declared CPC-linked product scope, including when its low fat content is natural. This is a classification eligibility condition, not a general milk-quality pass limit, an emission factor, or an instruction to standardize the milk. Retain the actual composition and state; do not replace measured net milk mass with fat-corrected milk. Source: `un-cpc-3-02291`.
 
 ## 2. Product Category Identity
 
@@ -17,8 +19,8 @@ This PCR covers unprocessed ovine milk from a dairy sheep herd at the actual pro
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-sheep |
 | classification_refs | CPC 3.0 02291 Raw milk of sheep |
-| covered_products | Unprocessed raw sheep milk at producing-farm handover, warm or chilled on farm. |
-| excluded_products | Pasteurized, heat-treated, formulated, independently skimmed or partly skimmed milk; downstream dairy products. |
+| covered_products | Unprocessed raw sheep milk at producing-farm handover, warm or chilled on farm.; unskimmed/not partly skimmed, measured milk-fat mass fraction at least 3.5% (35 g/kg milk) |
+| excluded_products | Pasteurized, heat-treated, formulated, independently skimmed or partly skimmed milk; downstream dairy products.; milk with fat content below 3.5%, skimmed or partly skimmed milk |
 | representative_product | 1 kg measured raw sheep milk at actual producing-farm gate. |
 | production_route | Managed dairy ewe biological production, independent milking/collection, optional first straining/filtration, optional on-farm chilling, then one final handover. Pasture and housed/concentrate management are evidence-specific alternatives of the same managed herd parent. |
 | market_state | Raw liquid sheep milk, warm or chilled at producing-farm gate. |
@@ -40,7 +42,7 @@ This PCR covers unprocessed ovine milk from a dairy sheep herd at the actual pro
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method |
+| Required qualifiers | sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date |
 
 Instantiate one foreground reference from the actual handed-over lot, with all required qualifiers. The category may cover alternative states and producer gates, but each package has one declared species/state/gate/grade stratum and one measured accepted reference-output denominator. Do not pool incompatible states or claim equal service from equal mass. Route-specific source rows and reference_handover describe the same physical boundary event; their linked internal transfer is not another sale or another physical operation.
 
@@ -50,6 +52,7 @@ The confirmed chilled farm-gate Product UUID is not a broad warm-or-chilled refe
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | final reference milk | Milk-fat mass fraction, wet-milk basis | % or g/kg milk | Verify at least 3.5% (35 g/kg) on a sample matched to the actual handover lot, with method, sampling date and skimmed/not-skimmed state. Below-threshold or skimmed/partly skimmed milk is outside the declared CPC-linked scope. Missing or incomparable composition evidence prevents a classification claim; never assume eligibility from species, breed or a default fat content. This condition does not change net-mass normalization. |
 | `milk_mass` | Final raw milk | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure accepted mass at producing-farm gate; record density and temperature for volume conversion. |
 | `milk_state` | Warm/chilled route | Mass and temperature | kg; °C | Preserve actual state; never infer chilled identity from a generic raw-milk name. |
 | `feed_basis` | Ewe feed/forage | As-fed or dry basis | kg | State feed moisture and pasture-intake method before aggregation. |
@@ -992,7 +995,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_final_milk`, `chilled_final_milk`
 
-Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method
+Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw sheep milk at producing-farm handover, warm or chilled for actual producer-handover linkage
 - Flow property / unit: Mass / kg
@@ -1029,7 +1032,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_final_milk`, `chilled_final_milk`
 
-Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method
+Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw sheep milk at producing-farm handover, warm or chilled
 - Flow property / unit: Mass / kg
@@ -1103,6 +1106,7 @@ Required product-instance qualifiers: sheep species and dairy breed; herd/farm; 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02291` |
 | `validate_raw_state` | Final reference | Verify unheated, unseparated ovine raw milk and exactly one warm/chilled farm-gate product; chilled UUID cannot fill broad reference or warm output. | `un-cpc-3-2025` |
 | `validate_balance` | Milk nodes | Reconcile collected, filtered, chilled and accepted lots with rejects; no intermediate milk sold-final twice. | `mass-balance-identity` |
 | `validate_outputs` | Herd allocation | Check milk, sold lambs/culls, actual wool/manure transfer, mortality and unsold manure status/gates before allocation. | `fao-small-ruminant-dairy` |
@@ -1126,6 +1130,7 @@ Required product-instance qualifiers: sheep species and dairy breed; herd/farm; 
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `un-cpc-3-02291` | official_guidance | [UN Statistics Division, CPC 3.0 02291: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02291) | Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold |
 | `un-cpc-3-2025` | `official_guidance` | https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Raw sheep milk classification/exclusion. |
 | `fao-small-ruminant-dairy` | `official_guidance` | https://www.fao.org/dairy-production-products/dairy/small-ruminants/en | Dairy sheep routes and output context. |
 | `fao-leap-small-ruminants-2016` | `official_guidance` | https://openknowledge.fao.org/handle/20.500.14283/i6434en | Small-ruminant LCA boundary, allocation and activity data. |

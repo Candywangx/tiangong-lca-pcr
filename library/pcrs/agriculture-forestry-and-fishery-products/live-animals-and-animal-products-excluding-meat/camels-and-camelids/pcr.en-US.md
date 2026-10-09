@@ -55,7 +55,7 @@ The broad fixed identity requires every qualifier above; it cannot substitute fo
 | `count_to_mass` | entries, births, deaths and transfers | Mass | kg | Preserve head, species and class; convert only with measured weights or a documented matching-class mean. |
 | `feed_dry_matter` | forage, browse, concentrates and supplements | Mass | kg dry matter and kg as-fed | Preserve as-fed mass and dry-matter fraction; identify the reviewed method for unmeasured intake. |
 | `water_basis` | supplied water | Mass or volume | kg or m3 | Separate managed supply from rainfall or unmanaged access and disclose meter coverage or estimation. |
-| `emission_basis` | CH4, N2O and NH3 | Mass of named substance | kg CH4, kg N2O or N2O-N, kg NH3 or NH3-N | Keep substance and element bases explicit and document molecular conversions. |
+| `emission_basis` | CH4, N2O and NH3 | Mass of named compound in final exchanges | kg CH4; kg N2O; kg NH3 | Retain raw N-basis records; before final normalization convert kg N2O-N to kg N2O by 44/28 and kg NH3-N to kg NH3 by 17/14. Values already expressed as compound mass are not converted again. The final fixed-UUID exchange uses the mass of its named compound, never the N-basis amount. Keep raw species and elemental bases explicit; carbon-equivalent quantities do not replace CH4 mass. |
 | `inventory_reference_normalization` | all inventory rows | Actual flow property | exchange unit per reference flow | The inventory and collection aggregation fields below express final amounts per declared reference flow. Keep all raw collection records, original denominator qualifiers, route/period strata, unit conversions and allocation requirements. For each flow, first obtain its attributable amount in its own numerator unit using the existing rules; then divide by the measured accepted reference-output quantity of the same scope and multiply by the declared reference quantity. Do not mix species, states, gates or incompatible routes; count transfers and shared burdens once. A missing, zero or untraceable accepted-output denominator is a blocking data-quality issue. Keep provisional QA ranges on their explicitly stated bases; they are not conversion factors or production defaults. Compute normalized amount = attributable amount * declared reference quantity / measured accepted reference-output quantity. Apply normalization once only; never divide an already normalized value again. |
 
 ## 5. System Boundary
@@ -427,7 +427,7 @@ Denominator and scope requirements：per kg reference live weight
 
 - Selected flow: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Binding: Fixed (`fixed`)
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O or kg N2O-N
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - Amount rule: Calculate by species/class, nitrogen excretion, period and manure/deposition pathway; retain basis conversion.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -452,7 +452,7 @@ Denominator and scope requirements：per kg reference live weight
 
 - Selected flow: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Binding: Fixed (`fixed`)
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O or kg N2O-N
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - Amount rule: Calculate only for documented volatilization or leaching/runoff precursors; do not duplicate direct N2O.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -477,7 +477,7 @@ Denominator and scope requirements：per kg reference live weight
 
 - Selected flow: ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Binding: Fixed (`fixed`)
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3 or kg NH3-N
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
 - Amount rule: Calculate by manure nitrogen pathway and reviewed factors; preserve basis and precursor linkage.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -526,7 +526,7 @@ Denominator and scope requirements：per kg reference live weight
 | `herd_balance` | herd events | opening + entries + births = closing + transfers + deaths; class transitions are linked, not new animals. | events | reconciled head balance | `fao-ruminant-lca-2013` |
 | `dry_matter` | feed/browse | as-fed mass × measured/supplier dry-matter fraction; declare method for unmeasured intake. | as-fed; fraction; land records | kg dry matter | `ipcc-2019-livestock-manure` |
 | `enteric_methane` | enteric CH4 | Apply declared tier by species/category and period; retain activity and factors. | category; animal-days; feed/energy; factors | kg CH4 | `ipcc-2019-livestock-manure` |
-| `manure_emissions` | manure CH4, N2O and NH3 | Apply pathway equations; molecular conversion is explicit. | category; excretion/N; pathway; climate; factors | kg CH4, N2O, NH3 | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |
+| `manure_emissions` | manure CH4, N2O and NH3 | Apply the declared reviewed equations by animal category, excretion and manure pathway. Retain raw N-basis records; before final normalization convert kg N2O-N to kg N2O by 44/28 and kg NH3-N to kg NH3 by 17/14. Values already expressed as compound mass are not converted again. The final fixed-UUID exchange uses the mass of its named compound, never the N-basis amount. | category; excretion/N; pathway; climate; factors | kg CH4, N2O, NH3 | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |
 | `transport_service` | included transport | tonnes × included one-way km. | cargo mass; distance | t*km | `fao-ruminant-lca-2013` |
 
 ### Data Quality Requirements

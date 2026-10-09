@@ -4,8 +4,8 @@ source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-sheep"
   classification_refs: "CPC 3.0 02291 Raw milk of sheep"
-  covered_products: "Unprocessed raw sheep milk at producing-farm handover, warm or chilled on farm."
-  excluded_products: "Pasteurized, heat-treated, formulated, independently skimmed or partly skimmed milk; downstream dairy products."
+  covered_products: "Unprocessed raw sheep milk at producing-farm handover, warm or chilled on farm.; unskimmed/not partly skimmed, measured milk-fat mass fraction at least 3.5% (35 g/kg milk)"
+  excluded_products: "Pasteurized, heat-treated, formulated, independently skimmed or partly skimmed milk; downstream dairy products.; milk with fat content below 3.5%, skimmed or partly skimmed milk"
   representative_product: "1 kg measured raw sheep milk at actual producing-farm gate."
   production_route: "Managed dairy ewe biological production, independent milking/collection, optional first straining/filtration, optional on-farm chilling, then one final handover. Pasture and housed/concentrate management are evidence-specific alternatives of the same managed herd parent."
   market_state: "Raw liquid sheep milk, warm or chilled at producing-farm gate."
@@ -78,9 +78,19 @@ reference_flow_definition:
     - "actual producer gate"
     - "lactation period"
     - "mass or volume-density method"
+    - "unskimmed/not partly skimmed"
+    - "measured milk-fat mass fraction at least 3.5% (35 g/kg milk)"
+    - "with lot-matched assay method and sampling date"
 reference_flows:
   []
 measurement_rules:
+  - id: cpc_milk_scope
+    applies_to: "final reference milk"
+    required_property_ref:
+      name: "Milk-fat mass fraction, wet-milk basis"
+      uuid: ""
+    required_unit: "% or g/kg milk"
+    rule: "Verify at least 3.5% (35 g/kg) on a sample matched to the actual handover lot, with method, sampling date and skimmed/not-skimmed state. Below-threshold or skimmed/partly skimmed milk is outside the declared CPC-linked scope. Missing or incomparable composition evidence prevents a classification claim; never assume eligibility from species, breed or a default fat content. This condition does not change net-mass normalization."
   - id: milk_mass
     applies_to: "Final raw milk"
     required_property_ref:
@@ -1055,7 +1065,7 @@ process_inventory:
           name: "Raw sheep milk at producing-farm handover, warm or chilled for actual producer-handover linkage"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This input matches the accepted goods represented by warm_final_milk, chilled_final_milk under their unchanged route conditions. It is an internal source-to-handover linkage, not a newly purchased same-category good and not extra production. The matching source and input cancel at the package boundary. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_final_milk, chilled_final_milk Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method"
+          description: "This input matches the accepted goods represented by warm_final_milk, chilled_final_milk under their unchanged route conditions. It is an internal source-to-handover linkage, not a newly purchased same-category good and not extra production. The matching source and input cancel at the package boundary. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_final_milk, chilled_final_milk Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date"
           amount:
             expression: "Use measured accepted same-lot quantity reconciled to the linked source rows; normalize once to the declared reference flow."
             value_mode: "calculated_value"
@@ -1087,7 +1097,7 @@ process_inventory:
           name: "Raw sheep milk at producing-farm handover, warm or chilled"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This is the actual accepted reference product at the declared producer boundary, measured under cp_reference_handover. It is the sole external reference output; instantiate its real identity from the lot, not a broad fixed UUID. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_final_milk, chilled_final_milk Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method"
+          description: "This is the actual accepted reference product at the declared producer boundary, measured under cp_reference_handover. It is the sole external reference output; instantiate its real identity from the lot, not a broad fixed UUID. The actual route/state/gate is selected from foreground handover evidence; retain every required qualifier. Use the actual terminal source for the same accepted physical lot, not every successive stage transfer. Fixed source identities apply only to their exact species/state/gate; use an unbound compatible source role for other covered routes and resolve the actual foreground exchange before final dataset creation. Selected source/interface rows: warm_final_milk, chilled_final_milk Required product-instance qualifiers: sheep species and dairy breed; herd/farm; milking batch; warm/chilled state; actual temperature; first filtration/chilling; actual producer gate; lactation period; mass or volume-density method; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date"
           amount:
             expression: "1 kg"
             value_mode: "calculated_value"
@@ -1321,6 +1331,11 @@ dataset_production:
       requirement: "Archive period, physical/economic allocation basis, shares and sensitivity; prevent duplicate burden."
       evidence: "attribution worksheet"
 validation_rules:
+  - rule_id: v_cpc_milk_scope
+    applies_to: "final reference product and classification"
+    rule: "Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition."
+    source_ids:
+      - un-cpc-3-02291
   - rule_id: validate_raw_state
     applies_to: "Final reference"
     rule: "Verify unheated, unseparated ovine raw milk and exactly one warm/chilled farm-gate product; chilled UUID cannot fill broad reference or warm output."
@@ -1360,6 +1375,10 @@ published_dataset_profile:
   required_quality_disclosure: "Feed/pasture measurement, lamb milk retention, milk loss, manure pathway, emission method, allocations and unresolved identities/ranges."
   update_trigger: "Changed product state/gate, herd route, manure system, allocation basis or verified UUID."
 data_sources:
+  - id: "un-cpc-3-02291"
+    type: "official_guidance"
+    reference: "[UN Statistics Division, CPC 3.0 02291: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02291)"
+    used_for: "Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold"
   - id: "un-cpc-3-2025"
     type: "official_guidance"
     reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
@@ -1382,19 +1401,19 @@ data_sources:
     used_for: "QA identity, not empirical sheep-milk factor."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:161c5a53ff3c4f1f2de9d3e32801d50ffb112acd66868540329e287525223757"
+  source_sha256: "sha256:9695092ed18bd253edd87169264b25bb78a1780f3de76ce26032ea1a1637b1fe"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6946"
+    - unit_id: "normative_8288"
       family: "system_boundary"
       span:
         start:
-          offset: 6946
-          line: 60
+          offset: 8288
+          line: 63
           column: 1
         end:
-          offset: 10278
-          line: 85
+          offset: 11620
+          line: 88
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Dairy ewe herd with documented replacement stock, feed/forage, water, milking services and any operated conditioning/chilling equipment. |\n| starting_condition_role | Biological production starting point and purchased input/service provenance. |\n| product_classification_scope | CPC 3.0 02291 raw sheep milk; lambs, culls, wool and independently transferred manure are distinct products where actually sold. |\n| recursive_input_rule | Purchased raw sheep milk from another farm carries upstream burden once; internal milk transfers link to producing nodes and are not re-imported as external input. |\n| upstream_dataset_requirement | Link purchased feed, replacement stock, water, energy, filter media and services to source-specific upstream data; disclose missing inputs. |\n| disclosure | Declare farm/herd/breed, pasture or housed period, lactation and replacement, lamb suckling/retained milk, milking/filter/chilling route, final state/gate, manure fate, co-outputs and shared facilities. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `one_final_state` | Final lot | Choose exactly one warm or chilled final producing-farm milk state; intermediate transfers are not additional final sold milk. | `un-cpc-3-2025` |\n| `milking_capture` | Ewe milk | Separate milking from herd biological production because collection establishes measured saleable milk versus spill/reject before conditioning. | `fao-small-ruminant-dairy` |\n| `first_conditioning` | Optional straining | Include only actually operated first filtration with warm collected input, prepared raw output, material input and rejects; no heat treatment. | `fao-small-ruminant-dairy` |\n| `farm_chilling` | Optional cooling | Include only actual farm cooling, recording warm input, energy, chilled raw output, losses and final temperature. | `fao-small-ruminant-dairy` |\n| `pasture_housed_delta` | Alternative herd regimes | Both retain managed ewe production; pasture changes grazed-feed measurement and manure placement, while housed/concentrate management changes feed sourcing, housing water and manure storage. Choose evidenced categories and calculation per flock-period, splitting documented mixed periods. | `fao-small-ruminant-dairy` |\n| `period_shared` | Herd and milk nodes | Link breeding, lactation, dry and replacement periods and shared parlour/tank/pump services to beneficiary output batches once. | `fao-leap-small-ruminants-2016` |\n| `reference_handover_linkage` | actual reference-product boundary | Record reference_handover as the same physical producer handover already represented by its source rows. It must not extend the gate or insert new processing, capture, storage, transport, service or capital burdens. For a unit-process projection, keep the actually operated stage references; the handover record may be a boundary interface in the resulting foreground package, not an invented standalone operation. Select one actual qualified route/output stratum; trace matching source and input as internal transfers and expose the accepted reference product once. If the source already ended at this gate, partition its existing handover responsibility without counting it again. |  |\n\n"
       headings:
@@ -1413,12 +1432,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6946
-              line: 60
+              offset: 8288
+              line: 63
               column: 1
             end:
-              offset: 6967
-              line: 60
+              offset: 8309
+              line: 63
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1433,16 +1452,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55098"
+    - unit_id: "normative_56722"
       family: "allocation"
       span:
         start:
-          offset: 55098
-          line: 1057
+          offset: 56722
+          line: 1060
           column: 1
         end:
-          offset: 56283
-          line: 1066
+          offset: 57907
+          line: 1069
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `output_census` | Ewe herd | Enumerate raw milk, independently sold lambs/culls, wool if shorn and sold, and exported manure at actual handovers. Mortality and unsold manure remain waste/residue. A sold-wool exchange must be added from actual records. | `fao-small-ruminant-dairy` |\n| `allocation_precedence` | Joint herd outputs | Subdivide measured activity where possible; otherwise use documented physical causality where defensible, then contemporaneous economic value with period and sensitivity. No default substitution credit. | `fao-leap-small-ruminants-2016` |\n| `period_attribution` | Breeding/lactation/replacement | Attribute feed, service, milk, lambs, culls and events to observed periods; carry cross-period burden once and disclose lamb milk retention. | `fao-leap-small-ruminants-2016` |\n| `shared_attribution` | Parlour, tank, pump, meter | List every herd/milking/conditioning/chilling consumer and service period; allocate by metered use or documented time/throughput and reconcile to total without duplication. | `fao-leap-small-ruminants-2016` |\n\n"
       headings:
@@ -1461,12 +1480,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55098
-              line: 1057
+              offset: 56722
+              line: 1060
               column: 1
             end:
-              offset: 55138
-              line: 1057
+              offset: 56762
+              line: 1060
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1481,18 +1500,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_65477"
+    - unit_id: "normative_67101"
       family: "validation"
       span:
         start:
-          offset: 65477
-          line: 1102
+          offset: 67101
+          line: 1105
           column: 1
         end:
-          offset: 66666
-          line: 1113
+          offset: 68758
+          line: 1117
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_raw_state` | Final reference | Verify unheated, unseparated ovine raw milk and exactly one warm/chilled farm-gate product; chilled UUID cannot fill broad reference or warm output. | `un-cpc-3-2025` |\n| `validate_balance` | Milk nodes | Reconcile collected, filtered, chilled and accepted lots with rejects; no intermediate milk sold-final twice. | `mass-balance-identity` |\n| `validate_outputs` | Herd allocation | Check milk, sold lambs/culls, actual wool/manure transfer, mortality and unsold manure status/gates before allocation. | `fao-small-ruminant-dairy` |\n| `validate_periods` | Herd/milking | Link breeding, lactation, dry and replacement periods/events to benefiting milk and animals once. | `fao-leap-small-ruminants-2016` |\n| `validate_shared` | Shared assets | Identify all parlour, tank, pump, chiller and meter consumers/periods; reconcile allocated shares to totals. | `fao-leap-small-ruminants-2016` |\n| `validate_route` | Pasture/housed | Require actual feed, water and manure evidence; never stack incompatible route assumptions. | `fao-small-ruminant-dairy` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02291` |\n| `validate_raw_state` | Final reference | Verify unheated, unseparated ovine raw milk and exactly one warm/chilled farm-gate product; chilled UUID cannot fill broad reference or warm output. | `un-cpc-3-2025` |\n| `validate_balance` | Milk nodes | Reconcile collected, filtered, chilled and accepted lots with rejects; no intermediate milk sold-final twice. | `mass-balance-identity` |\n| `validate_outputs` | Herd allocation | Check milk, sold lambs/culls, actual wool/manure transfer, mortality and unsold manure status/gates before allocation. | `fao-small-ruminant-dairy` |\n| `validate_periods` | Herd/milking | Link breeding, lactation, dry and replacement periods/events to benefiting milk and animals once. | `fao-leap-small-ruminants-2016` |\n| `validate_shared` | Shared assets | Identify all parlour, tank, pump, chiller and meter consumers/periods; reconcile allocated shares to totals. | `fao-leap-small-ruminants-2016` |\n| `validate_route` | Pasture/housed | Require actual feed, water and manure evidence; never stack incompatible route assumptions. | `fao-small-ruminant-dairy` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1509,12 +1528,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 65477
-              line: 1102
+              offset: 67101
+              line: 1105
               column: 1
             end:
-              offset: 65499
-              line: 1102
+              offset: 67123
+              line: 1105
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1533,272 +1552,285 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "one_final_state"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 8147
-          line: 77
+          offset: 9489
+          line: 80
           column: 1
         end:
-          offset: 8327
-          line: 77
+          offset: 9669
+          line: 80
           column: 181
     - pointer: "/system_boundary/rules/1"
       rule_id: "milking_capture"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 8328
-          line: 78
+          offset: 9670
+          line: 81
           column: 1
         end:
-          offset: 8535
-          line: 78
+          offset: 9877
+          line: 81
           column: 208
     - pointer: "/system_boundary/rules/2"
       rule_id: "first_conditioning"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 8536
-          line: 79
+          offset: 9878
+          line: 82
           column: 1
         end:
-          offset: 8755
-          line: 79
+          offset: 10097
+          line: 82
           column: 220
     - pointer: "/system_boundary/rules/3"
       rule_id: "farm_chilling"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 8756
-          line: 80
+          offset: 10098
+          line: 83
           column: 1
         end:
-          offset: 8939
-          line: 80
+          offset: 10281
+          line: 83
           column: 184
     - pointer: "/system_boundary/rules/4"
       rule_id: "pasture_housed_delta"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 8940
-          line: 81
+          offset: 10282
+          line: 84
           column: 1
         end:
-          offset: 9313
-          line: 81
+          offset: 10655
+          line: 84
           column: 374
     - pointer: "/system_boundary/rules/5"
       rule_id: "period_shared"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 9314
-          line: 82
+          offset: 10656
+          line: 85
           column: 1
         end:
-          offset: 9519
-          line: 82
+          offset: 10861
+          line: 85
           column: 206
     - pointer: "/system_boundary/rules/6"
       rule_id: "reference_handover_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 9520
-          line: 83
+          offset: 10862
+          line: 86
           column: 1
         end:
-          offset: 10276
-          line: 83
+          offset: 11618
+          line: 86
           column: 757
     - pointer: "/allocation_rules/0"
       rule_id: "output_census"
       identity_kind: "explicit"
-      unit_id: "normative_55098"
+      unit_id: "normative_56722"
       source_span:
         start:
-          offset: 55211
-          line: 1061
+          offset: 56835
+          line: 1064
           column: 1
         end:
-          offset: 55495
-          line: 1061
+          offset: 57119
+          line: 1064
           column: 285
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_55098"
+      unit_id: "normative_56722"
       source_span:
         start:
-          offset: 55496
-          line: 1062
+          offset: 57120
+          line: 1065
           column: 1
         end:
-          offset: 55783
-          line: 1062
+          offset: 57407
+          line: 1065
           column: 288
     - pointer: "/allocation_rules/2"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_55098"
+      unit_id: "normative_56722"
       source_span:
         start:
-          offset: 55784
-          line: 1063
+          offset: 57408
+          line: 1066
           column: 1
         end:
-          offset: 56018
-          line: 1063
+          offset: 57642
+          line: 1066
           column: 235
     - pointer: "/allocation_rules/3"
       rule_id: "shared_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_55098"
+      unit_id: "normative_56722"
       source_span:
         start:
-          offset: 56019
-          line: 1064
+          offset: 57643
+          line: 1067
           column: 1
         end:
-          offset: 56281
-          line: 1064
+          offset: 57905
+          line: 1067
           column: 263
     - pointer: "/validation_rules/0"
+      rule_id: "v_cpc_milk_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_67101"
+      source_span:
+        start:
+          offset: 67196
+          line: 1109
+          column: 1
+        end:
+          offset: 67663
+          line: 1109
+          column: 468
+    - pointer: "/validation_rules/1"
       rule_id: "validate_raw_state"
       identity_kind: "explicit"
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 65572
-          line: 1106
+          offset: 67664
+          line: 1110
           column: 1
         end:
-          offset: 65783
-          line: 1106
+          offset: 67875
+          line: 1110
           column: 212
-    - pointer: "/validation_rules/1"
+    - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 65784
-          line: 1107
+          offset: 67876
+          line: 1111
           column: 1
         end:
-          offset: 65957
-          line: 1107
+          offset: 68049
+          line: 1111
           column: 174
-    - pointer: "/validation_rules/2"
+    - pointer: "/validation_rules/3"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 65958
-          line: 1108
+          offset: 68050
+          line: 1112
           column: 1
         end:
-          offset: 66148
-          line: 1108
+          offset: 68240
+          line: 1112
           column: 191
-    - pointer: "/validation_rules/3"
+    - pointer: "/validation_rules/4"
       rule_id: "validate_periods"
       identity_kind: "explicit"
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 66149
-          line: 1109
+          offset: 68241
+          line: 1113
           column: 1
         end:
-          offset: 66320
-          line: 1109
+          offset: 68412
+          line: 1113
           column: 172
-    - pointer: "/validation_rules/4"
+    - pointer: "/validation_rules/5"
       rule_id: "validate_shared"
       identity_kind: "explicit"
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 66321
-          line: 1110
+          offset: 68413
+          line: 1114
           column: 1
         end:
-          offset: 66503
-          line: 1110
+          offset: 68595
+          line: 1114
           column: 183
-    - pointer: "/validation_rules/5"
+    - pointer: "/validation_rules/6"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 66504
-          line: 1111
+          offset: 68596
+          line: 1115
           column: 1
         end:
-          offset: 66664
-          line: 1111
+          offset: 68756
+          line: 1115
           column: 161
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 6946
-          line: 60
+          offset: 8288
+          line: 63
           column: 1
         end:
-          offset: 6967
-          line: 60
+          offset: 8309
+          line: 63
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6946"
+      unit_id: "normative_8288"
       source_span:
         start:
-          offset: 6995
-          line: 64
+          offset: 8337
+          line: 67
           column: 1
         end:
-          offset: 8054
-          line: 71
+          offset: 9396
+          line: 74
           column: 220
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55098"
+      unit_id: "normative_56722"
       source_span:
         start:
-          offset: 55098
-          line: 1057
+          offset: 56722
+          line: 1060
           column: 1
         end:
-          offset: 55138
-          line: 1057
+          offset: 56762
+          line: 1060
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_65477"
+      unit_id: "normative_67101"
       source_span:
         start:
-          offset: 65477
-          line: 1102
+          offset: 67101
+          line: 1105
           column: 1
         end:
-          offset: 65499
-          line: 1102
+          offset: 67123
+          line: 1105
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1807,5 +1839,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:161c5a53ff3c4f1f2de9d3e32801d50ffb112acd66868540329e287525223757"
-  generated_content_sha256: "sha256:d66d38e1639ba2354d0e8d2a2ebffc6fc6e6e2ca5a8a7c375f2b394200dabbb6"
+    sha256: "sha256:9695092ed18bd253edd87169264b25bb78a1780f3de76ce26032ea1a1637b1fe"
+  generated_content_sha256: "sha256:567042f72fee5177a6a5ca2cc38213ecbe63bb75b4aa00a7d4f196491a5dd530"

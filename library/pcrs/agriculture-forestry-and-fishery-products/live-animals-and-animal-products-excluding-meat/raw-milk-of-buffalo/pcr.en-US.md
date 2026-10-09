@@ -11,14 +11,16 @@ sync_with: pcr.zh-CN.md
 
 This PCR governs foreground data packages for unprocessed buffalo milk at the producing dairy farm gate, whether handed over warm or chilled by that farm. Declare buffalo species, farm, herd/lactation period, raw state, temperature, fat/protein or solids, and accepted/rejected mass. Exclude milk from cattle or goats, pasteurization, standardization, consumer packaging, independent cooling centres and post-handover transport. Live buffalo are a separate product.
 
+For the accepted exact mapping to CPC 3.0 02212, the final reference product must be unskimmed and not partly skimmed, with a measured milk-fat mass fraction of at least 3.5% (35 g/kg milk). Milk below this classification boundary is outside this PCR's declared CPC-linked product scope, including when its low fat content is natural. This is a classification eligibility condition, not a general milk-quality pass limit, an emission factor, or an instruction to standardize the milk. Retain the actual composition and state; do not replace measured net milk mass with fat-corrected milk. Source: `un-cpc-3-02212`.
+
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-buffalo` |
 | classification_refs | CPC 3.0 `02212`, Raw milk of buffalo |
-| covered_products | unprocessed buffalo milk, warm or farm-chilled, at producing farm gate |
-| excluded_products | other species' milk, processed milk, milk from independent cooling centre |
+| covered_products | unprocessed buffalo milk, warm or farm-chilled, at producing farm gate; unskimmed/not partly skimmed, measured milk-fat mass fraction at least 3.5% (35 g/kg milk) |
+| excluded_products | other species' milk, processed milk, milk from independent cooling centre; milk with fat content below 3.5%, skimmed or partly skimmed milk |
 | representative_product | accepted raw buffalo milk at its declared final farm-gate state |
 | production_route | managed buffalo dairy herd → milking capture → first conditioning → optional farm cooling |
 | market_state | warm or farm-chilled raw milk, with temperature and composition declared |
@@ -42,7 +44,7 @@ Pasture and housed routes are deltas of the managed biological herd parent. They
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period |
+| Required qualifiers | buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date |
 
 Instantiate one foreground reference from the actual handed-over lot, with all required qualifiers. The category may cover alternative states and producer gates, but each package has one declared species/state/gate/grade stratum and one measured accepted reference-output denominator. Do not pool incompatible states or claim equal service from equal mass. Route-specific source rows and reference_handover describe the same physical boundary event; their linked internal transfer is not another sale or another physical operation.
 
@@ -52,6 +54,7 @@ The confirmed chilled-only UUID is confined to the explicitly chilled output car
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | final reference milk | Milk-fat mass fraction, wet-milk basis | % or g/kg milk | Verify at least 3.5% (35 g/kg) on a sample matched to the actual handover lot, with method, sampling date and skimmed/not-skimmed state. Below-threshold or skimmed/partly skimmed milk is outside the declared CPC-linked scope. Missing or incomparable composition evidence prevents a classification claim; never assume eligibility from species, breed or a default fat content. This condition does not change net-mass normalization. |
 | `m_reference` | accepted final milk | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Normalize one final warm or chilled handover to 1 kg net accepted milk; do not double count an internal warm transfer. |
 | `m_composition` | milk quality | fat/protein or solids mass fraction | % or g/kg | Retain sampling time, analytical basis and wet-mass denominator; do not assume standardization. |
 | `m_feed` | feed | mass and dry matter | kg | Keep as-fed and dry-matter amounts distinct with measured moisture conversion. |
@@ -694,7 +697,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_milk`, `chilled_milk`
 
-Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period
+Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw milk of buffalo, warm or farm-chilled, producing farm gate for actual producer-handover linkage
 - Flow property / unit: Mass / kg
@@ -731,7 +734,7 @@ The actual route/state/gate is selected from foreground handover evidence; retai
 
 Selected source/interface rows: `warm_milk`, `chilled_milk`
 
-Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period
+Required product-instance qualifiers: buffalo species; raw state; farm gate; warm or chilled; handover temperature; fat/protein or solids; accepted and rejected mass; herd and lactation period; unskimmed/not partly skimmed; measured milk-fat mass fraction at least 3.5% (35 g/kg milk), with lot-matched assay method and sampling date
 
 - Selected flow: Raw milk of buffalo, warm or farm-chilled, producing farm gate
 - Flow property / unit: Mass / kg
@@ -801,6 +804,7 @@ Required product-instance qualifiers: buffalo species; raw state; farm gate; war
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02212` |
 | `v_reference` | final milk | One final handover state per batch; normalize 1 kg accepted mass. Chilled-only UUID cannot stand for broad warm-or-chilled reference. | |
 | `v_route` | pasture/housed route | Require feed, manure, energy and animal-period evidence for each route delta; a route label alone is insufficient. | `fao-large-ruminants-2016` |
 | `v_outputs` | milk, live animals, manure | Require explicit independent handover and attribution for each co-product; neither residue nor internal transfer is credited twice. | `fao-large-ruminants-2016` |
@@ -825,5 +829,6 @@ Required product-instance qualifiers: buffalo species; raw state; farm gate; war
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `un-cpc-3-02212` | official_guidance | [UN Statistics Division, CPC 3.0 02212: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02212) | Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold |
 | `fao-large-ruminants-2016` | official_guidance | FAO LEAP, Environmental performance of large ruminant supply chains, 2016, https://openknowledge.fao.org/handle/20.500.14283/i6494en | herd phases, boundary, feed, outputs and allocation |
 | `ipcc-livestock-2019` | method_factor | IPCC, 2019 Refinement, Volume 4 Chapter 10, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf | buffalo emission and manure pathways |

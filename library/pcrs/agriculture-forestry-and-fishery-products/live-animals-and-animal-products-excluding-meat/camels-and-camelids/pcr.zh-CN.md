@@ -55,7 +55,7 @@ sync_with: pcr.en-US.md
 | `count_to_mass` | entries, births, deaths and transfers | Mass | kg | Preserve head, species and class; convert only with measured weights or a documented matching-class mean. |
 | `feed_dry_matter` | forage, browse, concentrates and supplements | Mass | kg dry matter and kg as-fed | Preserve as-fed mass and dry-matter fraction; identify the reviewed method for unmeasured intake. |
 | `water_basis` | supplied water | Mass or volume | kg or m3 | Separate managed supply from rainfall or unmanaged access and disclose meter coverage or estimation. |
-| `emission_basis` | CH4, N2O and NH3 | Mass of named substance | kg CH4, kg N2O or N2O-N, kg NH3 or NH3-N | Keep substance and element bases explicit and document molecular conversions. |
+| `emission_basis` | CH4, N2O and NH3 | 最终交换中指定化合物的质量 | kg CH4; kg N2O; kg NH3 | 保留氮基准原始记录；在最终归一化前，将 kg N2O-N 乘以 44/28 换算为 kg N2O，将 kg NH3-N 乘以 17/14 换算为 kg NH3。已为化合物质量的数量不得再次换算。最终固定 UUID 交换使用所绑定化合物的质量，不能直接填写氮基准数量。明确原始物种与元素基准；碳当量不得替代 CH4 质量。 |
 | `inventory_reference_normalization` | 所有清单行 | 实际流属性 | 每参考流的交换单位 | 下方清单和采集汇总字段表示每个声明参考流的最终数量。保留全部原始采集记录、原分母限定信息、路线及期间分层、单位换算和分配要求。对每项流，先依原有规则取得以其自身分子单位表示的可归属数量，再除以同一范围的实测合格参考产出数量，并乘以声明参考数量。不得混合物种、状态、交付门或不相容路线；内部移交及共享负担只计一次。合格产出分母缺失、为零或不可追溯时，属于阻断性数据质量问题。暂定 QA 范围仍使用其明确声明的基准，不能视为换算因子或生产默认值。 归一化数量 = 可归属数量 × 声明参考数量 / 实测合格参考产出数量。归一化只执行一次，不得再次除以已使用的分母。 |
 
 ## 5. 系统边界
@@ -427,7 +427,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 绑定： Fixed (`fixed`)
-- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O or kg N2O-N
+- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - 数量规则： Calculate by species/class, nitrogen excretion, period and manure/deposition pathway; retain basis conversion.
 - 数值来源模式： Calculated value (`calculated_value`)
 - 适用范围： Site-specific (`site_specific`)
@@ -452,7 +452,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 绑定： Fixed (`fixed`)
-- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O or kg N2O-N
+- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - 数量规则： Calculate only for documented volatilization or leaching/runoff precursors; do not duplicate direct N2O.
 - 数值来源模式： Calculated value (`calculated_value`)
 - 适用范围： Site-specific (`site_specific`)
@@ -477,7 +477,7 @@ sync_with: pcr.en-US.md
 
 - 选定流： ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 绑定： Fixed (`fixed`)
-- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3 or kg NH3-N
+- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
 - 数量规则： Calculate by manure nitrogen pathway and reviewed factors; preserve basis and precursor linkage.
 - 数值来源模式： Calculated value (`calculated_value`)
 - 适用范围： Site-specific (`site_specific`)
@@ -526,7 +526,7 @@ sync_with: pcr.en-US.md
 | `herd_balance` | herd events | opening + entries + births = closing + transfers + deaths; class transitions are linked, not new animals. | events | reconciled head balance | `fao-ruminant-lca-2013` |
 | `dry_matter` | feed/browse | as-fed mass × measured/supplier dry-matter fraction; declare method for unmeasured intake. | as-fed; fraction; land records | kg dry matter | `ipcc-2019-livestock-manure` |
 | `enteric_methane` | 肠道 CH4 | 按物种/类别和期间应用已声明层级；保留活动数据和因子。 | 类别；动物日；饲料/能量；因子 | kg CH4 | `ipcc-2019-livestock-manure` |
-| `manure_emissions` | 粪污 CH4、N2O 和 NH3 | 应用路径公式；明确分子换算。 | 类别；排泄/N；路径；气候；因子 | kg CH4、N2O、NH3 | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |
+| `manure_emissions` | 粪污 CH4、N2O 和 NH3 | 按动物类别、排泄及粪污路径应用声明的经审查公式。保留氮基准原始记录；在最终归一化前，将 kg N2O-N 乘以 44/28 换算为 kg N2O，将 kg NH3-N 乘以 17/14 换算为 kg NH3。已为化合物质量的数量不得再次换算。最终固定 UUID 交换使用所绑定化合物的质量，不能直接填写氮基准数量。 | 类别；排泄/N；路径；气候；因子 | kg CH4、N2O、NH3 | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |
 | `transport_service` | included transport | tonnes × included one-way km. | cargo mass; distance | t*km | `fao-ruminant-lca-2013` |
 
 ### 数据质量要求

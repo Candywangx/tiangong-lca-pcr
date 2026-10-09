@@ -11,14 +11,16 @@ sync_with: pcr.en-US.md
 
 本 PCR 用于产奶农场门口交付的未加工水牛原奶前景数据包，涵盖温乳和农场自身冷却的原奶。必须声明水牛物种、农场、畜群及泌乳期间、原奶状态、温度、脂肪/蛋白或固形物，以及接收和拒收质量。不包括其他物种乳、巴氏杀菌、标准化、消费包装、独立冷却中心及交付后的运输。活水牛为独立产品。
 
+为与 CPC 3.0 02212 的已接受 exact 映射保持一致，最终参考产品必须为未脱脂、未部分脱脂的生乳，且实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳）。低于该分类边界的乳不属于本 PCR 声明的 CPC 关联产品范围，即使低脂来自天然成分差异也不例外。这是分类适用条件，不是通用乳质量合格线、排放因子，也不要求人为标准化乳成分。保留实际成分与状态，不得以脂肪校正乳替代实测净乳质量。来源：`un-cpc-3-02212`。
+
 ## 2. 产品类别识别
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-buffalo` |
 | classification_refs | CPC 3.0 `02212`，水牛原奶 |
-| covered_products | 产奶农场门口未加工的温热或农场冷却水牛乳 |
-| excluded_products | 其他物种乳、加工乳、独立冷却中心出品乳 |
+| covered_products | 产奶农场门口未加工的温热或农场冷却水牛乳；未脱脂、未部分脱脂，实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳） |
+| excluded_products | 其他物种乳、加工乳、独立冷却中心出品乳；脂肪含量低于 3.5% 的乳、脱脂乳或部分脱脂乳 |
 | representative_product | 农场最终交接状态下已接收的水牛原奶 |
 | production_route | 管理型水牛畜群 → 挤乳采集 → 初步处理 → 可选农场冷却 |
 | market_state | 温热或农场冷却原奶，声明温度与成分 |
@@ -42,7 +44,7 @@ sync_with: pcr.en-US.md
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | 水牛物种；原奶状态；农场门口；温热或冷却；交付温度；脂肪/蛋白或固形物；接收和拒收质量；畜群及泌乳期间 |
+| Required qualifiers | 水牛物种；原奶状态；农场门口；温热或冷却；交付温度；脂肪/蛋白或固形物；接收和拒收质量；畜群及泌乳期间；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期 |
 
 从实际交付批次实例化一个前景参考，声明全部必需限定项。类别可以覆盖不同状态及生产者交付门，但每个数据包只有一个声明物种／状态／交付门／等级分层，以及一个实测合格参考产出分母。不得汇总不相容状态，也不得以质量相同推定服务等价。路线专属来源行与 reference_handover 描述同一实际边界事件；关联内部移交不是另一次销售，也不是新增实体操作。
 
@@ -52,6 +54,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
+| `cpc_milk_scope` | 最终参考乳 | 乳脂肪质量分数，湿乳质量基准 | % 或 g/kg 乳 | 以实际交付批次的匹配样品核实不低于 3.5%（35 g/kg），保留方法、采样日期及脱脂状态。低于阈值、脱脂或部分脱脂乳不在声明的 CPC 关联范围内。成分证据缺失或不可比时不得声称分类适用；不能依据物种、品种或默认脂肪含量假定适用。该条件不改变净质量归一化。 |
 | `m_reference` | 已接收最终乳 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 每批仅有一次最终温乳或冷却乳交付，归一到 1 kg 已接收净质量；内部温乳转移不可重复计数。 |
 | `m_composition` | 原奶质量 | 脂肪/蛋白或固形物质量分数 | % 或 g/kg | 保留采样时间、分析基准及湿质量分母；不得假设标准化。 |
 | `m_feed` | 饲料 | 质量与干物质 | kg | 区分原物与干物质，并保留实测含水换算。 |
@@ -694,7 +697,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_milk`, `chilled_milk`
 
-必需产品实例限定项：水牛物种；原奶状态；农场门口；温热或冷却；交付温度；脂肪/蛋白或固形物；接收和拒收质量；畜群及泌乳期间
+必需产品实例限定项：水牛物种；原奶状态；农场门口；温热或冷却；交付温度；脂肪/蛋白或固形物；接收和拒收质量；畜群及泌乳期间；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：产奶农场门口温热或农场冷却的水牛原奶（实际生产者交付关联）
 - 流属性 / 单位：质量 / kg
@@ -731,7 +734,7 @@ sync_with: pcr.en-US.md
 
 选定来源／接口行：`warm_milk`, `chilled_milk`
 
-必需产品实例限定项：水牛物种；原奶状态；农场门口；温热或冷却；交付温度；脂肪/蛋白或固形物；接收和拒收质量；畜群及泌乳期间
+必需产品实例限定项：水牛物种；原奶状态；农场门口；温热或冷却；交付温度；脂肪/蛋白或固形物；接收和拒收质量；畜群及泌乳期间；未脱脂、未部分脱脂；实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），保留同批化验方法与采样日期
 
 - 选定流：产奶农场门口温热或农场冷却的水牛原奶
 - 流属性 / 单位：质量 / kg
@@ -801,6 +804,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `v_cpc_milk_scope` | 最终参考产品与分类 | 核对同批实测乳脂肪质量分数不低于 3.5%（35 g/kg 乳），且未脱脂、未部分脱脂。低脂或分离乳不得使用本 exact CPC 关联范围；缺失证据时分类适用性未定，不得假定满足。不得将其解释为质量验收限值或改变实际成分。 | `un-cpc-3-02212` |
 | `v_reference` | 最终原奶 | 每批只有一个最终交付状态；归一到 1 kg 接收质量。冷却专属 UUID 不可代表宽口径温乳或冷却乳参考流。 | |
 | `v_route` | 放牧/舍饲 | 各路线差异均需饲料、粪污、能源及动物期间证据；路线名称不足以证明。 | `fao-large-ruminants-2016` |
 | `v_outputs` | 原奶、活体及粪污 | 每个共产品均需独立交接与归属决策；残余和内部转移不得重复计入。 | `fao-large-ruminants-2016` |
@@ -825,5 +829,6 @@ sync_with: pcr.en-US.md
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `un-cpc-3-02212` | official_guidance | [联合国统计司，CPC 3.0 02212 分类说明](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02212) | 物种分类范围及低脂、脱脂、部分脱脂排除；不是通用质量或排放阈值 |
 | `fao-large-ruminants-2016` | official_guidance | FAO LEAP, Environmental performance of large ruminant supply chains, 2016, https://openknowledge.fao.org/handle/20.500.14283/i6494en | 畜群阶段、边界、饲料、产出及分配 |
 | `ipcc-livestock-2019` | method_factor | IPCC, 2019 Refinement, Volume 4 Chapter 10, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf | 水牛排放及粪污路径 |
