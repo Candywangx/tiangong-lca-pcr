@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
-lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
+lastReviewedCommit: e9b91252307d0345defcb709e819799d1aa6ba42
+lastReviewedNote: "Reviewed PCR #107/#108 latest browser failure: explicit manual language switches load the verified exported HTML document directly, preserving counterpart, query/fragment, preference and storage-denial behavior; neutral detection remains unchanged. Guide browser acceptance additionally requires exact main-frame HTTP 200 HTML navigation. Unmarked RSC failures remain blocking; no classifier exemptions, dependency or methodology changes. Fresh full CI and updated independent review remain required."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

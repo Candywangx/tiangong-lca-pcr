@@ -170,11 +170,17 @@ async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evi
  const counterpart=gettingStartedGuide(route.locale==='zh'?'en':'zh');
  setPhase('guide-counterpart-entry');await page.goto(origin+route.path+'?from=getting-started',{waitUntil:'networkidle'});
  setPhase('guide-counterpart-select');await openLanguageSelector(page);
- await page.getByRole('button',{name:counterpart.locale==='zh'?'中文':'English',exact:true}).last().click();
- await page.waitForURL(origin+counterpart.url+'?from=getting-started');await settleLanguage(page,counterpart.language);
+ const target=origin+counterpart.url+'?from=getting-started';
+ const [response]=await Promise.all([
+  page.waitForResponse(received=>received.url()===target&&received.request().isNavigationRequest()
+   &&received.request().resourceType()==='document'&&received.request().frame()===page.mainFrame()),
+  page.getByRole('button',{name:counterpart.locale==='zh'?'中文':'English',exact:true}).last().click(),
+ ]);
+ assert.equal(response.status(),200);assert.match(response.headers()['content-type']??'',/^text\/html(?:;|$)/iu);
+ await page.waitForURL(target);await settleLanguage(page,counterpart.language);
  await page.getByRole('button',{name:counterpart.locale==='zh'?'复制 Agent 提示词':'Copy Agent prompt',exact:true}).waitFor({state:'visible'});
  assert.ok((await page.locator('#getting-started-content pre code').first().textContent())?.includes(counterpart.rawUrl));
- evidence.assertions.push('language selector opens authored guide counterpart and preserves query');
+ evidence.assertions.push('language selector loads HTTP 200 HTML document for authored guide counterpart and preserves query');
  setPhase('guide-counterpart-return');await page.goto(origin+route.path,{waitUntil:'networkidle'});
 }
 async function settleLanguage(page:Page,language:string):Promise<void> {

@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
-lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
+lastReviewedCommit: e9b91252307d0345defcb709e819799d1aa6ba42
+lastReviewedNote: "Reviewed PCR #107/#108 latest browser failure: explicit manual language switches load the verified exported HTML document directly, preserving counterpart, query/fragment, preference and storage-denial behavior; neutral detection remains unchanged. Guide browser acceptance additionally requires exact main-frame HTTP 200 HTML navigation. Unmarked RSC failures remain blocking; no classifier exemptions, dependency or methodology changes. Fresh full CI and updated independent review remain required."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

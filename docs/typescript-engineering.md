@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
-lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
+lastReviewedCommit: e9b91252307d0345defcb709e819799d1aa6ba42
+lastReviewedNote: "Reviewed PCR #107/#108 latest browser failure: explicit manual language switches load the verified exported HTML document directly, preserving counterpart, query/fragment, preference and storage-denial behavior; neutral detection remains unchanged. Guide browser acceptance additionally requires exact main-frame HTTP 200 HTML navigation. Unmarked RSC failures remain blocking; no classifier exemptions, dependency or methodology changes. Fresh full CI and updated independent review remain required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -442,6 +442,9 @@ The Chinese and English getting-started guides are planned routes in that same
 desktop/mobile matrix. Checks cover language-matched home entry, verified guide
 counterpart switching, one main navigation entry per section, localized copying
 of displayed prompt text, clipboard-denial feedback and guide search/navigation.
+Counterpart switching must observe a main-frame document navigation to the exact
+target URL, HTTP 200 and HTML before checking the target language and authored
+guide content. An eventual successful page does not excuse an unmarked failed RSC request.
 Clipboard transport is mocked for repeatable cross-browser acceptance; no host
 clipboard permission or live website publication is claimed by those checks.
 

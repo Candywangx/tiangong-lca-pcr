@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-09
-lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
-lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
+lastReviewedNote: "Reviewed PCR #107/#108 latest browser failure: explicit manual language switches load the verified exported HTML document directly, preserving counterpart, query/fragment, preference and storage-denial behavior; neutral detection remains unchanged. Guide browser acceptance additionally requires exact main-frame HTTP 200 HTML navigation. Unmarked RSC failures remain blocking; no classifier exemptions, dependency or methodology changes. Fresh full CI and updated independent review remain required."
+lastReviewedCommit: e9b91252307d0345defcb709e819799d1aa6ba42
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -141,6 +141,10 @@ automatic navigation and ordinary localized links never write it. Storage denial
 does not stop reading or switching. A manual Chinese home switch uses `/zh/`,
 including when persistence is unavailable. All language navigation preserves the
 current query string and fragment; a document switch prefers a verified counterpart.
+Manual language changes load that exported HTML document through native browser
+navigation. This establishes the target's HTML language directly without an
+intermediate client-router RSC transition. Ordinary same-language links and neutral
+entry detection retain their existing behavior.
 PCR document slugs retain semantic domain/subdomain/record identity under
 `docs/pcr/`. Exceptionally long documents may have stable subpages with a complete
 chapter inventory. All normative content remains in the HTML of those pages.

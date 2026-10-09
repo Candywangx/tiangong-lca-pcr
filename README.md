@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 7b2d8c1dd4618435180c98be0427c7b27e10d551
-lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Saved-source window tests now expire the controlled clock explicitly while real Git integrity reads use the existing normal harvest budget; failure-reason, source-reuse and fresh UUID assertions are retained. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
+lastReviewedCommit: e9b91252307d0345defcb709e819799d1aa6ba42
+lastReviewedNote: "Reviewed PCR #107/#108 latest browser failure: explicit manual language switches load the verified exported HTML document directly, preserving counterpart, query/fragment, preference and storage-denial behavior; neutral detection remains unchanged. Guide browser acceptance additionally requires exact main-frame HTTP 200 HTML navigation. Unmarked RSC failures remain blocking; no classifier exemptions, dependency or methodology changes. Fresh full CI and updated independent review remain required."
 ---
 
 # TianGong LCA PCR Library
