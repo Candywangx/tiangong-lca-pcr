@@ -210,7 +210,7 @@ process_inventory:
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
           description: "Conditional on use of an owned condenser microphone. Attribute actual equipment production using utilization and supported service activity, without a default lifetime. Rented devices already covered by services are not counted again."
           amount:
-            expression: "Attributable measured exchange amount per declared reference flow; cp_equipment."
+            expression: "Use the attributable manufacturing fraction of one complete asset from cp_equipment and allocate_equipment as the equipment input per declared reference flow; retain the cumulative cross-project/period ledger and reconcile operation and rental-service coverage separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -299,7 +299,7 @@ process_inventory:
           property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
           description: "Attribute actual workstation manufacturing across all three processes once here, using its declared configuration, utilization and supported service denominator; do not convert cost or power to equipment mass."
           amount:
-            expression: "Attributable measured exchange amount per declared reference flow; cp_equipment."
+            expression: "Use the attributable manufacturing fraction of one complete asset from cp_equipment and allocate_equipment as the equipment input per declared reference flow; retain the cumulative cross-project/period ledger and reconcile operation and rental-service coverage separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -388,7 +388,7 @@ allocation_rules:
       - un-sna-originals-2008
   - rule_id: allocate_equipment
     applies_to: "foreground_burden_allocation"
-    rule: "Use actual equipment-production inventories and documented utilization plus supported total service activity or observed service period. No default lifetime; disclose uncertainty when future use is unsupported. Avoid rental/equipment double accounting. Waste treatment is declared without automatic avoided-production credits."
+    rule: "Attribute real equipment manufacturing with a persistent asset ledger across all projects and periods. Measured project use is only the numerator; the denominator must cover supported actual lifetime/cumulative service activity or a justified expected lifetime, with sensitivity and subsequent reconciliation. Cumulative allocated manufacturing fractions across every project and period must not exceed 1, and must never reset at a new project or observation window. An observed-period method distributes only the already attributed manufacturing fraction of that period, not a whole asset inventory in every period. Unknown lifetime, denominator or period share requires explicit review; no default life or mass. Avoid service/rental/equipment duplication and automatic waste credits."
     source_ids: []
 dataset_production:
   collection_protocols:
@@ -444,8 +444,8 @@ dataset_production:
       process_id: "create_content_finish"
       flow_role: "microphone_share; workstation_share"
       record_type: "Utilization records"
-      raw_fields: "model; configuration; production inventory; task hours; total service activity; supported period; share"
-      collection_method: "Link physical assets and task utilization; justify service denominator with records, no default life"
+      raw_fields: "persistent asset ID; model; configuration; production inventory; project task use; supported lifetime/cumulative-service denominator and its coverage; expected-life evidence and sensitivity; manufacturing fraction already attributed to the period; current project fraction; prior and cumulative fractions across all projects and periods; service/rental coverage; subsequent reconciliation"
+      collection_method: "Link physical assets and task records to the cross-project/period manufacturing-share ledger; justify the denominator under allocate_equipment. An observation period distributes only its already attributed fraction and cumulative shares must not exceed 1. Unknown denominators or period fractions require review; a new project or period never resets whole-asset manufacture."
       unit: "item"
       frequency: "each task and acceptance"
       temporal_coverage: "complete creation including rework"
@@ -529,6 +529,10 @@ validation_rules:
     applies_to: "foreground_dataset_conformance"
     rule: "Check count and normalization; preserve electricity energy/MJ, equipment count, provider hours and passenger-distance units. Names alone do not establish route, region, property or UUID suitability."
     source_ids: []
+  - rule_id: validate_equipment_shares
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify persistent asset IDs, use numerators, supported lifetime/cumulative-service denominators and already attributed period fractions. Cumulative manufacturing shares across all projects and periods must not exceed 1. Unknown denominators or period fractions require explicit review; one observation window cannot stand for a whole lifetime or reset full manufacture each period."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "original_asset_production"
   downstream_use: "secondary_dataset; background_dataset"
@@ -556,7 +560,7 @@ data_sources:
     used_for: "Historical originals/copies distinction only; no monetary allocation or current legal/lifetime claim"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:5108e605b5e2a2249752d506d63707f13f8c7228ceebcdea65ca9a54ba2e8360"
+  source_sha256: "sha256:3332b758543a0cd89ba4c5c29445648040f037e9e0c8c199cd623bd038e6b0fd"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4419"
@@ -607,18 +611,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_16214"
+    - unit_id: "normative_16598"
       family: "allocation"
       span:
         start:
-          offset: 16214
+          offset: 16598
           line: 292
           column: 1
         end:
-          offset: 17413
+          offset: 18256
           line: 300
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_shared` | First subdivide project work and separate providers. Attribute shared metered totals using measured power profiles and recorded job/equipment occupancy; justify idle/support shares and reconcile assigned totals. Storage uses actual capacity-time and provider inventory, not universal kWh/GB. Do not allocate by sales, royalties or audience counts. |  |\n| `allocate_original` | For jointly created originals prefer subdivision; otherwise document a physically supported shared-work relationship, fractions and sensitivity. Failed takes/revisions remain with the accepted original. Prevent parent/component double accounting; rights transfer is not new original production. | ebu-radio-production-2023; un-sna-originals-2008 |\n| `allocate_equipment` | Use actual equipment-production inventories and documented utilization plus supported total service activity or observed service period. No default lifetime; disclose uncertainty when future use is unsupported. Avoid rental/equipment double accounting. Waste treatment is declared without automatic avoided-production credits. |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_shared` | First subdivide project work and separate providers. Attribute shared metered totals using measured power profiles and recorded job/equipment occupancy; justify idle/support shares and reconcile assigned totals. Storage uses actual capacity-time and provider inventory, not universal kWh/GB. Do not allocate by sales, royalties or audience counts. |  |\n| `allocate_original` | For jointly created originals prefer subdivision; otherwise document a physically supported shared-work relationship, fractions and sensitivity. Failed takes/revisions remain with the accepted original. Prevent parent/component double accounting; rights transfer is not new original production. | ebu-radio-production-2023; un-sna-originals-2008 |\n| `allocate_equipment` | Attribute real equipment manufacturing with a persistent asset ledger across all projects and periods. Measured project use is only the numerator; the denominator must cover supported actual lifetime/cumulative service activity or a justified expected lifetime, with sensitivity and subsequent reconciliation. Cumulative allocated manufacturing fractions across every project and period must not exceed 1, and must never reset at a new project or observation window. An observed-period method distributes only the already attributed manufacturing fraction of that period, not a whole asset inventory in every period. Unknown lifetime, denominator or period share requires explicit review; no default life or mass. Avoid service/rental/equipment duplication and automatic waste credits. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -635,11 +639,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 16214
+              offset: 16598
               line: 292
               column: 1
             end:
-              offset: 16254
+              offset: 16638
               line: 292
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -655,18 +659,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_23082"
+    - unit_id: "normative_24484"
       family: "validation"
       span:
         start:
-          offset: 23082
+          offset: 24484
           line: 330
           column: 1
         end:
-          offset: 23864
-          line: 338
+          offset: 25685
+          line: 339
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require complete accepted original, all qualifiers and exactly 1 item linked to radio_original. Reject airings, downloads or rights payments as original output. | un-cpc-radio-originals; ebu-radio-production-2023 |\n| `validate_coverage` | Check creation/rework and owned/provider separation; reject hidden support, storage, travel, consumable or release omissions. Declare identity/upstream gaps and prohibit complete lifecycle claims while missing. |  |\n| `validate_units` | Check count and normalization; preserve electricity energy/MJ, equipment count, provider hours and passenger-distance units. Names alone do not establish route, region, property or UUID suitability. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require complete accepted original, all qualifiers and exactly 1 item linked to radio_original. Reject airings, downloads or rights payments as original output. | un-cpc-radio-originals; ebu-radio-production-2023 |\n| `validate_coverage` | Check creation/rework and owned/provider separation; reject hidden support, storage, travel, consumable or release omissions. Declare identity/upstream gaps and prohibit complete lifecycle claims while missing. |  |\n| `validate_units` | Check count and normalization; preserve electricity energy/MJ, equipment count, provider hours and passenger-distance units. Names alone do not establish route, region, property or UUID suitability. |  |\n| `validate_equipment_shares` | Verify persistent asset IDs, use numerators, supported lifetime/cumulative-service denominators and already attributed period fractions. Cumulative manufacturing shares across all projects and periods must not exceed 1. Unknown denominators or period fractions require explicit review; one observation window cannot stand for a whole lifetime or reset full manufacture each period. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -683,11 +687,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 23082
+              offset: 24484
               line: 330
               column: 1
             end:
-              offset: 23104
+              offset: 24506
               line: 330
               column: 23
           text: "## 9. Validation Rules"
@@ -746,81 +750,94 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_shared"
       identity_kind: "explicit"
-      unit_id: "normative_16214"
+      unit_id: "normative_16598"
       source_span:
         start:
-          offset: 16308
+          offset: 16692
           line: 296
           column: 1
         end:
-          offset: 16682
+          offset: 17066
           line: 296
           column: 375
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_original"
       identity_kind: "explicit"
-      unit_id: "normative_16214"
+      unit_id: "normative_16598"
       source_span:
         start:
-          offset: 16683
+          offset: 17067
           line: 297
           column: 1
         end:
-          offset: 17054
+          offset: 17438
           line: 297
           column: 372
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_equipment"
       identity_kind: "explicit"
-      unit_id: "normative_16214"
+      unit_id: "normative_16598"
       source_span:
         start:
-          offset: 17055
+          offset: 17439
           line: 298
           column: 1
         end:
-          offset: 17411
+          offset: 18254
           line: 298
-          column: 357
+          column: 816
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_23082"
+      unit_id: "normative_24484"
       source_span:
         start:
-          offset: 23158
+          offset: 24560
           line: 334
           column: 1
         end:
-          offset: 23397
+          offset: 24799
           line: 334
           column: 240
     - pointer: "/validation_rules/1"
       rule_id: "validate_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_23082"
+      unit_id: "normative_24484"
       source_span:
         start:
-          offset: 23398
+          offset: 24800
           line: 335
           column: 1
         end:
-          offset: 23637
+          offset: 25039
           line: 335
           column: 240
     - pointer: "/validation_rules/2"
       rule_id: "validate_units"
       identity_kind: "explicit"
-      unit_id: "normative_23082"
+      unit_id: "normative_24484"
       source_span:
         start:
-          offset: 23638
+          offset: 25040
           line: 336
           column: 1
         end:
-          offset: 23862
+          offset: 25264
           line: 336
           column: 225
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_equipment_shares"
+      identity_kind: "explicit"
+      unit_id: "normative_24484"
+      source_span:
+        start:
+          offset: 25265
+          line: 337
+          column: 1
+        end:
+          offset: 25683
+          line: 337
+          column: 419
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -848,26 +865,26 @@ normative_context:
           column: 141
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_16214"
+      unit_id: "normative_16598"
       source_span:
         start:
-          offset: 16214
+          offset: 16598
           line: 292
           column: 1
         end:
-          offset: 16254
+          offset: 16638
           line: 292
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_23082"
+      unit_id: "normative_24484"
       source_span:
         start:
-          offset: 23082
+          offset: 24484
           line: 330
           column: 1
         end:
-          offset: 23104
+          offset: 24506
           line: 330
           column: 23
 projection_metadata:
@@ -877,5 +894,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:5108e605b5e2a2249752d506d63707f13f8c7228ceebcdea65ca9a54ba2e8360"
-  generated_content_sha256: "sha256:3d8350f0587938dc3077f97a7b503845c1c598d3f63722d17a43aebd998c39ba"
+    sha256: "sha256:3332b758543a0cd89ba4c5c29445648040f037e9e0c8c199cd623bd038e6b0fd"
+  generated_content_sha256: "sha256:750809ee39d1216111aa652ca8a2f535aa74a696892d06536b253a798669af74"

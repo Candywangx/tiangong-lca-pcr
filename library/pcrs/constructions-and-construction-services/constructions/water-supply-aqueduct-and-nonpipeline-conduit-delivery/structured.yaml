@@ -29,6 +29,10 @@ system_boundary:
       source_ids:
         - usbr-construction
         - epa-washout-2012
+    - rule_id: b_consumed_inputs
+      applies_to: "foreground_system_boundary"
+      rule: "For every supplied material or assembly input, construction/installation applicability identifies the intended work, not only successfully installed quantities. In each native unit use attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock; include pre-acceptance spillage, damage, rejected-but-consumed items and replacements. Verified returns and reusable carryover are excluded from consumed input, while any attributable handling, transport or rework remains. Reconcile installed acceptance and waste separately; do not cancel consumed manufacture. Reusable temporary assets retain their conserved manufacturing share under the asset-allocation rules."
+      source_ids: []
     - rule_id: b_stages
       applies_to: "foreground_system_boundary"
       rule: "Exclude later operation/conveyed-water pumping, maintenance/renewal and final demolition. Actual existing-asset removal at site preparation is construction input. Disclose land/hydrology/ecology, noise and traffic disturbance gaps without declaring zero impact; operational water supply is not construction water."
@@ -324,7 +328,7 @@ process_inventory:
           flow_ref:
             uuid: "4f197bee-7b3b-11dd-ad8b-0800200c9a66"
           property_unit: "Mass / kg"
-          description: "Only installed actual 16/32 crushed stone in a drainage or bedding layer; do not substitute for all concrete aggregate gradings."
+          description: "Use actual 16/32 crushed stone supplied for this work's drainage or bedding layer; include attributable spillage and pre-acceptance replacement consumption under b_consumed_inputs, and record installed quantity separately. Do not substitute for other concrete aggregate gradings."
           amount:
             expression: "Collect and attribute the actual exchange for this complete work using cp_material; preserve task, lot, original physical unit and applicability conditions."
             value_mode: "foreground_record"
@@ -501,7 +505,7 @@ process_inventory:
           name: "Precast concrete water-conveyance trough"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Only actual trough units installed with measured configuration and mass; includes supplier-defined embedded reinforcement once, not generic wall panels."
+          description: "Use actual trough units supplied for this work with measured configuration and mass; include attributable units damaged or consumed before acceptance under b_consumed_inputs, and record accepted installation separately. Count supplier-defined embedded reinforcement once; do not substitute generic wall panels."
           amount:
             expression: "Collect and attribute the actual exchange for this complete work using cp_material; preserve task, lot, original physical unit and applicability conditions."
             value_mode: "foreground_record"
@@ -1087,8 +1091,8 @@ dataset_production:
       process_id: "all_applicable_construction_processes"
       flow_role: "material"
       record_type: "delivery_and_placement"
-      raw_fields: "lot; material state; source gate; accepted receipt; return; installed geometry; measured density where converted; waste"
-      collection_method: "Weigh receipts and returns, reconcile tickets with surveyed installed dimensions; use actual tested density only for the same state/lot. Record embedded component supplier scope. Aggregation detail: Sum attributable physical exchanges per declared reference flow"
+      raw_fields: "lot; material state; source gate; accepted receipt; return; installed geometry; measured density where converted; waste ; opening and closing reusable stock; verified transfers; pre-acceptance damage/rejection/replacement; separate consumed and accepted installed quantities"
+      collection_method: "Weigh receipts and returns, reconcile tickets with surveyed installed dimensions; use actual tested density only for the same state/lot. Record embedded component supplier scope. Aggregation detail: Sum attributable physical exchanges per declared reference flow  Apply b_consumed_inputs in the row native unit: gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock; include consumed losses and replacements, with accepted installation and waste reconciled separately."
       unit: "kg"
       frequency: "each task, lot, trip or acceptance event"
       temporal_coverage: "actual start through complete acceptance, including correction"
@@ -1182,7 +1186,7 @@ dataset_production:
   calculation_rules:
     - id: inventory_aggregation
       applies_to: "all inventory rows"
-      rule: "Sum actual attributable task exchanges for the same complete work per declared reference flow; reconcile receipts, returns, surplus and installation separately, excluding internal transfers from external exchange."
+      rule: "Sum actual attributable task exchanges for the same complete work per declared reference flow; reconcile receipts, returns, surplus and installation separately, excluding internal transfers from external exchange.  Apply b_consumed_inputs to supplied inputs, including pre-acceptance consumed losses and replacements; accepted installed amounts are not the input quantity."
       inputs:
         - cp_material
         - cp_utilities
@@ -1324,7 +1328,7 @@ data_sources:
     used_for: "Historical qualitative washout liquid/solids, containment and transfer boundaries; no copied pH/metals concentration or current compliance approval"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:1e615e8a2ca3d843f772d6cd58ad3d92190d17880d5a01bb38a423b9a9caaa65"
+  source_sha256: "sha256:1e457c13b3bc2f95c28dc3ff42690f5340f9a8833a0aac86802fee3026f53a31"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5902"
@@ -1335,10 +1339,10 @@ normative_context:
           line: 58
           column: 1
         end:
-          offset: 8352
-          line: 78
+          offset: 9078
+          line: 79
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Recorded preconstruction site, retained existing entity, inlet interfaces and actual supplier-gate material state |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Complete supply-purpose nonpipeline conveyance work; classification only informs scope |\n| recursive_input_rule | Retained existing conduit is starting stock, not newly produced output; purchased same-category works need distinct upstream boundaries without recursive double counting |\n| upstream_dataset_requirement | Separately verify and link material, equipment and utility route/geography/property and production/transport boundary; supplier-gate data do not prove complete upstream coverage |\n| disclosure | Construction foreground through acceptance, with linked upstream module completeness reported separately; not an unqualified full-life or complete cradle-to-gate result |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| b_build | Include actual preparation, cut/fill, support, foundations, lining, covers, flume erection, integral controls, curing, tests/correction/cleanup and temporary works. Record equipment/utilities once by task; underground routes must include actual support and muck handling. | usbr-construction; ladwp-wip-2024 |\n| b_supplied | Separate supplied component/mixture manufacture, delivery and onsite installation. Actual onsite mixing, precasting or fabrication needs separate real atomic inputs; never count mixtures and embedded ingredients simultaneously. Upstream production is not silently merged into construction. | usbr-construction; epa-washout-2012 |\n| b_stages | Exclude later operation/conveyed-water pumping, maintenance/renewal and final demolition. Actual existing-asset removal at site preparation is construction input. Disclose land/hydrology/ecology, noise and traffic disturbance gaps without declaring zero impact; operational water supply is not construction water. | ladwp-wip-2024; un-cpc3-2025 |\n| b_complete_route | Conditional cards do not authorize scope deletion. Actual other polymers, metal/timber flumes, prestressing, rock bolts, steel ribs, blasting, onsite batching, coatings or controls require additional atomic cards, original project method, collection and identity checks before project completeness can be claimed. | usbr-construction; usbr-canals-2017 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Recorded preconstruction site, retained existing entity, inlet interfaces and actual supplier-gate material state |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Complete supply-purpose nonpipeline conveyance work; classification only informs scope |\n| recursive_input_rule | Retained existing conduit is starting stock, not newly produced output; purchased same-category works need distinct upstream boundaries without recursive double counting |\n| upstream_dataset_requirement | Separately verify and link material, equipment and utility route/geography/property and production/transport boundary; supplier-gate data do not prove complete upstream coverage |\n| disclosure | Construction foreground through acceptance, with linked upstream module completeness reported separately; not an unqualified full-life or complete cradle-to-gate result |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| b_build | Include actual preparation, cut/fill, support, foundations, lining, covers, flume erection, integral controls, curing, tests/correction/cleanup and temporary works. Record equipment/utilities once by task; underground routes must include actual support and muck handling. | usbr-construction; ladwp-wip-2024 |\n| b_supplied | Separate supplied component/mixture manufacture, delivery and onsite installation. Actual onsite mixing, precasting or fabrication needs separate real atomic inputs; never count mixtures and embedded ingredients simultaneously. Upstream production is not silently merged into construction. | usbr-construction; epa-washout-2012 |\n| b_consumed_inputs | For every supplied material or assembly input, construction/installation applicability identifies the intended work, not only successfully installed quantities. In each native unit use attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock; include pre-acceptance spillage, damage, rejected-but-consumed items and replacements. Verified returns and reusable carryover are excluded from consumed input, while any attributable handling, transport or rework remains. Reconcile installed acceptance and waste separately; do not cancel consumed manufacture. Reusable temporary assets retain their conserved manufacturing share under the asset-allocation rules. |  |\n| b_stages | Exclude later operation/conveyed-water pumping, maintenance/renewal and final demolition. Actual existing-asset removal at site preparation is construction input. Disclose land/hydrology/ecology, noise and traffic disturbance gaps without declaring zero impact; operational water supply is not construction water. | ladwp-wip-2024; un-cpc3-2025 |\n| b_complete_route | Conditional cards do not authorize scope deletion. Actual other polymers, metal/timber flumes, prestressing, rock bolts, steel ribs, blasting, onsite batching, coatings or controls require additional atomic cards, original project method, collection and identity checks before project completeness can be claimed. | usbr-construction; usbr-canals-2017 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1375,16 +1379,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43221"
+    - unit_id: "normative_44256"
       family: "allocation"
       span:
         start:
-          offset: 43221
-          line: 786
+          offset: 44256
+          line: 787
           column: 1
         end:
-          offset: 44362
-          line: 794
+          offset: 45397
+          line: 795
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| a_task | Avoid allocation with work/task submeters and subcontract physical ledgers. Unavoidable shared utilities use measured equipment hours, pumping or other physically causal activity; list all beneficiaries and conserved shares. Unknown relationships require review; cost is not a default. | |\n| a_asset | Manufacturing attribution shares for the same physical equipment/reusable component must sum to no more than one across projects, periods and reuses. Derive a dimensionless share from supported total activity and project activity, multiplying measured count/mass/volume. Unknown life/total activity remains review; operating burdens are actual separately measured consumption. | |\n| a_waste | Reused excavated soil/rock is an internal transfer; waste follows actual destination. No automatic substitution credit for steel/concrete waste. A traded co-product requires evidence of status/use and a separately declared allocation/system-expansion method and factor sources; disposal payment does not create output. | epa-washout-2012 |\n\n"
       headings:
@@ -1403,12 +1407,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43221
-              line: 786
+              offset: 44256
+              line: 787
               column: 1
             end:
-              offset: 43261
-              line: 786
+              offset: 44296
+              line: 787
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1423,16 +1427,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54411"
+    - unit_id: "normative_56010"
       family: "validation"
       span:
         start:
-          offset: 54411
-          line: 831
+          offset: 56010
+          line: 832
           column: 1
         end:
-          offset: 55749
-          line: 840
+          offset: 57348
+          line: 841
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| v_reference | Reject a materials bundle, construction service, partial lining or unaccepted task substituted for the same complete reference work. Check 1 item, surveyed geometry/hydraulic conditions and finished_conduit consistency; missing qualifiers invalidate the data package. | un-cpc3-2025; ladwp-wip-2024 |\n| v_route | Check every necessary process/condition against as-built methods; onsite mixture production, blasting or specialty support without separate exchanges prevents a completeness claim. Resolve mixed purpose/category/interfaces first. | usbr-construction |\n| v_identity | Verify public substance/state/route/geography/compartment/reference property/unit for every UUID. NO, NO2 and N2O are distinct; wastewater transfer is not resource water or environmental water discharge. Keep specific blank identities and review where unmatched. | epa-washout-2012 |\n| v_balance | Reconcile quantity schedule, stocks, waste/water ledger, energy, transport boundaries and cumulative asset shares. Correct double counts, incompatible units, default density/lifetime or unsupported factors. A candidate structural check without real project measurements establishes neither performance nor scientific approval. | usbr-canals-2017; usbr-construction |\n\n"
       headings:
@@ -1451,12 +1455,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54411
-              line: 831
+              offset: 56010
+              line: 832
               column: 1
             end:
-              offset: 54433
-              line: 831
+              offset: 56032
+              line: 832
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1499,7 +1503,7 @@ normative_context:
           line: 74
           column: 345
     - pointer: "/system_boundary/rules/2"
-      rule_id: "b_stages"
+      rule_id: "b_consumed_inputs"
       identity_kind: "explicit"
       unit_id: "normative_5902"
       source_span:
@@ -1508,112 +1512,125 @@ normative_context:
           line: 75
           column: 1
         end:
-          offset: 7975
+          offset: 8341
           line: 75
-          column: 360
+          column: 726
     - pointer: "/system_boundary/rules/3"
+      rule_id: "b_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_5902"
+      source_span:
+        start:
+          offset: 8342
+          line: 76
+          column: 1
+        end:
+          offset: 8701
+          line: 76
+          column: 360
+    - pointer: "/system_boundary/rules/4"
       rule_id: "b_complete_route"
       identity_kind: "explicit"
       unit_id: "normative_5902"
       source_span:
         start:
-          offset: 7976
-          line: 76
+          offset: 8702
+          line: 77
           column: 1
         end:
-          offset: 8350
-          line: 76
+          offset: 9076
+          line: 77
           column: 375
     - pointer: "/allocation_rules/0"
       rule_id: "a_task"
       identity_kind: "explicit"
-      unit_id: "normative_43221"
+      unit_id: "normative_44256"
       source_span:
         start:
-          offset: 43315
-          line: 790
+          offset: 44350
+          line: 791
           column: 1
         end:
-          offset: 43615
-          line: 790
+          offset: 44650
+          line: 791
           column: 301
     - pointer: "/allocation_rules/1"
       rule_id: "a_asset"
       identity_kind: "explicit"
-      unit_id: "normative_43221"
+      unit_id: "normative_44256"
       source_span:
         start:
-          offset: 43616
-          line: 791
+          offset: 44651
+          line: 792
           column: 1
         end:
-          offset: 44008
-          line: 791
+          offset: 45043
+          line: 792
           column: 393
     - pointer: "/allocation_rules/2"
       rule_id: "a_waste"
       identity_kind: "explicit"
-      unit_id: "normative_43221"
+      unit_id: "normative_44256"
       source_span:
         start:
-          offset: 44009
-          line: 792
+          offset: 45044
+          line: 793
           column: 1
         end:
-          offset: 44360
-          line: 792
+          offset: 45395
+          line: 793
           column: 352
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_54411"
+      unit_id: "normative_56010"
       source_span:
         start:
-          offset: 54487
-          line: 835
+          offset: 56086
+          line: 836
           column: 1
         end:
-          offset: 54803
-          line: 835
+          offset: 56402
+          line: 836
           column: 317
     - pointer: "/validation_rules/1"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_54411"
+      unit_id: "normative_56010"
       source_span:
         start:
-          offset: 54804
-          line: 836
+          offset: 56403
+          line: 837
           column: 1
         end:
-          offset: 55067
-          line: 836
+          offset: 56666
+          line: 837
           column: 264
     - pointer: "/validation_rules/2"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54411"
+      unit_id: "normative_56010"
       source_span:
         start:
-          offset: 55068
-          line: 837
+          offset: 56667
+          line: 838
           column: 1
         end:
-          offset: 55366
-          line: 837
+          offset: 56965
+          line: 838
           column: 299
     - pointer: "/validation_rules/3"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54411"
+      unit_id: "normative_56010"
       source_span:
         start:
-          offset: 55367
-          line: 838
+          offset: 56966
+          line: 839
           column: 1
         end:
-          offset: 55747
-          line: 838
+          offset: 57346
+          line: 839
           column: 381
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1642,27 +1659,27 @@ normative_context:
           column: 186
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43221"
+      unit_id: "normative_44256"
       source_span:
         start:
-          offset: 43221
-          line: 786
+          offset: 44256
+          line: 787
           column: 1
         end:
-          offset: 43261
-          line: 786
+          offset: 44296
+          line: 787
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54411"
+      unit_id: "normative_56010"
       source_span:
         start:
-          offset: 54411
-          line: 831
+          offset: 56010
+          line: 832
           column: 1
         end:
-          offset: 54433
-          line: 831
+          offset: 56032
+          line: 832
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1671,5 +1688,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:1e615e8a2ca3d843f772d6cd58ad3d92190d17880d5a01bb38a423b9a9caaa65"
-  generated_content_sha256: "sha256:039164f4afa68ed3d6bfe3ba05667341f3b14d2a8275884db57c9c86c177b577"
+    sha256: "sha256:1e457c13b3bc2f95c28dc3ff42690f5340f9a8833a0aac86802fee3026f53a31"
+  generated_content_sha256: "sha256:87c1edbff1a6cc474af032d4a3c85f000d9d9d937dc561b118f9ff43f8ed3ce5"

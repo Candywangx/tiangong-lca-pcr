@@ -150,7 +150,7 @@ process_inventory:
           name: "Selected excavated mineral soil for embankment fill"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Only imported suitable soil: measured receipts minus returned deliveries; record source, classification, moisture, compaction and placement. Internal cut-to-fill movement is an internal transfer, not another external input."
+          description: "Only suitable soil imported for this work: attributable consumption = gross receipts + opening stock - verified returns/transfers - closing reusable stock, all reconciled for matching material and moisture state. Include consumed losses and rework; record placed quantity separately. Record source, classification, moisture, compaction and placement. Internal cut-to-fill movement is an internal transfer, not another external input."
           amount:
             expression: "Measured exchange attributed to this complete work using cp_material; retain task/lot and actual physical quantity."
             value_mode: "foreground_record"
@@ -995,8 +995,8 @@ dataset_production:
       process_id: "all_foreground_processes"
       flow_role: "material_input"
       record_type: "weighing_record"
-      raw_fields: "task; lot; supplier; composition; grade; wet/dry state; receipt/return; density if volume-converted; placement; reusable asset ledger"
-      collection_method: "Use calibrated weighbridge/batch scales and receipts; reconcile delivery, installed quantity, returns, waste and stock change. When using geometric volume, measure matching lot density rather than a typical value. Keep upstream gate separate from onsite installation."
+      raw_fields: "task; lot; supplier; composition; grade; wet/dry state; receipt/return; density if volume-converted; placement; reusable asset ledger ; attributable opening/closing reusable stocks; verified transfers; consumed losses and rework"
+      collection_method: "Use calibrated weighbridge/batch scales and receipts; reconcile delivery, installed quantity, returns, waste and stock change. When using geometric volume, measure matching lot density rather than a typical value. Keep upstream gate separate from onsite installation.  For imported_fill, use attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock on a matching material/moisture basis; record consumption and placement separately. This does not replace reusable-asset manufacturing attribution."
       unit: "kg"
       frequency: "Every lot and task"
       temporal_coverage: "All work incl. rejected/reworked batches"
@@ -1165,7 +1165,7 @@ data_sources:
     used_for: "Construction dust is activity/weather dependent and needs operation-specific assessment. Historical TSP factor limitations support rejecting unqualified transfer to PM10; no numerical factor is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3c82f5ee302ab32f59bfabf3143e1a47eae268917bc8313512d0bc8916ca362b"
+  source_sha256: "sha256:5dd00afb8a217874281f30f33ab45d073e20ecabdca5ac7f5b0f002cccbd7814"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5687"
@@ -1216,15 +1216,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41231"
+    - unit_id: "normative_41441"
       family: "allocation"
       span:
         start:
-          offset: 41231
+          offset: 41441
           line: 710
           column: 1
         end:
-          offset: 42764
+          offset: 42974
           line: 718
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| a_task | Prefer separately metered task quantities and identifiable material lots. For shared utilities or haulage, partition using measured equipment hours with load/fuel evidence, metered volumes or actual consignments; preserve the denominator ledger and reconcile allocated totals to the original measured totals. Do not allocate by contract price or assumed equal lengths. | fhwa-pavement-lca-2016 |\n| a_reuse | Equipment fabrication is outside the default construction foreground; disclose this gap. When linked in an extended dataset, and for reusable temporary works, maintain one cross-project manufacturing-burden ledger: a use share equals attributable actual activity divided by evidenced cumulative service activity for the same asset and manufacturing scope. Cumulative shares over projects, periods and repeated use must not exceed one. Unknown denominator, future reuse or lifetime stays review; no full-burden reset each project. Report damage/replacement separately and reconcile stock. | fhwa-pavement-lca-2016 |\n| a_recycling | Separate internal reuse, exported waste and separately verified recovered product. No automatic avoided-production credit; retain transfer/treatment burden and disclose the actual recycling allocation boundary. Any separate substitution claim requires reviewed counterfactual, quality and destination evidence; do not create a fictitious co-product from spoil. | fhwa-pavement-lca-2016 |\n\n"
@@ -1244,11 +1244,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41231
+              offset: 41441
               line: 710
               column: 1
             end:
-              offset: 41271
+              offset: 41481
               line: 710
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1264,15 +1264,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50858"
+    - unit_id: "normative_51433"
       family: "validation"
       span:
         start:
-          offset: 50858
+          offset: 51433
           line: 750
           column: 1
         end:
-          offset: 52249
+          offset: 52824
           line: 759
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| v_reference | Reject incomplete/partial delivery, absent geometry/configuration/acceptance qualifiers, inconsistent work count or a mass/material-only output. Keep finished_road reference quantity, protocols and inventories on the same basis. | un-cpc3-constructions-2025; fhwa-pavement-lca-2016 |\n| v_routes | Check every as-built process and component against the declared perimeter and route; resolve absent cards before calling a concrete dataset complete. Validate layer/volume/receipt consistency, rejected work, water routes and waste destinations from actual records. | fhwa-fp24-construction |\n| v_identity | Verify UUID-specific chemical/physical identity, geography, voltage, medium/submedium, fossil/biogenic source and reference property/unit. No NO/NO2/N2O substitution, no resource-water/wastewater conflation and no composite emissions placeholder. |  |\n| v_completeness | Report construction coverage, linked upstream completeness, unquantified emissions/noise, work-zone effects and excluded later stages. Construction noise needs a documented acoustic indicator, method and receiving context; do not express dB as additive energy/mass or fabricate an elementary flow. Measurement consistency alone establishes neither scientific approval nor whole-life performance. | fhwa-pavement-lca-2016 |\n\n"
@@ -1292,11 +1292,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50858
+              offset: 51433
               line: 750
               column: 1
             end:
-              offset: 50880
+              offset: 51455
               line: 750
               column: 23
           text: "## 9. Validation Rules"
@@ -1368,92 +1368,92 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_task"
       identity_kind: "explicit"
-      unit_id: "normative_41231"
+      unit_id: "normative_41441"
       source_span:
         start:
-          offset: 41325
+          offset: 41535
           line: 714
           column: 1
         end:
-          offset: 41731
+          offset: 41941
           line: 714
           column: 407
     - pointer: "/allocation_rules/1"
       rule_id: "a_reuse"
       identity_kind: "explicit"
-      unit_id: "normative_41231"
+      unit_id: "normative_41441"
       source_span:
         start:
-          offset: 41732
+          offset: 41942
           line: 715
           column: 1
         end:
-          offset: 42358
+          offset: 42568
           line: 715
           column: 627
     - pointer: "/allocation_rules/2"
       rule_id: "a_recycling"
       identity_kind: "explicit"
-      unit_id: "normative_41231"
+      unit_id: "normative_41441"
       source_span:
         start:
-          offset: 42359
+          offset: 42569
           line: 716
           column: 1
         end:
-          offset: 42762
+          offset: 42972
           line: 716
           column: 404
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_50858"
+      unit_id: "normative_51433"
       source_span:
         start:
-          offset: 50934
+          offset: 51509
           line: 754
           column: 1
         end:
-          offset: 51233
+          offset: 51808
           line: 754
           column: 300
     - pointer: "/validation_rules/1"
       rule_id: "v_routes"
       identity_kind: "explicit"
-      unit_id: "normative_50858"
+      unit_id: "normative_51433"
       source_span:
         start:
-          offset: 51234
+          offset: 51809
           line: 755
           column: 1
         end:
-          offset: 51538
+          offset: 52113
           line: 755
           column: 305
     - pointer: "/validation_rules/2"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_50858"
+      unit_id: "normative_51433"
       source_span:
         start:
-          offset: 51539
+          offset: 52114
           line: 756
           column: 1
         end:
-          offset: 51805
+          offset: 52380
           line: 756
           column: 267
     - pointer: "/validation_rules/3"
       rule_id: "v_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_50858"
+      unit_id: "normative_51433"
       source_span:
         start:
-          offset: 51806
+          offset: 52381
           line: 757
           column: 1
         end:
-          offset: 52247
+          offset: 52822
           line: 757
           column: 442
   diagnostics:
@@ -1483,26 +1483,26 @@ normative_context:
           column: 189
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41231"
+      unit_id: "normative_41441"
       source_span:
         start:
-          offset: 41231
+          offset: 41441
           line: 710
           column: 1
         end:
-          offset: 41271
+          offset: 41481
           line: 710
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50858"
+      unit_id: "normative_51433"
       source_span:
         start:
-          offset: 50858
+          offset: 51433
           line: 750
           column: 1
         end:
-          offset: 50880
+          offset: 51455
           line: 750
           column: 23
 projection_metadata:
@@ -1512,5 +1512,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3c82f5ee302ab32f59bfabf3143e1a47eae268917bc8313512d0bc8916ca362b"
-  generated_content_sha256: "sha256:7bb99ce018f1af9c37635d7289f68054272c5f64471091373c2e7f0be7e0c27b"
+    sha256: "sha256:5dd00afb8a217874281f30f33ab45d073e20ecabdca5ac7f5b0f002cccbd7814"
+  generated_content_sha256: "sha256:4e652a659201abaebd48065320836dbea09a7ca96c0e34c5056cf34fe4cc38c6"

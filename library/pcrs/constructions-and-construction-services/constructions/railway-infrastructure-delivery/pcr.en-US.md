@@ -653,7 +653,7 @@ This UUID applies only to Chinese user-side grid-average electricity at 1–35 k
 
 ###### lubricating oil (`lubricant`)
 
-Only actual petroleum-derived oil used in construction equipment; record grade, replacement and retained stock. Grease, hydraulic fluid and biodegradable oil require separate identities.
+This UUID applies only to an actual batch verified as fully synthetic polyalphaolefin (PAO) lubricating oil, total synthesis process, production mix at plant. Record grade, base-oil composition, supply route and gate, replacements and stock; petroleum origin or a generic label alone does not establish a match. Mineral oil, other base-oil formulations, grease, hydraulic fluid and biodegradable oil require separately verified identities. If the complete identity fields cannot be reconciled with supplier evidence, retain the batch identity as unresolved rather than substituting this UUID.
 
 - Selected flow: lubricating oil `aec6f1a5-7b09-4704-870d-434d3ada0edd`
 - Flow property / unit: Mass / kg

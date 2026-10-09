@@ -161,7 +161,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Where actual cut-and-cover excavation uses sheet piles; distinguish retained piles from reusable support. Allocate reusable pile manufacture through the same-asset ledger; never charge full manufacture at each project."
           amount:
-            expression: "Record actual attributable deliveries less returns and stock changes; separate incorporation from loss."
+            expression: "Separate new supplied piles permanently incorporated or consumed from reusable or previously used piles. For the new-consumed portion use measured attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock, retaining consumed losses, with cp_materials. For reusable or previously used piles use measured asset net mass multiplied by the evidenced dimensionless manufacturing share under the section 8 same-asset manufacturing calculation and cp_assets; returning the physical pile does not cancel its use share. Prior manufacture already assigned is never charged again, including if a previously used pile is finally retained or lost. Keep physical delivery/return/incorporation/loss movements separate and do not count the same pile in both branches."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1164,8 +1164,8 @@ dataset_production:
       process_id: "all_foreground_processes"
       flow_role: "reusable machine/component manufacturing shares"
       record_type: "foreground_record"
-      raw_fields: "asset ID; actual count/net mass and configuration; manufacturing scope; project activity; supported cumulative activity/use history; prior/current shares; remaining shares; repair"
-      collection_method: "Reconcile same-asset cross-project ledger and supplier records; audit cumulative shares ≤1; unknown denominator or physical conversion requires review without resetting full manufacture"
+      raw_fields: "asset ID; actual count/net mass and configuration; manufacturing scope; project activity; supported cumulative activity/use history; prior/current shares; remaining shares; repair ; support_pile new/previously-used status; permanent/consumed versus reusable portion; physical receipts/returns/closing stock/incorporation/loss; prior assigned manufacture"
+      collection_method: "Reconcile same-asset cross-project ledger and supplier records; audit cumulative shares ≤1; unknown denominator or physical conversion requires review without resetting full manufacture  For support_pile, reconcile new-consumed material through cp_materials separately from reusable/previously-used asset mass times its conserved share; a returned reusable pile retains this project manufacturing share. A formerly used pile retained or lost may receive only a justified remaining share, never fresh full manufacture. Prevent duplicate attribution between branches and retain physical movements separately."
       unit: "item; kg; h"
       frequency: "each task, batch or event and delivery reconciliation"
       temporal_coverage: "actual construction start through acceptance including rework"
@@ -1205,7 +1205,7 @@ dataset_production:
       source_ids: []
     - id: asset_attribution
       applies_to: "support_pile; tbm_share"
-      rule: "Apply section 7 same-asset manufacturing shares with measured count or mass and supported cumulative activity; dimensionless shares conserve cumulative burden ≤1. Do not replace unknown denominator with a default."
+      rule: "Apply section 7 same-asset manufacturing shares to tbm_share and the reusable or previously used portion of support_pile: measured asset count or net mass × evidenced dimensionless share based on supported cumulative activity. Conserve cumulative assigned manufacture ≤1 across all projects/periods; physical return does not set the share to zero, and later retention/loss never resets full manufacture. The new permanently incorporated/consumed support_pile portion follows its separate cp_materials stock balance, not this asset-use formula. Do not replace an unknown denominator or prior ledger with a default."
       inputs:
         - cp_assets
       output: "attributed manufacturing contribution and limitations"
@@ -1271,7 +1271,7 @@ data_sources:
     used_for: "Historical qualitative civil-route, excavation support, lining and immersed-element process context; no adopted design loads, quantities, service life or emission factors; actual project specifications control applicability"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:cb0d63ad77d8c2d7f25afa88459f495d5fc53a1ccd4a4f2e588a7158416976ae"
+  source_sha256: "sha256:c75f5fd94e0c5e9a69b0935e32ecd0492d9b00428abf00a733126c1e107ac683"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4936"
@@ -1322,15 +1322,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46555"
+    - unit_id: "normative_47243"
       family: "allocation"
       span:
         start:
-          offset: 46555
+          offset: 47243
           line: 845
           column: 1
         end:
-          offset: 47998
+          offset: 48686
           line: 853
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | rule | source_ids |\n| --- | --- | --- |\n| allocation_subdivide | First subdivide records by work package, bore, route and delivery. Attribute shared electricity, haul and pumping by causal metered energy, measured transported mass-distance or actual pumping activity. Collect the real activity and all beneficiaries; no allocation by arbitrary project cost or default tunnel length. Retain formula, physical units and uncertainty. |  |\n| allocation_reuse | For machines and reusable piles/formwork, use supported cumulative activity or reuse history of the same asset to assign a dimensionless share of manufacturing burdens. Sum of prior, current and future assigned shares must not exceed one; never reset the full burden per project. Actual machine mass/count, net configuration and ledger are collected separately; missing lifespan/activity denominator stays review, not assumed zero. Keep maintenance and consumption separate. |  |\n| allocation_excavation | Reconcile excavation volume/mass, internal reuse, off-site reuse/sale, disposal and stock by material and moisture. Excavated rock/soil is not automatically a co-product or a credit. If real co-production remains after subdivision, justify a physical causal allocation with receiving-product evidence; economic fallback needs actual values and sensitivity review. No default avoided landfill or virgin aggregate credit. |  |\n\n"
@@ -1350,11 +1350,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46555
+              offset: 47243
               line: 845
               column: 1
             end:
-              offset: 46595
+              offset: 47283
               line: 845
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1370,15 +1370,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56888"
+    - unit_id: "normative_58571"
       family: "validation"
       span:
         start:
-          offset: 56888
+          offset: 58571
           line: 887
           column: 1
         end:
-          offset: 58166
+          offset: 59849
           line: 897
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | rule |\n| --- | --- |\n| validate_reference | Reference product name equals reference_tunnel selected flow; 1 item represents the same complete accepted delivery in cp_delivery and all inventory bases; geometry and system interfaces are explicit. |\n| validate_routes | Actual construction records determine all route conditions; do not replace tunnel scope with a smaller material or easier geography to match identity. Ground improvement, dry/wet spraying, lining and jacking differences retain complete actual inventories. |\n| validate_balance | Reconcile excavation, reuse, import, disposal, moisture and stock; supplied materials, installed quantities and losses; pump water balance and energy meters; same-asset shares across projects ≤1. |\n| validate_emission | NO, NO₂ and N₂O, PM10 and larger particles, fossil and biogenic carbon, environmental abstraction and waste/discharge are distinct. Verify actual release and medium; no presumed emission factors or indoor-to-environment conversion. |\n| validate_completeness | Missing identity, measurement, tasks, unsupported conversions/shares and separately excluded lifecycle stages remain explicit gaps. Mechanical check success does not approve methodology or engineering acceptance. |\n\n"
@@ -1398,11 +1398,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56888
+              offset: 58571
               line: 887
               column: 1
             end:
-              offset: 56910
+              offset: 58593
               line: 887
               column: 23
           text: "## 9. Validation Rules"
@@ -1461,105 +1461,105 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_46555"
+      unit_id: "normative_47243"
       source_span:
         start:
-          offset: 46649
+          offset: 47337
           line: 849
           column: 1
         end:
-          offset: 47044
+          offset: 47732
           line: 849
           column: 396
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_reuse"
       identity_kind: "explicit"
-      unit_id: "normative_46555"
+      unit_id: "normative_47243"
       source_span:
         start:
-          offset: 47045
+          offset: 47733
           line: 850
           column: 1
         end:
-          offset: 47545
+          offset: 48233
           line: 850
           column: 501
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_excavation"
       identity_kind: "explicit"
-      unit_id: "normative_46555"
+      unit_id: "normative_47243"
       source_span:
         start:
-          offset: 47546
+          offset: 48234
           line: 851
           column: 1
         end:
-          offset: 47996
+          offset: 48684
           line: 851
           column: 451
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_56888"
+      unit_id: "normative_58571"
       source_span:
         start:
-          offset: 56945
+          offset: 58628
           line: 891
           column: 1
         end:
-          offset: 57170
+          offset: 58853
           line: 891
           column: 226
     - pointer: "/validation_rules/1"
       rule_id: "validate_routes"
       identity_kind: "explicit"
-      unit_id: "normative_56888"
+      unit_id: "normative_58571"
       source_span:
         start:
-          offset: 57171
+          offset: 58854
           line: 892
           column: 1
         end:
-          offset: 57448
+          offset: 59131
           line: 892
           column: 278
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_56888"
+      unit_id: "normative_58571"
       source_span:
         start:
-          offset: 57449
+          offset: 59132
           line: 893
           column: 1
         end:
-          offset: 57667
+          offset: 59350
           line: 893
           column: 219
     - pointer: "/validation_rules/3"
       rule_id: "validate_emission"
       identity_kind: "explicit"
-      unit_id: "normative_56888"
+      unit_id: "normative_58571"
       source_span:
         start:
-          offset: 57668
+          offset: 59351
           line: 894
           column: 1
         end:
-          offset: 57923
+          offset: 59606
           line: 894
           column: 256
     - pointer: "/validation_rules/4"
       rule_id: "validate_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_56888"
+      unit_id: "normative_58571"
       source_span:
         start:
-          offset: 57924
+          offset: 59607
           line: 895
           column: 1
         end:
-          offset: 58164
+          offset: 59847
           line: 895
           column: 241
   diagnostics:
@@ -1589,26 +1589,26 @@ normative_context:
           column: 188
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46555"
+      unit_id: "normative_47243"
       source_span:
         start:
-          offset: 46555
+          offset: 47243
           line: 845
           column: 1
         end:
-          offset: 46595
+          offset: 47283
           line: 845
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56888"
+      unit_id: "normative_58571"
       source_span:
         start:
-          offset: 56888
+          offset: 58571
           line: 887
           column: 1
         end:
-          offset: 56910
+          offset: 58593
           line: 887
           column: 23
 projection_metadata:
@@ -1618,5 +1618,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:cb0d63ad77d8c2d7f25afa88459f495d5fc53a1ccd4a4f2e588a7158416976ae"
-  generated_content_sha256: "sha256:ef1e9e6d7dffa3bc1ee4562d5c0bf34c2b8b47ae266af375b7e44a2acd9e5c22"
+    sha256: "sha256:c75f5fd94e0c5e9a69b0935e32ecd0492d9b00428abf00a733126c1e107ac683"
+  generated_content_sha256: "sha256:610b9dd4a21c6e5d69137a9f93ffcd9e06a08fade345cdb39d674cd93e9f9e05"

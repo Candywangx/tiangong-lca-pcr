@@ -83,6 +83,7 @@ content_maturity: authored_methodology
 | b_complete_delivery | 纳入真实进场、线路与作业带准备、表土分离、沟槽或支撑、收管布管弯管、连接与无损检测、适用涂层修补、下沟或铺设锚固、回填、站场土建及设备安装、试验复验、连头、交付要求的恢复与清场。共享公用工程及排放记录按任务标记且只计一次。 | ferc-construction-2017; ferc-upland-2013; saipem-subsea |
 | b_routes | 从真实设计与竣工记录确定明挖、定向钻、隧道、地上支撑、海底及站场要求。纳入真实水控制、钻浆管理、铺管与辅助船、开沟防护及登陆段。缺失材料或过程须先补充原子行才能提供完整项目数据；条件性行不能删去实际范围。 | ferc-wetland-2013; saipem-subsea; un-cpc3-2025 |
 | b_supplied_state | 外供管材、涂层及总成制造与现场连接防护运输安装分开。供应方厂内试验在上游，真实施工试验在前景。现场加工拌合单列投入过程，不重复内含钢、混凝土、水或涂层成分。 | ferc-construction-2017; nwpipe-steel-water-2019; phmsa-hydrotest |
+| b_consumed_inputs | 对每项外供材料或总成投入，施工安装适用条件限定用途，不将投入限于成功安装量。各原生单位按可归属总收货+期初库存−经核实退回或转移−期末可复用库存计量；包括验收前撒漏、损坏、拒收后实际消耗及替换。经核实退回和可复用结存不计入消耗投入，但相关可归属搬运、运输或返工仍保留。安装验收量与废物分别核对，不抵消已消耗投入的制造负担。可复用临时资产仍按资产分摊规则计守恒的制造份额。 |  |
 | b_stages | 纳入施工实际需要的既有障碍与临建拆除，不假称是未来最终拆除。交付后输送运营、日常泵送压缩、维护更新及最终拆除不纳入，须以真实活动、时间及去向证据另行扩展。 | ferc-construction-2017; phmsa-hydrotest |
 | b_environment | 直接水资源输入、外购技术圈水、送去处理废水及基本流排放是不同接口。仅在具体物质介质和真实发生有证据时计排放。噪声、振动、土地生态、水体扰动与降排水是需调查的影响背景，缺少适用定量流是明确覆盖缺口，不是零影响。 | ferc-construction-2017; ferc-wetland-2013; ferc-upland-2013 |
 
@@ -576,7 +577,7 @@ content_maturity: authored_methodology
 
 ###### 泵（`liquid_pump`）
 
-仅用于长距离相关泵站安装的实际完整工厂外供液体泵。记录介质、型号、工况、壳体与叶轮、供货总成及实测净质量；声明驱动是否内含，避免重复另计电机。本行不是运营泵送电力。
+用于长距离相关泵站实际供入的完整工厂外供液体泵，按b_consumed_inputs纳入可归属的验收前损坏及替换消耗；安装验收泵另记。记录介质、型号、工况、壳体与叶轮、供货总成及实测净质量；声明驱动是否内含，避免重复另计电机。本行不是运营泵送电力。
 
 - 选定流：泵 `bbd91be4-dc00-44c2-8bc1-f67ee79174a7`
 - 流属性/单位：质量 / kg
@@ -1137,7 +1138,7 @@ content_maturity: authored_methodology
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_delivery | handover | finished_pipeline | 验收与竣工台账 | 资产场址接口编号；国家；介质；真实适用线路长度内径壁厚路线压力工况；纳入站场几何与设备 BOM；not_applicable 范围证据；试验介质准则结果；焊缝涂层检查；返工；恢复；完整验收数量 | 采用可追溯竣工几何与校准仪器测量，核对合同范围及 BOM、签署验收及试验记录；计输出前核验完整交付状态。 | item | 每次交付与修正 | 完整真实施工至验收 | 同一声明单元及接口 | 每声明的参考流 | 测量校准文件；验收检查记录 |
-| cp_materials | pipe_installation; earthworks; crossings; offshore; station; restoration | each supplied atomic material/assembly | 到货、领退料、存量及供方记录 | row_id；批次牌号规格；材料配方内衬涂层；供方国家接口；领退料存量；实测净质量长度体积；温度；密度线质量；站场总成内含 | 采用校准秤或可追溯批次证书称量交付领用净量，将初末存量与退料核对安装几何及真实 BOM；只在同批同态下实测密度线质量，排除包装皮重及完整外供总成中已内含项目。 | kg; m; m3 | 每次到货领用退回 | 施工返工所有批次 | 同一单元，按任务站场区段标记 | 每声明的参考流 | 称量票；钢厂证书；配方；真实 BOM 存量核对 |
+| cp_materials | pipe_installation; earthworks; crossings; offshore; station; restoration | each supplied atomic material/assembly | 到货、领退料、存量及供方记录 | row_id；批次牌号规格；材料配方内衬涂层；供方国家接口；领退料存量；实测净质量长度体积；温度；密度线质量；站场总成内含 ；期初期末可复用库存；经核实转移；验收前损坏拒收替换；分别记录消耗与安装验收量 | 采用校准秤或可追溯批次证书称量交付领用净量，将初末存量与退料核对安装几何及真实 BOM；只在同批同态下实测密度线质量，排除包装皮重及完整外供总成中已内含项目。  按b_consumed_inputs采用逐行原生单位：可归属总收货+期初库存−经核实退回或转移−期末可复用库存；纳入实际消耗的损失与替换，安装验收及废物分别核对。 | kg; m; m3 | 每次到货领用退回 | 施工返工所有批次 | 同一单元，按任务站场区段标记 | 每声明的参考流 | 称量票；钢厂证书；配方；真实 BOM 存量核对 |
 | cp_logistics | logistics | transport_diesel | 车辆与托运台账 | 车辆任务；起终点；真实距离；载荷；空返；柴油牌号化石比例；供油燃用量；初末油存量；供方运输覆盖 | 使用燃料表、加油与发运记录，核对装载量及纳入的去回程，不假设扣除距离。若使用链接运输服务数据替代燃料，声明精确活动并剔除本核算中其内含燃料与排放。 | kg; km | 每趟运输与加油 | 所有真实施工交付及废物运输 | 单元特定线路台账 | 每声明的参考流 | 燃料表校准；发运与行车日志；供应边界 |
 | cp_energy | site_support; offshore | each fuel or delivered-voltage electricity | 电表、燃料及设备任务日志 | row_id；电表电压；国家年份供方；任务设备；初末读数；真实作业怠速小时；燃料量牌号化石比例；密度；热值证据；船舶加油任务；归属份额 | 读取校准用户表、称量领油或可追溯加油记录，分别核对现场发电与船舶任务。共享量按真实分表任务需求或有依据活动归属，守恒完整期间数量。kWh 以 3.6 转 MJ；质量转燃料能量须真实适用低位热值，不假设流次要属性。 | kg; kWh; MJ | 每班、领油及计量期间 | 整个场地船舶施工及复验 | 声明单元任务及另列共享受益者 | 每声明的参考流 | 表校准；燃料证书；时间任务及守恒归属台账 |
 | cp_water | site_support | treated_process_water; river_withdrawal; groundwater_withdrawal; dewatering_freshwater_return; dewatering_wastewater | 供水、取水、使用、循环及降排水计量 | 来源类型国家地点；处理接口；用途任务；质量体积温度密度；取用；循环；排出；存量；降排水；许可 | 计量每项真实外部来源与去向。称量以质量参考的处理水，或以同态实测密度换算体积。内部循环不每次重新作为外部投入；另保留地下水降排水旁路量及接收接口。 | kg; m3 | 每次取用使用排出 | 全部施工包括水压试验 | 同一单元、明确水体及供方 | 每声明的参考流 | 校准表；水平衡；真实来源质量及许可 |
@@ -1151,7 +1152,7 @@ content_maturity: authored_methodology
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | calc_reference | finished_pipeline | 仅在同一完整单元全部接口、实体工程与所需试验实际验收后记录 1 件，不按购入管长推算验收数。 | cp_delivery | 每声明的参考流参考输出 | un-cpc3-2025 |
-| calc_stock | all material and waste rows | 每声明的参考流按批次核对期初、到货、期末、退料、安装、废物与内部回用；同一物质状态守恒并记录返工，不能将所有投入质量设为建筑参考质量。 | cp_materials; cp_waste | 每声明的参考流各物质的净归属量 | ferc-construction-2017 |
+| calc_stock | all material and waste rows | 每声明的参考流按批次核对期初、到货、期末、退料、安装、废物与内部回用；同一物质状态守恒并记录返工，不能将所有投入质量设为建筑参考质量。  对外供投入应用b_consumed_inputs，包括验收前实际消耗的损失与替换；不得把安装验收量当作投入量。 | cp_materials; cp_waste | 每声明的参考流各物质的净归属量 | ferc-construction-2017 |
 | calc_utilities | transport_diesel; site_diesel; marine_gasoil; cn_lv_power; cn_mv_power | 每声明的参考流汇总实测归属量；电量 kWh 乘 3.6 得 MJ。体积转燃料质量采用实测同态密度；转能量采用有依据实际低位热值。共享任务份额总和不得超过对应计量期总量。 | cp_energy; cp_logistics | 每声明的参考流 kg 或 MJ | ferc-construction-2017 |
 | calc_water | treated_process_water; river_withdrawal; groundwater_withdrawal; dewatering_freshwater_return; dewatering_wastewater; test_wastewater; freshwater_discharge | 每声明的参考流逐来源核对外部取用、供水、储存、实际回用与外部去向。质量参考水的体积换算用同态实测密度；取水、耗水、送处理废水与直接排放分别记录，内部循环不作为重复外部取水。 | cp_water; cp_testing | 每声明的参考流分别 kg 或 m3 | ferc-wetland-2013 |
 | calc_emission | all elementary air emission rows | 每声明的参考流采用实测物质释放量，或明确记录适用因子乘真实活动及单位。化石 CO2 采用实测化石碳氧化量乘分子质量比 44/12；不默认全化石或全氧化，不以 NOx 当量、总 PM 或排放因子代替真实物质粒级。 | cp_air | 每声明的参考流物质特定 kg | ferc-construction-2017 |

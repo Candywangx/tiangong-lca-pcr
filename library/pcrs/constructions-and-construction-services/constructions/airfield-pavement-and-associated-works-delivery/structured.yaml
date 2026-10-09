@@ -23,8 +23,8 @@ system_boundary:
       source_ids:
         - faa-airport-construction-2018
     - rule_id: boundary_consumed_inputs
-      applies_to: "purchased product inputs in all selected or actually attempted construction routes"
-      rule: "Input amounts include all actual attributable consumption, including pre-installation damage, rejected loads, cutting/application losses and replacements before handover. This is an explicit exception to local installed/applied/used wording: that wording identifies the intended route and configuration, not a successful-installation-only numerator. Reconcile native-unit input = gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock; retain installed accepted quantities and actual waste separately. Keep supplied identity/state and assembly boundaries exact; do not duplicate internal constituents or reusable-asset manufacture."
+      applies_to: "purchased consumable/permanently supplied product inputs in all selected or actually attempted construction routes; reusable-asset manufacture excluded"
+      rule: "Input amounts include all actual attributable consumption, including pre-installation damage, rejected loads, cutting/application losses and replacements before handover. This is an explicit exception to local installed/applied/used wording: that wording identifies the intended route and configuration, not a successful-installation-only numerator. Reconcile native-unit input = gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock; retain installed accepted quantities and actual waste separately. Keep supplied identity/state and assembly boundaries exact; do not duplicate internal constituents or reusable-asset manufacture.  This stock-consumption equation does not apply to reusable equipment or plywood-panel manufacturing shares under cp_assets/cp_formwork_assets. Those rows retain their supported cumulative-use manufacture attribution under allocation_assets/asset_share even if the physical asset is returned, transferred or held in reusable closing stock; physical stock movements remain separate and cannot cancel the current use share."
       source_ids: []
     - rule_id: boundary_stages
       applies_to: "dataset"
@@ -1442,7 +1442,7 @@ data_sources:
     used_for: "Concrete washout liquid, settled solids, containment and actual water-route distinction; no assumed soil/water discharge or default pH/concentration"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3d6f36f40a3b4d343b38403d36a378ea3da4ce6a62b8cbe566bff99b99f5c7a6"
+  source_sha256: "sha256:86379527dbfe6522e81facc3d65eb5c46ca1008ffc18d391d8aa3277fa7527a7"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6820"
@@ -1453,10 +1453,10 @@ normative_context:
           line: 68
           column: 1
         end:
-          offset: 9881
+          offset: 10372
           line: 88
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual pre-construction site, retained assets and external supply product gates |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Airfield pavement and related non-building entity; use and delivery scope explicitly declared |\n| recursive_input_rule | Retained same-category pavement is an existing asset input with condition/burden records; do not recursively duplicate its whole construction history |\n| upstream_dataset_requirement | Link each actual supplied product to compatible state, technology, geography and unit manufacture data; onsite mixing separately expands actual ingredients, heating, fuel and releases without duplicating finished-product manufacture |\n| disclosure | Upstream coverage, actual transport/site work, initial removal, retained assets, associated facilities, subcontracting, tests, gaps and post-handover stages |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_delivery | dataset | Record actual earthworks, layers, drainage, marking/grooving, lighting and tests/handover by process. Listed materials are not a universal complete recipe; individually add every additional actual material, packaging, lubricant, planting input, ancillary and temporary work exchange, documenting absent processes. | faa-airport-construction-2018 |\n| boundary_consumed_inputs | purchased product inputs in all selected or actually attempted construction routes | Input amounts include all actual attributable consumption, including pre-installation damage, rejected loads, cutting/application losses and replacements before handover. This is an explicit exception to local installed/applied/used wording: that wording identifies the intended route and configuration, not a successful-installation-only numerator. Reconcile native-unit input = gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock; retain installed accepted quantities and actual waste separately. Keep supplied identity/state and assembly boundaries exact; do not duplicate internal constituents or reusable-asset manufacture. | |\n| boundary_stages | dataset | Link manufacture and transport separately; paving does not represent material production. Operating electricity, aircraft, post-handover maintenance/replacement, final demolition and destinations are excluded; separately model those stages only with real scenarios and redeclared scope. | fhwa-pavement-lca-2016 |\n| boundary_environment | utilities; waste | Include actual utilities and evidenced direct releases, distinguishing fuel supply/combustion, purchased water/resource abstraction, dewatering transfer/discharge, liquid waste/settled solids. Retain actual equipment, duration, location and measurements for noise without inventing default sound-energy exchanges; any evidenced emissions are separate exact substances and media. | epa-construction-dust-1995; epa-concrete-washout-2012 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual pre-construction site, retained assets and external supply product gates |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Airfield pavement and related non-building entity; use and delivery scope explicitly declared |\n| recursive_input_rule | Retained same-category pavement is an existing asset input with condition/burden records; do not recursively duplicate its whole construction history |\n| upstream_dataset_requirement | Link each actual supplied product to compatible state, technology, geography and unit manufacture data; onsite mixing separately expands actual ingredients, heating, fuel and releases without duplicating finished-product manufacture |\n| disclosure | Upstream coverage, actual transport/site work, initial removal, retained assets, associated facilities, subcontracting, tests, gaps and post-handover stages |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_delivery | dataset | Record actual earthworks, layers, drainage, marking/grooving, lighting and tests/handover by process. Listed materials are not a universal complete recipe; individually add every additional actual material, packaging, lubricant, planting input, ancillary and temporary work exchange, documenting absent processes. | faa-airport-construction-2018 |\n| boundary_consumed_inputs | purchased consumable/permanently supplied product inputs in all selected or actually attempted construction routes; reusable-asset manufacture excluded | Input amounts include all actual attributable consumption, including pre-installation damage, rejected loads, cutting/application losses and replacements before handover. This is an explicit exception to local installed/applied/used wording: that wording identifies the intended route and configuration, not a successful-installation-only numerator. Reconcile native-unit input = gross attributable receipts + opening stock - verified returns/transfers - closing reusable stock; retain installed accepted quantities and actual waste separately. Keep supplied identity/state and assembly boundaries exact; do not duplicate internal constituents or reusable-asset manufacture.  This stock-consumption equation does not apply to reusable equipment or plywood-panel manufacturing shares under cp_assets/cp_formwork_assets. Those rows retain their supported cumulative-use manufacture attribution under allocation_assets/asset_share even if the physical asset is returned, transferred or held in reusable closing stock; physical stock movements remain separate and cannot cancel the current use share. | |\n| boundary_stages | dataset | Link manufacture and transport separately; paving does not represent material production. Operating electricity, aircraft, post-handover maintenance/replacement, final demolition and destinations are excluded; separately model those stages only with real scenarios and redeclared scope. | fhwa-pavement-lca-2016 |\n| boundary_environment | utilities; waste | Include actual utilities and evidenced direct releases, distinguishing fuel supply/combustion, purchased water/resource abstraction, dewatering transfer/discharge, liquid waste/settled solids. Retain actual equipment, duration, location and measurements for noise without inventing default sound-energy exchanges; any evidenced emissions are separate exact substances and media. | epa-construction-dust-1995; epa-concrete-washout-2012 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1493,15 +1493,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54185"
+    - unit_id: "normative_54676"
       family: "allocation"
       span:
         start:
-          offset: 54185
+          offset: 54676
           line: 951
           column: 1
         end:
-          offset: 55532
+          offset: 56023
           line: 959
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_project | all inventory rows | First partition airport work using submeters, weights, equipment time, actual zones and lots; direct attribution precedes allocation. Shared activities use measured causal physical drivers, preserving all beneficiary projects and denominator with shares summing to one. Area normalizes the reference within a consistent use/structure package; it is not a default allocation among heterogeneous works. |  |\n| allocation_assets | plywood_form; utilities | Use cp_assets / cp_formwork_assets to record each asset/component manufacture burden, project/period activity and supported cumulative service. Across projects, periods and repeated uses, total manufacture shares of the same asset cannot exceed one. Unknown life/cumulative activity remains a review and completeness gap, never reset per project. |  |\n| allocation_recovery | waste | Construction waste, reused pavement and exported millings do not automatically earn credits. Document actual treatment/recovery gates, quality and receiver. Any substitution benefit or recycling allocation needs a declared sourced method and sensitivity, without simultaneously claiming avoided manufacture and zero burden. | fhwa-pavement-lca-2016 |\n\n"
@@ -1521,11 +1521,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54185
+              offset: 54676
               line: 951
               column: 1
             end:
-              offset: 54225
+              offset: 54716
               line: 951
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1541,15 +1541,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_68288"
+    - unit_id: "normative_68779"
       family: "validation"
       span:
         start:
-          offset: 68288
+          offset: 68779
           line: 997
           column: 1
         end:
-          offset: 69688
+          offset: 70179
           line: 1006
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference_airfield | Check 1 m2 output, Area property, surveyed area, delivery completeness and qualifiers; all rows/protocols share the same package denominator. Missing survey/attribution evidence or overlapping area makes data incomplete. | un-cpc3-2025 |\n| validate_route | dataset | Reconcile earthworks, subgrade, aggregate, asphalt/concrete/turf layers and specified associated works with actual design, documenting applicability/absence and corrections. An empty UUID does not imply absence; collection labels cannot complete the inventory. | faa-airport-construction-2018 |\n| validate_identities | all inventory rows | Verify each public identity substance, state, route, geography/voltage, environmental medium and reference property; unsupported mass/area/volume relationships remain unresolved. Align bilingual row_id, rule_id, UUID and official Chinese names. |  |\n| validate_coverage | dataset | Check no overlap between site combustion, transport, upstream manufacture and treatment. Reconcile water/waste destinations, exact emission species and cumulative asset shares. Gaps prevent complete environmental-inventory claims; site delivery confers neither whole-life coverage nor scientific/regulatory approval. | fhwa-pavement-lca-2016; epa-concrete-washout-2012 |\n\n"
@@ -1569,11 +1569,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 68288
+              offset: 68779
               line: 997
               column: 1
             end:
-              offset: 68310
+              offset: 68801
               line: 997
               column: 23
           text: "## 9. Validation Rules"
@@ -1613,20 +1613,20 @@ normative_context:
           line: 84
           column: 1
         end:
-          offset: 9054
+          offset: 9545
           line: 84
-          column: 793
+          column: 1284
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_stages"
       identity_kind: "explicit"
       unit_id: "normative_6820"
       source_span:
         start:
-          offset: 9055
+          offset: 9546
           line: 85
           column: 1
         end:
-          offset: 9398
+          offset: 9889
           line: 85
           column: 344
     - pointer: "/system_boundary/rules/3"
@@ -1635,102 +1635,102 @@ normative_context:
       unit_id: "normative_6820"
       source_span:
         start:
-          offset: 9399
+          offset: 9890
           line: 86
           column: 1
         end:
-          offset: 9879
+          offset: 10370
           line: 86
           column: 481
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_project"
       identity_kind: "explicit"
-      unit_id: "normative_54185"
+      unit_id: "normative_54676"
       source_span:
         start:
-          offset: 54298
+          offset: 54789
           line: 955
           column: 1
         end:
-          offset: 54747
+          offset: 55238
           line: 955
           column: 450
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_assets"
       identity_kind: "explicit"
-      unit_id: "normative_54185"
+      unit_id: "normative_54676"
       source_span:
         start:
-          offset: 54748
+          offset: 55239
           line: 956
           column: 1
         end:
-          offset: 55147
+          offset: 55638
           line: 956
           column: 400
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_54185"
+      unit_id: "normative_54676"
       source_span:
         start:
-          offset: 55148
+          offset: 55639
           line: 957
           column: 1
         end:
-          offset: 55530
+          offset: 56021
           line: 957
           column: 383
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_68288"
+      unit_id: "normative_68779"
       source_span:
         start:
-          offset: 68383
+          offset: 68874
           line: 1001
           column: 1
         end:
-          offset: 68664
+          offset: 69155
           line: 1001
           column: 282
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_68288"
+      unit_id: "normative_68779"
       source_span:
         start:
-          offset: 68665
+          offset: 69156
           line: 1002
           column: 1
         end:
-          offset: 68988
+          offset: 69479
           line: 1002
           column: 324
     - pointer: "/validation_rules/2"
       rule_id: "validate_identities"
       identity_kind: "explicit"
-      unit_id: "normative_68288"
+      unit_id: "normative_68779"
       source_span:
         start:
-          offset: 68989
+          offset: 69480
           line: 1003
           column: 1
         end:
-          offset: 69283
+          offset: 69774
           line: 1003
           column: 295
     - pointer: "/validation_rules/3"
       rule_id: "validate_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_68288"
+      unit_id: "normative_68779"
       source_span:
         start:
-          offset: 69284
+          offset: 69775
           line: 1004
           column: 1
         end:
-          offset: 69686
+          offset: 70177
           line: 1004
           column: 403
   diagnostics:
@@ -1760,26 +1760,26 @@ normative_context:
           column: 174
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54185"
+      unit_id: "normative_54676"
       source_span:
         start:
-          offset: 54185
+          offset: 54676
           line: 951
           column: 1
         end:
-          offset: 54225
+          offset: 54716
           line: 951
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_68288"
+      unit_id: "normative_68779"
       source_span:
         start:
-          offset: 68288
+          offset: 68779
           line: 997
           column: 1
         end:
-          offset: 68310
+          offset: 68801
           line: 997
           column: 23
 projection_metadata:
@@ -1789,5 +1789,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3d6f36f40a3b4d343b38403d36a378ea3da4ce6a62b8cbe566bff99b99f5c7a6"
-  generated_content_sha256: "sha256:8acac84774f4477415e4f95f54a9269a09854b8a04632054d9a6579ac048cdf5"
+    sha256: "sha256:86379527dbfe6522e81facc3d65eb5c46ca1008ffc18d391d8aa3277fa7527a7"
+  generated_content_sha256: "sha256:39f2301fef0ebbbe33e8bcd74835f4ca4167aa656c14193b7acb2f104407ae2e"

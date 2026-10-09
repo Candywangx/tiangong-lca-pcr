@@ -1105,7 +1105,7 @@ process_inventory:
           property_unit: "Length 838aaa23-0117-11db-92e3-0800200c9a66 / m"
           description: "Only actual CN factory-gate low-voltage cable conforming to the original GB/T 12706.1-2020 route and matched conductor, insulation, rated voltage and cross-section. Verify supplied cable and included packaging; it is not generic copper metal or HV cable."
           amount:
-            expression: "Measure reel delivery lengths minus returns; reconcile installed circuits and separately documented offcuts. Retain primary Length/m, not assumed cable kg per metre."
+            expression: "Use attributable cable consumption in m = gross receipts + opening stock - verified returns/transfers - closing reusable stock. Include installation offcuts, pre-acceptance damage and replacement consumption; reconcile accepted installed lengths and retained slack separately. Preserve Length/m and do not infer cable mass per metre."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1748,8 +1748,8 @@ dataset_production:
       process_id: "electrical"
       flow_role: "Each actual atomic exchange and same declared plant"
       record_type: "foreground_records"
-      raw_fields: "Circuit ids, supply voltage/country, transformer ratings, supplied package boundary, cable lengths/specifications, protection/earthing and cold acceptance; gross attributable receipts; opening/closing reusable stock; verified returns/transfers; failed/replaced units; separate accepted installed counts"
-      collection_method: "Use signed drawings/tests, original supplier tickets, calibrated weighing/meters, equipment logs and configuration evidence; reconcile field work packages and subcontractors; equipment input counts and module manufacture areas include all attributable consumed units, including failed/rejected replacements. Reconcile gross receipts + opening stock - verified returns/transfers - closing reusable stock; accepted installed configuration and waste are separate ledgers, not exclusions from consumed input manufacture."
+      raw_fields: "Circuit ids, supply voltage/country, transformer ratings, supplied package boundary, cable lengths/specifications, protection/earthing and cold acceptance; gross attributable receipts; opening/closing reusable stock; verified returns/transfers; failed/replaced units; separate accepted installed counts ; attributable opening/closing cable stock in m; gross received cable m; verified return/transfer m; consumed damage/offcut/replacement m"
+      collection_method: "Use signed drawings/tests, original supplier tickets, calibrated weighing/meters, equipment logs and configuration evidence; reconcile field work packages and subcontractors; equipment input counts and module manufacture areas include all attributable consumed units, including failed/rejected replacements. Reconcile gross receipts + opening stock - verified returns/transfers - closing reusable stock; accepted installed configuration and waste are separate ledgers, not exclusions from consumed input manufacture.  Cable consumption in m = attributable gross receipts + opening stock - verified returns/transfers - closing reusable stock; include consumed offcuts/damage/replacements, while reconciling installed lengths and reusable surplus separately. Record these terms for every cable row; the balance is not limited to equipment counts or module areas."
       unit: "Row-specific kg, m3, m2, m, MJ, item, t*km; raw capacity MW and geometry retained separately"
       frequency: "Every delivery/return, activity/meter interval, installation test and final handover"
       temporal_coverage: "Entire actual included construction period, rework and subcontracted stages; each gap explicit"
@@ -1969,7 +1969,7 @@ data_sources:
     used_for: "Historical ready-mix chute/pump washing and separate captured liquid/solid handling; no default pH, density, mandatory leakage or treatment credit"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0ba3986df2fd51c1afedb324a38881f0593d8eb4da8779d5adb4271855119125"
+  source_sha256: "sha256:7f7b0d832e2b8fa760d30ac147fddea57af3ab41e90d84d86395b112c6de0f1d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_12084"
@@ -2020,15 +2020,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_73090"
+    - unit_id: "normative_73258"
       family: "allocation"
       span:
         start:
-          offset: 73090
+          offset: 73258
           line: 963
           column: 1
         end:
-          offset: 75051
+          offset: 75219
           line: 974
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| direct_activity | dataset; inventory | First assign materials, metered energy and work packages directly to the actual plant. For shared batching, workforce equipment or deliveries use recorded beneficiary activities/loads and explain the physical relationship; neither plant cost nor assumed annual generation supplies the denominator. Missing relationship requires review. |  |\n| shared_assets | dataset; inventory | For each equipment or reusable form/component retain a persistent manufacture-burden ledger across every project and period. Attribute measured asset amount times evidenced use share; the cumulative shares must be ≤1 and operating energy is separate. Record actual hours/cycles or supported whole-asset denominator and beneficiaries; unknown future life/capacity remains an explicit review, not a fresh full burden at every project. |  |\n| multipurpose_works | dataset; inventory | Shared dam, reservoir civil works, access and grid interfaces must be assigned once with project-specific causal/service evidence among actual beneficiaries; shares conserve the entire included construction burden. State unallocated/missing scope. Independently imported component datasets must not duplicate plant foreground works. |  |\n| residuals | dataset; inventory | Separate reusable material/product transfers from segregated waste and actual disposal. Do not net avoided virgin manufacture or future recovery into core construction. A hot-test electricity/heat extension records actual useful outputs and its independent allocation basis; trial export does not turn construction reference quantity into kWh. |  |\n\nThese attribution rules require the explicit foreground measurement and cross-project evidence of cp_assets and the relevant work-package protocols; they supply no external default share, lifetime or substitution factor.\n\n"
@@ -2048,11 +2048,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 73090
+              offset: 73258
               line: 963
               column: 1
             end:
-              offset: 73130
+              offset: 73298
               line: 963
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -2068,15 +2068,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_94400"
+    - unit_id: "normative_95050"
       family: "validation"
       span:
         start:
-          offset: 94400
+          offset: 95050
           line: 1016
           column: 1
         end:
-          offset: 96714
+          offset: 97364
           line: 1027
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| identity_gate | dataset; inventory | Require one actual constructed power-plant entity, its generating route and all mandatory qualifiers. Verify every adopted identity against material/specification, geography, state, route, primary property and unit group; unresolved identity is not a substitution licence. |  |\n| measurement_gate | dataset; inventory | The final output is exactly 1 item/件 and every inventory/protocol basis is the same declared reference flow. Reconcile measured geometry, capacity, count and delivery state; never infer mass per plant, life, energy yield or a universal mix. Preserve Mass, Area, Length, Volume and energy identities and evidence for any conversion. |  |\n| completeness_gate | dataset; inventory | Match every actual required/conditional design work package to its atomic rows, original records and upstream/transport interfaces. Missing components, unmetered work, hot tests within the accepted scope, unknown allocations or conversions and unsupported routes remain review gaps and prohibit a complete result; genuine absence requires design evidence. |  |\n| environment_gate | dataset; inventory | Check independent source/species/medium evidence before direct elementary exchanges, including fossil share, molecular NO/NO2, disjoint PM fractions and water receptor. Captured sludge/liquid is waste, internal recirculation is not intake, and noise/concentration is not assumed emitted mass. Missing observation is not zero. |  |\n| attribution_gate | dataset; inventory | Reconcile each persistent asset and shared dam/connection ledger across all users, projects and periods; cumulative manufacture shares ≤1 and complete attribution sums to the whole declared burden. Retain actual gates and eliminate duplicate raw materials, equipment packages, fuel services and freight. |  |\n| handover_gate | dataset; inventory | Require dated signed construction acceptance, geometry/configuration and outstanding-tests list. Independent structural, electrical, nuclear, environmental or regulatory acceptance must be evidenced where claimed; PCR inspection establishes none of these approvals. Report performed/skipped checks, findings, uncertainty and covered/excluded stages. |  |\n\n"
@@ -2096,11 +2096,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 94400
+              offset: 95050
               line: 1016
               column: 1
             end:
-              offset: 94422
+              offset: 95072
               line: 1016
               column: 23
           text: "## 9. Validation Rules"
@@ -2198,144 +2198,144 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "direct_activity"
       identity_kind: "explicit"
-      unit_id: "normative_73090"
+      unit_id: "normative_73258"
       source_span:
         start:
-          offset: 73203
+          offset: 73371
           line: 967
           column: 1
         end:
-          offset: 73584
+          offset: 73752
           line: 967
           column: 382
     - pointer: "/allocation_rules/1"
       rule_id: "shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_73090"
+      unit_id: "normative_73258"
       source_span:
         start:
-          offset: 73585
+          offset: 73753
           line: 968
           column: 1
         end:
-          offset: 74061
+          offset: 74229
           line: 968
           column: 477
     - pointer: "/allocation_rules/2"
       rule_id: "multipurpose_works"
       identity_kind: "explicit"
-      unit_id: "normative_73090"
+      unit_id: "normative_73258"
       source_span:
         start:
-          offset: 74062
+          offset: 74230
           line: 969
           column: 1
         end:
-          offset: 74443
+          offset: 74611
           line: 969
           column: 382
     - pointer: "/allocation_rules/3"
       rule_id: "residuals"
       identity_kind: "explicit"
-      unit_id: "normative_73090"
+      unit_id: "normative_73258"
       source_span:
         start:
-          offset: 74444
+          offset: 74612
           line: 970
           column: 1
         end:
-          offset: 74827
+          offset: 74995
           line: 970
           column: 384
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_73090"
+      unit_id: "normative_73258"
       source_span:
         start:
-          offset: 74829
+          offset: 74997
           line: 972
           column: 1
         end:
-          offset: 75049
+          offset: 75217
           line: 972
           column: 221
     - pointer: "/validation_rules/0"
       rule_id: "identity_gate"
       identity_kind: "explicit"
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 94495
+          offset: 95145
           line: 1020
           column: 1
         end:
-          offset: 94811
+          offset: 95461
           line: 1020
           column: 317
     - pointer: "/validation_rules/1"
       rule_id: "measurement_gate"
       identity_kind: "explicit"
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 94812
+          offset: 95462
           line: 1021
           column: 1
         end:
-          offset: 95190
+          offset: 95840
           line: 1021
           column: 379
     - pointer: "/validation_rules/2"
       rule_id: "completeness_gate"
       identity_kind: "explicit"
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 95191
+          offset: 95841
           line: 1022
           column: 1
         end:
-          offset: 95594
+          offset: 96244
           line: 1022
           column: 404
     - pointer: "/validation_rules/3"
       rule_id: "environment_gate"
       identity_kind: "explicit"
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 95595
+          offset: 96245
           line: 1023
           column: 1
         end:
-          offset: 95967
+          offset: 96617
           line: 1023
           column: 373
     - pointer: "/validation_rules/4"
       rule_id: "attribution_gate"
       identity_kind: "explicit"
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 95968
+          offset: 96618
           line: 1024
           column: 1
         end:
-          offset: 96318
+          offset: 96968
           line: 1024
           column: 351
     - pointer: "/validation_rules/5"
       rule_id: "handover_gate"
       identity_kind: "explicit"
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 96319
+          offset: 96969
           line: 1025
           column: 1
         end:
-          offset: 96712
+          offset: 97362
           line: 1025
           column: 394
   diagnostics:
@@ -2365,26 +2365,26 @@ normative_context:
           column: 216
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_73090"
+      unit_id: "normative_73258"
       source_span:
         start:
-          offset: 73090
+          offset: 73258
           line: 963
           column: 1
         end:
-          offset: 73130
+          offset: 73298
           line: 963
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_94400"
+      unit_id: "normative_95050"
       source_span:
         start:
-          offset: 94400
+          offset: 95050
           line: 1016
           column: 1
         end:
-          offset: 94422
+          offset: 95072
           line: 1016
           column: 23
 projection_metadata:
@@ -2394,5 +2394,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0ba3986df2fd51c1afedb324a38881f0593d8eb4da8779d5adb4271855119125"
-  generated_content_sha256: "sha256:aef92da1f615a8a4b6d8351a429205adf8ba9b81f5c93a0347de827359fbd85b"
+    sha256: "sha256:7f7b0d832e2b8fa760d30ac147fddea57af3ab41e90d84d86395b112c6de0f1d"
+  generated_content_sha256: "sha256:dd3fe655b68bc57bd2ed2fcc1cfde11377b3b214d2f7893eecffb3a7b83984aa"

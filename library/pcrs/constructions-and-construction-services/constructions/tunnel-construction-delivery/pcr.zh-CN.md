@@ -104,7 +104,7 @@ item 与公开 Item(s) 为同一数量单位，件为中文显示。几何限定
 
 - 选定流：开挖支护用成品钢板桩
 - 流属性/单位：质量 / kg
-- 数量规则：记录实际归属供货量扣除退货和库存变化；分开记录安装量和损耗。
+- 数量规则：分开新供并永久留置或消耗的桩与可复用或已使用桩。新供消耗部分按cp_materials实测可归属总收货+期初库存−经核实退回或转移−期末可复用库存，保留实际损耗。可复用或已使用桩按第8节同资产制造计算及cp_assets，以实测资产净质量乘有依据的无量纲制造份额；实体退回不抵消本次使用份额。已分配制造负担不再重计，即使已使用桩最终留置或损失亦如此。实物到货、退回、留置与损耗另记，同一桩不得同时计入两分支。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
@@ -863,7 +863,7 @@ item 与公开 Item(s) 为同一数量单位，件为中文显示。几何限定
 | cp_water | site_operation | supply; abstraction; drainage; contained liquid | foreground_record | row_id；来源；含水层或受纳体；盐度；水表；体积；复用；涌水或雨水；处理；采样；浓度；外运 | 供水、取水及排水分别计量；释放物种采用实际代表性采样，收集废液分开；不假设所有涌水为资源消耗或洁净排水 | m3; kg | 每任务、批次或事件及交付核对 | 实际施工起点至验收，包括返工 | 同一声明场址及交付边界 | 每声明的参考流 | 校准、原始票据、竣工测量、证书及范围核对 |
 | cp_waste | site_operation; immersed | each separate physical waste stream | foreground_record | row_id；工序；分类；组成；含水率；校准重量；去向；接收者；场内复用；库存 | 逐物流核对地磅及接收证据；污染土、沉积物、硬化混凝土和液体泥浆区分；不以混合废物标签代替实际交换 | kg | 每任务、批次或事件及交付核对 | 实际施工起点至验收，包括返工 | 同一声明场址及交付边界 | 每声明的参考流 | 校准、原始票据、竣工测量、证书及范围核对 |
 | cp_emissions | site_operation | each actual elementary substance | foreground_record | row_id；物种或 CAS；化石或生物来源；介质及子介质；时态；浓度；流率及持续时间；实际活动；控制；模型或因子来源；不确定性 | 采用代表性实际测量或可追溯场址或设备模型；洞口或环境释放与室内暴露、捕集部分及总 NOx 区分；保留缺失范围 | kg | 每任务、批次或事件及交付核对 | 实际施工起点至验收，包括返工 | 同一声明场址及交付边界 | 每声明的参考流 | 校准、原始票据、竣工测量、证书及范围核对 |
-| cp_assets | all foreground processes | reusable machine/component manufacturing shares | foreground_record | 资产标识；实际数量或净质量及配置；制造范围；项目活动；有依据累计活动或使用历史；既往及本次份额；剩余份额；维修 | 核对同资产跨项目台账及供应方记录；审计累计份额≤1；分母或物理换算未知保留审查，不重置全部制造 | item; kg; h | 每任务、批次或事件及交付核对 | 实际施工起点至验收，包括返工 | 同一声明场址及交付边界 | 每声明的参考流 | 校准、原始票据、竣工测量、证书及范围核对 |
+| cp_assets | all foreground processes | reusable machine/component manufacturing shares | foreground_record | 资产标识；实际数量或净质量及配置；制造范围；项目活动；有依据累计活动或使用历史；既往及本次份额；剩余份额；维修 ；support_pile新供或已使用状态；永久消耗与复用部分；实物收货退回期末库存留置损耗；已分配制造负担 | 核对同资产跨项目台账及供应方记录；审计累计份额≤1；分母或物理换算未知保留审查，不重置全部制造  对support_pile，将cp_materials记录的新供消耗材料与复用或已使用资产质量乘守恒份额分开核对；退回的复用桩仍承担本项目制造份额。曾使用桩最终留置或损失只能归属有依据的剩余份额，不能新计全额制造。避免两分支重复归属，实物流转另记。 | item; kg; h | 每任务、批次或事件及交付核对 | 实际施工起点至验收，包括返工 | 同一声明场址及交付边界 | 每声明的参考流 | 校准、原始票据、竣工测量、证书及范围核对 |
 
 ### 计算规则
 
@@ -872,7 +872,7 @@ item 与公开 Item(s) 为同一数量单位，件为中文显示。几何限定
 | delivery_basis | all inventory rows | 汇总同一验收交付归属的每个原子交换；按每声明的参考流报告，保留各分子单位。不任意除以质量、公里或寿命。 | cp_delivery; cp_materials; cp_blasting; cp_energy; cp_water; cp_waste; cp_emissions | 每声明的参考流的交换数量 |  |
 | complete_output | reference_tunnel | 一项完整验收声明实体 = 1 件；未完成或拒收工程不是验收产出，但保留归属负担。 | cp_delivery | reference_tunnel |  |
 | physical_conversion | all inventory rows | 按第4节采用实际匹配批次物理记录；保留原数量、单位、实测密度或线密度或浓度及温度、公式和不确定性。不支持关系保留审查。 | cp_materials; cp_energy; cp_water; cp_emissions | 原单位可追溯数量 |  |
-| asset_attribution | support_pile; tbm_share | 依据第7节采用同资产制造份额、实测数量或质量及有依据累计活动；无量纲份额保证累计负担≤1。不以默认值替换未知分母。 | cp_assets | 归属制造贡献及局限 |  |
+| asset_attribution | support_pile; tbm_share | 对tbm_share及support_pile中可复用或已使用部分应用第7节同资产制造份额：实测资产数量或净质量×基于有据累计活动的无量纲份额。跨全部项目期间累计已分配制造份额≤1；实物退回不将份额归零，后续留置或损失不重置全额制造。support_pile中新供永久留置或消耗部分采用其单列cp_materials库存平衡，不采用本资产使用公式。分母或既往台账未知不得用默认值替换。 | cp_assets | 归属制造贡献及局限 |  |
 
 ### 数据质量要求
 

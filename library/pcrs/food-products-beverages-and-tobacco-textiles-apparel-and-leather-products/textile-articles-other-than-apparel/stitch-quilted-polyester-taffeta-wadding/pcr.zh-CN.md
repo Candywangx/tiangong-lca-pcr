@@ -395,7 +395,7 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_material | quilting | taffeta_input; wadding_input; thread_input | 质量领用 | 批号；组成；整理；来源；领用kg；退回kg；期初期末库存；验收产量kg | 校准称重及关联批次的领料账；核对领用、在制品及验收产量 | kg | 每批；每统计期核对 | 完整声明期，包括启动、停机、废品及返工 | 声明的加工场址及可归属外包作业 | 每 1 kg 参考流 | 校准、批次账、原始记录、不确定性及核对 |
-| cp_output | finishing | finished_roll | 验收净质量 | 卷号；毛重kg；实测皮重kg；净重kg；幅宽m；长度m；完整成品面密度；调湿；缺陷 | 称量每卷验收产品；测量验收面积；按声明的客户条件检查层间连接及缝迹缺陷 | kg; m2 | 每批；每统计期核对 | 完整声明期，包括启动、停机、废品及返工 | 声明的加工场址及可归属外包作业 | 每 1 kg 参考流 | 校准、批次账、原始记录、不确定性及核对 |
+| cp_output | finishing | finished_roll | 验收净质量 | 卷号；毛重kg；实测皮重kg；净重kg；幅宽m；长度m；完整成品面密度；调湿；缺陷 ；统计期汇总组标识；同产品结构等级；失败及零产出批号；返工来源及最终验收卷号 | 称量每卷验收产品；测量验收面积；按声明的客户条件检查层间连接及缝迹缺陷  将全部批次（含整批失败）核对到同产品统计期汇总组；保留零产出批活动供分子归属，最终验收返工品只计一次。按该组汇总验收净质量用于normalize_batch。 | kg; m2 | 每批；每统计期核对 | 完整声明期，包括启动、停机、废品及返工 | 声明的加工场址及可归属外包作业 | 每 1 kg 参考流 | 校准、批次账、原始记录、不确定性及核对 |
 | cp_transfer | quilting; finishing | quilted_intermediate_out; quilted_intermediate_in | 内部质量转移 | 批号；转移kg；在制品kg；调湿；输出及接收过程 | 相同调湿基准的配对校准称重记录 | kg | 每批；每统计期核对 | 完整声明期，包括启动、停机、废品及返工 | 声明的加工场址及可归属外包作业 | 每 1 kg 参考流 | 校准、批次账、原始记录、不确定性及核对 |
 | cp_energy | quilting; finishing | quilting_electricity; finishing_electricity | 电力计量 | 表号；期初kWh；期末kWh；电压；地域；设备工况；运行时间；压缩机抽尘分配；验收产量kg | 对匹配批次读取校准分表；独立核对支持电量与场址总表 | kWh; MJ | 每批；每统计期核对 | 完整声明期，包括启动、停机、废品及返工 | 声明的加工场址及可归属外包作业 | 每 1 kg 参考流 | 校准、批次账、原始记录、不确定性及核对 |
 | cp_pack | finishing | ldpe_wrap; paper_core | 包装质量 | 组件牌号；领用kg；损耗kg；皮重kg；可追溯退回；验收产量kg | 分别称量各包装组件，核对实际领用及复用卷芯退回 | kg | 每批；每统计期核对 | 完整声明期，包括启动、停机、废品及返工 | 声明的加工场址及可归属外包作业 | 每 1 kg 参考流 | 校准、批次账、原始记录、不确定性及核对 |
@@ -407,7 +407,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| normalize_batch | 所有清单行 | 对每项交换j，归一化量 = 可归属实测批次交换量j / 批次验收纺织品净质量kg。场址、期间及调湿态须匹配；不得除以包装毛重或重复计内部转移。 | cp_material; cp_output; cp_transfer; cp_energy; cp_pack; cp_waste; cp_emission; cp_maintenance | 各交换单位每 1 kg 参考流 |  |
+| normalize_batch | 所有清单行 | 对同一声明产品结构、等级、场址及调湿状态建立有记录的统计期汇总组，纳入全部可归属启动、停机、整批失败、废品及返工。对每项交换j，归一化量=该汇总组全部可归属实测交换j之和/同组验收纺织品净质量总kg。返工产品仅在最终验收时计一次；废品不计入合格产出，其可归属交换仍留在分子。不得对整批失败用零产量归一化、删去其负担或平均各批比率。整个汇总组没有正合格产出时，保留未归一化清单并要求审查，不虚构产出或每kg结果。不得混合无关产品、除以包装卷毛重或重复计内部转移。 | cp_material; cp_output; cp_transfer; cp_energy; cp_pack; cp_waste; cp_emission; cp_maintenance | 各交换单位每 1 kg 参考流 |  |
 | electricity_conversion | quilting_electricity; finishing_electricity | MJ电量 = 电表kWh电量乘以3.6；再应用 normalize_batch。此精确单位换算不是能耗强度假设。 | cp_energy; cp_output | MJ per 1 kg reference flow |  |
 | area_reporting | finished_roll | 验收面积 = 各卷验收幅宽乘以验收长度之和；完整成品面密度 = 验收纺织品净kg / 验收m2。仅有面积统计时，应称量具有完整结构的代表样并验证卷质量换算。不得以仅絮片g/m2作为成品总质量。 | cp_output | m2及kg/m2，作为kg参考的补充 | xmt-q1 |
 
@@ -425,7 +425,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | validate_scope | finished_roll | 拒绝用于单面聚酯缝合路线以外的产品；要求完整限定及实际客户验收。不得从中间纺织品记录推断成衣合规或保温等同性。 |  |
-| validate_basis | 所有清单行 | 要求正值验收净kg、实测皮重、共同调湿态、内部转移配对及可复现归一化交换。以直接卷称重核对完整复合面密度；不得以标称絮片规格作分母。 | xmt-q1 |
+| validate_basis | 所有清单行 | 要求正值验收净kg、实测皮重、共同调湿态、内部转移配对及可复现归一化交换。以直接卷称重核对完整复合面密度；不得以标称絮片规格作分母。  核查同产品统计期汇总组分子完整纳入整批失败，且采用同组唯一正合格质量分母。零产出汇总组保留未归一化状态并要求审查，不得平均批次比率或删去失败批交换。 | xmt-q1 |
 | validate_identity | 公开流及未解决行 | 使用前核验公开流类型、引用属性、单位、地域、电压、材质及来料态。空UUID仍保留精确命名交换，并阻止全关联清单声明；身份解决不代表方法学批准。 |  |
 | validate_emissions | pet_dust_air; captured_dust | 将空气基本流排放与捕集废物及技术圈水分开。本干法路线不强制湿法废水或燃烧排放；实际额外作业须完整增补过程并核验交换身份。 |  |
 

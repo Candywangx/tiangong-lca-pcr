@@ -30,6 +30,10 @@ system_boundary:
       source_ids:
         - jrc-levels-boq-2021
         - rics-wlca-2024
+    - rule_id: boundary_consumed_inputs
+      applies_to: "permanent/consumed supplied materials and assemblies; excludes reusable-asset manufacture"
+      rule: "Local installed, delivered, commissioned or as-built wording specifies the intended route/configuration and acceptance evidence; it does not exclude attributable materials or assemblies consumed in attempted installation, damage, rejected-and-scrapped work or replacements before acceptance. In each native unit, consumed input = attributable gross receipts + opening stock - verified returns/transfers - closing usable stock. Retain actual supplied identity/configuration and assembly inclusions, with failed/replaced items traced to their own identity rather than the final replacement identity. Reconcile accepted installation and waste separately. Verified returns/usable surplus are excluded from consumption, but their attributable transport/handling/rework remains. This equation does not measure reusable equipment/formwork manufacture: retain section 7 conserved lifetime-use shares even when assets are returned/transferred/held in closing stock, and never charge the same asset as both full consumption and a use share."
+      source_ids: []
     - rule_id: boundary_stages
       applies_to: "dataset"
       rule: "Keep material manufacture, inbound transport, site installation, maintenance/replacement, operation, final demolition and waste destinations separately identifiable. A4 and A5 foreground does not establish full A1–A5 or whole-life coverage. Actual initial demolition/clearance and its waste must be inventoried separately when present."
@@ -1258,8 +1262,8 @@ dataset_production:
       process_id: "site"
       flow_role: "row-specific actual exchange"
       record_type: "foreground_records"
-      raw_fields: "Excavation volume, soil state, grading, site condition and imported fill weights"
-      collection_method: "Survey before/after work and retain calibrated weighbridge/delivery records, contamination tests and destination tickets; record original and loose volumes separately"
+      raw_fields: "Excavation volume, soil state, grading, site condition and imported fill weights ; where supplied materials/assemblies occur: identity-specific gross receipts, opening/closing usable stock, verified returns/transfers, consumed damage/rejects/replacements and separate accepted installation"
+      collection_method: "Survey before/after work and retain calibrated weighbridge/delivery records, contamination tests and destination tickets; record original and loose volumes separately  For supplied material/assembly input quantities apply boundary_consumed_inputs, retaining failed/replacement consumption and separate acceptance/waste records; reusable-asset manufacture remains its separate conserved-share calculation."
       unit: "row-specific kg, m3, m2, MJ, item, t*km"
       frequency: "Each delivery, work-package event and meter interval; each handover"
       temporal_coverage: "Complete actual construction period through acceptance; retain start/end dates and unmetered intervals"
@@ -1270,8 +1274,8 @@ dataset_production:
       process_id: "structure"
       flow_role: "row-specific actual exchange"
       record_type: "foreground_records"
-      raw_fields: "Each member/material identity, grade, geometry, moisture, deliveries, returns, installation and temporary-panel deployment"
-      collection_method: "Reconcile as-built drawings and work-package issue/return sheets to supplier tickets; use actual ready-mix volume and measured reinforcement/timber mass; retain curing, pumping, lifting and temporary works records"
+      raw_fields: "Each member/material identity, grade, geometry, moisture, deliveries, returns, installation and temporary-panel deployment ; where supplied materials/assemblies occur: identity-specific gross receipts, opening/closing usable stock, verified returns/transfers, consumed damage/rejects/replacements and separate accepted installation"
+      collection_method: "Reconcile as-built drawings and work-package issue/return sheets to supplier tickets; use actual ready-mix volume and measured reinforcement/timber mass; retain curing, pumping, lifting and temporary works records  For supplied material/assembly input quantities apply boundary_consumed_inputs, retaining failed/replacement consumption and separate acceptance/waste records; reusable-asset manufacture remains its separate conserved-share calculation."
       unit: "row-specific kg, m3, m2, MJ, item, t*km"
       frequency: "Each delivery, work-package event and meter interval; each handover"
       temporal_coverage: "Complete actual construction period through acceptance; retain start/end dates and unmetered intervals"
@@ -1282,8 +1286,8 @@ dataset_production:
       process_id: "envelope"
       flow_role: "row-specific actual exchange"
       record_type: "foreground_records"
-      raw_fields: "Roof/wall build-up; each layer quantity and unit; glass area, frame mass, thickness, density, door count and wastage"
-      collection_method: "Survey installed dimensions and reconcile measured receipts/returns with as-built schedules; do not infer insulation mass from an assumed density"
+      raw_fields: "Roof/wall build-up; each layer quantity and unit; glass area, frame mass, thickness, density, door count and wastage ; where supplied materials/assemblies occur: identity-specific gross receipts, opening/closing usable stock, verified returns/transfers, consumed damage/rejects/replacements and separate accepted installation"
+      collection_method: "Survey installed dimensions and reconcile measured receipts/returns with as-built schedules; do not infer insulation mass from an assumed density  For supplied material/assembly input quantities apply boundary_consumed_inputs, retaining failed/replacement consumption and separate acceptance/waste records; reusable-asset manufacture remains its separate conserved-share calculation."
       unit: "row-specific kg, m3, m2, MJ, item, t*km"
       frequency: "Each delivery, work-package event and meter interval; each handover"
       temporal_coverage: "Complete actual construction period through acceptance; retain start/end dates and unmetered intervals"
@@ -1294,8 +1298,8 @@ dataset_production:
       process_id: "fitout"
       flow_role: "row-specific actual exchange"
       record_type: "foreground_records"
-      raw_fields: "Each fixed installation, product state, area/mass/count, model, capacity, refrigerant charge and commissioning record"
-      collection_method: "Use measured issue/return quantities, installed schedules and commissioning evidence; separately enumerate fittings, adhesives, fixings, ductwork and electrical protection where actually used"
+      raw_fields: "Each fixed installation, product state, area/mass/count, model, capacity, refrigerant charge and commissioning record ; where supplied materials/assemblies occur: identity-specific gross receipts, opening/closing usable stock, verified returns/transfers, consumed damage/rejects/replacements and separate accepted installation"
+      collection_method: "Use measured issue/return quantities, installed schedules and commissioning evidence; separately enumerate fittings, adhesives, fixings, ductwork and electrical protection where actually used  For supplied material/assembly input quantities apply boundary_consumed_inputs, retaining failed/replacement consumption and separate acceptance/waste records; reusable-asset manufacture remains its separate conserved-share calculation."
       unit: "row-specific kg, m3, m2, MJ, item, t*km"
       frequency: "Each delivery, work-package event and meter interval; each handover"
       temporal_coverage: "Complete actual construction period through acceptance; retain start/end dates and unmetered intervals"
@@ -1354,8 +1358,8 @@ dataset_production:
       process_id: "special_installation"
       flow_role: "use-specific installed atomic exchange"
       record_type: "foreground_records"
-      raw_fields: "Equipment id, supplier gate, item count/mass, tank material/capacity, pipe composition/length, dock dimensions, containment, test activity/results, installation acceptance"
-      collection_method: "Inspect as-built schedules and supplier records; reconcile actual tank placement/backfill, pipe jointing, dispenser and containment installation to tests and signed handover. Preserve each component boundary and separately measured test energy/water/wastes; no generic design or local compliance certification inferred"
+      raw_fields: "Equipment id, supplier gate, item count/mass, tank material/capacity, pipe composition/length, dock dimensions, containment, test activity/results, installation acceptance ; where supplied materials/assemblies occur: identity-specific gross receipts, opening/closing usable stock, verified returns/transfers, consumed damage/rejects/replacements and separate accepted installation"
+      collection_method: "Inspect as-built schedules and supplier records; reconcile actual tank placement/backfill, pipe jointing, dispenser and containment installation to tests and signed handover. Preserve each component boundary and separately measured test energy/water/wastes; no generic design or local compliance certification inferred  For supplied material/assembly input quantities apply boundary_consumed_inputs, retaining failed/replacement consumption and separate acceptance/waste records; reusable-asset manufacture remains its separate conserved-share calculation."
       unit: "row-specific item, kg, m3, MJ"
       frequency: "Each installation and commissioning event"
       temporal_coverage: "Full actual construction period to handover"
@@ -1389,7 +1393,7 @@ dataset_production:
   calculation_rules:
     - id: project_reconciliation
       applies_to: "all inventory rows"
-      rule: "Retain directly attributable totals per declared reference flow in the row unit. Reconcile receipts, returns, remaining stock, installed amounts and exported wastes for each identified product; disclose internal recirculation and test consumption. No default yield, waste fraction or area-to-mass factor."
+      rule: "Retain directly attributable totals per declared reference flow in the row unit. Reconcile receipts, returns, remaining stock, installed amounts and exported wastes for each identified product; disclose internal recirculation and test consumption. No default yield, waste fraction or area-to-mass factor.  Apply boundary_consumed_inputs to permanent/consumed supplied materials and assemblies, including pre-acceptance losses and replacements in each actual native unit; installed acceptance is not the consumption numerator. Keep reusable-asset manufacture under the separate cumulative-share ledger."
       inputs:
         - cp_site
         - cp_structure
@@ -1467,34 +1471,34 @@ data_sources:
   - id: "un-cpc-3-53122"
     type: "official_guidance"
     reference: "UNSD CPC Version 3.0 Explanatory Notes, 30 June 2025, PDF/printed p.278, subclass 53122; adjacent 53121 p.277 and 53129/532 p.278. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
-    used_for: ""
+    used_for: "Full commercial building classification and distinction from residential/industrial, other non-residential and civil-engineering products; no construction recipe."
   - id: "jrc-levels-boq-2021"
     type: "official_guidance"
     reference: "European Commission JRC, Level(s) indicator 2.1, publication v1.1, January 2021, printed/PDF pp.16 and 23–24, Table 2. https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/2021-01/UM3_Indicator_2.1_v1.1_34pp.pdf"
-    used_for: ""
+    used_for: "Building element coverage and as-built quantity evidence; no numerical material footprint or lifespan adopted."
   - id: "rics-wlca-2024"
     type: "standard"
     reference: "RICS, Whole life carbon assessment for the built environment, 2nd edition, version 3 August 2024, sections 2.1, 4.5 and 5.1.4, printed pp.18–20,45–47,80–84. https://www.rics.org/content/dam/ricsglobal/documents/standards/Whole_life_carbon_assessment_PS_Sept23.pdf."
-    used_for: ""
+    used_for: "Lifecycle stage separation and actual construction evidence; limited guidance use, no claim of full RICS WLCA compliance or use of its default rates."
   - id: "epa-construction-dust-2010"
     type: "official_guidance"
     reference: "US EPA AP-42 section 13.2.3 Heavy Construction Operations, January 1995 corrected February 2010, printed p.13.2.3-1. https://www.epa.gov/sites/default/files/2020-10/documents/13.2.3_heavy_construction_operations.pdf"
-    used_for: ""
+    used_for: "Historical qualitative relationship of operations, moisture and dust only; not a current generic emission factor."
   - id: "epa-concrete-washout-2012"
     type: "official_guidance"
     reference: "US EPA Stormwater Best Management Practice Concrete Washout, EPA-833-F-11-006 February 2012, PDF pp.1–2. https://www.epa.gov/sites/default/files/2015-11/documents/concretewashout_0.pdf"
-    used_for: ""
+    used_for: "Washout liquid/solids routing distinction; no local permit or assumed discharge."
   - id: "ghg-allocation-2011"
     type: "official_guidance"
     reference: "WRI/WBCSD Product Life Cycle Accounting and Reporting Standard 2011, chapter 9, printed p.63 / PDF p.65, Tables 9.1–9.2. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
-    used_for: ""
+    used_for: "Historical allocation hierarchy; actual site causal relations still require evidence."
   - id: "epa-ust-installation"
     type: "official_guidance"
     reference: "US EPA, Resources for UST Owners and Operators, Tank and Piping Installation section. https://www.epa.gov/ust/resources-ust-owners-and-operators"
-    used_for: ""
+    used_for: "Qualitative installation activities: excavation, siting, assembly, backfill, grading, tank/piping/dispenser containment and installation verification. US jurisdiction conditions are not imposed as universal design or local legal approval; actual manufacturer and site instructions govern."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:92c65e342ae64d010f0d680ab76dc1ce40c6ac33d2e019623b4ed1fac564ea37"
+  source_sha256: "sha256:d65876a13e9e4ab6e638ebf2c7bcdfcb3c5c59871980a5bd3f20d41a0cb9b441"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6932"
@@ -1505,10 +1509,10 @@ normative_context:
           line: 60
           column: 1
         end:
-          offset: 9805
-          line: 80
+          offset: 10962
+          line: 81
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Recorded site at construction commencement and externally supplied product gates; include actual site clearance and temporary works where they occur |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Delivered physical commercial building entity |\n| recursive_input_rule | A reused same-category building or retained structure is an explicitly identified pre-existing input with declared burdens and condition, never silently expanded into a duplicate building output |\n| upstream_dataset_requirement | Link each actual supplied atomic product to compatible manufacture data with geography, technology, units and included transport/waste gates; disclose every missing upstream dataset |\n| disclosure | State actual site, delivery specification, A4/A5 process coverage, A1–A3 linkage, temporary facilities, outsourced works, exclusions and later-stage omissions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| commercial_entity_boundary | dataset | Separate independent civil-engineering networks, runway/road works and multi-building shared works from the delivered building register. Include attributable forecourt/garage works, fixed fuel installations and loading interfaces when actually delivered; identify tenant-installed works after handover as excluded later fit-out. Shell-only state, mixed uses and existing retained elements must be explicit, not hidden as complete fitted commercial delivery. | un-cpc-3-53122; jrc-levels-boq-2021; epa-ust-installation |\n| boundary_delivery | all inventory rows | Include the actual foundation, structure, enclosure, specified fixed installations, construction/testing utilities and wastes up to acceptance. Process headings partition activities, not partial products. Enumerate each additional installed product and actually occurring exchange as its own row; listed route alternatives are not interchangeable placeholders. | jrc-levels-boq-2021; rics-wlca-2024 |\n| boundary_stages | dataset | Keep material manufacture, inbound transport, site installation, maintenance/replacement, operation, final demolition and waste destinations separately identifiable. A4 and A5 foreground does not establish full A1–A5 or whole-life coverage. Actual initial demolition/clearance and its waste must be inventoried separately when present. | rics-wlca-2024 |\n| boundary_double_count | site_utilities | Report purchased utility inputs and direct site emissions separately. Onsite diesel combustion is added only if the chosen background fuel dataset ends before combustion; no duplicated upstream emissions. Abstracted resources, dewatering transfers, returned water and exported liquid wastes have distinct routing. | rics-wlca-2024; epa-concrete-washout-2012 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Recorded site at construction commencement and externally supplied product gates; include actual site clearance and temporary works where they occur |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Delivered physical commercial building entity |\n| recursive_input_rule | A reused same-category building or retained structure is an explicitly identified pre-existing input with declared burdens and condition, never silently expanded into a duplicate building output |\n| upstream_dataset_requirement | Link each actual supplied atomic product to compatible manufacture data with geography, technology, units and included transport/waste gates; disclose every missing upstream dataset |\n| disclosure | State actual site, delivery specification, A4/A5 process coverage, A1–A3 linkage, temporary facilities, outsourced works, exclusions and later-stage omissions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| commercial_entity_boundary | dataset | Separate independent civil-engineering networks, runway/road works and multi-building shared works from the delivered building register. Include attributable forecourt/garage works, fixed fuel installations and loading interfaces when actually delivered; identify tenant-installed works after handover as excluded later fit-out. Shell-only state, mixed uses and existing retained elements must be explicit, not hidden as complete fitted commercial delivery. | un-cpc-3-53122; jrc-levels-boq-2021; epa-ust-installation |\n| boundary_delivery | all inventory rows | Include the actual foundation, structure, enclosure, specified fixed installations, construction/testing utilities and wastes up to acceptance. Process headings partition activities, not partial products. Enumerate each additional installed product and actually occurring exchange as its own row; listed route alternatives are not interchangeable placeholders. | jrc-levels-boq-2021; rics-wlca-2024 |\n| boundary_consumed_inputs | permanent/consumed supplied materials and assemblies; excludes reusable-asset manufacture | Local installed, delivered, commissioned or as-built wording specifies the intended route/configuration and acceptance evidence; it does not exclude attributable materials or assemblies consumed in attempted installation, damage, rejected-and-scrapped work or replacements before acceptance. In each native unit, consumed input = attributable gross receipts + opening stock - verified returns/transfers - closing usable stock. Retain actual supplied identity/configuration and assembly inclusions, with failed/replaced items traced to their own identity rather than the final replacement identity. Reconcile accepted installation and waste separately. Verified returns/usable surplus are excluded from consumption, but their attributable transport/handling/rework remains. This equation does not measure reusable equipment/formwork manufacture: retain section 7 conserved lifetime-use shares even when assets are returned/transferred/held in closing stock, and never charge the same asset as both full consumption and a use share. |  |\n| boundary_stages | dataset | Keep material manufacture, inbound transport, site installation, maintenance/replacement, operation, final demolition and waste destinations separately identifiable. A4 and A5 foreground does not establish full A1–A5 or whole-life coverage. Actual initial demolition/clearance and its waste must be inventoried separately when present. | rics-wlca-2024 |\n| boundary_double_count | site_utilities | Report purchased utility inputs and direct site emissions separately. Onsite diesel combustion is added only if the chosen background fuel dataset ends before combustion; no duplicated upstream emissions. Abstracted resources, dewatering transfers, returned water and exported liquid wastes have distinct routing. | rics-wlca-2024; epa-concrete-washout-2012 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1545,16 +1549,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55452"
+    - unit_id: "normative_56609"
       family: "allocation"
       span:
         start:
-          offset: 55452
-          line: 1071
+          offset: 56609
+          line: 1072
           column: 1
         end:
-          offset: 57520
-          line: 1080
+          offset: 58677
+          line: 1081
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| attribution | shared site activities | Use dedicated project metering and work-package subdivision first. If works serve multiple buildings, document measured machine time, material issue or another causal driver, the full receiving population and idle load under cp_joint. Area or price share is not a default physical relation. | ghg-allocation-2011 |\n| actual_coproduct | exported useful outputs | Separate sold products, reused soil and wastes by actual status and destination. Avoid allocation by subdivision; remaining co-products require justified physical relations, or documented alternative allocation and sensitivity when physical relations cannot be established. No automatic avoided-material credit is assigned. | ghg-allocation-2011 |\n| temporary_reuse | temporary works | Retain construction burdens and rejected/reworked materials for this accepted building. Record temporary-panel equipment sharing from actual deployment and reuse logs with future reuse uncertainty; do not invent lifetime or reuse count. Report waste treatment and recovery beyond this gate separately. | rics-wlca-2024 |\n| `asset_share_conservation` | reusable formwork, components and equipment | Maintain one asset-level manufacturing-burden ledger across all projects and periods. A measured project use-time or deployment is only the numerator; the denominator must represent evidenced total lifetime service or a justified forecast with sensitivity and later reconciliation. Cumulative manufacturing shares across all projects and periods must not exceed one. An observation-period allocation may distribute only the manufacturing share already attributable to that period; never reintroduce the whole asset manufacture at each period. Unknown lifetime/service denominators remain unresolved review, not a default. Include asset manufacture when material; a hire invoice alone does not establish lifecycle coverage. | `ghg-allocation-2011`; `rics-wlca-2024` |\n\n"
       headings:
@@ -1573,12 +1577,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55452
-              line: 1071
+              offset: 56609
+              line: 1072
               column: 1
             end:
-              offset: 55492
-              line: 1071
+              offset: 56649
+              line: 1072
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1593,16 +1597,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70112"
+    - unit_id: "normative_73801"
       family: "validation"
       span:
         start:
-          offset: 70112
-          line: 1114
+          offset: 73801
+          line: 1115
           column: 1
         end:
-          offset: 72662
-          line: 1124
+          offset: 76351
+          line: 1125
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| commercial_system_completeness | dataset | Reconcile supplied and installed work packages: warehouse fixed racks/loading, retail escalators and delivered shop fit-out, office services, terminal fixed passenger/baggage equipment, garage ventilation/drainage, and station tank/piping/detection/containment are included only as actually delivered. Add every actual chiller, fan, pump, valve, sprinkler head, distribution/security/communication unit, sanitary fitting, fixing, adhesive and protective layer as a separate product-specific atomic row only when separately procured or fabricated within the foreground boundary. For components already included in a complete supplied unit, such as an air-handling-unit fan or fuel-dispenser pump, verify specifications and supplier inventory coverage without a duplicate component exchange or upstream manufacturing burden. Retain actual installation activities and separately supplied replacements or additions. Missing actual systems prevents a completeness claim; operational vehicles, merchandise and sold fuel are excluded. | jrc-levels-boq-2021; un-cpc-3-53122; epa-ust-installation |\n| validate_scope | dataset | Reject missing commercial use, site/geometry/delivery condition, inappropriate category, material-bundle substitution or construction-service reference. Require whole-building acceptance and every required qualifier. | un-cpc-3-53122 |\n| validate_inventory | all inventory rows | Check one physical or chemical identity per exchange, row-specific unit, route applicability, project denominator, every linked protocol and bilateral consistency. Sum stage utilities/wastes to actual records; unresolved identities are gaps rather than permission to select a near name. |  |\n| validate_stage_claim | dataset | Verify A1–A3 data links, A4 transport and A5 actual work before claiming their coverage. Omitted use, replacement, demolition and recovery forbid full-lifetime claims; later scenarios require new source-supported durations and routes. Do not imply scientific or regulatory approval from acceptance of a PCR projection. | rics-wlca-2024 |\n| validate_environment | site_utilities | Require a documented direct-release basis and no overlap with combustion/waste-treatment background datasets. Check NO speciation, PM fractions, fossil carbon and water routing; unresolved required measurements prevent a complete dataset claim. | epa-construction-dust-2010; epa-concrete-washout-2012 |\n\n"
       headings:
@@ -1621,12 +1625,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70112
-              line: 1114
+              offset: 73801
+              line: 1115
               column: 1
             end:
-              offset: 70134
-              line: 1114
+              offset: 73823
+              line: 1115
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1669,7 +1673,7 @@ normative_context:
           line: 76
           column: 444
     - pointer: "/system_boundary/rules/2"
-      rule_id: "boundary_stages"
+      rule_id: "boundary_consumed_inputs"
       identity_kind: "explicit"
       unit_id: "normative_6932"
       source_span:
@@ -1678,138 +1682,151 @@ normative_context:
           line: 77
           column: 1
         end:
-          offset: 9400
+          offset: 10172
           line: 77
-          column: 385
+          column: 1157
     - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_6932"
+      source_span:
+        start:
+          offset: 10173
+          line: 78
+          column: 1
+        end:
+          offset: 10557
+          line: 78
+          column: 385
+    - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_double_count"
       identity_kind: "explicit"
       unit_id: "normative_6932"
       source_span:
         start:
-          offset: 9401
-          line: 78
+          offset: 10558
+          line: 79
           column: 1
         end:
-          offset: 9803
-          line: 78
+          offset: 10960
+          line: 79
           column: 403
     - pointer: "/allocation_rules/0"
       rule_id: "attribution"
       identity_kind: "explicit"
-      unit_id: "normative_55452"
+      unit_id: "normative_56609"
       source_span:
         start:
-          offset: 55565
-          line: 1075
+          offset: 56722
+          line: 1076
           column: 1
         end:
-          offset: 55920
-          line: 1075
+          offset: 57077
+          line: 1076
           column: 356
     - pointer: "/allocation_rules/1"
       rule_id: "actual_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_55452"
+      unit_id: "normative_56609"
       source_span:
         start:
-          offset: 55921
-          line: 1076
+          offset: 57078
+          line: 1077
           column: 1
         end:
-          offset: 56315
-          line: 1076
+          offset: 57472
+          line: 1077
           column: 395
     - pointer: "/allocation_rules/2"
       rule_id: "temporary_reuse"
       identity_kind: "explicit"
-      unit_id: "normative_55452"
+      unit_id: "normative_56609"
       source_span:
         start:
-          offset: 56316
-          line: 1077
+          offset: 57473
+          line: 1078
           column: 1
         end:
-          offset: 56674
-          line: 1077
+          offset: 57831
+          line: 1078
           column: 359
     - pointer: "/allocation_rules/3"
       rule_id: "asset_share_conservation"
       identity_kind: "explicit"
-      unit_id: "normative_55452"
+      unit_id: "normative_56609"
       source_span:
         start:
-          offset: 56675
-          line: 1078
+          offset: 57832
+          line: 1079
           column: 1
         end:
-          offset: 57518
-          line: 1078
+          offset: 58675
+          line: 1079
           column: 844
     - pointer: "/validation_rules/0"
       rule_id: "commercial_system_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_70112"
+      unit_id: "normative_73801"
       source_span:
         start:
-          offset: 70207
-          line: 1118
+          offset: 73896
+          line: 1119
           column: 1
         end:
-          offset: 71341
-          line: 1118
+          offset: 75030
+          line: 1119
           column: 1135
     - pointer: "/validation_rules/1"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_70112"
+      unit_id: "normative_73801"
       source_span:
         start:
-          offset: 71342
-          line: 1119
+          offset: 75031
+          line: 1120
           column: 1
         end:
-          offset: 71606
-          line: 1119
+          offset: 75295
+          line: 1120
           column: 265
     - pointer: "/validation_rules/2"
       rule_id: "validate_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_70112"
+      unit_id: "normative_73801"
       source_span:
         start:
-          offset: 71607
-          line: 1120
+          offset: 75296
+          line: 1121
           column: 1
         end:
-          offset: 71942
-          line: 1120
+          offset: 75631
+          line: 1121
           column: 336
     - pointer: "/validation_rules/3"
       rule_id: "validate_stage_claim"
       identity_kind: "explicit"
-      unit_id: "normative_70112"
+      unit_id: "normative_73801"
       source_span:
         start:
-          offset: 71943
-          line: 1121
+          offset: 75632
+          line: 1122
           column: 1
         end:
-          offset: 72315
-          line: 1121
+          offset: 76004
+          line: 1122
           column: 373
     - pointer: "/validation_rules/4"
       rule_id: "validate_environment"
       identity_kind: "explicit"
-      unit_id: "normative_70112"
+      unit_id: "normative_73801"
       source_span:
         start:
-          offset: 72316
-          line: 1122
+          offset: 76005
+          line: 1123
           column: 1
         end:
-          offset: 72660
-          line: 1122
+          offset: 76349
+          line: 1123
           column: 345
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1838,27 +1855,27 @@ normative_context:
           column: 176
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55452"
+      unit_id: "normative_56609"
       source_span:
         start:
-          offset: 55452
-          line: 1071
+          offset: 56609
+          line: 1072
           column: 1
         end:
-          offset: 55492
-          line: 1071
+          offset: 56649
+          line: 1072
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70112"
+      unit_id: "normative_73801"
       source_span:
         start:
-          offset: 70112
-          line: 1114
+          offset: 73801
+          line: 1115
           column: 1
         end:
-          offset: 70134
-          line: 1114
+          offset: 73823
+          line: 1115
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1867,5 +1884,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:92c65e342ae64d010f0d680ab76dc1ce40c6ac33d2e019623b4ed1fac564ea37"
-  generated_content_sha256: "sha256:bad4ef165661e5577634f0cdde845bbb933771192f4056db86fdc21f8857147e"
+    sha256: "sha256:d65876a13e9e4ab6e638ebf2c7bcdfcb3c5c59871980a5bd3f20d41a0cb9b441"
+  generated_content_sha256: "sha256:83dfcadebc5ede2e2113f377bf1e6c8218814e42d6e6bd2d0cd06b4f80675ef4"

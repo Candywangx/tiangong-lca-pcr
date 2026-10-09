@@ -343,6 +343,8 @@ sync_with: pcr.en-US.md
 
 ### 过程：厂内管路、固定设备及滤料初装 (`installation`)
 
+以下输入按归属交付的实际净消耗量记录，包括安装或验收前损坏、拒收后报废及替换投入；不能只取最终实装量。通过 cp_install 核对总收货、期初库存、已核实退回/转出及期末可用库存，并将安装验收配置和废物去向另列。
+
 #### 输入
 
 ##### 产品流
@@ -394,7 +396,7 @@ sync_with: pcr.en-US.md
 
 ###### 泵 (`pump`)
 
-实际安装的液体泵厂门总成；记录工况、介质、材质、电机是否内含、数量及实测总成净质量，保留公开Mass属性。仅未内含电机时才另计电机。
+归属本项目实际消耗的液体泵厂门总成，包括安装前损坏报废及替换件；记录工况、介质、材质、电机是否内含、数量及实测总成净质量，保留公开Mass属性。仅未内含电机时才另计电机。
 
 - 选定流：泵 `bbd91be4-dc00-44c2-8bc1-f67ee79174a7`
 - 流属性/单位：Mass / kg
@@ -1173,7 +1175,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_acceptance` | handover | accepted_entity；完整系统配置 | acceptance_record | 场址；资产／阶段标识；验收数量；坐标；边界；池体尺寸及体积；建筑面积／占地；污水系统长度／管径；实装系列清单；额定／验收能力及实测测试时长；水质；签署验收日期 | 测量竣工几何，核对同一交付的图纸、设备台账及签署验收／性能测试。仅填实有配置；没有的池体／建筑／滤料／管网字段须界面证据支持not_applicable，适用但未测保留缺口。按适用情况测试真实处理、输送或处置功能，不能仅用造价或几何推算能力。 | item; m; m2; m3; m3/day | 每个交付阶段 | 完整施工至验收交付 | 声明完整处理厂或污水系统 | 每声明的参考流 | 测量记录；签署测试报告；范围／缺陷台账 |
 | `cp_material` | ground; civil | 分列外购及实装材料 | delivery_and_batch_record | 施工包；材料及状态；牌号；批次；收料／退回／实装／余料数量；干湿基准；密度试验；实配比；来源门端 | 使用经校准称重单及拌制／浇筑记录；体积转质量仅用同物料批次密度、级配／含水率及实际几何；核对钢筋表及实装数量。 | kg; m3; m | 每批拌料／收料 | 声明施工全过程 | 现场及供应门端 | 每声明的参考流 | 校准；供应商证书；竣工数量；库存平衡 |
-| `cp_install` | installation | 单项固定总成、管材或滤料 | installation_record | 总成标识；技术；工况；供应门端；材质／配方；尺寸；实测净质量或长度；数量；滤料初装；电机／框架／电缆内含范围；验收 | 用设备／物料清单及验收核对供应商同配置总成净质量／长度和滤料收料。设备按件转质量须用同配置称重／可追溯净质量，不能猜全厂质量。 | kg; m; item | 每个总成／批次 | 全部交付安装及交付前更换 | 交付安装边界 | 每声明的参考流 | 供应范围；称重；安装检查；测试记录 |
+| `cp_install` | installation | 单项固定总成、管材或滤料 | installation_record | 总成标识；技术；工况；供应门端；材质／配方；尺寸；同配置实测净质量或长度；总收货及期初库存；已核实退回／转出；期末可用库存；净消耗和另列实装验收件数；损坏／拒收报废及替换关联；滤料初装；电机／框架／电缆内含范围；验收 | 核对收货、库存、退回／转移、设备／物料清单、验收及废物票据，以总收货加期初库存、减已核实退回／转出及期末可用库存取得归属净消耗量，包含失败替换件；实装数量另列。按件转质量使用同配置称重／可追溯净质量，不猜全厂质量；已核实退回且未消耗的设备不计投入。 | kg; m; item | 每个总成／批次 | 全部交付安装及交付前更换 | 交付安装边界 | 每声明的参考流 | 供应范围；称重；安装检查；测试记录 |
 | `cp_temporary` | ground; civil; utilities | 复用临时资产及资本设备 | asset_activity_ledger | 资产标识；同配置；制造覆盖；实际质量／体积／数量；工程活动；累计寿命活动证据；前后已归属份额；修复；凭据；未知分母 | 分列现场实际实物与归属制造等价量。以使用活动台账及有依据的寿命／使用分母分摊，逐资产跨工程核对，不能重置。体积计模板须实测面积／厚度。 | kg; m3; item | 每资产及使用期间 | 完整工程及累计资产台账 | 共用同一实物资产的全部工程 | 每声明的参考流 | 资产记录；实际活动；有依据分母；累计份额审计 |
 | `cp_energy` | utilities | 每项电源及燃料批次 | meter_and_fuel_record | 来源；地域；电压；电表起止；施工包；燃料牌号及来源；称重质量或计量体积；温度／密度；低位热值；自备发电输出；既有厂运行表 | 分表计施工及试运转；核对油箱平衡及有依据净热值。若体积计油，先用批次实测密度。共用公用工程按实际因果活动归属，不以电价代替。 | MJ; kWh; kg; m3 | 每班及抄表期间 | 仅施工及交付前试运行 | 用户端供应及实际设备 | 每声明的参考流 | 校准仪表；燃料证书；台账；隔离既有运行 |
 | `cp_water` | civil; utilities | 按来源分列施工水、降水及洗浆 | water_balance_record | 水源及取水／供水门端；逐批用途；期初末储存；取水；外购；回用；外运；直接受体；液量；湿固体；盐度／温度／密度 | 计量每项跨界，区别内部回用并核对库存及混凝土／土中实际保留水。记录降水及洗浆去向，不能假定全部耗水或入河。 | m3; kg | 每次使用／排水及每日平衡 | 所有施工用水活动 | 现场、水源及实际接收界面 | 每声明的参考流 | 校准；供水单；取样；收集及去向记录 |
@@ -1187,7 +1189,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `project_basis` | all inventory rows | 一项声明完整交付按全部施工／测试活动合计各归属交换，扣有据退回并核对库存，按每声明的参考流报告。多个独立验收实体须分别有匹配清单，不能把较大厂任意等分为若干件。 | event quantities; return and stock ledger; cp_acceptance | attributed exchange per declared reference flow |  |
-| `physical_mass_conversion` | material and installation quantities | 物料kg=实测m3×同物料批次密度kg/m3，或实装件数×同配置可追溯总成净质量kg/件。保留原始量、条件及不确定性，不设通用混凝土、海水或全厂密度／质量。 | cp_material; cp_install; cp_trial; geometry; measured density | kg per declared reference flow |  |
+| `physical_mass_conversion` | material and installation quantities | 物料kg=实际净消耗m3×同物料批次密度kg/m3，或实际净消耗件数×同配置可追溯总成净质量kg/件。净消耗按 cp_material 或 cp_install 的收货、期初库存、退回／转移和期末可用库存核对，包括安装／验收前损坏、拒收后报废及替换投入；实装验收件数另列，不作为全部制造投入的乘数。保留原始量、条件及不确定性，不设通用混凝土、海水或全厂密度／质量。 | cp_material; cp_install; cp_trial; geometry; measured density | kg per declared reference flow |  |
 | `energy_conversion` | utilities | 电力MJ=kWh×3.6；燃料MJ=实际燃料kg×批次净热值MJ/kg。燃料体积台账先以同批实测密度转kg，保留公开能量属性，避免重复计自备发电产出。 | cp_energy; verified unit definitions; fuel certificates | MJ per declared reference flow |  |
 | `trial_constituent_mass` | direct liquid emissions | 每种实际组分排放kg=实际排口同步排放m3×实测浓度kg/m3，按相关期间积分。按SI定义mg/L乘0.001为kg/m3。须明确物种、受体及整液／组分核算；NOx当量或COD不是分子NO2或一种化学品。 | cp_trial; sampled molecular concentrations; outlet volume | each evidenced constituent kg per declared reference flow |  |
 | `asset_share` | temporary manufacturing burden | 每个同配置资产归属制造量=实物净量×有据活动份额，全部使用份额之和≤1。未知寿命分母不能置一，须独立披露资本敏感性／审查缺口。 | cp_temporary; actual physical quantities; cumulative share ledger | manufacturing-equivalent kg, m3 or item per declared reference flow |  |

@@ -485,8 +485,8 @@ dataset_production:
       process_id: "finishing"
       flow_role: "finished_roll"
       record_type: "Accepted net mass"
-      raw_fields: "roll_id; gross_kg; measured_tare_kg; net_kg; width_m; length_m; complete_areal_mass; conditioning; defects"
-      collection_method: "Weigh every accepted roll; measure accepted area; inspect layer connection and seam defects against declared customer criteria"
+      raw_fields: "roll_id; gross_kg; measured_tare_kg; net_kg; width_m; length_m; complete_areal_mass; conditioning; defects ; reporting-period pool ID; same product construction/grade; failed and zero-output batch IDs; rework origin and final accepted roll IDs"
+      collection_method: "Weigh every accepted roll; measure accepted area; inspect layer connection and seam defects against declared customer criteria  Reconcile every batch, including wholly failed batches, to the same product/period pool; retain zero-output batch activity for numerator attribution and count finally accepted rework once. Aggregate accepted net mass over this pool for normalize_batch."
       unit: "kg; m2"
       frequency: "Each batch; reconcile each reporting period"
       temporal_coverage: "Complete declared period including starts, stops, rejects and rework"
@@ -568,7 +568,7 @@ dataset_production:
   calculation_rules:
     - id: normalize_batch
       applies_to: "all inventory rows"
-      rule: "For each exchange j, normalized amount = attributable measured batch amount j / net accepted batch textile mass in kg. Use matched site, period and conditioning; do not divide by gross packed rolls or include internal transfers twice."
+      rule: "Define one documented reporting-period pool for the same declared product construction, grade, site and conditioning; include all attributable startup, shutdown, wholly failed batches, rejects and rework. For each exchange j, normalized amount = sum of attributable measured exchange j across that pool / total net accepted textile mass in kg from the same pool. Count reworked product only once when finally accepted; rejected product is not accepted output, while its attributable exchanges remain in the numerator. Do not normalize a wholly failed batch by its zero output, omit its burden or average per-batch ratios. If the complete pool has no positive accepted output, retain the unnormalized inventory and require review; do not fabricate output or a per-kg result. Do not pool unrelated products, divide by gross packed-roll mass or double count internal transfers."
       inputs:
         - cp_material
         - cp_output
@@ -620,7 +620,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_basis
     applies_to: "all inventory rows"
-    rule: "Require positive net accepted kg, measured tare, common conditioning, paired internal transfers and reproducible normalized exchanges. Compare total composite areal mass with direct roll weighing; do not use a nominal wadding grade as the denominator."
+    rule: "Require positive net accepted kg, measured tare, common conditioning, paired internal transfers and reproducible normalized exchanges. Compare total composite areal mass with direct roll weighing; do not use a nominal wadding grade as the denominator.  Verify complete same-product period-pool numerator coverage, including wholly failed batches, and one matching positive accepted-mass denominator. A zero-output pool remains unnormalized and requires review; averaging batch ratios or dropping failed-batch exchanges is prohibited."
     source_ids:
       - xmt-q1
   - rule_id: validate_identity
@@ -662,7 +662,7 @@ data_sources:
     used_for: "Roll feeding, sewing, thread cutting and compressor support on one machine; rated data are not measured energy, throughput or a universal route requirement"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:73f31e1a047d77d0697aae5063ceafe13fddcdb5c846393777d0ee84a1a3ffe4"
+  source_sha256: "sha256:3aea62440eac4a1611ad41e6d015af48569a72334ce8aaa75c4b565bbdb7330b"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5475"
@@ -761,18 +761,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_31475"
+    - unit_id: "normative_32506"
       family: "validation"
       span:
         start:
-          offset: 31475
+          offset: 32506
           line: 423
           column: 1
         end:
-          offset: 32755
+          offset: 34068
           line: 432
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | finished_roll | Reject use outside the one-sided polyester sewn route; require all declared qualifiers and actual customer acceptance. Do not infer apparel compliance or thermal equivalence from the intermediate textile record. |  |\n| validate_basis | all inventory rows | Require positive net accepted kg, measured tare, common conditioning, paired internal transfers and reproducible normalized exchanges. Compare total composite areal mass with direct roll weighing; do not use a nominal wadding grade as the denominator. | xmt-q1 |\n| validate_identity | Public flows and unresolved rows | Verify public flow type, referenced property, unit, geography, voltage, material and incoming state before use. Blank UUIDs remain exact named exchanges and block claims of fully linked inventory; identity resolution does not approve methodology. |  |\n| validate_emissions | pet_dust_air; captured_dust | Separate elementary airborne release from captured waste and technical water. No wet-processing wastewater or combustion emissions are mandatory in this dry route; actual additional operations require complete process additions and verified exchange identities. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | finished_roll | Reject use outside the one-sided polyester sewn route; require all declared qualifiers and actual customer acceptance. Do not infer apparel compliance or thermal equivalence from the intermediate textile record. |  |\n| validate_basis | all inventory rows | Require positive net accepted kg, measured tare, common conditioning, paired internal transfers and reproducible normalized exchanges. Compare total composite areal mass with direct roll weighing; do not use a nominal wadding grade as the denominator.  Verify complete same-product period-pool numerator coverage, including wholly failed batches, and one matching positive accepted-mass denominator. A zero-output pool remains unnormalized and requires review; averaging batch ratios or dropping failed-batch exchanges is prohibited. | xmt-q1 |\n| validate_identity | Public flows and unresolved rows | Verify public flow type, referenced property, unit, geography, voltage, material and incoming state before use. Blank UUIDs remain exact named exchanges and block claims of fully linked inventory; identity resolution does not approve methodology. |  |\n| validate_emissions | pet_dust_air; captured_dust | Separate elementary airborne release from captured waste and technical water. No wet-processing wastewater or combustion emissions are mandatory in this dry route; actual additional operations require complete process additions and verified exchange identities. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -789,11 +789,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 31475
+              offset: 32506
               line: 423
               column: 1
             end:
-              offset: 31497
+              offset: 32528
               line: 423
               column: 23
           text: "## 9. Validation Rules"
@@ -891,53 +891,53 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_31475"
+      unit_id: "normative_32506"
       source_span:
         start:
-          offset: 31570
+          offset: 32601
           line: 427
           column: 1
         end:
-          offset: 31821
+          offset: 32852
           line: 427
           column: 252
     - pointer: "/validation_rules/1"
       rule_id: "validate_basis"
       identity_kind: "explicit"
-      unit_id: "normative_31475"
+      unit_id: "normative_32506"
       source_span:
         start:
-          offset: 31822
+          offset: 32853
           line: 428
           column: 1
         end:
-          offset: 32124
+          offset: 33437
           line: 428
-          column: 303
+          column: 585
     - pointer: "/validation_rules/2"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_31475"
+      unit_id: "normative_32506"
       source_span:
         start:
-          offset: 32125
+          offset: 33438
           line: 429
           column: 1
         end:
-          offset: 32433
+          offset: 33746
           line: 429
           column: 309
     - pointer: "/validation_rules/3"
       rule_id: "validate_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_31475"
+      unit_id: "normative_32506"
       source_span:
         start:
-          offset: 32434
+          offset: 33747
           line: 430
           column: 1
         end:
-          offset: 32753
+          offset: 34066
           line: 430
           column: 320
   diagnostics:
@@ -979,14 +979,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_31475"
+      unit_id: "normative_32506"
       source_span:
         start:
-          offset: 31475
+          offset: 32506
           line: 423
           column: 1
         end:
-          offset: 31497
+          offset: 32528
           line: 423
           column: 23
 projection_metadata:
@@ -996,5 +996,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:73f31e1a047d77d0697aae5063ceafe13fddcdb5c846393777d0ee84a1a3ffe4"
-  generated_content_sha256: "sha256:f3db4688bf8f5d68a93d5ac68c11236fa03a412b850271afd33fd64e3d076c77"
+    sha256: "sha256:3aea62440eac4a1611ad41e6d015af48569a72334ce8aaa75c4b565bbdb7330b"
+  generated_content_sha256: "sha256:2bf8800acacafefa85111a9249b3f032726425a30181f602ab61ab8350550770"

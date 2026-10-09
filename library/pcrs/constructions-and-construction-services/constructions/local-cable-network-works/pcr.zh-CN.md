@@ -488,7 +488,7 @@ UUID仅限实际香港水处理厂门端的处理水生产与供应。另核真�
 
 - 选定流：低压电缆 `49101b44-20cc-46a0-adfb-af07e4cc8908`
 - 流属性/单位：Length `838aaa23-0117-11db-92e3-0800200c9a66` / m
-- 数量规则：实际供入电缆m减记录退库；另核安装长度、预留及余料
+- 数量规则： 按m计可归属电缆消耗量=总收货+期初库存−经核实退回或转移−期末可复用库存。纳入安装边料、验收前损坏及替换消耗；安装验收长度与保留预留段另行核对。保留Length/m，不推断每米电缆质量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
@@ -872,7 +872,7 @@ UUID仅限实际香港水处理厂门端的处理水生产与供应。另核真�
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_handover | acceptance | accepted entity | acceptance dossier | 实体ID；端点；场址边界；路线m；分回路电缆m；站房m2；塔高m；电压容量纤芯规格；安装范围；竣工验收日期；试验状态 | 测量竣工几何，核对签署交付、回路表及实际试验，记录通电或仅就绪状态 | item; m; m2 | 每次验收及修订 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |
 | cp_materials | underground-civil; aerial-support; cable-placement; station-tower; reinstatement | individual material input | delivery and installation ledger | row_id；批次；供方；等级；状态；净kg；m或件；密度；含水；收货；退回；位置；内含组件；组件位号；失效及替换量；可归属期初期末库存；经核实转移 | 称量票据及净交付；核对设计量、实际安装、退回与余料；每项体积长度换算有独立支持；各原生单位的投入量=可归属总收货+期初库存−经核实退回或转移−期末可复用库存。纳入验收前失效及返工消耗；安装验收量与废物分别核对，不抵消制造负担。 | kg; m; item | 每批及每次安装 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |
-| cp_cables | cable-placement | individual cable input | reel and circuit ledger | 盘ID；规格；电缆m；路线m；芯数；回路；预留；退回m；拒收m；接续终端位置 | 校准计米器核对盘标识及竣工回路测量；记录未安装损失及验收前实际更换 | m; kg | 每盘及每回路 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |
+| cp_cables | cable-placement | individual cable input | reel and circuit ledger | 盘ID；规格；电缆m；路线m；芯数；回路；预留；退回m；拒收m；接续终端位置 ；可归属期初期末电缆库存m；总收货电缆m；经核实退回转移m；实际消耗的损坏边料替换m | 校准计米器核对盘标识及竣工回路测量；记录未安装损失及验收前实际更换  电缆消耗m=可归属总收货+期初库存−经核实退回或转移−期末可复用库存；纳入实际消耗的边料损坏替换，安装长度与可复用余料分别核对。每项电缆行均记录这些量，平衡不只适用于设备件数或组件面积。 | m; kg | 每盘及每回路 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |
 | cp_utilities | site-operations; underground-civil; aerial-support; cable-placement; station-tower; marine-placement; reinstatement; acceptance | individual fuel and electricity | meter and fuel log | 设备ID；process_id；日期；表起止；kWh；燃料kg；燃料体积；实际密度；批次MJ/kg；地域；电压；化石生物比例 | 读实际电表及称量加油票；作业、怠速、返工归属一次；船舶活动独立标记 | MJ; kWh; kg | 每班、电表时段及燃料批次 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |
 | cp_water | site-operations; underground-civil | supply, abstraction and dispatch | separate water meters and samples | 接口；来源；含水层；受体；m3；水质；样品；处理；循环；日期；方向；未转移或外运 | 供水、抽水、送处理及直接排放分开计量；核对湿过程水及滞留含水；记录咸淡水受体 | m3 | 每时段及排水批次 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |
 | cp_logistics | site-operations; marine-placement; reinstatement | individual freight service | shipment records | 批次ID；材料行；起终点；净t；路线km；卡车；载货空载段；分配；背景内含 | 称量实际载货并记录行驶路线及空载回程，核对供方运输边界 | t*km | 每趟 | 实际施工开始至验收，含返工 | 声明实体及归属活动 | 每声明的参考流 | 原始票据、校准、样品、工程签署记录与缺口清单 |

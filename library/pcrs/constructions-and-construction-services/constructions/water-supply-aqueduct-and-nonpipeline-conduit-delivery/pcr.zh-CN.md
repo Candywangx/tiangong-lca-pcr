@@ -72,6 +72,7 @@ content_maturity: authored_methodology
 | --- | --- | --- |
 | b_build | 纳入实际场地准备、挖填、支护、地基、衬砌、盖板、槽身架设、整体控制、养护、试验整改清理以及实际临时工程。按任务记录设备与公用工程一次，地下路线不得漏掉真实支护与出渣。 | usbr-construction; ladwp-wip-2024 |
 | b_supplied | 区分供应构件混合物制造、运送和现场安装。现场实际拌合、预制、加工须另建真实原子投入；不得同时计混合物及已包含组分。非施工实体的上游材料生产不默认并入。 | usbr-construction; epa-washout-2012 |
+| b_consumed_inputs | 对每项外供材料或总成投入，施工安装适用条件限定用途，不将投入限于成功安装量。各原生单位按可归属总收货+期初库存−经核实退回或转移−期末可复用库存计量；包括验收前撒漏、损坏、拒收后实际消耗及替换。经核实退回和可复用结存不计入消耗投入，但相关可归属搬运、运输或返工仍保留。安装验收量与废物分别核对，不抵消已消耗投入的制造负担。可复用临时资产仍按资产分摊规则计守恒的制造份额。 |  |
 | b_stages | 后续运行输水泵送、维护更新及最终拆除排除；开工前实际旧设施拆除归场地准备。披露土地水文生态、噪声及交通扰动评价缺口，不宣称零影响；运营供水资源不能混为施工用水。 | ladwp-wip-2024; un-cpc3-2025 |
 | b_complete_route | 条件行不是范围删减许可。实际其他聚合物、金属木槽、预应力、锚杆、钢拱架、爆破、现场拌合、涂层或控制设备须补原子行、原始工法、采集与身份核实后方可声称该项目完整。 | usbr-construction; usbr-canals-2017 |
 
@@ -218,7 +219,7 @@ content_maturity: authored_methodology
 
 ###### 碎石，16/32粒级（`stone_drain`）
 
-仅用于实际安装的16/32粒级碎石排水或垫层，不能替代所有混凝土集料级配。
+用于本工程排水或垫层实际供入的16/32粒级碎石；按b_consumed_inputs纳入可归属撒漏及验收前替换消耗，安装量另记。不能替代其他混凝土集料级配。
 
 - 选定流：碎石，16/32粒级 `4f197bee-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：质量 / kg
@@ -355,7 +356,7 @@ content_maturity: authored_methodology
 
 ###### 预制混凝土输水槽（`precast_trough`）
 
-仅用于按实测配置及质量安装的实际槽身构件；供应商界定的内嵌钢筋只计一次，不能采用通用墙板代替。
+用于本工程实际供入且配置和质量经实测的槽身构件；按b_consumed_inputs纳入验收前损坏或消耗的可归属构件，安装验收量另记。供应商界定的内嵌钢筋只计一次，不能采用通用墙板代替。
 
 - 选定流：预制混凝土输水槽
 - 流属性/单位：质量 / kg
@@ -797,7 +798,7 @@ content_maturity: authored_methodology
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_material | all applicable construction processes | material | delivery_and_placement | 批次；材料状态；来源门端；验收接收量；退货；安装几何；换算所需实测密度；废物 |称量接收与退回量，供货单与实测安装尺寸核对；仅采用同状态同批次实际检测密度。记录供应商内含构件范围。 汇总细节：按每声明的参考流汇总可归属实物交换 | kg | 每任务、批次、行程或验收事件 | 实际开工至完整验收，包括整改 | 同一明确工程边界，分包亦纳入 | 每声明的参考流 | 校准凭据、原始账、试验报告、版本和交接记录 |
+| cp_material | all applicable construction processes | material | delivery_and_placement | 批次；材料状态；来源门端；验收接收量；退货；安装几何；换算所需实测密度；废物 ；期初期末可复用库存；经核实转移；验收前损坏拒收替换；分别记录消耗与安装验收量 |称量接收与退回量，供货单与实测安装尺寸核对；仅采用同状态同批次实际检测密度。记录供应商内含构件范围。 汇总细节：按每声明的参考流汇总可归属实物交换  按b_consumed_inputs采用逐行原生单位：可归属总收货+期初库存−经核实退回或转移−期末可复用库存；纳入实际消耗的损失与替换，安装验收及废物分别核对。 | kg | 每任务、批次、行程或验收事件 | 实际开工至完整验收，包括整改 | 同一明确工程边界，分包亦纳入 | 每声明的参考流 | 校准凭据、原始账、试验报告、版本和交接记录 |
 | cp_utilities | support | energy | meter_and_fuel_ledger | 设备编号；任务；小时；收货；期初期末库存；燃料密度；电压；供电地域；表读数 |读取经校准任务表计与油料账；核对分包记录；保留实际燃料属性与计量能量单位。 汇总细节：按每声明的参考流汇总可归属使用量，各任务只计一次 | kg; MJ | 每任务、批次、行程或验收事件 | 实际开工至完整验收，包括整改 | 同一明确工程边界，分包亦纳入 | 每声明的参考流 | 校准凭据、原始账、试验报告、版本和交接记录 |
 | cp_water | support | water | meter_and_transfer | 来源；流域；供应或取水体积；养护试验使用；降排水；洗槽；循环；受体；浓度；排水许可 |分别计量供水、河水取用、降排水、洗槽及实际外排；内部回用记为内部转移。分开处理废物转移与实测直接环境排放。 汇总细节：按每声明的参考流汇总各独立水交换；不得静默净额抵销取水与返还 | m3 | 每任务、批次、行程或验收事件 | 实际开工至完整验收，包括整改 | 同一明确工程边界，分包亦纳入 | 每声明的参考流 | 校准凭据、原始账、试验报告、版本和交接记录 |
 | cp_waste | all applicable construction processes | waste | weighbridge_transfer | row_id；任务；组成；干湿状态；含水率；质量；接收方；处理或回用证据 |使用经校准秤或地磅转移记录；检测组成与含水率并核对现场物料平衡；不假设回收。 汇总细节：按每声明的参考流汇总每项废物流 | kg | 每任务、批次、行程或验收事件 | 实际开工至完整验收，包括整改 | 同一明确工程边界，分包亦纳入 | 每声明的参考流 | 校准凭据、原始账、试验报告、版本和交接记录 |
@@ -810,7 +811,7 @@ content_maturity: authored_methodology
 
 | rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| inventory_aggregation | 所有清单行 | 同一完整工程按任务汇总实际可归属交换，保持每声明的参考流；收货、退货、余料和安装量分别核对，不将内部转移当外部交换。 | cp_material; cp_utilities; cp_water; cp_waste; cp_delivery | 同基准的逐行数量 | usbr-construction |
+| inventory_aggregation | 所有清单行 | 同一完整工程按任务汇总实际可归属交换，保持每声明的参考流；收货、退货、余料和安装量分别核对，不将内部转移当外部交换。  对外供投入应用b_consumed_inputs，包括验收前实际消耗的损失与替换；不得把安装验收量当作投入量。 | cp_material; cp_utilities; cp_water; cp_waste; cp_delivery | 同基准的逐行数量 | usbr-construction |
 | physical_conversion | 所有清单行 | 实测体积×同批状态实测密度=质量；实测面积×同批单位面积质量=质量。保留源值、状态、换算因子及不确定性，不用供应记录的次要筛查比值作通用密度。 | measured volume/area; tested density/areal mass; cp_material | 原属性下的实际数量 | |
 | energy_meter | electricity_cn_lv | 电表kWh × 3.6 = MJ，计入同工程用户端消耗一次。 | meter kWh; cp_utilities | MJ |  |
 | transport_activity | road_freight | 各可归属行程载质量kg × 实际距离km求和；原件若用t*km则1 t*km = 1000 kg*km。 | trip mass; km; cp_transport | kg*km |  |
