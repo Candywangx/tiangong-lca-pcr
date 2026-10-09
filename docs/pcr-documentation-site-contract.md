@@ -349,15 +349,24 @@ Worker and tokenization module are compiled TypeScript browser modules shipped w
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
 
-New search manifests use `schemaVersion: 2`: each shard's `entries` object stores
-the pinned FlexSearch export as native JSON arrays. Generation requires every
-export value to parse as an array and stringify back to the exact original engine
-string. The Worker stringifies those arrays before engine import and also accepts
-version 1 manifests with their original string entries. Unsupported manifest
-versions and entry types inconsistent with the declared version fail initialization;
-failed loads remain retryable. This representation preserves export key order,
-terms, postings, IDs and complete records. The 2 MB text buckets, tokenization,
-30-candidate limit per shard, global ranking and browser size budgets are unchanged.
+New search manifests use `schemaVersion: 3`. Each `*.map` export stores a
+`postings` pool of unique document-ID arrays and ordered `terms` tuples
+`[term, originalRankLength, [rank, postingId, ...]]`. Null rank slots are omitted
+on the wire and restored at exactly their original positions; duplicate posting
+lists are stored once. ID order, term order, empty lists and trailing null slots
+are preserved. Other export entries remain native JSON arrays. Every generated
+entry must decode to the exact original pinned-engine export string before it is
+written. Search result records are unchanged and retained in full.
+
+The compiled Worker restores the original export before engine import and also
+accepts version 1 string entries and version 2 native arrays. Unsupported versions,
+mixed formats, malformed tuples, unordered/duplicate ranks, non-integer IDs and
+dangling posting references fail initialization; failed loads remain retryable.
+Compact rank lengths are bounded to 256 slots before allocation (the pinned
+engine uses nine). This is a wire-shape guard, not a search-result limit.
+The 2 MB text buckets, tokenization, 30-candidate limit per shard, global ranking
+and existing 20 MB raw / 4 MB gzip per-language budgets are unchanged. Compression
+never deletes source text, searchable terms, postings or records.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading

@@ -20,12 +20,12 @@ export function compileDocsBrowserAssets({root=repositoryRoot,outputRoot}:{root?
   const compiled=spawnSync(process.execPath,[compiler,"-p",path.join(root,"tsconfig.docs-worker.json"),"--outDir",temporary],{cwd:root,encoding:"utf8",maxBuffer:8*1024*1024});
   if(compiled.error||compiled.status!==0)throw new Error("Browser TypeScript compilation failed: "+(compiled.error?.message??compiled.stdout+compiled.stderr));
   const outputs=new Map<string,Buffer>();
-  for(const name of ["search-worker.js", "search-terms.js"]){const source=path.join(temporary,name);const stat=lstatSync(source);if(!stat.isFile()||stat.isSymbolicLink())throw new Error("Compiled browser asset is not a regular file: "+name);outputs.set(name,readFileSync(source));}
+  for(const name of ["search-worker.js", "search-terms.js", "search-format.js"]){const source=path.join(temporary,name);const stat=lstatSync(source);if(!stat.isFile()||stat.isSymbolicLink())throw new Error("Compiled browser asset is not a regular file: "+name);outputs.set(name,readFileSync(source));}
   mkdirSync(outputRoot,{recursive:true});
-  const worker=outputs.get("search-worker.js");const terms=outputs.get("search-terms.js");if(!worker||!terms)throw new Error("Required browser outputs are missing");
-  const workerText=worker.toString("utf8").replaceAll('"./search-terms.js"','"./search-terms.mjs"');
-  writeFileSync(path.join(outputRoot,"search-worker.mjs"),workerText);writeFileSync(path.join(outputRoot,"search-terms.mjs"),terms);
-  return {compilerVersion:expected,files:["search-worker.mjs","search-terms.mjs"]};
+  const worker=outputs.get("search-worker.js");const terms=outputs.get("search-terms.js");const format=outputs.get("search-format.js");if(!worker||!terms||!format)throw new Error("Required browser outputs are missing");
+  const workerText=worker.toString("utf8").replaceAll('"./search-terms.js"','"./search-terms.mjs"').replaceAll('"./search-format.js"','"./search-format.mjs"');
+  writeFileSync(path.join(outputRoot,"search-worker.mjs"),workerText);writeFileSync(path.join(outputRoot,"search-terms.mjs"),terms);writeFileSync(path.join(outputRoot,"search-format.mjs"),format);
+  return {compilerVersion:expected,files:["search-worker.mjs","search-terms.mjs","search-format.mjs"]};
  }finally{rmSync(temporary,{recursive:true,force:true});}
 }
 

@@ -1,4 +1,5 @@
 import {parseSiteManifest} from "../lib/site-contracts.ts";
+import {decodeSearchEntry} from "../lib/search-format.ts";
 import {isUnknownRecord} from "../../pcr-core/src/types.ts";
 import {assertManifest} from "../../../builder/lib/schema-contracts.ts";
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
@@ -210,7 +211,7 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 2, "new indexes use native JSON export arrays");
+      assert.equal(search.schemaVersion, 3, "new indexes use lossless pooled sparse postings");
       assert.equal(search.language, language);
       assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
       for (const shard of search.shards) {
@@ -218,7 +219,10 @@ test("real generator preserves multilingual released snapshots and excludes open
         const data: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", shard.url), "utf8"));
         assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
         assert.ok(Object.values(data.entries).length > 0);
-        assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
+        for (const [key, value] of Object.entries(data.entries)) {
+          assert.ok(key.endsWith(".map") ? isUnknownRecord(value) : Array.isArray(value), "exports must use their declared compact wire format");
+          assert.ok(Array.isArray(JSON.parse(decodeSearchEntry(key, value, 3))));
+        }
       }
       const currentPages = recordPages(site, site.records[0]!, language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { createRequire, registerHooks } from 'node:module';
 import { Index } from 'flexsearch';
 import { searchTerms } from '../../lib/search-terms.ts';
+import { encodeSearchEntry } from '../../lib/search-format.ts';
 import type { SearchResult } from '../../lib/types.ts';
 
 const workerUrl = new URL('../../lib/search-worker.ts', import.meta.url);
@@ -43,7 +44,7 @@ async function serialize(documents: Document[], language: string): Promise<Shard
   return { entries, records: documents.map(entry => entry.record) };
 }
 
-async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
+async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
   const language = scenario === 'chinese' ? 'zh-CN' : 'en-US';
   const root = `/generated/search/${language}/`;
   const responses = new Map<string, { status: number; body: unknown }>();
@@ -71,7 +72,9 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
   };
   const query = (text: string) => send({ id: ++sequence, query: text, language });
   const valid = (reply: Reply): SearchResult[] => { assert.equal(reply.error, undefined); assert.ok(Array.isArray(reply.results)); return reply.results; };
-  const encode = (shard: Shard) => schemaVersion === 1 ? shard : nativeShard(shard);
+  const encode = (shard: Shard) => schemaVersion === 1 ? shard : schemaVersion === 2 ? nativeShard(shard) : {
+    entries: Object.fromEntries(Object.entries(shard.entries).map(([key, value]) => [key, encodeSearchEntry(key, value)])), records: shard.records,
+  };
   const install = async (documents: Document[][]) => {
     const shards: { url: string }[] = [];
     for (const [index, entries] of documents.entries()) { const url = root + 'shard-' + index + '.json'; shards.push({ url }); responses.set(url, { status: 200, body: encode(await serialize(entries, language)) }); }
@@ -151,7 +154,7 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
     responses.set(target, saved); assert.equal(valid(await query('wheat')).length, 4);
     assert.equal(requests.filter(url => url.endsWith('manifest.json')).length, 2);
   } else if (scenario === 'manifest-shape') {
-    for (const invalid of [null, ...[undefined, 0, 3, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
+    for (const invalid of [null, ...[undefined, 0, 4, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
       responses.set(root + 'manifest.json', { status: 200, body: invalid });
       assert.equal((await query('wheat')).error, 'Invalid search manifest.');
     }
@@ -186,5 +189,5 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
   } else throw new Error('Unknown search worker scenario: ' + scenario);
 }
 const scenario = process.argv[2]; assert.ok(scenario);
-const schemaVersion = Number(process.argv[3]); assert.ok(schemaVersion === 1 || schemaVersion === 2);
+const schemaVersion = Number(process.argv[3]); assert.ok(schemaVersion === 1 || schemaVersion === 2 || schemaVersion === 3);
 await main(scenario, schemaVersion); process.stdout.write(`PASS ${scenario}\n`);

@@ -47,6 +47,7 @@ import {
 } from "./markdown.ts";
 import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
+import { encodeSearchEntry } from "../lib/search-format.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
   options: {
@@ -979,12 +980,9 @@ async function generate() {
         encode: (value: unknown) => searchTerms(value, language),
       });
       for (const doc of bucket) index.add(Number(doc.record.id), doc.text);
-      const entries: Record<string,unknown[]> = {};
+      const entries: Record<string,ReturnType<typeof encodeSearchEntry>> = {};
       await index.export((key, value) => {
-        const parsed: unknown = JSON.parse(value);
-        if (!Array.isArray(parsed) || JSON.stringify(parsed) !== value)
-          throw new Error("Unsupported serialized search export: " + language + "/" + key);
-        entries[key] = parsed;
+        entries[key] = encodeSearchEntry(key, value);
       });
       const payload = JSON.stringify({
         entries,
@@ -1017,7 +1015,7 @@ async function generate() {
     }
     await flush();
     json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 2,
+      schemaVersion: 3,
       language,
       shards,
     });
