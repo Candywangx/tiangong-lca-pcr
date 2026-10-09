@@ -145,7 +145,7 @@ sync_with: pcr.en-US.md
 
 ###### 既有观测数据包 (`source_data`)
 
-条件纳入：一份可识别的外购观测数据版本进入编制。绑定其清单、源变量、覆盖、质量标志及复用权。按实际范围的数据包计数，保留有依据的上游形成份额，不把复制字节当作新观测事实。自有原始观测须采用实际观测路线清单。
+条件纳入：一份可识别的既有观测数据版本通过获取、接收（包括免费或开放数据）或复用进入编制。绑定其清单、源变量、覆盖、质量标志及复用权。按实际范围的数据包计数，保留有依据的上游形成份额，不把复制字节当作新观测事实。本形成周期内新开展的自有原始观测则须采用实际观测路线清单。
 
 - 选定流： 既有观测数据包
 - 流属性/单位： 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / item
@@ -418,5 +418,4 @@ sync_with: pcr.en-US.md
 | unece-gsbpm52 | official_guidance | 联合国欧洲经济委员会《通用统计业务过程模型》5.2版（2025年5月，2025年6月 CES 认可）；采集及处理，段落93–114：https://unece.github.io/GSBPM-5.2/ | 获取、整合、校验和按路线纠正；统计框架，不要求统一插补，无能耗系数 |
 | gsf-sci110 | standard | 绿色软件基金会《软件碳强度规范》1.1.0；Energy 和 Embodied emissions 节：https://sci.greensoftware.foundation/ | 仅实测计算能耗范围和预留时间或资源设备归属；无默认寿命，不是完整数据 LCA 得分 |
 | noaa-ghcnd | dataset | NOAA NCEI GHCN-Daily 说明文件3.35版；标题及版本引用和第III节数据文件格式、MFLAG/QFLAG/SFLAG；数据集 DOI10.7289/V5D21VHZ：https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt | 真实版本观测数据库示例及来源、质量标志；仅天气数据特定元数据，无生产者数量或通用质量阈值 |
-
 | nist-si-conversion | official_guidance | NIST SP811（2008），附录 B.8 K，千瓦时转焦耳精确因子：https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b8 | 1 kWh = 3.6 × 10^6 J = 3.6 MJ，仅精确单位换算；历史表格，不采用其2019年前基本单位定义或生产系数 |

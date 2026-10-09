@@ -77,7 +77,7 @@ measurement_rules:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Record each stream as received wet mass with measured water fraction w. Dry solids = wet mass × (1 - w); ethanol is separately assayed in cake. Never use dry-solids mass as delivered product mass."
+    rule: "Record each stream as received wet mass with measured water fraction w, ethanol fraction e and any other measured volatile fraction v, all on the same wet-mass basis. Nonvolatile dry solids = wet mass × (1 - w - e - v); use e or v = 0 only when absence is established. Do not count ethanol as dry solids or subtract it twice when an assay already includes volatile loss. Never use dry-solids mass as delivered product mass."
   - id: solution_basis
     applies_to: "Acid, ethanol and caustic"
     required_property_ref:
@@ -902,7 +902,7 @@ dataset_production:
       source_ids: []
     - id: composition_balance
       applies_to: "Peel, pectin cake, product and solvent"
-      rule: "For balance checks use measured mass fractions: dry solids = wet stream mass × (1 - water fraction); ethanol mass = solution mass × ethanol fraction. Reconcile component input, output, internal recovery and stock change separately. Retained ethanol and sucrose do not become pectin solids."
+      rule: "For balance checks use distinct measured fractions on the same wet-mass basis: nonvolatile dry solids = wet stream mass × (1 - water fraction - ethanol fraction - other volatile fraction); ethanol mass = wet stream mass × ethanol fraction. Establish absent volatile fractions before using zero and avoid double subtraction when an assay includes volatile loss. Reconcile water, ethanol, nonvolatile solids, internal recovery and stock change separately. Sucrose is part of nonvolatile solids but not pectin solids; retained ethanol is neither. Keep actual wet mass for transfers and delivered product mass for the reference flow."
       inputs:
         - cp_material
         - cp_intermediate
@@ -985,18 +985,18 @@ data_sources:
     used_for: "Historical technical description supporting hydrochloric-acid aqueous extraction, alcohol separation and route alternatives; no numerical operating ranges or food safety conclusions adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:337445f7fcfa6f9b2cf769305e9d34b9080b91eb3e5b435b93690ec5a10e5bd0"
+  source_sha256: "sha256:2fea1e83f4e9451770e68d76d857c07af2e6d704d2a09542329a8211edc464cf"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5503"
+    - unit_id: "normative_5730"
       family: "system_boundary"
       span:
         start:
-          offset: 5503
+          offset: 5730
           line: 60
           column: 1
         end:
-          offset: 7810
+          offset: 8037
           line: 79
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Washed dried citrus peel, purchased acid, ethanol, sucrose, treated water, electricity, steam heat and packaging delivered to the manufacturing site |\n| starting_condition_role | Technosphere inputs into a gate-to-gate manufacturing foreground |\n| product_classification_scope | Only the stated citrus pectin powder route, a narrower pectic-substance representative of CPC 23999 |\n| recursive_input_rule | Any purchased pectin intermediate is recorded once with a matching upstream dataset and declared entry stage; upstream extraction is not reconstructed recursively or treated as free |\n| upstream_dataset_requirement | Link citrus cultivation/juice co-product allocation and peel washing/drying, chemical and sucrose production, water treatment, grid supply, steam generation, packaging production, inbound transport when included, and external waste treatment. Foreground alone is not complete cradle-to-gate |\n| disclosure | Declare site/year, entry state, batch route, utilities, internal recycle, external waste destination, upstream links and gaps; downstream food preparation, consumption, distribution and packaging end of life are excluded |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_operations` | Declared manufacturing route | Include all actual extraction, filtration, concentration, precipitation, washing, separation, drying, milling, blending, packing and production-attributable cleaning; cp_utilities also covers any actual internal recovery equipment. | `ippa-process`; `efsa-pectin-manufacture-2017` |\n| `boundary_external_links` | Purchased inputs and waste transfers | Document actual supplier and treatment links. Citrus peel described as a residue does not automatically have zero upstream burden; upstream juice/peel allocation must be evidenced. Utility boiler combustion and external treatment emissions are outside the measured foreground. |  |\n| `boundary_no_default_emissions` | Elementary exchanges | Declare measured species, receiving medium and submedium. No mandatory CO2, NOx, methane or pollutant emissions are inferred from process names; expand actual atomic rows when evidence shows an omitted exchange. |  |\n\n"
@@ -1016,11 +1016,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5503
+              offset: 5730
               line: 60
               column: 1
             end:
-              offset: 5524
+              offset: 5751
               line: 60
               column: 22
           text: "## 5. System Boundary"
@@ -1036,15 +1036,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36790"
+    - unit_id: "normative_37017"
       family: "allocation"
       span:
         start:
-          offset: 36790
+          offset: 37017
           line: 604
           column: 1
         end:
-          offset: 38080
+          offset: 38307
           line: 612
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | Shared equipment and utilities | Use product-campaign submetering and separately observed operations first. cp_utilities records measured causal drivers and reconciles the allocated shares to the site total. Do not allocate steam, electricity or cleaning from assumed market averages. |  |\n| `allocation_spent_peel` | Spent citrus peel | Classify each physical spent-peel shipment once as waste or documented usable feed co-product using cp_residue. For co-production collect all product quantities, dry matter, metered separable operations and the evidence for the remaining physical relationship. A remaining shared burden without a verified relationship requires methodological review; no automatic wet-mass allocation or avoided-feed credit is provided. | `vincent-citrus-2015` |\n| `allocation_internal_recycle` | Solvent, water and pectin rework | Account internal recycling by mass balance, not negative purchases or external co-products. Include recovery utilities and purge treatment; only actual exported recovered solvent is a potential co-product and requires a separate verified row, identity, quantity and allocation assessment. |  |\n\n"
@@ -1064,11 +1064,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36790
+              offset: 37017
               line: 604
               column: 1
             end:
-              offset: 36830
+              offset: 37057
               line: 604
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1084,15 +1084,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46409"
+    - unit_id: "normative_46976"
       family: "validation"
       span:
         start:
-          offset: 46409
+          offset: 46976
           line: 644
           column: 1
         end:
-          offset: 48314
+          offset: 48881
           line: 654
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | Reference product | Require 1 kg accepted net mixed powder output, the reference_product_output link, all qualifiers and cp_product. Do not validate pure pectin, wet cake or sugar-only output as this product. | `jecfa-pectins-2007` |\n| `validate_route` | Process inventory | Require evidence for every declared process, matching intermediate transfers and site utilities. Conditional residue/feed, caustic, packaging and elementary rows need measured inclusion or an explicit absence explanation. Missing required records are incomplete, not zero. | `ippa-process` |\n| `validate_balance` | Solvent, water, solids and allocation | Check nonnegative physical exchanges, positive B, solution assay consistency, matched transfers, mass-balance closure and no duplicate waste/feed or recycle credits. Unresolved residuals, composition, identity or allocation prevent a conclusive dataset claim. |  |\n| `validate_electricity_supply` | Electricity rows and linked providers | Verify country, voltage, consumption/production mix and user-side/generation-side boundary against supply records. UUID 3d76981f-964a-4865-b588-0e067a2a1163 is restricted to matching CN grid-average 1–35 kV user-side consumption mix; other supplies require a newly verified identity and supplier data. Do not use this UUID or its provider as a global default. This identity condition does not restrict the product methodology to CN. Preserve the original Net calorific value reference, verified energy unit chain and 1 kWh = 3.6 MJ conversion. |  |\n| `validate_boundary_claim` | Dataset completeness | A gate-to-gate foreground cannot be called complete cradle-to-gate without verified upstream and external-treatment links. LCA validation does not establish food safety, health claims or regulatory approval. |  |\n\n"
@@ -1112,11 +1112,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46409
+              offset: 46976
               line: 644
               column: 1
             end:
-              offset: 46431
+              offset: 46998
               line: 644
               column: 23
           text: "## 9. Validation Rules"
@@ -1136,193 +1136,193 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_operations"
       identity_kind: "explicit"
-      unit_id: "normative_5503"
+      unit_id: "normative_5730"
       source_span:
         start:
-          offset: 6842
+          offset: 7069
           line: 75
           column: 1
         end:
-          offset: 7181
+          offset: 7408
           line: 75
           column: 340
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_external_links"
       identity_kind: "explicit"
-      unit_id: "normative_5503"
+      unit_id: "normative_5730"
       source_span:
         start:
-          offset: 7182
+          offset: 7409
           line: 76
           column: 1
         end:
-          offset: 7532
+          offset: 7759
           line: 76
           column: 351
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_no_default_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_5503"
+      unit_id: "normative_5730"
       source_span:
         start:
-          offset: 7533
+          offset: 7760
           line: 77
           column: 1
         end:
-          offset: 7808
+          offset: 8035
           line: 77
           column: 276
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_36790"
+      unit_id: "normative_37017"
       source_span:
         start:
-          offset: 36903
+          offset: 37130
           line: 608
           column: 1
         end:
-          offset: 37221
+          offset: 37448
           line: 608
           column: 319
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_spent_peel"
       identity_kind: "explicit"
-      unit_id: "normative_36790"
+      unit_id: "normative_37017"
       source_span:
         start:
-          offset: 37222
+          offset: 37449
           line: 609
           column: 1
         end:
-          offset: 37715
+          offset: 37942
           line: 609
           column: 494
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_internal_recycle"
       identity_kind: "explicit"
-      unit_id: "normative_36790"
+      unit_id: "normative_37017"
       source_span:
         start:
-          offset: 37716
+          offset: 37943
           line: 610
           column: 1
         end:
-          offset: 38078
+          offset: 38305
           line: 610
           column: 363
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_46409"
+      unit_id: "normative_46976"
       source_span:
         start:
-          offset: 46504
+          offset: 47071
           line: 648
           column: 1
         end:
-          offset: 46762
+          offset: 47329
           line: 648
           column: 259
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_46409"
+      unit_id: "normative_46976"
       source_span:
         start:
-          offset: 46763
+          offset: 47330
           line: 649
           column: 1
         end:
-          offset: 47095
+          offset: 47662
           line: 649
           column: 333
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_46409"
+      unit_id: "normative_46976"
       source_span:
         start:
-          offset: 47096
+          offset: 47663
           line: 650
           column: 1
         end:
-          offset: 47423
+          offset: 47990
           line: 650
           column: 328
     - pointer: "/validation_rules/3"
       rule_id: "validate_electricity_supply"
       identity_kind: "explicit"
-      unit_id: "normative_46409"
+      unit_id: "normative_46976"
       source_span:
         start:
-          offset: 47424
+          offset: 47991
           line: 651
           column: 1
         end:
-          offset: 48046
+          offset: 48613
           line: 651
           column: 623
     - pointer: "/validation_rules/4"
       rule_id: "validate_boundary_claim"
       identity_kind: "explicit"
-      unit_id: "normative_46409"
+      unit_id: "normative_46976"
       source_span:
         start:
-          offset: 48047
+          offset: 48614
           line: 652
           column: 1
         end:
-          offset: 48312
+          offset: 48879
           line: 652
           column: 266
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5503"
+      unit_id: "normative_5730"
       source_span:
         start:
-          offset: 5503
+          offset: 5730
           line: 60
           column: 1
         end:
-          offset: 5524
+          offset: 5751
           line: 60
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5503"
+      unit_id: "normative_5730"
       source_span:
         start:
-          offset: 5552
+          offset: 5779
           line: 64
           column: 1
         end:
-          offset: 6769
+          offset: 6996
           line: 71
           column: 238
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36790"
+      unit_id: "normative_37017"
       source_span:
         start:
-          offset: 36790
+          offset: 37017
           line: 604
           column: 1
         end:
-          offset: 36830
+          offset: 37057
           line: 604
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46409"
+      unit_id: "normative_46976"
       source_span:
         start:
-          offset: 46409
+          offset: 46976
           line: 644
           column: 1
         end:
-          offset: 46431
+          offset: 46998
           line: 644
           column: 23
 projection_metadata:
@@ -1332,5 +1332,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:337445f7fcfa6f9b2cf769305e9d34b9080b91eb3e5b435b93690ec5a10e5bd0"
-  generated_content_sha256: "sha256:732d6080626a7effc73bd5306b038cb1ebeae498c8c69e64c4f6b2b8f1cb20c8"
+    sha256: "sha256:2fea1e83f4e9451770e68d76d857c07af2e6d704d2a09542329a8211edc464cf"
+  generated_content_sha256: "sha256:a41ef18b4155591f407841ea03ecf455cd30e1eb8f04b642191aab2d1a30c364"

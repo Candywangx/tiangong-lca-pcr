@@ -145,7 +145,7 @@ Electricity attributable to observation work, including allocated reserved idle/
 
 ###### Existing observation dataset package (`source_data`)
 
-Conditional: one identified acquired observation-data version enters compilation. Bind its manifest, source variables, coverage, quality flags and reuse rights. Count actual scoped packages; carry the justified upstream creation share, rather than copying their bytes as newly observed facts. Primary owned observations instead require the actual observation-route inventory.
+Conditional: one identified existing observation-data version is acquired, received (including free or open data) or reused in compilation. Bind its manifest, source variables, coverage, quality flags and reuse rights. Count actual scoped packages; carry the justified upstream creation share, rather than copying their bytes as newly observed facts. New primary observations on own account in the current creation cycle instead require the actual observation-route inventory.
 
 - Selected flow: Existing observation dataset package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / item
@@ -418,5 +418,4 @@ For physical observation, retain the actual method, sampling/survey coverage, eq
 | unece-gsbpm52 | official_guidance | UNECE, Generic Statistical Business Process Model Version5.2 (May2025, CES endorsed June2025); Collect/Process, paragraphs93–114: https://unece.github.io/GSBPM-5.2/ | Acquisition, integration, validation and route-specific correction; statistical framework, no mandatory imputation or energy coefficients |
 | gsf-sci110 | standard | Green Software Foundation, Software Carbon Intensity specification1.1.0; Energy and Embodied emissions: https://sci.greensoftware.foundation/ | Measured computing energy scope and reserved-time/resource device attribution only; no default lifetime or complete data LCA score |
 | noaa-ghcnd | dataset | NOAA NCEI GHCN-Daily README Version3.35; header/version citation and §III FORMAT OF DATA FILES, MFLAG/QFLAG/SFLAG; dataset DOI10.7289/V5D21VHZ: https://www.ncei.noaa.gov/pub/data/ghcn/daily/readme.txt | Actual versioned observation database example and source/quality flags; weather-specific metadata only, no producer quantities or generic quality threshold |
-
 | nist-si-conversion | official_guidance | NIST SP811 (2008), Appendix B.8 K, exact kilowatt hour to joule factor: https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b8 | 1 kWh = 3.6 × 10^6 J = 3.6 MJ, exact conversion only; historical table, not used for pre-2019 base-unit definitions or production coefficients |

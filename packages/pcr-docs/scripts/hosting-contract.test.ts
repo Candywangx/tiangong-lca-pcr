@@ -30,19 +30,25 @@ test("product build Node pin cannot replace the provider's qualified preinstalle
   assert.throws(() => verifyHostingContract({ ...config, nodeVersion: product.node }, downloads), /qualified preinstalled Node 24 runtime/u);
   assert.doesNotThrow(() => verifyHostingContract(config, downloads));
 });
-test("moved download rules, missing module MIME and redirect drift fail the gate", () => {
-  for (const mutation of ["raw", "mime", "redirect", "output"]) {
+test("moved download rules, missing module or guide MIME and redirect drift fail the gate", () => {
+  for (const mutation of ["raw", "mime", "guide", "redirect", "output"]) {
     const broken = structuredClone(config);
-    if (mutation === "raw") broken.headers[0]!.source = "/downloads/*";
-    if (mutation === "mime")
-      broken.headers[1]!.headers = broken.headers[1]!.headers.filter(
+    if (mutation === "raw") broken.headers.find(rule => rule.source === "/generated/raw/*")!.source = "/downloads/*";
+    if (mutation === "mime" || mutation === "guide") {
+      const rule = broken.headers.find(rule => rule.source === (mutation === "mime" ? "/generated/*.mjs" : "/getting-started*.md"))!;
+      rule.headers = rule.headers.filter(
         (header) => header.key !== "Content-Type",
       );
-    if (mutation === "redirect") broken.redirects = [];
+    }
+    if (mutation === "redirect") broken.redirects = [{ source: "/zh/", destination: "/", statusCode: 301 }];
     if (mutation === "output") broken.outputDirectory = "out";
     assert.throws(
       () => verifyHostingContract(broken, downloads),
       mutation,
     );
   }
+});
+test("localized Chinese home remains explicit, including broad hosting rules", () => {
+  for (const source of ["/zh", "/zh/", "/*"])
+    assert.throws(() => verifyHostingContract({ ...config, redirects: [{ source, destination: "/", statusCode: 301 }] }, downloads), /Explicit Chinese-home/u);
 });

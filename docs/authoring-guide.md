@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-06
-lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
-lastReviewedNote: "Reviewed PCR #95 distribution-only 0.4.3 preparation; no canonical PCR edits, lifecycle promotion, scientific approval or translation-review changes."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: f5089dd6cdacfe224cd3badd396106a903634508
+lastReviewedNote: "Reviewed PCR #106 / PR #97 content and bilingual pectin/TV accounting corrections against the update workflow. Candidate maturity, pending scientific review, unresolved identities and mapping authorization are preserved; unified 0.4.5 is product preparation only."
 ---
 
 # Authoring Guide

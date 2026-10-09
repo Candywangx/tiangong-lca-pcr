@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-06
-lastReviewedCommit: 2d8f3f99f95763ff5e7470932f20380ed8e6f530
-lastReviewedNote: "Reviewed PCR #95 0.4.3 preparation examples; availability remains guarded, qualified CLI stays 0.1.25 and compatible reader minimum stays 0.4.1."
+lastReviewedAt: 2026-10-08
+lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
+lastReviewedNote: "Reviewed PCR #106 / PR #97 candidate content and search compatibility; installation examples prepare unified 0.4.5. Task snapshots, source-language requirements and release/integration gates remain unchanged. Preserved main PR #105 bilingual guide and navigation changes during integration."
 ---
 
 # TianGong LCA PCR Library
@@ -38,6 +38,14 @@ This repository stores TianGong LCA product category rules and data production m
 Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The workspace's retained local directory is `tiangong-lca-pcr`; repository renaming does not change PCR identifiers, package names, or release history.
 
 PCR records are canonical methodology documents. Classification systems such as CPC, HS, ISIC, and NAICS are entry points that map to canonical PCR records; they do not own the PCR directory structure.
+
+## Start with an Agent
+
+Read the [Agent getting-started guide](packages/pcr-docs/public/getting-started.md)
+for installation, the bundled Skill, task-pinned snapshots, LCA/TIDAS authoring,
+review and fully offline use. The website exports this source verbatim at
+`/getting-started.md`; the public URL becomes available with the next qualified
+website release containing it.
 
 ## Repository Shape
 
@@ -293,6 +301,16 @@ Formats are enforced per command: `resolve`, `guidance`, and validation are JSON
 
 ## Public PCR Documentation
 
+The [English Getting started page](https://pcr.tiangong.earth/en/docs/getting-started/)
+and [Chinese guide](https://pcr.tiangong.earth/zh/docs/getting-started/)
+explain installation, Skill discovery and LCA/TIDAS tasks, with localized copyable
+Agent prompts. Their [English raw Markdown](https://pcr.tiangong.earth/getting-started.md)
+and [Chinese raw Markdown](https://pcr.tiangong.earth/getting-started.zh-CN.md) are
+exported from the corresponding authored sources for direct Agent reading. Website availability
+follows the next qualified product release containing these documentation pages.
+Website guide translations do not change the English-only npm methodology content.
+
+
 The public site in `packages/pcr-docs/` reads the canonical library through the core
 consistent document API and the shared immutable-history verifier. It renders
 ordinary Markdown as complete semantic HTML in a Next.js static export. Fumadocs
@@ -369,7 +387,7 @@ The [offline distribution contract](docs/offline-distribution.md) defines the se
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
-The 0.4.3 release-preparation examples target PCR tool/content 0.4.3 and the
+The 0.4.5 release-preparation examples target PCR tool/content 0.4.5 and the
 qualified minimum `@tiangong-lca/cli` 0.1.25. Confirm the corresponding registry
 versions are available before installation; source metadata or a preparing release
 does not establish completed publication. Offline consumer targets include Linux
