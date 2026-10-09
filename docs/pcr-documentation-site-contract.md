@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-09
-lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
-lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
+lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
+lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -127,7 +127,9 @@ The complete default Chinese home is `/`. Localized homes and document routes us
 the registry's URL aliases, initially `/zh/`, `/en/` and `/{locale}/docs/**`.
 `/zh` and `/zh/` carry that same Chinese home: they are generated, canonicalized
 to `/` and kept out of the sitemap. The provider preserves these explicit language
-URLs. `/en/` is a real
+URLs at HTTP 200; live release acceptance compares both Chinese aliases with
+the sealed Chinese-home bytes and also verifies the neutral and English homes.
+A provider redirect is not accepted as language-home evidence. `/en/` is a real
 localized home, and the document routes keep their locale segment.
 In a JavaScript-enabled browser, only `/` negotiates a reading language: a valid
 manual `pcr-docs-language` localStorage value wins, then the browser's language

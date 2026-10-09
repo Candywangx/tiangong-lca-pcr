@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
-lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
+lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
+lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md

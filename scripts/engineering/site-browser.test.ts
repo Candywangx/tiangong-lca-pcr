@@ -77,7 +77,12 @@ test('successful HEAD companion probes require exact same-origin page-scoped pre
 test('request diagnostics preserve observed context and omit unrelated header values',()=>{
  const request={url:()=> 'http://127.0.0.1:1/en/segment',failure:()=>({errorText:'Load request cancelled'}),method:()=> 'GET',headers:()=>({'next-router-prefetch':'1',rsc:'1',authorization:'test-secret',cookie:'private-cookie'}),resourceType:()=> 'fetch' as const,isNavigationRequest:()=>false};
  const context={engine:'webkit' as const,viewport:'mobile',startedAtMs:100,failedAtMs:105,startPhase:'guide-counterpart-return',failurePhase:'guide-counterpart-return',actualUrl:'http://127.0.0.1:1/zh/docs/getting-started/'};
- const captured=captureCancelledSiteRequest(request,context,200);
+ const failures:CancelledRequest[]=[];
+ const cyclicContext={...context,requestFailures:failures,cookie:'private-context'};
+ const captured=captureCancelledSiteRequest(request,cyclicContext,200);failures.push(captured);
+ const serialized=JSON.stringify({languagePreferences:[cyclicContext]});
+ assert.equal(JSON.parse(serialized).languagePreferences[0].requestFailures[0].failurePhase,context.failurePhase);
+ assert.equal(Object.hasOwn(captured,'requestFailures'),false);assert.equal(Object.hasOwn(captured,'cookie'),false);
  assert.equal(captured.reason,'Load request cancelled');assert.equal(captured.method,'GET');assert.equal(captured.resourceType,'fetch');assert.equal(captured.isNavigationRequest,false);assert.equal(captured.status,200);
  assert.deepEqual(captured.headers,{'next-router-prefetch':'1',rsc:'1'});assert.equal(captured.startPhase,context.startPhase);assert.equal(captured.failurePhase,context.failurePhase);assert.equal(captured.actualUrl,context.actualUrl);assert.equal(captured.startedAtMs,100);assert.equal(captured.failedAtMs,105);
  assert.equal(isCancelledSitePrefetch(captured,[]),true);

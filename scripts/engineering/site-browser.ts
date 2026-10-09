@@ -101,7 +101,7 @@ interface FailureContext {engine:SiteBrowserEngine;viewport:string;startedAtMs:n
 export function captureCancelledSiteRequest(request:FailureRequest,context:FailureContext,status?:number):CancelledRequest {
  const headers=request.headers(),selected:Record<string,string>={};
  for(const key of ['next-router-prefetch','next-router-segment-prefetch','rsc','purpose','sec-purpose','sec-fetch-mode','sec-fetch-dest'])if(headers[key]!==undefined)selected[key]=headers[key];
- return {...context,url:request.url(),reason:request.failure()?.errorText??'unknown',method:request.method(),headers:selected,resourceType:request.resourceType(),isNavigationRequest:request.isNavigationRequest(),status};
+ return {engine:context.engine,viewport:context.viewport,startedAtMs:context.startedAtMs,failedAtMs:context.failedAtMs,startPhase:context.startPhase,failurePhase:context.failurePhase,actualUrl:context.actualUrl,url:request.url(),reason:request.failure()?.errorText??'unknown',method:request.method(),headers:selected,resourceType:request.resourceType(),isNavigationRequest:request.isNavigationRequest(),status};
 }
 function observeSiteRequests(page:Page,context:{engine:SiteBrowserEngine;viewport:string},failedRequests:CancelledRequest[],prefetchUrls:string[]) {
  let phase='page-check';const starts=new WeakMap<Request,{at:number;phase:string}>(),responses=new WeakMap<Request,number>();
@@ -270,7 +270,7 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
  try {
   await blocked.addInitScript(()=>{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>{throw new Error('Storage blocked for qualification');}});});
   const page=await blocked.newPage(),errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
-  const trace=observeSiteRequests(page,evidence,failedRequests,prefetchUrls);trace.setPhase('blocked-storage-entry');
+  const trace=observeSiteRequests(page,{engine:evidence.engine,viewport:evidence.viewport},failedRequests,prefetchUrls);trace.setPhase('blocked-storage-entry');
   try {const waitForCurrentRequests=currentNetworkIdle(page);
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');
   await settleLanguage(page,languageCodes.en!);

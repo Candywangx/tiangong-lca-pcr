@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
-lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
+lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
+lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -459,7 +459,9 @@ Browser request receipts retain engine, viewport, exact URL, method, resource
 kind, navigation flag, observed HTTP status, start/failure timestamps and phases,
 actual page URL, and an allowlist of routing/prefetch headers. Cookies and
 credentials are not collected. Partial language-preference evidence survives
-failure. The classifier accepts only the pinned engine's exact cancellation
+failure. Diagnostic capture copies only the explicit scalar context fields; it
+never retains an evidence object or its request-failure array, so the complete
+partial receipt remains serializable. The classifier accepts only the pinned engine's exact cancellation
 reason (`net::ERR_ABORTED`, `NS_BINDING_ABORTED`, or WebKit `cancelled` /
 `Load request cancelled`), a non-navigation GET/HEAD fetch/xhr/other request,
 no failed observed HTTP response, and explicit prefetch metadata. A successful

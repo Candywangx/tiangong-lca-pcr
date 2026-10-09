@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-09
-lastReviewedCommit: 7fca96b27dc931a52a106f234416034deb0842ef
-lastReviewedNote: "Reviewed PCR #107/#108: evidence-bound browser cancellation repair and unified 0.4.6 preparation. Real navigation/HTTP/resource failures remain blocking; fresh complete qualification and coordinated publication are required. Preserved immutable incomplete v0.4.5, candidate methodology status, bilingual guide behavior and English-only npm content; no compatibility or runtime changes."
+lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
+lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -412,16 +412,31 @@ and [configuration](https://pages.edgeone.ai/document/edgeone-json).
 
 ### Browser cancellation qualification and v0.4.5 recovery
 
-The immutable `v0.4.5` preparing release has original sealed assets and a verified
-accepted tool upload. Subsequent full qualification stopped before coordinated
-publication on explicit Firefox/WebKit prefetch cancellations. Its tag, accepted
-package, sealed bytes and failed receipts remain unchanged; neither a preparing
-release nor the accepted tool alone establishes completed product publication.
+The immutable `v0.4.5` preparing release retains its original sealed assets and
+receipts. [PCR #106's verified recovery](https://github.com/tiangong-lca/pcr/pull/109#issuecomment-6065383398)
+installed both exact npm packages and deployed the sealed web candidate. Stable
+publication remains incomplete: the historical verifier demanded a Chinese-home
+redirect, although the accepted site contract preserves explicit language URLs.
+At that recovery, both npm `latest` channels still pointed to `0.4.4`. Preserve the immutable tag and
+receipts; do not replay that publisher or substitute rebuilt assets.
 
 Product `0.4.6` repairs classification only when an engine-specific cancellation
 has explicit non-navigation prefetch evidence. Real navigation, resource, HTTP
-and unmarked failures remain blocking. Fresh complete qualification and the same
-coordinated npm/web publication contract apply to the new immutable tag. See
+and unmarked failures remain blocking. Browser diagnostics project scalar context
+explicitly so partial language evidence remains serializable.
+
+New sealed web probes bind both catalogs and the neutral, Chinese and English
+homes to exact export bytes. Live acceptance requires HTTP 200 and HTML at `/`,
+`/zh`, `/zh/`, `/en` and `/en/`; the two slashless URLs use their corresponding
+localized home probes. Redirects or changed home content fail closed. Existing
+identity/cutover, counts, bounded-body, freshness and raw-download header/hash
+checks remain mandatory. Historical two-catalog manifests remain readable for
+exact artifact verification and materialization; they cannot qualify a fresh
+live publication without sealed homepage proofs. Their original manifests are
+never rewritten.
+
+Fresh complete qualification and the same coordinated npm/web publication
+contract apply to the new immutable tag. See
 [the request evidence contract](typescript-engineering.md#site-and-release-runtime-cutover).
 Canonical candidate PCR status and English-only npm methodology are unchanged.
 
