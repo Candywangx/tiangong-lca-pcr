@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-for (const schemaVersion of [1, 2]) for (const [scenario, description] of [
+const scenarios = [
   ['wire-roundtrip', 'worker imports every export string exactly and preserves complete result records'],
   ['entry-format-retry', 'worker rejects entries from the wrong wire format and permits a valid retry'],
   ['english-rank', 'real serialized English index ranks exact/prefix/title/body hits predictably'],
@@ -20,7 +20,13 @@ for (const schemaVersion of [1, 2]) for (const [scenario, description] of [
   ['serialized-retry', 'real index import failure resets initialization and permits a valid retry'],
   ['requests', 'invalid requests cannot initialize or fetch the search index'],
   ['empty', 'empty index inventories and unmatched queries return complete empty results'],
-] as const) test(`v${schemaVersion}: ${description}`, () => {
+] as const;
+const compactScenarios = [
+  ['leading-ranks', 'worker restores leading/interior/trailing nulls, empty lists and exact ID order'],
+  ['invalid-offsets', 'worker rejects malformed offsets and postings before bounded allocation and permits retry'],
+  ['mixed-map-formats', 'worker rejects native v2 maps and the withdrawn pooled-map format under v3'],
+] as const;
+for (const schemaVersion of [1, 2, 3]) for (const [scenario, description] of [...scenarios, ...(schemaVersion === 3 ? compactScenarios : [])]) test(`v${schemaVersion}: ${description}`, () => {
   const result = spawnSync(process.execPath, [fileURLToPath(new URL('./fixtures/search-worker-runtime.ts', import.meta.url)), scenario, String(schemaVersion)], {
     encoding: 'utf8', timeout: 30_000, maxBuffer: 2 * 1024 * 1024,
   });

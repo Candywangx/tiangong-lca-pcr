@@ -210,7 +210,7 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 2, "new indexes use native JSON export arrays");
+      assert.equal(search.schemaVersion, 3, "new indexes use leading-null-offset maps");
       assert.equal(search.language, language);
       assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
       for (const shard of search.shards) {
@@ -219,6 +219,16 @@ test("real generator preserves multilingual released snapshots and excludes open
         assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
         assert.ok(Object.values(data.entries).length > 0);
         assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
+        for (const [key, entry] of Object.entries(data.entries)) {
+          if (!key.endsWith('.map')) continue;
+          assert.ok(Array.isArray(entry));
+          for (const term of entry) {
+            assert.ok(Array.isArray(term) && term.length === 3 && typeof term[0] === 'string');
+            assert.ok(typeof term[1] === 'number' && Number.isSafeInteger(term[1]) && term[1] >= 0 && term[1] <= 256);
+            assert.ok(Array.isArray(term[2]) && term[2].length <= 256 - term[1]);
+            assert.notEqual(term[2][0], null, 'Only the leading null run is removed');
+          }
+        }
       }
       const currentPages = recordPages(site, site.records[0]!, language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);

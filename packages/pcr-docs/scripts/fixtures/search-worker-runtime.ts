@@ -21,13 +21,19 @@ registerHooks({ resolve(specifier, context, nextResolve) {
 
 type Document = { record: SearchResult; text: string };
 type Shard = { entries: Record<string, string>; records: SearchResult[] };
-function nativeShard(shard: Shard): { entries: Record<string, unknown[]>; records: SearchResult[] } {
+function nativeShard(shard: Shard, schemaVersion: 2 | 3): { entries: Record<string, unknown[]>; records: SearchResult[] } {
   const entries: Record<string, unknown[]> = {};
   for (const [key, value] of Object.entries(shard.entries)) {
     const parsed: unknown = JSON.parse(value);
     assert.ok(Array.isArray(parsed));
     assert.equal(JSON.stringify(parsed), value, 'Native arrays must roundtrip every pinned engine export exactly');
-    entries[key] = parsed;
+    entries[key] = schemaVersion === 3 && key.endsWith('.map') ? parsed.map((term: unknown) => {
+      assert.ok(Array.isArray(term) && term.length === 2 && typeof term[0] === 'string' && Array.isArray(term[1]));
+      const ranks: unknown[] = term[1];
+      const first = ranks.findIndex(rank => rank !== null);
+      const offset = first === -1 ? ranks.length : first;
+      return [term[0], offset, ranks.slice(offset)];
+    }) : parsed;
   }
   return { entries, records: shard.records };
 }
@@ -43,7 +49,7 @@ async function serialize(documents: Document[], language: string): Promise<Shard
   return { entries, records: documents.map(entry => entry.record) };
 }
 
-async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
+async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
   const language = scenario === 'chinese' ? 'zh-CN' : 'en-US';
   const root = `/generated/search/${language}/`;
   const responses = new Map<string, { status: number; body: unknown }>();
@@ -71,7 +77,7 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
   };
   const query = (text: string) => send({ id: ++sequence, query: text, language });
   const valid = (reply: Reply): SearchResult[] => { assert.equal(reply.error, undefined); assert.ok(Array.isArray(reply.results)); return reply.results; };
-  const encode = (shard: Shard) => schemaVersion === 1 ? shard : nativeShard(shard);
+  const encode = (shard: Shard) => schemaVersion === 1 ? shard : nativeShard(shard, schemaVersion);
   const install = async (documents: Document[][]) => {
     const shards: { url: string }[] = [];
     for (const [index, entries] of documents.entries()) { const url = root + 'shard-' + index + '.json'; shards.push({ url }); responses.set(url, { status: 200, body: encode(await serialize(entries, language)) }); }
@@ -87,6 +93,41 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
     await install([documents]);
     assert.deepEqual(valid(await query('wheat')), documents.map(entry => entry.record));
     assert.deepEqual(imported, Object.entries(original.entries), 'Worker must pass the original strings and key order into the real engine');
+  } else if (scenario === 'leading-ranks') {
+    assert.equal(schemaVersion, 3);
+    // Exercise empty arrays, all-null arrays, interior/trailing nulls, empty postings,
+    // Unicode/escaped terms and repeated IDs without relying on the encoder under test.
+    const engineMap = [['quoted "term"\\珊瑚', [null, null, [9, 2, 9], null, [], null]], ['empty', []], ['nulls', [null, null]], ['zero', [[0], null]]];
+    const expected = JSON.stringify(engineMap);
+    const original = responses.get(root + 'shard-0.json')!.body;
+    assert.ok(object(original) && object(original.entries));
+    const key = Object.keys(original.entries).find(key => key.endsWith('.map')); assert.ok(key);
+    responses.set(root + 'shard-0.json', { status: 200, body: { ...original, entries: { ...original.entries, [key]: [['quoted "term"\\珊瑚', 2, [[9, 2, 9], null, [], null]], ['empty', 0, []], ['nulls', 2, []], ['zero', 0, [[0], null]]] } } });
+    await query('absent');
+    assert.ok(imported.some(([name, value]) => name === key && value === expected), 'Worker must restore every rank, null and ID in exact engine order');
+  } else if (scenario === 'invalid-offsets') {
+    assert.equal(schemaVersion, 3);
+    const target = root + 'shard-0.json';
+    const original = responses.get(target)!.body; assert.ok(object(original) && object(original.entries));
+    const key = Object.keys(original.entries).find(key => key.endsWith('.map')); assert.ok(key);
+    for (const term of [null, ['x', 0], [7, 0, []], ['x', -1, []], ['x', 0.5, []], ['x', '2', []], ['x', null, []], ['x', 257, []], ['x', Number.MAX_SAFE_INTEGER, []], ['x', 256, [[0]]], ['x', 0, Array.from({ length: 257 }, () => [])], ['x', 0, {}], ['x', 0, [null]], ['x', 0, [[-1]]], ['x', 0, [[0.5]]], ['x', 0, [['1']]], ['x', 0, [{}]], ['x', 0, [[Number.MAX_SAFE_INTEGER + 1]]], ['x', 0, [], 'extra']]) {
+      responses.set(target, { status: 200, body: { ...original, entries: { ...original.entries, [key]: [term] } } });
+      const failure = await query('wheat');
+      assert.equal(failure.error, 'Invalid serialized search data.'); assert.equal(failure.results, undefined);
+    }
+    responses.set(target, { status: 200, body: original });
+    assert.equal(valid(await query('wheat')).length, 4, 'Malformed compact maps must not prevent a later valid retry');
+  } else if (scenario === 'mixed-map-formats') {
+    assert.equal(schemaVersion, 3);
+    const target = root + 'shard-0.json';
+    const saved = responses.get(target)!;
+    const original = saved.body; assert.ok(object(original) && object(original.entries));
+    const key = Object.keys(original.entries).find(key => key.endsWith('.map')); assert.ok(key);
+    for (const invalid of [[['x', [null, [0]]]], { postings: [[0]], terms: [['x', 2, [1, 0]]] }, '[["x",[0]]]']) {
+      responses.set(target, { status: 200, body: { ...original, entries: { ...original.entries, [key]: invalid } } });
+      assert.equal((await query('wheat')).error, 'Invalid serialized search data.');
+    }
+    responses.set(target, saved); assert.equal(valid(await query('wheat')).length, 4);
   } else if (scenario === 'entry-format-retry') {
     const target = root + 'shard-0.json';
     const original = responses.get(target)!;
@@ -151,7 +192,7 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
     responses.set(target, saved); assert.equal(valid(await query('wheat')).length, 4);
     assert.equal(requests.filter(url => url.endsWith('manifest.json')).length, 2);
   } else if (scenario === 'manifest-shape') {
-    for (const invalid of [null, ...[undefined, 0, 3, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
+    for (const invalid of [null, ...[undefined, 0, 4, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
       responses.set(root + 'manifest.json', { status: 200, body: invalid });
       assert.equal((await query('wheat')).error, 'Invalid search manifest.');
     }
@@ -186,5 +227,5 @@ async function main(scenario: string, schemaVersion: 1 | 2): Promise<void> {
   } else throw new Error('Unknown search worker scenario: ' + scenario);
 }
 const scenario = process.argv[2]; assert.ok(scenario);
-const schemaVersion = Number(process.argv[3]); assert.ok(schemaVersion === 1 || schemaVersion === 2);
+const schemaVersion = Number(process.argv[3]); assert.ok(schemaVersion === 1 || schemaVersion === 2 || schemaVersion === 3);
 await main(scenario, schemaVersion); process.stdout.write(`PASS ${scenario}\n`);

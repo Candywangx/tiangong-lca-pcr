@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-10-08
-lastReviewedNote: "Reviewed PCR #106 / PR #97 native-array search v2 with v1 reader compatibility and unchanged aggregate budgets, preserving current-main onboarding and language preferences. Unified 0.4.5 publication remains subject to fresh qualification and live verification. Preserved main PR #105 bilingual guide and navigation changes during integration."
+lastReviewedAt: 2026-10-10
+lastReviewedNote: "Search v3 removes leading null ranks only, with exact engine-export restoration, v1/v2 reader compatibility and unchanged search behavior and size budgets. No publication or deployment approval is implied."
 lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -349,15 +349,26 @@ Worker and tokenization module are compiled TypeScript browser modules shipped w
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
 
-New search manifests use `schemaVersion: 2`: each shard's `entries` object stores
-the pinned FlexSearch export as native JSON arrays. Generation requires every
-export value to parse as an array and stringify back to the exact original engine
-string. The Worker stringifies those arrays before engine import and also accepts
-version 1 manifests with their original string entries. Unsupported manifest
-versions and entry types inconsistent with the declared version fail initialization;
-failed loads remain retryable. This representation preserves export key order,
-terms, postings, IDs and complete records. The 2 MB text buckets, tokenization,
-30-candidate limit per shard, global ranking and browser size budgets are unchanged.
+New search manifests use `schemaVersion: 3`. Only `*.map` entries change:
+each original `[term, ranks]` becomes `[term, leadingNullCount, remainingRanks]`.
+Generation removes only the consecutive leading `null` ranks. The Worker restores
+that prefix before engine import. Interior/trailing nulls, empty rank arrays,
+empty posting lists, term/ID order and complete result records remain unchanged;
+posting lists are not pooled or deduplicated. Other entries remain native arrays.
+Every encoded map must restore the exact original pinned-engine export string
+during generation. No searchable content is removed or retokenized.
+
+The Worker also accepts version 1 string entries and version 2 native arrays.
+This v3 is the leading-offset format only; the withdrawn pooled-map experiment
+is not supported. Unsupported versions, mixed map shapes, malformed offsets and
+invalid posting IDs fail initialization; failed loads remain retryable. Restored
+rank lengths are bounded to 256 before allocation (the pinned engine uses nine
+slots); this is a wire-shape guard, not a result or size-budget change. Empty and
+all-null original arrays remain exactly recoverable.
+The 2 MB text buckets, tokenization, 30-candidate limit per shard, global ranking
+and existing 20 MB raw / 4 MB gzip per-language budgets are unchanged. New-format
+indexes must be delivered together with their matching compiled Worker; old
+Workers do not understand v3. This change adds no browser module or source file.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading

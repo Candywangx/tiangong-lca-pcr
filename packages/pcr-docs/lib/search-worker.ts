@@ -9,6 +9,16 @@ function searchRecord(value:unknown):value is SearchResult {
  return record(value)&&typeof value.id==="string"&&value.type==="page"&&typeof value.url==="string"&&typeof value.content==="string"&&typeof value.description==="string"
  &&(value.breadcrumbs===undefined||Array.isArray(value.breadcrumbs)&&value.breadcrumbs.every((item:unknown)=>typeof item==="string"));
 }
+/** v3 only removes leading null ranks; restore the exact pinned-engine export. */
+function restoreSearchMap(value:unknown):unknown[] {
+ if(!Array.isArray(value))throw new Error("Invalid serialized search data.");
+ return value.map((term:unknown)=>{
+  if(!Array.isArray(term)||term.length!==3||typeof term[0]!=="string"||!Number.isSafeInteger(term[1])||term[1]<0||term[1]>256||!Array.isArray(term[2])||term[2].length>256-term[1])throw new Error("Invalid serialized search data.");
+  const offset:number=term[1],ranks:unknown[]=term[2];
+  if(ranks[0]===null||!ranks.every(rank=>rank===null||Array.isArray(rank)&&rank.every((id:unknown)=>typeof id==="number"&&Number.isSafeInteger(id)&&id>=0)))throw new Error("Invalid serialized search data.");
+  return [term[0],[...Array.from({length:offset},()=>null),...ranks]];
+ });
+}
 async function createIndex(language:string):Promise<SearchIndex> {
  const engine:unknown=await import(engineUrl);
  if(!record(engine)||typeof engine.Index!=="function")throw new Error("Search engine is unavailable.");
@@ -22,7 +32,7 @@ async function load(language:string):Promise<SearchShard[]> {
  const response=await fetch(`/generated/search/${encodeURIComponent(language)}/manifest.json`);
  if(!response.ok)throw new Error("Search index is unavailable.");
  const manifest:unknown=await response.json();
- if(!record(manifest)||(manifest.schemaVersion!==1&&manifest.schemaVersion!==2)||manifest.language!==language||!Array.isArray(manifest.shards))throw new Error("Invalid search manifest.");
+ if(!record(manifest)||(manifest.schemaVersion!==1&&manifest.schemaVersion!==2&&manifest.schemaVersion!==3)||manifest.language!==language||!Array.isArray(manifest.shards))throw new Error("Invalid search manifest.");
  const shards:SearchShard[]=[];
  for(const item of manifest.shards){
   if(!record(item)||typeof item.url!=="string"||!item.url.startsWith("/generated/search/"))throw new Error("Invalid search shard.");
@@ -33,7 +43,7 @@ async function load(language:string):Promise<SearchShard[]> {
   for(const [key,payload]of Object.entries(data.entries)){
    let serialized:string;
    if(manifest.schemaVersion===1){if(typeof payload!=="string")throw new Error("Invalid serialized search data.");serialized=payload;}
-   else{if(!Array.isArray(payload))throw new Error("Invalid serialized search data.");serialized=JSON.stringify(payload);}
+   else{if(!Array.isArray(payload))throw new Error("Invalid serialized search data.");serialized=JSON.stringify(manifest.schemaVersion===3&&key.endsWith(".map")?restoreSearchMap(payload):payload);}
    index.import(key,serialized);
   }
   shards.push({index,records:new Map(data.records.map(record=>[record.id,record]))});

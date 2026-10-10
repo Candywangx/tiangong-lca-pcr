@@ -495,6 +495,27 @@ function catalogPage(language: string, slugs: string[], title: string, records: 
   manifest.pages.push(page);
   addSearch(page, records.map((r) => r.title[language]).join(" "));
 }
+/** Preserve every engine term/rank/ID; only omit a leading run of null ranks. */
+function encodeSearchEntry(key: string, value: string): unknown[] {
+  const parsed: unknown = JSON.parse(value);
+  if (!Array.isArray(parsed) || JSON.stringify(parsed) !== value)
+    throw new Error("Unsupported serialized search export: " + key);
+  if (!key.endsWith(".map")) return parsed;
+  const packed = parsed.map((term: unknown) => {
+    if (!Array.isArray(term) || term.length !== 2 || typeof term[0] !== "string" || !Array.isArray(term[1]) || term[1].length > 256)
+      throw new Error("Unsupported serialized search map: " + key);
+    const ranks: unknown[] = term[1];
+    if (!ranks.every(rank => rank === null || Array.isArray(rank) && rank.every((id: unknown) => typeof id === "number" && Number.isSafeInteger(id) && id >= 0)))
+      throw new Error("Unsupported serialized search map: " + key);
+    let offset = 0;
+    while (ranks[offset] === null) offset++;
+    return [term[0], offset, ranks.slice(offset)] as [string, number, unknown[]];
+  });
+  const restored = packed.map(([term, offset, ranks]) => [term, [...Array.from({ length: offset }, () => null), ...ranks]]);
+  if (JSON.stringify(restored) !== value)
+    throw new Error("Search map did not roundtrip exactly: " + key);
+  return packed;
+}
 async function generate() {
   fs.mkdirSync(stage, { recursive: true });
   const pcrs = listPcrs({ root, scope: "material" });
@@ -981,10 +1002,7 @@ async function generate() {
       for (const doc of bucket) index.add(Number(doc.record.id), doc.text);
       const entries: Record<string,unknown[]> = {};
       await index.export((key, value) => {
-        const parsed: unknown = JSON.parse(value);
-        if (!Array.isArray(parsed) || JSON.stringify(parsed) !== value)
-          throw new Error("Unsupported serialized search export: " + language + "/" + key);
-        entries[key] = parsed;
+        entries[key] = encodeSearchEntry(key, value);
       });
       const payload = JSON.stringify({
         entries,
@@ -1017,7 +1035,7 @@ async function generate() {
     }
     await flush();
     json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 2,
+      schemaVersion: 3,
       language,
       shards,
     });
