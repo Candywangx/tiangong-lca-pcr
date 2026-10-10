@@ -700,5 +700,4 @@ UUID 50657322-939c-4829-a87b-47c093bfa6a7 仅用于匹配的 CN（中国）用�
 | steriflow-baby-retort | handbook | Steriflow, Baby food sterilization in the food industry,12September2024, “Baby Food: Sterilization Process” and “Different Stages of Sterilization”, https://www.steriflow.com/en/baby-food-sterilization-in-the-food-industry/ | 设备制造商的预处理、灌装、封口、淋水式罐内热处理及冷却路线证据；不采用节能、安全保证或数字规程 |
 | codex-canning | official_guidance | FAO/WHO,CAC/RCP23-1979, revised1989/1993, editorial2011, §§4.4,5.2,7.4,7.5,7.6,8; printed/PDF p20 §7.5. https://www.fao.org/input/download/standards/24/CXP_023e.pdf | 历史低酸罐藏方法背景；需要实际产品/容器规程及工厂主管权限；不构成当前婴幼儿特定监管批准 |
 | foreground-records | dataset | 要求的后续场址记录：批次配方、校准称量、公用工程表计、热处理规程及放行记录、清洗日志及废物联单；本PCR未附工厂数据集 | 数据生产前采集，作为计量、算术归一化、分配、平衡及不确定性依据 |
-
 | codex-baby-food-2023 | standard | FAO/WHO, CXS 73-1981, amended2023, §§1,3.2, physical/printed p3; https://www.fao.org/fao-who-codexalimentarius/sh-proxy/fr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B73-1981%252FCXS_073e.pdf | 仅断奶辅食范围及均匀/粉碎形态；只有官方文本提取，PDF字节及视觉核验不可取得；不构成食品安全批准 |
