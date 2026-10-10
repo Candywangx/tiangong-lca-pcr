@@ -1,4 +1,5 @@
 import { searchTerms } from "./search-terms.ts";
+import { decodeSearchEntries, SEARCH_SCORE_SLOTS } from "./search-wire.ts";
 import type {SearchResult} from "./types.ts";
 interface SearchIndex {import(key:string,payload:string):void;search(query:string,options:{limit:number}):(string|number)[]}
 interface SearchShard {index:SearchIndex;records:Map<string,SearchResult>}
@@ -9,20 +10,10 @@ function searchRecord(value:unknown):value is SearchResult {
  return record(value)&&typeof value.id==="string"&&value.type==="page"&&typeof value.url==="string"&&typeof value.content==="string"&&typeof value.description==="string"
  &&(value.breadcrumbs===undefined||Array.isArray(value.breadcrumbs)&&value.breadcrumbs.every((item:unknown)=>typeof item==="string"));
 }
-/** v3 only removes leading null ranks; restore the exact pinned-engine export. */
-function restoreSearchMap(value:unknown):unknown[] {
- if(!Array.isArray(value))throw new Error("Invalid serialized search data.");
- return value.map((term:unknown)=>{
-  if(!Array.isArray(term)||term.length!==3||typeof term[0]!=="string"||!Number.isSafeInteger(term[1])||term[1]<0||term[1]>256||!Array.isArray(term[2])||term[2].length>256-term[1])throw new Error("Invalid serialized search data.");
-  const offset:number=term[1],ranks:unknown[]=term[2];
-  if(ranks[0]===null||!ranks.every(rank=>rank===null||Array.isArray(rank)&&rank.every((id:unknown)=>typeof id==="number"&&Number.isSafeInteger(id)&&id>=0)))throw new Error("Invalid serialized search data.");
-  return [term[0],[...Array.from({length:offset},()=>null),...ranks]];
- });
-}
 async function createIndex(language:string):Promise<SearchIndex> {
  const engine:unknown=await import(engineUrl);
  if(!record(engine)||typeof engine.Index!=="function")throw new Error("Search engine is unavailable.");
- const index:unknown=Reflect.construct(engine.Index,[{tokenize:"strict",encode:(value:unknown)=>searchTerms(value,language)}]);
+ const index:unknown=Reflect.construct(engine.Index,[{tokenize:"strict",resolution:SEARCH_SCORE_SLOTS,encode:(value:unknown)=>searchTerms(value,language)}]);
  if(!record(index)||typeof index.import!=="function"||typeof index.search!=="function")throw new Error("Invalid search engine.");
  const importEntry=index.import,search=index.search;
  return {import(key,payload){importEntry.call(index,key,payload);},search(query,options){const result:unknown=search.call(index,query,options);if(!Array.isArray(result)||!result.every((hit:unknown)=>typeof hit==="string"||typeof hit==="number"&&Number.isFinite(hit)))throw new Error("Invalid search results.");return result;}};
@@ -39,11 +30,13 @@ async function load(language:string):Promise<SearchShard[]> {
   const response=await fetch(item.url);if(!response.ok)throw new Error("Search shard is unavailable.");
   const data:unknown=await response.json();
   if(!record(data)||!record(data.entries)||!Array.isArray(data.records)||!data.records.every(searchRecord))throw new Error("Invalid serialized search data.");
+  if(manifest.schemaVersion!==3&&Object.hasOwn(data,"sparseMaps"))throw new Error("Invalid serialized search data.");
+  const entries=manifest.schemaVersion===3?decodeSearchEntries(data.entries,data.sparseMaps):data.entries;
   const index=await createIndex(language);
-  for(const [key,payload]of Object.entries(data.entries)){
+  for(const [key,payload]of Object.entries(entries)){
    let serialized:string;
    if(manifest.schemaVersion===1){if(typeof payload!=="string")throw new Error("Invalid serialized search data.");serialized=payload;}
-   else{if(!Array.isArray(payload))throw new Error("Invalid serialized search data.");serialized=JSON.stringify(manifest.schemaVersion===3&&key.endsWith(".map")?restoreSearchMap(payload):payload);}
+   else{if(!Array.isArray(payload))throw new Error("Invalid serialized search data.");serialized=JSON.stringify(payload);}
    index.import(key,serialized);
   }
   shards.push({index,records:new Map(data.records.map(record=>[record.id,record]))});

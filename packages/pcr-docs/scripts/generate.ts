@@ -47,6 +47,7 @@ import {
 } from "./markdown.ts";
 import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
+import { encodeSearchEntries, SEARCH_SCORE_SLOTS } from "../lib/search-wire.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
   options: {
@@ -494,27 +495,6 @@ function catalogPage(language: string, slugs: string[], title: string, records: 
   write(page.htmlPath!, body);
   manifest.pages.push(page);
   addSearch(page, records.map((r) => r.title[language]).join(" "));
-}
-/** Preserve every engine term/rank/ID; only omit a leading run of null ranks. */
-function encodeSearchEntry(key: string, value: string): unknown[] {
-  const parsed: unknown = JSON.parse(value);
-  if (!Array.isArray(parsed) || JSON.stringify(parsed) !== value)
-    throw new Error("Unsupported serialized search export: " + key);
-  if (!key.endsWith(".map")) return parsed;
-  const packed = parsed.map((term: unknown) => {
-    if (!Array.isArray(term) || term.length !== 2 || typeof term[0] !== "string" || !Array.isArray(term[1]) || term[1].length > 256)
-      throw new Error("Unsupported serialized search map: " + key);
-    const ranks: unknown[] = term[1];
-    if (!ranks.every(rank => rank === null || Array.isArray(rank) && rank.every((id: unknown) => typeof id === "number" && Number.isSafeInteger(id) && id >= 0)))
-      throw new Error("Unsupported serialized search map: " + key);
-    let offset = 0;
-    while (ranks[offset] === null) offset++;
-    return [term[0], offset, ranks.slice(offset)] as [string, number, unknown[]];
-  });
-  const restored = packed.map(([term, offset, ranks]) => [term, [...Array.from({ length: offset }, () => null), ...ranks]]);
-  if (JSON.stringify(restored) !== value)
-    throw new Error("Search map did not roundtrip exactly: " + key);
-  return packed;
 }
 async function generate() {
   fs.mkdirSync(stage, { recursive: true });
@@ -997,15 +977,19 @@ async function generate() {
       if (!bucket.length) return;
       const index = new Index({
         tokenize: "strict",
+        resolution: SEARCH_SCORE_SLOTS,
         encode: (value: unknown) => searchTerms(value, language),
       });
       for (const doc of bucket) index.add(Number(doc.record.id), doc.text);
       const entries: Record<string,unknown[]> = {};
       await index.export((key, value) => {
-        entries[key] = encodeSearchEntry(key, value);
+        const parsed: unknown = JSON.parse(value);
+        if (!Array.isArray(parsed) || JSON.stringify(parsed) !== value)
+          throw new Error("Unsupported serialized search export: " + language + "/" + key);
+        entries[key] = parsed;
       });
       const payload = JSON.stringify({
-        entries,
+        ...encodeSearchEntries(entries),
         records: bucket.map((d) => d.record),
       });
       if (Buffer.byteLength(payload) > 20_000_000)

@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-10
-lastReviewedNote: "Search v3 removes leading null ranks only, with exact engine-export restoration, v1/v2 reader compatibility and unchanged search behavior and size budgets. No publication or deployment approval is implied."
-lastReviewedCommit: 059aa340fc90d0d9e0ad8add6b0af485d66a8803
+lastReviewedAt: 2026-10-09
+lastReviewedNote: "Reviewed fork PR 15 integration: lossless sparse score-slot search wire v3 preserves exact engine imports and complete records under unchanged 20 MB raw/4 MB gzip language budgets; retains v1/v2 readers, explicit malformed-metadata rejection and retries, emitted codec module/MIME checks. Existing PCR #107/#108 language-routing and browser failure predicates remain unchanged; methodology and mapping approval remain separate."
+lastReviewedCommit: eff07d1e9764d670de6ea87d7a09b965710d0832
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -127,7 +127,9 @@ The complete default Chinese home is `/`. Localized homes and document routes us
 the registry's URL aliases, initially `/zh/`, `/en/` and `/{locale}/docs/**`.
 `/zh` and `/zh/` carry that same Chinese home: they are generated, canonicalized
 to `/` and kept out of the sitemap. The provider preserves these explicit language
-URLs. `/en/` is a real
+URLs at HTTP 200; live release acceptance compares both Chinese aliases with
+the sealed Chinese-home bytes and also verifies the neutral and English homes.
+A provider redirect is not accepted as language-home evidence. `/en/` is a real
 localized home, and the document routes keep their locale segment.
 In a JavaScript-enabled browser, only `/` negotiates a reading language: a valid
 manual `pcr-docs-language` localStorage value wins, then the browser's language
@@ -139,6 +141,10 @@ automatic navigation and ordinary localized links never write it. Storage denial
 does not stop reading or switching. A manual Chinese home switch uses `/zh/`,
 including when persistence is unavailable. All language navigation preserves the
 current query string and fragment; a document switch prefers a verified counterpart.
+Manual language changes load that exported HTML document through native browser
+navigation. This establishes the target's HTML language directly without an
+intermediate client-router RSC transition. Ordinary same-language links and neutral
+entry detection retain their existing behavior.
 PCR document slugs retain semantic domain/subdomain/record identity under
 `docs/pcr/`. Exceptionally long documents may have stable subpages with a complete
 chapter inventory. All normative content remains in the HTML of those pages.
@@ -349,26 +355,29 @@ Worker and tokenization module are compiled TypeScript browser modules shipped w
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
 
-New search manifests use `schemaVersion: 3`. Only `*.map` entries change:
-each original `[term, ranks]` becomes `[term, leadingNullCount, remainingRanks]`.
-Generation removes only the consecutive leading `null` ranks. The Worker restores
-that prefix before engine import. Interior/trailing nulls, empty rank arrays,
-empty posting lists, term/ID order and complete result records remain unchanged;
-posting lists are not pooled or deduplicated. Other entries remain native arrays.
-Every encoded map must restore the exact original pinned-engine export string
-during generation. No searchable content is removed or retokenized.
+Search manifest version 2 uses `schemaVersion: 2`: each shard's `entries` object stores
+the pinned FlexSearch export as native JSON arrays. Generation requires every
+export value to parse as an array and stringify back to the exact original engine
+string. The Worker stringifies those arrays before engine import and also accepts
+version 1 manifests with their original string entries. Unsupported manifest
+versions and entry types inconsistent with the declared version fail initialization;
+failed loads remain retryable. This representation preserves export key order,
+terms, postings, IDs and complete records. The 2 MB text buckets, tokenization,
+30-candidate limit per shard, global ranking and browser size budgets are unchanged.
 
-The Worker also accepts version 1 string entries and version 2 native arrays.
-This v3 is the leading-offset format only; the withdrawn pooled-map experiment
-is not supported. Unsupported versions, mixed map shapes, malformed offsets and
-invalid posting IDs fail initialization; failed loads remain retryable. Restored
-rank lengths are bounded to 256 before allocation (the pinned engine uses nine
-slots); this is a wire-shape guard, not a result or size-budget change. Empty and
-all-null original arrays remain exactly recoverable.
-The 2 MB text buckets, tokenization, 30-candidate limit per shard, global ranking
-and existing 20 MB raw / 4 MB gzip per-language budgets are unchanged. New-format
-indexes must be delivered together with their matching compiled Worker; old
-Workers do not understand v3. This change adds no browser module or source file.
+Search manifest version 3 retains native export arrays and complete result records,
+but marks supported FlexSearch map keys in each shard's `sparseMaps` list. Each
+marked term stores its original score-vector length and ordered non-null slot
+positions with unchanged posting lists. The Worker restores every null slot and
+stringifies the exact original engine export before import. The pinned nine-slot
+bound prevents malformed sparse lengths from allocating unbounded arrays. Dense
+or unsupported map shapes stay native; compression is used only when smaller.
+Version 1 string entries and version 2 native arrays remain readable and reject
+version 3 sparse metadata. Missing, duplicate, foreign or malformed sparse metadata
+fails initialization and remains retryable. Export key order, terms, posting IDs,
+slot positions, complete records, tokenization, text buckets, ranking and both
+browser budgets remain unchanged. The shared codec is an emitted TypeScript
+browser module with the same executable MIME/noindex checks as the Worker.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
