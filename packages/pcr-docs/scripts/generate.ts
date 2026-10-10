@@ -47,6 +47,7 @@ import {
 } from "./markdown.ts";
 import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
+import { encodeSearchEntries, SEARCH_SCORE_SLOTS } from "../lib/search-wire.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
   options: {
@@ -976,6 +977,7 @@ async function generate() {
       if (!bucket.length) return;
       const index = new Index({
         tokenize: "strict",
+        resolution: SEARCH_SCORE_SLOTS,
         encode: (value: unknown) => searchTerms(value, language),
       });
       for (const doc of bucket) index.add(Number(doc.record.id), doc.text);
@@ -987,7 +989,7 @@ async function generate() {
         entries[key] = parsed;
       });
       const payload = JSON.stringify({
-        entries,
+        ...encodeSearchEntries(entries),
         records: bucket.map((d) => d.record),
       });
       if (Buffer.byteLength(payload) > 20_000_000)
@@ -1017,7 +1019,7 @@ async function generate() {
     }
     await flush();
     json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 2,
+      schemaVersion: 3,
       language,
       shards,
     });
