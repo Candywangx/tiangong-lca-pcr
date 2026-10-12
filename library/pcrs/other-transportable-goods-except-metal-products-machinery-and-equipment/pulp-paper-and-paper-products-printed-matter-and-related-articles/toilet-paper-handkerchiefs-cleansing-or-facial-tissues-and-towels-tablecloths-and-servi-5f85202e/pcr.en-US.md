@@ -15,14 +15,14 @@ This PCR covers dry conversion of purchased virgin-fibre conventional wet-presse
 
 Exclude parent-reel papermaking, wood pulping/bleaching, recycled-fibre/deinking, TAD/hybrid/airlaid webs, cellulose wadding, facial tissues, napkins, towels, tablecloths, apparel, printing, lotion/fragrance application, non-PVAc converter chemicals and onsite core manufacture. These need applicable reviewed extensions rather than an automatic classification selection. A different supplied parent-reel technology cannot borrow the 32131 conventional-creped background. Onsite thermal drying/steam/gas combustion and fuel-driven handling are outside this all-electric conversion route; their presence invalidates route applicability until separately modelled with appropriate emissions evidence.
 
-CPC3.0 32193 is broader than this product/route. The recommended relation is narrower, subject to independent controller acceptance. The existing 32131 parent-reel method stops before consumer converting. Its stock output and this PCR’s finished-roll output are physically different interfaces; classification and intended use alone do not make them interchangeable.
+CPC3.0 32193 is broader than this product/route. The scope is narrower; the canonical mapping and its ADR govern the accepted relation. The existing 32131 parent-reel method stops before consumer converting. Its stock output and this PCR’s finished-roll output are physically different interfaces; classification and intended use alone do not make them interchangeable.
 
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.toilet-paper-handkerchiefs-cleansing-or-facial-tissues-and-towels-tablecloths-and-servi-5f85202e |
-| classification_refs | CPC:3.0:32193; narrower |
+| classification_refs | CPC 3.0 32193; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unprinted unlotioned cored toilet tissue rolls from purchased virgin-fibre CWP dry-creped parent reels |
 | excluded_products | Parent stock; facial tissue/napkin/towel/tablecloth/apparel; other fibre-web/papermaking/chemical/thermal routes |
 | representative_product | Accepted packed cored toilet roll with measured net sheet mass and quality |

@@ -19,7 +19,7 @@ Exclude wood wool, pulp/refined long fibers, chips, particleboard furnish, bonde
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.unbound-untreated-wood-flour |
-| classification_refs | CPC 3.0 31220; narrower |
+| classification_refs | CPC 3.0 31220; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Untreated unbound flour from dry waste sawdust, one declared filler grade |
 | excluded_products | Wood wool; long fibers; bonded or chemically treated products; thermally dried onsite routes |
 | representative_product | Loose mechanically milled wood flour at bulk dispatch |

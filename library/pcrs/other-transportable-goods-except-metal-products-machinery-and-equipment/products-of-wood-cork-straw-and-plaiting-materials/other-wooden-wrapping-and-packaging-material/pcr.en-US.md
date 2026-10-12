@@ -31,7 +31,7 @@ Excluded: wood boxes/crates/cable drums, pallets/load boards or their assembly s
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-wooden-wrapping-and-packaging-material |
-| classification_refs | CPC 3.0 31709; narrower |
+| classification_refs | CPC 3.0 31709; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Accepted solid-wood packaging wedges and contoured/notched blocks with cargo-contact geometry |
 | excluded_products | The exclusions in section 1; classification labels alone do not establish applicability |
 | representative_product | Unglued uncoated tapered pine packaging wedge, cut to order from kiln-dried sawn stock |
@@ -88,7 +88,7 @@ Declare all required qualifiers in dataset metadata or equivalent reference-flow
 | --- | --- |
 | declared_starting_condition | Purchased kiln-dried untreated sawn stock received at workshop; supplier drying burdens remain upstream |
 | starting_condition_role | Gate-to-gate electric conversion to accepted packaging articles |
-| product_classification_scope | Only specified solid-wood packaging wedge/contoured-block subset; proposed CPC31709 narrower |
+| product_classification_scope | Only specified solid-wood packaging wedge/contoured-block subset; CPC31709 narrower scope |
 | recursive_input_rule | Purchased same-category unfinished/reworked packaging articles change the route and require separate disclosed supplier gate; never silently substitute for sawn stock or create repeated finishing credit |
 | upstream_dataset_requirement | Match stock species, drying, moisture/reference quantity, forestry carbon/allocation, supplier gate and inbound transport; match delivered electricity voltage/geography/period, oil and PE supplier specifications. Identity UUID is not a background dataset. |
 | disclosure | Disclose all gates, actual operations, meters, transport providers, exclusions and pending identities/background compatibility; gate-to-gate alone is not cradle-to-gate |

@@ -23,7 +23,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-continuously-shaped-along-any-of-its-edges-or-faces-including-strips-and-friezes-f-b33b549b |
-| classification_refs | CPC 3.0 31212; narrower |
+| classification_refs | CPC 3.0 31212; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 来自单根竹秆、非胶合、未组装的连续成型竹条；有据涂饰或未涂饰状态 |
 | excluded_products | 胶合/工程竹、竹胶合板、已组装地板、仅刨光坯材、未加工竹秆及未审查的其他涂饰路线 |
 | representative_product | 一根具有声明连续截形的非胶合竹线条 |

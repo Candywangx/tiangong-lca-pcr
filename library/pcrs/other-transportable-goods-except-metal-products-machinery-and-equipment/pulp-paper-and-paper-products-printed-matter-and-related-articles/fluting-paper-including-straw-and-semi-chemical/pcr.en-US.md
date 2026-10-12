@@ -21,7 +21,7 @@ Pulping is supplied through qualified upstream data, not erased from cradle-to-g
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.fluting-paper-including-straw-and-semi-chemical |
-| classification_refs | CPC 3.0 32134; narrower scope proposal, subject to independent mapping acceptance |
+| classification_refs | CPC 3.0 32134; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Single-ply unbleached hardwood NSSC fluting paper reels from externally supplied pulp; same-grade internal broke permitted |
 | excluded_products | Straw/non-wood fluting; recovered-fibre fluting; CTMP/TMP/kraft furnish; coated or surface-sized medium; linerboard; corrugated paperboard and boxes; integrated pulping foreground |
 | representative_product | One accepted net uncoated NSSC reel before corrugation; no mandated mill recipe or producer average |

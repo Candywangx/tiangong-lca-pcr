@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.cartons-boxes-cases-record-sleeves-and-other-packing-containers-except-bags-of-paper-pa-b72ab64c |
-| classification_refs | CPC 3.0 32153；仅建议 narrower，未接受映射 |
+| classification_refs | CPC 3.0 32153; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未印刷未涂布 C 楞单瓦楞 0201-G 扁平胶合箱 |
 | excluded_products | 其他箱结构/材料/表面状态；袋和办公用品；上游纸板制造 |
 | representative_product | 一片四壁开槽箱，含制造胶合搭接及中线相接外摇盖 |

@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-continuously-shaped-along-any-of-its-edges-or-faces-including-strips-and-friezes-f-d3228e5f |
-| classification_refs | CPC 3.0: 31211；方法范围 narrower |
+| classification_refs | CPC 3.0 31211; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未处理针叶实木连续成型条/镶条/压条/线条，未组装，采用窑干原锯材 |
 | excluded_products | 普通锯切/平刨原材；非针叶木/竹材；胶合/层压/指接产品；板材；涂装/防腐；已组装地板或门窗 |
 | representative_product | 声明出厂含水率下验收净未涂装针叶实木纵向型材 |

@@ -20,7 +20,7 @@ Exclude printed wallpaper, PVC or other decorative polymer layers, pigment-coate
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.wallpaper-base |
-| classification_refs | CPC 3.0:32124; narrower scope proposal; no accepted mapping |
+| classification_refs | CPC 3.0 32124; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Wet-laid uncoated, unsaturated wallpaper base from purchased bleached kraft wood pulp; actual filler and non-pigmented sizing |
 | excluded_products | Printed, pigment-coated, decorative-layer, latex-saturated, nonwoven, mechanical-pulp and recovered-fibre routes |
 | representative_product | One accepted net delivered base-paper reel to purchaser specifications; no representative recipe |

@@ -23,7 +23,7 @@ Exclude every glued or engineered bamboo blank, including parallel-strip laminat
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-continuously-shaped-along-any-of-its-edges-or-faces-including-strips-and-friezes-f-b33b549b |
-| classification_refs | CPC 3.0 31212; narrower |
+| classification_refs | CPC 3.0 31212; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Single-culm unglued unassembled continuously profiled bamboo strips; documented coated or uncoated state |
 | excluded_products | Glued/engineered bamboo; bamboo plywood; assembled flooring; plain-planed stock; untreated culms; other coating routes without review |
 | representative_product | One unglued bamboo moulding with declared continuous cross-section |

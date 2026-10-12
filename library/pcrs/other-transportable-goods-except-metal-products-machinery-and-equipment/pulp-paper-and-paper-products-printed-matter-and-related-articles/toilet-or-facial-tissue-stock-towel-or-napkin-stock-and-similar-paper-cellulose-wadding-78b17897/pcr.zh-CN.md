@@ -13,14 +13,14 @@ translation_status: aligned
 
 本 PCR 覆盖外购原生漂白阔叶木和针叶木硫酸盐商品浆制造单层起皱卫生原纸母卷的非一体化路线：再碎浆、浆料净化和磨浆、湿法成形、常规压榨及真空脱水、蒸汽加热扬克缸和热风气罩干燥、刮刀起皱、卷取，以及厂门验收前实际母卷复卷、修边和运输保护。原纸供后续转换，不以消费卷、面巾张或餐巾张计量。[jrc-pp-bref-2015, sofidel-parent-reels]
 
-CPC3.0 32131 还包括超出本方法的纤维素絮片及纤维网，建议关系为 narrower，须独立接受映射。排除干法或气流成网非织造产品、TAD 和混合或不起皱路线、回收纤维和脱墨路线、厂内木材制浆漂白、功能涂层或乳液、层间复合、消费端压花打孔折叠、纸条卷截切及 32193 零售包装。其他实际路线须另行方法审查，分类标签不建立适用性。[jrc-pp-bref-2015]
+CPC3.0 32131 还包括超出本方法的纤维素絮片及纤维网，本方法范围为 narrower，已接受关系以权威映射及其 ADR 为准。排除干法或气流成网非织造产品、TAD 和混合或不起皱路线、回收纤维和脱墨路线、厂内木材制浆漂白、功能涂层或乳液、层间复合、消费端压花打孔折叠、纸条卷截切及 32193 零售包装。其他实际路线须另行方法审查，分类标签不建立适用性。[jrc-pp-bref-2015]
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.toilet-or-facial-tissue-stock-towel-or-napkin-stock-and-similar-paper-cellulose-wadding-78b17897 |
-| classification_refs | CPC:3.0:32131; narrower |
+| classification_refs | CPC 3.0 32131; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 用于厕用纸、面巾、擦手纸或餐巾转换的原生纤维常规湿压干起皱单层母卷 |
 | excluded_products | 转换后的成品纸制品、纤维素絮片或非织造纤维网、再生或 TAD 或混合或不起皱原纸、木材一体化制浆 |
 | representative_product | 实测厂门含水状态下的合格起皱卫生原纸母卷 |

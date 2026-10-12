@@ -21,7 +21,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.fluting-paper-including-straw-and-semi-chemical |
-| classification_refs | CPC 3.0 32134；较窄范围建议，须独立接受映射 |
+| classification_refs | CPC 3.0 32134; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 采用外供浆制造的单层未漂白阔叶木NSSC瓦楞芯纸卷；允许同牌号内回用损纸 |
 | excluded_products | 草浆/非木浆芯纸；回收纤维芯纸；CTMP/TMP/硫酸盐浆配浆；涂布或表面施胶芯纸；箱板纸；成品瓦楞纸板和纸箱；一体化制浆前景 |
 | representative_product | 起楞前的一卷合格净未涂布NSSC芯纸；不规定工厂配方或生产者平均值 |

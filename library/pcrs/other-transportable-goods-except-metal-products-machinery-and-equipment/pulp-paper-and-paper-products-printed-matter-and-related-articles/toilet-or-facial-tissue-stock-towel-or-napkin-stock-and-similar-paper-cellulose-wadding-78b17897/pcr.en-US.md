@@ -13,14 +13,14 @@ translation_status: canonical
 
 This PCR covers non-integrated manufacture of single-ply creped tissue parent reels from purchased virgin bleached hardwood/softwood kraft market pulp: repulping, stock cleaning/refining, wet forming, conventional pressing/vacuum dewatering, steam-heated Yankee plus hot-air hood drying, blade creping, reeling and any parent-reel rewinding/edge cutting and transport protection before mill-gate acceptance. Tissue is a substrate for later conversion, not a counted consumer roll, facial tissue or napkin. [jrc-pp-bref-2015, sofidel-parent-reels]
 
-CPC3.0 32131 also includes cellulose wadding and fibre webs beyond this method. The proposed relation is narrower, requiring independent mapping acceptance. Exclude dry-laid/airlaid/nonwoven webs, TAD and hybrid/uncreped routes, recovered-fibre/deinking routes, on-site pulping/bleaching from wood, coatings/lotions, ply bonding, consumer embossing/perforation/folding/log cutting and retail packaging under 32193. Actual different routes require separately reviewed methodology; no classification label establishes applicability. [jrc-pp-bref-2015]
+CPC3.0 32131 also includes cellulose wadding and fibre webs beyond this method. The scope is narrower; the canonical mapping and its ADR govern the accepted relation. Exclude dry-laid/airlaid/nonwoven webs, TAD and hybrid/uncreped routes, recovered-fibre/deinking routes, on-site pulping/bleaching from wood, coatings/lotions, ply bonding, consumer embossing/perforation/folding/log cutting and retail packaging under 32193. Actual different routes require separately reviewed methodology; no classification label establishes applicability. [jrc-pp-bref-2015]
 
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.toilet-or-facial-tissue-stock-towel-or-napkin-stock-and-similar-paper-cellulose-wadding-78b17897 |
-| classification_refs | CPC:3.0:32131; narrower |
+| classification_refs | CPC 3.0 32131; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Virgin-fibre CWP dry-creped single-ply tissue parent reels for toilet/facial/towel/napkin conversion |
 | excluded_products | Finished converted paper articles; cellulose wadding/nonwoven webs; recycled/TAD/hybrid/noncreped tissue; integrated wood pulping |
 | representative_product | Accepted creped tissue parent reel at measured mill-gate moisture |

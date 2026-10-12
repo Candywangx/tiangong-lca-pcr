@@ -15,14 +15,14 @@ This method covers factory manufacture of uncoated interior cellular wood panels
 
 Exclude solid blockboard/battenboard, all-veneer plywood, paper-honeycomb door cores, aluminium honeycomb, bamboo cores, foamed plastic cores, assembled doors/hardware, coated/preserved panels, purchased bonded skins, liquid premixed UF, other adhesive chemistries, raw-log conversion, on-site green-wood drying and fuel/steam/purchased-heat press routes. These require new physical inventory and applicability review. This recipe is an evidence-informed collection route; it is not an industry-average recipe, emission factor or claim of structural/fire/acoustic equivalence.
 
-UN CPC 3.0 31610 identifies spaced wood laths, whereas the broader 31411 explanatory inclusion also mentions cellular board, and the 31421 title/note distinction does not settle every physical core. Resolve using the actual cross-section and bill of materials; retain classification overlap for maintainer mapping review. No method or accepted coverage of 3141/3142 is inferred from that wording. This route is a narrower proposal for 31610, not automatic accepted coverage. Sources: `un-cpc-cellular-3`, `un-cpc-plywood-3`, `un-cpc-laminated-3`.
+UN CPC 3.0 31610 identifies spaced wood laths, whereas the broader 31411 explanatory inclusion also mentions cellular board, and the 31421 title/note distinction does not settle every physical core. Resolve using the actual cross-section and bill of materials; retain classification overlap for maintainer mapping review. No method or accepted coverage of 3141/3142 is inferred from that wording. This route is limited to the narrower 31610 subset; the canonical mapping and its ADR govern accepted coverage. Sources: `un-cpc-cellular-3`, `un-cpc-plywood-3`, `un-cpc-laminated-3`.
 
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.cellular-board |
-| classification_refs | CPC 3.0 31610; physical spaced wood-core context only |
+| classification_refs | CPC 3.0 31610; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated interior spaced-lath/lattice wood-core panels of the declared UF electric-press route |
 | excluded_products | Solid strip cores, all-veneer boards, paper/aluminium honeycomb and all exclusions in section 1 |
 | representative_product | Trimmed panel with coniferous spaced wood core and non-tropical hardwood veneer skins |

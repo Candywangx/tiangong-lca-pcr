@@ -23,7 +23,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-cork-debacked-or-roughly-squared-or-in-blocks-plates-sheets-or-strip-crushed-gr-6a65ac8e |
-| classification_refs | CPC 3.0: 31921；建议narrower关系；接受映射须由主控独立裁定 |
+| classification_refs | CPC 3.0 31921; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 声明单产品电力画像下，已煮制、环境稳定调湿、分级并修边的未胶结栓皮栎天然软木板片 |
 | excluded_products | 以原料或简单准备树皮为最终产品；碎粒或粉末；以废软木为参考产品；工业去背；塞体或圆片；胶结、膨胀或层合软木 |
 | representative_product | 准备厂门口验收天然软木板片，在实测交付含水率下的净质量 |

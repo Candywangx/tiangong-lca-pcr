@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.labels-of-paper-or-paperboard |
-| classification_refs | CPC 3.0 32197; narrower |
+| classification_refs | CPC 3.0 32197; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 连续格拉辛底纸上的印刷模切永久压敏纸标签 |
 | excluded_products | 第1节的湿胶、直接热敏、无胶、无底纸、薄膜／纸板及不兼容路线 |
 | representative_product | HERMAwhite (601)/62Gpt/523 加工为黑色印刷模切卷 |

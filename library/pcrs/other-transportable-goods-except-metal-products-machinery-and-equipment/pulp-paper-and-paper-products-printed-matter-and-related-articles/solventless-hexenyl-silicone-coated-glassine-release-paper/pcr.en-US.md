@@ -20,7 +20,7 @@ Solvent-diluted, emulsion, condensation-cured, UV-cured and vinyl-only systems a
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.solventless-hexenyl-silicone-coated-glassine-release-paper |
-| classification_refs | CPC 3.0 32149; narrower; proposed subset only |
+| classification_refs | CPC 3.0 32149; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Neat thermally addition-cured hexenyl-silicone coated glassine, one side, rolls |
 | excluded_products | The excluded routes and products in section 1 |
 | representative_product | Accepted roll of single-sided silicone-coated glassine with declared release performance |

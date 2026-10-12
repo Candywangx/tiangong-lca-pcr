@@ -18,7 +18,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.chemical-wood-pulp-other-than-dissolving-grades |
-| classification_refs | CPC 3.0 32112; narrower |
+| classification_refs | CPC 3.0 32112; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 干燥非溶解级漂白松/云杉硫酸盐商品浆板浆包 |
 | excluded_products | 未漂白；亚硫酸盐；烧碱；溶解级；阔叶；竹；非木；机械/半化学；再生；一体化湿浆；纸张 |
 | representative_product | 氧脱木素D-EOP-D ECF漂白针叶硫酸盐浆 |

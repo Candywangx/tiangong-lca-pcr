@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-particle-boards-of-wood-e-g-waferboard |
-| classification_refs | CPC 3.0 31439；narrower；仅为分类背景 |
+| classification_refs | CPC 3.0 31439; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 随机宽薄木质刨片waferboard；粉状PF及声明的间接蒸汽/干式控制试点路线 |
 | excluded_products | 细粒UF板；主动定向OSB/waferboard；纤维板；单板胶合板；非木质板；涂层/覆面/处理板；其他胶种和供热/控制路线 |
 | representative_product | 厂门验收随机宽刨片PF板材净成品；历史图2/W系列锚点不是供方清单数据 |

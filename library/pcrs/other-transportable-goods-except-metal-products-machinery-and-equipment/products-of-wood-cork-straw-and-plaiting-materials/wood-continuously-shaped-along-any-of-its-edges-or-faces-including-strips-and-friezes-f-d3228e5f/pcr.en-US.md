@@ -19,7 +19,7 @@ Exclude non-coniferous wood/bamboo, laminated or finger-jointed/glued wood, engi
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-continuously-shaped-along-any-of-its-edges-or-faces-including-strips-and-friezes-f-d3228e5f |
-| classification_refs | CPC 3.0: 31211; narrower methodology scope |
+| classification_refs | CPC 3.0 31211; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Solid untreated coniferous continuously profiled strips/friezes/beadings/mouldings, unassembled, made from kiln-dried sawn stock |
 | excluded_products | Plain sawn/surfaced stock; non-coniferous/bamboo; glued/laminated/finger-jointed products; panels; coating/preservation; assembled floors or doors/windows |
 | representative_product | Net accepted uncoated solid coniferous longitudinal profile at declared dispatch moisture |

@@ -20,7 +20,7 @@ Exclude CLT cross-layer panels, LVL/PSL/LSL/OSL, veneer-containing tension lamin
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.untreated-prf-glulam-straight-beams |
-| classification_refs | CPC 3.0 31627; narrower |
+| classification_refs | CPC 3.0 31627; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Untreated uncoated straight PRF coniferous sawn-lamella glulam beams |
 | excluded_products | CLT; LVL and other structural composite lumber; treated/coated/curved/veneer-reinforced or hot/RF-cured products |
 | representative_product | One declared straight beam configuration with actual lamella grade combination |

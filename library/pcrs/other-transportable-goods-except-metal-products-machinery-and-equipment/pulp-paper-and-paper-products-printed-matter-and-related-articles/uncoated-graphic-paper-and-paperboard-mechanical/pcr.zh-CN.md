@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.uncoated-graphic-paper-and-paperboard-mechanical |
-| classification_refs | CPC 3.0 32125; narrower |
+| classification_refs | CPC 3.0 32125; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 原生浆超级压光未涂布凹版印刷纸 |
 | excluded_products | 新闻纸；再生SC；无木纸；涂布纸；纸板；表面施胶纸；一体化制浆 |
 | representative_product | 原生浆SC-A凹版杂志卷筒纸；UPM Cat G仅为商业纸种例证，不是指定配方 |

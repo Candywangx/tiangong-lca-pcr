@@ -21,7 +21,7 @@ Exclude OSB/waferboard with oriented or distinct wafer architecture; bamboo, fla
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.particle-board-of-wood |
-| classification_refs | CPC 3.0:31431; narrower |
+| classification_refs | CPC 3.0 31431; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated flat hot-pressed wood particleboard with ingredient-audited unmodified UF binder |
 | excluded_products | OSB; waferboard; non-wood panels; fiberboard; faced/coated panels; molded products; unidentified or other binder recipes |
 | representative_product | One accepted wood species/source, particle geometry, UF recipe, density, thickness and moisture cohort |

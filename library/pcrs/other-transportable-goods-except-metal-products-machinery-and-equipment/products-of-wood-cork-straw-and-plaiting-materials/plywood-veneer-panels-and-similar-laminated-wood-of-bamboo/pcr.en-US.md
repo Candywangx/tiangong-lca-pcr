@@ -25,7 +25,7 @@ Drying and hot pressing do not establish carbon neutrality. If any upstream mat 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-veneer-panels-and-similar-laminated-wood-of-bamboo |
-| classification_refs | CPC 3.0 31450; proposed narrower subset, subject to independent mapping acceptance |
+| classification_refs | CPC 3.0 31450; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated PF-impregnated woven-bamboo-mat flat plywood |
 | excluded_products | Curtain, strip-laminated, scrimber, flattened, wood-composite, overlaid and pretreated bamboo panels; unglued profiles |
 | representative_product | Accepted flat PF bamboo mat packaging or general board, without inferred structural grade |

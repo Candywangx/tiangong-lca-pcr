@@ -18,7 +18,9 @@ translation_status: aligned
 | 植物羊皮纸 | 纸幅经化学羊皮化，通常使用硫酸，随后清洗/中和及干燥；纤维素凝胶是独立化学转化，本方法排除。成品只有纤维素不证明没有使用工艺酸 [hubbe-pruszynski-greaseproof-2020, Parchmentized Paper; ahlstrom-gvp-technology]。 |
 | 机械天然防油纸 | 高打浆与结合紧密的纤维结构形成屏障，不采用酸羊皮化或功能阻隔/离型涂层；本方法覆盖此路线 [nordic-natural-greaseproof-2022, 第4页; hubbe-pruszynski-greaseproof-2020, Refining]。 |
 | 涂层防油/烘焙纸 | 有机硅离型、含氟化学品、聚合物膜或矿物阻隔层须有独立组分、施涂及固化清单。生产者册明确包括有机硅变体，即使商品名为天然防油纸也在本方法之外；PFAS-free 不等于未涂层 [nordic-natural-greaseproof-2022, 第3–4页]。 |
-| 玻璃纸及描图纸 | 玻璃纸通常增加强多辊超级压光，有时包括再润湿及表面成膜处理；透明性或名称相近不证明路线相符。排除超级压光玻璃纸/离型原纸及描图产品；普通机内压光按实际记录，不能改称玻璃纸制造 [ahlstrom-glassine-ep2931972a1, 0001–0006; jrc-pulp-paper-bref-2015, 7.1.9]。 |
+| 格拉辛纸及描图纸 | 格拉辛纸通常增加强多辊超级压光，有时包括再润湿及表面成膜处理；透明性或名称相近不证明路线相符。排除超级压光格拉辛纸/离型原纸及描图产品；普通机内压光按实际记录，不能改称格拉辛纸制造 [ahlstrom-glassine-ep2931972a1, 0001–0006; jrc-pulp-paper-bref-2015, 7.1.9]。 |
+
+术语说明：glassine 是超级压光的纤维纸，即格拉辛纸；cellophane 是再生纤维素膜，即玻璃纸／赛璐玢，两者材质和制造路线不同。含 UUID 的官方流名称按数据库原文保留，其中存在歧义的中文标签不改变本文工艺定义 [upm-glassine-terminology; gb-cellophane-2009]。
 
 另排除再生纤维素赛璐玢膜、动物羊皮、回收浆/机械浆配料、一体化木材制浆/漂白、湿强/加填/着色纸种、厂内燃烧、污泥厌氧消化及零售裁切/制品加工。不设配方、滤水性目标、涂层量、打浆能耗、排放因子或耐热性能默认值。实际工艺助剂须逐一检查，未涂层声明不能成为遗漏化学品的理由；实质不同的处理或阻隔路线须另用方法。
 
@@ -27,9 +29,9 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.vegetable-parchment-greaseproof-papers-tracing-papers-and-glassine-and-other-glazed-tra-4f048b3e |
-| classification_refs | CPC 3.0 32137; narrower |
+| classification_refs | CPC 3.0 32137; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未涂层、无超级压光的原生化学浆机械高打浆防油纸卷 |
-| excluded_products | 酸羊皮化纸；涂层烘焙/阻隔纸；玻璃纸；描图纸；赛璐玢膜；一体化制浆/燃烧路线 |
+| excluded_products | 酸羊皮化纸；涂层烘焙/阻隔纸；格拉辛纸；描图纸；赛璐玢膜；一体化制浆/燃烧路线 |
 | representative_product | 天然防油未涂层原纸子集；Nordic Paper 证实机械屏障，不认定所有品牌纸种均符合此范围 |
 | production_route | 外购漂白化学木浆；高打浆；湿法成形/压榨；外供汽干燥；机内整饰纸卷；一级/好氧处理 |
 | market_state | 制造厂门的合格净纸卷，在下游涂层或制品加工前 |
@@ -212,7 +214,7 @@ translation_status: aligned
 
 ###### 植物羊皮纸、防油纸、绘图纸、玻璃纸及其他上光透明纸或半透明纸 (`finished`)
 
-唯一的合格外部纸产品：未涂层、机械高打浆、机内整饰防油纸卷，不是超级压光玻璃纸。广义 UUID 仅用于该子集；净纸量排除卷芯和包膜，包装仍保留在实物交付账中。
+唯一的合格外部纸产品：未涂层、机械高打浆、机内整饰防油纸卷，不是超级压光格拉辛纸。广义 UUID 仅用于该子集；净纸量排除卷芯和包膜，包装仍保留在实物交付账中。
 
 - 选定流：植物羊皮纸、防油纸、绘图纸、玻璃纸及其他上光透明纸或半透明纸 `89996c15-334b-4f79-ad2c-e21d667f9c80`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -718,7 +720,7 @@ translation_status: aligned
 | cp_energy_wwtp | wwtp | wwtp_electricity | meter | 电表号；电压；时段；阶段；起止千瓦时；可归属污水处理电量；共有总表重叠；无关场址活动排除；供方组合/损耗基准 | 校准电表及分表，保留打浆、纸机、整饰和处理记录，包含换级和清洗 本协议仅归属wwtp实际行和来源，其他过程采用cp_energy；保留全部原始工序/组分/库存及门点记录。共同总表/最终排口的同一外部交换只在一个明确对应的行计一次；来源分解不增加第二份交换，配对内部交接两端仍同量。 | kWh; MJ | 连续计量按班汇总 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动；实际归属过程：wwtp | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
 | cp_heat | papermaking | drying_heat | enthalpy_balance | 汽质量；入口绝压/表压；温度；干度；凝结水质量/压力/温度；损失；供方参考定义；k_bg | 校准汽/凝结水表及工况传感器，使用经确认的焓数据并把入汽减回流能量与供方交付合同对应；不默认换算 | kg; MJ | 连续计量按班汇总 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动 | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
 | cp_water | papermaking | water; effluent_transfer; vapour | water_balance | 补水质量/体积/密度；内部白水及废水体积；独立汽/凝结水；纸/污泥水分；干燥及处理排气湿度/流量；处理蒸发；库存; 实测 rho_eff(T,组成)；水质量分数；rho_water(T)；完整废水质量与水组分体积 | 校准流量表、密度/温度及代表性干燥及处理单元水分衡算，匹配内部转移读数，先实物水衡算再归属 本协议仅归属papermaking实际行和来源，其他过程采用cp_water_wwtp；保留全部原始工序/组分/库存及门点记录。共同总表/最终排口的同一外部交换只在一个明确对应的行计一次；来源分解不增加第二份交换，配对内部交接两端仍同量。 | kg; m3 | 连续及按班 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动；实际归属过程：papermaking | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
-| cp_water_wwtp | wwtp | wwtp_water; wastewater_in; wwtp_vapour | water_balance | 补水质量/体积/密度；内部白水及废水体积；独立汽/凝结水；纸/污泥水分；干燥及处理排气湿度/流量；处理蒸发；库存; 实测 rho_eff(T,组成)；水质量分数；rho_water(T)；完整废水质量与水组分体积 | 校准流量表、密度/温度及代表性干燥及处理单元水分衡算，匹配内部转移读数，先实物水衡算再归属 本协议仅归属wwtp实际行和来源，其他过程采用cp_water；保留全部原始工序/组分/库存及门点记录。共同总表/最终排口的同一外部交换只在一个明确对应的行计一次；来源分解不增加第二份交换，配对内部交接两端仍同量。 | kg; m3 | 连续及按班 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动；实际归属过程：wwtp | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
+| cp_water_wwtp | wwtp | wwtp_water; wastewater_in; wwtp_vapour | water_balance | 补水质量/体积/密度；内部白水及废水体积；独立汽/凝结水；纸/污泥水分；干燥及处理排气湿度/流量；处理蒸发；库存; 实测 rho_eff(T,组成)；水质量分数；rho_water(T)；完整废水质量与水组分体积  反应水生成／消耗及证据；用于总质量核对的摄氧量；| 校准流量表、密度/温度及代表性干燥及处理单元水分衡算，匹配内部转移读数，先实物水衡算再归属 本协议仅归属wwtp实际行和来源，其他过程采用cp_water；保留全部原始工序/组分/库存及门点记录。共同总表/最终排口的同一外部交换只在一个明确对应的行计一次；来源分解不增加第二份交换，配对内部交接两端仍同量。  纳入独立证据支持的反应水项，不假定水在生物转化中守恒，不将反应项归入未知残差。| kg; m3 | 连续及按班 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动；实际归属过程：wwtp | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
 | cp_chemical | wwtp | pac; pam; naoh; urea; phosphoric | dosing_and_stock | 商品名；SDS/CAS；离子状态；含量/活性固体；商品质量；溶液水；加药表；库存；供方参考基准 | 核对每项实际完整供货、投加、库存及发票，检测实际批次并匹配供方参考单位。独立采购试剂及现场混合/稀释水/公用工程为真实单列投入。制剂已含水/助剂仅作分析，不重复采购。完整外购溶液或供方过程重建须涵盖实际配制/制造、辅助/损失/公用工程及交付一次；有效物换算本身不足。 | kg | 每次交付和投加班次 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动 | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
 | cp_waste | papermaking | reject; dust_collected | weighing_and_receipt | 物流；湿质量；干固体；组成；污染状态；接收方；接收条件；处置路线；内部回收排除 | 分别称量外送物流，核对转移单、污泥固体测试及接收凭证；收集纸粉不是排出颗粒物 本协议仅归属papermaking实际行和来源，其他过程采用cp_waste_wwtp；保留全部原始工序/组分/库存及门点记录。共同总表/最终排口的同一外部交换只在一个明确对应的行计一次；来源分解不增加第二份交换，配对内部交接两端仍同量。 | kg | 每次外送 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动；实际归属过程：papermaking | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
 | cp_waste_wwtp | wwtp | primary_sludge; bio_sludge | weighing_and_receipt | 物流；湿质量；干固体；组成；污染状态；接收方；接收条件；处置路线；内部回收排除 | 分别称量外送物流，核对转移单、污泥固体测试及接收凭证；收集纸粉不是排出颗粒物 本协议仅归属wwtp实际行和来源，其他过程采用cp_waste；保留全部原始工序/组分/库存及门点记录。共同总表/最终排口的同一外部交换只在一个明确对应的行计一次；来源分解不增加第二份交换，配对内部交接两端仍同量。 | kg | 每次外送 | 一个声明完整代表性生产周期，包含异常运行 | 同一选定产线/纸种及归属共有服务，记录所有排除场址活动；实际归属过程：wwtp | 每 1 kg 参考流 | 校准；原始日志；接收/实验方法；覆盖、不确定性及衡算残差 |
@@ -733,7 +735,7 @@ translation_status: aligned
 | normalize_exchange | all inventory rows | q_i = X_i / Q；X_i 是按声明单位实测并归属纸种的交换，Q 为同时期合格净纸 kg；finished = Q/Q = 1 kg。内部链接两端保持相同 X_i 和 q_i。 | X_i; Q; cp_mass; row protocol | 每 1 kg 参考流数量 | jrc-pulp-paper-bref-2015 |
 | effluent_load | cod; bod; tss; tn; tp; aox | L_i = sum(C_i,t * V_t) / 1000，C 按 mg/L、V 按 m3，得到 kg 实测指标/物种；以 L_i/Q 归一化。先汇总负荷和 Q 再相除，不能平均只含浓度的日比值。 | C_i,t; V_t; Q; cp_effluent | 每 1 kg 参考流的 kg 负荷 | jrc-pulp-paper-bref-2015 |
 | steam_link | drying_heat | H_net = sum(m_in * h_in) - sum(m_return * h_return)，采用实测压力/温度/干度及声明回流边界；只有供方定义兼容 k_bg 后才可 H_bg = k_bg * H_net。不设通用锅炉效率或 kg 蒸汽因子。 | cp_heat; supplier definition | 供方参考 MJ，兼容性未知时待定 | jrc-pulp-paper-bref-2015 |
-| physical_balances | 未分配实物账 | 对干固体、水及碳各守恒量：外部输入 = 交付纸及包装 + 外部废物 + 实际基本流释放 + 回流公用工程水 + 期末减期初库存 + 有记录的残差；内部流只抵消一次。保留实际药剂及纤维的 C/N/固体比例；需氧量指标不是额外守恒碳。完整实物联产品数量保留后再单独归属负荷。 | cp_mass; cp_material; cp_water; cp_water_wwtp; cp_waste; cp_waste_wwtp; cp_effluent; cp_air; cp_gas | 实物数量、残差及不确定性 | jrc-pulp-paper-bref-2015; ec-pef-method-2021 |
+| physical_balances | 未分配实物账 | 元素碳守恒：外部碳输入 = 外部碳输出 + 期末减期初碳库存 + 有记录的残差，各股物流采用实测或有证据的 kg C 含量。生物或化学反应中干固体与 H2O 并非各自守恒：对每一组分，外部输入 + 反应生成 - 反应消耗 = 外部输出 + 期末减期初库存 + 有记录的残差。以实测或独立证据支持的现场反应记录实际固体转化、用于总质量核对的摄氧量及反应水生成／消耗；不假定反应得率，不以 COD 代替碳质量。交付纸及包装、废物、基本流释放与公用工程回流分别按其组分核算，内部链接只抵消一次。反应项与测量／模型不确定性分开，不强行闭合，也不把反应生成水当作未知误差来反推蒸发量。实物数量保留后再分配负荷。 | cp_mass; cp_material; cp_water; cp_water_wwtp; cp_waste; cp_waste_wwtp; cp_effluent; cp_air; cp_gas | 实物数量、残差及不确定性 | jrc-pulp-paper-bref-2015; epa-wastewater-basics; ec-pef-method-2021 |
 | complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
@@ -752,7 +754,7 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| validate_scope | reference product | 本方法拒绝酸羊皮化、功能涂层、超级压光玻璃纸及再生纤维素膜；核实实际屏障路线及限定信息，不凭商品名。 | nordic-natural-greaseproof-2022; hubbe-pruszynski-greaseproof-2020; ahlstrom-glassine-ep2931972a1 |
+| validate_scope | reference product | 本方法拒绝酸羊皮化、功能涂层、超级压光格拉辛纸及再生纤维素膜；核实实际屏障路线及限定信息，不凭商品名。 | nordic-natural-greaseproof-2022; hubbe-pruszynski-greaseproof-2020; ahlstrom-glassine-ep2931972a1 |
 | validate_quantity | all inventory rows | 须恰好一个外部成品纸参考输出；所有行/协议使用同一 Q，内部链接两端同量且换算证据完整。未知供汽或供方数量口径不得声称完整链接数据集。 | jrc-pulp-paper-bref-2015 |
 | validate_releases | elementary outputs | 匹配实际介质/物种及分析数量基准；不重复嵌套颗粒、捕集纸粉、未处理废水或将 COD/BOD 当碳。LCI 保留生物 CO₂，甲烷化石/生物来源分开；修正流不能代替直接释放。 | jrc-pulp-paper-bref-2015; ipcc-wastewater-2019 |
 | validate_evidence | all inventory rows | 物理身份及定量背景兼容性分别审查；未决身份、不支持的计量、未解释残差及缺失处理链接保持明确，软件校验不批准科学方法。 | jrc-pulp-paper-bref-2015; ec-pef-method-2021 |
@@ -764,7 +766,7 @@ translation_status: aligned
 | dataset_role | secondary_dataset; background_dataset |
 | downstream_use | 符合限定的防油纸下游制品加工制造输入 |
 | allowed_use | 同一未涂层机械屏障路线，数量及上游/处理链接明确兼容 |
-| excluded_use | 把 CPC 32137 全部作为单一混合；羊皮纸、涂层烘焙/离型纸、玻璃纸、描图纸、赛璐玢；不受支持的完整生命周期比较 |
+| excluded_use | 把 CPC 32137 全部作为单一混合；羊皮纸、涂层烘焙/离型纸、格拉辛纸、描图纸、赛璐玢；不受支持的完整生命周期比较 |
 | required_metadata | 全部参考限定、原始周期/场址、阶段覆盖、浆种/基准、公用工程、组成、工艺图及来源日期 |
 | required_quality_disclosure | 不确定性、数据缺口、身份与定量链接债务、排口/空气覆盖、未分配衡算及独立负荷分配 |
 | update_trigger | 浆料/屏障/整饰、供方口径、公用工程/处理路线、排放或验收规格改变 |
@@ -775,8 +777,11 @@ translation_status: aligned
 | --- | --- | --- | --- |
 | jrc-pulp-paper-bref-2015 | official_guidance | Best Available Techniques Reference Document for the Production of Pulp, Paper and Board; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf; 2015, Chapters 2 and 7; PDF pp. 86–88, 104–105, 698–702, 708, 713–714 | 非一体化造纸、高打浆、COD 释放、脱水/干燥影响、切纸粉尘、处理药剂和同周期浓度/流量/净产量计量的定性依据；数值案例及 BAT 数值均不作为默认值。 |
 | nordic-natural-greaseproof-2022 | literature | Nordic Paper: Natural Greaseproof paper brochure; https://www.nordic-paper.com/sites/default/files/2022-01/Natural%20Greaseproof%20paper_brochure_2022.pdf; 2022 brochure, PDF pp. 3–5 | 生产者证实机械纤维素屏障，同册也记载有机硅涂层及湿强变体；证明路线家族存在，不证明某厂全部配方、公用工程路线或数量。 |
-| hubbe-pruszynski-greaseproof-2020 | literature | Hubbe and Pruszynski: Greaseproof paper products: A review emphasizing ecofriendly approaches; https://bioresources.cnr.ncsu.edu/resources/greaseproof-paper-products-a-review-emphasizing-ecofriendly-approaches/; 2020; Parchmentized Paper, Refining, Calendering | 仅用于区别酸凝胶羊皮纸、高打浆、无超级压光天然防油纸、涂层和玻璃纸；不采用历史配方或实验定量因子。 |
+| hubbe-pruszynski-greaseproof-2020 | literature | Hubbe and Pruszynski: Greaseproof paper products: A review emphasizing ecofriendly approaches; https://bioresources.cnr.ncsu.edu/resources/greaseproof-paper-products-a-review-emphasizing-ecofriendly-approaches/; 2020; Parchmentized Paper, Refining, Calendering | 仅用于区别酸凝胶羊皮纸、高打浆、无超级压光天然防油纸、涂层和格拉辛纸；不采用历史配方或实验定量因子。 |
 | ahlstrom-gvp-technology | literature | Ahlstrom: Genuine Vegetable Parchment technology; https://www.ahlstrom.com/products/technologies/genuine-vegetable-parchment-technology/; Accessed 2026-10-12; history and two-stage parchmentization paragraphs | 生产者确认抄纸及纤维素凝胶羊皮化两个阶段；成品无添加剂声明不等于无工艺化学品；不采用酸处理配方。 |
-| ahlstrom-glassine-ep2931972a1 | literature | Ahlstrom: A method of manufacturing of glassine paper, EP2931972A1; https://patents.google.com/patent/EP2931972A1/en; 2015-10-21; description [0001]–[0006] | 原始专利区分玻璃纸离型原纸、再润湿/离线超级压光及在线成膜/多辊路线；专利工况不是通用要求，本方法排除这些路线。 |
+| ahlstrom-glassine-ep2931972a1 | literature | Ahlstrom: A method of manufacturing of glassine paper, EP2931972A1; https://patents.google.com/patent/EP2931972A1/en; 2015-10-21; description [0001]–[0006] | 原始专利区分格拉辛纸离型原纸、再润湿/离线超级压光及在线成膜/多辊路线；专利工况不是通用要求，本方法排除这些路线。 |
 | ec-pef-method-2021 | official_guidance | European Commission Recommendation (EU) 2021/2279, Annex I; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf; 2021-12-16, Section 4.5, PDF pp. 63–64 | 仅采用多功能过程处理层级；不据此宣称 PEF 合规或引入无关动物特定分配。 |
 | ipcc-wastewater-2019 | official_guidance | IPCC 2019 Refinement, Volume 5, Chapter 6 Wastewater Treatment and Discharge; https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/5_Volume5/19R_V5_6_Ch06_Wastewater.pdf; 2019, Sections 6.1, 6.2.3, 6.4 and Appendix 6A.1 | 仅用于工业甲烷/一氧化二氮路径及碳来源范围；不移植生活污水因子、行业平均负荷，也不把国家总量不计生物 CO₂ 的口径移植到 LCI。 |
+| epa-wastewater-basics | official_guidance | John R. Buchanan, Wastewater Basics 101，美国 EPA 托管原件；https://www.epa.gov/sites/default/files/2015-06/documents/epa-mou_wastewater_basics_101.pdf；PDF 第15页 Aerobic Biotransformation | 有机物耗氧转化为 CO2、H2O 及生物质／残余物的一般原理，支持反应项；不是纸厂配方、默认得率、数量或排放因子。 |
+| upm-glassine-terminology | literature | UPM 标签材料官方中文产品页；https://www.upmspecialtymaterials.com/cn/zh-hans-pages/upm-labeling-materials/；产品与品牌中的格拉辛说明 | 仅支持 glassine 的中文术语和超级压光纤维纸身份，不采用产品定量或性能默认值。 |
+| gb-cellophane-2009 | standard | GB/T 24695-2009《食品包装用玻璃纸》／Cellophane used for food packaging；官方双语名称 https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=4886854AC267120FA0757B2DDFA20BC9 | 仅用于术语区分：官方中文名称玻璃纸对应 cellophane；不声称符合标准全文或引入测试程序。 |

@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.doors-and-their-frames-and-thresholds-made-out-of-wood |
-| classification_refs | CPC 3.0 31622; narrower |
+| classification_refs | CPC 3.0 31622; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未涂装、无玻璃的实木硬木榫接门扇 |
 | excluded_products | 填芯门扇；门框；门槛；整套门；空芯板半成品；贴面/工程木或涂装门扇 |
 | representative_product | 一扇已打磨验收、不带安装五金的实木硬木镶板门扇 |

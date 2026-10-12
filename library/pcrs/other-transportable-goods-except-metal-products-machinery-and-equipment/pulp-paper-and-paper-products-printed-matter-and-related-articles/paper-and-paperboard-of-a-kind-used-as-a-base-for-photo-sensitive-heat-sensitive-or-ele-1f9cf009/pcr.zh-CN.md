@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.paper-and-paperboard-of-a-kind-used-as-a-base-for-photo-sensitive-heat-sensitive-or-ele-1f9cf009 |
-| classification_refs | CPC 3.0 32123; narrower |
+| classification_refs | CPC 3.0 32123; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 由所支持外购化学浆路线制造的未功能涂布成品热敏原纸卷筒 |
 | excluded_products | 功能涂布记录纸；感光/电敏品级；纸板；机械浆/回收纤维路线；一体化制浆 |
 | representative_product | Andhra Thermal Base Paper (NS); 仅作为基纸实物身份 [andhra-thermal-base] |

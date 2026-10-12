@@ -23,7 +23,7 @@ The 2020 CORRIM report describes NE/NC US mills in production year 2017. It supp
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-sawn-or-chipped-lengthwise-sliced-or-peeled-of-a-thickness-exceeding-6-mm-of-non-c-2b701f10 |
-| classification_refs | CPC 3.0: 31102; narrower methodology; classification itself also contains sliced/peeled forms and other states |
+| classification_refs | CPC 3.0 31102; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Untreated kiln-dried straight-planed temperate non-coniferous longitudinally sawn solid wood; actual thickness >6 mm |
 | excluded_products | Tropical or coniferous wood; green/air-dried or unplaned final products; sliced/peeled products; veneer ≤6 mm; sleepers; profiles; treated/glued/engineered wood; alternative drying routes |
 | representative_product | Accepted kiln-dried planed temperate hardwood at dispatch moisture, mill gate |

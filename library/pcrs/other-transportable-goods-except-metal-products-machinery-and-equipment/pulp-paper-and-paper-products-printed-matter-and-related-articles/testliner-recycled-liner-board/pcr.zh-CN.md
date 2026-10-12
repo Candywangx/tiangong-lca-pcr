@@ -14,14 +14,14 @@ content_maturity: authored_methodology
 
 排除原生纤维补强或牛皮箱板纸、瓦楞芯纸、商品浆、仅用外购浆抄纸、白面脱墨漂白等级、人为染色、颜料涂布、阻隔或特殊处理、瓦楞纸板复合及箱体转换。所有纸层须满足本边界。广义参考产品包含本物理限定子集，且无相反工艺限定。
 
-BREF与FEFCO支持机械不脱墨路线；生产者WT2000证明脱墨回收表层也存在，不把该产品的化学、场址工艺或数量泛化。因此建议CPC3.0:32135关系为narrower，并非已接受映射决定。
+BREF与FEFCO支持机械不脱墨路线；生产者WT2000证明脱墨回收表层也存在，不把该产品的化学、场址工艺或数量泛化。因此本方法仅覆盖CPC3.0:32135的narrower子集；已接受映射决定以权威映射及其ADR为准。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.testliner-recycled-liner-board |
-| classification_refs | CPC 3.0:32135; narrower |
+| classification_refs | CPC 3.0 32135; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 自然棕色未涂布再生箱板纸；外部干纤维全部回收；机械净化不脱墨浆料；普通淀粉施胶或未施胶卷或平张 |
 | excluded_products | 原生或混合原生纤维面纸；瓦楞芯纸；白面脱墨漂白染色涂布或特种纸；商品浆；转换瓦楞纸板箱体 |
 | representative_product | 自然棕色双层回收废纸再生箱板纸卷，声明纸层等级与水分 |

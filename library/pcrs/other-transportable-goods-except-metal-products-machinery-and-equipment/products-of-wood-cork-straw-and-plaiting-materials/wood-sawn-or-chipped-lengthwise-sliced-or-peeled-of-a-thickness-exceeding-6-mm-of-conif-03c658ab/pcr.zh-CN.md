@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-sawn-or-chipped-lengthwise-sliced-or-peeled-of-a-thickness-exceeding-6-mm-of-conif-03c658ab |
-| classification_refs | CPC 3.0: 31101；PCR方法学范围窄于分类 |
+| classification_refs | CPC 3.0 31101; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 直接支持仅限：窑干未浸渍针叶木纵向锯切或削片材，实测厚度大于6毫米；粗锯或平面刨削。该参考定义不覆盖生材/气干最终产品或切片/旋切形态 |
 | excluded_products | 阔叶锯材；厚度不超过6毫米的单板；轨枕；连续成型木材；浸渍木材；胶合或层压制品；人造板 |
 | representative_product | 出厂窑干针叶锯材，以声明的发运含水率下的湿态净质量计 |

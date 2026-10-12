@@ -20,7 +20,7 @@ Exclude bonded particleboard, OSB, pulp manufacture, wood wool/flour, densified 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-in-chips-or-particles |
-| classification_refs | CPC 3.0 31230; narrower |
+| classification_refs | CPC 3.0 31230; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Clean uncompressed wood chips/particles with declared specification and moisture |
 | excluded_products | Bonded boards; pellets; flour/wool; treated or contaminated wood; foreground thermally dried product |
 | representative_product | Screened bulk untreated wood chips at preparation gate |

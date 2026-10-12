@@ -20,7 +20,7 @@ The foreground uses electric slotting/scoring, folding/gluing and conditioning w
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.cartons-boxes-cases-record-sleeves-and-other-packing-containers-except-bags-of-paper-pa-b72ab64c |
-| classification_refs | CPC 3.0 32153; narrower proposal only, no accepted edge |
+| classification_refs | CPC 3.0 32153; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unprinted uncoated C-flute single-wall 0201-G flat glued boxes |
 | excluded_products | Other box constructions/materials/finishes; bags and office articles; upstream sheet manufacture |
 | representative_product | One-piece four-panel slotted box with manufacturer glue overlap and central-meeting outer flaps |

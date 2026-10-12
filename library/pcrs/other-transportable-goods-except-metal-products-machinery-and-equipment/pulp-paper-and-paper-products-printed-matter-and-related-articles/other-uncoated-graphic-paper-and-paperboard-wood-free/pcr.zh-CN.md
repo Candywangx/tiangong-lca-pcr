@@ -22,7 +22,7 @@ wood-free 是制浆造纸行业用语，不是“无木纤维”。JRC 词汇定
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.other-uncoated-graphic-paper-and-paperboard-wood-free |
-| classification_refs | CPC 3.0 32129，建议 narrower；此引用不代表已接受映射 |
+| classification_refs | CPC 3.0 32129; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 漂白原生化学木浆未涂布印写纸；无颜料表面施胶；卷纸或切纸；非一体化纸厂 |
 | excluded_products | 机械浆或回收浆纸种；颜料涂布及特殊功能纸；包装纸；纸板；复合或已印刷制品；一体化制浆 |
 | representative_product | Arctic Paper Munkedal 的 Munken Pure 普通未复合未涂布胶印纸；仅为真实产品身份示例，不移植厂平均配方 |

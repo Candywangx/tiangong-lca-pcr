@@ -15,14 +15,14 @@ translation_status: aligned
 
 排除实心细木工板/实心条芯板、全单板胶合板、纸蜂窝门芯、铝蜂窝、竹芯、泡沫塑料芯、带五金的组装门、涂饰/防腐板、购入已胶合面板、预混液态UF、其他胶种、原木转换、厂内生材干燥，以及燃料/蒸汽/购热压合路线。这些情况需重新审查实物清单与适用性。该配方路线用于有证据的现场采集，不是行业平均配方、排放因子或结构/防火/隔声等效性声明。
 
-联合国CPC3.0的31610说明明确为间隔木条；较宽的31411说明也提到空芯板，而31421标题与说明的差异不能裁定每一种物理芯层。须依据实际截面和物料表判断，分类交叉保留给维护者进行映射审查。不得由该措辞推定3141/3142的方法或已接受覆盖。本路线对31610仅提出narrower建议，不自动成为已接受覆盖。来源：`un-cpc-cellular-3`、`un-cpc-plywood-3`、`un-cpc-laminated-3`。
+联合国CPC3.0的31610说明明确为间隔木条；较宽的31411说明也提到空芯板，而31421标题与说明的差异不能裁定每一种物理芯层。须依据实际截面和物料表判断，分类交叉保留给维护者进行映射审查。不得由该措辞推定3141/3142的方法或已接受覆盖。本路线仅覆盖31610的narrower子集，已接受范围以权威映射及其ADR为准。来源：`un-cpc-cellular-3`、`un-cpc-plywood-3`、`un-cpc-laminated-3`。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.cellular-board |
-| classification_refs | CPC3.0 31610；仅为间隔木芯物理边界语境 |
+| classification_refs | CPC 3.0 31610; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 本UF电加热压合路线的未涂饰室内间隔木条/木格栅空芯板 |
 | excluded_products | 实心条芯、全单板板材、纸/铝蜂窝及第1节全部排除项 |
 | representative_product | 针叶间隔木芯、非热带阔叶单板面层的修边板 |

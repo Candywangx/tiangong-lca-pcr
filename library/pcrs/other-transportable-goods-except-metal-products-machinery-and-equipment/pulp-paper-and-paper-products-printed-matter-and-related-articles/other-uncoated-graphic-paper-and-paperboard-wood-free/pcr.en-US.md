@@ -22,7 +22,7 @@ Exclude pigmented coated printing paper, newsprint, photosensitive/thermal/elect
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.other-uncoated-graphic-paper-and-paperboard-wood-free |
-| classification_refs | CPC 3.0 32129, proposed narrower scope; this reference is not an accepted mapping |
+| classification_refs | CPC 3.0 32129; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Bleached virgin chemical wood-pulp uncoated printing/writing paper; non-pigmented surface sizing; reels or cut sheets; non-integrated mill |
 | excluded_products | Mechanical/recovered-furnish grades; pigmented coated/special functional papers; packaging grades; paperboard; laminated/printed products; integrated pulp making |
 | representative_product | Munken Pure ordinary non-laminated uncoated offset-printing paper, Arctic Paper Munkedal; product identity example, no plant-average recipe |

@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.untreated-prf-glulam-straight-beams |
-| classification_refs | CPC 3.0 31627; narrower |
+| classification_refs | CPC 3.0 31627; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未处理、未涂饰的针叶锯材层板 PRF 胶合木直梁 |
 | excluded_products | CLT；LVL 及其他结构复合材；经处理/涂饰/弯曲/单板增强或热/射频固化产品 |
 | representative_product | 一个有真实层板等级组合记录的直梁配置 |

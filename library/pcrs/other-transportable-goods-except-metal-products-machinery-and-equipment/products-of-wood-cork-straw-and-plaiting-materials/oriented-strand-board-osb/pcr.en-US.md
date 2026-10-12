@@ -20,7 +20,7 @@ PF and pMDI routes, including layer-specific combinations and actual edge sealin
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.oriented-strand-board-osb |
-| classification_refs | CPC 3.0 31432; narrower |
+| classification_refs | CPC 3.0 31432; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unoverlaid wood OSB with PF/pMDI binder and declared long-strand layered orientation |
 | excluded_products | Random particleboard/waferboard; fibre/veneer panels; treated, overlaid or other-binder variants |
 | representative_product | Accepted finished OSB at factory gate, actual dispatch wet mass, excluding packaging |

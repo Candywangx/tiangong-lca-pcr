@@ -21,7 +21,7 @@ The 1 kg production reference compares production burdens for this declared sack
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.sacks-and-bags-of-paper |
-| classification_refs | CPC 3.0 32152; narrower; candidate relation for controller review |
+| classification_refs | CPC 3.0 32152; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Eligible empty open-mouth pasted unbleached kraft sacks with the declared material/route restrictions. |
 | excluded_products | Raw sack paper/reels; coated or laminated bags; printed, valved, sewn or handled bags; bags with film/liner; boxes, envelopes, woven/plastic sacks; filled goods. |
 | representative_product | Unprinted unlined open-mouth pasted sack; dimensions, number of plies and rated load are site-declared, never preset. |
@@ -449,7 +449,7 @@ Actual emitted cutting particulate above 10 micrometres, into outdoor air unspec
 | --- | --- | --- | --- |
 | validate_reference | finished_bag | Exactly one finished sack reference product output must declare 1 kg accepted net mass and required qualifiers. No intermediate sack output may reuse its reference UUID. | billerud-sack-handbook |
 | validate_denominator | all inventory rows | Inventory bases, campaign aggregation and both language renderings use per 1 kg reference flow with cp_output net mass; every amount has a traceable protocol and no fabricated quantity. |  |
-| validate_route | paper-sack-converting | Reject claims of complete applicability when printing, film/liner, valve, handles, heat supply, combustion or papermaking occurs without separately reviewed coverage. Existing unmapped classification does not itself invalidate a complete narrower methodology. | billerud-sack-handbook |
+| validate_route | paper-sack-converting | Reject claims of complete applicability when printing, film/liner, valve, handles, heat supply, combustion or papermaking occurs without separately reviewed coverage. Classification mapping acceptance does not itself establish methodology approval or complete dataset coverage. | billerud-sack-handbook |
 | validate_balance | all inventory rows | Require reconciled physical material/water/carbon records, compatible upstream/treatment providers and a separately justified burden allocation. Unresolved identity, provider basis, atmosphere uptake or particle fractions makes affected dataset coverage incomplete. | ec-pef-2021 |
 | validate_particles | pm25; pm_coarse; pm_large; collected_dust | Keep external exclusive air fractions distinct from captured waste, internal reuse and workplace measurements. EPA201A is not applicable to water-droplet emissions or fugitive ambient sampling; no unsupported size-fraction subtraction. | epa-method-201a-2020 |
 

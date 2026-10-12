@@ -21,7 +21,7 @@ Exclude paperboard, corrugated/composite multi-sheet constructions, integrated p
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.paper-and-paperboard-coated-with-kaolin-or-with-other-inorganic-substances |
-| classification_refs | CPC 3.0: 32143; proposed narrower relation, pending controller acceptance |
+| classification_refs | CPC 3.0 32143; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unprinted C1S/C2S woodfree paper with actual aqueous GCC/kaolin carboxylated-SB pigment coating, electric hot-air drying and any actual cold calendering |
 | excluded_products | Board; integrated pulping/papermaking; mechanical/recovered-fibre substrate; incompatible coating, impregnation, lamination, printing, combustion/steam heating and heated calender routes |
 | representative_product | Unprinted mineral-coated printing/label-face reel or sheet; a declared product grade, not a universal commercial recipe |

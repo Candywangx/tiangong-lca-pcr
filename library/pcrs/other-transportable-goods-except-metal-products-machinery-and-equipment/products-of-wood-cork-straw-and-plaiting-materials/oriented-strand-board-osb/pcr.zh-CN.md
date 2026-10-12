@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.oriented-strand-board-osb |
-| classification_refs | CPC 3.0 31432; narrower |
+| classification_refs | CPC 3.0 31432; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | PF/pMDI胶合、声明长刨片分层取向的未覆面木OSB |
 | excluded_products | 随机刨花板/waferboard；纤维/单板板材；处理、覆面或其他胶种变体 |
 | representative_product | 出厂验收OSB，以实际发运湿态质量计，不含包装 |

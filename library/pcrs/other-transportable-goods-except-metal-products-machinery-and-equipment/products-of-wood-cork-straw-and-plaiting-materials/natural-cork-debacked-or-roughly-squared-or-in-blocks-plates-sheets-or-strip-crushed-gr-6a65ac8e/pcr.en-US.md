@@ -23,7 +23,7 @@ The Spanish stopper case demonstrates electric boiling and resting/drying, but i
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-cork-debacked-or-roughly-squared-or-in-blocks-plates-sheets-or-strip-crushed-gr-6a65ac8e |
-| classification_refs | CPC 3.0: 31921; narrower proposed relation; accepted mapping subject to independent controller decision |
+| classification_refs | CPC 3.0 31921; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Boiled, ambient-stabilized, graded and edge-trimmed unagglomerated Quercus suber natural cork planks under the declared single-product electric profile |
 | excluded_products | Raw/simply prepared bark as final product; granules/powder; waste cork as reference product; industrial debacking; stoppers/discs; adhesive-bonded/expanded/laminated cork |
 | representative_product | Accepted prepared natural cork planks, net mass at measured dispatch moisture, at preparation-plant gate |

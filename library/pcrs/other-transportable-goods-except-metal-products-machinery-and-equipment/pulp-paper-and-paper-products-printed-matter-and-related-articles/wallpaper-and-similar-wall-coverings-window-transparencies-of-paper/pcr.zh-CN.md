@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.wallpaper-and-similar-wall-coverings-window-transparencies-of-paper |
-| classification_refs | CPC 3.0:32194; narrower 建议，无已接受映射 |
+| classification_refs | CPC 3.0 32194; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 非预涂胶纤维素纸墙纸，水性凹版印刷；声明实际机械压纹 |
 | excluded_products | 非织造/PET、乙烯基/PVC、纺织、复合、罩光、自黏、窗用透明纸、原纸及其他印刷路线 |
 | representative_product | 一个验收商业墙纸等级，实际颜色及规格；无平均配方 |

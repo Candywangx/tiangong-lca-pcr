@@ -18,7 +18,7 @@ This method covers one non-dissolving, virgin softwood market-pulp route: receiv
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.chemical-wood-pulp-other-than-dissolving-grades |
-| classification_refs | CPC 3.0 32112; narrower |
+| classification_refs | CPC 3.0 32112; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Dried non-dissolving bleached pine/spruce kraft market-pulp sheets in bales |
 | excluded_products | Unbleached; sulphite; soda; dissolving-grade; hardwood; bamboo; nonwood; mechanical/semichemical; recycled; wet integrated pulp; paper |
 | representative_product | Oxygen-delignified D-EOP-D ECF bleached softwood kraft pulp |

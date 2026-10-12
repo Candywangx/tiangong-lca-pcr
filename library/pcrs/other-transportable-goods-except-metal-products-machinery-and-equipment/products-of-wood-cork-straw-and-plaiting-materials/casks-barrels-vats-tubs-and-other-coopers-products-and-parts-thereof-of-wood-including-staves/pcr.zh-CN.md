@@ -21,7 +21,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.casks-barrels-vats-tubs-and-other-coopers-products-and-parts-thereof-of-wood-including-staves |
-| classification_refs | CPC3.0 31703；仅建议较窄范围，接受映射由独立治理决定 |
+| classification_refs | CPC 3.0 31703; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 新制全橡木葡萄酒桶，黑色或镀锌钢箍，声明弯曲和烘烤配置 |
 | excluded_products | 单独销售的桶板／桶底；旧桶／翻新桶；非橡木或复合桶；槽／盆；炭化烈酒桶 |
 | representative_product | 一个已明确型号的新制橡木葡萄酒桶；不固定橡木产地、容积或寿命 |

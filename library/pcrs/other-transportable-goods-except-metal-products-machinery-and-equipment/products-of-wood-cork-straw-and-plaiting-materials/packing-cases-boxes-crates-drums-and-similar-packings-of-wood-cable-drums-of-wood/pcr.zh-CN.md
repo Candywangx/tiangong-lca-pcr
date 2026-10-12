@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.packing-cases-boxes-crates-drums-and-similar-packings-of-wood-cable-drums-of-wood |
-| classification_refs | CPC 3.0 31701; narrower; 待独立接受，当前未映射 |
+| classification_refs | CPC 3.0 31701; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未涂饰钉装针叶实木锯材运输空箱，含配套盖板及整体木档 |
 | excluded_products | 电缆盘、木桶、托盘、开敞条板箱、结构框架箱、人造板箱、胶合箱、拆装箱片、再用箱 |
 | representative_product | 外购窑干针叶板料裁切钉装的新制运输箱；不指定默认尺寸、载荷或质量 |

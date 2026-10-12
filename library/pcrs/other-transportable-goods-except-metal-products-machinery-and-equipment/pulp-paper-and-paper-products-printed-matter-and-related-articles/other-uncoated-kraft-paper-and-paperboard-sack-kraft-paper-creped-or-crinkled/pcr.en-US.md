@@ -22,7 +22,7 @@ Exclude kraftliner for corrugated-board faces, fluting for the corrugated middle
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.other-uncoated-kraft-paper-and-paperboard-sack-kraft-paper-creped-or-crinkled |
-| classification_refs | CPC 3.0 32133; narrower; proposed scope only, not an accepted mapping |
+| classification_refs | CPC 3.0 32133; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Virgin unbleached softwood Clupak extensible sack kraft paper; unsized, non-wet-strength, uncoated |
 | excluded_products | Kraftliner; fluting; finished sacks; recovered-fibre/bleached/sized/wet-strength/coated/macro-creped variants and other routes in section 1 |
 | representative_product | Unprinted brown extensible paper reel for industrial multiwall sack conversion |

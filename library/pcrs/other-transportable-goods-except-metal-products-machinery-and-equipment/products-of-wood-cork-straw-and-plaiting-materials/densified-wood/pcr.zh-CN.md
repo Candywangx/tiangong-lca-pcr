@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.densified-wood |
-| classification_refs | CPC 3.0: 31520; narrower; 候选范围，未接受映射 |
+| classification_refs | CPC 3.0 31520; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 无树脂、未胶合、热定形压缩实木工具柄坯料；黄桦为代表 |
 | excluded_products | compreg；普通胶合板/细木工板；胶合压缩单板；MDF；刨花板；天然高密度但未压缩木；仅热改性木；涂饰或化学处理产品 |
 | representative_product | 黄桦未涂饰工具柄坯料，验收调湿后工厂门净质量 |

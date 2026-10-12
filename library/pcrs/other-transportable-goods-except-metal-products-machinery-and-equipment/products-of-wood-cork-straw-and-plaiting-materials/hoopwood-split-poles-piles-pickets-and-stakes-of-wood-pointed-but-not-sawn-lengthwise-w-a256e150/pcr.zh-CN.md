@@ -22,7 +22,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.hoopwood-split-poles-piles-pickets-and-stakes-of-wood-pointed-but-not-sawn-lengthwise-w-a256e150 |
-| classification_refs | CPC 3.0 31330；narrower 范围建议：仅未防腐欧洲栗劈裂尖桩 |
+| classification_refs | CPC 3.0 31330; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 农业围栏或植株支撑用去皮、劈裂、削尖的 Castanea sativa 木桩；生材或自然风干状态 |
 | excluded_products | 箍木；未削尖劈杆；结构桩；粗坯木棒；刨花木；纵锯、车削、弯曲、钻孔、型面加工、防腐或人工干燥产品 |
 | representative_product | 一根去皮的欧洲栗劈裂桩，在大端削出四面尖头 |

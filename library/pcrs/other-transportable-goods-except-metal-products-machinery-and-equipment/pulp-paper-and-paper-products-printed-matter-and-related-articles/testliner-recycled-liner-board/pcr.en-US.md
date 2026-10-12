@@ -14,14 +14,14 @@ This PCR covers industrial production of naturally brown, uncoated testliner ree
 
 Excluded: virgin-fibre reinforcement or kraftliner; fluting medium; market pulp; purchased-pulp-only papermaking; white-top/deinked/bleached grades; intentional colouring, pigment coating, barrier/specialty treatment; corrugated-board assembly or box conversion. All plies must satisfy this boundary. The broad reference product includes the physically limited subset without a contrary route limitation.
 
-BREF and FEFCO support a mechanical non-deinked route. The producer WT2000 confirms that deinked recycled top plies also exist; its chemical/site process and product quantities are not generalized. Accordingly the proposed CPC 3.0:32135 relation is narrower and is not an accepted mapping decision.
+BREF and FEFCO support a mechanical non-deinked route. The producer WT2000 confirms that deinked recycled top plies also exist; its chemical/site process and product quantities are not generalized. Accordingly this methodology covers a narrower CPC 3.0:32135 subset; accepted mapping decisions are governed by the canonical mapping and its ADR.
 
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.testliner-recycled-liner-board |
-| classification_refs | CPC 3.0:32135; narrower |
+| classification_refs | CPC 3.0 32135; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated natural-brown testliner; 100% externally recovered dry fibre; mechanically cleaned non-deinked stock; unspecialised starch-sized or unsized reels/sheets |
 | excluded_products | Virgin/mixed virgin-fibre liners; fluting; white-top/deinked/bleached/coloured/coated/specialty paper; market pulp; converted corrugated board/boxes |
 | representative_product | Natural-brown two-ply recovered-paper testliner reel with declared ply grades and moisture |

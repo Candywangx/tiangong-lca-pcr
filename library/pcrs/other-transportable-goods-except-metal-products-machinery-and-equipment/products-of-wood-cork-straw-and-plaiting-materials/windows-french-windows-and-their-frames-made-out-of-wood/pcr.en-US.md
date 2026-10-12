@@ -22,7 +22,7 @@ Bau EPD original pages 4–6 and 10–11 support complete-window composition and
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.windows-french-windows-and-their-frames-made-out-of-wood |
-| classification_refs | CPC 3.0 31621; narrower |
+| classification_refs | CPC 3.0 31621; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Manually operated single-sash spruce complete window; purchased triple-argon IGU; purchased kiln-dried laminated scantlings; electric machining/assembly route |
 | excluded_products | Frame-only; unglazed window; French window; roof window; multiple sashes; aluminium cladding; other species; fire/smoke special performance; in-house glazing fabrication or combustion route |
 | representative_product | Single-sash complete spruce window with actual glazing and hardware, configuration and finish declared from product originals |

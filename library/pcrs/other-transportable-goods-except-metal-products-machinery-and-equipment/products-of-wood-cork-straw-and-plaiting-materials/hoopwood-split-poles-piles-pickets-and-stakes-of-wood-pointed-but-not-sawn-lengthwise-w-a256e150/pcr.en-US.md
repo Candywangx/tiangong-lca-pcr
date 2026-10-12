@@ -22,7 +22,7 @@ Hoopwood for hoops, unpointed split poles, structural piles, rough walking-stick
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.hoopwood-split-poles-piles-pickets-and-stakes-of-wood-pointed-but-not-sawn-lengthwise-w-a256e150 |
-| classification_refs | CPC 3.0 31330; narrower scope proposal: untreated cleft pointed sweet-chestnut stakes only |
+| classification_refs | CPC 3.0 31330; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Debarked, cleft, pointed Castanea sativa stakes for agricultural fencing or plant support; green or naturally seasoned |
 | excluded_products | Hoopwood; unpointed split poles; structural piles; rough stick blanks; chipwood; sawn-lengthwise, turned, bent, drilled, profiled, treated or artificially dried products |
 | representative_product | An individual debarked cleft Castanea sativa stake pointed on four faces at the larger end |

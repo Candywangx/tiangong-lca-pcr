@@ -21,7 +21,7 @@ Roll embossing configurations can use steam or run without it. The actual conver
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.paper-and-paperboard-creped-crinkled-embossed-or-perforated |
-| classification_refs | CPC:3.0:32142; narrower |
+| classification_refs | CPC 3.0 32142; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | White uncoated nominal 250 g/m2 two-sided mechanically linen-embossed fine-paper sheets from purchased unembossed chemical-pulp base paper |
 | excluded_products | Creped or perforated products; tissue, Clupak sack paper, wet felt-marked papers; coated/printed/primed/laminated/adhesive papers; ivory/coloured grades; integrated papermaking and final articles |
 | representative_product | Favini Biancoflash Premium Classic Linen LN 2/S, nominal 250 g/m2, white unprinted sheets; commercial identity only, not a factory dataset |

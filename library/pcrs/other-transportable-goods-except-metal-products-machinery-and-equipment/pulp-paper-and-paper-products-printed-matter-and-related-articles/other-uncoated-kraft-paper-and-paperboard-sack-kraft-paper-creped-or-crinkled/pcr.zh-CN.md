@@ -22,7 +22,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.other-uncoated-kraft-paper-and-paperboard-sack-kraft-paper-creped-or-crinkled |
-| classification_refs | CPC 3.0 32133；narrower；仅为建议范围，不是已接受映射 |
+| classification_refs | CPC 3.0 32133; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 原生未漂白针叶木 Clupak 伸性牛皮纸袋原纸；未施胶、未加湿强剂、未涂布 |
 | excluded_products | 箱板纸；瓦楞芯纸；成品纸袋；回收纤维、漂白、施胶、湿强、涂布、明显起皱变体及第 1 节其他路线 |
 | representative_product | 用于工业多层纸袋加工的未印刷棕色伸性原纸卷 |

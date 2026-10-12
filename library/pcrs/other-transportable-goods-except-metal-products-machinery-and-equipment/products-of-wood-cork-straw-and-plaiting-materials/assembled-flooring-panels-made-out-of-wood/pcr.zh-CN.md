@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.assembled-flooring-panels-made-out-of-wood |
-| classification_refs | CPC 3.0 31626；方法范围更窄；不表示映射已接受 |
+| classification_refs | CPC 3.0 31626; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | UF胶合全非热带阔叶木单板、透明UV预涂饰多层拼装地板 |
 | excluded_products | 单层实木拼装板；HDF强化/复合地板；未组装条料；其他芯层/胶种/涂饰 |
 | representative_product | 具有声明木层树种配方的工厂涂饰型面多层木地板；不虚构厚度、密度或比例 |

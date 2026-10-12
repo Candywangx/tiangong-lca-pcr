@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.shuttering-for-concrete-constructional-work-made-out-of-wood |
-| classification_refs | CPC 3.0:31623; narrower (建议，尚未接受) |
+| classification_refs | CPC 3.0 31623; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 按具体模板图纸加工且全部裸露边孔重新封漆的新制无框架桦木模板面板 |
 | excluded_products | 库存原板；其他木质模板路线；完整模板系统；使用服务 |
 | representative_product | 单件按图成品，无默认厚度、尺寸、配方或质量 |

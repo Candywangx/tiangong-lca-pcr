@@ -20,7 +20,7 @@ Exclude spoons, bowls, bamboo laminates, glued or end-grain assembled boards, th
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.tableware-and-kitchenware-of-wood |
-| classification_refs | CPC:3.0:31912; narrower |
+| classification_refs | CPC 3.0 31912; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated unglued single-piece face-grain sugar maple cutting boards |
 | excluded_products | Spoons; bowls; bamboo; glued/end-grain boards; coated/oiled/waxed boards; impregnated or thermally modified stock |
 | representative_product | One accepted complete sugar maple cutting board of the declared dimensions and moisture state |

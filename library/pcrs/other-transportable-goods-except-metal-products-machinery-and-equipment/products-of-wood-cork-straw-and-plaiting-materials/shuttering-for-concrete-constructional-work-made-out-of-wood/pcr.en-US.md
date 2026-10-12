@@ -19,7 +19,7 @@ Excluded: log-to-plywood manufacture, new on-site film application/hot pressing,
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.shuttering-for-concrete-constructional-work-made-out-of-wood |
-| classification_refs | CPC 3.0:31623; narrower (proposed, unaccepted) |
+| classification_refs | CPC 3.0 31623; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | New unframed birch facing panels fabricated to specific shuttering drawings with all exposed edges/holes resealed |
 | excluded_products | Stock substrate sheets; other wood shuttering routes; complete formwork systems; use services |
 | representative_product | One-piece drawing-specific facing, without default thickness, dimensions, recipe or mass |

@@ -22,7 +22,7 @@ Exclude already coated recording paper, thermal jumbo rolls with an imaging laye
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.paper-and-paperboard-of-a-kind-used-as-a-base-for-photo-sensitive-heat-sensitive-or-ele-1f9cf009 |
-| classification_refs | CPC 3.0 32123; narrower |
+| classification_refs | CPC 3.0 32123; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Finished uncoated thermal base paper reels made by the supported purchased-chemical-pulp route |
 | excluded_products | Functional-coated recording paper; photo/electrosensitive grades; paperboard; mechanical/recovered-fibre routes; integrated pulp production |
 | representative_product | Andhra Thermal Base Paper (NS); physical base-paper identity only [andhra-thermal-base] |

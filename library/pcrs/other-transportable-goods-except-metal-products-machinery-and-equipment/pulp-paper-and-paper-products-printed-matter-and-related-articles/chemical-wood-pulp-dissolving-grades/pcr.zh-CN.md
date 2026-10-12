@@ -15,7 +15,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.chemical-wood-pulp-dissolving-grades |
-| classification_refs | CPC 3.0 32111; narrower; 仅供独立映射审查 |
+| classification_refs | CPC 3.0 32111; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 桉木镁基酸性亚硫酸盐ECF溶解级干燥浆板，打包交付，纺织用途 |
 | excluded_products | 造纸级浆；其他木种和蒸煮基或路线；TCF；湿浆；再生或非木浆；纤维纺丝；高黏度化学特种浆 |
 | representative_product | 具有批次质量证书的原生桉木再生纤维素纺织用溶解浆板 |

@@ -25,7 +25,7 @@ FAO 将竹席胶合板、竹帘胶合板、竹条胶合板、覆纸板和竹刨�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-veneer-panels-and-similar-laminated-wood-of-bamboo |
-| classification_refs | CPC 3.0 31450；建议 narrower 子集，映射须独立接受 |
+| classification_refs | CPC 3.0 31450; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 无涂层酚醛浸渍编织竹席平板 |
 | excluded_products | 竹帘、竹条层压、重组、展平、木竹复合、覆面和预处理竹板；无胶型材 |
 | representative_product | 已验收的平面酚醛竹席包装或通用板，不推定结构等级 |

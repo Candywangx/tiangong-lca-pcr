@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-in-chips-or-particles |
-| classification_refs | CPC 3.0 31230; narrower |
+| classification_refs | CPC 3.0 31230; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 规格及含水率明确的洁净非压制木片或木颗粒 |
 | excluded_products | 胶结板材；压制燃料颗粒；木粉或木丝；处理或污染木材；前景人工热干燥产品 |
 | representative_product | 制备厂门口的筛分散装未处理木片 |

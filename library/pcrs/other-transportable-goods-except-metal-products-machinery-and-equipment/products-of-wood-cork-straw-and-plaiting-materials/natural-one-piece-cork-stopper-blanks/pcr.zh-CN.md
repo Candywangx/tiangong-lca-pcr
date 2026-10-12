@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-one-piece-cork-stopper-blanks |
-| classification_refs | CPC 3.0:31922; narrower; 仅分类语义背景，映射由主控裁定 |
+| classification_refs | CPC 3.0 31922; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未洗涤未涂饰、冲切及干式修整的天然单件软木塞坯 |
 | excluded_products | 车削塞、胶结塞、粘接圆片塞、填孔涂饰成品、软木板材 |
 | representative_product | 圆柱栓皮栎单件塞坯，尺寸与等级按实际订单声明 |

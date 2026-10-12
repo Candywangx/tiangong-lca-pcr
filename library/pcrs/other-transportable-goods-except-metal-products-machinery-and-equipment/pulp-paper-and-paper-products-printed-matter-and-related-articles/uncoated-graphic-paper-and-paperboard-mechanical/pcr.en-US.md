@@ -19,7 +19,7 @@ Uncoated means absence of a surface pigment coating here. Surface sizing is a se
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.uncoated-graphic-paper-and-paperboard-mechanical |
-| classification_refs | CPC 3.0 32125; narrower |
+| classification_refs | CPC 3.0 32125; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Virgin-furnish supercalendered uncoated rotogravure paper |
 | excluded_products | Newsprint; recycled SC; woodfree paper; coated paper; board; surface-sized paper; integrated pulping |
 | representative_product | Virgin-furnish SC-A rotogravure magazine reels; UPM Cat G is a commercial grade example, not a mandated recipe |

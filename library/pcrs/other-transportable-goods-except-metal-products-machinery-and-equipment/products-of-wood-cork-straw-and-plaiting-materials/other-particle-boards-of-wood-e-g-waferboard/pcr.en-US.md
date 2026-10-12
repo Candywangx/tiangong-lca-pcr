@@ -22,7 +22,7 @@ Real product anchors are the photographed wide-wafer board in FPL-GTR-53, Figure
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-particle-boards-of-wood-e-g-waferboard |
-| classification_refs | CPC 3.0 31439; narrower; classification context only |
+| classification_refs | CPC 3.0 31439; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Random broad-thin wood waferboard, powdered PF route and the declared indirect steam/dry-control pilot |
 | excluded_products | Fine-particle UF board; deliberately oriented OSB/waferboard; fibreboard; veneer panels; nonwood panels; coated/overlaid/treated panels; other binder and heat/control routes |
 | representative_product | Net accepted finished random wide-wafer PF panel at factory gate; historical Figure 2/W-series anchors are not supplier inventory data |

@@ -21,7 +21,7 @@ UF 制备是明确的前景阶段，可在板材厂内，也可扩展至能提�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.particle-board-of-wood |
-| classification_refs | CPC 3.0:31431; narrower |
+| classification_refs | CPC 3.0 31431; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 原料逐项核算的未改性 UF 胶结未饰面平压木质刨花板 |
 | excluded_products | OSB；waferboard；非木板；纤维板；饰面/涂层板；模压产品；不明或其他胶结配方 |
 | representative_product | 一组经接受的木材树种/来源、粒形、UF 配方、密度、厚度及含水率队列 |

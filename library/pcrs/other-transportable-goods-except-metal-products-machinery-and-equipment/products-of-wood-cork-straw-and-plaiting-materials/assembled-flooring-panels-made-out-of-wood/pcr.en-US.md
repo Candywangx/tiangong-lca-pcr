@@ -21,7 +21,7 @@ The distinction between solid and all-wood engineered flooring follows `nwfa-woo
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.assembled-flooring-panels-made-out-of-wood |
-| classification_refs | CPC 3.0 31626; narrower methodology scope; no accepted mapping implied |
+| classification_refs | CPC 3.0 31626; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | UF-bonded all-non-tropical-hardwood-veneer, clear UV-prefinished assembled multilayer flooring |
 | excluded_products | Single-layer solid parquet; HDF laminate/composite; unassembled strips; alternate cores/glues/finishes |
 | representative_product | A declared species-layer recipe of factory-finished profiled multilayer wood flooring; no invented thickness, density or proportions |

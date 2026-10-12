@@ -21,7 +21,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.paper-and-paperboard-coated-with-kaolin-or-with-other-inorganic-substances |
-| classification_refs | CPC 3.0：32143；建议narrower关系，待主控接受 |
+| classification_refs | CPC 3.0 32143; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未印刷C1S/C2S木浆纸，实际水性GCC/高岭土羧基丁苯颜料涂层、电热风干燥及实际冷压光 |
 | excluded_products | 纸板；一体化制浆/造纸；机械浆/回收纤维基纸；不兼容涂层、浸渍、覆合、印刷、燃烧/蒸汽加热及加热压光路线 |
 | representative_product | 未印刷无机涂布印刷/标签面纸卷或纸张；采用申明牌号，不是通用商业配方 |

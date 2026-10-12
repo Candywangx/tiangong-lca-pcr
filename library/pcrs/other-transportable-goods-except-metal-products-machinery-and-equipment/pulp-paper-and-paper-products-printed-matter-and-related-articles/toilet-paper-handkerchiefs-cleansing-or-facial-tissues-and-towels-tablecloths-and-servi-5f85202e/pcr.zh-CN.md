@@ -15,14 +15,14 @@ translation_status: aligned
 
 排除母卷造纸、木材制浆/漂白、回收纤维/脱墨、TAD/混合/气流成网材料、纤维素填絮、面巾纸、餐巾纸、纸巾、桌布、服装、印刷、乳液/香精施加、加工端非PVAc化学品及现场制芯。这些需要适用并经审查的方法扩展，不能按分类自动选择。不同母卷技术不能借用32131常规起皱背景。现场热干燥/蒸汽/燃气燃烧及燃油搬运不属于本全电加工路线；若存在，须以合适排放证据单独建模后重新核定适用性。
 
-CPC3.0 32193范围比本产品/路线宽。建议关系为narrower，须由主控独立接受。现有32131母卷方法止于消费品加工之前，其原纸输出与本PCR成品卷纸输出为不同实物接口；分类与用途本身不能使二者互换。
+CPC3.0 32193范围比本产品/路线宽。本方法范围为narrower，已接受关系以权威映射及其ADR为准。现有32131母卷方法止于消费品加工之前，其原纸输出与本PCR成品卷纸输出为不同实物接口；分类与用途本身不能使二者互换。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.toilet-paper-handkerchiefs-cleansing-or-facial-tissues-and-towels-tablecloths-and-servi-5f85202e |
-| classification_refs | CPC:3.0:32193; narrower |
+| classification_refs | CPC 3.0 32193; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 购入原生纤维CWP干法起皱母卷加工的未印刷、未加乳液有芯厕用卷纸 |
 | excluded_products | 原纸；面巾纸/餐巾纸/纸巾/桌布/服装；其他纤维网/造纸/化学/热加工路线 |
 | representative_product | 经验收包装的有芯厕用卷纸，具有实测纸张净质量与质量指标 |

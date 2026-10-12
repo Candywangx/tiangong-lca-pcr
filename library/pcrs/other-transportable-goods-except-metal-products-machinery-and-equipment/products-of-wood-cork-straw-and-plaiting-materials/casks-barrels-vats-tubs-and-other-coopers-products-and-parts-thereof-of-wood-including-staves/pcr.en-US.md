@@ -21,7 +21,7 @@ Excluded products are saleable stave/head semifinished products as reference out
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.casks-barrels-vats-tubs-and-other-coopers-products-and-parts-thereof-of-wood-including-staves |
-| classification_refs | CPC3.0 31703; proposed narrower scope only; accepted mapping is independently governed |
+| classification_refs | CPC 3.0 31703; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | New all-oak wine barrels, bare black or galvanized steel hoops, declared bending and toast configuration |
 | excluded_products | Staves/heads sold alone; used/refurbished barrels; non-oak or composite barrels; vats/tubs; charred spirits casks |
 | representative_product | One specified new oak wine barrel model; no fixed oak origin, capacity or service life |

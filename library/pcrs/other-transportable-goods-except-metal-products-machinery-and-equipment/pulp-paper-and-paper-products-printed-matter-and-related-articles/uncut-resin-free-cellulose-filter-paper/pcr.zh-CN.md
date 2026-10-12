@@ -22,7 +22,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.uncut-resin-free-cellulose-filter-paper |
-| classification_refs | CPC 3.0 32136; narrower |
+| classification_refs | CPC 3.0 32136; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 受上述路线及无添加树脂条件限定的湿法纤维素定性滤纸原纸卷 |
 | excluded_products | 烟纸、包装纸、毛毡纸；树脂硬化、酸洗无灰、填充、涂布或浸渍滤材；已裁切或成型过滤产品 |
 | representative_product | Hahnemühle 高纯度普通定性滤纸原纸卷；实物形态示例，不证明现场配方或能源路线 |

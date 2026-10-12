@@ -21,7 +21,7 @@ CPC3.0 31913 combines inlaid/marquetry surfaces, protective storage cases and de
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-marquetry-and-inlaid-wood-cases-for-jewellery-or-cutlery-and-similar-articles-of-w-26cf8014 |
-| classification_refs | CPC 3.0 31913; narrower |
+| classification_refs | CPC 3.0 31913; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Single-piece hardwood carved indoor decorative statuettes and ornaments with brush-applied shellac |
 | excluded_products | Marquetry; storage cases; functional furniture/tableware/toys; glued or treated wood; other finish routes |
 | representative_product | A kiln-dried solid hardwood decorative statuette, dry sanded and clear shellac brush finished |

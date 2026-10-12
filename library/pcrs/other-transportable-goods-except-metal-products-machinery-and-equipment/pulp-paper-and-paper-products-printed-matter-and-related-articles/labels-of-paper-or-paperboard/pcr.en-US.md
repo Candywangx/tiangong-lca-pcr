@@ -20,7 +20,7 @@ Wet-glue labels require adhesive applied during labelling and have a different s
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.labels-of-paper-or-paperboard |
-| classification_refs | CPC 3.0 32197; narrower |
+| classification_refs | CPC 3.0 32197; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Printed die-cut permanent-PSA paper labels on continuous glassine liner |
 | excluded_products | Wet-glue, direct-thermal, adhesive-free, linerless, film/board and incompatible routes in Section 1 |
 | representative_product | HERMAwhite (601)/62Gpt/523 converted to black printed die-cut rolls |

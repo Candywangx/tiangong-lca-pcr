@@ -19,7 +19,7 @@ Integrated sites may use this node only when wood preparation, TMP production, c
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.newsprint |
-| classification_refs | CPC 3.0 32121; narrower proposal only, no accepted mapping |
+| classification_refs | CPC 3.0 32121; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unprinted uncoated machine-finished newsprint reels within the declared furnish and utility route |
 | excluded_products | Printed newspapers; writing/book/magazine paper; coated paper; sheets; full integrated pulping; chemical pretreatment of TMP |
 | representative_product | One actual newsprint grade, fibre furnish, ash, moisture and reel specification |
@@ -64,7 +64,7 @@ Declare every qualifier in the data package. The reference is a manufacturing de
 | --- | --- |
 | declared_starting_condition | Traceable pulp lots received at the papermaking node; actual TMP/DIP/kraft supply datasets upstream |
 | starting_condition_role | intermediate_input |
-| product_classification_scope | Proposed narrower CPC 32121; papermaking node does not establish full leaf or integrated-mill coverage |
+| product_classification_scope | Narrower CPC 32121 scope; papermaking node does not establish full leaf or integrated-mill coverage |
 | recursive_input_rule | Returned own broke and white water stay internal; externally bought newsprint/broke requires a distinct received-flow boundary and upstream history. Do not recursively select this PCR to invent its original burden. |
 | upstream_dataset_requirement | Route-, state-, site-, time- and quantity-compatible pulp, utilities, chemicals, packaging, transport and residue treatment. Integrated transfers link measured wet mass, solids and energy to the matching upstream node. |
 | disclosure | Cradle-to-gate inventory combines node and complete upstream supply; disclose purchased/integrated links, exclusions, transports, treatment and unresolved identities. Printing/use/end-of-life are excluded from this manufacturing node. |

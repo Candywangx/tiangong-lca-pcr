@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.solventless-hexenyl-silicone-coated-glassine-release-paper |
-| classification_refs | CPC 3.0 32149; narrower; 仅建议子集 |
+| classification_refs | CPC 3.0 32149; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 原液热加成固化己烯基硅酮涂布格拉辛纸，单面，纸卷 |
 | excluded_products | 第 1 节所列排除路线与产品 |
 | representative_product | 声明离型性能并验收合格的单面涂硅格拉辛纸卷 |

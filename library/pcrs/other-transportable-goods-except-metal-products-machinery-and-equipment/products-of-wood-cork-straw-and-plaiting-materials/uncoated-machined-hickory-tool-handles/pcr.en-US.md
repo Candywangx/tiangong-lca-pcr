@@ -19,7 +19,7 @@ The declared quantity is a production reference for a component, not a lifetime-
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.uncoated-machined-hickory-tool-handles |
-| classification_refs | CPC 3.0 31911: proposed narrower subset; no accepted edge |
+| classification_refs | CPC 3.0 31911; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated, untreated, unglued solid true-hickory finished replacement tool handles, ready to fit the declared tool drawing |
 | excluded_products | Complete tools; tool bodies/heads; broom/brush bodies and handles; shoe lasts/trees; roughly trimmed unworked wooden sticks; compressed/densified, coated, impregnated or glued handles; attached metal parts |
 | representative_product | Sanded solid true-hickory hammer replacement handle with specified head fit; no head or ferrule supplied |

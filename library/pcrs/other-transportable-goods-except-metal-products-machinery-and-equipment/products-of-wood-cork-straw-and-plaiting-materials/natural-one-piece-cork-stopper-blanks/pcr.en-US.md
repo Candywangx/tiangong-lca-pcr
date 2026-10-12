@@ -20,7 +20,7 @@ Agglomerated stoppers require granulate production, measured formulation, binder
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.natural-one-piece-cork-stopper-blanks |
-| classification_refs | CPC 3.0:31922; narrower; classification context only; mapping decision belongs to controller |
+| classification_refs | CPC 3.0 31922; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unwashed uncoated punched and dry-sized one-piece natural cork stopper blanks |
 | excluded_products | Turned, agglomerated, disc-bonded, colmated/coated finished stoppers and cork boards |
 | representative_product | Cylindrical Quercus suber one-piece blank; dimensions and grade declared from actual order |

@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.wallpaper-base |
-| classification_refs | CPC 3.0:32124; narrower 边界建议，未接受映射 |
+| classification_refs | CPC 3.0 32124; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 湿法抄造、外购漂白硫酸盐木浆制、未涂布未浸渍壁纸原纸；实际填料和无颜料施胶 |
 | excluded_products | 印刷、颜料涂布、装饰覆层、乳胶浸渍、无纺或机械浆及回收纤维路线 |
 | representative_product | 按购方规格验收的一卷净交付原纸；不设代表性配方 |

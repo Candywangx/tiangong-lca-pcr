@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.uncoated-machined-hickory-tool-handles |
-| classification_refs | CPC 3.0 31911：拟议narrower子集；没有已接受边 |
+| classification_refs | CPC 3.0 31911; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 无涂层、未处理、非胶合、未致密化的真山核桃实木成品替换工具柄，可按指定工具图纸安装 |
 | excluded_products | 完整工具；工具本体/头；扫帚/刷体及柄；鞋楦/鞋撑；粗修未加工木棍；压缩/致密化、涂层、浸渍或胶合柄；附装金属件 |
 | representative_product | 指定工具头配合的打磨真山核桃实木替换锤柄；不含工具头或金属套箍 |

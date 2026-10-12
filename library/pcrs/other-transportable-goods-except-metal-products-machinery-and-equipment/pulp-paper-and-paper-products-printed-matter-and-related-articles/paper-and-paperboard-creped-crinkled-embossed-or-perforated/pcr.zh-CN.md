@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.paper-and-paperboard-creped-crinkled-embossed-or-perforated |
-| classification_refs | CPC:3.0:32142; narrower |
+| classification_refs | CPC 3.0 32142; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 外购未压花化学浆原纸加工的白色未涂布标称250 g/m2机械双面亚麻纹压花细纸张 |
 | excluded_products | 起皱或穿孔产品；生活用纸、Clupak袋纸、湿部毛毡纹纸；涂布、印刷、底涂、层压、自黏纸；象牙色或彩色纸种；一体化造纸及最终制品 |
 | representative_product | Favini Biancoflash Premium Classic Linen LN 2/S, 标称250 g/m2，白色未印刷纸张；仅商品身份，不是工厂数据集 |

@@ -21,7 +21,7 @@ This is production methodology, not a construction-function equivalence claim. N
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-sawn-or-chipped-lengthwise-sliced-or-peeled-of-a-thickness-exceeding-6-mm-of-conif-03c658ab |
-| classification_refs | CPC 3.0: 31101; PCR methodology narrower than classification |
+| classification_refs | CPC 3.0 31101; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Directly supported only: kiln-dried, unimpregnated coniferous longitudinally sawn/chipped wood, measured thickness >6 mm; rough or straight-planed. Green/air-dried final products and sliced/peeled forms are not covered by this reference definition |
 | excluded_products | Non-coniferous timber; veneer ≤6 mm; sleepers; continuously shaped wood; impregnated wood; glued/laminated products; panels |
 | representative_product | Kiln-dried coniferous sawn timber, net wet mass at declared dispatch moisture, at mill gate |

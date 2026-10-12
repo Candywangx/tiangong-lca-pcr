@@ -19,7 +19,7 @@ A foreground dataset must name the actual paper grades, deinking technology, ble
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.pulps-of-fibres-derived-from-recovered-waste-and-scrap-paper-or-paperboard-or-of-other-73692a30 |
-| classification_refs | CPC 3.0 32114; proposed narrower scope, independent acceptance pending |
+| classification_refs | CPC 3.0 32114; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Washed, peroxide-bleached deinked recovered-paper market pulp with qualified dried delivery |
 | excluded_products | Non-deinked board pulp; primary nonwood plant pulp; virgin wood/dissolving pulp; wet lap; finished paper |
 | representative_product | Deinked market pulp for paper manufacture, composition and quality measured |

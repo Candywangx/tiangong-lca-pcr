@@ -21,7 +21,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.sacks-and-bags-of-paper |
-| classification_refs | CPC 3.0 32152; narrower; 候选关系待主控审查 |
+| classification_refs | CPC 3.0 32152; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 符合申报材质和路线限制的空开口糊底未漂白牛皮纸袋。 |
 | excluded_products | 纸袋原纸卷；涂布或层合袋；印刷、阀口、缝合或提手袋；含膜或内袋的袋；纸盒、信封、编织或塑料袋；被包装货物。 |
 | representative_product | 无印刷无内衬开口糊底袋；尺寸、层数、额定载荷由现场申报，不预设。 |
@@ -449,7 +449,7 @@ CAS7732-18-5水以蒸气形式跨入室外空气、子介质未特指，来自�
 | --- | --- | --- | --- |
 | validate_reference | finished_bag | 必须恰有一个成品袋参考产品输出申报1千克验收净质量及必需限定信息。中间袋输出不能复用其参考UUID。 | billerud-sack-handbook |
 | validate_denominator | all inventory rows | 清单基准、批次聚合及双语均采用每1千克参考流及cp_output净质量；每项数量须有可追溯协议且无虚构数量。 |  |
-| validate_route | paper-sack-converting | 若实际存在印刷、膜内衬、阀口、提手、供热、燃烧或造纸而无独立审查覆盖，拒绝声称完全适用。分类仍未映射本身不否定完整窄范围方法。 | billerud-sack-handbook |
+| validate_route | paper-sack-converting | 若实际存在印刷、膜内衬、阀口、提手、供热、燃烧或造纸而无独立审查覆盖，拒绝声称完全适用。分类映射被接受本身不证明方法学获批或数据集覆盖完整。 | billerud-sack-handbook |
 | validate_balance | all inventory rows | 要求实物物料水碳账核对、上游处理供方兼容及独立有据负荷分配。身份、供应基准、空气吸湿或粒径未决使所涉数据覆盖不完整。 | ec-pef-2021 |
 | validate_particles | pm25; pm_coarse; pm_large; collected_dust | 外排互斥空气区间须与捕集废物、内部回用及工作场所测量分开。EPA201A不适用于含水滴排放或逸散环境采样；不得进行无支持的区间相减。 | epa-method-201a-2020 |
 

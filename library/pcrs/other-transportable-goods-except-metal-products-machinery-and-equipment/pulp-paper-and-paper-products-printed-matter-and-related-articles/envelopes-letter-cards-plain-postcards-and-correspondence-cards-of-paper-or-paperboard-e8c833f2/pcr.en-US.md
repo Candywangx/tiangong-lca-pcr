@@ -20,7 +20,7 @@ Transparent film, window apertures and window-patching gum are absent. Release s
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.envelopes-letter-cards-plain-postcards-and-correspondence-cards-of-paper-or-paperboard-e8c833f2 |
-| classification_refs | CPC 3.0 32192; narrower; proposed only, no accepted mapping |
+| classification_refs | CPC 3.0 32192; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Unprinted windowless gummed correspondence envelopes, empty at converter gate |
 | excluded_products | Letter cards, postcards, stationery kits, writing compendiums, padded mailers, windowed/printed/peel-seal/self-seal envelopes, onsite papermaking |
 | representative_product | Unprinted windowless remoistenable-gummed paper envelopes |

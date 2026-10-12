@@ -22,7 +22,7 @@ The foreground route uses purchased electricity and externally supplied steam, i
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.uncut-resin-free-cellulose-filter-paper |
-| classification_refs | CPC 3.0 32136; narrower |
+| classification_refs | CPC 3.0 32136; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Wet-laid qualitative cellulose filter base-paper reels within the stated route and resin-free condition |
 | excluded_products | Cigarette, wrapping and felt paper; resin-hardened, acid-washed ashless, filled, coated or impregnated filter media; cut/formed filters |
 | representative_product | Reel form of ordinary Hahnemühle highly pure qualitative filter paper; physical example, not proof of factory recipe or energy route |

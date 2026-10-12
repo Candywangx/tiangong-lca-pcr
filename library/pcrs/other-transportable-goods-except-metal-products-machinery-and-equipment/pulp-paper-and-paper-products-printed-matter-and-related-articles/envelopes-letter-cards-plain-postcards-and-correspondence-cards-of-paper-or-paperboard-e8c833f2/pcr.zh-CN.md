@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.envelopes-letter-cards-plain-postcards-and-correspondence-cards-of-paper-or-paperboard-e8c833f2 |
-| classification_refs | CPC 3.0 32192; narrower; 仅为建议，未接受映射 |
+| classification_refs | CPC 3.0 32192; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 转换厂门的未印刷无窗胶封口空通信信封 |
 | excluded_products | 信卡、明信片、文具套装、书信用品夹、缓冲邮袋、有窗或印刷或撕条或自粘信封、厂内造纸 |
 | representative_product | 未印刷无窗再润湿胶封口纸信封 |

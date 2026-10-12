@@ -20,7 +20,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.tableware-and-kitchenware-of-wood |
-| classification_refs | CPC:3.0:31912; narrower |
+| classification_refs | CPC 3.0 31912; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 无涂层无胶黏剂单块面纹糖枫实木砧板 |
 | excluded_products | 勺；碗；竹；胶合/端纹拼装砧板；涂层/涂油/涂蜡砧板；浸渍或热改性坯料 |
 | representative_product | 一件声明尺寸及含水状态的完整验收糖枫砧板 |

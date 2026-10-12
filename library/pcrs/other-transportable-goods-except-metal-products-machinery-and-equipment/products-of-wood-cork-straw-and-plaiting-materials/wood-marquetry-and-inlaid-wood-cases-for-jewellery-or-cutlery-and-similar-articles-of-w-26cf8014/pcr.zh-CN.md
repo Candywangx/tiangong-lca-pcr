@@ -21,7 +21,7 @@ CPC3.0 31913 混合了镶嵌表面、保护性储存箱盒和装饰物，功能�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-marquetry-and-inlaid-wood-cases-for-jewellery-or-cutlery-and-similar-articles-of-w-26cf8014 |
-| classification_refs | CPC 3.0 31913; narrower |
+| classification_refs | CPC 3.0 31913; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 单块阔叶实木雕刻、虫胶刷涂的室内装饰雕像与摆件 |
 | excluded_products | 细工镶嵌；储存箱盒；功能性家具、餐具、玩具；胶合或处理木料；其他饰面路线 |
 | representative_product | 窑干单块阔叶实木装饰雕像，干砂光及透明虫胶刷涂 |

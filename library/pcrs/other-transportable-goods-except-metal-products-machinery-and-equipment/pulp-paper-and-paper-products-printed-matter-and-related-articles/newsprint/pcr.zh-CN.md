@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.newsprint |
-| classification_refs | CPC 3.0 32121; narrower 仅建议，未接受映射 |
+| classification_refs | CPC 3.0 32121; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 声明浆料及公用工程路线内的未印刷、未涂布、机器整饰新闻纸卷 |
 | excluded_products | 印刷报纸；书写纸、书纸、杂志纸；涂布纸；平张纸；完整集成制浆；TMP 的化学预处理 |
 | representative_product | 一个实际新闻纸等级及其浆料、灰分、水分与卷纸规格 |
@@ -64,7 +64,7 @@ content_maturity: authored_methodology
 | --- | --- |
 | declared_starting_condition | 造纸节点接收可追溯浆料批次；实际 TMP、脱墨浆、硫酸盐浆供方数据集在上游 |
 | starting_condition_role | intermediate_input |
-| product_classification_scope | 建议 narrower CPC 32121；造纸节点不代表完整分类叶或集成场址覆盖 |
+| product_classification_scope | CPC 32121 的 narrower 范围；造纸节点不代表完整分类叶或集成场址覆盖 |
 | recursive_input_rule | 自产损纸及白水回流保留为内部循环；外购新闻纸或损纸须定义独立接收流边界及上游历史。不得递归选择本 PCR 来虚构原始负荷。 |
 | upstream_dataset_requirement | 路线、状态、场址、时间及数量基准相容的浆料、公用工程、化学品、包装、运输及残余物处理数据集。集成转移须将实测湿质量、固体及能量链接至对应上游节点。 |
 | disclosure | 从摇篮到厂门清单由本节点及完整上游供应组合；披露外购或集成链接、排除项、运输、处理及未决身份。本制造节点不含印刷、使用及报废。 |

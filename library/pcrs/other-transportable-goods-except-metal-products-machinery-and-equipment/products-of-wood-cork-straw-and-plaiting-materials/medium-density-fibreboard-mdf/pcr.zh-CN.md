@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.medium-density-fibreboard-mdf |
-| classification_refs | CPC 3.0 31441; narrower |
+| classification_refs | CPC 3.0 31441; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 常规干法木质未饰面MDF |
 | excluded_products | 湿法硬板；其他纤维板；非木纤维板；刨花板；OSB；饰面板；特种阻燃/防腐配方 |
 | representative_product | 中密度纤维板 `57c184ac-a2d3-4500-af7b-80609ed89d2f` |
@@ -1165,7 +1165,7 @@ translation_status: aligned
 
 - 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
-- 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_energy_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1210,7 +1210,7 @@ translation_status: aligned
 
 - 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：净热值, 低位热值 `93a60a56-a3c8-11da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-11da-a746-0800200c9a66` / MJ
-- 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_energy_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1225,7 +1225,7 @@ translation_status: aligned
 
 - 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_water采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_water_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1240,7 +1240,7 @@ translation_status: aligned
 
 - 选定流：MDF间接加热回流蒸汽凝结水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_thermal采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_thermal_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1263,7 +1263,7 @@ translation_status: aligned
 
 - 选定流：交付MDF蒸煮器的工艺蒸汽
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_thermal采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_thermal_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1278,7 +1278,7 @@ translation_status: aligned
 
 - 选定流：交付MDF制造的间接工艺热
 - 流属性/单位：交付热计量基准未决；MJ；流属性及单位组UUID未决 / MJ
-- 数量规则：按cp_thermal采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_thermal_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1295,7 +1295,7 @@ translation_status: aligned
 
 - 选定流：木料锅炉底灰
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_residues采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_residues_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1310,7 +1310,7 @@ translation_status: aligned
 
 - 选定流：木料锅炉捕集飞灰
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_residues采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_residues_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1325,7 +1325,7 @@ translation_status: aligned
 
 - 选定流：送处理的木料锅炉排污水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_residues采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_residues_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1342,7 +1342,7 @@ translation_status: aligned
 
 - 选定流：二氧化碳（生物源） `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1357,7 +1357,7 @@ translation_status: aligned
 
 - 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1372,7 +1372,7 @@ translation_status: aligned
 
 - 选定流：一氧化碳（生物源） `8a313a02-e251-11e6-bf01-fe55135034f3`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1387,7 +1387,7 @@ translation_status: aligned
 
 - 选定流：一氧化碳（化石源） `08a91e70-3ddc-11dd-924e-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1402,7 +1402,7 @@ translation_status: aligned
 
 - 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1417,7 +1417,7 @@ translation_status: aligned
 
 - 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1432,7 +1432,7 @@ translation_status: aligned
 
 - 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1447,7 +1447,7 @@ translation_status: aligned
 
 - 选定流：氮氧化物 `f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1462,7 +1462,7 @@ translation_status: aligned
 
 - 选定流：二氧化硫 `fe0acd60-3ddc-11dd-ac48-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1477,7 +1477,7 @@ translation_status: aligned
 
 - 选定流：颗粒物 (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1492,7 +1492,7 @@ translation_status: aligned
 
 - 选定流：颗粒物 (PM2.5 - PM10) `08a91e70-3ddc-11dd-9501-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
@@ -1507,7 +1507,7 @@ translation_status: aligned
 
 - 选定流：颗粒物（> PM10） `fe0acd60-3ddc-11dd-a70a-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流

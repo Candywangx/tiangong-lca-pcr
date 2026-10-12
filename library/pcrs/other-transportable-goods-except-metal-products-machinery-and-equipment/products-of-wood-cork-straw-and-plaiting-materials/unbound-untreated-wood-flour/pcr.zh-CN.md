@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.unbound-untreated-wood-flour |
-| classification_refs | CPC 3.0 31220; narrower |
+| classification_refs | CPC 3.0 31220; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 由干燥锯屑废物生产的未处理无黏结木粉，一个明确填料等级 |
 | excluded_products | 木丝；长纤维；黏结或化学处理产品；场内热干燥路线 |
 | representative_product | 散装交付的机械粉磨松散木粉 |

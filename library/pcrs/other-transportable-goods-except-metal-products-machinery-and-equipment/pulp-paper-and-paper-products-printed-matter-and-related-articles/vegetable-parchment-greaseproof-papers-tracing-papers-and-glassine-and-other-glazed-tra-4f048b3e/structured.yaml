@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.vegetable-parchment-greaseproof-papers-tracing-papers-and-glassine-and-other-glazed-tra-4f048b3e"
-  classification_refs: "CPC 3.0 32137; narrower"
+  classification_refs: "CPC 3.0 32137; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
   covered_products: "Uncoated mechanically high-refined virgin chemical-pulp greaseproof reels, without supercalendering"
   excluded_products: "Acid parchment; coated baking/barrier paper; glassine; tracing paper; cellophane film; integrated pulp/combustion routes"
   representative_product: "Natural Greaseproof uncoated base-paper subset; mechanical barrier documented by Nordic Paper; no assertion that all branded grades meet this scope"
@@ -1033,8 +1033,8 @@ dataset_production:
       process_id: "wwtp"
       flow_role: "wwtp_water; wastewater_in; wwtp_vapour"
       record_type: "water_balance"
-      raw_fields: "makeup mass/volume/density; internal white-water and effluent volumes; steam/condensate separate; paper/sludge moisture; dryer and treatment exhaust humidity/flow; treatment evaporation; stocks; measured rho_eff(T,composition); water mass fraction; rho_water(T); whole wastewater mass and component-water volume"
-      collection_method: "Calibrated flowmeters, density/temperature measurements and representative dryer and treatment-unit moisture balances; pair internal transfer readings; reconcile water physically before attribution This protocol attributes only actual wwtp rows/sources; the other process uses cp_water. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      raw_fields: "makeup mass/volume/density; internal white-water and effluent volumes; steam/condensate separate; paper/sludge moisture; dryer and treatment exhaust humidity/flow; treatment evaporation; stocks; measured rho_eff(T,composition); water mass fraction; rho_water(T); whole wastewater mass and component-water volume  reaction-water generation/consumption and evidence; oxygen uptake for total-mass reconciliation;"
+      collection_method: "Calibrated flowmeters, density/temperature measurements and representative dryer and treatment-unit moisture balances; pair internal transfer readings; reconcile water physically before attribution This protocol attributes only actual wwtp rows/sources; the other process uses cp_water. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities.  Include independently supported reaction-water terms; do not assume water is conserved across biological conversion or absorb reaction terms into unexplained residuals."
       unit: "kg; m3"
       frequency: "continuous and shift"
       temporal_coverage: "one complete representative declared production period, including abnormal operation"
@@ -1148,7 +1148,7 @@ dataset_production:
         - jrc-pulp-paper-bref-2015
     - id: physical_balances
       applies_to: "unallocated physical ledgers"
-      rule: "For each conserved dry-solids, water and carbon quantity: external inputs = dispatched paper and packaging + external waste + actual elementary releases + returned utility water + closing-minus-opening stocks + documented residual. Internal links cancel once. Keep actual chemical and fibre C/N/solids fractions; oxygen-demand indicators are not extra conserved carbon. Preserve full physical co-product quantities before separate burden attribution."
+      rule: "Elemental carbon is conserved: external carbon inputs = external carbon outputs + closing-minus-opening carbon stocks + documented residual, using each stream’s measured or evidenced kg C content. Dry solids and H2O are not independently conserved across biological or chemical reactions: for each component, external inputs + reaction generation - reaction consumption = external outputs + closing-minus-opening stocks + documented residual. Record actual solids conversion, oxygen uptake for total-mass reconciliation and reaction-water generation/consumption from measured or independently supported site chemistry; do not assume reaction yields or substitute COD for carbon mass. Reconcile dispatched paper/packaging, waste, elementary releases and utility returns on their own component bases; internal links cancel once. Keep reaction terms distinct from measurement/model uncertainty, and never force closure or infer evaporation by treating reaction-generated water as unexplained error. Preserve physical quantities before burden allocation."
       inputs:
         - cp_mass
         - cp_material
@@ -1162,6 +1162,7 @@ dataset_production:
       output: "physical quantities, residual and uncertainty"
       source_ids:
         - jrc-pulp-paper-bref-2015
+        - epa-wastewater-basics
         - ec-pef-method-2021
     - id: complete_period_normalization
       applies_to: "all inventory rows"
@@ -1247,21 +1248,33 @@ data_sources:
     type: "official_guidance"
     reference: "IPCC 2019 Refinement, Volume 5, Chapter 6 Wastewater Treatment and Discharge; https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/5_Volume5/19R_V5_6_Ch06_Wastewater.pdf; 2019, Sections 6.1, 6.2.3, 6.4 and Appendix 6A.1"
     used_for: "Industrial methane/nitrous-oxide pathways and carbon-origin scope only. No domestic-water factors, industry average loads or national-total exclusion of biogenic CO2 imported into this LCI."
+  - id: "epa-wastewater-basics"
+    type: "official_guidance"
+    reference: "John R. Buchanan, Wastewater Basics 101, US EPA-hosted original; https://www.epa.gov/sites/default/files/2015-06/documents/epa-mou_wastewater_basics_101.pdf; PDF p.15, Aerobic Biotransformation"
+    used_for: "General oxygen-consuming biological conversion of organic matter to CO2, H2O and biomass/residue; supports reaction terms, not a paper-mill recipe, default yield, amount or emission factor."
+  - id: "upm-glassine-terminology"
+    type: "literature"
+    reference: "UPM, Labeling Materials, official Chinese product page; https://www.upmspecialtymaterials.com/cn/zh-hans-pages/upm-labeling-materials/; Products and brands, glassine description"
+    used_for: "Chinese glassine terminology and supercalendered fibre-paper identity only; no product-specific grammage or performance default adopted."
+  - id: "gb-cellophane-2009"
+    type: "standard"
+    reference: "GB/T 24695-2009, Cellophane used for food packaging / 食品包装用玻璃纸; official bilingual title https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=4886854AC267120FA0757B2DDFA20BC9"
+    used_for: "Terminology distinction only: the official Chinese name 玻璃纸 corresponds to cellophane. No full-standard compliance or test procedure is claimed."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:10238e83b5a81b399f3d4f11e01c783971c016900718bc21e26a612260402382"
+  source_sha256: "sha256:cbf3d5899051c549a2e9eab792058832de5638d3da5f9485828a307f7c214a79"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7916"
+    - unit_id: "normative_8389"
       family: "system_boundary"
       span:
         start:
-          offset: 7916
-          line: 68
+          offset: 8389
+          line: 70
           column: 1
         end:
-          offset: 10144
-          line: 87
+          offset: 10617
+          line: 89
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received purchased bleached chemical papermaking pulp and external utilities |\n| starting_condition_role | Foreground manufacturing entry |\n| product_classification_scope | Mechanical uncoated greaseproof subset of CPC 32137; not its incompatible sibling routes |\n| recursive_input_rule | Purchased same-category paper is an upstream product, not a reason to reproduce its manufacture here. A converting-only route is excluded; own internal broke is an internal return, not a purchased recursive input. |\n| upstream_dataset_requirement | Require compatible cradle-to-gate pulp, utility, chemical and packaging datasets and external waste treatment; physical flow identity alone is insufficient |\n| disclosure | Disclose collected gate-to-gate scope separately from upstream/downstream links; missing links never imply zero burden or complete cradle-to-gate coverage |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_include | all inventory rows | Include stock preparation, refining, wet forming, pressing, drying, finishing, dispatch, cleaning, internal recovery and primary/aerobic treatment; add each actual process chemical and waste as a separate specific row. Keep start-ups, grade changes and cleaning in the actual collection period. | jrc-pulp-paper-bref-2015 |\n| boundary_services | all inventory rows | External electricity/steam generation and water supply are background links: do not duplicate their combustion or abstraction emissions here. On-site boilers, pulping/bleaching or anaerobic digestion require another evidenced scope; downstream receiving-water gas generation and disposal are separately linked. | jrc-pulp-paper-bref-2015; ipcc-wastewater-2019 |\n| boundary_links | all inventory rows | Internal effluent_transfer and wastewater_in have equal whole-mixture masses, volumes, density and composition. Return white water, fibre, activated sludge and condensate are recorded in physical ledgers and cancel once. Record only final outfall releases to the environment; do not add untreated loads or waste-transfer loads twice. | jrc-pulp-paper-bref-2015 |\n\n"
       headings:
@@ -1280,12 +1293,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7916
-              line: 68
+              offset: 8389
+              line: 70
               column: 1
             end:
-              offset: 7937
-              line: 68
+              offset: 8410
+              line: 70
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1300,16 +1313,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50962"
+    - unit_id: "normative_51435"
       family: "allocation"
       span:
         start:
-          offset: 50962
-          line: 698
+          offset: 51435
+          line: 700
           column: 1
         end:
-          offset: 52038
-          line: 705
+          offset: 52511
+          line: 707
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | all inventory rows | Separate grade campaigns and direct meters first. For genuinely shared activities investigate subdivision/system expansion, then demonstrate a relevant underlying physical relationship; only if neither is defensible may a documented other relationship such as economic value be used. No automatic mass allocation, paper yield factor, recycled-paper credit or universal price ratio. | ec-pef-method-2021 |\n| allocation_ledgers | all inventory rows | Preserve the unallocated physical mass/water/carbon ledger and full product/waste quantities, separately from the product-attributed environmental burden ledger. Allocation partitions burdens; it must not multiply real co-product outputs or internal-link quantities by an allocation share. Do not call internally recovered broke a sold co-product. Record actual receivers and any genuine off-spec sales independently. | ec-pef-method-2021; jrc-pulp-paper-bref-2015 |\n\n"
       headings:
@@ -1328,12 +1341,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50962
-              line: 698
+              offset: 51435
+              line: 700
               column: 1
             end:
-              offset: 51002
-              line: 698
+              offset: 51475
+              line: 700
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1348,16 +1361,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70162"
+    - unit_id: "normative_71526"
       family: "validation"
       span:
         start:
-          offset: 70162
-          line: 747
+          offset: 71526
+          line: 749
           column: 1
         end:
-          offset: 71615
-          line: 756
+          offset: 72979
+          line: 758
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | reference product | Reject acid parchmentization, functional coatings, supercalendered glassine or regenerated-cellulose film from this method; verify actual barrier route and required qualifiers, not a trade name. | nordic-natural-greaseproof-2022; hubbe-pruszynski-greaseproof-2020; ahlstrom-glassine-ep2931972a1 |\n| validate_quantity | all inventory rows | Require exactly one external finished-paper reference output, same Q across all rows/protocols, equal internal-link ends and complete conversion evidence. Unknown steam or supplier quantity conventions fail a claim of a complete linked dataset. | jrc-pulp-paper-bref-2015 |\n| validate_releases | elementary outputs | Match actual medium/species and analytical quantity basis. Do not duplicate nested particles, captured dust, untreated wastewater or COD/BOD as carbon. Keep biogenic CO2 in LCI and fossil/biogenic methane distinct. No correction flow substitutes for a direct release. | jrc-pulp-paper-bref-2015; ipcc-wastewater-2019 |\n| validate_evidence | all inventory rows | Review physical identity and quantitative background compatibility independently. Unresolved identities, unsupported measurements, unexplained residuals and missing treatment links remain explicit; validation does not approve scientific methodology. | jrc-pulp-paper-bref-2015; ec-pef-method-2021 |\n\n"
       headings:
@@ -1376,12 +1389,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70162
-              line: 747
+              offset: 71526
+              line: 749
               column: 1
             end:
-              offset: 70184
-              line: 747
+              offset: 71548
+              line: 749
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1400,168 +1413,168 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_include"
       identity_kind: "explicit"
-      unit_id: "normative_7916"
+      unit_id: "normative_8389"
       source_span:
         start:
-          offset: 8969
-          line: 83
+          offset: 9442
+          line: 85
           column: 1
         end:
-          offset: 9334
-          line: 83
+          offset: 9807
+          line: 85
           column: 366
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_services"
       identity_kind: "explicit"
-      unit_id: "normative_7916"
+      unit_id: "normative_8389"
       source_span:
         start:
-          offset: 9335
-          line: 84
+          offset: 9808
+          line: 86
           column: 1
         end:
-          offset: 9739
-          line: 84
+          offset: 10212
+          line: 86
           column: 405
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_links"
       identity_kind: "explicit"
-      unit_id: "normative_7916"
+      unit_id: "normative_8389"
       source_span:
         start:
-          offset: 9740
-          line: 85
+          offset: 10213
+          line: 87
           column: 1
         end:
-          offset: 10142
-          line: 85
+          offset: 10615
+          line: 87
           column: 403
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_hierarchy"
       identity_kind: "explicit"
-      unit_id: "normative_50962"
+      unit_id: "normative_51435"
       source_span:
         start:
-          offset: 51075
-          line: 702
+          offset: 51548
+          line: 704
           column: 1
         end:
-          offset: 51525
-          line: 702
+          offset: 51998
+          line: 704
           column: 451
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_50962"
+      unit_id: "normative_51435"
       source_span:
         start:
-          offset: 51526
-          line: 703
+          offset: 51999
+          line: 705
           column: 1
         end:
-          offset: 52036
-          line: 703
+          offset: 52509
+          line: 705
           column: 511
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_70162"
+      unit_id: "normative_71526"
       source_span:
         start:
-          offset: 70257
-          line: 751
+          offset: 71621
+          line: 753
           column: 1
         end:
-          offset: 70592
-          line: 751
+          offset: 71956
+          line: 753
           column: 336
     - pointer: "/validation_rules/1"
       rule_id: "validate_quantity"
       identity_kind: "explicit"
-      unit_id: "normative_70162"
+      unit_id: "normative_71526"
       source_span:
         start:
-          offset: 70593
-          line: 752
+          offset: 71957
+          line: 754
           column: 1
         end:
-          offset: 70909
-          line: 752
+          offset: 72273
+          line: 754
           column: 317
     - pointer: "/validation_rules/2"
       rule_id: "validate_releases"
       identity_kind: "explicit"
-      unit_id: "normative_70162"
+      unit_id: "normative_71526"
       source_span:
         start:
-          offset: 70910
-          line: 753
+          offset: 72274
+          line: 755
           column: 1
         end:
-          offset: 71271
-          line: 753
+          offset: 72635
+          line: 755
           column: 362
     - pointer: "/validation_rules/3"
       rule_id: "validate_evidence"
       identity_kind: "explicit"
-      unit_id: "normative_70162"
+      unit_id: "normative_71526"
       source_span:
         start:
-          offset: 71272
-          line: 754
+          offset: 72636
+          line: 756
           column: 1
         end:
-          offset: 71613
-          line: 754
+          offset: 72977
+          line: 756
           column: 342
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7916"
+      unit_id: "normative_8389"
       source_span:
         start:
-          offset: 7916
-          line: 68
+          offset: 8389
+          line: 70
           column: 1
         end:
-          offset: 7937
-          line: 68
+          offset: 8410
+          line: 70
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7916"
+      unit_id: "normative_8389"
       source_span:
         start:
-          offset: 7965
-          line: 72
+          offset: 8438
+          line: 74
           column: 1
         end:
-          offset: 8896
-          line: 79
+          offset: 9369
+          line: 81
           column: 172
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50962"
+      unit_id: "normative_51435"
       source_span:
         start:
-          offset: 50962
-          line: 698
+          offset: 51435
+          line: 700
           column: 1
         end:
-          offset: 51002
-          line: 698
+          offset: 51475
+          line: 700
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70162"
+      unit_id: "normative_71526"
       source_span:
         start:
-          offset: 70162
-          line: 747
+          offset: 71526
+          line: 749
           column: 1
         end:
-          offset: 70184
-          line: 747
+          offset: 71548
+          line: 749
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1570,5 +1583,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:10238e83b5a81b399f3d4f11e01c783971c016900718bc21e26a612260402382"
-  generated_content_sha256: "sha256:5be3ec4f9408a943756496097c4ffc9f93010f559e64df55f778bd66edb9d9ca"
+    sha256: "sha256:cbf3d5899051c549a2e9eab792058832de5638d3da5f9485828a307f7c214a79"
+  generated_content_sha256: "sha256:d9beceb1b2b7f0f257f0cbacbea0fc667779963d6e03db556f38f9cd245b2139"

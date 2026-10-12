@@ -19,7 +19,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.pulps-of-fibres-derived-from-recovered-waste-and-scrap-paper-or-paperboard-or-of-other-73692a30 |
-| classification_refs | CPC 3.0 32114; 建议narrower边界，待独立接受 |
+| classification_refs | CPC 3.0 32114; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 水洗、过氧化物漂白脱墨回收纸市场浆，具有合格干燥交付状态 |
 | excluded_products | 非脱墨纸板浆；原生非木植物浆；原生木浆/溶解浆；湿浆；成品纸 |
 | representative_product | 用于造纸的脱墨市场浆，实测组成和质量 |

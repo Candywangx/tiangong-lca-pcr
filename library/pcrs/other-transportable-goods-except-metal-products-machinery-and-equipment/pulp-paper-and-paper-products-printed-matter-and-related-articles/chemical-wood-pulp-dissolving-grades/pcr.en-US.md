@@ -15,7 +15,7 @@ The functional difference from paper-grade pulp is controlled cellulose purity a
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.chemical-wood-pulp-dissolving-grades |
-| classification_refs | CPC 3.0 32111; narrower; context for independent mapping review |
+| classification_refs | CPC 3.0 32111; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Eucalyptus magnesium acid sulphite ECF dissolving-grade dried sheets, baled, textile feedstock |
 | excluded_products | Papergrade pulp; other wood/base/cooking routes; TCF; slurry; recycled or non-wood pulp; fibre spinning; high-viscosity specialty chemical pulp |
 | representative_product | Virgin eucalyptus dissolving pulp sheets with lot-specific acceptance certificate for regenerated-cellulose textiles |

@@ -20,7 +20,7 @@ Exclude all-PVC and paper-backed vinyl wallpaper, cellulose/PET nonwoven wallpap
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.wallpaper-and-similar-wall-coverings-window-transparencies-of-paper |
-| classification_refs | CPC 3.0:32194; narrower proposal, no accepted mapping |
+| classification_refs | CPC 3.0 32194; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Non-prepasted cellulose-paper wallpaper, water-based rotogravure printed; declared mechanical embossing |
 | excluded_products | Nonwoven/PET, vinyl/PVC, textile, laminated, overvarnished, self-adhesive, window transparency, base-paper and other print routes |
 | representative_product | One accepted commercial wallpaper grade, actual colourways and specification; no average recipe |

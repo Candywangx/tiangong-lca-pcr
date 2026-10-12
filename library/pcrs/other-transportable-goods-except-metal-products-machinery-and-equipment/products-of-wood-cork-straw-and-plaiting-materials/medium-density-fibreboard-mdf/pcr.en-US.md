@@ -20,7 +20,7 @@ Wood provenance, species mix, density, thickness, moisture, declared formaldehyd
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.medium-density-fibreboard-mdf |
-| classification_refs | CPC 3.0 31441; narrower |
+| classification_refs | CPC 3.0 31441; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Conventional dry-process uncoated wood MDF |
 | excluded_products | Wet hardboard; other fibreboards; nonwood fibreboard; particleboard; OSB; coated board; special fire-retardant/preservative recipes |
 | representative_product | Medium density fiberboard `57c184ac-a2d3-4500-af7b-80609ed89d2f` |
@@ -1165,7 +1165,7 @@ Measure auxiliary gas separately from direct dryer and oxidizer fuel. Identity i
 
 - Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66`; unit group `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
-- Amount rule: Collect this actual exchange using cp_energy and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_energy_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1210,7 +1210,7 @@ Measure boiler auxiliaries and control; apply below-1-kV identity only when actu
 
 - Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66`; unit group `93a60a57-a3c8-11da-a746-0800200c9a66` / MJ
-- Amount rule: Collect this actual exchange using cp_energy and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_energy_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1225,7 +1225,7 @@ Measure new treated make-up water and exclude recovered condensate from this inp
 
 - Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_water and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_water_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1240,7 +1240,7 @@ Same physical stream and quantity as condensate_return; do not apply allocation 
 
 - Selected flow: Returned steam condensate from MDF indirect heating
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_thermal and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_thermal_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1263,7 +1263,7 @@ Conditional on on-site generation of this carrier. The output equals the linked 
 
 - Selected flow: Process steam delivered to MDF digester
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_thermal and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_thermal_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1278,7 +1278,7 @@ Conditional on on-site generation of this carrier. The output equals the linked 
 
 - Selected flow: Indirect process heat delivered to MDF manufacture
 - Flow property / unit: Delivered heat measurement basis unresolved; MJ; flow property/unit group UUID unresolved / MJ
-- Amount rule: Collect this actual exchange using cp_thermal and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_thermal_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1295,7 +1295,7 @@ Conditional on this collected boiler waste; measure separately, identify fuel mi
 
 - Selected flow: Wood-residue boiler bottom ash
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_residues and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_residues_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1310,7 +1310,7 @@ Conditional on this collected boiler waste; measure separately, identify fuel mi
 
 - Selected flow: Wood-residue boiler captured fly ash
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_residues and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_residues_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1325,7 +1325,7 @@ Conditional on this collected boiler waste; measure separately, identify fuel mi
 
 - Selected flow: Wood-residue boiler blowdown water sent to treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_residues and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_residues_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1342,7 +1342,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon dioxide (biogenic) `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1357,7 +1357,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon dioxide (fossil) `08a91e70-3ddc-11dd-923d-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1372,7 +1372,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon monoxide (biogenic) `8a313a02-e251-11e6-bf01-fe55135034f3`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1387,7 +1387,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon monoxide (fossil) `08a91e70-3ddc-11dd-924e-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1402,7 +1402,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1417,7 +1417,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: methane (fossil) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1432,7 +1432,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1447,7 +1447,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: Nitrogen oxides `f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1462,7 +1462,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: sulfur dioxide `fe0acd60-3ddc-11dd-ac48-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1477,7 +1477,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: particles (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1492,7 +1492,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: particles (PM2.5 - PM10) `08a91e70-3ddc-11dd-9501-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -1507,7 +1507,7 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: particles (> PM10) `fe0acd60-3ddc-11dd-a70a-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow

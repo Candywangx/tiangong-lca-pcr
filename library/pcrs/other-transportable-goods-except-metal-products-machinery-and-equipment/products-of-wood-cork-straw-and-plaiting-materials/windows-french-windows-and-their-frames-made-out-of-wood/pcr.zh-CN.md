@@ -22,7 +22,7 @@ Bau EPD 原件第4—6及10—11页支持整窗组成和随预制程度变化的
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.windows-french-windows-and-their-frames-made-out-of-wood |
-| classification_refs | CPC 3.0 31621; narrower |
+| classification_refs | CPC 3.0 31621; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 手动单扇云杉木整窗；外购三层充氩玻璃；外购窑干胶合方材；电力加工装配路线 |
 | excluded_products | 仅木框；未装玻璃窗；法式落地窗；屋顶窗；多扇窗；铝包木窗；其他树种；特殊防火烟密；厂内玻璃制造或燃烧路线 |
 | representative_product | 单扇带实际玻璃五金的云杉整窗，规格及表面层由具体原件声明 |

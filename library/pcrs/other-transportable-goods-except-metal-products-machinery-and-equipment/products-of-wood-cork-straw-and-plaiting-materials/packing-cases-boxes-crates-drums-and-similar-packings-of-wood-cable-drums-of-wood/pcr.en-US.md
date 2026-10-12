@@ -20,7 +20,7 @@ Exclude cable drums, stave barrels/casks, pallets and pallet collars, open slatt
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.packing-cases-boxes-crates-drums-and-similar-packings-of-wood-cable-drums-of-wood |
-| classification_refs | CPC 3.0 31701; narrower; pending independent acceptance; currently unmapped |
+| classification_refs | CPC 3.0 31701; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
 | covered_products | Uncoated nailed coniferous solid-sawn empty shipping box with matched lid and integral cleats |
 | excluded_products | Cable drums, stave barrels, pallets, open crates, structural framed crates, panel-board boxes, glued boxes, shook, reused boxes |
 | representative_product | New shipping box cut and nailed from purchased kiln-dried coniferous boards; no default dimensions, payload or mass |

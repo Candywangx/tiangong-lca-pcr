@@ -23,7 +23,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wood-sawn-or-chipped-lengthwise-sliced-or-peeled-of-a-thickness-exceeding-6-mm-of-non-c-2b701f10 |
-| classification_refs | CPC 3.0: 31102；方法学范围较窄；分类本身还包含切片/旋切形态及其他状态 |
+| classification_refs | CPC 3.0 31102; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
 | covered_products | 未处理、窑干且平面刨削的温带非针叶纵向锯切实木；实际厚度大于6毫米 |
 | excluded_products | 热带或针叶木；生材/气干或未刨光成品；切片/旋切材；厚度不超过6毫米单板；轨枕；型材；处理/胶合/工程木；其他干燥路线 |
 | representative_product | 声明发运含水率下出厂验收合格的窑干刨光温带硬木 |
