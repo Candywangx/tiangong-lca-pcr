@@ -427,6 +427,9 @@ export function checkMeasurementConsistency({ english, chinese }: { english?: Me
       }
       if (isOutput) {
         record("reference_output", rowContext);
+        if (referenceUuid && row.uuid !== referenceUuid) {
+          finding("error", "MEASUREMENT_REFERENCE_OUTPUT_IDENTITY_MISMATCH", "The linked completed output must retain the declared reference product UUID.", rowContext);
+        }
         const amount = outputAmount(expression);
         const exchangeUnit = unit(row.property_unit?.split("/").at(-1));
         if (!amount) {

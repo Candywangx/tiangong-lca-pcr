@@ -69,6 +69,7 @@ An explicit link must identify one unique row across all input/output flow types
 output, even when other physical co-products share its generic material UUID. UUID matching is a fallback only when
 the link is absent or empty; a missing, duplicate or non-output explicit target remains unresolved and cannot fall
 back to another row. Preserve all physical co-product and transfer rows.
+When a reference product UUID is declared, the linked output must retain that same UUID.
 Input rows must name their collection protocol
 and applicable calculation rule. A conversion rule's `Applies to` is the exact row id, a comma/semicolon-separated
 row-id list, or `all inventory rows` / `所有清单行`; exceptions and arbitrary scope prose are not positive scope evidence.
