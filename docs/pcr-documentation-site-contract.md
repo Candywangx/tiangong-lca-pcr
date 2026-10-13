@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-13
-lastReviewedNote: "Reviewed the 156-record restoration and retained v4 search codec from ca46d655: bounded score masks and signed posting deltas retain exact engine exports and backward readers under unchanged raw/gzip browser budgets. PCR lifecycle, translation, canonical bytes, dependency and product-version contracts remain unchanged. Full source-bound qualification and coordinated publication remain separate requirements."
-lastReviewedCommit: 401774fffcfea676b00a01c658ebcd2d6885041d
+lastReviewedNote: "Reviewed the 156-record restoration and retained v4 search codec from ca46d655: bounded score masks, signed posting deltas and keyed inspector packs retain exact engine exports, complete record data and backward readers under unchanged browser and provider file budgets. PCR lifecycle, translation, canonical bytes, dependency and product-version contracts remain unchanged. Full source-bound qualification and coordinated publication remain separate requirements."
+lastReviewedCommit: 4cb1e0c9021e191c1d7d2ab6552aaf715fc170ab
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -397,6 +397,25 @@ logs actual raw/gzip language totals at the unchanged budget gate. Native fallba
 full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 MB
 gzip budgets are unchanged. No dependency or remote service is added, and wire
 compression does not claim to reduce the restored engine's resident memory.
+
+### Inspector data transport
+
+The field inspector groups complete generated records into versioned JSON packs,
+using positional entries `[key, manifest, structured]`. Each record carries its
+exact transport key; current records and historical releases have distinct keys.
+Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
+whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
+array position, object-key order or empty value is removed. Generation requires
+each decoded record to serialize exactly as its original generated data; export
+verification repeats that comparison against the shipped pack for every record.
+The reader retains support for older unkeyed single-record payloads, rejects
+unknown versions, duplicate or missing keys and malformed records, and preserves
+the inspector's visible retry behavior. Browser qualification exercises the actual
+inspector in both languages and for available historical releases.
+
+This is lossless file packing to reduce the number of exported transport files.
+Server-side record data, byte-exact raw downloads, complete static HTML and every
+native Next navigation payload remain intact. No hosting rewrite is required.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
