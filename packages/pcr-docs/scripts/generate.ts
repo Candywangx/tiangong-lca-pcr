@@ -989,7 +989,7 @@ async function generate() {
         entries[key] = parsed;
       });
       const payload = JSON.stringify({
-        ...encodeSearchEntries(entries),
+        ...encodeSearchEntries(entries, 4),
         records: bucket.map((d) => d.record),
       });
       if (Buffer.byteLength(payload) > 20_000_000)
@@ -1019,15 +1019,16 @@ async function generate() {
     }
     await flush();
     json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 3,
+      schemaVersion: 4,
       language,
       shards,
     });
     const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, 0);
     const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, 0);
+    console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
       throw new Error(
-        "Search exceeds the per-language browser budget: " + language,
+        "Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)",
       );
     report.search.push({
       language,

@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-13
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
+lastReviewedNote: "Reviewed the 156-record restoration and retained v4 search codec from ca46d655: bounded score masks and signed posting deltas retain exact engine exports and backward readers under unchanged raw/gzip browser budgets. PCR lifecycle, translation, canonical bytes, dependency and product-version contracts remain unchanged. Full source-bound qualification and coordinated publication remain separate requirements."
+lastReviewedCommit: 401774fffcfea676b00a01c658ebcd2d6885041d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -378,6 +378,25 @@ fails initialization and remains retryable. Export key order, terms, posting IDs
 slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
+
+Search manifest version 4 retains `sparseMaps` markers and reads its initial flat
+`[term, scoreVectorLength, position, postingList, ...]` representation. New v4
+exports set both `scoreMasks: true` and `postingDeltas: true`. Each marked term is
+`[term, header, postingList, ...]`: `header = scoreVectorLength * 512 + slotMask`,
+with at most nine slots. Posting lists follow occupied slot order. Numeric-only
+lists store the first ID and then signed differences from the preceding ID;
+mixed/string lists stay verbatim. Decoding restores the original ID order,
+duplicates, slot positions, trailing nulls and complete engine export strings.
+Non-safe or negative restored IDs, impossible masks, incorrect posting counts,
+unpaired or foreign encoding flags fail initialization and remain retryable.
+
+The Worker continues to read v1/v2, the existing nested v3 and original flat v4;
+it decodes marked maps strictly by declared version and encoding flags. Generation
+verifies exact original engine export strings before publishing every shard and
+logs actual raw/gzip language totals at the unchanged budget gate. Native fallback,
+full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 MB
+gzip budgets are unchanged. No dependency or remote service is added, and wire
+compression does not claim to reduce the restored engine's resident memory.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
