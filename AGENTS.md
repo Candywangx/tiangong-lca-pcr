@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-13
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedCommit: 3372bc9f3a0e3dcb41595a05f31c6d4114be08ef
+lastReviewedNote: "Reviewed PCR #114 combined 0.4.7 qualification repair: the POSIX signal-test fixture publishes readiness atomically and reaps its owned subprocess group before deleting temporary files. Controlled failure now exits with the original assertion instead of hanging; complete instrumented engineering tests and strict types pass locally. Production runner, coverage semantics, CI budgets, runtime pins and candidate methodology are unchanged; fresh complete CI and publication remain required."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
