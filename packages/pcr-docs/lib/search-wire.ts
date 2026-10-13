@@ -10,6 +10,8 @@ type SparseTerm = [string, number, [number, (string | number)[]][]];
 export interface SearchWireEntries {
   entries: Record<string, unknown[]>;
   sparseMaps: string[];
+  scoreMasks?: true;
+  postingDeltas?: true;
 }
 function sparseMap(value: unknown[]): SparseTerm[] | undefined {
   const result: SparseTerm[] = [];
@@ -26,8 +28,41 @@ function sparseMap(value: unknown[]): SparseTerm[] | undefined {
   }
   return result;
 }
-function flattenMap(value: SparseTerm[]): unknown[][] {
-  return value.map(([term, length, slots]) => [term, length, ...slots.flatMap(([position, posting]) => [position, posting])]);
+function deltaPosting(value: (string | number)[]): (string | number)[] {
+  return value.every(id => typeof id === 'number')
+    ? value.map((id, index) => Number(id) - Number(value[index - 1] ?? 0)) : value;
+}
+function restorePosting(value: unknown): unknown {
+  if (!Array.isArray(value) || !value.every(id => typeof id === 'number')) return value;
+  let previous = 0;
+  return value.map(delta => {
+    if (!Number.isSafeInteger(delta) || !Number.isSafeInteger(previous + delta) || previous + delta < 0) throw invalid();
+    previous += delta;
+    return previous;
+  });
+}
+/** A bounded header stores vector length and occupied slots; numeric postings use reversible deltas. */
+function maskMap(value: SparseTerm[]): unknown[][] {
+  return value.map(([term, length, slots]) => [term,
+    length * 512 + slots.reduce((mask, [position]) => mask + 2 ** position, 0),
+    ...slots.map(([, posting]) => deltaPosting(posting))]);
+}
+function restoreMasks(value: unknown[]): unknown[] {
+  const nested = value.map(term => {
+    if (!Array.isArray(term) || term.length < 2 || typeof term[0] !== 'string'
+      || !Number.isInteger(term[1]) || term[1] < 0 || term[1] > SEARCH_SCORE_SLOTS * 512 + 511) throw invalid();
+    const length = Math.floor(term[1] / 512), mask = term[1] % 512;
+    if (mask >= 2 ** length) throw invalid();
+    const slots: unknown[] = [];
+    let offset = 2;
+    for (let position = 0; position < length; position++) if (mask & 2 ** position) {
+      if (offset >= term.length) throw invalid();
+      slots.push([position, restorePosting(term[offset++])]);
+    }
+    if (offset !== term.length) throw invalid();
+    return [term[0], length, slots];
+  });
+  return restoreMap(nested, 3);
 }
 function restoreMap(value: unknown[], version: 3 | 4): unknown[] {
   if (version === 4) value = value.map(term => {
@@ -57,17 +92,19 @@ export function encodeSearchEntries(entries: Record<string, unknown[]>, version:
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
     const nested = mapKey(key) ? sparseMap(value) : undefined;
-    const sparse = nested && (version === 4 ? flattenMap(nested) : nested);
+    const sparse = nested && (version === 4 ? maskMap(nested) : nested);
     if (sparse && new TextEncoder().encode(JSON.stringify(sparse)).length
       < new TextEncoder().encode(JSON.stringify(value)).length) {
-      if (JSON.stringify(restoreMap(sparse, version)) !== JSON.stringify(value)) throw invalid();
+      if (JSON.stringify(version === 4 ? restoreMasks(sparse) : restoreMap(sparse, version)) !== JSON.stringify(value)) throw invalid();
       result[key] = sparse; sparseMaps.push(key);
     } else result[key] = value;
   }
-  return { entries: result, sparseMaps };
+  return version === 4 ? { entries: result, sparseMaps, scoreMasks: true, postingDeltas: true } : { entries: result, sparseMaps };
 }
 /** Decode the declared bounded v3/v4 format before engine import; unmarked arrays remain native. */
-export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 = 3): Record<string, unknown[]> {
+export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 = 3, scoreMasks?: unknown, postingDeltas?: unknown): Record<string, unknown[]> {
+  if ((scoreMasks !== undefined || postingDeltas !== undefined)
+    && (version !== 4 || scoreMasks !== true || postingDeltas !== true)) throw invalid();
   if (!object(entries) || !Array.isArray(sparseMaps)
     || !sparseMaps.every(key => typeof key === 'string' && mapKey(key) && Object.hasOwn(entries, key))
     || new Set(sparseMaps).size !== sparseMaps.length) throw invalid();
@@ -75,7 +112,7 @@ export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, versi
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
-    result[key] = selected.has(key) ? restoreMap(value, version) : value;
+    result[key] = selected.has(key) ? (scoreMasks === true ? restoreMasks(value) : restoreMap(value, version)) : value;
   }
   return result;
 }

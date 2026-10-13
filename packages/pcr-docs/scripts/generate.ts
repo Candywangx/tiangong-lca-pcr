@@ -1024,9 +1024,10 @@ async function generate() {
     });
     const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, 0);
     const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, 0);
+    console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
       throw new Error(
-        "Search exceeds the per-language browser budget: " + language,
+        "Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)",
       );
     report.search.push({
       language,

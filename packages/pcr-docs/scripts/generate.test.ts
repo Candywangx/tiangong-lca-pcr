@@ -232,7 +232,7 @@ test("real generator preserves multilingual released snapshots and excludes open
         assert.ok(Object.values(data.entries).length > 0);
         assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
         const index = new Index({tokenize: "strict", encode: (value: unknown) => searchTerms(value, language)});
-        for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 4))) index.import(key, JSON.stringify(payload));
+        for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 4, data.scoreMasks, data.postingDeltas))) index.import(key, JSON.stringify(payload));
         assert.ok(index.search("wheat", {limit: 30}).length > 0, "Generated v4 exports remain readable by the pinned engine");
       }
       const currentPages = recordPages(site, site.records[0]!, language);

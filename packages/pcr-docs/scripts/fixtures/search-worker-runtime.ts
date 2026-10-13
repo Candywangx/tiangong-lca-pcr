@@ -75,6 +75,15 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4): Promise<voi
   const encode = (shard: Shard) => {
     if (schemaVersion === 1) return shard;
     const native = nativeShard(shard);
+    if (schemaVersion === 4 && scenario === 'flat-v4-roundtrip') {
+      const nested = encodeSearchEntries(native.entries, 3);
+      const entries = {...nested.entries};
+      for (const key of nested.sparseMaps) entries[key] = entries[key]!.map(term => {
+        assert.ok(Array.isArray(term) && Array.isArray(term[2]));
+        return [term[0], term[1], ...term[2].flat()];
+      });
+      return {...native, entries, sparseMaps: nested.sparseMaps};
+    }
     return schemaVersion === 2 ? native : { ...native, ...encodeSearchEntries(native.entries, schemaVersion) };
   };
   const install = async (documents: Document[][]) => {
@@ -86,7 +95,7 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4): Promise<voi
   await import(workerUrl.href);
   assert.equal(requests.length, 0, 'Import alone must not fetch or initialize an index');
 
-  if (scenario === 'wire-roundtrip') {
+  if (scenario === 'wire-roundtrip' || scenario === 'flat-v4-roundtrip') {
     const documents = [document(4, 'Wheat "seed"', 'Wheat seed 珊瑚 café', '/fixture/wheat/', 'Complete "quoted" context\\with a newline\nand Unicode 珊瑚'), document(9, 'Other scope', 'Wheat scope')];
     const original = await serialize(documents, language);
     await install([documents]);
@@ -117,6 +126,18 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4): Promise<voi
       responses.set(target, { status: 200, body: { ...shard, sparseMaps } });
       const failure = await query('wheat');
       assert.equal(failure.results, undefined); assert.equal(failure.error, 'Invalid serialized search data.');
+    }
+    responses.set(target, original); assert.equal(valid(await query('wheat')).length, 4);
+  } else if (scenario === 'mask-metadata') {
+    const target = root + 'shard-0.json', original = responses.get(target)!;
+    const shard = original.body; assert.ok(object(shard));
+    for (const field of ['scoreMasks', 'postingDeltas']) {
+      const values = schemaVersion === 4 ? [undefined, false, null, 0, {}, 'true'] : [true, false, null];
+      for (const value of values) {
+        responses.set(target, {status: 200, body: {...shard, [field]: value}});
+        const failure = await query('wheat');
+        assert.equal(failure.results, undefined); assert.equal(failure.error, 'Invalid serialized search data.');
+      }
     }
     responses.set(target, original); assert.equal(valid(await query('wheat')).length, 4);
   } else if (scenario === 'english-rank') {

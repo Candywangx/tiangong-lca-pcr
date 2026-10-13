@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-13
-lastReviewedNote: "Added explicit flat sparse search wire v4 with v1/v2/v3 readers and bounded lossless inspector record packs. Browser budgets, complete search records, canonical downloads and methodology states remain unchanged; fresh CI qualification is required."
+lastReviewedNote: "Extended explicit search wire v4 with bounded score masks and reversible posting deltas with v1/v2/v3 readers and bounded lossless inspector record packs. Browser budgets, complete search records, canonical downloads and methodology states remain unchanged; fresh CI qualification is required."
 lastReviewedCommit: null
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -379,17 +379,24 @@ slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
 
-Search manifest version 4 retains the same `sparseMaps` markers but flattens each
-marked term to `[term, scoreVectorLength, position, postingList, ...]`, removing
-only the nested tuple brackets from v3. Generation emits v4 and verifies exact
-original engine export strings before publishing each shard. The Worker continues
-to read v1/v2 and the existing nested v3; it decodes marked maps strictly by the
-declared version, never by guessing their shape. Malformed v4 tuples and
-version-incompatible metadata fail initialization and remain retryable. The
-nine-slot bound, native fallback, full records, tokenization, scores, posting
-order, ranking, 2 MB text buckets and 20 MB raw/4 MB gzip budgets are unchanged.
-No dependency or remote service is added, and wire compression does not claim
-to reduce the restored engine's resident-memory requirement.
+Search manifest version 4 retains `sparseMaps` markers and reads its initial flat
+`[term, scoreVectorLength, position, postingList, ...]` representation. New v4
+exports set both `scoreMasks: true` and `postingDeltas: true`. Each marked term is
+`[term, header, postingList, ...]`: `header = scoreVectorLength * 512 + slotMask`,
+with at most nine slots. Posting lists follow occupied slot order. Numeric-only
+lists store the first ID and then signed differences from the preceding ID;
+mixed/string lists stay verbatim. Decoding restores the original ID order,
+duplicates, slot positions, trailing nulls and complete engine export strings.
+Non-safe or negative restored IDs, impossible masks, incorrect posting counts,
+unpaired or foreign encoding flags fail initialization and remain retryable.
+
+The Worker continues to read v1/v2, the existing nested v3 and original flat v4;
+it decodes marked maps strictly by declared version and encoding flags. Generation
+verifies exact original engine export strings before publishing every shard and
+logs actual raw/gzip language totals at the unchanged budget gate. Native fallback,
+full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 MB
+gzip budgets are unchanged. No dependency or remote service is added, and wire
+compression does not claim to reduce the restored engine's resident memory.
 
 ### Inspector data transport
 

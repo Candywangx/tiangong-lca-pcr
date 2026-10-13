@@ -56,7 +56,7 @@ test('v3 rejects malformed metadata and bounded score-slot tuples before allocat
   assert.deepEqual(decodeSearchEntries(entries, ['1.map'])['1.reg'], [1]);
 });
 
-test('v4 flat score slots shrink v3 while restoring exact engine exports and multilingual results', async () => {
+test('v4 score masks shrink v3 while restoring exact engine exports and multilingual results', async () => {
   for (const language of ['en-US', 'zh-CN']) {
     const options = {tokenize: 'strict' as const, encode: (value: unknown) => searchTerms(value, language)};
     const index = new Index(options), loaded = new Index(options);
@@ -66,8 +66,8 @@ test('v4 flat score slots shrink v3 while restoring exact engine exports and mul
     await index.export((key, value) => { const parsed: unknown = JSON.parse(value); assert.ok(Array.isArray(parsed)); original[key] = parsed; });
     const v3 = encodeSearchEntries(original, 3), v4 = encodeSearchEntries(original, 4);
     const wire: unknown = JSON.parse(JSON.stringify(v4));
-    assert.ok(wire !== null && typeof wire === 'object' && 'entries' in wire && 'sparseMaps' in wire);
-    const restored = decodeSearchEntries(wire.entries, wire.sparseMaps, 4);
+    assert.ok(wire !== null && typeof wire === 'object' && 'entries' in wire && 'sparseMaps' in wire && 'scoreMasks' in wire && 'postingDeltas' in wire);
+    const restored = decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas);
     assert.deepEqual(Object.keys(restored), Object.keys(original));
     for (const [key, value] of Object.entries(restored)) {
       assert.equal(JSON.stringify(value), JSON.stringify(original[key]), 'Every engine import string must round-trip exactly');
@@ -85,7 +85,7 @@ test('v4 preserves empty and trailing score slots, posting order, string IDs and
   const original = {'1.map': [['__proto__', [null, [], null, null, null, null, null, null, ['constructor', 0, '文献']]], ['empty', []]], '1.reg': [0, 'constructor'], 'foreign.map': [null]};
   const wire = encodeSearchEntries(original, 4);
   assert.deepEqual(wire.sparseMaps, ['1.map']);
-  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4)), JSON.stringify(original));
+  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas)), JSON.stringify(original));
   assert.equal(JSON.stringify(original['1.map'][0]), '["__proto__",[null,[],null,null,null,null,null,null,["constructor",0,"文献"]]]', 'Encoding must not mutate input');
   assert.deepEqual(decodeSearchEntries({'1.map': [['empty', 0]]}, ['1.map'], 4)['1.map'], [['empty', []]]);
 });
@@ -95,4 +95,26 @@ test('v4 rejects malformed flat tuples and sparse metadata without arbitrary sco
   for (const term of invalidTerms) assert.throws(() => decodeSearchEntries({'1.map': [term]}, ['1.map'], 4), /Invalid serialized/);
   for (const metadata of [undefined, null, {}, [1], ['missing.map'], ['1.reg'], ['__proto__'], ['1.map', '1.map']])
     assert.throws(() => decodeSearchEntries({'1.map': [['term', 9, 8, [1]]], '1.reg': [1]}, metadata, 4), /Invalid serialized/);
+});
+
+test('v4 masks and signed deltas retain out-of-order IDs, repeats, mixed strings and maximum safe IDs', () => {
+  const original = {'1.map': [['empty', []], ['term', [null, null, null, null, null, null, [], null, [100, 2, 2, 0, Number.MAX_SAFE_INTEGER, 3]]], ['mixed', [null, null, null, null, null, null, null, null, ['id', 12, 0]]]]};
+  const wire = encodeSearchEntries(original, 4);
+  assert.deepEqual(wire.sparseMaps, ['1.map']);
+  assert.equal(wire.scoreMasks, true); assert.equal(wire.postingDeltas, true);
+  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, true, true)), JSON.stringify(original));
+  const flat = {'1.map': [['legacy', 9, 8, [100, 2, 2]]]};
+  assert.deepEqual(decodeSearchEntries(flat, ['1.map'], 4)['1.map'], [['legacy', [null, null, null, null, null, null, null, null, [100, 2, 2]]]]);
+  assert.throws(() => decodeSearchEntries({'1.map': [['mask', 4864, [100, 2]]]}, ['1.map'], 4, true), /Invalid serialized/);
+});
+
+test('v4 rejects malformed mask headers, posting counts, delta overflow and foreign encoding flags', () => {
+  for (const term of [null, [], ['x'], ['x', -1], ['x', 5120], ['x', 1e9], ['x', 1.5], ['x', 1], ['x', 514], ['x', 4864], ['x', 4864, [1], [2]], ['x', 4864, null], ['x', 4864, [1.5]], ['x', 4864, [-1]], ['x', 4864, [Number.MAX_SAFE_INTEGER, 1]], ['x', 4864, ['id', -1]]])
+    assert.throws(() => decodeSearchEntries({'1.map': [term]}, ['1.map'], 4, true, true), /Invalid serialized/);
+  for (const flag of [false, null, 1, 'true', {}]) {
+    assert.throws(() => decodeSearchEntries({}, [], 4, flag), /Invalid serialized/);
+    assert.throws(() => decodeSearchEntries({}, [], 4, true, flag), /Invalid serialized/);
+  }
+  assert.throws(() => decodeSearchEntries({}, [], 3, true), /Invalid serialized/);
+  assert.throws(() => decodeSearchEntries({}, [], 4, undefined, true), /Invalid serialized/);
 });
