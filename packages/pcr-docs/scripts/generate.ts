@@ -2,6 +2,7 @@ import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/type
 import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResult} from "../lib/types.ts";
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
 import {compileDocsBrowserAssets} from "./browser-assets.ts";
+import {writeRecordDataPacks} from "./record-data-packs.ts";
 type ClassificationRef={system:string;version:string;code:string;title?:string;mapping_type?:string};
 interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:ClassificationRef[];modules?:Record<string,string[]>}
 type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
@@ -561,7 +562,6 @@ async function generate() {
         const dataPath = "data/" + short(pcr.id) + ".json",
           data = { manifest: m, structured: bundle.structured };
         json(dataPath, data);
-        json("public/" + dataPath, data);
         const record: GeneratedRecord = {
           id: pcr.id,
           slug,
@@ -680,7 +680,6 @@ async function generate() {
             structured: release.structured,
           };
           json(historicalDataPath, historicalData);
-          json("public/" + historicalDataPath, historicalData);
           const historical: GeneratedRecord = {
             ...record,
             title: releaseManifest.title,
@@ -989,7 +988,7 @@ async function generate() {
         entries[key] = parsed;
       });
       const payload = JSON.stringify({
-        ...encodeSearchEntries(entries),
+        ...encodeSearchEntries(entries, 4),
         records: bucket.map((d) => d.record),
       });
       if (Buffer.byteLength(payload) > 20_000_000)
@@ -1019,15 +1018,16 @@ async function generate() {
     }
     await flush();
     json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 3,
+      schemaVersion: 4,
       language,
       shards,
     });
     const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, 0);
     const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, 0);
+    console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
       throw new Error(
-        "Search exceeds the per-language browser budget: " + language,
+        "Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)",
       );
     report.search.push({
       language,
@@ -1060,6 +1060,9 @@ async function generate() {
   manifest.counts.languages = codes.length;
   report.metrics = { ...manifest.counts, generationMs: Date.now() - started };
   report.summaries = { ...summaries, limit: SUMMARY_LIMIT };
+  const recordDataPacking = writeRecordDataPacks(stage, [...manifest.records, ...manifest.historicalRecords]);
+  json("record-data-packing.json", recordDataPacking);
+  console.log(JSON.stringify({event: "record-data-packing", ...recordDataPacking}));
   json("site.json", manifest);
   json("report.json", report);
   json("public/version.json", {

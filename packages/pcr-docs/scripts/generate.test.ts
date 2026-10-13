@@ -1,3 +1,7 @@
+import {decodeRecordData} from "../lib/record-data.ts";
+import {decodeSearchEntries} from "../lib/search-wire.ts";
+import {Index} from "flexsearch";
+import {searchTerms} from "../lib/search-terms.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
 import {isUnknownRecord} from "../../pcr-core/src/types.ts";
 import {assertManifest} from "../../../builder/lib/schema-contracts.ts";
@@ -202,6 +206,14 @@ test("real generator preserves multilingual released snapshots and excludes open
         record.versions!.map((item) => item.version),
         ["1.0.0", "1.1.0"],
       );
+    const allRecords = [site.records[0]!, ...site.historicalRecords!];
+    assert.equal(new Set(allRecords.map(record => record.dataUrl)).size, 1, "Current and historical data share one bounded transport pack");
+    for (const record of allRecords) {
+      const packed: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", record.dataUrl), "utf8"));
+      const expected = fs.readFileSync(path.join(output, ".generated", record.dataPath), "utf8");
+      assert.equal(JSON.stringify(decodeRecordData(packed, record.dataKey)), expected);
+      assert.equal(fs.existsSync(path.join(output, "public/generated", record.dataPath)), false);
+    }
     const source = createDocumentSource(site);
     assert.deepEqual(
       publicHomeLanguages(site).map((language) => language.code),
@@ -210,7 +222,7 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 3, "new indexes use lossless sparse score slots");
+      assert.equal(search.schemaVersion, 4, "new indexes use lossless flat sparse score slots");
       assert.equal(search.language, language);
       assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
       for (const shard of search.shards) {
@@ -219,6 +231,9 @@ test("real generator preserves multilingual released snapshots and excludes open
         assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
         assert.ok(Object.values(data.entries).length > 0);
         assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
+        const index = new Index({tokenize: "strict", encode: (value: unknown) => searchTerms(value, language)});
+        for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 4, data.scoreMasks, data.postingDeltas))) index.import(key, JSON.stringify(payload));
+        assert.ok(index.search("wheat", {limit: 30}).length > 0, "Generated v4 exports remain readable by the pinned engine");
       }
       const currentPages = recordPages(site, site.records[0]!, language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);

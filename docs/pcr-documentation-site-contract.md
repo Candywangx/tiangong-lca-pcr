@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-09
-lastReviewedNote: "Reviewed fork PR 15 integration: lossless sparse score-slot search wire v3 preserves exact engine imports and complete records under unchanged 20 MB raw/4 MB gzip language budgets; retains v1/v2 readers, explicit malformed-metadata rejection and retries, emitted codec module/MIME checks. Existing PCR #107/#108 language-routing and browser failure predicates remain unchanged; methodology and mapping approval remain separate."
-lastReviewedCommit: eff07d1e9764d670de6ea87d7a09b965710d0832
+lastReviewedAt: 2026-10-13
+lastReviewedNote: "Extended explicit search wire v4 with bounded score masks and reversible posting deltas with v1/v2/v3 readers and bounded lossless inspector record packs. Browser budgets, complete search records, canonical downloads and methodology states remain unchanged; fresh CI qualification is required."
+lastReviewedCommit: null
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -378,6 +378,44 @@ fails initialization and remains retryable. Export key order, terms, posting IDs
 slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
+
+Search manifest version 4 retains `sparseMaps` markers and reads its initial flat
+`[term, scoreVectorLength, position, postingList, ...]` representation. New v4
+exports set both `scoreMasks: true` and `postingDeltas: true`. Each marked term is
+`[term, header, postingList, ...]`: `header = scoreVectorLength * 512 + slotMask`,
+with at most nine slots. Posting lists follow occupied slot order. Numeric-only
+lists store the first ID and then signed differences from the preceding ID;
+mixed/string lists stay verbatim. Decoding restores the original ID order,
+duplicates, slot positions, trailing nulls and complete engine export strings.
+Non-safe or negative restored IDs, impossible masks, incorrect posting counts,
+unpaired or foreign encoding flags fail initialization and remain retryable.
+
+The Worker continues to read v1/v2, the existing nested v3 and original flat v4;
+it decodes marked maps strictly by declared version and encoding flags. Generation
+verifies exact original engine export strings before publishing every shard and
+logs actual raw/gzip language totals at the unchanged budget gate. Native fallback,
+full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 MB
+gzip budgets are unchanged. No dependency or remote service is added, and wire
+compression does not claim to reduce the restored engine's resident memory.
+
+### Inspector data transport
+
+The field inspector groups complete generated records into versioned JSON packs,
+using positional entries `[key, manifest, structured]`. Each record carries its
+exact transport key; current records and historical releases have distinct keys.
+Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
+whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
+array position, object-key order or empty value is removed. Generation requires
+each decoded record to serialize exactly as its original generated data; export
+verification repeats that comparison against the shipped pack for every record.
+The reader retains support for older unkeyed single-record payloads, rejects
+unknown versions, duplicate or missing keys and malformed records, and preserves
+the inspector's visible retry behavior. Browser qualification exercises the actual
+inspector in both languages and for available historical releases.
+
+This is lossless file packing to reduce the number of exported transport files.
+Server-side record data, byte-exact raw downloads, complete static HTML and every
+native Next navigation payload remain intact. No hosting rewrite is required.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
