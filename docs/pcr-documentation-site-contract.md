@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-09
-lastReviewedNote: "Reviewed fork PR 15 integration: lossless sparse score-slot search wire v3 preserves exact engine imports and complete records under unchanged 20 MB raw/4 MB gzip language budgets; retains v1/v2 readers, explicit malformed-metadata rejection and retries, emitted codec module/MIME checks. Existing PCR #107/#108 language-routing and browser failure predicates remain unchanged; methodology and mapping approval remain separate."
-lastReviewedCommit: eff07d1e9764d670de6ea87d7a09b965710d0832
+lastReviewedAt: 2026-10-13
+lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
