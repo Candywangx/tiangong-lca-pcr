@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-12
-lastReviewedNote: "Reviewed upstream PR 111 search-budget failure: the 51-record integration produces 20,984,241 raw English search bytes with native-array v2. Carry the already-reviewed lossless sparse score-slot v3 codec, exact engine imports, complete records, v1/v2 readers, rejection/retry and emitted-module/MIME checks under the existing 20 MB raw/4 MB gzip language budgets. Fresh upstream validation and full static qualification remain required; methodology and mapping approval remain separate."
-lastReviewedCommit: 9ea9422d00d634cc61a9104cbebb274d82f82e25
+lastReviewedAt: 2026-10-13
+lastReviewedNote: "Reviewed PR #110 and #111 combined integration: both retain identical lossless sparse score-slot search wire v3, complete records and exact engine imports, v1/v2 readers and rejection/retry behavior under unchanged 20 MB raw/4 MB gzip budgets. Original source-bound browser/docs receipts were independently verified; the combined 1085-record candidate requires fresh full qualification. Language-routing behavior, candidate methodology and mapping/translation approval boundaries remain unchanged."
+lastReviewedCommit: d2da1f7ca147f43924fbbef609d797acf65fdecd
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
