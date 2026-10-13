@@ -153,7 +153,14 @@ no-follow and source-identity tests; it never relaxes production path checks or
 canonicalizes user-supplied artifact paths on their behalf. Preserve useful test
 logs separately from disposable fixtures.
 
-Cooperative POSIX signal forwarding has a real subprocess test. Windows
+Cooperative POSIX signal forwarding has a real subprocess test. Its readiness
+file is published atomically, and its fixture subprocesses share one owned
+process group. Failed assertions terminate that group and wait for stdio closure
+before deleting the fixture, so surviving descendants cannot hide a failure by
+keeping the test process alive. This fixture cleanup does not weaken assertions,
+change the production runner, or extend CI timeouts.
+
+Windows
 `process.kill(SIGTERM)` terminates its target without invoking that handler, so
 that specific case is explicitly reported as unsupported there. Ordinary child
 failure/status propagation and temporary-root cleanup still run on Windows.
