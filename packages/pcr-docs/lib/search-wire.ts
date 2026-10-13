@@ -1,4 +1,4 @@
-/** The pinned FlexSearch index uses nine scoring slots; wire v3 retains every slot and ID. */
+/** The pinned FlexSearch index uses nine scoring slots; wire v3/v4 retain every slot and ID. */
 export const SEARCH_SCORE_SLOTS = 9;
 const invalid = () => new Error('Invalid serialized search data.');
 const mapKey = (key: string) => /^[1-9][0-9]*\.map$/u.test(key);
@@ -26,7 +26,16 @@ function sparseMap(value: unknown[]): SparseTerm[] | undefined {
   }
   return result;
 }
-function restoreMap(value: unknown[]): unknown[] {
+function flattenMap(value: SparseTerm[]): unknown[][] {
+  return value.map(([term, length, slots]) => [term, length, ...slots.flatMap(([position, posting]) => [position, posting])]);
+}
+function restoreMap(value: unknown[], version: 3 | 4): unknown[] {
+  if (version === 4) value = value.map(term => {
+    if (!Array.isArray(term) || term.length < 2 || term.length % 2 !== 0) throw invalid();
+    const slots: unknown[] = [];
+    for (let offset = 2; offset < term.length; offset += 2) slots.push([term[offset], term[offset + 1]]);
+    return [term[0], term[1], slots];
+  });
   return value.map(term => {
     if (!Array.isArray(term) || term.length !== 3 || typeof term[0] !== 'string'
       || !Number.isInteger(term[1]) || term[1] < 0 || term[1] > SEARCH_SCORE_SLOTS
@@ -42,22 +51,23 @@ function restoreMap(value: unknown[]): unknown[] {
   });
 }
 /** Compress only supported map shapes when smaller; every export key/value remains recoverable. */
-export function encodeSearchEntries(entries: Record<string, unknown[]>): SearchWireEntries {
+export function encodeSearchEntries(entries: Record<string, unknown[]>, version: 3 | 4 = 3): SearchWireEntries {
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
   const sparseMaps: string[] = [];
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
-    const sparse = mapKey(key) ? sparseMap(value) : undefined;
+    const nested = mapKey(key) ? sparseMap(value) : undefined;
+    const sparse = nested && (version === 4 ? flattenMap(nested) : nested);
     if (sparse && new TextEncoder().encode(JSON.stringify(sparse)).length
       < new TextEncoder().encode(JSON.stringify(value)).length) {
-      if (JSON.stringify(restoreMap(sparse)) !== JSON.stringify(value)) throw invalid();
+      if (JSON.stringify(restoreMap(sparse, version)) !== JSON.stringify(value)) throw invalid();
       result[key] = sparse; sparseMaps.push(key);
     } else result[key] = value;
   }
   return { entries: result, sparseMaps };
 }
-/** Decode bounded v3 maps before engine import; legacy v2 native arrays remain accepted verbatim. */
-export function decodeSearchEntries(entries: unknown, sparseMaps: unknown): Record<string, unknown[]> {
+/** Decode the declared bounded v3/v4 format before engine import; unmarked arrays remain native. */
+export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 = 3): Record<string, unknown[]> {
   if (!object(entries) || !Array.isArray(sparseMaps)
     || !sparseMaps.every(key => typeof key === 'string' && mapKey(key) && Object.hasOwn(entries, key))
     || new Set(sparseMaps).size !== sparseMaps.length) throw invalid();
@@ -65,7 +75,7 @@ export function decodeSearchEntries(entries: unknown, sparseMaps: unknown): Reco
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
-    result[key] = selected.has(key) ? restoreMap(value) : value;
+    result[key] = selected.has(key) ? restoreMap(value, version) : value;
   }
   return result;
 }
