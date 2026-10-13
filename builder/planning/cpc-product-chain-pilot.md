@@ -8,7 +8,7 @@
 
 - Chains: 3
 - Nodes: 13
-- Edges: 9 (3 ready, 6 blocked)
+- Edges: 9 (4 ready, 5 blocked)
 
 This report shows reviewed product dependencies for planning PCR work. CPC is a product classification, not a process graph; arrows express scoped pilot relationships, not universal production routes.
 
@@ -56,7 +56,7 @@ flowchart LR
   n1["26160 Cotton, carded or combed"]
   n2["26360 Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"]
   n3["26620 Woven fabrics of cotton, containing 85% or more by weight of cotton, weighing more than 200 g/m2"]
-  n0 -.-> n1
+  n0 --> n1
   n1 -.-> n2
   n2 --> n3
 ```
@@ -65,20 +65,18 @@ flowchart LR
 
 | Edge | From | To | Evidence | Boundary | Scheduling | Blockers | Review notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| raw-cotton-to-carded-or-combed-cotton | raw-cotton | carded-or-combed-cotton | supported_by_pcr | aligned | blocked | upstream_not_material | CPC 01921 is currently unmapped, so the aligned PCR evidence does not make this edge executable; Review the cultivation-to-ginning boundary and cotton type before adding any upstream material PCR. |
+| raw-cotton-to-carded-or-combed-cotton | raw-cotton | carded-or-combed-cotton | supported_by_pcr | aligned | ready | — | CPC 01921 now resolves to the restored material cotton PCR; this interface applies only to its ginned-lint route at the gin gate, with virgin Upland cotton explicitly selected; Preserve the declared cultivation-to-ginning boundary, cotton type and moisture basis; farm-gate seed cotton is not the incoming ginned fibre required by the downstream PCR. |
 | carded-or-combed-cotton-to-cotton-yarn | carded-or-combed-cotton | cotton-yarn | supported_by_pcr | overlap | blocked | boundary_not_aligned | Directly chaining CPC 26160 to the current cotton-yarn PCR would repeat fibre-preparation operations already inside the downstream foreground boundary; Reassess only after a downstream-PCR revision explicitly supports purchased carded or combed cotton and conditionally excludes every duplicated preparation operation. |
 | cotton-yarn-to-woven-cotton-fabric | cotton-yarn | woven-cotton-fabric | supported_by_pcr | aligned | ready | — | Confirm that the downstream fabric basis exceeds 200 g/m2 and that purchased or internally transferred yarn is represented consistently. |
 
 ### Executable generation waves
 
-1. cotton-yarn
-2. woven-cotton-fabric
+1. raw-cotton, cotton-yarn
+2. carded-or-combed-cotton, woven-cotton-fabric
 
 ### Manual-review queue
 
-- raw-cotton-to-carded-or-combed-cotton (raw-cotton → carded-or-combed-cotton): upstream_not_material — CPC 01921 is currently unmapped, so the aligned PCR evidence does not make this edge executable; Review the cultivation-to-ginning boundary and cotton type before adding any upstream material PCR.
 - carded-or-combed-cotton-to-cotton-yarn (carded-or-combed-cotton → cotton-yarn): boundary_not_aligned — Directly chaining CPC 26160 to the current cotton-yarn PCR would repeat fibre-preparation operations already inside the downstream foreground boundary; Reassess only after a downstream-PCR revision explicitly supports purchased carded or combed cotton and conditionally excludes every duplicated preparation operation.
-- Review-only nodes: raw-cotton, carded-or-combed-cotton
 
 ## Chain: Forestry to pulp to paper
 
@@ -102,9 +100,9 @@ flowchart LR
 
 | Edge | From | To | Evidence | Boundary | Scheduling | Blockers | Review notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| coniferous-pulpwood-to-mechanical-pulp | coniferous-pulpwood | mechanical-pulp | supported_by_official_source | needs_review | blocked | upstream_not_material, downstream_not_material, evidence_not_pcr, boundary_not_aligned | Both endpoints are currently unmapped and have no material PCR, so this edge and its nodes remain outside execution waves; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping. |
+| coniferous-pulpwood-to-mechanical-pulp | coniferous-pulpwood | mechanical-pulp | supported_by_official_source | needs_review | blocked | downstream_not_material, evidence_not_pcr, boundary_not_aligned | Coniferous pulpwood now has a material PCR, but CPC 32113 remains unmapped; official-source relationship evidence and the unreviewed interface keep this edge and its nodes outside execution waves; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping. |
 | mechanical-pulp-to-newsprint | mechanical-pulp | newsprint | supported_by_official_source | needs_review | blocked | upstream_not_material, evidence_not_pcr, boundary_not_aligned | Newsprint may include recovered or deinked pulp and chemical pulp; the mechanical-pulp-only route is not universal; CPC 32113 remains unmapped; the accepted newsprint subset requires unimpregnated TMP and a compatible deinked furnish. This edge remains outside execution waves pending PCR-bound upstream and interface review; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping. |
-| nonconiferous-pulpwood-to-chemical-pulp | nonconiferous-pulpwood | chemical-pulp | supported_by_official_source | needs_review | blocked | upstream_not_material, evidence_not_pcr, boundary_not_aligned | CPC 03122 remains unmapped, and the accepted downstream kraft-pulp method is limited to softwood while this edge starts from non-coniferous pulpwood; the upstream methodology and species/feedstock-form mismatch still require review; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping. |
+| nonconiferous-pulpwood-to-chemical-pulp | nonconiferous-pulpwood | chemical-pulp | supported_by_official_source | needs_review | blocked | evidence_not_pcr, boundary_not_aligned | CPC 03122 now has a material PCR, but the accepted downstream kraft-pulp method is limited to softwood while this edge starts from non-coniferous pulpwood; the species/feedstock-form mismatch still requires review; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping. |
 | chemical-pulp-to-wood-free-paper | chemical-pulp | wood-free-paper | supported_by_official_source | needs_review | blocked | evidence_not_pcr, boundary_not_aligned | Wood-free paper requires predominantly or almost exclusively chemical pulp but allows fillers and route or site distinctions; Accepted endpoint mappings do not establish compatible pulp species, bleaching, delivered moisture, supplier gate or downstream furnish; PCR-bound interface review remains required before execution; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping. |
 
 ### Executable generation waves
@@ -113,9 +111,9 @@ flowchart LR
 
 ### Manual-review queue
 
-- coniferous-pulpwood-to-mechanical-pulp (coniferous-pulpwood → mechanical-pulp): upstream_not_material, downstream_not_material, evidence_not_pcr, boundary_not_aligned — Both endpoints are currently unmapped and have no material PCR, so this edge and its nodes remain outside execution waves; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
+- coniferous-pulpwood-to-mechanical-pulp (coniferous-pulpwood → mechanical-pulp): downstream_not_material, evidence_not_pcr, boundary_not_aligned — Coniferous pulpwood now has a material PCR, but CPC 32113 remains unmapped; official-source relationship evidence and the unreviewed interface keep this edge and its nodes outside execution waves; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
 - mechanical-pulp-to-newsprint (mechanical-pulp → newsprint): upstream_not_material, evidence_not_pcr, boundary_not_aligned — Newsprint may include recovered or deinked pulp and chemical pulp; the mechanical-pulp-only route is not universal; CPC 32113 remains unmapped; the accepted newsprint subset requires unimpregnated TMP and a compatible deinked furnish. This edge remains outside execution waves pending PCR-bound upstream and interface review; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
-- nonconiferous-pulpwood-to-chemical-pulp (nonconiferous-pulpwood → chemical-pulp): upstream_not_material, evidence_not_pcr, boundary_not_aligned — CPC 03122 remains unmapped, and the accepted downstream kraft-pulp method is limited to softwood while this edge starts from non-coniferous pulpwood; the upstream methodology and species/feedstock-form mismatch still require review; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
+- nonconiferous-pulpwood-to-chemical-pulp (nonconiferous-pulpwood → chemical-pulp): evidence_not_pcr, boundary_not_aligned — CPC 03122 now has a material PCR, but the accepted downstream kraft-pulp method is limited to softwood while this edge starts from non-coniferous pulpwood; the species/feedstock-form mismatch still requires review; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
 - chemical-pulp-to-wood-free-paper (chemical-pulp → wood-free-paper): evidence_not_pcr, boundary_not_aligned — Wood-free paper requires predominantly or almost exclusively chemical pulp but allows fillers and route or site distinctions; Accepted endpoint mappings do not establish compatible pulp species, bleaching, delivered moisture, supplier gate or downstream furnish; PCR-bound interface review remains required before execution; Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
 - Review-only nodes: coniferous-pulpwood, mechanical-pulp, newsprint, nonconiferous-pulpwood, chemical-pulp, wood-free-paper
 
