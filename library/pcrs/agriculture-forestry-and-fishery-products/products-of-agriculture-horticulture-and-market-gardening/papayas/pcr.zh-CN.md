@@ -73,10 +73,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | 作物建立和作物管理 | 纳入从声明起始条件到所代表采收批次的投入和直接种植交换，并将其分配到同一声明周期的可销售产出。 | `fao-papaya-production-guidance` |
+| `boundary_crop_cycle` | 作物建立和作物管理 | 纳入从声明起始条件到所代表采收批次的投入和直接种植交换，并将其分配到同一声明周期的可销售产出。 | `fao-gap-framework-2003` |
 | `boundary_declared_gate` | 采收和交接点处理 | 终止于声明的农场或第一包装场交接点；只有在该交接前发生时，才纳入分选、修整、清洗、冷却和初级包装。 | `codex-cxc-53-2003` |
 | `boundary_soil_emissions` | 管理土壤和残余物 | 对氮肥、改良剂和返还残余物氮使用一个声明的方法，并避免重复计算上游或投入造成的排放。 | `ipcc-2019-managed-soils` |
-| `boundary_residue_fate` | 田间残余物和拒收物 | 按去向记录田间残余物和采后拒收物；未说明去向的拒收物或残余物不是共产品。 | `fao-papaya-production-guidance` |
+| `boundary_residue_fate` | 田间残余物和拒收物 | 按去向记录田间残余物和采后拒收物；未说明去向的拒收物或残余物不是共产品。 | `fao-gap-framework-2003` |
 
 ## 6. 过程清单结构
 
@@ -109,7 +109,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_papaya_establishment_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ###### 农业养分与肥料投入（`papaya_crop_establishment_agricultural_nutrient_inputs`）
 
@@ -126,7 +126,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_papaya_input_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：暂定建立期养分筛选范围
   - 范围角色：默认估计（`default_estimate`）
   - 下限：0
@@ -155,7 +155,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_papaya_establishment_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -209,7 +209,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_papaya_input_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ###### 植保产品（`papaya_crop_protection`）
 
@@ -226,7 +226,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_papaya_input_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -314,7 +314,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_papaya_harvest_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -334,7 +334,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_papaya_harvest_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -354,7 +354,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_papaya_harvest_records`
-- 来源：`fao-papaya-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 
 ##### 基本流
@@ -484,7 +484,7 @@ sync_with: pcr.en-US.md
 ## 7. 分配与共产品处理
 
 - `allocation_marketable_output`：使用可销售质量作为主要产出基准，将作物周期投入和直接种植交换分配给可销售新鲜木瓜。`source_ids`：`iso-14044-2006`。
-- `allocation_rejects`：除非文件化接收路线产生单独规定的共产品，否则将田间和交接点拒收物作为废物处理。本 PCR 不提供避免产品信用。`source_ids`：`iso-14044-2006`、`fao-papaya-production-guidance`。
+- `allocation_rejects`：除非文件化接收路线产生单独规定的共产品，否则将田间和交接点拒收物作为废物处理。本 PCR 不提供避免产品信用。`source_ids`：`iso-14044-2006`、`fao-gap-framework-2003`。
 - `allocation_reusable_containers`：按记录的服务周期对可重复使用采收容器和周转箱建模，将其生产负荷分摊到记录的使用次数，并将消耗性包装作为独立投入保留。`source_ids`：`iso-14044-2006`、`codex-cxc-53-2003`。
 
 ## 8. 前景数据采集、计算与质量规则
@@ -506,7 +506,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_marketable_normalization` | all processes | 将每项采集数量归一化到声明交接点的合格木瓜质量：`quantity / marketable_gate_mass`。 | field, cycle, lot, and gate records | quantity per kg or 1,000 kg marketable papaya | `iso-14044-2006` |
-| `calc_nutrient_equivalent` | fertilizer and soil amendments | `product_mass × declared nutrient fraction`；分别保留产品质量和养分当量结果。 | product invoice, formulation, and declared N/P2O5/K2O fraction | product mass and nutrient mass | `fao-papaya-production-guidance` |
+| `calc_nutrient_equivalent` | fertilizer and soil amendments | `product_mass × declared nutrient fraction`；分别保留产品质量和养分当量结果。 | product invoice, formulation, and declared N/P2O5/K2O fraction | product mass and nutrient mass | `fao-gap-framework-2003` |
 | `calc_soil_nitrogen_emissions` | managed soil emissions | 对有记录的氮投入和返还残余物氮应用一个选定的 IPCC 兼容因子方法，不重复计算上游排放。 | nutrient records, residue basis, method factor | declared soil-emission flows | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest and gate preparation | `gross harvested mass = marketable output + rejects + residue or process loss`，文件化库存变化另行显示。 | harvest lots, gate batches, reject and residue records | reconciled mass-balance check | `codex-cxc-53-2003` |
 | `calc_reusable_container_burden` | harvest containers and crates | 用容器生产负荷除以文件化服务周期，并将本次使用份额分配到所代表的木瓜产出。 | container mass, material, expected or observed service cycles | container burden per declared output | `iso-14044-2006` |
@@ -523,11 +523,11 @@ sync_with: pcr.en-US.md
 
 ## 9. 校验规则
 
-- `validation_identity`：数据集必须识别木瓜品种或产品类别、田块或保护地单元、生产路线、周期、声明交接点以及所有证据缺口的投入或产出身份。`source_ids`：`fao-papaya-production-guidance`。
+- `validation_identity`：数据集必须识别木瓜品种或产品类别、田块或保护地单元、生产路线、周期、声明交接点以及所有证据缺口的投入或产出身份。`source_ids`：`fao-gap-framework-2003`。
 - `validation_mass_balance`：每个采收和交接点批次中，采收或接收总质量必须与可销售产出、拒收物、残余物、废水或清洗损失、包装损失和披露的库存变化相符。`source_ids`：`codex-cxc-53-2003`。
 - `validation_normalization`：每个归一化库存值必须使用同一声明的可销售交接点质量，不得混用农场交接点和第一包装场产出。`source_ids`：`iso-14044-2006`。
 - `validation_nutrient_emissions`：养分当量投入和管理土壤排放必须声明其基准，并使用一种不重复计算的方法。`source_ids`：`ipcc-2019-managed-soils`。
-- `validation_temporal`：数据集必须覆盖所代表的生产周期和采收批次，或明确披露缺失记录和替代记录。`source_ids`：`fao-papaya-production-guidance`。
+- `validation_temporal`：数据集必须覆盖所代表的生产周期和采收批次，或明确披露缺失记录和替代记录。`source_ids`：`fao-gap-framework-2003`。
 
 ## 10. 发布数据集画像
 
@@ -541,12 +541,14 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 计量基准、采集期间、完整性、质量平衡结果、分配规则、暂定范围、数据替代、不确定性和证据缺口 UUID 或流身份 |
 | update_trigger | 种植路线、灌溉系统、养分或植保方案、采收或交接点处理、包装、产品定义、方法因子或身份映射发生变化 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-papaya-production-guidance` | extension_guidance | FAO 热带水果生产的作物生产和良好农业实践指导 | 生产路线分解、种植、作物管理、采收记录、残余物处理和数据采集 |
 | `fao-irrigation-drainage-paper-56` | handbook | FAO Irrigation and drainage paper 56, *Crop evapotranspiration* | 灌溉计量和输水量区分 |
 | `ipcc-2019-managed-soils` | method_factor | IPCC 2019 Refinement to the 2006 IPCC Guidelines，管理土壤和氮排放 | 管理土壤氮计算和非重复规则 |
 | `codex-cxc-53-2003` | official_guidance | Codex Alimentarius CXC 53-2003，鲜食水果和蔬菜卫生操作规范 | 采收、清洗、包装、卫生、批次核对和交接点处理 |
 | `iso-14044-2006` | standard | ISO 14044:2006，环境管理—生命周期评价—要求和指南 | 归一化、分配、可重复使用容器处理和校验原则 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

@@ -70,9 +70,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_declared_orchard_cycle` | 建立和果园管理 | 纳入产生新鲜产出的声明建立或生产周期更新、管理活动和投入；排除无关基础设施。 | `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6` |
-| `boundary_farm_gate_conditioning` | 采收和初步调理 | 终止于声明的果园门或包装场门；仅在其发生于该边界之前时纳入分级、冷却、清洗和初级包装。 | `fao-fresh-fruit-postharvest-guidance`; `globalgap-ifa-fruit-vegetables-v6` |
-| `boundary_soil_residue_pathway` | 养分、土壤、残余物和次品 | 使用一种声明的氮和残余物方法；不得重复计算路径，也不得在没有去向和功能证据时主张残余物抵扣。 | `ipcc-2019-refinement-afolu`; `fao-good-agricultural-practices` |
+| `boundary_declared_orchard_cycle` | 建立和果园管理 | 纳入产生新鲜产出的声明建立或生产周期更新、管理活动和投入；排除无关基础设施。 | `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6` |
+| `boundary_farm_gate_conditioning` | 采收和初步调理 | 终止于声明的果园门或包装场门；仅在其发生于该边界之前时纳入分级、冷却、清洗和初级包装。 | `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6` |
+| `boundary_soil_residue_pathway` | 养分、土壤、残余物和次品 | 使用一种声明的氮和残余物方法；不得重复计算路径，也不得在没有去向和功能证据时主张残余物抵扣。 | `ipcc-2019-refinement-afolu`; `fao-gap-framework-2003` |
 
 ## 6. 过程清单结构
 
@@ -104,7 +104,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- 来源：`fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ###### 农业养分与肥料投入（`cherry_orchard_establishment_agricultural_nutrient_inputs`）
 
@@ -121,7 +121,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_amendment_records`
-- 来源：`fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- 来源：`fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ##### 废物流
 
@@ -141,7 +141,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：依据采集计算（`calculated_from_collection`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -167,7 +167,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
-- 来源：`fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- 来源：`fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ###### 灌溉和冷却用电（`orchard_electricity_input`）
 记录代表性周期中泵、冷却设备或果园设备使用的购入电力。
@@ -216,7 +216,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_amendment_records`
-- 来源：`fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- 来源：`fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ###### 作物保护产品（`crop_protection_input`）
 记录果园使用的命名产品和有效成分，不将不同产品合并为一个通用流。
@@ -251,7 +251,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：依据采集计算（`calculated_from_collection`）
 - 采集协议：`cp_orchard_cycle_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 灌溉水取用（`water_withdrawal`）
 水源特定的取水量与输送的灌溉水分开记录，以避免重复计算。
@@ -309,7 +309,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_and_packaging_records`
-- 来源：`fao-fresh-fruit-postharvest-guidance`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ###### 边界前冷却能耗（`pre_gate_cooling_energy`）
 当冷却或冷库属于所选路线且发生在声明包装场门之前时，将其电力纳入。
@@ -325,7 +325,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_and_packaging_records`
-- 来源：`fao-fresh-fruit-postharvest-guidance`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ##### 废物流
 ##### 基本流
@@ -349,7 +349,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_lot_records`
-- 来源：`fao-fresh-fruit-postharvest-guidance`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ##### 废物流
 ##### 基本流
@@ -373,7 +373,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_and_reject_records`
-- 来源：`fao-fresh-fruit-postharvest-guidance`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ##### 废物流
 
@@ -394,7 +394,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_and_reject_records`
-- 来源：`fao-fresh-fruit-postharvest-guidance`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ##### 废物流
 
@@ -412,7 +412,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_and_reject_records`
-- 来源：`fao-fresh-fruit-postharvest-guidance`; `globalgap-ifa-fruit-vegetables-v6`
+- 来源：`fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6`
 
 
 ##### 基本流
@@ -437,9 +437,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_shared_orchard_cycles` | 建立和多个周期 | 按有记录的面积时间、树年或其他有依据的物理基础分配共享果园负担，并披露该基础。 | `fao-good-agricultural-practices` |
-| `allocation_marketable_and_reject_outputs` | 采收和边界处理 | 将可销售樱桃作为参考输出；分别记录降级水果、次品、修剪物和回收物料，只有在存在真实共产品功能时才进行分配。 | `fao-fresh-fruit-postharvest-guidance`; `globalgap-ifa-fruit-vegetables-v6` |
-| `allocation_recovered_residue_claim` | 回收残余物 | 除非记录去向、功能、数量和接收系统证据，否则不得主张避免生产。 | `fao-good-agricultural-practices` |
+| `allocation_shared_orchard_cycles` | 建立和多个周期 | 按有记录的面积时间、树年或其他有依据的物理基础分配共享果园负担，并披露该基础。 | `fao-gap-framework-2003` |
+| `allocation_marketable_and_reject_outputs` | 采收和边界处理 | 将可销售樱桃作为参考输出；分别记录降级水果、次品、修剪物和回收物料，只有在存在真实共产品功能时才进行分配。 | `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6` |
+| `allocation_recovered_residue_claim` | 回收残余物 | 除非记录去向、功能、数量和接收系统证据，否则不得主张避免生产。 | `fao-gap-framework-2003` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -464,10 +464,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_cycle_normalization` | all process rows | `normalized amount = recorded amount / marketable gate output * 1,000 kg`. | block records; dates; gate output | normalized amount | `fao-good-agricultural-practices` |
+| `calc_cycle_normalization` | all process rows | `normalized amount = recorded amount / marketable gate output * 1,000 kg`. | block records; dates; gate output | normalized amount | `fao-gap-framework-2003` |
 | `calc_nutrient_basis` | fertilizer and amendment rows | 保持产品质量以及 N、P2O5、K2O 质量分开；仅依据声明证据计算。 | product mass; nutrient fractions or result | product and nutrient amount | `globalgap-ifa-fruit-vegetables-v6` |
 | `calc_soil_emissions` | soil emission rows | 对有记录的投入氮使用一种兼容 IPCC 的氮方法，并披露因子和换算。 | N input; factors; qualifiers | elementary-flow amount | `ipcc-2019-refinement-afolu` |
-| `calc_mass_reconciliation` | harvest, gate and residue rows | 平衡采收量、可销售产出、次品、残余物、回收物料和有记录损失。 | lot records; scale; destination records | mass balance | `fao-fresh-fruit-postharvest-guidance` |
+| `calc_mass_reconciliation` | harvest, gate and residue rows | 平衡采收量、可销售产出、次品、残余物、回收物料和有记录损失。 | lot records; scale; destination records | mass balance | `fao-postharvest-handling-ae075e` |
 
 ### 数据质量要求
 
@@ -483,8 +483,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_qualifiers` | reference flow and dataset | 当必需物种、地理位置、路线、周期、边界、成熟度、等级、果梗或处理限定信息缺失时拒绝。 | `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6` |
-| `validate_cycle_and_output_reconciliation` | cycle and gate output | 检查投入属于声明区块和期间，并检查产出、次品、残余物和损失与采收量相符。 | `fao-fresh-fruit-postharvest-guidance` |
+| `validate_reference_qualifiers` | reference flow and dataset | 当必需物种、地理位置、路线、周期、边界、成熟度、等级、果梗或处理限定信息缺失时拒绝。 | `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6` |
+| `validate_cycle_and_output_reconciliation` | cycle and gate output | 检查投入属于声明区块和期间，并检查产出、次品、残余物和损失与采收量相符。 | `fao-postharvest-handling-ae075e` |
 | `validate_nutrient_and_emission_basis` | nutrient and emission rows | 检查产品质量、养分基准、因子方法和限定信息；防止氮路径重复计算。 | `ipcc-2019-refinement-afolu` |
 | `validate_gate_and_downstream_exclusion` | boundary and use | 检查边界明确，并排除零售、消费者、下游运输和加工樱桃。 | `globalgap-ifa-fruit-vegetables-v6` |
 
@@ -500,11 +500,13 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 时间和场址覆盖、完整性、原始记录比例、分配、质量平衡、因子和 identity 证据缺口s |
 | update_trigger | 路线、灌溉、养分方法、周期分配、边界处理、包装或排放方法发生变化 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices and orchard production guidance | 果园过程、投入、边界和周期披露 |
-| `fao-fresh-fruit-postharvest-guidance` | extension_guidance | FAO fresh-fruit post-harvest handling guidance | 采收、分级、冷却、包装、次品和质量平衡 |
 | `globalgap-ifa-fruit-vegetables-v6` | standard | GLOBALG.A.P. Integrated Farm Assurance fruit and vegetables requirements | 可追溯性、投入、水、养分、作物保护和质量证据 |
 | `ipcc-2019-refinement-afolu` | method_factor | 2019 IPCC Refinement, AFOLU | 管理土壤氮方法和排放路径披露 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
+| `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), FAO-hosted original, https://www.fao.org/4/ae075e/ae075e00.htm | 仅为一般采后处理、冷却和损失记录背景；作物特定参数及本 PCR 截止点和归属须另行证据支持。 |

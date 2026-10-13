@@ -22,12 +22,12 @@ system_boundary:
       rule: "Include field preparation, planting, crop management, and all harvests of the declared annual crop cycle; allocate shared field operations to the reported crop using documented field records."
       source_ids:
         - fao-crop-production-framework
-        - usda-watermelon-production-guidance
+        - uga-watermelon-production-b996-2017
     - rule_id: boundary_farm_gate
       applies_to: "harvest and preparation"
       rule: "End the foreground boundary when marketable whole watermelon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer."
       source_ids:
-        - usda-watermelon-production-guidance
+        - uga-watermelon-production-b996-2017
         - fao-postharvest-handling
     - rule_id: boundary_managed_soils
       applies_to: "fertilizer, amendment, and residue flows"
@@ -147,7 +147,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_planting_records
               source_ids:
-                - usda-watermelon-production-guidance
+                - uga-watermelon-production-b996-2017
             ranges:
               - role: qa_guardrail
                 lower: "0.1"
@@ -174,7 +174,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_operation_records
               source_ids:
-                - usda-watermelon-production-guidance
+                - uga-watermelon-production-b996-2017
             ranges: []
       waste:
         []
@@ -242,7 +242,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_fertilizer_records
               source_ids:
-                - usda-watermelon-production-guidance
+                - uga-watermelon-production-b996-2017
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -312,7 +312,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_crop_protection_records
               source_ids:
-                - usda-watermelon-production-guidance
+                - uga-watermelon-production-b996-2017
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -339,7 +339,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_operation_records
               source_ids:
-                - usda-watermelon-production-guidance
+                - uga-watermelon-production-b996-2017
             ranges: []
       waste:
         []
@@ -638,7 +638,7 @@ dataset_production:
         - "label or supplier concentration"
       output: "kg N, kg P2O5, or kg K2O"
       source_ids:
-        - usda-watermelon-production-guidance
+        - uga-watermelon-production-b996-2017
     - id: calc_land_occupation
       applies_to: "field occupation"
       rule: "occupation = field area × declared crop-cycle occupation duration"
@@ -750,10 +750,10 @@ data_sources:
     type: "official_guidance"
     reference: "FAO crop production and resource-management guidance. https://www.fao.org/land-water/databases-and-software/crop-information/en/"
     used_for: "annual crop-cycle boundary, field records, and allocation requirements"
-  - id: "usda-watermelon-production-guidance"
+  - id: "uga-watermelon-production-b996-2017"
     type: "extension_guidance"
-    reference: "USDA and extension production guidance for watermelon planting, nutrient management, field operations, and harvest records. https://extension.uga.edu/publications/detail.html?number=C1101"
-    used_for: "planting, nutrient management, field operations, and harvest records"
+    reference: "University of Georgia Cooperative Extension, Commercial Watermelon Production, Bulletin 996 (2017), https://fieldreport.caes.uga.edu/publications/B996/commercial-watermelon-production/"
+    used_for: "Georgia planting, nutrient management, field operations and harvest context; PCR boundary and allocation are author methodological choices"
   - id: "fao-crop-evapotranspiration-56"
     type: "official_guidance"
     reference: "FAO Irrigation and drainage paper 56, *Crop evapotranspiration*. https://www.fao.org/4/X0490E/X0490E00.htm"
@@ -772,7 +772,7 @@ data_sources:
     used_for: "grading, loss recording, packaging, and farm-gate preparation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3e4cd1b3fe94a1269f7b1be5d5bb31752a1ced12ad95ae302d41529129ee9c01"
+  source_sha256: "sha256:160e65255032a11748dc9a595f7430b39a92a657a39825ba3a16529ae145654e"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4456"
@@ -786,7 +786,7 @@ normative_context:
           offset: 7006
           line: 79
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared agricultural field receiving watermelon seed or transplants, with prior land use, field preparation, and excluded pre-plant operations disclosed |\n| starting_condition_role | Beginning of the declared annual watermelon crop cycle |\n| product_classification_scope | Fresh whole watermelons under CPC 3.0:01221 through farm-gate hand-off |\n| recursive_input_rule | Purchased watermelon seed or transplants are distinct upstream product inputs and are linked once rather than recreated as an internal watermelon production process. |\n| upstream_dataset_requirement | Require upstream datasets for seed or transplants, fertilizers, amendments, crop-protection products, irrigation water, energy, field machinery services, and packaging when used. |\n| disclosure | Declare production geography, prior land use, crop cycle dates, cultivar or seed type, irrigation regime, nutrient basis, crop-protection program, field emissions method, residue fate, harvest and grading method, washing, and packaging. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_annual_crop_cycle` | field preparation through final harvest | Include field preparation, planting, crop management, and all harvests of the declared annual crop cycle; allocate shared field operations to the reported crop using documented field records. | `fao-crop-production-framework`; `usda-watermelon-production-guidance` |\n| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole watermelon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `usda-watermelon-production-guidance`; `fao-postharvest-handling` |\n| `boundary_managed_soils` | fertilizer, amendment, and residue flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset. | `ipcc-2019-managed-soils` |\n| `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-crop-residue-management`; `fao-postharvest-handling` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared agricultural field receiving watermelon seed or transplants, with prior land use, field preparation, and excluded pre-plant operations disclosed |\n| starting_condition_role | Beginning of the declared annual watermelon crop cycle |\n| product_classification_scope | Fresh whole watermelons under CPC 3.0:01221 through farm-gate hand-off |\n| recursive_input_rule | Purchased watermelon seed or transplants are distinct upstream product inputs and are linked once rather than recreated as an internal watermelon production process. |\n| upstream_dataset_requirement | Require upstream datasets for seed or transplants, fertilizers, amendments, crop-protection products, irrigation water, energy, field machinery services, and packaging when used. |\n| disclosure | Declare production geography, prior land use, crop cycle dates, cultivar or seed type, irrigation regime, nutrient basis, crop-protection program, field emissions method, residue fate, harvest and grading method, washing, and packaging. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_annual_crop_cycle` | field preparation through final harvest | Include field preparation, planting, crop management, and all harvests of the declared annual crop cycle; allocate shared field operations to the reported crop using documented field records. | `fao-crop-production-framework`; `uga-watermelon-production-b996-2017` |\n| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole watermelon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `uga-watermelon-production-b996-2017`; `fao-postharvest-handling` |\n| `boundary_managed_soils` | fertilizer, amendment, and residue flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset. | `ipcc-2019-managed-soils` |\n| `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-crop-residue-management`; `fao-postharvest-handling` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1158,5 +1158,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3e4cd1b3fe94a1269f7b1be5d5bb31752a1ced12ad95ae302d41529129ee9c01"
-  generated_content_sha256: "sha256:95106de74fda7f7f21545d49bceaa747a44cb3b786b2f25927d54cd8c34dd73e"
+    sha256: "sha256:160e65255032a11748dc9a595f7430b39a92a657a39825ba3a16529ae145654e"
+  generated_content_sha256: "sha256:7eb77e6e76e7ab2f328959ce19893572eae6c6417608703220b39ab0ab87052c"

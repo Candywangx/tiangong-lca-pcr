@@ -69,9 +69,9 @@ This PCR covers living, identified reptiles, including eligible snakes, lizards,
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `b_legal` | Every lot | Verify species and legal source before modelling marketable live output. CITES or domestic source codes require checking; they are not blanket authorization. | `un-cpc-2025`; `woah-reptiles-2024`; `cites-guide-2022` |
-| `b_routes` | Captive or wild source | Captive production includes real breeding/rearing, stock, feed, water and environmental control; collection includes authorized live capture and actual holding but no invented captive lifetime. Stop at actual source handover. | `woah-reptiles-2024` |
-| `b_shared` | Shared rooms, thermal plant, pools, equipment | Assign measured service to consuming cohorts, capture/holding nodes and periods once. Separate buyer transport, slaughter and destination use. | `woah-reptiles-2024` |
+| `b_legal` | Every lot | Verify species and legal source before modelling marketable live output. CITES or domestic source codes require checking; they are not blanket authorization. | `un-cpc-2025`; ; `cites-guide-2022` |
+| `b_routes` | Captive or wild source | Captive production includes real breeding/rearing, stock, feed, water and environmental control; collection includes authorized live capture and actual holding but no invented captive lifetime. Stop at actual source handover. |  |
+| `b_shared` | Shared rooms, thermal plant, pools, equipment | Assign measured service to consuming cohorts, capture/holding nodes and periods once. Separate buyer transport, slaughter and destination use. |  |
 
 ## 6. Process Inventory Structure
 
@@ -690,7 +690,7 @@ No generic direct emission is assumed at handover.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `a_output` | Captive node | List all intended independent live and non-live outputs and their actual gates. First partition physically separable activities; if joint burdens remain, use evidenced mass or another documented causal driver and disclose sensitivity. Unsold eggs/shed and dead animals are residue/waste. | `mass-balance-identity`; `woah-reptiles-2024` |
+| `a_output` | Captive node | List all intended independent live and non-live outputs and their actual gates. First partition physically separable activities; if joint burdens remain, use evidenced mass or another documented causal driver and disclose sensitivity. Unsold eggs/shed and dead animals are residue/waste. | `mass-balance-identity` |
 | `a_period` | Captive cohort or capture campaign | Link stock, facilities, feed, losses and live animals to actual periods. Allocate opening stock and shared assets once across realized outputs and service periods; no default reptile lifetime or double counting at internal transfers. | `mass-balance-identity` |
 | `a_shared` | Heated rooms, pools, cages and handling services | Record every consuming node/cohort and period; allocate by measured service time, metered energy/water or justified capacity driver, not again at final handover. | `mass-balance-identity` |
 
@@ -729,8 +729,8 @@ No generic direct emission is assumed at handover.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `v_legal` | live output | Fail if species, authorized origin, condition or actual source gate is absent; classification does not prove legality. | `un-cpc-2025`; `woah-reptiles-2024`; `cites-guide-2022` |
-| `v_routes` | source process | Exactly one evidenced source route supplies each lot. Captive needs stock/cohort records; capture needs permits/campaign and cannot inherit imagined breeding inputs. | `woah-reptiles-2024` |
+| `v_legal` | live output | Fail if species, authorized origin, condition or actual source gate is absent; classification does not prove legality. | `un-cpc-2025`; ; `cites-guide-2022` |
+| `v_routes` | source process | Exactly one evidenced source route supplies each lot. Captive needs stock/cohort records; capture needs permits/campaign and cannot inherit imagined breeding inputs. |  |
 | `v_balance` | mass and outputs | Reconcile opening/purchased or captured mass, stock changes, accepted live animals, mortality and real co-products; internal transfers and same-gate live returns only once. A later production activity requires its own responsibility and records. | `mass-balance-identity` |
 | `v_shared` | multi-period/shared assets | Each input, asset, output and loss has node/period attribution; shares sum to observed service without double charge at two gates. | `mass-balance-identity` |
 | `v_identity` | all cards | conditional flow cards need concrete selection; final exchanges need verified species/state/direction/property/unit and gate before publication. | `un-cpc-2025` |
@@ -754,7 +754,7 @@ No generic direct emission is assumed at handover.
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
 | `un-cpc-2025` | official_guidance | [UN CPC 3.0 explanatory notes](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf) | living-reptile classification boundary |
-| `woah-reptiles-2024` | official_guidance | [WOAH Terrestrial Code chapter 7.14](https://www.woah.org/fileadmin/Home/eng/Health_standards/tahc/2024/en_chapitre_aw_reptiles.htm) | species-specific handling, welfare and source documentation |
+| `woah-reptiles-2024` | official_guidance | [WOAH Terrestrial Code chapter 7.14](https://www.woah.org/fileadmin/Home/eng/Health_standards/tahc/2024/en_chapitre_aw_reptiles.htm) | WOAH 2024 Chapter 7.14 covers welfare during killing for skins/meat/products. Use only explicitly transferable handling context; it does not establish lawful live capture, breeding methods or LCA allocation. |
 | `cites-guide-2022` | official_guidance | [CITES Trade Database guide](https://trade.cites.org/cites_trade_guidelines/en-CITES_Trade_Database_Guide.pdf) | distinguish reported wild, captive and ranched source codes; not permit evidence alone |
 | `mass-balance-identity` | method_factor | Mass conservation and measured foreground input/output reconciliation | normalization, stock, water and shared-service reconciliation |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |

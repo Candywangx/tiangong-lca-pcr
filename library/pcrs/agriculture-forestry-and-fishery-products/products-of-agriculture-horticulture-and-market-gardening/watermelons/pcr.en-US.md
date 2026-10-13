@@ -71,8 +71,8 @@ When constructing a foreground data package, the items listed in `Required quali
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_annual_crop_cycle` | field preparation through final harvest | Include field preparation, planting, crop management, and all harvests of the declared annual crop cycle; allocate shared field operations to the reported crop using documented field records. | `fao-crop-production-framework`; `usda-watermelon-production-guidance` |
-| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole watermelon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `usda-watermelon-production-guidance`; `fao-postharvest-handling` |
+| `boundary_annual_crop_cycle` | field preparation through final harvest | Include field preparation, planting, crop management, and all harvests of the declared annual crop cycle; allocate shared field operations to the reported crop using documented field records. | `fao-crop-production-framework`; `uga-watermelon-production-b996-2017` |
+| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole watermelon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `uga-watermelon-production-b996-2017`; `fao-postharvest-handling` |
 | `boundary_managed_soils` | fertilizer, amendment, and residue flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset. | `ipcc-2019-managed-soils` |
 | `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-crop-residue-management`; `fao-postharvest-handling` |
 
@@ -107,7 +107,7 @@ Raw activity or stage basis: per planted hectare and per 1,000 kg marketable far
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_planting_records`
-- Sources: `usda-watermelon-production-guidance`
+- Sources: `uga-watermelon-production-b996-2017`
 - Range: Provisional planting-material screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0.1
@@ -132,7 +132,7 @@ Raw activity or stage basis: per planted hectare and per 1,000 kg marketable far
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_operation_records`
-- Sources: `usda-watermelon-production-guidance`
+- Sources: `uga-watermelon-production-b996-2017`
 
 ##### Waste flows
 
@@ -199,7 +199,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate watermelon.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_fertilizer_records`
-- Sources: `usda-watermelon-production-guidance`
+- Sources: `uga-watermelon-production-b996-2017`
 - Range: Provisional nitrogen application screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -267,7 +267,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate watermelon.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_crop_protection_records`
-- Sources: `usda-watermelon-production-guidance`
+- Sources: `uga-watermelon-production-b996-2017`
 - Range: Provisional crop-protection product screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -292,7 +292,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate watermelon.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_operation_records`
-- Sources: `usda-watermelon-production-guidance`
+- Sources: `uga-watermelon-production-b996-2017`
 
 ##### Waste flows
 
@@ -475,7 +475,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | all inventory rows | `normalized amount = field or lot amount × 1,000 kg / marketable farm-gate watermelon mass` | field or lot record; marketable mass | amount per 1,000 kg reference flow |  |
-| `calc_nutrient_mass` | fertilizer inputs | `nutrient mass = product mass × declared nutrient concentration` | product mass; label or supplier concentration | kg N, kg P2O5, or kg K2O | `usda-watermelon-production-guidance` |
+| `calc_nutrient_mass` | fertilizer inputs | `nutrient mass = product mass × declared nutrient concentration` | product mass; label or supplier concentration | kg N, kg P2O5, or kg K2O | `uga-watermelon-production-b996-2017` |
 | `calc_land_occupation` | field occupation | `occupation = field area × declared crop-cycle occupation duration` | field area; planting and final harvest dates | m2*a or declared area-time unit |  |
 | `calc_managed_soil_emissions` | managed-soil nitrogen emissions | Apply one declared IPCC-compatible method to documented nutrient inputs and returned residues; retain factors and assumptions with the dataset. | nutrient inputs; residue return; soil and climate parameters | elementary nitrogen emissions per reference flow | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest and grading | `gross harvested = marketable + rejected + documented other destinations`, subject to scale precision and declared estimation uncertainty | harvest, grading, and destination records | reconciled crop output and loss record | `fao-postharvest-handling` |
@@ -521,7 +521,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-crop-production-framework` | official_guidance | FAO crop production and resource-management guidance. https://www.fao.org/land-water/databases-and-software/crop-information/en/ | annual crop-cycle boundary, field records, and allocation requirements |
-| `usda-watermelon-production-guidance` | extension_guidance | USDA and extension production guidance for watermelon planting, nutrient management, field operations, and harvest records. https://extension.uga.edu/publications/detail.html?number=C1101 | planting, nutrient management, field operations, and harvest records |
+| `uga-watermelon-production-b996-2017` | extension_guidance | University of Georgia Cooperative Extension, Commercial Watermelon Production, Bulletin 996 (2017), https://fieldreport.caes.uga.edu/publications/B996/commercial-watermelon-production/ | Georgia planting, nutrient management, field operations and harvest context; PCR boundary and allocation are author methodological choices |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, *Crop evapotranspiration*. https://www.fao.org/4/X0490E/X0490E00.htm | crop water-balance and irrigation-record methods |
 | `ipcc-2019-managed-soils` | method_factor | 2019 IPCC Refinement, Agriculture, Forestry and Other Land Use, managed-soils methodology. https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | managed-soil nitrogen-emission method |
 | `fao-crop-residue-management` | official_guidance | FAO crop-residue and soil-management guidance. https://www.fao.org/3/y2779e/y2779e00.htm | residue return and destination disclosure |

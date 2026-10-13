@@ -1092,7 +1092,7 @@ perennial crops link establishment, productive phases, replacement and terminati
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_01` | all inventory rows | `normalized amount = amount × 1,000 kg / net marketable gate output`; retain the original process-output or storage-duration basis. | raw amount; net marketable gate output; basis | normalized amount | `mass-balance-identity` |
+| `calc_01` | all inventory rows | `normalized amount = amount × 1 kg / net marketable gate output`; retain the original process-output or storage-duration basis. | raw amount; net marketable gate output; basis | normalized amount | `mass-balance-identity` |
 | `calc_02` | fertilizer and amendments | `nutrient amount = product mass × declared nutrient fraction`, or documented laboratory result; retain product and nutrient bases separately. | product mass; composition or result | product and nutrient amounts | `fao-fruit-vegetable-production-practices-2024` |
 | `calc_03` | irrigation, withdrawal, conditioning and wastewater | Reconcile source withdrawal, delivery, recirculation, evaporation or consumption, retained solids and discharge; do not count one meter twice. | meters; batch records; return and discharge | water and wastewater amounts | `fao-good-farming-practices`; `mass-balance-identity` |
 | `calc_04` | annual and perennial phases | Allocate establishment, assets and shared phases by declared area-time, plant-year, crop-cycle, throughput or other physical basis and link each item to its period or phase. | area; duration; phase; assets; output | period-attributed inventory | `iso-14044-2006` |

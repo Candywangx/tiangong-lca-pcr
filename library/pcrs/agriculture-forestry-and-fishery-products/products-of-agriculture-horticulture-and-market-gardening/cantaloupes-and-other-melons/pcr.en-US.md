@@ -75,10 +75,10 @@ The sole reference output is `reference_product_at_declared_handoff`, receiving 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_annual_melon_cycle` | field or protected production through final harvest | Include field or protected-crop preparation, planting or transplanting, crop management, and all harvests of the declared annual crop cycle; allocate shared operations to the reported melon using documented production records. | `fao-crop-production-framework`; `fao-good-agricultural-practices` |
-| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole melon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `fao-fruit-and-vegetable-postharvest` |
+| `boundary_annual_melon_cycle` | field or protected production through final harvest | Include field or protected-crop preparation, planting or transplanting, crop management, and all harvests of the declared annual crop cycle; allocate shared operations to the reported melon using documented production records. | `fao-gap-framework-2003` |
+| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole melon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `fao-postharvest-handling-ae075e` |
 | `boundary_managed_soils` | nutrient, amendment, and residue flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset. | `ipcc-2019-managed-soils` |
-| `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-crop-residue-management`; `fao-fruit-and-vegetable-postharvest` |
+| `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-gap-framework-2003`; `fao-postharvest-handling-ae075e` |
 
 ## 6. Process Inventory Structure
 
@@ -113,7 +113,7 @@ Raw activity or stage basis: per planted hectare and per 1,000 kg marketable far
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_melon_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional planting-material screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0.05
@@ -138,7 +138,7 @@ Raw activity or stage basis: per planted hectare and per 1,000 kg marketable far
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_melon_field_operation_records`
-- Sources: `fao-crop-production-framework`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -205,7 +205,7 @@ Raw activity or stage basis: per production-unit hectare and converted to 1,000 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_melon_fertilizer_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional nitrogen application screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -248,7 +248,7 @@ Raw activity or stage basis: per production-unit hectare and converted to 1,000 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_melon_irrigation_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional irrigation screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -709,7 +709,7 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | --- | --- | --- | --- |
 | `allocation_avoid_by_subdivision` | field management, harvest, and conditioning | Prefer separate records for production, harvest, conditioning, marketable fruit, residues, and waste before applying allocation. | `iso-14044-2006` |
 | `allocation_melon_grades` | multiple marketable melon grades | Treat declared grades as one reference-product category when they share the same intended use; report grade-specific quantities and use economic or mass allocation only when separate modelling is infeasible. | `iso-14044-2006` |
-| `allocation_residue_and_rejects` | residues, rejects, and useful secondary outputs | Treat material with a declared useful hand-off as a co-product only when the hand-off and destination are documented; otherwise record it as waste or residue with fate disclosed. | `fao-fruit-and-vegetable-postharvest`; `iso-14044-2006` |
+| `allocation_residue_and_rejects` | residues, rejects, and useful secondary outputs | Treat material with a declared useful hand-off as a co-product only when the hand-off and destination are documented; otherwise record it as waste or residue with fate disclosed. | `fao-postharvest-handling-ae075e`; `iso-14044-2006` |
 | `allocation_shared_operations` | shared field, protected-crop, or conditioning operations | Allocate shared operations by measured area, time, mass, or another documented physical relationship; disclose the choice and test a value-based sensitivity when the physical relationship is not representative. | `iso-14044-2006` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
@@ -776,14 +776,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | foreground coverage; proxy inputs; missing records; range exceedances; emission methods; scale and meter calibration; grade and mass-balance reconciliations |
 | update_trigger | new reviewed melon evidence, material route change, revised emission method, changed concrete flow identity verification|
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-crop-production-framework` | official_guidance | FAO crop-production and resource-management guidance | crop route, establishment, field operations, and production boundary context |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices guidance for fruit and vegetable production | planting, nutrient, irrigation, crop-protection, and field-record expectations |
-| `fao-fruit-and-vegetable-postharvest` | official_guidance | FAO fruit and vegetable postharvest handling guidance | harvest, grading, washing, cooling, packaging, rejects, and farm-gate hand-off |
-| `fao-crop-residue-management` | official_guidance | FAO crop-residue management guidance | residue destination and non-marketable fruit handling |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11 | soil N2O, residue nitrogen, and nitrogen pathway accounting |
 | `emep-eea-2023-guidebook` | method_factor | European Environment Agency, EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023 | agricultural ammonia calculation and QA context |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | allocation hierarchy and disclosure |
@@ -792,3 +790,5 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |
+| `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), https://www.fao.org/4/ae075e/ae075e00.htm | General record/handling context only; not a crop-specific parameter or LCA boundary/allocation rule. |

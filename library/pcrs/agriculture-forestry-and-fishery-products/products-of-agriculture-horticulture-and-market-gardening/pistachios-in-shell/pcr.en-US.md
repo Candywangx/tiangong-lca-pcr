@@ -15,7 +15,7 @@ This PCR guides a foreground data package for pistachios produced in managed per
 
 The canonical reference-flow identity is the platform record `Pistachios, in shell`, classified as CPC 3.0 `01375`, with the platform qualifier `Production mix, at plant; Fresh pistachios picked`. A dataset must disclose whether the declared gate is the whole fruit at the fresh plant gate, a dehusked pistachio with shell retained, or an extended conditioned or stored lot. These states must not be silently mixed.
 
-This PCR applies to conventional, organic, rain-fed, irrigated, mixed-crop, and smallholder or estate routes when the cultivar or cultivar group, geography, tree age, crop year, harvest maturity, husk status, shell condition, moisture basis, quality state, and gate are disclosed. It excludes nursery operations except as upstream inputs, shell removal, splitting or hatcheting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, shell processing, retail packaging, consumer use, and transport or storage after the declared gate. It does not select an `Other` or n.e.c. product category.
+This PCR applies to conventional, organic, rain-fed, irrigated, mixed-crop, and smallholder or estate routes when the cultivar or cultivar group, geography, tree age, crop year, harvest maturity, husk status, shell condition, moisture basis, quality state, and gate are disclosed. It excludes nursery operations except as upstream inputs, shell removal, destructive splitting for kernel recovery or hatcheting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, shell processing, retail packaging, consumer use, and transport or storage after the declared gate. It does not select an `Other` or n.e.c. product category.
 
 ## 2. Product Category Identity
 
@@ -24,7 +24,7 @@ This PCR applies to conventional, organic, rain-fed, irrigated, mixed-crop, and 
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pistachios-in-shell` |
 | classification_refs | CPC 3.0 `01375`, Pistachios, in shell; mapping relation: exact |
 | covered_products | Whole pistachio fruit with husk and shell retained, and dehusked pistachios with the hard shell retained when the extended gate is declared |
-| excluded_products | Shelled or split pistachios; pistachio kernel, pistachio oil, roasted or otherwise processed pistachio products, shell products, and post-gate logistics or retail products |
+| excluded_products | Shelled pistachios or detached kernels; pistachio kernel, pistachio oil, roasted or otherwise processed pistachio products, shell products, and post-gate logistics or retail products |
 | representative_product | Mature or declared-maturity pistachios in shell with cultivar, husk status, moisture or freshness state, grade, accepted mass, reject mass, and gate declared |
 | production_route | Perennial pistachio-tree establishment and management, harvest and collection, optional dehusking while retaining the shell, primary conditioning, grading, optional storage, and declared hand-off |
 | market_state | Fresh whole fruit at plant gate or dehusked/conditioned in-shell lot at a declared extended gate, with crop year, geography, maturity, husk status, shell condition, grade, and fate records |
@@ -48,11 +48,13 @@ This PCR applies to conventional, organic, rain-fed, irrigated, mixed-crop, and 
 | Reference unit | kg |
 | Required qualifiers | cultivar or cultivar group; tree block and geography; establishment year, tree age, productive status, and replacement events; soil and climate; irrigation status and water source; crop year or averaging period; harvest maturity; whole-fruit or dehusked state; husk status; moisture basis; shell condition; size or grade; accepted, downgraded, rejected, and loss mass; husk destination; storage duration and condition; and gate |
 
-The required qualifiers must be declared in dataset metadata, process notes, the reference-flow comment, product description, or an equivalent data-package field. Net product mass excludes container tare. The platform identity is the fresh plant-gate product flow; dehusking, grading, drying, or storage is an extended gate and must retain that qualifier rather than being represented as a new product category. A shelled or split pistachio must not be used as the reference product for this PCR.
+The required qualifiers must be declared in dataset metadata, process notes, the reference-flow comment, product description, or an equivalent data-package field. Net product mass excludes container tare. The platform identity is the fresh plant-gate product flow; dehusking, grading, drying, or storage is an extended gate and must retain that qualifier rather than being represented as a new product category. A shelled pistachio or detached kernel must not be used as the reference product for this PCR.
 
 Each foreground dataset must explicitly select one actual route, declared gate, product state and output row. Reconcile the selected terminal route with `reference_product_at_declared_handoff`; normalize that handoff output to the reference quantity and retain preceding-stage outputs as measured transfers. Raw weighing, mass reconciliation and lot traceability requirements continue to apply.
 
 The sole reference output is `reference_product_at_declared_handoff`, receiving the selected actual route product at the declared gate. Existing route-output ids identify the source and physical state; they are no longer individually fixed to the reference quantity.
+
+Naturally split-on-suture nuts remain in-shell pistachios when their hard shells are retained. Natural opening is not shell removal or automatically a reject. Any deliberately opened in-shell route must disclose the actual operation and grade; distinguish it from destructive splitting for detached-kernel recovery (`usda-pistachio-in-shell-standard`).
 
 ## 4. Measurement and Unit Rules
 
@@ -71,7 +73,7 @@ The sole reference output is `reference_product_at_declared_handoff`, receiving 
 
 ## 5. System Boundary
 
-The default foreground boundary runs from the declared tree-orchard starting condition through perennial tree management, harvest and collection, and the fresh plant-gate hand-off of accepted pistachios in shell. An extended route additionally includes dehusking that leaves the hard shell intact, cleaning, grading, storage, and the declared post-harvest gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, retail, post-gate transport, and post-gate storage are outside the default boundary.
+The default foreground boundary runs from the declared tree-orchard starting condition through perennial tree management, harvest and collection, and the fresh plant-gate hand-off of accepted pistachios in shell. An extended route additionally includes dehusking that leaves the hard shell intact, cleaning, grading, storage, and the declared post-harvest gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, retail, post-gate transport, and post-gate storage are outside the default boundary.
 
 ### Boundary Abstraction
 
@@ -79,7 +81,7 @@ The default foreground boundary runs from the declared tree-orchard starting con
 | --- | --- |
 | declared_starting_condition | tree-orchard site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land use and existing tree history are disclosed |
 | starting_condition_role | start of managed perennial pistachio production and tree-asset accounting |
-| product_classification_scope | CPC 3.0 `01375`, Pistachios, in shell; shelled, split, kernel, oil, shell, and downstream processed pistachio products are outside this PCR |
+| product_classification_scope | CPC 3.0 `01375`, Pistachios, in shell; shelled, detached-kernel, oil, shell, and downstream processed pistachio products are outside this PCR |
 | recursive_input_rule | Same-category planting material or retained pistachios crossing the boundary are recorded as upstream inputs and are not recursively expanded into another in-shell product output. Internal hand-offs between orchard, harvest, conditioning, grading, and storage are process links and are not additional market outputs. |
 | upstream_dataset_requirement | Use representative upstream datasets for nursery material, nutrient products, crop protection, irrigation supply, fuel, electricity, dehusking or grading services, packaging, machinery services, and waste treatment when these inputs cross the boundary. |
 | disclosure | cultivar and tree block; geography, soil, climate, and land history; establishment year, tree age, productive life, and replacement; irrigation source and quality; nutrient and crop-protection records; harvest maturity; whole-fruit or dehusked state; moisture or freshness; shell quality; grade, reject, husk, and storage records; gate; and any intended husk co-product hand-off |
@@ -91,7 +93,7 @@ The default foreground boundary runs from the declared tree-orchard starting con
 | `boundary_tree_to_farm_gate` | all conforming datasets | Include perennial tree establishment, immature years, productive management, harvest, collection, and the declared fresh plant-gate hand-off of accepted pistachios in shell. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
 | `boundary_dehusking_extension` | extended post-harvest route | Include dehusking, cleaning, grading, and storage only when the declared dataset gate extends beyond the fresh whole-fruit plant gate. Report the extended gate and do not relabel it as the platform fresh/unprocessed state. | `ucdavis-pistachio-postharvest`; `codex-tree-nuts-hygiene-cxc-6-1972` |
 | `boundary_perennial_tree_disclosure` | establishment and replacement | Allocate establishment, immature years, replacement trees, and removal over the declared tree life and accepted-output basis; disclose life, non-bearing years, intercropping, and replacement events. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
-| `boundary_no_shell_removal` | in-shell product | Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, and shell processing. | `codex-tree-nuts-hygiene-cxc-6-1972`; `ucdavis-pistachio-postharvest` |
+| `boundary_no_shell_removal` | in-shell product | Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, and shell processing. | `codex-tree-nuts-hygiene-cxc-6-1972`; `ucdavis-pistachio-postharvest` |
 | `boundary_quality_and_fate` | all outputs | Separate accepted in-shell pistachios, husk, downgraded lots, rejected fruit, foreign material, dust, water loss, storage loss, and unexplained loss by measured mass and declared fate. | `ucdavis-pistachio-postharvest`; `mass-balance-identity` |
 
 ## 6. Process Inventory Structure
@@ -356,7 +358,7 @@ Raw activity or stage basis: per 1,000 kg accepted pistachios in shell.
 
 ### Process: Pistachio Dehusking, Primary Conditioning, and Grading (`pistachio_primary_conditioning_and_grading`)
 
-This process is conditional. Dehusking removes the outer husk while leaving the hard shell intact; shell removal, splitting, and kernel recovery are outside this PCR.
+This process is conditional. Dehusking removes the outer husk while leaving the hard shell intact; shell removal, destructive kernel-recovery splitting, and kernel recovery are outside this PCR.
 The dehusking and primary conditioning step is the material treatment node; its treated output and all residual destinations are recorded separately.
 
 #### Inputs
@@ -524,7 +526,7 @@ Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
 
 ###### Downgraded and rejected pistachios (`pistachio_grade_rejects`)
 
-Record cracked, moldy, insect-damaged, immature, over-mature, contaminated, or otherwise off-spec pistachios, with rework, recovery, treatment, or disposal destination.
+Record broken-shell damaged, moldy, insect-damaged, immature, over-mature, contaminated, or otherwise off-spec pistachios, with rework, recovery, treatment, or disposal destination.
 
 - Selected flow: rejected or downgraded pistachios in shell
 - Flow property / unit: Mass / kg
@@ -819,7 +821,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `quality_01` | flow identity | Use the verified `Pistachios, in shell` UUID with Mass and kg. Preserve the fresh plant-gate or explicitly extended-gate qualifier and do not substitute shelled, split, or kernel identities. | platform identity record; dataset metadata |
+| `quality_01` | flow identity | Use the verified `Pistachios, in shell` UUID with Mass and kg. Preserve the fresh plant-gate or explicitly extended-gate qualifier and do not substitute shelled or detached-kernel identities. | platform identity record; dataset metadata |
 | `quality_02` | tree and harvest quantities | Use calibrated scales, meters, or transparent documented estimates. Record a justified zero when a route does not use irrigation, wet cleaning, packaging, or storage. | calibration record; field and lot logs |
 | `quality_03` | husk and product state | Measure or document whole-fruit, dehusked-with-shell, and conditioned states separately. Retain husk moisture or dry-matter basis where allocation or conversion uses it. | batch record; scale; moisture or freshness test |
 | `quality_04` | completeness | Reconcile tree inputs, harvest outputs, husk destination, conditioning outputs, rejects, residues, water loss, storage loss, and gate dispatches. | mass-balance workbook; stock ledger |
@@ -832,7 +834,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | applies_to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validation_01` | reference flow | Reference product is the verified `Pistachios, in shell` UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled or split pistachio. | `codex-tree-nuts-hygiene-cxc-6-1972` |
+| `validation_01` | reference flow | Reference product is the verified `Pistachios, in shell` UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled pistachio or detached kernel. | `codex-tree-nuts-hygiene-cxc-6-1972` |
 | `validation_02` | process map | Every required process is present; conditional dehusking, cleaning, grading, and storage processes are present when the declared gate or route requires them. | `ucdavis-pistachio-postharvest` |
 | `validation_03` | perennial production | Tree establishment, immature years, productive phase, replacement, intercropping attribution, and removal are linked to declared crop years and are not double-counted. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
 | `validation_04` | harvest and collection | Harvested, collected, uncollected, damaged, residue, and accepted pistachio masses are mutually reconciled; maturity and hand-off state are declared. | `mass-balance-identity` |
@@ -849,7 +851,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | dataset_role | `secondary_dataset` for a reviewed pistachio-in-shell foreground dataset; may be promoted to `background_dataset` only after the required review and publication gates |
 | downstream_use | Construction and validation of process and lifecyclemodel projections for pistachios in shell at the declared fresh plant-gate or extended dehusked, conditioned, or storage gate |
 | allowed_use | Tree management, harvest, collection, dehusking, cleaning, grading, storage, and gate modelling when the declared product state, husk status, maturity, quality, crop year, geography, and allocation treatment are retained |
-| excluded_use | Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, shell products, retail products, consumer use, post-gate logistics, and unreported product categories |
+| excluded_use | Shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, shell products, retail products, consumer use, post-gate logistics, and unreported product categories |
 | required_metadata | reference UUID; Mass property and Units of mass unit group; CPC 3.0 `01375`; cultivar; geography; tree phase and age; crop year; irrigation; maturity; whole-fruit or dehusked state; husk fate; shell and grade quality; accepted, rejected, residue, loss, and storage records |
 | required_quality_disclosure | measurement versus estimate; freshness or moisture method; mass-balance completeness; tree-life and intercropping allocation; husk co-product allocation; rework and reject fate; storage duration; data period; geography; technology; and unresolved identity gaps |
 | update_trigger | new crop-year records, material change in tree phase or replacement, change in harvest or dehusking technology, new intended husk route, changed storage practice, evidence-backed range replacement, or platform identity revision |
@@ -869,3 +871,4 @@ The crop sources below support qualitative identity and handling context within 
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `usda-pistachio-in-shell-standard` | standard | USDA Agricultural Marketing Service, Pistachios in the Shell Grades and Standards, https://www.ams.usda.gov/grades-standards/pistachios-shell-grades-and-standards | Shell retention, natural suture opening and grade-specific split/non-split context; not an LCA allocation rule |

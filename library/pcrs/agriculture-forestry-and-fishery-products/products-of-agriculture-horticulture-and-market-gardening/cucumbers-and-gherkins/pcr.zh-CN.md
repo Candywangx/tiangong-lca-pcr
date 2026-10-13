@@ -74,9 +74,9 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `boundary_crop_cycle` | 建植和种植 | 纳入归属于声明作物周期的田间或设施苗床准备、种植、藤蔓管理、灌溉、养分和植保以及直接作物排放；披露先前土地利用，排除无关基础设施建设。 | `fao-crop-evapotranspiration-56`; `ipcc-2019-managed-soils-n2o` |
-| `boundary_repeated_harvest` | 采收轮次 | 将种植批次的每个采收轮次归属于同一作物周期，并在归一化前核对商品果、降级果、田间损失和残体。 | `fao-cucumber-production-guide`; `usda-ams-cucumber-standard` |
+| `boundary_repeated_harvest` | 采收轮次 | 将种植批次的每个采收轮次归属于同一作物周期，并在归一化前核对商品果、降级果、田间损失和残体。 | `fao-gap-framework-2003`; `usda-ams-cucumber-standard` |
 | `boundary_gate_preparation` | 分选、清洗、冷却和包装 | 默认前景边界在声明农场门或包装场门结束；只有交付前发生的分选、清洗、冷却和一次包装纳入。 | `usda-ams-cucumber-standard`; `usda-ams-pickling-cucumber-standard` |
-| `boundary_residue_fate` | 藤蔓、叶片、拒收果和修整物 | 分别记录还田、堆肥、饲料利用、处理、运输或处置。没有文件化接收方和用途时不得分配共产品抵扣。 | `iso-14044-2006`; `fao-cucumber-production-guide` |
+| `boundary_residue_fate` | 藤蔓、叶片、拒收果和修整物 | 分别记录还田、堆肥、饲料利用、处理、运输或处置。没有文件化接收方和用途时不得分配共产品抵扣。 | `iso-14044-2006`; `fao-gap-framework-2003` |
 
 ## 6. 过程清单结构
 
@@ -108,7 +108,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_planting_records`
-- 来源：`fao-cucumber-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：种植材料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.1
@@ -133,7 +133,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`fao-cucumber-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：建植期养分筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -187,7 +187,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：从采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_area_and_cycle_records`
-- 来源：`fao-cucumber-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：面积产出筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.01
@@ -224,7 +224,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`ipcc-2019-managed-soils-n2o`; `fao-cucumber-production-guide`
+- 来源：`ipcc-2019-managed-soils-n2o`; `fao-gap-framework-2003`
 - 数量范围：作物周期氮筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -292,7 +292,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_crop_protection_records`
-- 来源：`fao-cucumber-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：植保筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -317,7 +317,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`fao-cucumber-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：作物管理能源筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -347,7 +347,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_reconciliation`
-- 来源：`fao-cucumber-production-guide`; `usda-ams-cucumber-standard`
+- 来源：`fao-gap-framework-2003`; `usda-ams-cucumber-standard`
 - 数量范围：采收果筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：1,000
@@ -374,7 +374,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_and_reject_records`
-- 来源：`fao-cucumber-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：田间残体筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：100
@@ -427,15 +427,14 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
-- 数量范围：直接氧化亚氮筛选范围
+- 数量范围：作者暂定筛查估计；端点不是 IPCC 限值
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
   - 上限：20
   - 单位：kg N2O/ha
   - 基准：声明作物周期受控土壤氮排放
   - 基准类型：氮投入（`n_input`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ipcc-2019-managed-soils-n2o`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 硝酸盐进入淡水（`nitrate_freshwater_output`）
 
@@ -662,8 +661,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_crop_type` | 混合黄瓜和小黄瓜生产 | 按生产单元面积、作物周期产出或其他文件化物理基础，将共享投入分配给鲜食黄瓜、腌制型黄瓜或小黄瓜。各作物平衡完成前不得先平均。 | `fao-cucumber-production-guide` |
-| `allocation_repeated_harvest` | 同一植株的多次采收 | 将同一栽植批次的所有采收轮次视为一个作物周期，核对各轮次后再按总商品产出归一化。 | `fao-cucumber-production-guide` |
+| `allocation_crop_type` | 混合黄瓜和小黄瓜生产 | 按生产单元面积、作物周期产出或其他文件化物理基础，将共享投入分配给鲜食黄瓜、腌制型黄瓜或小黄瓜。各作物平衡完成前不得先平均。 | `fao-gap-framework-2003` |
+| `allocation_repeated_harvest` | 同一植株的多次采收 | 将同一栽植批次的所有采收轮次视为一个作物周期，核对各轮次后再按总商品产出归一化。 | `fao-gap-framework-2003` |
 | `allocation_shared_protected_unit` | 具有多作物的温室或其他设施单元 | 用声明的面积、占用时间、吞吐量或其他物理关系分配共享能源、水和管理记录；耐久基础设施另行披露。 | `iso-14044-2006` |
 | `allocation_residue_fate` | 藤蔓、叶片、拒收果和修整物 | 只有接收方、数量和预期用途均有文件时才提供共产品抵扣；否则作为残体或废物报告并保留作物周期负荷。 | `usda-ams-cucumber-standard` |
 
@@ -693,10 +692,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_nutrient_equivalent` | nutrient inputs | product mass × declared nutrient fraction; retain product mass and nutrient basis as separate records | invoice; formulation; nutrient plan; application log | kg N, kg P2O5, or kg K2O by crop cycle | `fao-cucumber-production-guide` |
+| `calc_nutrient_equivalent` | nutrient inputs | product mass × declared nutrient fraction; retain product mass and nutrient basis as separate records | invoice; formulation; nutrient plan; application log | kg N, kg P2O5, or kg K2O by crop cycle | `fao-gap-framework-2003` |
 | `calc_crop_cycle_normalization` | all crop-cycle inputs and outputs | crop-cycle quantity ÷ marketable gate output × 1,000 kg | crop-cycle quantity; gate output | normalized quantity per 1,000 kg output |  |
-| `calc_repeated_harvest_output` | harvest rounds | sum marketable fruit from all rounds assigned to the planting; reconcile gross fruit, rejects, losses, and residues first | harvest tickets; receiving records; reject records | total marketable crop-cycle output | `fao-cucumber-production-guide` |
-| `calc_area_time` | land occupation | production area × crop occupation period, with protected structure treatment declared separately | area register; planting and final harvest dates | m2*a | `fao-cucumber-production-guide` |
+| `calc_repeated_harvest_output` | harvest rounds | sum marketable fruit from all rounds assigned to the planting; reconcile gross fruit, rejects, losses, and residues first | harvest tickets; receiving records; reject records | total marketable crop-cycle output | `fao-gap-framework-2003` |
+| `calc_area_time` | land occupation | production area × crop occupation period, with protected structure treatment declared separately | area register; planting and final harvest dates | m2*a | `fao-gap-framework-2003` |
 | `calc_nitrogen_emission` | direct soil nitrous oxide | apply the selected IPCC-compatible factor to eligible nitrogen input and declared soil or climate method | nutrient records; method choice; area | kg N2O emitted to air | `ipcc-2019-managed-soils-n2o` |
 | `calc_water_balance` | irrigation and washing | sum metered deliveries or documented balance components; preserve source withdrawal, delivered water, recirculation, and discharge as distinct quantities | meter readings; rainfall; pumping or batch records | m3 by water role | `fao-crop-evapotranspiration-56` |
 | `calc_gate_mass_balance` | harvest and preparation | received fruit = marketable output + rejects + residue or handling loss within declared measurement uncertainty | harvest tickets; batch records; reject and residue records | reconciled mass balance | `usda-ams-cucumber-standard` |
@@ -718,9 +717,9 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_output` | reference flow | 参考产出必须是声明交付门的新鲜整果黄瓜或小黄瓜并使用 kg 质量；腌制、发酵、罐藏、切制或零售产品不在范围内。 | `usda-ams-cucumber-standard`; `usda-ams-pickling-cucumber-standard` |
-| `validate_crop_type` | product identity and aggregation | 必须声明作物类型和路线。鲜食黄瓜、腌制型黄瓜和小黄瓜只有在分别完成作物周期平衡并具备明确物理分配基础后才可聚合。 | `fao-cucumber-production-guide` |
-| `validate_cycle_dates` | establishment, management, and harvest | 种植、施用、灌溉、采收轮次和交付产出必须在声明作物周期内，或明确归属于该周期。 | `fao-cucumber-production-guide` |
-| `validate_nutrient_basis` | nutrient inputs and emissions | 产品质量、养分浓度、养分基准和排放方法必须相互一致；不得将产品质量和养分当量作为重复交换计入。 | `ipcc-2019-managed-soils-n2o`; `fao-cucumber-production-guide` |
+| `validate_crop_type` | product identity and aggregation | 必须声明作物类型和路线。鲜食黄瓜、腌制型黄瓜和小黄瓜只有在分别完成作物周期平衡并具备明确物理分配基础后才可聚合。 | `fao-gap-framework-2003` |
+| `validate_cycle_dates` | establishment, management, and harvest | 种植、施用、灌溉、采收轮次和交付产出必须在声明作物周期内，或明确归属于该周期。 | `fao-gap-framework-2003` |
+| `validate_nutrient_basis` | nutrient inputs and emissions | 产品质量、养分浓度、养分基准和排放方法必须相互一致；不得将产品质量和养分当量作为重复交换计入。 | `ipcc-2019-managed-soils-n2o`; `fao-gap-framework-2003` |
 | `validate_mass_balance` | harvest and gate preparation | 采收或收料质量必须与商品产出、拒收物、残体、废水相关损失和声明测量不确定度相符。 | `usda-ams-cucumber-standard` |
 | `validate_flow_identity_resolution` | parameterized rows | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validate_qualifiers` | reference flow and dataset metadata | 数据包必须包含作物类型、路线、作物周期、采收轮次、等级、清洗、冷却、包装和声明交付门等必需限定信息。 | `usda-ams-cucumber-standard`; `usda-ams-pickling-cucumber-standard` |
@@ -741,9 +740,9 @@ sync_with: pcr.en-US.md
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-cucumber-production-guide` | official_guidance | FAO, crop production and good-practice guidance for cucumber and gherkin cultivation | 作物路线、种植、作物管理、采收轮次、残体和边界规则 |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, *Crop evapotranspiration* | 灌溉调度和水平衡背景 |
 | `ipcc-2019-managed-soils-n2o` | method_factor | IPCC, *2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories* | 受控土壤氮排放方法和计算规则 |
 | `usda-ams-cucumber-standard` | official_guidance | USDA Agricultural Marketing Service, *Cucumber Grades and Standards* | 黄瓜成熟度、大小、质量、等级、缺陷和交付接受标准 |
 | `usda-ams-pickling-cucumber-standard` | official_guidance | USDA Agricultural Marketing Service, *Pickling Cucumber Grades and Standards* | 腌制型黄瓜和小黄瓜的大小、质量、等级和拒收标准 |
 | `iso-14044-2006` | standard | ISO 14044:2006, *Environmental management — Life cycle assessment — Requirements and guidelines* | 分配、共产品和残体处理原则 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般记录或处理背景，不是作物特定参数或 LCA 边界和分配规则。 |

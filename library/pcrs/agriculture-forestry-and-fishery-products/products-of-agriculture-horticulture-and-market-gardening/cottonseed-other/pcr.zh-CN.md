@@ -457,15 +457,14 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录（`collected_record`）
 - 采集协议: `cp_gin_lot_balance`
 - 来源: `cottonseed-storage-2018`
-- 数量范围：Cottonseed-to-lint co-product screen
+- 数量范围：作者暂定棉籽与皮棉比例估计；引用的全国均值不能确立这些端点
   - 范围角色：典型范围（`typical_range`）
   - 下限：1100
   - 上限：1800
   - 单位：kg cottonseed/1,000 kg lint
   - 基准：same reconciled gin lot
   - 基准类型：过程输出（`process_output`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`cottonseed-storage-2018`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 皮棉联产品 (`cotton_lint_output`)
 

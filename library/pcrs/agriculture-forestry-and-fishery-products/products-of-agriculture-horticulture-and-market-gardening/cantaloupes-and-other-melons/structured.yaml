@@ -21,13 +21,12 @@ system_boundary:
       applies_to: "field or protected production through final harvest"
       rule: "Include field or protected-crop preparation, planting or transplanting, crop management, and all harvests of the declared annual crop cycle; allocate shared operations to the reported melon using documented production records."
       source_ids:
-        - fao-crop-production-framework
-        - fao-good-agricultural-practices
+        - fao-gap-framework-2003
     - rule_id: boundary_farm_gate
       applies_to: "harvest and preparation"
       rule: "End the foreground boundary when marketable whole melon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer."
       source_ids:
-        - fao-fruit-and-vegetable-postharvest
+        - fao-postharvest-handling-ae075e
     - rule_id: boundary_managed_soils
       applies_to: "nutrient, amendment, and residue flows"
       rule: "Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset."
@@ -37,8 +36,8 @@ system_boundary:
       applies_to: "rejected fruit and crop residues"
       rule: "Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product."
       source_ids:
-        - fao-crop-residue-management
-        - fao-fruit-and-vegetable-postharvest
+        - fao-gap-framework-2003
+        - fao-postharvest-handling-ae075e
 boundary_abstraction:
   declared_starting_condition: "Prepared agricultural field or protected-crop production unit receiving melon seed or transplants, with prior land use and pre-plant operations disclosed"
   starting_condition_role: "Beginning of the declared annual melon crop cycle"
@@ -159,7 +158,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_melon_establishment_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0.05"
@@ -186,7 +185,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_melon_field_operation_records
               source_ids:
-                - fao-crop-production-framework
+                - fao-gap-framework-2003
             ranges: []
       waste:
         []
@@ -254,7 +253,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_melon_fertilizer_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -297,7 +296,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_melon_irrigation_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -797,7 +796,7 @@ allocation_rules:
     applies_to: "residues, rejects, and useful secondary outputs"
     rule: "Treat material with a declared useful hand-off as a co-product only when the hand-off and destination are documented; otherwise record it as waste or residue with fate disclosed."
     source_ids:
-      - fao-fruit-and-vegetable-postharvest
+      - fao-postharvest-handling-ae075e
       - iso-14044-2006
   - rule_id: allocation_shared_operations
     applies_to: "shared field, protected-crop, or conditioning operations"
@@ -1039,22 +1038,6 @@ published_dataset_profile:
   required_quality_disclosure: "foreground coverage; proxy inputs; missing records; range exceedances; emission methods; scale and meter calibration; grade and mass-balance reconciliations"
   update_trigger: "new reviewed melon evidence, material route change, revised emission method, changed concrete flow identity verification"
 data_sources:
-  - id: "fao-crop-production-framework"
-    type: "official_guidance"
-    reference: "FAO crop-production and resource-management guidance"
-    used_for: "crop route, establishment, field operations, and production boundary context"
-  - id: "fao-good-agricultural-practices"
-    type: "official_guidance"
-    reference: "FAO good agricultural practices guidance for fruit and vegetable production"
-    used_for: "planting, nutrient, irrigation, crop-protection, and field-record expectations"
-  - id: "fao-fruit-and-vegetable-postharvest"
-    type: "official_guidance"
-    reference: "FAO fruit and vegetable postharvest handling guidance"
-    used_for: "harvest, grading, washing, cooling, packaging, rejects, and farm-gate hand-off"
-  - id: "fao-crop-residue-management"
-    type: "official_guidance"
-    reference: "FAO crop-residue management guidance"
-    used_for: "residue destination and non-marketable fruit handling"
   - id: "ipcc-2019-managed-soils"
     type: "method_factor"
     reference: "IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11"
@@ -1075,9 +1058,17 @@ data_sources:
     type: "method_factor"
     reference: "This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing."
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
+  - id: "fao-gap-framework-2003"
+    type: "official_guidance"
+    reference: "FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm"
+    used_for: "Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence."
+  - id: "fao-postharvest-handling-ae075e"
+    type: "official_guidance"
+    reference: "Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), https://www.fao.org/4/ae075e/ae075e00.htm"
+    used_for: "General record/handling context only; not a crop-specific parameter or LCA boundary/allocation rule."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:07635c26309e06e73c6915d4527964532b8bf743906bf9d7867761f508b95bf8"
+  source_sha256: "sha256:ffe930b5e7ed1dfd341e6de99029d5460ec975b64ea8c0403a7f31ba419e9c9b"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5517"
@@ -1088,10 +1079,10 @@ normative_context:
           line: 61
           column: 1
         end:
-          offset: 8118
+          offset: 8063
           line: 83
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared agricultural field or protected-crop production unit receiving melon seed or transplants, with prior land use and pre-plant operations disclosed |\n| starting_condition_role | Beginning of the declared annual melon crop cycle |\n| product_classification_scope | Fresh whole cantaloupes and other non-watermelon melons under CPC 3.0:01229 through farm-gate hand-off |\n| recursive_input_rule | Purchased melon seed or transplants are distinct upstream product inputs and are linked once rather than recreated as an internal melon production process. |\n| upstream_dataset_requirement | Require compatible upstream datasets for seed or transplants, fertilizers, amendments, crop-protection products, irrigation water, energy, field machinery services, and packaging when used. |\n| disclosure | Declare melon type and cultivar, geography, prior land use, crop-cycle dates, production system, irrigation regime, nutrient basis, crop-protection program, emission method, residue fate, harvest and grading method, washing, and packaging. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_annual_melon_cycle` | field or protected production through final harvest | Include field or protected-crop preparation, planting or transplanting, crop management, and all harvests of the declared annual crop cycle; allocate shared operations to the reported melon using documented production records. | `fao-crop-production-framework`; `fao-good-agricultural-practices` |\n| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole melon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `fao-fruit-and-vegetable-postharvest` |\n| `boundary_managed_soils` | nutrient, amendment, and residue flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset. | `ipcc-2019-managed-soils` |\n| `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-crop-residue-management`; `fao-fruit-and-vegetable-postharvest` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared agricultural field or protected-crop production unit receiving melon seed or transplants, with prior land use and pre-plant operations disclosed |\n| starting_condition_role | Beginning of the declared annual melon crop cycle |\n| product_classification_scope | Fresh whole cantaloupes and other non-watermelon melons under CPC 3.0:01229 through farm-gate hand-off |\n| recursive_input_rule | Purchased melon seed or transplants are distinct upstream product inputs and are linked once rather than recreated as an internal melon production process. |\n| upstream_dataset_requirement | Require compatible upstream datasets for seed or transplants, fertilizers, amendments, crop-protection products, irrigation water, energy, field machinery services, and packaging when used. |\n| disclosure | Declare melon type and cultivar, geography, prior land use, crop-cycle dates, production system, irrigation regime, nutrient basis, crop-protection program, emission method, residue fate, harvest and grading method, washing, and packaging. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_annual_melon_cycle` | field or protected production through final harvest | Include field or protected-crop preparation, planting or transplanting, crop management, and all harvests of the declared annual crop cycle; allocate shared operations to the reported melon using documented production records. | `fao-gap-framework-2003` |\n| `boundary_farm_gate` | harvest and preparation | End the foreground boundary when marketable whole melon is transferred at the farm gate; include on-farm grading, trimming of damaged fruit, washing, cooling, and primary packaging only when they occur before transfer. | `fao-postharvest-handling-ae075e` |\n| `boundary_managed_soils` | nutrient, amendment, and residue flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared calculation method, without double counting emissions represented by an upstream dataset. | `ipcc-2019-managed-soils` |\n| `boundary_residue_fate` | rejected fruit and crop residues | Record field return, composting, feed, treatment, disposal, or another declared destination for each residue stream; an unreported destination remains a data-quality gap and is not an automatic co-product. | `fao-gap-framework-2003`; `fao-postharvest-handling-ae075e` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1128,18 +1119,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_38385"
+    - unit_id: "normative_38296"
       family: "allocation"
       span:
         start:
-          offset: 38385
+          offset: 38296
           line: 706
           column: 1
         end:
-          offset: 39679
+          offset: 39586
           line: 715
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_by_subdivision` | field management, harvest, and conditioning | Prefer separate records for production, harvest, conditioning, marketable fruit, residues, and waste before applying allocation. | `iso-14044-2006` |\n| `allocation_melon_grades` | multiple marketable melon grades | Treat declared grades as one reference-product category when they share the same intended use; report grade-specific quantities and use economic or mass allocation only when separate modelling is infeasible. | `iso-14044-2006` |\n| `allocation_residue_and_rejects` | residues, rejects, and useful secondary outputs | Treat material with a declared useful hand-off as a co-product only when the hand-off and destination are documented; otherwise record it as waste or residue with fate disclosed. | `fao-fruit-and-vegetable-postharvest`; `iso-14044-2006` |\n| `allocation_shared_operations` | shared field, protected-crop, or conditioning operations | Allocate shared operations by measured area, time, mass, or another documented physical relationship; disclose the choice and test a value-based sensitivity when the physical relationship is not representative. | `iso-14044-2006` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_by_subdivision` | field management, harvest, and conditioning | Prefer separate records for production, harvest, conditioning, marketable fruit, residues, and waste before applying allocation. | `iso-14044-2006` |\n| `allocation_melon_grades` | multiple marketable melon grades | Treat declared grades as one reference-product category when they share the same intended use; report grade-specific quantities and use economic or mass allocation only when separate modelling is infeasible. | `iso-14044-2006` |\n| `allocation_residue_and_rejects` | residues, rejects, and useful secondary outputs | Treat material with a declared useful hand-off as a co-product only when the hand-off and destination are documented; otherwise record it as waste or residue with fate disclosed. | `fao-postharvest-handling-ae075e`; `iso-14044-2006` |\n| `allocation_shared_operations` | shared field, protected-crop, or conditioning operations | Allocate shared operations by measured area, time, mass, or another documented physical relationship; disclose the choice and test a value-based sensitivity when the physical relationship is not representative. | `iso-14044-2006` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1156,11 +1147,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 38385
+              offset: 38296
               line: 706
               column: 1
             end:
-              offset: 38425
+              offset: 38336
               line: 706
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1176,15 +1167,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49792"
+    - unit_id: "normative_49699"
       family: "validation"
       span:
         start:
-          offset: 49792
+          offset: 49699
           line: 755
           column: 1
         end:
-          offset: 51410
+          offset: 51317
           line: 767
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_output` | terminal output | Exactly one terminal marketable melon output equals 1,000 kg after scaling and declares melon type, cultivar, maturity, grade, and farm-gate qualifiers. |  |\n| `validation_process_route` | process map | Include establishment, crop management, and harvest once per crop cycle; include conditioning only when it occurs before hand-off and is not double counted. |  |\n| `validation_crop_cycle_reconciliation` | field inventory | Production-unit area, planting material, inputs, harvest outputs, residue fates, and emissions refer to the same crop cycle and production units. |  |\n| `validation_nitrogen_balance` | nutrient and emission inventory | Reconcile nutrient content, returned and removed residue nitrogen, and emission pathways with methods and factors disclosed. | `ipcc-2019-managed-soils` |\n| `validation_harvest_balance` | harvest and grading | Reconcile incoming fruit with marketable fruit, declared useful outputs, rejects, and measured losses within uncertainty. | `mass-balance-identity` |\n| `validation_conditioning_balance` | optional conditioning | Reconcile incoming batches with accepted fruit, rejects, packaging, water, and measured losses; exclude conditioning when its burdens are embedded upstream. | `mass-balance-identity` |\n| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
@@ -1204,11 +1195,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49792
+              offset: 49699
               line: 755
               column: 1
             end:
-              offset: 49814
+              offset: 49721
               line: 755
               column: 23
           text: "## 9. Validation Rules"
@@ -1235,33 +1226,33 @@ normative_context:
           line: 78
           column: 1
         end:
-          offset: 7146
+          offset: 7104
           line: 78
-          column: 386
+          column: 344
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_farm_gate"
       identity_kind: "explicit"
       unit_id: "normative_5517"
       source_span:
         start:
-          offset: 7147
+          offset: 7105
           line: 79
           column: 1
         end:
-          offset: 7458
+          offset: 7412
           line: 79
-          column: 312
+          column: 308
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_managed_soils"
       identity_kind: "explicit"
       unit_id: "normative_5517"
       source_span:
         start:
-          offset: 7459
+          offset: 7413
           line: 80
           column: 1
         end:
-          offset: 7774
+          offset: 7728
           line: 80
           column: 316
     - pointer: "/system_boundary/rules/3"
@@ -1270,154 +1261,154 @@ normative_context:
       unit_id: "normative_5517"
       source_span:
         start:
-          offset: 7775
+          offset: 7729
           line: 81
           column: 1
         end:
-          offset: 8116
+          offset: 8061
           line: 81
-          column: 342
+          column: 333
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_by_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_38385"
+      unit_id: "normative_38296"
       source_span:
         start:
-          offset: 38498
+          offset: 38409
           line: 710
           column: 1
         end:
-          offset: 38731
+          offset: 38642
           line: 710
           column: 234
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_melon_grades"
       identity_kind: "explicit"
-      unit_id: "normative_38385"
+      unit_id: "normative_38296"
       source_span:
         start:
-          offset: 38732
+          offset: 38643
           line: 711
           column: 1
         end:
-          offset: 39025
+          offset: 38936
           line: 711
           column: 294
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_and_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_38385"
+      unit_id: "normative_38296"
       source_span:
         start:
-          offset: 39026
+          offset: 38937
           line: 712
           column: 1
         end:
-          offset: 39351
+          offset: 39258
           line: 712
-          column: 326
+          column: 322
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared_operations"
       identity_kind: "explicit"
-      unit_id: "normative_38385"
+      unit_id: "normative_38296"
       source_span:
         start:
-          offset: 39352
+          offset: 39259
           line: 713
           column: 1
         end:
-          offset: 39677
+          offset: 39584
           line: 713
           column: 326
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_output"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 49887
+          offset: 49794
           line: 759
           column: 1
         end:
-          offset: 50096
+          offset: 50003
           line: 759
           column: 210
     - pointer: "/validation_rules/1"
       rule_id: "validation_process_route"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 50097
+          offset: 50004
           line: 760
           column: 1
         end:
-          offset: 50303
+          offset: 50210
           line: 760
           column: 207
     - pointer: "/validation_rules/2"
       rule_id: "validation_crop_cycle_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 50304
+          offset: 50211
           line: 761
           column: 1
         end:
-          offset: 50515
+          offset: 50422
           line: 761
           column: 212
     - pointer: "/validation_rules/3"
       rule_id: "validation_nitrogen_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 50516
+          offset: 50423
           line: 762
           column: 1
         end:
-          offset: 50738
+          offset: 50645
           line: 762
           column: 223
     - pointer: "/validation_rules/4"
       rule_id: "validation_harvest_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 50739
+          offset: 50646
           line: 763
           column: 1
         end:
-          offset: 50943
+          offset: 50850
           line: 763
           column: 205
     - pointer: "/validation_rules/5"
       rule_id: "validation_conditioning_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 50944
+          offset: 50851
           line: 764
           column: 1
         end:
-          offset: 51190
+          offset: 51097
           line: 764
           column: 247
     - pointer: "/validation_rules/6"
       rule_id: "validation_flow_identity"
       identity_kind: "explicit"
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 51191
+          offset: 51098
           line: 765
           column: 1
         end:
-          offset: 51408
+          offset: 51315
           line: 765
           column: 218
   diagnostics:
@@ -1447,26 +1438,26 @@ normative_context:
           column: 257
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_38385"
+      unit_id: "normative_38296"
       source_span:
         start:
-          offset: 38385
+          offset: 38296
           line: 706
           column: 1
         end:
-          offset: 38425
+          offset: 38336
           line: 706
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49792"
+      unit_id: "normative_49699"
       source_span:
         start:
-          offset: 49792
+          offset: 49699
           line: 755
           column: 1
         end:
-          offset: 49814
+          offset: 49721
           line: 755
           column: 23
 projection_metadata:
@@ -1476,5 +1467,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:07635c26309e06e73c6915d4527964532b8bf743906bf9d7867761f508b95bf8"
-  generated_content_sha256: "sha256:281e90aa663eb19b0804d255640edf84090d6455c9529a0f6da1379bfe2179f4"
+    sha256: "sha256:ffe930b5e7ed1dfd341e6de99029d5460ec975b64ea8c0403a7f31ba419e9c9b"
+  generated_content_sha256: "sha256:901cf5ee71162ebafcb8e625729f53f6592a4293ee005b1b190d28e84a0470fc"

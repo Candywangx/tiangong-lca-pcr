@@ -109,14 +109,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_activity_records`
 - 来源：
-- 数量范围：播种率筛选范围
+- 数量范围：作者暂定播种量估计；不是已发表经验区间
   - 范围角色：典型范围（`typical_range`）
   - 下限：45
   - 上限：100
   - 单位：kg seed/ha
   - 基准：条播或可比建植方式；超出范围的比率需说明理由
   - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 农业养分与肥料投入（`buckwheat_field_production_agricultural_nutrient_inputs`）
 

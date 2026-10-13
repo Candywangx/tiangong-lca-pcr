@@ -58,10 +58,10 @@ translation_status: aligned
 | 规则编号 | 适用对象 | 规则 | 来源 |
 | --- | --- | --- | --- |
 | `boundary_crop_production` | 田间生产 | 包含声明的播种用种子投入、土地占用、整地、播种、施肥、适用时的灌溉、植保、田间作业和收获前后的直接田间排放。 | `ipcc-2019-managed-soils-n2o`; `fao-crop-evapotranspiration-56` |
-| `boundary_harvest` | 收获和田间交接 | 当这些活动属于前景数据包时，包含收获、脱粒或联合收割、田间收集，以及到声明农场门或初级处理交接点的运输。 | `fao-grain-postharvest-systems-1998`; `fao-rye-postharvest-operations-1999` |
-| `boundary_primary_conditioning` | 收获后路线 | 只有当声明门点位于这些作业之后时，才包含初级干燥、清理、分级、粉尘或筛下物处理及短期储存。 | `fao-rye-postharvest-operations-1999`; `fao-grain-postharvest-systems-1998` |
-| `boundary_downstream_exclusion` | 下游加工 | 排除制粉、制麦、淀粉或乙醇转化、食品或饲料配方、零售和消费者使用；这些应由下游数据集表示。 | `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020` |
-| `boundary_input_completeness` | 所有前景路线 | 对肥料、灌溉、植保、田间能源、电力、土地、收获能源、干燥能源、清理损失、残余物和直接排放给出数值、合理的零值或有记录的排除理由。 | `ipcc-2019-managed-soils-n2o`; `fao-rye-postharvest-operations-1999` |
+| `boundary_harvest` | 收获和田间交接 | 当这些活动属于前景数据包时，包含收获、脱粒或联合收割、田间收集，以及到声明农场门或初级处理交接点的运输。 | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |
+| `boundary_primary_conditioning` | 收获后路线 | 只有当声明门点位于这些作业之后时，才包含初级干燥、清理、分级、粉尘或筛下物处理及短期储存。 | `fao-wheat-postharvest-operations-1999`; `fao-grain-postharvest-systems-1998` |
+| `boundary_downstream_exclusion` | 下游加工 | 排除制粉、制麦、淀粉或乙醇转化、食品或饲料配方、零售和消费者使用；这些应由下游数据集表示。 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `boundary_input_completeness` | 所有前景路线 | 对肥料、灌溉、植保、田间能源、电力、土地、收获能源、干燥能源、清理损失、残余物和直接排放给出数值、合理的零值或有记录的排除理由。 | `ipcc-2019-managed-soils-n2o`; `fao-wheat-postharvest-operations-1999` |
 ### 边界概化
 | 字段 | 值 |
 | --- | --- |
@@ -208,7 +208,7 @@ translation_status: aligned
   - 证据类型：方法公式（`method_formula`）
 ###### 黑麦秸秆或田间残余物（`rye_straw_or_field_residue`）
 秸秆或其他田间残余物在被移出、销售、转移、翻埋、焚烧或以其他方式跨越前景边界时记录。留在田间的残余物通过声明去向记录，不作为产品输出直接计入。
-- 选定流：Rye straw `bcaf0254-cdd3-43d1-823a-2f69df3801d8`
+- 选定流：黑麦秸秆（UUID 未解析；须核实作物特定身份）
 - 流属性/单位：Mass / kg
 - 数量规则：记录跨越边界的实测残余物质量和声明去向
 - 数值来源模式：前景记录（`foreground_record`）
@@ -373,7 +373,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_energy_records`
-- 来源：`fao-rye-postharvest-operations-1999`
+- 来源：`fao-wheat-postharvest-operations-1999`
 ##### 废物流
 **处理筛下物和拒收谷物（`conditioning_screenings_and_rejects`）**
 按物流和去向记录筛下物、异物、拒收谷物和不合格物料；不得将其计入合格参考产品。
@@ -388,7 +388,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_reject_records`
-- 来源：`fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020`
+- 来源：`fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
 #### 输出
 ##### 产品流
 ###### 处理后的非播种用黑麦谷物（`conditioned_rye_grain`）
@@ -406,7 +406,7 @@ translation_status: aligned
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioned_output_records`
-- 来源：`fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020`
+- 来源：`fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
 - 范围：同阶段产出计量对账
   - 范围角色：质量检查边界（`qa_guardrail`）
   - 下限：1
@@ -573,8 +573,8 @@ translation_status: aligned
 | 规则编号 | 适用对象 | 规则 | 来源 |
 | --- | --- | --- | --- |
 | `allocation_avoidance` | 作物、收获和处理过程 | 首先在记录支持时，将作物作业、收获、干燥、清理、分级、储存和废物处理拆分为独立过程，避免分配。 | `iso-14044-2006` |
-| `allocation_grain_and_residue` | 黑麦谷物和移出的秸秆或残余物 | 根据声明去向处理留在田间的残余物。若秸秆或其他残余物被移出或销售且不能拆分过程，使用明确声明的物理或经济分配方法，并披露敏感性。 | `iso-14044-2006`; `fao-rye-postharvest-operations-1999` |
-| `allocation_screenings_and_rejects` | 筛下物、破损谷物和不合格物料 | 将合格谷物、筛下物、拒收物和损失作为不同输出记录并声明去向。没有明确返工或分配决定时，不得将拒收物料计入参考产品。 | `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `allocation_grain_and_residue` | 黑麦谷物和移出的秸秆或残余物 | 根据声明去向处理留在田间的残余物。若秸秆或其他残余物被移出或销售且不能拆分过程，使用明确声明的物理或经济分配方法，并披露敏感性。 | `iso-14044-2006`; `fao-wheat-postharvest-operations-1999` |
+| `allocation_screenings_and_rejects` | 筛下物、破损谷物和不合格物料 | 将合格谷物、筛下物、拒收物和损失作为不同输出记录并声明去向。没有明确返工或分配决定时，不得将拒收物料计入参考产品。 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
 | `allocation_substitution` | 残余物或副产品使用 | 只有当被替代产品、路线、市场和证据均已声明时才使用替代法；不得从产品标签或泛化的残余物名称推断替代信用。 | `iso-14044-2006` |
 ## 8. 前景数据采集、计算与质量规则
 
@@ -603,11 +603,11 @@ translation_status: aligned
 | 规则编号 | 适用对象 | 公式或规则 | 输入 | 输出 | 来源 |
 | --- | --- | --- | --- | --- | --- |
 | `normalize_to_declared_gate` | 所有前景流 | 记录的流数量 / 所选声明门点的合格非播种用黑麦谷物质量 × 参考数量 | 所有适用协议；声明门点输出 | 每 1 kg 参考产品的数量 | `mass-balance-identity` |
-| `convert_moisture_basis` | 谷物质量比较 | 干物质质量 = 原始质量 × (1 - 水分比例)；保留原始值、转换值和实测水分基准 | 收获和处理质量；水分记录 | 可比质量基准 | `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `convert_moisture_basis` | 谷物质量比较 | 干物质质量 = 原始质量 × (1 - 水分比例)；保留原始值、转换值和实测水分基准 | 收获和处理质量；水分记录 | 可比质量基准 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
 | `calculate_water_withdrawal` | 灌溉 | 将按水源计量取水换算到声明单位并按所选门点输出归一化；单独报告输送量和消耗量 | `cp_irrigation_records`; `cp_declared_gate_output_records` | 每个参考输出的取水量 | `fao-crop-evapotranspiration-56` |
 | `calculate_direct_soil_n2o` | 肥料氮和直接 N₂O | 对已核算氮投入应用所选 IPCC 层级和因子，适用时将 N₂O-N 转换为 N₂O，并披露因子选择 | `cp_fertilizer_input_records`; 所选方法因子 | 每个参考输出的直接土壤 N₂O | `ipcc-2019-managed-soils-n2o` |
 | `reconcile_harvest_outputs` | 收获和田间交接 | 收获谷物 + 移出的残余物 + 实测损失 + 田间返回或未计量剩余 = 同一水分基准下的声明收获投入；解释剩余项 | `cp_land_and_output_records`; `cp_harvest_and_output_records`; `cp_residue_and_fate_records` | 质量平衡核对 | `mass-balance-identity` |
-| `reconcile_conditioning_outputs` | 初级处理 | 处理后合格谷物 + 筛下物 + 拒收物 + 粉尘或实测损失 = 同一水分基准下的处理投入；解释剩余项 | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | 处理收率和损失核对 | `fao-rye-postharvest-operations-1999`; `mass-balance-identity` |
+| `reconcile_conditioning_outputs` | 初级处理 | 处理后合格谷物 + 筛下物 + 拒收物 + 粉尘或实测损失 = 同一水分基准下的处理投入；解释剩余项 | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | 处理收率和损失核对 | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
 | `allocate_storage_energy` | 储存 | 按记录的批次质量和声明储存时长分配储存能源；有专用计量时避免分配 | `cp_storage_and_handoff_records` | 每个参考输出的储存能源 | `iso-14044-2006` |
 ### 数据质量要求
 | requirement_id | 适用对象 | 要求 | 证据 |
@@ -622,12 +622,12 @@ translation_status: aligned
 ## 9. 验证规则
 | 规则编号 | 适用对象 | 规则 | 来源 |
 | --- | --- | --- | --- |
-| `validation_non_seed_boundary` | 产品身份 | 确认参考产品为非播种用黑麦谷物，并确认播种用种子、面粉、麦芽、淀粉、乙醇和下游产品已排除或单独建模。 | `usda-rye-standards-2020`; `fao-rye-postharvest-operations-1999` |
+| `validation_non_seed_boundary` | 产品身份 | 确认参考产品为非播种用黑麦谷物，并确认播种用种子、面粉、麦芽、淀粉、乙醇和下游产品已排除或单独建模。 | `usda-rye-standards-2020`; `fao-wheat-postharvest-operations-1999` |
 | `validation_reference_flow` | 参考流 | 确认恰好一个所选输出提供实际声明门点的 1 kg 非播种用黑麦谷物，采用质量属性和 kg 单位，并记录用途、水分、质量、地理范围和作物年度。最终化前按该物理状态核实 UUID；未解析身份不等于已核实产品，实际未进行调质时不得要求调质。 | `usda-rye-standards-2020` |
-| `validation_process_completeness` | 过程图和库存 | 确认作物生产、收获以及适用的初级处理或储存过程已经纳入，或已根据声明门点明确排除。 | `fao-grain-postharvest-systems-1998`; `fao-rye-postharvest-operations-1999` |
+| `validation_process_completeness` | 过程图和库存 | 确认作物生产、收获以及适用的初级处理或储存过程已经纳入，或已根据声明门点明确排除。 | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |
 | `validation_nitrogen` | 肥料和排放 | 确认产品质量与 kg N 区分，因子选择已声明，N₂O-N 转换透明，其他氮路径已处理或说明理由。 | `ipcc-2019-managed-soils-n2o` |
 | `validation_water` | 灌溉 | 确认取水、输送灌溉、消耗和水足迹结果已区分且没有重复计算。 | `fao-crop-evapotranspiration-56` |
-| `validation_moisture_and_mass_balance` | 收获和处理 | 确认质量核对使用共同水分基准，且合格谷物、残余物、筛下物、拒收物和损失均有声明去向。 | `fao-rye-postharvest-operations-1999`; `mass-balance-identity` |
+| `validation_moisture_and_mass_balance` | 收获和处理 | 确认质量核对使用共同水分基准，且合格谷物、残余物、筛下物、拒收物和损失均有声明去向。 | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
 | `validation_allocation` | 联产品和残余物 | 确认先考虑拆分，分配方法已声明，替代法有被替代产品证据，且重要时报告敏感性。 | `iso-14044-2006` |
 | `validation_uuid_review` | identity 引用 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 ## 10. 发布数据集画像
@@ -643,7 +643,7 @@ translation_status: aligned
 ## 11. 数据源
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-rye-postharvest-operations-1999` | official_guidance | FAO INPhO，*WHEAT: Post-harvest Operations*，<https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_WHEAT.pdf> | 黑麦收获、干燥、清理、储存、损失和初级处理过程分解 |
+| `fao-wheat-postharvest-operations-1999` | official_guidance | FAO INPhO，*WHEAT: Post-harvest Operations*，<https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_WHEAT.pdf> | 从小麦迁移的一般谷物清理、干燥和储存背景；不提供黑麦或燕麦特定产量、水分默认值或秸秆身份。 |
 | `fao-grain-postharvest-systems-1998` | official_guidance | FAO，*Agricultural engineering in development — Grain and post-harvest systems*，<https://www.fao.org/4/t0522e/T0522E03.htm> | 收获到储存的顺序和声明的收获后交接 |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56，*Crop evapotranspiration*，<https://www.fao.org/4/X0490E/X0490E00.htm> | 灌溉和作物用水数据采集与水量区分 |
 | `ipcc-2019-managed-soils-n2o` | method_factor | IPCC 2019 Refinement，Volume 4，Chapter 11，<https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | 管理土壤 N₂O 方法选择、活动数据和因子披露 |

@@ -1066,7 +1066,7 @@ CPC 叶是分类参考，不是产品身份替代物。若数据包合并不同�
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_01` | all inventory rows | `normalized amount = amount × 1,000 kg / net marketable gate output`; 保留原始过程输出或储存时长基准。 | raw amount; net marketable gate output; basis | normalized amount | `mass-balance-identity` |
+| `calc_01` | all inventory rows | `normalized amount = amount × 1 kg / net marketable gate output`; 保留原始过程输出或储存时长基准。 | raw amount; net marketable gate output; basis | normalized amount | `mass-balance-identity` |
 | `calc_02` | fertilizer and amendments | `nutrient amount = product mass × declared nutrient fraction`，或使用有记录的实验室结果；分别保留产品和养分基准。 | product mass; composition or result | product and nutrient amounts | `fao-fruit-vegetable-production-practices-2024` |
 | `calc_03` | irrigation, withdrawal, conditioning and wastewater | 核对源头取水、供给、循环、蒸发或消耗、截留固体和排放；同一水表不得重复计算。 | meters; batch records; return and discharge | water and wastewater amounts | `fao-good-farming-practices`; `mass-balance-identity` |
 | `calc_04` | annual and perennial phases | 按声明的面积-时间、株年、作物周期、吞吐量或其他有依据的物理基础分配建植、资产和共享阶段，并将每项关联到其期间或阶段。 | area; duration; phase; assets; output | period-attributed inventory | `iso-14044-2006` |

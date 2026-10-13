@@ -197,15 +197,7 @@ Raw activity or stage basis: per 1 kg reference product.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
 - Sources: `dzikiti-apple-water-footprint-2019`
-- Range: Measured orchard water-footprint context
-  - Range role: Typical range (`typical_range`)
-  - Lower: 0.187
-  - Upper: 0.237
-  - Unit: m3 total water footprint/kg apples
-  - Basis: measured Mediterranean-climate orchard context, not a universal irrigation default
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dzikiti-apple-water-footprint-2019`
+Range evidence need: collect delivered irrigation and source withdrawal separately. The cited total water-footprint observations (187–237 m3/t, including green/blue components) are contextual indicators and are not a range for either exchange.
 
 ###### Orchard energy (`orchard_energy`)
 
@@ -280,15 +272,7 @@ Raw activity or stage basis: per 1 kg reference product.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_irrigation_records`
 - Sources: `dzikiti-apple-water-footprint-2019`
-- Range: Measured orchard water-footprint context
-  - Range role: Typical range (`typical_range`)
-  - Lower: 0.187
-  - Upper: 0.237
-  - Unit: m3 total water footprint/kg apples
-  - Basis: measured context; withdrawal remains source-specific
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dzikiti-apple-water-footprint-2019`
+Range evidence need: collect delivered irrigation and source withdrawal separately. The cited total water-footprint observations (187–237 m3/t, including green/blue components) are contextual indicators and are not a range for either exchange.
 
 #### Outputs
 

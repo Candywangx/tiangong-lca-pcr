@@ -110,7 +110,7 @@ Raw activity or stage basis: per cultivated hectare and converted with same-cycl
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_activity_records`
 - Sources:
-- Range: Published seeding-rate screening range
+- Range: Provisional author seeding-rate estimate; not a published empirical interval
   - Range role: Typical range (`typical_range`)
   - Lower: 45
   - Upper: 100

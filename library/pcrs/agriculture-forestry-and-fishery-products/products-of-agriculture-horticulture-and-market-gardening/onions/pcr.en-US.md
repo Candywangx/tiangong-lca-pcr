@@ -259,15 +259,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
 - Collection protocol: `cp_irrigation_and_withdrawal_records`
 - Sources: `fao-crop-water-needs-onion`, `fao-56-crop-evapotranspiration`
 
-- Range: Field irrigation reference interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 3500
-  - Upper: 5500
-  - Unit: m3/ha per onion crop cycle
-  - Basis: one hectare over an onion crop cycle; convert to the PCR reference flow using measured area and output
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-crop-water-needs-onion`
+Range evidence need: no delivered-irrigation default is established. FAO 350–550 mm is crop water need (ETc), equivalent to 3500–5500 m3/ha of evapotranspiration, not metered irrigation. Derive net irrigation after effective rainfall, soil-water change and other supplies, then gross delivery from documented efficiency/losses; rain-fed delivery may be zero.
 
 ###### Water withdrawn from the declared natural or municipal source (`water_resource_withdrawal`)
 
@@ -400,12 +392,12 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs.
 - Collection protocol: `cp_crop_emission_activity_records`
 - Sources: `ipcc-2019-managed-soils-n2o`
 
-- Range: IPCC direct N2O-N factor envelope
+- Range: IPCC Table 11.1 non-rice N-input factor-family context; not a hard validity bound
   - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.002
+  - Lower: 0
   - Upper: 0.019
   - Unit: kg N2O-N per kg N input
-  - Basis: per kg applied or otherwise modelled N input
+  - Basis: Select a documented family: aggregate EF1 0.010 (uncertainty 0.002–0.018); wet synthetic N 0.016 (0.013–0.019); wet other N 0.006 (0.001–0.011); dry all N 0.005 (0–0.011), in kg N2O-N/kg N. The combined 0–0.019 is contextual only, not a universal factor or statistical interval.
   - Basis kind: N input (`n_input`)
   - Evidence kind: External source (`external_source`)
   - Sources: `ipcc-2019-managed-soils-n2o`

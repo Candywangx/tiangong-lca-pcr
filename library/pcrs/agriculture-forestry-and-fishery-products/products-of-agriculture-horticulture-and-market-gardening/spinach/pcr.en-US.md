@@ -71,10 +71,10 @@ When constructing a foreground data package, the items listed in `Required quali
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | establishment and field management | Include bed preparation, sowing or transplanting, crop management, and crop-cycle inputs that produce the declared spinach output; disclose prior land use and exclude unrelated infrastructure construction. | `ucanr-spinach-production-1996`; `govnl-spinach-production-guide-2025` |
+| `boundary_crop_cycle` | establishment and field management | Include bed preparation, sowing or transplanting, crop management, and crop-cycle inputs that produce the declared spinach output; disclose prior land use and exclude unrelated infrastructure construction. | `ucanr-spinach-production-2011`; `govnl-spinach-production-guide-2025` |
 | `boundary_gate_preparation` | harvest and packing | End the foreground system at the declared farm-gate or pack-house gate and include cutting, grading, trimming, washing, cooling, and primary packaging when they occur before that gate. | `usda-ams-bunched-spinach-standard`; `psu-spinach-harvest-guidance-2025` |
 | `boundary_soil_emissions` | fertilizer, crop residues, and managed soil | Estimate applicable direct and indirect nitrogen emissions using one declared method and the recorded nutrient inputs and residue fate; avoid double counting a nitrogen pathway. | `ipcc-2019-refinement-nitrogen` |
-| `boundary_residue_fate` | field residue, rejects, and trim | Record field return, composting, feed use, treatment, or disposal separately; a material with no demonstrated productive use remains a residue or waste flow. | `ucanr-spinach-production-1996`; `usda-ams-bunched-spinach-standard` |
+| `boundary_residue_fate` | field residue, rejects, and trim | Record field return, composting, feed use, treatment, or disposal separately; a material with no demonstrated productive use remains a residue or waste flow. | `ucanr-spinach-production-2011`; `usda-ams-bunched-spinach-standard` |
 
 ## 6. Process Inventory Structure
 
@@ -133,7 +133,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_establishment_records`
-- Sources: `ucanr-spinach-production-1996`; `govnl-spinach-production-guide-2025`
+- Sources: `ucanr-spinach-production-2011`; `govnl-spinach-production-guide-2025`
 - Range: Establishment nitrogen screen
   - Range role: Typical range (`typical_range`)
   - Lower: 22
@@ -142,7 +142,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same
   - Basis: preplant or planting application to a fresh-market spinach crop
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: External source (`external_source`)
-  - Sources: `ucanr-spinach-production-1996`
+  - Sources: `ucanr-spinach-production-2011`
 
 - Range: Soil-test-dependent phosphorus screen
   - Range role: Default estimate (`default_estimate`)
@@ -177,16 +177,15 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
-- Sources: `ucanr-spinach-production-1996`; `fao-spinach-irrigation-schedule`
-- Range: Establishment irrigation screen
+- Sources: `ucanr-spinach-production-2011`; `fao-spinach-irrigation-schedule`
+- Range: Provisional author establishment-water estimate; endpoints not supplied by the scheduling sources
   - Range role: Typical range (`typical_range`)
   - Lower: 100
   - Upper: 300
   - Unit: m3/ha
   - Basis: delivered irrigation between seeding and emergence or transplant establishment
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ucanr-spinach-production-1996`; `fao-spinach-irrigation-schedule`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Flow: Mobile machinery fuel for bed preparation (`establishment_machinery_fuel`)
 
@@ -203,7 +202,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach from the same
 - Basis kind: Fuel inventory (`fuel_inventory`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_energy_records`
-- Sources: `ucanr-spinach-production-1996`
+- Sources: `ucanr-spinach-production-2011`
 - Range: Bed-preparation fuel screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 50
@@ -271,7 +270,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_records`
-- Sources: `ucanr-spinach-production-1996`; `govnl-spinach-production-guide-2025`
+- Sources: `ucanr-spinach-production-2011`; `govnl-spinach-production-guide-2025`
 - Range: Crop-cycle nitrogen screen
   - Range role: Typical range (`typical_range`)
   - Lower: 22
@@ -280,7 +279,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
   - Basis: preplant plus supplemental nitrogen for fresh-market spinach
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: External source (`external_source`)
-  - Sources: `ucanr-spinach-production-1996`
+  - Sources: `ucanr-spinach-production-2011`
 
 - Range: In-season phosphorus screen
   - Range role: Default estimate (`default_estimate`)
@@ -340,16 +339,16 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
-- Sources: `ucanr-spinach-production-1996`; `fao-spinach-irrigation-schedule`
-- Range: Crop-cycle irrigation screen
+- Sources: `ucanr-spinach-production-2011`; `fao-spinach-irrigation-schedule`
+- Range: California fresh-market applied-water context; not a universal irrigation limit
   - Range role: Typical range (`typical_range`)
-  - Lower: 413
-  - Upper: 1240
+  - Lower: 1016
+  - Upper: 3048
   - Unit: m3/ha
-  - Basis: total applied irrigation between seeding and harvest for fresh-market spinach
+  - Basis: California seeding-to-harvest clipped crop 4–8 acre-inches/acre (1016–2032 m3/ha), bunch crop 6–12 (1524–3048); 1 inch depth = 254 m3/ha. Excludes processed routes and pre-tillage water; use actual field water balance.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: External source (`external_source`)
-  - Sources: `ucanr-spinach-production-1996`
+  - Sources: `ucanr-spinach-production-2011`
 
 ###### Flow: Mobile machinery fuel during crop management (`crop_machinery_fuel`)
 
@@ -366,7 +365,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
 - Basis kind: Fuel inventory (`fuel_inventory`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_energy_records`
-- Sources: `ucanr-spinach-production-1996`
+- Sources: `ucanr-spinach-production-2011`
 - Range: Crop-management fuel screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 100
@@ -395,7 +394,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_reconciliation`
-- Sources: `ucanr-spinach-production-1996`
+- Sources: `ucanr-spinach-production-2011`
 - Range: Field-residue screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -479,15 +478,14 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach.
 - Evidence kind: Method formula (`method_formula`)
 - Collection protocol: `cp_nutrient_records`
 - Sources: `ipcc-2019-refinement-nitrogen`
-- Range: Direct nitrous-oxide QA screen
+- Range: Provisional author screening estimate; endpoints are not IPCC limits
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 15
   - Unit: kg N2O/ha
   - Basis: managed-soil nitrogen emissions for the represented crop cycle
   - Basis kind: N input (`n_input`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ipcc-2019-refinement-nitrogen`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Flow: Nitrate to freshwater from field losses (`nitrate_freshwater_output`)
 
@@ -743,7 +741,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh spinach at gate.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_single_crop_cycle` | shared field, bed, or protected unit | Attribute crop-cycle inputs to spinach using the recorded bed or unit area and the crop-cycle output; do not allocate to a second crop without its own records. | `ucanr-spinach-production-1996` |
+| `allocation_single_crop_cycle` | shared field, bed, or protected unit | Attribute crop-cycle inputs to spinach using the recorded bed or unit area and the crop-cycle output; do not allocate to a second crop without its own records. | `ucanr-spinach-production-2011` |
 | `allocation_multi_cut_spinach` | repeated cuts from one sowing | Treat successive cuts as outputs of the same declared crop cycle and reconcile each cut before normalizing to total marketable spinach. | `psu-spinach-harvest-guidance-2025` |
 | `allocation_residue_fate` | field residues, rejects, and trim | Do not assign a co-product credit to residues unless a documented recipient, quantity, and intended use exists; otherwise retain the burden with spinach production and report the residue fate. | `usda-ams-bunched-spinach-standard` |
 
@@ -795,7 +793,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- |
 | `validate_reference_output` | reference flow | The declared reference output must be marketable fresh spinach at the declared gate and must use mass in kg; a frozen, canned, cooked, or retail product is outside this PCR. | `usda-ams-bunched-spinach-standard` |
 | `validate_crop_cycle_dates` | crop establishment and management | Sowing or transplanting, applications, irrigation, harvest cuts, and gate output must fall within the declared crop cycle or be explicitly attributed to it. | `govnl-spinach-production-guide-2025` |
-| `validate_nutrient_basis` | fertilizer inputs and emissions | Product mass, nutrient concentration, nutrient basis, and emission calculation method must be present and internally consistent; avoid counting both product mass and nutrient mass as the same exchange. | `ucanr-spinach-production-1996`; `ipcc-2019-refinement-nitrogen` |
+| `validate_nutrient_basis` | fertilizer inputs and emissions | Product mass, nutrient concentration, nutrient basis, and emission calculation method must be present and internally consistent; avoid counting both product mass and nutrient mass as the same exchange. | `ucanr-spinach-production-2011`; `ipcc-2019-refinement-nitrogen` |
 | `validate_mass_balance` | harvest and gate preparation | Gross harvest and received mass must reconcile with marketable output, rejects, residues, and losses within the declared measurement uncertainty. | `usda-ams-bunched-spinach-standard` |
 | `validate_flow_identity_resolution` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
 | `validate_qualifiers` | reference flow and dataset metadata | Required qualifiers must be present in the dataset package, including crop form, cut, gate, washing, cooling, packaging, and production route. | `usda-ams-bunched-spinach-standard`; `psu-spinach-harvest-guidance-2025` |
@@ -816,7 +814,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `ucanr-spinach-production-1996` | literature | University of California Agriculture and Natural Resources, *Spinach Production in California*, ANR Publication 7212, https://anrcatalog.ucanr.edu/pdf/7212.pdf | production route, irrigation, nutrient application, crop management, and boundary context |
+| `ucanr-spinach-production-2011` | literature | University of California Agriculture and Natural Resources, *Spinach Production in California*, ANR Publication 7212 (2011), https://escholarship.org/content/qt67w2p91c/qt67w2p91c.pdf | production route, irrigation, nutrient application, crop management, and boundary context |
 | `govnl-spinach-production-guide-2025` | official_guidance | Government of Newfoundland and Labrador, *Vegetable Crops Production Guide: Spinach*, https://www.gov.nl.ca/ffa/files/agrifoods-plants-pdf-spinach.pdf | seeding, crop establishment, soil-test-based nutrient practice, and crop-cycle qualifiers |
 | `ufifas-leafy-vegetable-guide-2024` | extension_guidance | University of Florida IFAS, *Leafy Vegetable Production*, https://ask.ifas.ufl.edu/publication/CV293?downloadOpen=true | seed-rate and harvest-period screening |
 | `fao-spinach-irrigation-schedule` | official_guidance | FAO, *Crop Water Management: Determination of the Irrigation Schedule for Crops Other Than Rice*, https://www.fao.org/4/T7202E/t7202e06.htm | spinach irrigation scheduling context |

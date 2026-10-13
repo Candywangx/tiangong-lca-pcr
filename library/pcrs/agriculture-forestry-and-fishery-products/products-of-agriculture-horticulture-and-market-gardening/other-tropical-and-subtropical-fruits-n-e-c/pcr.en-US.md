@@ -72,9 +72,9 @@ Missing reference-flow UUID is an identity evidence gap condition for later fore
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_start_condition` | all processes | Start at the declared crop-cycle or orchard-establishment condition and include foreground inputs and emissions through accepted farm-gate fruit; exclude retail, consumer use, and downstream processing. | `fao-good-agricultural-practices`, `codex-fresh-fruits-vegetables-cxc-53` |
-| `boundary_route_disclosure` | annual and perennial routes | Declare establishment, non-bearing years, grafting, or stand replacement; do not mix annual and perennial time bases without an allocation rule. | `fao-good-agricultural-practices` |
-| `boundary_recursive_input` | planting material | Record purchased or transferred material at its actual crossing point; self-propagated material requires origin and allocation evidence. | `fao-good-agricultural-practices` |
+| `boundary_start_condition` | all processes | Start at the declared crop-cycle or orchard-establishment condition and include foreground inputs and emissions through accepted farm-gate fruit; exclude retail, consumer use, and downstream processing. | `fao-gap-framework-2003`, `codex-fresh-fruits-vegetables-cxc-53` |
+| `boundary_route_disclosure` | annual and perennial routes | Declare establishment, non-bearing years, grafting, or stand replacement; do not mix annual and perennial time bases without an allocation rule. | `fao-gap-framework-2003` |
+| `boundary_recursive_input` | planting material | Record purchased or transferred material at its actual crossing point; self-propagated material requires origin and allocation evidence. | `fao-gap-framework-2003` |
 
 ## 6. Process Inventory Structure
 
@@ -106,7 +106,7 @@ Raw activity or stage basis: per established area and allocated to 1 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_01319_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Agricultural nutrient and fertilizer inputs (`p01319_establishment_agricultural_nutrient_inputs`)
 
@@ -123,7 +123,7 @@ Raw activity or stage basis: per established area and allocated to 1 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_01319_establishment_records`
-- Sources: `fao-good-agricultural-practices`; `ipcc-2019-refinement-agriculture`
+- Sources: `fao-gap-framework-2003`; `ipcc-2019-refinement-agriculture`
 
 ##### Waste flows
 
@@ -143,7 +143,7 @@ Raw activity or stage basis: per established area and allocated to 1 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 #### Outputs
 
@@ -163,7 +163,7 @@ Raw activity or stage basis: linked to declared crop-cycle or orchard-year outpu
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -181,7 +181,7 @@ Raw activity or stage basis: per established area and allocated to 1 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 
 ##### Elementary flows
@@ -207,7 +207,7 @@ Raw activity or stage basis: per crop-cycle or orchard-year and 1 kg accepted fr
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_01319_cultivation_records`
-- Sources: `fao-good-agricultural-practices`; `ipcc-2019-refinement-agriculture`
+- Sources: `fao-gap-framework-2003`; `ipcc-2019-refinement-agriculture`
 - Range: Provisional nutrient QA screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -231,7 +231,7 @@ Raw activity or stage basis: per crop-cycle or orchard-year and 1 kg accepted fr
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_01319_cultivation_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional irrigation QA screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -255,7 +255,7 @@ Raw activity or stage basis: per crop-cycle or orchard-year and 1 kg accepted fr
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_cultivation_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Crop-protection products supplied (`cultivation_crop_protection_input`)
 Record each formulation by product, active ingredient where known, event, and treated area.
@@ -271,7 +271,7 @@ Raw activity or stage basis: per crop-cycle or orchard-year and 1 kg accepted fr
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_01319_cultivation_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 ##### Elementary flows
@@ -290,7 +290,7 @@ Raw activity or stage basis: per crop-cycle or orchard-year and 1 kg accepted fr
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_cultivation_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 #### Outputs
 
@@ -328,7 +328,7 @@ Raw activity or stage basis: per crop-cycle or orchard-year and 1 kg accepted fr
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_cultivation_records`
-- Sources: `fao-good-agricultural-practices`, `ipcc-2019-refinement-agriculture`
+- Sources: `fao-gap-framework-2003`, `ipcc-2019-refinement-agriculture`
 
 ##### Elementary flows
 
@@ -368,7 +368,7 @@ Raw activity or stage basis: per harvested lot and 1 kg accepted fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_01319_harvest_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Farm-gate packaging and protective materials (`farm_gate_packaging_input`)
 Record crates, bins, liners, labels, and other materials used before the declared farm gate; reusable packaging needs service-life evidence.
@@ -437,7 +437,7 @@ Raw activity or stage basis: per harvested lot and 1 kg accepted fruit.
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `allocation_accepted_rejected` | harvested, accepted, and rejected fruit | Separate accepted product, rejected fruit, and co-products by measured mass; do not allocate rejected fruit to the reference product unless explicitly defined as an accepted co-product. | `iso-14044-allocation`, `codex-fresh-fruits-vegetables-cxc-53` |
-| `allocation_perennial_establishment` | perennial establishment and productive years | Allocate shared establishment inputs over disclosed productive years and accepted output using stand age and productive-year evidence. | `iso-14044-allocation`, `fao-good-agricultural-practices` |
+| `allocation_perennial_establishment` | perennial establishment and productive years | Allocate shared establishment inputs over disclosed productive years and accepted output using stand age and productive-year evidence. | `iso-14044-allocation`, `fao-gap-framework-2003` |
 | `allocation_multiple_fruit_products` | shared field, orchard, irrigation, and machinery records | Allocate by measured accepted mass unless a documented physical-causality rule is more appropriate; report the selected basis. | `iso-14044-allocation` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
@@ -458,7 +458,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_01319_reference_normalization` | all processes | `normalized amount = declared process amount / accepted farm-gate fruit mass` | process amount; accepted mass | amount per kg accepted fruit | `iso-14044-allocation` |
-| `calc_01319_nutrient_basis` | nutrient and amendment inputs | `nutrient mass = product mass × declared nutrient fraction`; retain product and nutrient results | product mass; label or laboratory analysis | kg product and nutrient basis | `fao-good-agricultural-practices` |
+| `calc_01319_nutrient_basis` | nutrient and amendment inputs | `nutrient mass = product mass × declared nutrient fraction`; retain product and nutrient results | product mass; label or laboratory analysis | kg product and nutrient basis | `fao-gap-framework-2003` |
 | `calc_01319_perennial_allocation` | establishment and perennial production | Allocate shared establishment amount over disclosed productive years and accepted output; retain source amount | establishment amount; productive years; output | allocated amount per kg fruit | `iso-14044-allocation` |
 | `calc_01319_mass_reconciliation` | harvest and conditioning | `harvested mass = accepted mass + rejected mass + declared other destination mass` | lot weights; destinations | reconciled quantities | `codex-fresh-fruits-vegetables-cxc-53` |
 | `calc_01319_emission_factor` | cultivation emissions | Apply declared method factor to recorded nutrient/protection basis and retain substance, compartment, factor, and uncertainty | input basis; factor; compartment | elementary emissions | `ipcc-2019-refinement-agriculture` |
@@ -477,7 +477,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validation_01319_reference_qualifiers` | reference product | Reject a data package lacking actual fruit identity, route, farm-gate condition, maturity/grade, and accepted-product basis; evidence gap platform UUID is a follow-up identity item, not a reason to change product meaning. | `codex-fresh-fruits-vegetables-cxc-53` |
-| `validation_01319_cycle_completeness` | process map and protocols | Check that establishment, cultivation, and harvest are included or explicitly excluded, and that annual/perennial time basis is consistent. | `fao-good-agricultural-practices` |
+| `validation_01319_cycle_completeness` | process map and protocols | Check that establishment, cultivation, and harvest are included or explicitly excluded, and that annual/perennial time basis is consistent. | `fao-gap-framework-2003` |
 | `validation_01319_mass_balance` | harvest and waste rows | Check harvested, accepted, rejected, and other destinations before normalizing to 1 kg accepted fruit. | `codex-fresh-fruits-vegetables-cxc-53` |
 | `validation_01319_allocation_disclosure` | shared inputs and co-products | Check that shared records, establishment allocation, co-products, and rejected-fruit destinations state a documented allocation basis. | `iso-14044-allocation` |
 
@@ -493,11 +493,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | temporal coverage, site scope, measured versus calculated values, allocation basis, factor source, uncertainty, identity evidence gaps, and omitted processes |
 | update_trigger | verified reference-flow identity, concrete flow identity verification|
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices guidance | establishment, nutrients, water, crop protection, and records |
 | `ipcc-2019-refinement-agriculture` | method_factor | 2019 IPCC Refinement agriculture emission-factor methods | managed-soil and residue emission calculations |
 | `codex-fresh-fruits-vegetables-cxc-53` | official_guidance | Codex CXC 53 Code of Hygienic Practice for Fresh Fruits and Vegetables | harvest, handling, lot identity, and quality |
 | `iso-14044-allocation` | standard | ISO 14044 principles for life-cycle allocation and boundary disclosure | allocation and boundary rules |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

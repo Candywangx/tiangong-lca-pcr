@@ -295,15 +295,14 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_output_records`
-- 数量范围：福尼奥籽粒产量筛选范围
+- 数量范围：依物种和地区变化的谷物产量暂定估计；两种福尼奥粟的端点均未核实
   - 范围角色：典型范围（`typical_range`）
   - 下限：150
   - 上限：800
   - 单位：kg grain/ha
   - 基准：报告的宽泛福尼奥产量背景；保留当地实测产量和水分
   - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`fao-ecocrop-fonio`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 作为有用产品移出的福尼奥秸秆（`fonio_removed_straw_output`）
 

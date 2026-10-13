@@ -71,8 +71,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_annual_crop_cycle` | 从田地准备到最后一次采收 | 纳入声明的一年生作物周期的田地准备、播种或定植、种植管理和全部采收；共享田间作业应根据有文件依据的田间记录分配给报告作物。 | `fao-crop-production-framework`; `usda-watermelon-production-guidance` |
-| `boundary_farm_gate` | 采收和准备 | 当可销售完整西瓜在农场大门转移时结束前景边界；仅在转移前发生时纳入农场内分级、受损果实修整、清洗、冷却和初级包装。 | `usda-watermelon-production-guidance`; `fao-postharvest-handling` |
+| `boundary_annual_crop_cycle` | 从田地准备到最后一次采收 | 纳入声明的一年生作物周期的田地准备、播种或定植、种植管理和全部采收；共享田间作业应根据有文件依据的田间记录分配给报告作物。 | `fao-crop-production-framework`; `uga-watermelon-production-b996-2017` |
+| `boundary_farm_gate` | 采收和准备 | 当可销售完整西瓜在农场大门转移时结束前景边界；仅在转移前发生时纳入农场内分级、受损果实修整、清洗、冷却和初级包装。 | `uga-watermelon-production-b996-2017`; `fao-postharvest-handling` |
 | `boundary_managed_soils` | 肥料、改良剂和残余物流 | 按一种声明的计算方法纳入施用养分和还田残余物产生的直接和间接管理土壤排放，不重复计算上游数据集已表示的排放。 | `ipcc-2019-managed-soils` |
 | `boundary_residue_fate` | 淘汰果实和作物残余物 | 为每个残余物流记录还田、堆肥、饲料、处理、处置或其他声明去向；未报告去向属于数据质量缺口，不能自动作为副产品。 | `fao-crop-residue-management`; `fao-postharvest-handling` |
 
@@ -106,7 +106,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_planting_records`
-- 来源：`usda-watermelon-production-guidance`
+- 来源：`uga-watermelon-production-b996-2017`
 - 数量范围：暂定种植材料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.1
@@ -131,7 +131,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_operation_records`
-- 来源：`usda-watermelon-production-guidance`
+- 来源：`uga-watermelon-production-b996-2017`
 
 ##### 废物流
 
@@ -196,7 +196,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fertilizer_records`
-- 来源：`usda-watermelon-production-guidance`
+- 来源：`uga-watermelon-production-b996-2017`
 - 数量范围：暂定氮施用筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -264,7 +264,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_crop_protection_records`
-- 来源：`usda-watermelon-production-guidance`
+- 来源：`uga-watermelon-production-b996-2017`
 - 数量范围：暂定作物保护产品筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -289,7 +289,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_operation_records`
-- 来源：`usda-watermelon-production-guidance`
+- 来源：`uga-watermelon-production-b996-2017`
 
 ##### 废物流
 
@@ -469,7 +469,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | 所有库存行 | `normalized amount = field or lot amount × 1,000 kg / marketable farm-gate watermelon mass` | 地块或批次记录；可销售质量 | 每 1,000 kg 参考流的数量 |  |
-| `calc_nutrient_mass` | 肥料投入 | `nutrient mass = product mass × declared nutrient concentration` | 产品质量；标签或供应商浓度 | kg N、kg P2O5 或 kg K2O | `usda-watermelon-production-guidance` |
+| `calc_nutrient_mass` | 肥料投入 | `nutrient mass = product mass × declared nutrient concentration` | 产品质量；标签或供应商浓度 | kg N、kg P2O5 或 kg K2O | `uga-watermelon-production-b996-2017` |
 | `calc_land_occupation` | 土地占用 | `occupation = field area × declared crop-cycle occupation duration` | 地块面积；播种或定植和最后采收日期 | m2*a 或声明的面积时间单位 |  |
 | `calc_managed_soil_emissions` | 管理土壤氮排放 | 对有记录的养分投入和还田残余物应用一种声明的、兼容 IPCC 的方法，并将因子和假设保留在数据集内。 | 养分投入；残余物还田；土壤和气候参数 | 每参考流的基本氮排放 | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | 采收和分级 | `gross harvested = marketable + rejected + documented other destinations`，受称量精度和声明估算不确定度约束 | 采收、分级和去向记录 | 核对后的作物产出和损失记录 | `fao-postharvest-handling` |
@@ -515,7 +515,7 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `fao-crop-production-framework` | official_guidance | FAO 作物生产和资源管理指南。https://www.fao.org/land-water/databases-and-software/crop-information/en/ | 一年生作物周期边界、田间记录和分配要求 |
-| `usda-watermelon-production-guidance` | extension_guidance | USDA 及推广机构西瓜播种、养分管理、田间作业和采收记录指南。https://extension.uga.edu/publications/detail.html?number=C1101 | 播种、养分管理、田间作业和采收记录 |
+| `uga-watermelon-production-b996-2017` | extension_guidance | University of Georgia Cooperative Extension, Commercial Watermelon Production, Bulletin 996 (2017), https://fieldreport.caes.uga.edu/publications/B996/commercial-watermelon-production/ | 佐治亚州播种、养分管理、田间作业和采收背景；PCR 边界与分配由本方法明确选择 |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO 灌溉与排水文件 56《作物蒸散》。https://www.fao.org/4/X0490E/X0490E00.htm | 作物水平衡和灌溉记录方法 |
 | `ipcc-2019-managed-soils` | method_factor | 2019 IPCC Refinement 农业、林业和其他土地利用部分的管理土壤方法。https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 管理土壤氮排放方法 |
 | `fao-crop-residue-management` | official_guidance | FAO 作物残余物和土壤管理指南。https://www.fao.org/3/y2779e/y2779e00.htm | 残余物还田和去向披露 |

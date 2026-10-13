@@ -15,7 +15,7 @@ translation_status: aligned
 
 规范参考流身份对应平台记录 `Pistachios, in shell`，分类为 CPC 3.0 `01375`，平台限定信息为 `Production mix, at plant; Fresh pistachios picked`。数据集必须披露声明节点的产品是生产设施鲜品节点的完整果实、去外果皮但保留硬壳的开心果，还是经过调理或储存的延伸节点批次，不得混淆这些状态。
 
-本 PCR 适用于常规、有机、雨养、灌溉、混作以及小农或种植园路线，前提是披露品种或品种组、地理位置、树龄、作物年度、采收成熟度、外果皮状态、硬壳状况、水分基准、质量状态和交接节点。排除苗圃作业（作为上游投入时除外）、去硬壳、劈开或斧剖、仁加工、榨油、烘烤或其他加工开心果产品、硬壳加工、零售包装、消费者使用，以及声明交接节点后的运输或储存。本 PCR 不选择 `Other` 或 n.e.c. 产品类别。
+本 PCR 适用于常规、有机、雨养、灌溉、混作以及小农或种植园路线，前提是披露品种或品种组、地理位置、树龄、作物年度、采收成熟度、外果皮状态、硬壳状况、水分基准、质量状态和交接节点。排除苗圃作业（作为上游投入时除外）、去硬壳、破坏性劈壳取仁或斧剖、仁加工、榨油、烘烤或其他加工开心果产品、硬壳加工、零售包装、消费者使用，以及声明交接节点后的运输或储存。本 PCR 不选择 `Other` 或 n.e.c. 产品类别。
 
 ## 2. 产品类别识别
 
@@ -24,7 +24,7 @@ translation_status: aligned
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pistachios-in-shell` |
 | classification_refs | CPC 3.0 `01375`，带壳开心果；映射关系：exact |
 | covered_products | 保留外果皮和硬壳的完整开心果果实，以及声明延伸节点时去外果皮但保留硬壳的开心果 |
-| excluded_products | 去壳或劈开的开心果；开心果仁、开心果油、烘烤或其他加工开心果产品、硬壳产品，以及交接节点后的物流或零售产品 |
+| excluded_products | 去壳开心果或脱离硬壳的果仁；开心果仁、开心果油、烘烤或其他加工开心果产品、硬壳产品，以及交接节点后的物流或零售产品 |
 | representative_product | 成熟或达到声明成熟度的带壳开心果，披露品种、外果皮状态、水分或鲜度状态、等级、合格质量、拒收质量和交接节点 |
 | production_route | 多年生开心果树建植与管理、采收与收集、保留硬壳的可选去外果皮、初级调理、分级、可选储存及声明交接 |
 | market_state | 生产设施节点的鲜完整果实，或声明延伸节点的去外果皮／调理带壳批次，并记录作物年度、地理位置、成熟度、外果皮状态、硬壳状况、等级和去向 |
@@ -48,11 +48,13 @@ translation_status: aligned
 | 参考单位 | kg |
 | 必需限定信息 | 品种或品种组；树木地块和地理位置；建植年份、树龄、结果状态和补植事件；土壤和气候；灌溉状态和水源；作物年度或平均期间；采收成熟度；完整果实或去外果皮状态；外果皮状态；水分基准；硬壳状况；尺寸或等级；合格、降级、拒收和损失质量；外果皮去向；储存时长和条件；交接节点 |
 
-必需限定信息必须在数据集元数据、过程说明、参考流备注、产品说明或等效数据包字段中声明。净产品质量排除容器皮重。平台身份对应生产设施鲜品节点的产品流；去外果皮、分级、干燥或储存属于延伸交接节点，必须保留该限定信息，不能表示成新的产品类别。不得将去壳或劈开的开心果用作本 PCR 的参考产品。
+必需限定信息必须在数据集元数据、过程说明、参考流备注、产品说明或等效数据包字段中声明。净产品质量排除容器皮重。平台身份对应生产设施鲜品节点的产品流；去外果皮、分级、干燥或储存属于延伸交接节点，必须保留该限定信息，不能表示成新的产品类别。不得将去壳开心果或脱离硬壳的果仁用作本 PCR 的参考产品。
 
 每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
 
 唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+沿硬壳缝自然开口、仍保留硬壳的果实属于带壳开心果。自然开口不是去壳，也不自动成为拒收品。任何人工开口但保留硬壳的路线须披露实际操作和等级，并与破坏性劈壳取出果仁区分（`usda-pistachio-in-shell-standard`）。
 
 ## 4. 计量与单位规则
 
@@ -71,7 +73,7 @@ translation_status: aligned
 
 ## 5. 系统边界
 
-默认前景边界从声明的树木果园起始条件开始，经过多年生树木管理、采收与收集，止于合格带壳开心果在生产设施鲜品节点的交接。延伸路线另纳入保留硬壳的去外果皮、清理、分级、储存和声明采后交接节点。种植材料、肥料、植保产品、灌溉供水、能源载体、机械服务和包装的上游生产使用有代表性的背景数据集。去硬壳、劈开、仁加工、榨油、烘烤或其他加工开心果产品、零售及交接节点后运输和储存均在默认边界之外。
+默认前景边界从声明的树木果园起始条件开始，经过多年生树木管理、采收与收集，止于合格带壳开心果在生产设施鲜品节点的交接。延伸路线另纳入保留硬壳的去外果皮、清理、分级、储存和声明采后交接节点。种植材料、肥料、植保产品、灌溉供水、能源载体、机械服务和包装的上游生产使用有代表性的背景数据集。去硬壳、破坏性劈壳取仁、仁加工、榨油、烘烤或其他加工开心果产品、零售及交接节点后运输和储存均在默认边界之外。
 
 ### 边界概化
 
@@ -79,7 +81,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 建植前或建植时的树木果园地块，种植材料和购买的管理投入跨越前景边界；披露先前土地用途及既有树木历史 |
 | starting_condition_role | 受管理的多年生开心果生产和树木资产核算的起点 |
-| product_classification_scope | CPC 3.0 `01375`，带壳开心果；去壳、劈开、仁、油、硬壳及下游加工开心果产品不在本 PCR 范围内 |
+| product_classification_scope | CPC 3.0 `01375`，带壳开心果；去壳、脱离硬壳的果仁、油、硬壳及下游加工开心果产品不在本 PCR 范围内 |
 | recursive_input_rule | 同类种植材料或跨越边界的留存开心果作为上游投入记录，不递归展开为另一带壳产品输出。果园、采收、调理、分级和储存之间的内部交接是过程链接，不是额外市场输出。 |
 | upstream_dataset_requirement | 苗圃材料、养分产品、植保、灌溉供水、燃料、电力、去外果皮或分级服务、包装、机械服务和废物处理跨越边界时，使用有代表性的上游数据集。 |
 | disclosure | 品种和树木地块；地理位置、土壤、气候和土地历史；建植年份、树龄、结果寿命和补植；灌溉水源和水质；养分和植保记录；采收成熟度；完整果实或去外果皮状态；水分或鲜度；硬壳质量；等级、拒收、外果皮和储存记录；交接节点；任何有意外果皮副产品交接 |
@@ -91,7 +93,7 @@ translation_status: aligned
 | `boundary_tree_to_farm_gate` | 所有符合要求的数据集 | 纳入多年生树木建植、未结果年份、结果期管理、采收、收集及合格带壳开心果在声明生产设施鲜品节点的交接。 | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
 | `boundary_dehusking_extension` | 延伸采后路线 | 仅当声明的数据集交接节点超出生产设施鲜完整果实节点时，才纳入去外果皮、清理、分级和储存。报告延伸交接节点，不得重新标注为平台鲜品／未加工状态。 | `ucdavis-pistachio-postharvest`; `codex-tree-nuts-hygiene-cxc-6-1972` |
 | `boundary_perennial_tree_disclosure` | 建植和补植 | 按声明树木寿命及合格产出基准分配建植、未结果年份、补植树和清除，并披露寿命、未结果年份、间作和补植事件。 | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
-| `boundary_no_shell_removal` | 带壳产品 | 产品边界保留硬壳。排除斧剖或去硬壳、劈开、仁加工、榨油、烘烤或其他加工开心果产品和硬壳加工。 | `codex-tree-nuts-hygiene-cxc-6-1972`; `ucdavis-pistachio-postharvest` |
+| `boundary_no_shell_removal` | 带壳产品 | 产品边界保留硬壳。排除斧剖或去硬壳、破坏性劈壳取仁、仁加工、榨油、烘烤或其他加工开心果产品和硬壳加工。 | `codex-tree-nuts-hygiene-cxc-6-1972`; `ucdavis-pistachio-postharvest` |
 | `boundary_quality_and_fate` | 所有输出 | 按实测质量及声明去向区分合格带壳开心果、外果皮、降级批次、拒收果实、异物、粉尘、水分损失、储存损失和未解释损失。 | `ucdavis-pistachio-postharvest`; `mass-balance-identity` |
 
 ## 6. 过程清单结构
@@ -356,7 +358,7 @@ translation_status: aligned
 
 ### 过程：开心果去外果皮、初级调理和分级（`pistachio_primary_conditioning_and_grading`）
 
-本过程有条件纳入。去外果皮操作去除外层外果皮并保留硬壳；去硬壳、劈开以及仁回收不在本 PCR 范围内。
+本过程有条件纳入。去外果皮操作去除外层外果皮并保留硬壳；去硬壳、破坏性劈壳取仁以及仁回收不在本 PCR 范围内。
 去外果皮和初级调理是物料处理节点，分别记录其处理后输出及全部残余物去向。
 
 #### 输入
@@ -524,7 +526,7 @@ translation_status: aligned
 
 ###### 降级和拒收开心果（`pistachio_grade_rejects`）
 
-记录开裂、霉变、虫害、未成熟、过熟、污染或其他不合规格的开心果，以及返工、回收、处理或处置去向。
+记录硬壳破损、霉变、虫害、未成熟、过熟、污染或其他不合规格的开心果，以及返工、回收、处理或处置去向。
 
 - 选定流：拒收或降级带壳开心果
 - 流属性/单位：质量 / kg
@@ -819,7 +821,7 @@ translation_status: aligned
 
 | requirement_id | 适用对象 | 要求 | 证据 |
 | --- | --- | --- | --- |
-| `quality_01` | 流身份 | 使用经核实的 `Pistachios, in shell` UUID，属性为质量、单位为 kg。保留生产设施鲜品节点或明确延伸交接节点的限定信息，不得替换为去壳、劈开或仁的身份。 | 平台身份记录；数据集元数据 |
+| `quality_01` | 流身份 | 使用经核实的 `Pistachios, in shell` UUID，属性为质量、单位为 kg。保留生产设施鲜品节点或明确延伸交接节点的限定信息，不得替换为去壳或脱离硬壳的果仁的身份。 | 平台身份记录；数据集元数据 |
 | `quality_02` | 树木和采收数量 | 使用校准秤、计量表或透明且有记录的估计。路线不使用灌溉、湿法清理、包装或储存时，记录有依据的零值。 | 校准记录；田间和批次日志 |
 | `quality_03` | 外果皮和产品状态 | 分别测量或记录完整果实、去外果皮保留硬壳和调理状态。分配或换算涉及外果皮水分或干物质时，保留相应基准。 | 批次记录；秤；水分或鲜度检测 |
 | `quality_04` | 完整性 | 核对树木投入、采收输出、外果皮去向、调理输出、拒收物、残余物、水分损失、储存损失和交接发货。 | 质量平衡工作簿；库存台账 |
@@ -832,7 +834,7 @@ translation_status: aligned
 
 | rule_id | applies_to | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validation_01` | 参考流 | 参考产品采用经核实的 `Pistachios, in shell` UUID，属性为质量、单位为 kg。数据集声明完整果实或延伸去外果皮交接状态，不得替换为去壳或劈开的开心果。 | `codex-tree-nuts-hygiene-cxc-6-1972` |
+| `validation_01` | 参考流 | 参考产品采用经核实的 `Pistachios, in shell` UUID，属性为质量、单位为 kg。数据集声明完整果实或延伸去外果皮交接状态，不得替换为去壳开心果或脱离硬壳的果仁。 | `codex-tree-nuts-hygiene-cxc-6-1972` |
 | `validation_02` | 过程图 | 所有必需过程均存在；声明交接节点或路线需要时，条件性的去外果皮、清理、分级和储存过程也须存在。 | `ucdavis-pistachio-postharvest` |
 | `validation_03` | 多年生生产 | 树木建植、未结果年份、结果期、补植、间作归属和清除均关联至声明作物年度，不得重复计入。 | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |
 | `validation_04` | 采收和收集 | 采收、收集、未收集、受损、残余物和合格开心果质量相互核对；声明成熟度和交接状态。 | `mass-balance-identity` |
@@ -849,7 +851,7 @@ translation_status: aligned
 | dataset_role | 已审阅的带壳开心果前景数据集使用 `secondary_dataset`；仅通过规定审查和发布门槛后才可提升为 `background_dataset` |
 | downstream_use | 构建和验证声明生产设施鲜品节点或延伸去外果皮、调理或储存交接节点的带壳开心果 process 和 lifecyclemodel 投影 |
 | allowed_use | 保留声明产品状态、外果皮状态、成熟度、质量、作物年度、地理位置和分配处理时，用于树木管理、采收、收集、去外果皮、清理、分级、储存和交接节点建模 |
-| excluded_use | 去硬壳、劈开、仁加工、榨油、烘烤或其他加工开心果产品、硬壳产品、零售产品、消费者使用、交接节点后物流及未报告产品类别 |
+| excluded_use | 去硬壳、破坏性劈壳取仁、仁加工、榨油、烘烤或其他加工开心果产品、硬壳产品、零售产品、消费者使用、交接节点后物流及未报告产品类别 |
 | required_metadata | 参考 UUID；质量属性和质量单位组；CPC 3.0 `01375`；品种；地理位置；树木阶段和年龄；作物年度；灌溉；成熟度；完整果实或去外果皮状态；外果皮去向；硬壳和等级质量；合格、拒收、残余物、损失和储存记录 |
 | required_quality_disclosure | 实测与估计区分；鲜度或水分方法；质量平衡完整性；树木寿命和间作分配；外果皮副产品分配；返工和拒收去向；储存时长；数据期间；地理位置；技术；未解决身份缺口 |
 | update_trigger | 新作物年度记录、树木阶段或补植的重大变化、采收或去外果皮技术变化、新预期外果皮路线、储存实践变化、有证据支持的范围替换或平台身份修订 |
@@ -869,3 +871,4 @@ translation_status: aligned
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `usda-pistachio-in-shell-standard` | standard | USDA Agricultural Marketing Service, Pistachios in the Shell Grades and Standards, https://www.ams.usda.gov/grades-standards/pistachios-shell-grades-and-standards | Shell retention, natural suture opening and grade-specific split/non-split context; not an LCA allocation rule |

@@ -346,15 +346,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate product.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_nutrient_application_records`
 - Sources: `ipcc-2019-managed-soils-n2o`
-- Range: Direct N2O screening interval
+- Range: Provisional author screening estimate; endpoints are not IPCC limits
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 80
   - Unit: kg N2O-N/ha
   - Basis: documented nutrient input and crop cycle
   - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ipcc-2019-managed-soils-n2o`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Ammonia volatilization (`ammonia_emission`)
 
@@ -372,15 +371,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate product.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_nutrient_application_records`
 - Sources: `ipcc-2019-managed-soils-n2o`
-- Range: Ammonia screening interval
+- Range: Provisional author screening estimate; endpoints are not IPCC limits
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 60
   - Unit: kg NH3-N/ha
   - Basis: documented nutrient input and crop cycle
   - Basis kind: crop_cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ipcc-2019-managed-soils-n2o`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Nitrate leaching or runoff (`nitrate_water_emission`)
 

@@ -74,8 +74,8 @@ the reference-flow comment, product description, or an equivalent package field.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_orchard_to_farm_gate` | all datasets | Include orchard management, harvest, and pre-hand-off handling; exclude downstream transport and processing. | `fao-good-agricultural-practices` |
-| `boundary_perennial_establishment` | establishment and replacement | Include establishment only for the declared allocation period and disclose productive lifetime and replacement rate. | `fao-good-agricultural-practices` |
+| `boundary_orchard_to_farm_gate` | all datasets | Include orchard management, harvest, and pre-hand-off handling; exclude downstream transport and processing. | `fao-gap-framework-2003` |
+| `boundary_perennial_establishment` | establishment and replacement | Include establishment only for the declared allocation period and disclose productive lifetime and replacement rate. | `fao-gap-framework-2003` |
 | `boundary_direct_field_emissions` | soil and crop-protection emissions | Use one declared geographically applicable method and the same activity records as nutrient accounting. | `ipcc-2019-refinement` |
 | `boundary_post_gate_exclusion` | downstream activities | Exclude off-farm storage, transport, distribution, retail packaging, processing, consumption, and end-of-life unless explicitly extended. |  |
 
@@ -110,7 +110,7 @@ Raw activity or stage basis: per planted hectare allocated to 1,000 kg fruit.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Agricultural nutrient and fertilizer inputs (`orchard_establishment_agricultural_nutrient_inputs`)
 
@@ -127,7 +127,7 @@ Raw activity or stage basis: per planted hectare allocated to 1,000 kg fruit.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Establishment irrigation (`establishment_irrigation_input`)
 
@@ -243,7 +243,7 @@ Raw activity or stage basis: per crop-year area converted to 1,000 kg fruit.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_activity_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Mobile machinery fuel (`orchard_fuel_input`)
 
@@ -513,7 +513,7 @@ Raw activity or stage basis: per 1,000 kg accepted fruit.
 | --- | --- | --- | --- |
 | `allocation_avoid_by_subdivision` | orchard and handling | Prefer separate pear/quince block and handling records before allocation. | `iso-14044-2006` |
 | `allocation_mixed_pear_quince` | mixed production | Use measured crop-year mass allocation when crop-specific records are unavailable and disclose the mix. | `iso-14044-2006` |
-| `allocation_orchard_establishment` | perennial establishment | Allocate establishment over the declared productive period using the same period for inputs and outputs. | `fao-good-agricultural-practices` |
+| `allocation_orchard_establishment` | perennial establishment | Allocate establishment over the declared productive period using the same period for inputs and outputs. | `fao-gap-framework-2003` |
 | `allocation_cull_and_byproducts` | culls and co-products | Subdivide by destination; use economic allocation only for documented valuable co-products when subdivision is infeasible. | `iso-14044-2006` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
@@ -535,8 +535,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_orchard_to_reference_flow` | orchard inputs and emissions | crop-year amount per area / same-year marketable yield per area × 1,000 kg | amount; area; accepted fruit mass | amount per 1,000 kg fruit |  |
-| `calc_nutrient_content` | fertilizers and amendments | product mass × declared nutrient fraction | product; mass; assay; basis | kg N, kg P2O5, kg K2O | `fao-good-agricultural-practices` |
-| `calc_perennial_establishment_allocation` | establishment | total burden × declared productive-period share | establishment amount; productive period | allocated annual amount | `fao-good-agricultural-practices` |
+| `calc_nutrient_content` | fertilizers and amendments | product mass × declared nutrient fraction | product; mass; assay; basis | kg N, kg P2O5, kg K2O | `fao-gap-framework-2003` |
+| `calc_perennial_establishment_allocation` | establishment | total burden × declared productive-period share | establishment amount; productive period | allocated annual amount | `fao-gap-framework-2003` |
 | `calc_managed_soil_emissions` | N2O, ammonia, nitrate | selected IPCC or regional factors applied to crop-year activity records | activity; soil/climate; factors | pathway emissions | `ipcc-2019-refinement` |
 | `calc_handling_mass_balance` | harvest and handling | harvested input = accepted fruit + culls + handling waste + measured losses within uncertainty | batch masses; destinations | reconciled outputs |  |
 
@@ -574,10 +574,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | temporal, geographical, technological, completeness, measurement, uncertainty, identity, and allocation quality |
 | update_trigger | changed crop route, orchard guidance, crop mix, hand-off definition, concrete flow identity verification|
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | source_id | type | reference | use |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices guidance for orchard management and harvest records | boundary, establishment, nutrient, and collection rules |
 | `ipcc-2019-refinement` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories | soil and residue emission methods |
 | `iso-14044-2006` | standard | ISO 14044:2006 Environmental management — Life cycle assessment — Requirements and guidelines | allocation and co-product handling |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

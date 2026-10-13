@@ -70,10 +70,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | 建植和田间管理 | 纳入生产声明菠菜产出的苗床整备、播种或移栽、作物管理及作物周期投入；披露先前土地利用，排除无关基础设施建设。 | `ucanr-spinach-production-1996`; `govnl-spinach-production-guide-2025` |
+| `boundary_crop_cycle` | 建植和田间管理 | 纳入生产声明菠菜产出的苗床整备、播种或移栽、作物管理及作物周期投入；披露先前土地利用，排除无关基础设施建设。 | `ucanr-spinach-production-2011`; `govnl-spinach-production-guide-2025` |
 | `boundary_gate_preparation` | 采收和包装 | 前景系统在声明农场门或包装场门结束；交付前发生的切割、分级、修整、清洗、冷却和一次包装均须纳入。 | `usda-ams-bunched-spinach-standard`; `psu-spinach-harvest-guidance-2025` |
 | `boundary_soil_emissions` | 肥料、作物残体和受控土壤 | 使用一个声明方法，根据记录的养分投入和残体去向估算适用的直接和间接氮排放；不得重复计算同一氮途径。 | `ipcc-2019-refinement-nitrogen` |
-| `boundary_residue_fate` | 田间残体、拒收物和修剪物 | 分别记录还田、堆肥、饲料利用、处理或处置；没有证明生产性用途的材料保留为残体或废物流。 | `ucanr-spinach-production-1996`; `usda-ams-bunched-spinach-standard` |
+| `boundary_residue_fate` | 田间残体、拒收物和修剪物 | 分别记录还田、堆肥、饲料利用、处理或处置；没有证明生产性用途的材料保留为残体或废物流。 | `ucanr-spinach-production-2011`; `usda-ams-bunched-spinach-standard` |
 
 ## 6. 过程清单结构
 
@@ -131,7 +131,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
-- 来源：`ucanr-spinach-production-1996`; `govnl-spinach-production-guide-2025`
+- 来源：`ucanr-spinach-production-2011`; `govnl-spinach-production-guide-2025`
 - 数量范围：建植期氮筛选范围
   - 范围角色：典型范围（`typical_range`）
   - 下限：22
@@ -140,7 +140,7 @@ sync_with: pcr.en-US.md
   - 基准：鲜食菠菜播前或播种施用
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-spinach-production-1996`
+  - 来源：`ucanr-spinach-production-2011`
 
 - 数量范围：依土壤测试的磷筛选范围
   - 范围角色：默认估计（`default_estimate`）
@@ -176,16 +176,15 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
-- 来源：`ucanr-spinach-production-1996`; `fao-spinach-irrigation-schedule`
-- 数量范围：建植灌溉筛选范围
+- 来源：`ucanr-spinach-production-2011`; `fao-spinach-irrigation-schedule`
+- 数量范围：作者暂定建植用水估计；灌溉调度来源不提供这些端点
   - 范围角色：典型范围（`typical_range`）
   - 下限：100
   - 上限：300
   - 单位：m3/ha
   - 基准：播种至出苗或移栽建植期间的供水量
   - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-spinach-production-1996`; `fao-spinach-irrigation-schedule`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 流：整床用移动机械燃料（`establishment_machinery_fuel`）
 
@@ -203,7 +202,7 @@ sync_with: pcr.en-US.md
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`ucanr-spinach-production-1996`
+- 来源：`ucanr-spinach-production-2011`
 - 数量范围：整床和播种燃料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：50
@@ -269,7 +268,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`ucanr-spinach-production-1996`; `govnl-spinach-production-guide-2025`
+- 来源：`ucanr-spinach-production-2011`; `govnl-spinach-production-guide-2025`
 - 数量范围：作物周期氮筛选范围
   - 范围角色：典型范围（`typical_range`）
   - 下限：22
@@ -278,7 +277,7 @@ sync_with: pcr.en-US.md
   - 基准：鲜食菠菜的播前加补充氮
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-spinach-production-1996`
+  - 来源：`ucanr-spinach-production-2011`
 
 - 数量范围：生长期磷筛选范围
   - 范围角色：默认估计（`default_estimate`）
@@ -339,16 +338,16 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
-- 来源：`ucanr-spinach-production-1996`; `fao-spinach-irrigation-schedule`
-- 数量范围：作物周期灌溉筛选范围
+- 来源：`ucanr-spinach-production-2011`; `fao-spinach-irrigation-schedule`
+- 数量范围：加州鲜销路线施水量背景；不作为通用灌溉限值
   - 范围角色：典型范围（`typical_range`）
-  - 下限：413
-  - 上限：1240
+  - 下限：1016
+  - 上限：3048
   - 单位：m3/ha
-  - 基准：鲜食菠菜从播种至采收的总灌溉量
+  - 基准：加州从播种到采收：切叶路线 4–8 acre-inches/acre，即 1016–2032 m3/ha；束装 6–12，即 1524–3048。1 英寸水深 = 254 m3/ha；不含加工路线或整地前用水，数据值仍来自实际水量平衡。
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-spinach-production-1996`
+  - 来源：`ucanr-spinach-production-2011`
 
 ###### 流：作物管理移动机械燃料（`crop_machinery_fuel`）
 
@@ -366,7 +365,7 @@ sync_with: pcr.en-US.md
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`ucanr-spinach-production-1996`
+- 来源：`ucanr-spinach-production-2011`
 - 数量范围：作物管理燃料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：100
@@ -395,7 +394,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_reconciliation`
-- 来源：`ucanr-spinach-production-1996`
+- 来源：`ucanr-spinach-production-2011`
 - 数量范围：田间残体筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -478,15 +477,14 @@ sync_with: pcr.en-US.md
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`ipcc-2019-refinement-nitrogen`
-- 数量范围：直接氧化亚氮 QA 范围
+- 数量范围：作者暂定筛查估计；端点不是 IPCC 限值
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
   - 上限：15
   - 单位：kg N2O/ha
   - 基准：代表作物周期的受控土壤氮排放
   - 基准类型：氮投入（`n_input`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ipcc-2019-refinement-nitrogen`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 流：田间损失进入淡水的硝酸盐（`nitrate_freshwater_output`）
 
@@ -743,7 +741,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_single_crop_cycle` | 共享田块、苗床或设施单元 | 使用记录的苗床或单元面积和作物周期产出将投入归属菠菜；没有另一作物独立记录时不得分配给它。 | `ucanr-spinach-production-1996` |
+| `allocation_single_crop_cycle` | 共享田块、苗床或设施单元 | 使用记录的苗床或单元面积和作物周期产出将投入归属菠菜；没有另一作物独立记录时不得分配给它。 | `ucanr-spinach-production-2011` |
 | `allocation_multi_cut_spinach` | 同一播种批次的多次切割 | 将连续切割视为同一声明作物周期的产出，核对各次切割后再按菠菜总商品量归一化。 | `psu-spinach-harvest-guidance-2025` |
 | `allocation_residue_fate` | 田间残体、拒收物和修剪物 | 只有存在有文件的接收方、数量和预期用途时才为残体分配共产品抵扣；否则保留菠菜生产负荷并报告残体去向。 | `usda-ams-bunched-spinach-standard` |
 
@@ -795,7 +793,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `validate_reference_output` | reference flow | 声明参考产出必须是声明交付门的新鲜商品菠菜，且使用 kg 质量；冷冻、罐藏、熟制或零售产品不在本 PCR 范围内。 | `usda-ams-bunched-spinach-standard` |
 | `validate_crop_cycle_dates` | crop establishment and management | 播种或移栽、投入施用、灌溉、采收切次和交付门产出必须落在声明作物周期内，或明确归属于该周期。 | `govnl-spinach-production-guide-2025` |
-| `validate_nutrient_basis` | fertilizer inputs and emissions | 必须具备产品质量、养分浓度、养分基准和排放计算方法且相互一致；不得将产品质量和养分质量作为同一交换重复计入。 | `ucanr-spinach-production-1996`; `ipcc-2019-refinement-nitrogen` |
+| `validate_nutrient_basis` | fertilizer inputs and emissions | 必须具备产品质量、养分浓度、养分基准和排放计算方法且相互一致；不得将产品质量和养分质量作为同一交换重复计入。 | `ucanr-spinach-production-2011`; `ipcc-2019-refinement-nitrogen` |
 | `validate_mass_balance` | harvest and gate preparation | 毛采收量和收料量必须在声明测量不确定度内与商品产出、拒收物、残体和损失相符。 | `usda-ams-bunched-spinach-standard` |
 | `validate_flow_identity_resolution` | parameterized rows | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validate_qualifiers` | reference flow and dataset metadata | 数据包必须包含必需限定信息，包括作物形式、切次、交付门、清洗、冷却、包装和生产路线。 | `usda-ams-bunched-spinach-standard`; `psu-spinach-harvest-guidance-2025` |
@@ -816,7 +814,7 @@ sync_with: pcr.en-US.md
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `ucanr-spinach-production-1996` | literature | University of California Agriculture and Natural Resources, *Spinach Production in California*, ANR Publication 7212, https://anrcatalog.ucanr.edu/pdf/7212.pdf | production route, irrigation, nutrient application, crop management, and boundary context |
+| `ucanr-spinach-production-2011` | literature | University of California Agriculture and Natural Resources, *Spinach Production in California*, ANR Publication 7212 (2011), https://escholarship.org/content/qt67w2p91c/qt67w2p91c.pdf | production route, irrigation, nutrient application, crop management, and boundary context |
 | `govnl-spinach-production-guide-2025` | official_guidance | Government of Newfoundland and Labrador, *Vegetable Crops Production Guide: Spinach*, https://www.gov.nl.ca/ffa/files/agrifoods-plants-pdf-spinach.pdf | seeding, crop establishment, soil-test-based nutrient practice, and crop-cycle qualifiers |
 | `ufifas-leafy-vegetable-guide-2024` | extension_guidance | University of Florida IFAS, *Leafy Vegetable Production*, https://ask.ifas.ufl.edu/publication/CV293?downloadOpen=true | seed-rate and harvest-period screening |
 | `fao-spinach-irrigation-schedule` | official_guidance | FAO, *Crop Water Management: Determination of the Irrigation Schedule for Crops Other Than Rice*, https://www.fao.org/4/T7202E/t7202e06.htm | spinach irrigation scheduling context |

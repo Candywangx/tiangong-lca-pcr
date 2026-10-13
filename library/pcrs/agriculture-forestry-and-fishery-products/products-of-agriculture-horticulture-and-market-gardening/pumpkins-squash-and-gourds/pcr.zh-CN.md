@@ -347,15 +347,14 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_nutrient_application_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
-- 数量范围：直接氧化亚氮筛选区间
+- 数量范围：作者暂定筛查估计；端点不是 IPCC 限值
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
   - 上限：80
   - 单位：kg N2O-N/ha
   - 基准：有记录的养分投入和种植周期
   - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ipcc-2019-managed-soils-n2o`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 氨挥发（`ammonia_emission`）
 
@@ -373,15 +372,14 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_nutrient_application_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
-- 数量范围：氨筛选区间
+- 数量范围：作者暂定筛查估计；端点不是 IPCC 限值
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
   - 上限：60
   - 单位：kg NH3-N/ha
   - 基准：有记录的养分投入和种植周期
   - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ipcc-2019-managed-soils-n2o`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 硝酸盐淋失或径流（`nitrate_water_emission`）
 

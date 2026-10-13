@@ -9,7 +9,7 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
-This PCR covers cultivation and farm-gate preparation of fresh, unprocessed leafy or stem vegetables classified as CPC 3.0:01219. It covers direct-sown and transplanted annual crops, field or protected cultivation, irrigation, nutrient and crop-protection inputs, harvest, grading, optional washing, cooling, and primary packaging when these occur before farm-gate hand-off. It includes chervil, chard, parsley, purslane, sea kale, rhubarb, sorrel, savory, tarragon, watercress, and other salad vegetables outside lettuce and chicory. Vegetable seed and transplants sold as planting material, spices and aromatic crops classified elsewhere, asparagus, artichokes, cabbages, cauliflower, broccoli, lettuce, chicory, spinach, roots, bulbs, tubers, processed or frozen products, distribution, retail, preparation, and consumption are excluded.
+This PCR covers cultivation and farm-gate preparation of fresh, unprocessed leafy or stem vegetables classified as CPC 3.0:01219. It covers direct-sown or transplanted annual crops and documented perennial stands, field or protected cultivation, irrigation, nutrient and crop-protection inputs, harvest, grading, optional washing, cooling, and primary packaging when these occur before farm-gate hand-off. It includes chervil, chard, parsley, purslane, sea kale, rhubarb, sorrel, savory, tarragon, watercress, and other salad vegetables outside lettuce and chicory. Vegetable seed and transplants sold as planting material, spices and aromatic crops classified elsewhere, asparagus, artichokes, cabbages, cauliflower, broccoli, lettuce, chicory, spinach, roots, bulbs, tubers, processed or frozen products, distribution, retail, preparation, and consumption are excluded.
 
 ## 2. Product Category Identity
 
@@ -504,6 +504,8 @@ Raw activity or stage basis: per 1,000 kg marketable reference product.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
+
+For a perennial route, record establishment and non-bearing years, each productive harvest period, replacement and termination. Do not repeat establishment each year. Allocate inherited establishment and shared services over documented productive output/service periods, carrying stock and unharvested production consistently. Use measured output and an explicit allocation key, not an invented universal lifetime, annual yield or plant mass. Link establishment land occupation and maintenance occupation to disjoint periods; document actual land transformation separately. Missing stand-period/output evidence prevents a complete perennial dataset.
 
 ## 7. Allocation and Co-product Handling
 

@@ -113,7 +113,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional establishment material screening estimate
   - Range role: Default estimate (`default_estimate`)
@@ -139,7 +139,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional establishment nutrient screening estimate
   - Range role: Default estimate (`default_estimate`)
   - Lower: 0
@@ -190,7 +190,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_fuel_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional establishment fuel screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -286,7 +286,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional cultivation nutrient screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -311,7 +311,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_crop_protection_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional crop-protection input screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -337,7 +337,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_fuel_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional cultivation electricity screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -363,7 +363,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_fuel_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional cultivation fuel screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -450,7 +450,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_emission_and_loss_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional removed-residue screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -590,7 +590,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_fuel_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional harvest fuel screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -616,7 +616,7 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate fruit.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_fuel_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 - Range: Provisional farm-gate electricity screening estimate
   - Range role: QA guardrail (`qa_guardrail`)
@@ -752,9 +752,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calculation_establishment_annualization` | establishment and replanting inputs | Eligible establishment amount for the crop year = recorded establishment amount × (declared crop-year share of productive life); disclose the productive-life denominator and replacement treatment. | establishment records; productive-life assumption; replacement area | annualized establishment input per crop year | `mass-balance-identity`; `fao-good-agricultural-practices` |
+| `calculation_establishment_annualization` | establishment and replanting inputs | Eligible establishment amount for the crop year = recorded establishment amount × (declared crop-year share of productive life); disclose the productive-life denominator and replacement treatment. | establishment records; productive-life assumption; replacement area | annualized establishment input per crop year | `mass-balance-identity`; `fao-gap-framework-2003` |
 | `calculation_reference_normalization` | all foreground rows | Normalized amount = crop-year amount ÷ accepted marketable fruit mass × 1,000 kg. Apply the same accepted-output denominator to inputs, emissions, culls, and residues. | crop-year amount; accepted fruit mass | amount per 1,000 kg accepted fruit | `mass-balance-identity` |
-| `calculation_nutrient_basis` | fertilizer and soil-amendment total | Preserve actual product mass and calculate nutrient mass only from the declared formulation or analysis: nutrient mass = product mass × declared nutrient fraction. Do not add product mass and nutrient mass as if they were the same quantity. | product mass; declared nutrient fraction; application record | product and nutrient-basis totals | `fao-good-agricultural-practices`; `mass-balance-identity` |
+| `calculation_nutrient_basis` | fertilizer and soil-amendment total | Preserve actual product mass and calculate nutrient mass only from the declared formulation or analysis: nutrient mass = product mass × declared nutrient fraction. Do not add product mass and nutrient mass as if they were the same quantity. | product mass; declared nutrient fraction; application record | product and nutrient-basis totals | `fao-gap-framework-2003`; `mass-balance-identity` |
 | `calculation_irrigation_withdrawal_reconciliation` | irrigation water and source withdrawal | Reconcile applied irrigation = source withdrawal + reused or stored water − documented conveyance or application losses, with each term and measurement basis disclosed. | applied water; withdrawal; reuse; storage; losses | reconciled water inputs | `fao-crop-evapotranspiration-56`; `mass-balance-identity` |
 | `calculation_managed_soil_emissions` | ammonia, nitrous oxide, nitrate, and phosphate rows | Use the declared measurement or method tier, nutrient basis, receiving medium, and site conditions. Report a zero only when the method and records support zero or non-applicability. | nutrient records; soil and drainage records; emission method; measurements | named-substance emissions by medium | `ipcc-2019-managed-soils` |
 | `calculation_harvest_mass_reconciliation` | accepted fruit, culls, rejects, and residues | Harvested mass = accepted marketable fruit + culls and rejects + documented field or handling losses, with moisture basis and destination recorded. | harvest tickets; grade sheets; cull and loss records | reconciled output and loss totals | `mass-balance-identity` |
@@ -777,7 +777,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `validation_reference_definition` | reference flow | Confirm the 1,000 kg functional unit, all required qualifiers, and the evidence gap reference product qualifiers before generating a foreground dataset. | `mass-balance-identity`; `codex-fresh-tropical-fruit-standards` |
 | `validation_flow_identity_binding` | parameterized product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
 | `validation_mass_reconciliation` | harvest and farm-gate aggregation | Check accepted fruit, culls, rejects, residues, field losses, and handling losses against harvested mass, with grade, moisture, and destination treatment explicit. | `mass-balance-identity` |
-| `validation_crop_year_completeness` | all required processes | Verify that cultivation, harvest, and gate records cover the declared crop year and that conditional establishment is either documented or explicitly excluded. | `fao-good-agricultural-practices` |
+| `validation_crop_year_completeness` | all required processes | Verify that cultivation, harvest, and gate records cover the declared crop year and that conditional establishment is either documented or explicitly excluded. | `fao-gap-framework-2003` |
 | `validation_boundary_and_state` | dataset scope | Reject datasets that include post-gate washing, waxing, grading, cooling, packing, processing, retail, or post-gate transport, or that omit the declared farm-gate point. | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |
 
 ## 10. Published Dataset Profile
@@ -792,6 +792,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | Measurement sources, missing or estimated fields, crop-year completeness, establishment annualization, allocation basis, mass-balance result, emission method and tier, concrete flow identity verification, and identity evidence gap findings |
 | update_trigger | New orchard or protected-production route, material change in gate conditioning or product state, revised emission method, new product qualifier, or evidence that alters collection, allocation, or validation rules |
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
@@ -800,6 +802,6 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `ipcc-2019-managed-soils` | official_guidance | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 Agriculture, Forestry and Other Land Use, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | Managed-soil and nutrient-loss emission methods |
 | `ipcc-2006-mobile-combustion` | official_guidance | IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2 Energy, Chapter 3 Mobile Combustion, https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html | Fuel-related carbon-dioxide calculation for mobile machinery |
 | `codex-fresh-tropical-fruit-standards` | standard | Codex Alimentarius standards CXS 184-1993 (mangoes), CXS 215-1999 (guavas), and CXS 246-2005 (mangosteens) | Fresh whole product state, quality and marketable-condition qualifiers |
-| `fao-good-agricultural-practices` | extension_guidance | FAO good agricultural practice guidance for orchard establishment, crop management, input records, harvest, and traceability | Process decomposition, collection protocols, input and harvest record requirements |
 | `iso-14044-2006` | standard | ISO 14044:2006, *Environmental management — Life cycle assessment — Requirements and guidelines*, https://www.iso.org/standard/38498.html | Boundary, allocation, documentation, and validation principles |
 | `mass-balance-identity` | method_factor | PCR method identity for reference-flow normalization, annualization, and harvest-output reconciliation | Reference-flow scaling, establishment annualization, nutrient-basis separation, and mass reconciliation |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

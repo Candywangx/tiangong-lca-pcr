@@ -799,7 +799,7 @@ process_inventory:
           property_unit: "Mass / kg water"
           description: "Calculate water removed from the cashew lot from measured as-received and conditioned moisture. Do not use an unmeasured generic drying loss when moisture data are available. Raw activity or stage basis: per 1,000 kg fresh farm-gate reference product."
           amount:
-            expression: "received dry matter minus conditioned dry matter, with measured lot moisture and mass"
+            expression: "incoming water plus water additions minus water retained in all accepted, downgraded, rejected and residue outputs, other water exits and water stock increase; use each stream wet mass multiplied by its measured water fraction"
             value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
@@ -1279,12 +1279,14 @@ dataset_production:
       source_ids:
         - iso-14044-2006
     - id: calc_05
-      applies_to: "premium, standard, downgraded, and rejected lots"
-      rule: "Grade outputs must be mutually exclusive. Conditioned accepted output equals the sum of grade outputs plus declared downgraded, rework, reject, foreign-material, water-loss, and unexplained-loss terms."
+      applies_to: "graded lots"
+      rule: "Accepted output equals the sum of mutually exclusive accepted grades only. Reconcile incoming batch mass plus additions and opening stock with accepted and separately sold downgraded outputs, rejects, residues, measured water/non-water losses and closing stock. Internal rework is a transfer, not another sale; investigate unexplained residual."
       inputs:
         - "batch input"
+        - additions
+        - stocks
         - "grade and reject records"
-      output: "normalized output rows"
+      output: "accepted output and complete batch balance"
       source_ids:
         - mass-balance-identity
     - id: calc_06
@@ -1424,7 +1426,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:55118ce11062c67118f1b96b9c3ce63c8de45c8575baefa43bd64eb58fc4db87"
+  source_sha256: "sha256:e315a9c922552d9fb3b38cd8e9d14ef37c651f194bb973594b662e03de05fab1"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8691"
@@ -1475,15 +1477,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55246"
+    - unit_id: "normative_55387"
       family: "allocation"
       span:
         start:
-          offset: 55246
+          offset: 55387
           line: 926
           column: 1
         end:
-          offset: 58162
+          offset: 58303
           line: 939
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | orchard and harvest with an intended cashew-apple output | Prefer process subdivision when orchard, harvest, apple collection, and nut collection records are independently available. When the cashew apple is deliberately collected and transferred as an intended co-product, allocate shared orchard and harvest burdens by measured dry-matter mass; if dry-matter data are unavailable, use measured as-received mass and disclose the limitation. | `iso-14044-2006`; `fao-cashew-india-production-1998` |\n| `allocation_02` | cashew apple not collected as a product | If the apple remains on the orchard floor or is handled as residue without an intended product hand-off, do not assign a co-product credit. Retain its mass and fate as a residue or waste flow and assign the shared burden to the intended in-shell nut output. | `iso-14044-2006`; `fao-cashew-minor-oil-crops` |\n| `allocation_03` | premium and standard in-shell grades | Use physical mass allocation between mutually exclusive accepted in-shell grade outputs when common conditioning burdens cannot be subdivided. Grade-specific operations remain with the grade receiving them; do not allocate the same lot to both a grade row and an aggregate output row. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_04` | perennial orchard periods and phases | Annualize establishment, immature years, replacement, and removal over the declared orchard life and accepted output basis. Link every input and output to a crop year or lifecycle phase; do not count a replacement event in both the original and replacement orchard phases. | `fao-cashew-india-production-1998`; `iso-14044-2006` |\n| `allocation_05` | downgraded, reworked, rejected, and recovered lots | Keep rejected and downgraded lots separate from accepted product. Rework retains the producing-node burden and is linked once; recovered or intentionally marketed material requires a declared destination and allocation decision; discarded material receives its declared treatment burden. | `mass-balance-identity`; `iso-14044-2006` |\n| `allocation_06` | batch, campaign, and changeover attribution | Link orchard, harvest, conditioning, cleaning, grading, and storage inputs and outputs to the batch or campaign that generated them. Record cleaning and changeover events once and do not allocate shared-run burdens to more than one batch without a documented driver. | `mass-balance-identity`; `iso-14044-2006` |\n\nCashew shell mass is part of the in-shell reference product and is not a separate co-product in this PCR. CNSL, shell fragments, kernel, testa, and all shelling outputs belong to a downstream shelling or kernel PCR and must not be introduced into this inventory. No output may be counted both as a cashew-apple co-product and as orchard residue.\n\n"
@@ -1503,11 +1505,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55246
+              offset: 55387
               line: 926
               column: 1
             end:
-              offset: 55286
+              offset: 55427
               line: 926
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1523,15 +1525,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_69662"
+    - unit_id: "normative_69948"
       family: "validation"
       span:
         start:
-          offset: 69662
+          offset: 69948
           line: 984
           column: 1
         end:
-          offset: 72080
+          offset: 72366
           line: 998
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Reference product is the verified `Cashew nuts, in shell` UUID with Mass and kg. The dataset declares fresh farm-gate or extended-gate state and does not substitute shelled kernels. | `fda-cashew-nut-methods` |\n| `validation_02` | process map | Every required process is present; conditional drying, cleaning, grading, and storage processes are present when the declared gate or route requires them. | `fao-cashew-postharvest-2020` |\n| `validation_03` | perennial production | Orchard establishment, immature years, productive phase, replacement, and removal are linked to declared crop years and are not double-counted. | `fao-cashew-india-production-1998`; `iso-14044-2006` |\n| `validation_04` | harvest and apple separation | Harvested, collected, uncollected, cashew-apple, residue, and accepted nut masses are mutually reconciled; apple destination is declared. | `mass-balance-identity` |\n| `validation_05` | conditioning and quality | Fresh input, conditioned moisture, premium grade, standard grade, downgraded/rework, reject, foreign material, water loss, and wastewater are mutually exclusive and mass-balanced. | `mass-balance-identity`; `fao-cashew-minor-oil-crops` |\n| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, moisture, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `fao-cashew-postharvest-2020` |\n| `validation_07` | allocation and rework | Cashew-apple allocation, grade allocation, downgraded routes, rework loops, and rejected-material treatment are explicit and no burden or output is counted twice. | `iso-14044-2006` |\n| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, moisture, and evidence limitations are disclosed. | `fao-cashew-postharvest-2020`; `mass-balance-identity` |\n| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |\n\n"
@@ -1551,11 +1553,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 69662
+              offset: 69948
               line: 984
               column: 1
             end:
-              offset: 69684
+              offset: 69970
               line: 984
               column: 23
           text: "## 9. Validation Rules"
@@ -1653,209 +1655,209 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 55359
+          offset: 55500
           line: 930
           column: 1
         end:
-          offset: 55877
+          offset: 56018
           line: 930
           column: 519
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 55878
+          offset: 56019
           line: 931
           column: 1
         end:
-          offset: 56248
+          offset: 56389
           line: 931
           column: 371
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 56249
+          offset: 56390
           line: 932
           column: 1
         end:
-          offset: 56638
+          offset: 56779
           line: 932
           column: 390
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 56639
+          offset: 56780
           line: 933
           column: 1
         end:
-          offset: 57027
+          offset: 57168
           line: 933
           column: 389
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 57028
+          offset: 57169
           line: 934
           column: 1
         end:
-          offset: 57434
+          offset: 57575
           line: 934
           column: 407
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 57435
+          offset: 57576
           line: 935
           column: 1
         end:
-          offset: 57813
+          offset: 57954
           line: 935
           column: 379
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 57815
+          offset: 57956
           line: 937
           column: 1
         end:
-          offset: 58160
+          offset: 58301
           line: 937
           column: 346
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 69757
+          offset: 70043
           line: 988
           column: 1
         end:
-          offset: 70004
+          offset: 70290
           line: 988
           column: 248
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 70005
+          offset: 70291
           line: 989
           column: 1
         end:
-          offset: 70227
+          offset: 70513
           line: 989
           column: 223
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 70228
+          offset: 70514
           line: 990
           column: 1
         end:
-          offset: 70471
+          offset: 70757
           line: 990
           column: 244
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 70472
+          offset: 70758
           line: 991
           column: 1
         end:
-          offset: 70688
+          offset: 70974
           line: 991
           column: 217
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 70689
+          offset: 70975
           line: 992
           column: 1
         end:
-          offset: 70973
+          offset: 71259
           line: 992
           column: 285
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 70974
+          offset: 71260
           line: 993
           column: 1
         end:
-          offset: 71244
+          offset: 71530
           line: 993
           column: 271
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 71245
+          offset: 71531
           line: 994
           column: 1
         end:
-          offset: 71472
+          offset: 71758
           line: 994
           column: 228
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 71473
+          offset: 71759
           line: 995
           column: 1
         end:
-          offset: 71782
+          offset: 72068
           line: 995
           column: 310
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 71783
+          offset: 72069
           line: 996
           column: 1
         end:
-          offset: 72078
+          offset: 72364
           line: 996
           column: 296
   diagnostics:
@@ -1885,26 +1887,26 @@ normative_context:
           column: 426
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55246"
+      unit_id: "normative_55387"
       source_span:
         start:
-          offset: 55246
+          offset: 55387
           line: 926
           column: 1
         end:
-          offset: 55286
+          offset: 55427
           line: 926
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_69662"
+      unit_id: "normative_69948"
       source_span:
         start:
-          offset: 69662
+          offset: 69948
           line: 984
           column: 1
         end:
-          offset: 69684
+          offset: 69970
           line: 984
           column: 23
 projection_metadata:
@@ -1914,5 +1916,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:55118ce11062c67118f1b96b9c3ce63c8de45c8575baefa43bd64eb58fc4db87"
-  generated_content_sha256: "sha256:866feb9d5e40c22df2c51c5eed9c0cc62ed514d958085f637274b97d7977e54b"
+    sha256: "sha256:e315a9c922552d9fb3b38cd8e9d14ef37c651f194bb973594b662e03de05fab1"
+  generated_content_sha256: "sha256:47a51d0bfe9faec8d0eb60056ccb7800516f7abffbf8d085bbe4f8cd8f4b9ed2"

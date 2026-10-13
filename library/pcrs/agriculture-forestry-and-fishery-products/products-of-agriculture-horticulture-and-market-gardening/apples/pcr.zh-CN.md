@@ -195,15 +195,7 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
 - 来源：`dzikiti-apple-water-footprint-2019`
-- 数量范围：实测果园水足迹背景区间
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：0.187
-  - 上限：0.237
-  - 单位：m3 总水足迹/kg 苹果
-  - 基准：地中海气候果园实测背景，不是通用灌溉默认值
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dzikiti-apple-water-footprint-2019`
+范围证据需求：分别采集实际灌溉供水和水源取用量。引用的总水足迹观测值（187–237 m3/t，包含绿水和蓝水成分）仅为背景指标，不是这两种交换的数量范围。
 
 ###### 果园能源（`orchard_energy`）
 
@@ -278,15 +270,7 @@ translation_status: aligned
 - 证据类型：根据采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_irrigation_records`
 - 来源：`dzikiti-apple-water-footprint-2019`
-- 数量范围：实测果园水足迹背景区间
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：0.187
-  - 上限：0.237
-  - 单位：m3 总水足迹/kg 苹果
-  - 基准：实测背景；取水仍须按水源记录
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dzikiti-apple-water-footprint-2019`
+范围证据需求：分别采集实际灌溉供水和水源取用量。引用的总水足迹观测值（187–237 m3/t，包含绿水和蓝水成分）仅为背景指标，不是这两种交换的数量范围。
 
 #### 输出
 ##### 产品流

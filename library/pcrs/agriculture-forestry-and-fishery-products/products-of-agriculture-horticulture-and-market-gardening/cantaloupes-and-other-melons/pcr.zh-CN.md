@@ -74,10 +74,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_annual_melon_cycle` | 露地或保护地生产至最终采收 | 纳入田地或保护地准备、播种或定植、作物管理和声明一年作物周期的全部采收；根据生产记录将共享作业分配给所报告的甜瓜。 | `fao-crop-production-framework`; `fao-good-agricultural-practices` |
-| `boundary_farm_gate` | 采收和准备 | 可销售完整甜瓜在农场大门转移时结束前景边界；仅在转移前发生时纳入农场内分级、受损果实修整、清洗、冷却和初级包装。 | `fao-fruit-and-vegetable-postharvest` |
+| `boundary_annual_melon_cycle` | 露地或保护地生产至最终采收 | 纳入田地或保护地准备、播种或定植、作物管理和声明一年作物周期的全部采收；根据生产记录将共享作业分配给所报告的甜瓜。 | `fao-gap-framework-2003` |
+| `boundary_farm_gate` | 采收和准备 | 可销售完整甜瓜在农场大门转移时结束前景边界；仅在转移前发生时纳入农场内分级、受损果实修整、清洗、冷却和初级包装。 | `fao-postharvest-handling-ae075e` |
 | `boundary_managed_soils` | 养分、改良剂和残余物流 | 按一种声明的计算方法纳入施用养分和还田残余物产生的直接和间接管理土壤排放，不重复计算上游数据集已表示的排放。 | `ipcc-2019-managed-soils` |
-| `boundary_residue_fate` | 淘汰果实和作物残余物 | 为每个残余物流记录还田、堆肥、饲料、处理、处置或其他去向；未报告去向属于数据质量缺口，不能自动作为副产品。 | `fao-crop-residue-management`; `fao-fruit-and-vegetable-postharvest` |
+| `boundary_residue_fate` | 淘汰果实和作物残余物 | 为每个残余物流记录还田、堆肥、饲料、处理、处置或其他去向；未报告去向属于数据质量缺口，不能自动作为副产品。 | `fao-gap-framework-2003`; `fao-postharvest-handling-ae075e` |
 
 ## 6. 过程清单结构
 
@@ -111,7 +111,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_melon_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：暂定种植材料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.05
@@ -136,7 +136,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_melon_field_operation_records`
-- 来源：`fao-crop-production-framework`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -201,7 +201,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_melon_fertilizer_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：暂定氮施用筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -244,7 +244,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_melon_irrigation_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：暂定灌溉筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -700,7 +700,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `allocation_avoid_by_subdivision` | 田间管理、采收和调理 | 优先分别记录生产、采收、调理、可销售果实、残余物和废物，再进行分配。 | `iso-14044-2006` |
 | `allocation_melon_grades` | 多个可销售甜瓜等级 | 具有相同预期用途的声明等级视为一个参考产品类别；报告等级数量，只有不能独立建模时才使用经济或质量分配。 | `iso-14044-2006` |
-| `allocation_residue_and_rejects` | 残余物、淘汰品和有用副产物 | 只有在交接和去向有记录时，才将有声明有用交接的材料作为副产品；否则按披露去向记录为废物或残余物。 | `fao-fruit-and-vegetable-postharvest`; `iso-14044-2006` |
+| `allocation_residue_and_rejects` | 残余物、淘汰品和有用副产物 | 只有在交接和去向有记录时，才将有声明有用交接的材料作为副产品；否则按披露去向记录为废物或残余物。 | `fao-postharvest-handling-ae075e`; `iso-14044-2006` |
 | `allocation_shared_operations` | 共享田间、保护地或调理作业 | 按面积、时间、质量或其他有记录的物理关系分配共享作业；物理关系不具代表性时披露并进行价值分配敏感性分析。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
@@ -767,14 +767,12 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 前景覆盖；代理投入；缺失记录；范围超限；排放方法；秤和计量器校准；等级和质量平衡核对 |
 | update_trigger | 新的经审查甜瓜证据、实质生产路线变化、排放方法修订、具体流身份核验|
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-crop-production-framework` | official_guidance | FAO crop-production and resource-management guidance | 作物路线、建立、田间作业和生产边界背景 |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices guidance for fruit and vegetable production | 播种、养分、灌溉、作物保护和田间记录要求 |
-| `fao-fruit-and-vegetable-postharvest` | official_guidance | FAO fruit and vegetable postharvest handling guidance | 采收、分级、清洗、冷却、包装、淘汰品和农场大门交付 |
-| `fao-crop-residue-management` | official_guidance | FAO crop-residue management guidance | 残余物去向和非市场果实处理 |
 | `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11 | 土壤 N2O、残余物氮和氮途径核算 |
 | `emep-eea-2023-guidebook` | method_factor | European Environment Agency, EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023 | 农业氨计算和 QA 背景 |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines | 分配层级和披露 |
@@ -783,3 +781,5 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
+| `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), https://www.fao.org/4/ae075e/ae075e00.htm | 仅为一般记录或处理背景，不是作物特定参数或 LCA 边界和分配规则。 |

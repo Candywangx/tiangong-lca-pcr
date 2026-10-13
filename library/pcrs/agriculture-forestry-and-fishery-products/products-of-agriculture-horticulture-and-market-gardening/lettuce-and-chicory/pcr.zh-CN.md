@@ -71,10 +71,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | 作物建立和管理 | 纳入从建立到代表性收获批次的投入及直接田间或保护地种植排放，并将其分配到同一声明周期的可销售产出。 | `fao-vegetable-production-guidance` |
+| `boundary_crop_cycle` | 作物建立和管理 | 纳入从建立到代表性收获批次的投入及直接田间或保护地种植排放，并将其分配到同一声明周期的可销售产出。 | `fao-gap-framework-2003` |
 | `boundary_declared_gate` | 收获和处理 | 在指定农场或首个包装场所交接点结束；只有在交接前发生时，才纳入分级、修整、清洗、冷却和初级包装。 | `usda-leafy-greens-guidance` |
 | `boundary_soil_emissions` | 管理土壤和残余物 | 对养分排放采用一种声明的方法，并避免重复计算肥料、改良剂和返田残余物中的氮。 | `ipcc-2019-managed-soils` |
-| `boundary_residue_fate` | 田间残余物和拒收物 | 按去向记录田间残余物和收获后拒收物；未说明去向的拒收物或残余物不作为共产品。 | `fao-vegetable-production-guidance` |
+| `boundary_residue_fate` | 田间残余物和拒收物 | 按去向记录田间残余物和收获后拒收物；未说明去向的拒收物或残余物不作为共产品。 | `fao-gap-framework-2003` |
 
 ## 6. 过程清单结构
 
@@ -686,7 +686,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_cycle_inputs` | 作物建立和管理 | 将周期投入和直接排放分配给同一田块或保护地单元及声明周期的可销售产出；披露失败面积、补播和多次收获处理。 | `fao-vegetable-production-guidance` |
+| `allocation_cycle_inputs` | 作物建立和管理 | 将周期投入和直接排放分配给同一田块或保护地单元及声明周期的可销售产出；披露失败面积、补播和多次收获处理。 | `fao-gap-framework-2003` |
 | `allocation_marketable_and_rejects` | 收获和处理 | 将可收获输入与可销售产出、拒收物、修剪物和测量质量变化核对；除非文件化的产品规格、买方、数量和去向证明其为共产品，否则拒收物按废物处理。 | `usda-leafy-greens-guidance` |
 | `allocation_secondary_output` | 有意生产的次级产品 | 对文件化的次级产品报告数量和交接，并采用有依据的分配或替代方法；不假定默认的避免负荷或经济分配。 |  |
 
@@ -710,7 +710,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `calc_nutrient_equivalent` | 肥料投入 | 产品质量乘以有记录的养分比例，得到声明基准下的 kg N、P2O5 或 K2O。 | product mass; nutrient concentration | nutrient-equivalent input |  |
 | `calc_cycle_normalization` | 作物周期投入和排放 | 将完整田块或保护地单元周期数量除以对应周期的可销售产出，再换算为每 1,000 kg 参考产品。 | cycle quantity; marketable output | normalized inventory amount |  |
-| `calc_water_and_withdrawal` | 灌溉 | 将灌溉供水和水源取水分开保留；有计量时进行核对，并披露未计量损失。 | delivery meter; source meter; return or loss record | irrigation input and withdrawal | `fao-vegetable-production-guidance` |
+| `calc_water_and_withdrawal` | 灌溉 | 将灌溉供水和水源取水分开保留；有计量时进行核对，并披露未计量损失。 | delivery meter; source meter; return or loss record | irrigation input and withdrawal | `fao-gap-framework-2003` |
 | `calc_harvest_mass_balance` | 收获和交接点处理 | 总收获量加测量质量变化等于可销售产出、拒收物、修剪物、随废水损失和其他声明产出之和。 | gross mass; marketable mass; rejects; trims; water; mass change | reconciled output quantities | `usda-leafy-greens-guidance` |
 | `calc_managed_soil_emissions` | 氮排放 | 对氮活动量应用声明的 IPCC 或可接受区域方程，保留 N2O-N 到 N2O 的换算且不重复计算。 | nitrogen activity; factors; soil or growing-medium qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
 
@@ -747,10 +747,12 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 原始数据覆盖；称和计量表质量；周期关联；质量平衡；方法和因子版本；数据缺口；暂定范围；具体流身份核验状态；未映射身份 |
 | update_trigger | 经核实的产品或流身份、经审查的产量或投入证据、作物路线或产品规格变化、排放方法变化，或交接点做法变化 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-vegetable-production-guidance` | official_guidance | FAO, Good Agricultural Practices for greenhouse and field vegetable production, https://www.fao.org | 作物周期边界、田间记录、残余物处理和蔬菜生产路线 |
 | `usda-leafy-greens-guidance` | official_guidance | U.S. FDA, Guidance for Industry: Guide to Minimize Microbial Food Safety Hazards of Fresh-cut Fruits and Vegetables, https://www.fda.gov | 新鲜叶菜处理、分级、清洗和声明交接点控制 |
 | `ipcc-2019-managed-soils` | official_guidance | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 管理土壤氮排放方法和 N2O 换算 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

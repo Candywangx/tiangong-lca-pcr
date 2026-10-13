@@ -802,7 +802,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据来源
 
-| source_id | type | citation | use |
+| source_id | type | reference | use |
 | --- | --- | --- | --- |
 | `un-cpc-3-02292` | official_guidance | [联合国统计司，CPC 3.0 02292 分类说明](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02292) | 物种分类范围及低脂、脱脂、部分脱脂排除；不是通用质量或排放阈值 |
 | `cpc-3-2025` | `official_guidance` | 联合国统计司，CPC Version 3.0 Explanatory Notes (2025)，https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 分类产品范围 |

@@ -74,10 +74,10 @@ The sole reference output is `reference_product_at_declared_handoff`, receiving 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_establishment_to_farm_gate` | all conforming datasets | Include site preparation, planting, orchard establishment, immature years, productive orchard management, harvest, and primary handling performed before the declared farm-gate hand-off. | `fao-crop-production-methodology`; `fao-stone-fruit-production-guide` |
-| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years. | `fao-stone-fruit-production-guide`; `iso-14067` |
+| `boundary_establishment_to_farm_gate` | all conforming datasets | Include site preparation, planting, orchard establishment, immature years, productive orchard management, harvest, and primary handling performed before the declared farm-gate hand-off. | `fao-gap-framework-2003` |
+| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | Include establishment and replacement-tree inputs only after assigning them to the declared orchard life or accepted fruit output basis; disclose the allocation horizon and non-bearing years. | `fao-gap-framework-2003`; `iso-14067` |
 | `boundary_direct_field_emissions` | managed soil, crop residues, and nutrient application | Include direct and indirect nutrient- and residue-related emissions using a geographically applicable method and the same activity data used for nutrient and residue accounting. | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
-| `boundary_farm_gate_handling` | optional primary handling | Include washing, sorting, grading, packing, or short holding only when performed before hand-off and not already embedded in the harvest record; identify rejected fruit and its destination. | `fao-crop-production-methodology` |
+| `boundary_farm_gate_handling` | optional primary handling | Include washing, sorting, grading, packing, or short holding only when performed before hand-off and not already embedded in the harvest record; identify rejected fruit and its destination. | `fao-gap-framework-2003` |
 | `boundary_post_farm_gate_exclusion` | downstream activities | Exclude off-farm transport, storage, distribution, retail, consumer use, processing, and packaging end-of-life unless the study explicitly extends beyond this PCR. | `iso-14044` |
 
 ## 6. Process Inventory Structure
@@ -112,7 +112,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_establishment_records`
-- Sources: `fao-stone-fruit-production-guide`
+- Sources: `fao-gap-framework-2003`
 
 ###### Agricultural nutrient and fertilizer inputs (`apricot_orchard_establishment_and_management_agricultural_nutrient_inputs`)
 
@@ -129,7 +129,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_orchard_management_records`
-- Sources: `fao-fertilizer-code`; `fao-stone-fruit-production-guide`
+- Sources: `fao-gap-framework-2003`
 
 ###### Irrigation water supplied (`irrigation_water_input`)
 
@@ -146,7 +146,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_irrigation_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ###### Farm machinery fuel or service supplied (`farm_energy_input`)
 
@@ -163,7 +163,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_energy_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ###### Crop-protection products supplied (`crop_protection_input`)
 
@@ -180,7 +180,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_crop_protection_records`
-- Sources: `fao-crop-production-methodology`; `fao-stone-fruit-production-guide`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -201,7 +201,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_apricot_land_records`
-- Sources: `fao-crop-production-methodology`; `iso-14067`
+- Sources: `fao-gap-framework-2003`; `iso-14067`
 
 #### Outputs
 
@@ -222,7 +222,7 @@ Raw activity or stage basis: per 1,000 kg accepted fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_harvest_records`
-- Sources: `fao-stone-fruit-production-guide`
+- Sources: `fao-gap-framework-2003`
 
 ##### Elementary flows
 
@@ -261,7 +261,7 @@ Raw activity or stage basis: per orchard-year and converted to 1,000 kg accepted
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_apricot_residue_records`
-- Sources: `fao-crop-production-methodology`; `ipcc-2019-refinement`
+- Sources: `fao-gap-framework-2003`; `ipcc-2019-refinement`
 
 ### Process: Apricot harvest and farm-gate handling (`apricot_harvest_and_farm_gate_handling`)
 
@@ -284,7 +284,7 @@ Raw activity or stage basis: per 1,000 kg accepted fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_harvest_records`
-- Sources: `fao-stone-fruit-production-guide`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -309,7 +309,7 @@ Raw activity or stage basis: per 1,000 kg accepted fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_harvest_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -329,7 +329,7 @@ Raw activity or stage basis: per 1,000 kg accepted fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_apricot_harvest_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 
 ###### Rejected or downgraded apricot fruit (`rejected_apricot_output`)
@@ -347,7 +347,7 @@ Raw activity or stage basis: per 1,000 kg accepted fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_harvest_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ### Process: Apricot primary handling (`apricot_primary_handling`)
 
@@ -370,7 +370,7 @@ Raw activity or stage basis: per 1,000 kg handled fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_handling_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ###### Primary handling energy (`primary_handling_energy_input`)
 
@@ -387,7 +387,7 @@ Raw activity or stage basis: per 1,000 kg handled fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_handling_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ###### Packing materials (`packing_material_input`)
 
@@ -404,7 +404,7 @@ Raw activity or stage basis: per 1,000 kg accepted handled fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_apricot_handling_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -429,7 +429,7 @@ Raw activity or stage basis: per 1,000 kg accepted handled fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_apricot_handling_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 
 ##### Waste flows
@@ -449,7 +449,7 @@ Raw activity or stage basis: per 1,000 kg accepted handled fruit.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_apricot_handling_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
@@ -517,7 +517,7 @@ Allocate orchard establishment, replacement trees, shared machinery, irrigation 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_orchard_life_and_period` | establishment, replacement, and shared orchard assets | Allocate multi-period inputs to the declared orchard-year and accepted fruit output using the declared orchard life, productive years, area, and yield records. | `fao-stone-fruit-production-guide`; `iso-14067` |
+| `allocation_orchard_life_and_period` | establishment, replacement, and shared orchard assets | Allocate multi-period inputs to the declared orchard-year and accepted fruit output using the declared orchard life, productive years, area, and yield records. | `fao-gap-framework-2003`; `iso-14067` |
 | `allocation_apricot_destinations` | fresh, processing, feed, compost, and disposal destinations | Keep destination masses separate; use documented physical or economic allocation only when more than one declared product or service shares a process. | `iso-14044` |
 | `allocation_rejects_and_residues` | rejected fruit and orchard residues | Treat material without a declared product or service as waste or residue and model its destination; do not grant a co-product credit solely because it has a possible downstream use. | `iso-14044`; `ipcc-2019-refinement` |
 
@@ -546,9 +546,9 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_apricot_reference_normalization` | all process outputs | normalized amount = declared flow amount / accepted farm-gate fruit mass × 1,000 kg | flow amount; accepted fruit mass | amount per 1,000 kg accepted fruit | `iso-14067` |
-| `calc_apricot_orchard_life_allocation` | establishment and replacement inputs | allocated orchard-year amount = total declared asset input × reporting orchard-year share over declared orchard life | asset input; orchard life; reporting period | orchard-year input | `fao-stone-fruit-production-guide`; `iso-14067` |
-| `calc_apricot_nutrient_basis` | nutrient and amendment card | nutrient mass = product mass × declared nutrient fraction; retain product mass and nutrient basis separately | product mass; label or analysis fraction | kg product and kg nutrient | `fao-fertilizer-code` |
-| `calc_apricot_mass_balance` | harvest and primary handling | incoming mass = accepted output + rejected output + measured loss, with unexplained residual investigated | incoming, accepted, rejected, and loss records | reconciled batch flows | `fao-crop-production-methodology` |
+| `calc_apricot_orchard_life_allocation` | establishment and replacement inputs | allocated orchard-year amount = total declared asset input × reporting orchard-year share over declared orchard life | asset input; orchard life; reporting period | orchard-year input | `fao-gap-framework-2003`; `iso-14067` |
+| `calc_apricot_nutrient_basis` | nutrient and amendment card | nutrient mass = product mass × declared nutrient fraction; retain product mass and nutrient basis separately | product mass; label or analysis fraction | kg product and kg nutrient | `fao-gap-framework-2003` |
+| `calc_apricot_mass_balance` | harvest and primary handling | incoming mass = accepted output + rejected output + measured loss, with unexplained residual investigated | incoming, accepted, rejected, and loss records | reconciled batch flows | `fao-gap-framework-2003` |
 | `calc_apricot_field_emissions` | soil and residue emissions | apply the selected geographic method to collected nutrient, residue, soil, and climate inputs; do not reuse a default factor without recording its applicability | nutrient, residue, soil, climate, and method inputs | elementary emission flows | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
 
 ### Data Quality Requirements
@@ -566,8 +566,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validation_apricot_reference_definition` | reference flow | Require 1,000 kg accepted fresh apricot fruit, declared hand-off condition, required qualifiers, and later-resolved reference identity before publication. | `iso-14067` |
-| `validation_apricot_orchard_periods` | establishment and management | Check that orchard establishment, non-bearing periods, replacement events, productive years, and annualization basis are declared and not double counted. | `fao-stone-fruit-production-guide`; `iso-14067` |
-| `validation_apricot_mass_balance` | harvest and primary handling | Check incoming fruit = accepted fruit + rejects + measured losses within the declared tolerance and trace every rejected destination. | `fao-crop-production-methodology` |
+| `validation_apricot_orchard_periods` | establishment and management | Check that orchard establishment, non-bearing periods, replacement events, productive years, and annualization basis are declared and not double counted. | `fao-gap-framework-2003`; `iso-14067` |
+| `validation_apricot_mass_balance` | harvest and primary handling | Check incoming fruit = accepted fruit + rejects + measured losses within the declared tolerance and trace every rejected destination. | `fao-gap-framework-2003` |
 | `validation_apricot_flow_bindings` | all flow cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `iso-14044` |
 | `validation_apricot_evidence` | all constrained ranges and factors | Require source-backed evidence or a declared foreground collection protocol for constrained values; mark provisional guardrails as replaceable estimates. | `iso-14044` |
 
@@ -583,13 +583,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | measurement sources, estimation and conversion rules, temporal and geographic coverage, completeness checks, allocation basis, method factors, uncertainty or guardrails, and identity evidence gaps |
 | update_trigger | new crop year, cultivar or production-route change, orchard replacement or land-history change, material handling change, revised emission method, or verified identity and evidence resolution |
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | source_id | type | Reference | Use in this PCR |
 | --- | --- | --- | --- |
-| `fao-crop-production-methodology` | official_guidance | FAO crop production and farm data collection guidance | process boundary, orchard records, handling records, and mass-balance protocol |
-| `fao-stone-fruit-production-guide` | extension_guidance | FAO or equivalent official stone-fruit orchard production guidance | perennial orchard establishment, management, harvest, and orchard-life disclosure |
-| `fao-fertilizer-code` | official_guidance | FAO fertilizer best-management code | product and nutrient-basis recording |
 | `ipcc-2019-refinement` | method_factor | 2019 IPCC Refinement to the 2006 IPCC Guidelines | managed-soil, residue, and agricultural emission calculation method |
 | `emep-eea-2023-guidebook` | method_factor | EMEP/EEA air pollutant emission inventory guidebook | applicable air-emission method and reporting distinctions |
 | `iso-14044` | standard | ISO 14044 environmental management—life cycle assessment—requirements and guidelines | allocation, boundary, and evidence rules |
@@ -598,3 +597,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

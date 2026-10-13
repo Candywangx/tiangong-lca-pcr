@@ -75,7 +75,7 @@ When constructing a foreground data package, the items listed in `Required quali
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_orchard_year` | establishment and orchard cultivation | Include orchard care and direct crop emissions attributable to the declared production year; include establishment only when its area, age, and attribution basis are explicitly declared, and exclude unrelated infrastructure construction. | `fao-citrus-production-guidance`; `fao-good-agricultural-practices` |
+| `boundary_orchard_year` | establishment and orchard cultivation | Include orchard care and direct crop emissions attributable to the declared production year; include establishment only when its area, age, and attribution basis are explicitly declared, and exclude unrelated infrastructure construction. | `fao-gap-framework-2003` |
 | `boundary_harvest_gate` | harvest, conditioning, and packing | End the default foreground boundary at the declared farm-gate or pack-house gate. Include sorting, washing, cooling, primary packaging, and pre-gate transport only when they occur before that gate. | `codex-fresh-produce-hygiene`; `usda-ams-citrus-standards` |
 | `boundary_residue_fate` | culls, field residues, wastewater, and packaging waste | Record field return, composting, feed use, treatment, transport, or disposal for each residue stream. Do not assign a co-product credit without a documented recipient and intended use. | `iso-14044-2006`; `mass-balance-identity` |
 
@@ -111,7 +111,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_establishment_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -132,7 +132,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_orchard_establishment_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 #### Outputs
 
@@ -163,7 +163,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_and_protection_records`
-- Sources: `fao-fertilizer-and-plant-nutrition`; `ipcc-2019-refinement-volume-4`
+- Sources: `fao-gap-framework-2003`; `ipcc-2019-refinement-volume-4`
 
 ###### Irrigation and fertigation water (`orchard_irrigation_water`)
 
@@ -197,7 +197,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_and_protection_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Field and pumping electricity (`field_electricity_input`)
 
@@ -214,7 +214,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_and_energy_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Mobile machinery fuel (`mobile_machinery_fuel`)
 
@@ -231,7 +231,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_and_energy_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -317,7 +317,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh whole output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_and_packaging_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -496,7 +496,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_orchard_year_normalization` | all crop-year rows | Divide the attributed orchard-year inventory by accepted fresh whole fruit mass at the declared gate and scale to 1,000 kg. | block area, attributed input records, accepted output mass | normalized PCR inventory | `mass-balance-identity` |
-| `calc_nutrient_equivalents` | fertilizer and soil-amendment rows | nutrient equivalent = formulated product mass × documented nutrient fraction; retain product mass and nutrient basis as separate fields. | product mass, N/P2O5/K2O fraction | nutrient-equivalent inputs | `fao-fertilizer-and-plant-nutrition` |
+| `calc_nutrient_equivalents` | fertilizer and soil-amendment rows | nutrient equivalent = formulated product mass × documented nutrient fraction; retain product mass and nutrient basis as separate fields. | product mass, N/P2O5/K2O fraction | nutrient-equivalent inputs | `fao-gap-framework-2003` |
 | `calc_water_withdrawal_balance` | irrigation and fertigation | withdrawal = source withdrawal records reconciled to delivered water and declared return or consumption balance; do not infer withdrawal from rainfall alone. | source meters, delivered water, return flow | water withdrawal and delivered irrigation inputs | `fao-crop-evapotranspiration-56` |
 | `calc_citrus_mass_balance` | harvest, conditioning, and gate output | harvested mass = accepted product + culls + recorded field, sorting, and packing losses; investigate unexplained residual mass. | lot weights and waste records | reconciled product and waste streams | `mass-balance-identity` |
 
@@ -515,7 +515,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validate_mass_balance` | harvest, conditioning, and gate output | Accepted product, culls, and recorded losses must reconcile to harvested fruit within the declared measurement tolerance; unexplained residuals require review. | `mass-balance-identity` |
-| `validate_input_records` | orchard cultivation and conditioning | Every foreground quantity must identify the orchard block or facility, crop-year or campaign period, unit, collection protocol, and allocation basis when shared. | `fao-good-agricultural-practices`; `iso-14044-2006` |
+| `validate_input_records` | orchard cultivation and conditioning | Every foreground quantity must identify the orchard block or facility, crop-year or campaign period, unit, collection protocol, and allocation basis when shared. | `fao-gap-framework-2003`; `iso-14044-2006` |
 | `validate_reference_qualifiers` | reference flow and dataset metadata | The data package must declare species or cultivar group, geography, orchard age, production year, gate state, marketable grade, and identity evidence gap status before downstream use. | `codex-fresh-produce-hygiene`; `usda-ams-citrus-standards` |
 
 ## 10. Published Dataset Profile
@@ -530,16 +530,16 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | measurement basis, temporal coverage, allocation method, mass-balance result, water and nutrient accounting method, data gaps, and flow-identity status |
 | update_trigger | New orchard route, irrigation or crop-protection technology, material change in yield or grade mix, revised nutrient or emission method, changed gate state, or resolution of an identity evidence gap |
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-citrus-production-guidance` | official_guidance | FAO citrus production and orchard management guidance | orchard establishment, orchard management, planting material, and crop-year boundary |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, Crop evapotranspiration | irrigation and water-balance collection rules |
-| `fao-fertilizer-and-plant-nutrition` | official_guidance | FAO fertilizer and plant nutrition guidance | nutrient product and nutrient-equivalent calculation |
-| `fao-good-agricultural-practices` | extension_guidance | FAO good agricultural practices guidance | crop protection, machinery, and field record expectations |
 | `ipcc-2019-refinement-volume-4` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 | managed-soil and crop-residue emission calculation |
 | `codex-fresh-produce-hygiene` | standard | Codex code of hygienic practice for fresh fruits and vegetables | washing, conditioning, packaging, and gate qualifiers |
 | `usda-ams-citrus-standards` | official_guidance | USDA Agricultural Marketing Service citrus grade and condition standards | marketable output, grade, culls, and gate quality |
 | `iso-14044-2006` | standard | ISO 14044:2006 Environmental management—Life cycle assessment—Requirements and guidelines | allocation and co-product handling |
 | `mass-balance-identity` | method_factor | PCR mass-balance and identity reconciliation method | product, cull, waste, and gate-output reconciliation |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

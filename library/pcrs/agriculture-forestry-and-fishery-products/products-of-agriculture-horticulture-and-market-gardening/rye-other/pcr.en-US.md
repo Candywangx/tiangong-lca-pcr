@@ -58,10 +58,10 @@ The sole reference output is `reference_product_at_declared_handoff`, receiving 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `boundary_crop_production` | field production | Include declared seed-for-sowing input, land occupation, soil preparation, sowing, fertilization, irrigation where applicable, crop protection, field operations, and direct field emissions through harvest. | `ipcc-2019-managed-soils-n2o`; `fao-crop-evapotranspiration-56` |
-| `boundary_harvest` | harvest and field hand-off | Include harvesting, threshing or combining, field-side collection, and transport to the declared farm or primary-conditioning hand-off when these activities are in the foreground data package. | `fao-grain-postharvest-systems-1998`; `fao-rye-postharvest-operations-1999` |
-| `boundary_primary_conditioning` | post-harvest route | Include primary drying, cleaning, grading, dust or screenings handling, and short-term storage only when the declared gate is after those operations. | `fao-rye-postharvest-operations-1999`; `fao-grain-postharvest-systems-1998` |
-| `boundary_downstream_exclusion` | downstream processing | Exclude milling, malting, starch or ethanol conversion, food or feed formulation, retail, and consumer use; represent these as downstream datasets. | `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020` |
-| `boundary_input_completeness` | all foreground routes | Address fertilizer, irrigation, crop protection, field energy, electricity, land, harvest energy, drying energy, cleaning losses, residues, and direct emissions with a value, justified zero, or documented exclusion. | `ipcc-2019-managed-soils-n2o`; `fao-rye-postharvest-operations-1999` |
+| `boundary_harvest` | harvest and field hand-off | Include harvesting, threshing or combining, field-side collection, and transport to the declared farm or primary-conditioning hand-off when these activities are in the foreground data package. | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |
+| `boundary_primary_conditioning` | post-harvest route | Include primary drying, cleaning, grading, dust or screenings handling, and short-term storage only when the declared gate is after those operations. | `fao-wheat-postharvest-operations-1999`; `fao-grain-postharvest-systems-1998` |
+| `boundary_downstream_exclusion` | downstream processing | Exclude milling, malting, starch or ethanol conversion, food or feed formulation, retail, and consumer use; represent these as downstream datasets. | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `boundary_input_completeness` | all foreground routes | Address fertilizer, irrigation, crop protection, field energy, electricity, land, harvest energy, drying energy, cleaning losses, residues, and direct emissions with a value, justified zero, or documented exclusion. | `ipcc-2019-managed-soils-n2o`; `fao-wheat-postharvest-operations-1999` |
 ### Boundary Abstraction
 | Field | Value |
 | --- | --- |
@@ -209,7 +209,7 @@ Raw activity or stage basis: process output before primary conditioning.
   - Sources: `mass-balance-identity`
 ###### Rye straw or field residue (`rye_straw_or_field_residue`)
 Straw or other field residue is recorded when it is removed, sold, transferred, incorporated, burned, or otherwise crosses the foreground boundary. Field residue that remains in place is recorded through its declared fate rather than as a product output.
-- Selected flow: Rye straw `bcaf0254-cdd3-43d1-823a-2f69df3801d8`
+- Selected flow: Rye straw (UUID unresolved; crop-specific identity required)
 - Flow property / unit: Mass / kg
 - Amount rule: measured residue mass crossing the boundary and declared fate
 - Value mode: Foreground record (`foreground_record`)
@@ -374,7 +374,7 @@ Raw activity or stage basis: per kg conditioned rye grain output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_energy_records`
-- Sources: `fao-rye-postharvest-operations-1999`
+- Sources: `fao-wheat-postharvest-operations-1999`
 ##### Waste flows
 **Conditioning screenings and rejected grain (`conditioning_screenings_and_rejects`)**
 Screenings, foreign material, rejected grain, and off-grade material are recorded by stream and fate; do not count them as accepted reference product.
@@ -389,7 +389,7 @@ Raw activity or stage basis: per kg grain entering primary conditioning.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_reject_records`
-- Sources: `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020`
+- Sources: `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
 #### Outputs
 ##### Product flows
 ###### Conditioned non-seed rye grain (`conditioned_rye_grain`)
@@ -407,7 +407,7 @@ Raw activity or stage basis: quantitative reference output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioned_output_records`
-- Sources: `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020`
+- Sources: `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
 - Range: Same-stage output measurement reconciliation
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 1
@@ -575,8 +575,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `allocation_avoidance` | crop, harvest, and conditioning processes | First avoid allocation by subdividing crop operations, harvest, drying, cleaning, grading, storage, and waste-handling responsibilities wherever records support separate process nodes. | `iso-14044-2006` |
-| `allocation_grain_and_residue` | rye grain and removed straw or residue | Treat residue left in the field according to its declared fate. When straw or another residue is removed or sold and subdivision is not possible, use an explicitly declared physical or economic allocation method and disclose sensitivity. | `iso-14044-2006`; `fao-rye-postharvest-operations-1999` |
-| `allocation_screenings_and_rejects` | screenings, damaged grain, and off-grade material | Record accepted grain, screenings, rejects, and losses as separate outputs with fates. Do not assign rejected material to the reference product without an explicit rework or allocation decision. | `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `allocation_grain_and_residue` | rye grain and removed straw or residue | Treat residue left in the field according to its declared fate. When straw or another residue is removed or sold and subdivision is not possible, use an explicitly declared physical or economic allocation method and disclose sensitivity. | `iso-14044-2006`; `fao-wheat-postharvest-operations-1999` |
+| `allocation_screenings_and_rejects` | screenings, damaged grain, and off-grade material | Record accepted grain, screenings, rejects, and losses as separate outputs with fates. Do not assign rejected material to the reference product without an explicit rework or allocation decision. | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
 | `allocation_substitution` | residue or by-product use | Use substitution only when the displaced product, route, market, and evidence are declared; do not infer a displacement credit from a product label or generic residue name. | `iso-14044-2006` |
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -605,11 +605,11 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `normalize_to_declared_gate` | all foreground flows | recorded flow amount / accepted non-seed rye grain mass at the selected declared gate * reference amount | all applicable protocols; declared gate output | amount per 1 kg reference product | `mass-balance-identity` |
-| `convert_moisture_basis` | grain mass comparisons | dry-matter mass = as-is mass * (1 - moisture fraction); retain both as-is and converted values and the measured moisture basis | harvest and conditioning mass; moisture records | comparable mass basis | `fao-rye-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `convert_moisture_basis` | grain mass comparisons | dry-matter mass = as-is mass * (1 - moisture fraction); retain both as-is and converted values and the measured moisture basis | harvest and conditioning mass; moisture records | comparable mass basis | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
 | `calculate_water_withdrawal` | irrigation | source-specific metered withdrawal converted to the declared unit and normalized to selected gate output; report delivery and consumption separately | `cp_irrigation_records`; `cp_declared_gate_output_records` | withdrawal per reference output | `fao-crop-evapotranspiration-56` |
 | `calculate_direct_soil_n2o` | fertilizer N and direct N2O | apply the selected IPCC tier and factor to accounted N input and convert N2O-N to N2O where applicable; disclose factor selection | `cp_fertilizer_input_records`; selected method factor | direct soil N2O per reference output | `ipcc-2019-managed-soils-n2o` |
 | `reconcile_harvest_outputs` | harvest and field delivery | harvested grain + residue removed + measured loss + field-return or unmeasured remainder = declared harvest input on a common moisture basis; explain any residual | `cp_land_and_output_records`; `cp_harvest_and_output_records`; `cp_residue_and_fate_records` | mass-balance reconciliation | `mass-balance-identity` |
-| `reconcile_conditioning_outputs` | primary conditioning | conditioned accepted grain + screenings + rejects + dust or measured loss = conditioning input on a common moisture basis; explain residual | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | conditioning yield and loss reconciliation | `fao-rye-postharvest-operations-1999`; `mass-balance-identity` |
+| `reconcile_conditioning_outputs` | primary conditioning | conditioned accepted grain + screenings + rejects + dust or measured loss = conditioning input on a common moisture basis; explain residual | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | conditioning yield and loss reconciliation | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
 | `allocate_storage_energy` | storage | storage energy is allocated by recorded lot mass and declared storage duration; avoid allocation when a dedicated meter exists | `cp_storage_and_handoff_records` | storage energy per reference output | `iso-14044-2006` |
 ### Data Quality Requirements
 | requirement_id | Applies to | Requirement | Evidence |
@@ -624,12 +624,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 ## 9. Validation Rules
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validation_non_seed_boundary` | product identity | Confirm that the reference product is non-seed rye grain and that seed for sowing, flour, malt, starch, ethanol, and downstream products are excluded or separately modelled. | `usda-rye-standards-2020`; `fao-rye-postharvest-operations-1999` |
+| `validation_non_seed_boundary` | product identity | Confirm that the reference product is non-seed rye grain and that seed for sowing, flour, malt, starch, ethanol, and downstream products are excluded or separately modelled. | `usda-rye-standards-2020`; `fao-wheat-postharvest-operations-1999` |
 | `validation_reference_flow` | reference flow | Confirm exactly one selected output provides 1 kg of non-seed rye grain at the actual declared gate, using the mass property and kg unit. Record end use, moisture, quality, geography and crop year. Verify its UUID against that physical state before finalization; an unresolved identity is not a verified product, and tempering is not required unless actually performed. | `usda-rye-standards-2020` |
-| `validation_process_completeness` | process map and inventory | Confirm crop production, harvest, and the applicable primary-conditioning or storage processes are present or explicitly excluded by the declared gate. | `fao-grain-postharvest-systems-1998`; `fao-rye-postharvest-operations-1999` |
+| `validation_process_completeness` | process map and inventory | Confirm crop production, harvest, and the applicable primary-conditioning or storage processes are present or explicitly excluded by the declared gate. | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |
 | `validation_nitrogen` | fertilizer and emissions | Confirm product mass differs from kg N, factor selection is declared, N2O-N conversion is transparent, and other nitrogen pathways are addressed or justified. | `ipcc-2019-managed-soils-n2o` |
 | `validation_water` | irrigation | Confirm withdrawal, delivered irrigation, consumption, and water-footprint results are distinguished and not double counted. | `fao-crop-evapotranspiration-56` |
-| `validation_moisture_and_mass_balance` | harvest and conditioning | Confirm mass reconciliation uses a common moisture basis and that accepted grain, residues, screenings, rejects, and losses have declared fates. | `fao-rye-postharvest-operations-1999`; `mass-balance-identity` |
+| `validation_moisture_and_mass_balance` | harvest and conditioning | Confirm mass reconciliation uses a common moisture basis and that accepted grain, residues, screenings, rejects, and losses have declared fates. | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
 | `validation_allocation` | co-products and residues | Confirm subdivision was considered first, any allocation method is declared, substitution has an evidenced displaced product, and sensitivity is reported when material. | `iso-14044-2006` |
 | `validation_uuid_review` | identity references | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
 ## 10. Published Dataset Profile
@@ -645,7 +645,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 ## 11. Data Sources
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-rye-postharvest-operations-1999` | official_guidance | FAO INPhO, *WHEAT: Post-harvest Operations*, <https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_WHEAT.pdf> | rye harvest, drying, cleaning, storage, loss, and primary-conditioning process decomposition |
+| `fao-wheat-postharvest-operations-1999` | official_guidance | FAO INPhO, *WHEAT: Post-harvest Operations*, <https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_WHEAT.pdf> | Generic grain cleaning, drying and storage context transferred from wheat; no rye/oat-specific yield, moisture default or straw identity is supplied. |
 | `fao-grain-postharvest-systems-1998` | official_guidance | FAO, *Agricultural engineering in development — Grain and post-harvest systems*, <https://www.fao.org/4/t0522e/T0522E03.htm> | harvest-to-storage sequence and declared post-harvest hand-offs |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, *Crop evapotranspiration*, <https://www.fao.org/4/X0490E/X0490E00.htm> | irrigation and crop-water data collection and water distinctions |
 | `ipcc-2019-managed-soils-n2o` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | managed-soil N2O method selection, activity data, and factor disclosure |

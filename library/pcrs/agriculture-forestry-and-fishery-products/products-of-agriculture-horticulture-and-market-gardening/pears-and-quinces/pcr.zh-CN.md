@@ -69,8 +69,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_orchard_to_farm_gate` | 所有数据集 | 纳入果园管理、采收和交付前处理；排除下游运输和加工。 | `fao-good-agricultural-practices` |
-| `boundary_perennial_establishment` | 建园和补植 | 仅在声明分配期内纳入，并披露生产寿命和补植率。 | `fao-good-agricultural-practices` |
+| `boundary_orchard_to_farm_gate` | 所有数据集 | 纳入果园管理、采收和交付前处理；排除下游运输和加工。 | `fao-gap-framework-2003` |
+| `boundary_perennial_establishment` | 建园和补植 | 仅在声明分配期内纳入，并披露生产寿命和补植率。 | `fao-gap-framework-2003` |
 | `boundary_direct_field_emissions` | 土壤和植保排放 | 使用一种声明的适用方法和与养分核算相同的活动记录。 | `ipcc-2019-refinement` |
 | `boundary_post_gate_exclusion` | 下游活动 | 除非明确扩展，否则排除场外储存、运输、分销、零售包装、加工、消费和报废。 |  |
 
@@ -104,7 +104,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 农业养分与肥料投入（`orchard_establishment_agricultural_nutrient_inputs`）
 
@@ -121,7 +121,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 建园灌溉（`establishment_irrigation_input`）
 
@@ -235,7 +235,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_activity_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 果园机械燃料（`orchard_fuel_input`）
 
@@ -502,7 +502,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `allocation_avoid_by_subdivision` | 果园和处理 | 优先分别记录梨/榅桲区组及处理活动，再分配。 | `iso-14044-2006` |
 | `allocation_mixed_pear_quince` | 混合生产 | 无作物特定记录时按年度实测质量分配并披露作物比例。 | `iso-14044-2006` |
-| `allocation_orchard_establishment` | 多年生建园 | 在声明生产期内分配建园，投入和输出使用同一期间。 | `fao-good-agricultural-practices` |
+| `allocation_orchard_establishment` | 多年生建园 | 在声明生产期内分配建园，投入和输出使用同一期间。 | `fao-gap-framework-2003` |
 | `allocation_cull_and_byproducts` | 次品和共产品 | 尽可能按去向细分；物理细分不可行时，对有记录的有价值共产品使用经济分配。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
@@ -524,8 +524,8 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_orchard_to_reference_flow` | orchard inputs and emissions | crop-year amount per area / same-year yield per area × 1,000 kg | amount; area; accepted fruit mass | amount per 1,000 kg fruit |  |
-| `calc_nutrient_content` | fertilizers and amendments | product mass × declared nutrient fraction | product; mass; assay; basis | kg N, kg P2O5, kg K2O | `fao-good-agricultural-practices` |
-| `calc_perennial_establishment_allocation` | establishment | total burden × declared productive-period share | establishment amount; productive period | allocated annual amount | `fao-good-agricultural-practices` |
+| `calc_nutrient_content` | fertilizers and amendments | product mass × declared nutrient fraction | product; mass; assay; basis | kg N, kg P2O5, kg K2O | `fao-gap-framework-2003` |
+| `calc_perennial_establishment_allocation` | establishment | total burden × declared productive-period share | establishment amount; productive period | allocated annual amount | `fao-gap-framework-2003` |
 | `calc_managed_soil_emissions` | N2O, ammonia, nitrate | selected factors applied to crop-year activity records | activity; soil/climate; factors | pathway emissions | `ipcc-2019-refinement` |
 | `calc_handling_mass_balance` | harvest and handling | harvested input = accepted fruit + culls + waste + measured losses within uncertainty | batch masses; destinations | reconciled outputs |  |
 
@@ -563,10 +563,12 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 时间、地理、技术、完整性、计量、不确定性、身份和分配质量 |
 | update_trigger | 作物路线、果园指南、作物比例、交付定义、具体流身份核验|
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | source_id | type | reference | use |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices guidance for orchard management and harvest records | 边界、建园、养分和采集规则 |
 | `ipcc-2019-refinement` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories | 土壤和残余物排放方法 |
 | `iso-14044-2006` | standard | ISO 14044:2006 Environmental management — Life cycle assessment — Requirements and guidelines | 分配和共产品处理 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

@@ -71,9 +71,9 @@ When constructing a foreground data package, all required qualifiers must be dec
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_declared_orchard_cycle` | establishment and orchard management | Include the declared establishment or productive-cycle renewal, management and inputs that produce the fresh output; exclude unrelated infrastructure. | `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6` |
-| `boundary_farm_gate_conditioning` | harvest and primary conditioning | End at the declared orchard or pack-house gate; include grading, cooling, washing and primary packing only when before that gate. | `fao-fresh-fruit-postharvest-guidance`; `globalgap-ifa-fruit-vegetables-v6` |
-| `boundary_soil_residue_pathway` | nutrients, soil, residues and rejects | Use one declared nitrogen and residue method; do not double count pathways or claim a residue credit without destination and function evidence. | `ipcc-2019-refinement-afolu`; `fao-good-agricultural-practices` |
+| `boundary_declared_orchard_cycle` | establishment and orchard management | Include the declared establishment or productive-cycle renewal, management and inputs that produce the fresh output; exclude unrelated infrastructure. | `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6` |
+| `boundary_farm_gate_conditioning` | harvest and primary conditioning | End at the declared orchard or pack-house gate; include grading, cooling, washing and primary packing only when before that gate. | `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6` |
+| `boundary_soil_residue_pathway` | nutrients, soil, residues and rejects | Use one declared nitrogen and residue method; do not double count pathways or claim a residue credit without destination and function evidence. | `ipcc-2019-refinement-afolu`; `fao-gap-framework-2003` |
 
 ## 6. Process Inventory Structure
 
@@ -106,7 +106,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_establishment_records`
-- Sources: `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- Sources: `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ###### Agricultural nutrient and fertilizer inputs (`cherry_orchard_establishment_agricultural_nutrient_inputs`)
 
@@ -123,7 +123,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_and_amendment_records`
-- Sources: `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- Sources: `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ##### Waste flows
 
@@ -143,7 +143,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_orchard_establishment_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 #### Outputs
 
@@ -171,7 +171,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
-- Sources: `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- Sources: `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ###### Electricity for irrigation and cooling (`orchard_electricity_input`)
 Purchased electricity used by pumps, cooling equipment or orchard equipment is recorded for the represented cycle.
@@ -220,7 +220,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_and_amendment_records`
-- Sources: `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6`
+- Sources: `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6`
 
 ###### Crop-protection products (`crop_protection_input`)
 Named products and active substances used on the orchard are recorded without collapsing distinct products into a generic flow.
@@ -255,7 +255,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_orchard_cycle_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 
 ###### Irrigation water withdrawal (`water_withdrawal`)
 Source-specific water withdrawal is recorded separately from delivered irrigation water to avoid double counting.
@@ -314,7 +314,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_and_packaging_records`
-- Sources: `fao-fresh-fruit-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ###### Pre-gate cooling energy (`pre_gate_cooling_energy`)
 Cooling or cold-room electricity used before the declared pack-house gate is included when it is part of the selected route.
@@ -330,7 +330,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_and_packaging_records`
-- Sources: `fao-fresh-fruit-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 ##### Elementary flows
@@ -355,7 +355,7 @@ Raw activity or stage basis: 1,000 kg reference flow.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_lot_records`
-- Sources: `fao-fresh-fruit-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 ##### Elementary flows
@@ -380,7 +380,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_and_reject_records`
-- Sources: `fao-fresh-fruit-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 
@@ -402,7 +402,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_and_reject_records`
-- Sources: `fao-fresh-fruit-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 
@@ -420,7 +420,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue_and_reject_records`
-- Sources: `fao-fresh-fruit-postharvest-guidance`; `globalgap-ifa-fruit-vegetables-v6`
+- Sources: `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6`
 
 
 ##### Elementary flows
@@ -445,9 +445,9 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_shared_orchard_cycles` | establishment and multiple cycles | Allocate shared orchard burdens by documented area-time, tree-year or another justified physical basis and disclose the basis. | `fao-good-agricultural-practices` |
-| `allocation_marketable_and_reject_outputs` | harvest and gate handling | Treat marketable cherries as the reference output; record downgraded fruit, culls, trim and recovered material separately, and allocate only where a genuine co-product function exists. | `fao-fresh-fruit-postharvest-guidance`; `globalgap-ifa-fruit-vegetables-v6` |
-| `allocation_recovered_residue_claim` | recovered residues | Do not claim avoided production unless destination, function, quantity and receiving-system evidence are documented. | `fao-good-agricultural-practices` |
+| `allocation_shared_orchard_cycles` | establishment and multiple cycles | Allocate shared orchard burdens by documented area-time, tree-year or another justified physical basis and disclose the basis. | `fao-gap-framework-2003` |
+| `allocation_marketable_and_reject_outputs` | harvest and gate handling | Treat marketable cherries as the reference output; record downgraded fruit, culls, trim and recovered material separately, and allocate only where a genuine co-product function exists. | `fao-postharvest-handling-ae075e`; `globalgap-ifa-fruit-vegetables-v6` |
+| `allocation_recovered_residue_claim` | recovered residues | Do not claim avoided production unless destination, function, quantity and receiving-system evidence are documented. | `fao-gap-framework-2003` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -472,10 +472,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_cycle_normalization` | all process rows | `normalized amount = recorded amount / marketable gate output * 1,000 kg`. | block records; dates; gate output | normalized amount | `fao-good-agricultural-practices` |
+| `calc_cycle_normalization` | all process rows | `normalized amount = recorded amount / marketable gate output * 1,000 kg`. | block records; dates; gate output | normalized amount | `fao-gap-framework-2003` |
 | `calc_nutrient_basis` | fertilizer and amendment rows | Keep product mass and N, P2O5 and K2O mass separate; calculate only from declared evidence. | product mass; nutrient fractions or result | product and nutrient amount | `globalgap-ifa-fruit-vegetables-v6` |
 | `calc_soil_emissions` | soil emission rows | Apply one selected IPCC-compatible nitrogen method to documented inputs and disclose factors and conversions. | N input; factors; qualifiers | elementary-flow amount | `ipcc-2019-refinement-afolu` |
-| `calc_mass_reconciliation` | harvest, gate and residue rows | Reconcile harvest, marketable output, rejects, residues, recovered material and documented loss. | lot records; scale; destination records | mass balance | `fao-fresh-fruit-postharvest-guidance` |
+| `calc_mass_reconciliation` | harvest, gate and residue rows | Reconcile harvest, marketable output, rejects, residues, recovered material and documented loss. | lot records; scale; destination records | mass balance | `fao-postharvest-handling-ae075e` |
 
 ### Data Quality Requirements
 
@@ -491,8 +491,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_qualifiers` | reference flow and dataset | Reject when required species, geography, route, cycle, gate, maturity, grade, stem or handling qualifiers are absent. | `fao-good-agricultural-practices`; `globalgap-ifa-fruit-vegetables-v6` |
-| `validate_cycle_and_output_reconciliation` | cycle and gate output | Check that inputs belong to the declared block and period and that output plus rejects, residues and loss reconcile to harvest. | `fao-fresh-fruit-postharvest-guidance` |
+| `validate_reference_qualifiers` | reference flow and dataset | Reject when required species, geography, route, cycle, gate, maturity, grade, stem or handling qualifiers are absent. | `fao-gap-framework-2003`; `globalgap-ifa-fruit-vegetables-v6` |
+| `validate_cycle_and_output_reconciliation` | cycle and gate output | Check that inputs belong to the declared block and period and that output plus rejects, residues and loss reconcile to harvest. | `fao-postharvest-handling-ae075e` |
 | `validate_nutrient_and_emission_basis` | nutrient and emission rows | Check product mass, nutrient basis, factor method and qualifiers; prevent duplicate nitrogen pathways. | `ipcc-2019-refinement-afolu` |
 | `validate_gate_and_downstream_exclusion` | boundary and use | Check an explicit gate and exclude retail, consumers, downstream transport and processed cherries. | `globalgap-ifa-fruit-vegetables-v6` |
 
@@ -508,11 +508,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | Temporal and site coverage, completeness, primary-record share, allocation, mass reconciliation, factors and identity evidence gaps |
 | update_trigger | Change in route, irrigation, nutrient method, cycle allocation, gate handling, packaging or emission method |
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices and orchard production guidance | orchard processes, inputs, boundary and cycle disclosure |
-| `fao-fresh-fruit-postharvest-guidance` | extension_guidance | FAO fresh-fruit post-harvest handling guidance | harvest, grading, cooling, packing, reject and mass reconciliation |
 | `globalgap-ifa-fruit-vegetables-v6` | standard | GLOBALG.A.P. Integrated Farm Assurance fruit and vegetables requirements | traceability, input, water, nutrient, crop-protection and quality evidence |
 | `ipcc-2019-refinement-afolu` | method_factor | 2019 IPCC Refinement, AFOLU | managed-soil nitrogen methods and emission-pathway disclosure |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |
+| `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), FAO-hosted original, https://www.fao.org/4/ae075e/ae075e00.htm | General handling, cooling and loss-record context only; crop-specific parameters and this PCR gate/attribution require separate evidence. |

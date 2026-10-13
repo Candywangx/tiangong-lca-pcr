@@ -76,8 +76,8 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | 建植和种植 | 纳入归属于作物周期的苗床准备、种植、作物管理、灌溉、养分和植保及直接作物排放；披露先前土地利用，排除无关基础设施建设。 | `fao-crop-evapotranspiration-56`; `fao-good-agricultural-practices` |
-| `boundary_repeated_harvest` | 采收轮次 | 将同一播种批次的每次采收归入同一作物周期，并在归一化前核对商品果、降级果、田间损失和残体。 | `fao-eggplant-production-guide`; `usda-ams-eggplant-standard` |
+| `boundary_crop_cycle` | 建植和种植 | 纳入归属于作物周期的苗床准备、种植、作物管理、灌溉、养分和植保及直接作物排放；披露先前土地利用，排除无关基础设施建设。 | `fao-crop-evapotranspiration-56`; `fao-gap-framework-2003` |
+| `boundary_repeated_harvest` | 采收轮次 | 将同一播种批次的每次采收归入同一作物周期，并在归一化前核对商品果、降级果、田间损失和残体。 | `fao-gap-framework-2003`; `usda-ams-eggplant-standard` |
 | `boundary_gate_preparation` | 分选、清洗、冷却和包装 | 默认前景边界在声明农场门或包装场门结束；只有在门前发生的分选、清洗、冷却、一次包装和运输才纳入。 | `usda-ams-eggplant-standard`; `codex-fresh-produce-hygiene` |
 | `boundary_residue_fate` | 次品果、作物残体和包装废物 | 分别记录还田、堆肥、饲料利用、处理、运输或处置；没有接收方和用途证据时不得给予共产品抵扣。 | `iso-14044-2006`; `mass-balance-identity` |
 
@@ -111,7 +111,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
-- 来源：`fao-eggplant-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：种植材料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.1
@@ -166,7 +166,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_area_cycle_records`
-- 来源：`fao-eggplant-production-guide`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：面积产出筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.01
@@ -228,7 +228,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`fao-soil-fertilizer-plant-nutrition`; `ipcc-2019-managed-soils-n2o`; `fao-crop-evapotranspiration-56`
+- 来源：`fao-gap-framework-2003`; `ipcc-2019-managed-soils-n2o`; `fao-crop-evapotranspiration-56`
 - 数量范围：作物周期氮筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -271,7 +271,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_crop_protection_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：植保产品筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -297,7 +297,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：田间电力筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -323,7 +323,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：移动燃料筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -382,7 +382,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_residue_fate_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：作物残体筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：100
@@ -516,7 +516,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：采后电力筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -568,7 +568,7 @@ translation_status: aligned
 - 基准类型：运输服务（`transport_service`）
 - 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_packaging_transport_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：交付门前运输筛选范围
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -697,10 +697,10 @@ translation_status: aligned
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_area_occupation` | crop establishment | 面积时间 = 声明生产面积 × 作物占用期；设施结构单独归属时保持分开 | 面积、起止日期、设施状态 | ha*a 或声明面积时间 | `fao-eggplant-production-guide` |
-| `calc_nutrient_equivalents` | nutrient inputs | 养分质量 = 配方产品质量 × 有文件支持的养分比例；产品和养分基准分开保留 | 产品质量、标签或计划浓度 | kg N、kg P2O5 和 kg K2O | `fao-soil-fertilizer-plant-nutrition` |
+| `calc_area_occupation` | crop establishment | 面积时间 = 声明生产面积 × 作物占用期；设施结构单独归属时保持分开 | 面积、起止日期、设施状态 | ha*a 或声明面积时间 | `fao-gap-framework-2003` |
+| `calc_nutrient_equivalents` | nutrient inputs | 养分质量 = 配方产品质量 × 有文件支持的养分比例；产品和养分基准分开保留 | 产品质量、标签或计划浓度 | kg N、kg P2O5 和 kg K2O | `fao-gap-framework-2003` |
 | `calc_managed_soil_emissions` | nitrogen-related elementary outputs | 对养分投入、残体去向和环境因子应用一个声明氮排放方法，不重复计算途径 | 养分投入、残体去向、方法因子 | 声明的氮排放流 | `ipcc-2019-managed-soils-n2o` |
-| `calc_transport_service` | pre-gate road freight | 运输服务 = 运输质量（t）× 有文件支持的距离（km）；说明是否包含返程或空驶 | 质量、距离、装载和路线记录 | t*km | `fao-good-agricultural-practices` |
+| `calc_transport_service` | pre-gate road freight | 运输服务 = 运输质量（t）× 有文件支持的距离（km）；说明是否包含返程或空驶 | 质量、距离、装载和路线记录 | t*km | `fao-gap-framework-2003` |
 | `calc_reference_normalization` | all inventory rows | 归一化值 = 作物周期数量 × 1,000 kg / 声明交付门的合格商品产出 | 作物周期数量和合格产出质量 | 每 1,000 kg 参考流的数量 | `mass-balance-identity` |
 | `calc_mass_reconciliation` | harvest, culls, residues, and packing | 采收总质量 = 合格产出 + 次品和拒收 + 田间或处理损失 + 声明残体流，并披露水分和皮重处理 | 采收、分级、残体、包装和损失记录 | 核对后的作物周期质量平衡 | `mass-balance-identity` |
 
@@ -722,7 +722,7 @@ translation_status: aligned
 | `validation_reference_definition` | reference flow | 确认 1,000 kg 功能单位、全部必需限定信息，以及在前景生成前完成平台核验的参考产品、质量属性和单位组身份。 | `mass-balance-identity` |
 | `validation_flow_identity_binding` | parameterized product inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validation_mass_reconciliation` | harvest and gate preparation | 核查合格产出、次品、拒收、残体、田间损失、处理损失和包装废物符合声明质量基准，并明确容器皮重和水分处理。 | `mass-balance-identity` |
-| `validation_boundary_disclosure` | system boundary | 若缺少范围要求的交付门、作物周期、路线、灌溉来源、养分基准、残体去向或门前处理，则拒绝数据集。 | `fao-good-agricultural-practices`; `usda-ams-eggplant-standard` |
+| `validation_boundary_disclosure` | system boundary | 若缺少范围要求的交付门、作物周期、路线、灌溉来源、养分基准、残体去向或门前处理，则拒绝数据集。 | `fao-gap-framework-2003`; `usda-ams-eggplant-standard` |
 | `validation_soil_emissions` | managed nitrogen and residues | 验证使用一个声明排放方法，并确保直接和间接氮途径不重复计算。 | `ipcc-2019-managed-soils-n2o` |
 | `validation_data_quality` | all foreground records | 分别报告身份、计量、时间覆盖、完整性、分配和披露发现；错误或无法确定的发现默认使校验失败。 | `iso-14044-2006` |
 
@@ -738,16 +738,16 @@ translation_status: aligned
 | required_quality_disclosure | 计量来源、缺失或估算字段、分配基准、作物周期完整性、质量平衡结果、排放方法、具体流身份核验和身份证据缺口发现 |
 | update_trigger | 新的栽培或设施路线、交付门调理或包装发生重大变化、排放方法修订、产品限定信息变化，或证据改变默认采集和校验规则 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
-| `fao-eggplant-production-guide` | extension_guidance | FAO 或国家推广资料中的茄子建植、作物管理、采收轮次和生产记录指导 | 作物周期分解、建植、采收和残体背景 |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, Crop evapotranspiration | 灌溉和水平衡方法背景 |
-| `fao-good-agricultural-practices` | official_guidance | FAO good agricultural practices 关于作物投入、田间作业和采后处理的指导 | 边界、田间作业、植保、能源和运输背景 |
-| `fao-soil-fertilizer-plant-nutrition` | official_guidance | FAO 土壤肥力和植物营养指导 | 养分产品和养分当量计算 |
 | `ipcc-2019-managed-soils-n2o` | method_factor | 2019 IPCC Refinement managed soils and nitrogen emissions guidance | 氮排放计算和校验 |
 | `usda-ams-eggplant-standard` | official_guidance | USDA Agricultural Marketing Service eggplant grade and quality guidance | 产品身份、成熟度、等级、产量、次品和交付限定信息 |
 | `codex-fresh-produce-hygiene` | standard | Codex fresh fruits and vegetables hygiene principles | 清洗、处理和门前卫生边界 |
 | `iso-14044-2006` | standard | ISO 14044 environmental management life-cycle assessment requirements | 分配和校验规则 |
 | `mass-balance-identity` | method_factor | 声明作物和包装质量平衡核对方法 | 归一化、损失、次品、残体和包装校验 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

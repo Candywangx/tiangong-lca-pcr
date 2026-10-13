@@ -69,9 +69,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `b_legal` | 每批 | 在将活体建模为可销售产出前核验物种及合法来源。CITES 或国内来源代码需进一步核查，不能视为通用许可。 | `un-cpc-2025`; `woah-reptiles-2024`; `cites-guide-2022` |
-| `b_routes` | 人工或野外来源 | 人工路线包括真实繁育/饲养、存栏、饲料、水和环境控制；采集路线包括获授权捕获和实际暂养，不虚构人工饲养期。止于实际来源交接。 | `woah-reptiles-2024` |
-| `b_shared` | 共享饲养室、温控、池和设备 | 将实测服务仅一次分配给使用的群组、捕获/暂养节点和期间；排除买方运输、屠宰和目的地使用。 | `woah-reptiles-2024` |
+| `b_legal` | 每批 | 在将活体建模为可销售产出前核验物种及合法来源。CITES 或国内来源代码需进一步核查，不能视为通用许可。 | `un-cpc-2025`; ; `cites-guide-2022` |
+| `b_routes` | 人工或野外来源 | 人工路线包括真实繁育/饲养、存栏、饲料、水和环境控制；采集路线包括获授权捕获和实际暂养，不虚构人工饲养期。止于实际来源交接。 |  |
+| `b_shared` | 共享饲养室、温控、池和设备 | 将实测服务仅一次分配给使用的群组、捕获/暂养节点和期间；排除买方运输、屠宰和目的地使用。 |  |
 
 ## 6. 过程清单结构
 
@@ -690,7 +690,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `a_output` | 人工节点 | 列明所有独立预期活体与非活体产出及交接门。先划分可分离活动；剩余联合负担采用有证据的质量或其他因果驱动并披露敏感性。未售卵/蜕皮及死体为残余物/废物。 | `mass-balance-identity`; `woah-reptiles-2024` |
+| `a_output` | 人工节点 | 列明所有独立预期活体与非活体产出及交接门。先划分可分离活动；剩余联合负担采用有证据的质量或其他因果驱动并披露敏感性。未售卵/蜕皮及死体为残余物/废物。 | `mass-balance-identity` |
 | `a_period` | 人工群组或捕获行动 | 将存栏、设施、饲料、损失和活体关联实际期间；期初存栏和共享资产在真实产出及服务期间只分配一次；不假定通用寿命，不重复计内部转移。 | `mass-balance-identity` |
 | `a_shared` | 加温房间、池、笼具及操作服务 | 记录每个使用节点/群组和期间；按实测服务时间、能源/水或有依据的能力驱动分配，不在最终交接再次计费。 | `mass-balance-identity` |
 
@@ -729,8 +729,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `v_legal` | 活体产出 | 缺少物种、获授权来源、状况或实际来源门即失败；分类不能证明合法性。 | `un-cpc-2025`; `woah-reptiles-2024`; `cites-guide-2022` |
-| `v_routes` | 来源过程 | 每批必须有且仅有一条经证实来源路线。人工路线需要存栏/群组记录；捕获路线需要许可/行动，不能继承虚构繁育投入。 | `woah-reptiles-2024` |
+| `v_legal` | 活体产出 | 缺少物种、获授权来源、状况或实际来源门即失败；分类不能证明合法性。 | `un-cpc-2025`; ; `cites-guide-2022` |
+| `v_routes` | 来源过程 | 每批必须有且仅有一条经证实来源路线。人工路线需要存栏/群组记录；捕获路线需要许可/行动，不能继承虚构繁育投入。 |  |
 | `v_balance` | 质量与产出 | 核对期初/购入或捕获质量、存栏变化、验收活体、死亡及真实副产品；内部转移及同门活体退回只计一次。后续再生产须有独立责任和记录。 | `mass-balance-identity` |
 | `v_shared` | 多期间与共享资产 | 每项投入、资产、产出及损失有节点/期间归属；份额合于观察服务量，不在两道门重复计费。 | `mass-balance-identity` |
 | `v_identity` | 全部卡片 | 待确认流身份卡须有具体选择；最终交换须在发布前核实物种/状态/方向/属性/单位及门。 | `un-cpc-2025` |
@@ -754,7 +754,7 @@ sync_with: pcr.en-US.md
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
 | `un-cpc-2025` | official_guidance | [联合国 CPC 3.0 说明](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf) | 活爬行动物分类边界 |
-| `woah-reptiles-2024` | official_guidance | [WOAH 陆生动物法典第 7.14 章](https://www.woah.org/fileadmin/Home/eng/Health_standards/tahc/2024/en_chapitre_aw_reptiles.htm) | 物种适配操作、福利及来源文件 |
+| `woah-reptiles-2024` | official_guidance | [WOAH 陆生动物法典第 7.14 章](https://www.woah.org/fileadmin/Home/eng/Health_standards/tahc/2024/en_chapitre_aw_reptiles.htm) | WOAH 2024 第 7.14 章适用于为皮、肉及其他产品屠宰时的福利；仅迁移明确适用的操作背景，不证明活体捕获合法性、繁育方法或 LCA 分配。 |
 | `cites-guide-2022` | official_guidance | [CITES 贸易数据库指南](https://trade.cites.org/cites_trade_guidelines/en-CITES_Trade_Database_Guide.pdf) | 区分所报野外、人工和牧养来源代码；代码本身非许可 |
 | `mass-balance-identity` | method_factor | 质量守恒与实测前景投入/产出核对 | 归一化、存栏、水及共享服务核对 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |

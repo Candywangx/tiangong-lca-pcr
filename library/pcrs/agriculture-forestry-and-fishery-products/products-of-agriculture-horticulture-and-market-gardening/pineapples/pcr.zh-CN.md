@@ -78,11 +78,11 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_establishment_and_maintenance` | 田间生产 | 包括建植、土壤和田间准备、养分和改良剂、灌溉、作物保护、田间作业、土地占用及采收前管理土壤排放。 | `fao-crop-production-methodology`；`fao-pineapple-production-guide`；`ipcc-2019-refinement` |
-| `boundary_harvest_and_field_delivery` | 采收和田间交接 | 当属于前景范围时，包括采收、收集、内部搬运以及至声明农场门或田间交接门的运输。 | `fao-pineapple-production-guide`；`fao-postharvest-handling` |
-| `boundary_primary_conditioning` | 可选整理 | 只有声明门位于这些操作之后时，才包括清洗、分选、修整、冷却、整理能源、废水和次品。 | `codex-cxs-182-1993`；`fao-postharvest-handling` |
+| `boundary_crop_establishment_and_maintenance` | 田间生产 | 包括建植、土壤和田间准备、养分和改良剂、灌溉、作物保护、田间作业、土地占用及采收前管理土壤排放。 | `fao-gap-framework-2003`；`fao-gap-framework-2003`；`ipcc-2019-refinement` |
+| `boundary_harvest_and_field_delivery` | 采收和田间交接 | 当属于前景范围时，包括采收、收集、内部搬运以及至声明农场门或田间交接门的运输。 | `fao-gap-framework-2003`；`fao-postharvest-handling-ae075e` |
+| `boundary_primary_conditioning` | 可选整理 | 只有声明门位于这些操作之后时，才包括清洗、分选、修整、冷却、整理能源、废水和次品。 | `codex-cxs-182-1993`；`fao-postharvest-handling-ae075e` |
 | `boundary_downstream_exclusion` | 下游加工和使用 | 排除果汁、罐藏、干燥、冷冻、发酵、切分、加糖、零售、消费者使用及声明门后的物流。 | `codex-cxs-182-1993`；`iso-14067` |
-| `boundary_input_completeness` | 所有路线 | 对繁殖材料、养分、作物保护、水、土地、能源、采收、运输、排放、产出归宿和整理投入给出数值、合理为零或文件化排除。 | `fao-crop-production-methodology`；`ipcc-2019-refinement`；`mass-balance-identity` |
+| `boundary_input_completeness` | 所有路线 | 对繁殖材料、养分、作物保护、水、土地、能源、采收、运输、排放、产出归宿和整理投入给出数值、合理为零或文件化排除。 | `fao-gap-framework-2003`；`ipcc-2019-refinement`；`mass-balance-identity` |
 
 ## 6. 过程清单结构
 
@@ -115,7 +115,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_propagation_and_cycle_records`
-- 来源：`fao-pineapple-production-guide`
+- 来源：`fao-gap-framework-2003`
 
 ###### 农业养分与肥料投入（`pineapple_crop_production_agricultural_nutrient_inputs`）
 
@@ -132,7 +132,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fertilizer_and_amendment_records`
-- 来源：`fao-pineapple-production-guide`; `ipcc-2019-refinement`
+- 来源：`fao-gap-framework-2003`; `ipcc-2019-refinement`
 
 ###### 灌溉供水（`irrigation_water_input`）
 
@@ -147,7 +147,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_and_withdrawal_records`
-- 来源：`fao-crop-evapotranspiration-56`；`fao-pineapple-production-guide`
+- 来源：`fao-crop-evapotranspiration-56`；`fao-gap-framework-2003`
 
 ###### 作物保护产品（`crop_protection_input`）
 
@@ -162,7 +162,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_crop_protection_records`
-- 来源：`fao-pineapple-production-guide`
+- 来源：`fao-gap-framework-2003`
 
 ###### 田间机械燃料（`field_machinery_fuel`）
 
@@ -179,7 +179,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`fao-crop-production-methodology`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -200,7 +200,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集计算（`calculated_from_collection`）
 - 采集协议：`cp_land_and_cycle_records`
-- 来源：`fao-crop-production-methodology`
+- 来源：`fao-gap-framework-2003`
 
 ###### 水源取水（`water_source_withdrawal`）
 
@@ -237,7 +237,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_and_output_records`
-- 来源：`fao-pineapple-production-guide`；`mass-balance-identity`
+- 来源：`fao-gap-framework-2003`；`mass-balance-identity`
 
 ##### 废物流
 
@@ -281,7 +281,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_and_output_records`
-- 来源：`fao-pineapple-production-guide`
+- 来源：`fao-gap-framework-2003`
 
 ###### 采收机械燃料（`harvest_machinery_fuel`）
 
@@ -298,7 +298,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_energy_records`
-- 来源：`fao-pineapple-production-guide`
+- 来源：`fao-gap-framework-2003`
 
 ###### 采收到声明门的公路运输服务（`harvest_road_transport`）
 
@@ -315,7 +315,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_transport_records`
-- 来源：`fao-postharvest-handling`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ##### 废物流
 
@@ -358,7 +358,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_and_output_records`
-- 来源：`mass-balance-identity`；`fao-postharvest-handling`
+- 来源：`mass-balance-identity`；`fao-postharvest-handling-ae075e`
 
 ##### 基本流
 
@@ -382,7 +382,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_and_gate_records`
-- 来源：`fao-postharvest-handling`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ###### 整理用水（`conditioning_water_input`）
 
@@ -399,7 +399,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_water_records`
-- 来源：`fao-postharvest-handling`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ###### 整理用电（`conditioning_electricity_input`）
 
@@ -416,7 +416,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_energy_records`
-- 来源：`fao-postharvest-handling`
+- 来源：`fao-postharvest-handling-ae075e`
 
 ##### 废物流
 
@@ -462,7 +462,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_and_gate_records`
-- 来源：`fao-postharvest-handling`；`mass-balance-identity`
+- 来源：`fao-postharvest-handling-ae075e`；`mass-balance-identity`
 
 
 ###### 整理损失（`conditioning_loss`）
@@ -546,8 +546,8 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_subdivision_priority` | 生产、采收和整理 | 当记录支持独立节点时，优先拆分植株、宿根/再生、采收、田间交接、整理和储存责任。 | `iso-14044`；`fao-crop-production-methodology` |
-| `allocation_plant_and_ratoon_cycles` | 共享田间和基础设施负荷 | 使用声明周期、持续时间和合格产出基准分配共享建植及多周期负荷；信息不完整时披露敏感性。 | `iso-14044`；`fao-pineapple-production-guide` |
+| `allocation_subdivision_priority` | 生产、采收和整理 | 当记录支持独立节点时，优先拆分植株、宿根/再生、采收、田间交接、整理和储存责任。 | `iso-14044`；`fao-gap-framework-2003` |
+| `allocation_plant_and_ratoon_cycles` | 共享田间和基础设施负荷 | 使用声明周期、持续时间和合格产出基准分配共享建植及多周期负荷；信息不完整时披露敏感性。 | `iso-14044`；`fao-gap-framework-2003` |
 | `allocation_fruit_and_nonreference_outputs` | 合格果实、次品、残余物和损失 | 分别记录预期产出、残余物、次品和废物及归宿；不能拆分时采用声明的物理或经济方法并披露替代方案。 | `iso-14044`；`mass-balance-identity` |
 
 ## 8. 前景数据采集、计算与质量规则
@@ -577,9 +577,9 @@ translation_status: aligned
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_reference_normalization` | all inventory rows | `normalized amount = recorded amount / accepted fresh pineapple output × 1,000 kg` | recorded amount; accepted output; gate and cycle | amount per 1,000 kg accepted output | `mass-balance-identity` |
-| `calc_cycle_allocation` | plant and ratoon cycles | 按声明周期持续时间和合格产出分配共享田间及建植记录，并披露基准和敏感性。 | area; duration; output; shared input | cycle-attributed input or emission | `iso-14044`；`fao-pineapple-production-guide` |
-| `calc_nutrient_basis` | fertilizer and amendments | `nutrient mass = product mass × declared nutrient fraction`；分别保留产品和养分。 | product mass; label or analysis fraction | kg nutrient and kg product | `fao-pineapple-production-guide` |
+| `calc_reference_normalization` | all inventory rows | `normalized amount = recorded amount / accepted fresh pineapple output × 1 kg` | recorded amount; accepted output; gate and cycle | amount per 1 kg accepted output | `mass-balance-identity` |
+| `calc_cycle_allocation` | plant and ratoon cycles | 按声明周期持续时间和合格产出分配共享田间及建植记录，并披露基准和敏感性。 | area; duration; output; shared input | cycle-attributed input or emission | `iso-14044`；`fao-gap-framework-2003` |
+| `calc_nutrient_basis` | fertilizer and amendments | `nutrient mass = product mass × declared nutrient fraction`；分别保留产品和养分。 | product mass; label or analysis fraction | kg nutrient and kg product | `fao-gap-framework-2003` |
 | `calc_managed_soil_emission` | soil emissions | 将选定方法层级应用于养分、改良剂、残余物和土壤投入；仅在需要时换算 N2O-N 并披露因子。 | inputs; factor; conversion | emission by substance and compartment | `ipcc-2019-refinement`；`emep-eea-2023-guidebook` |
 | `calc_output_reconciliation` | harvest and conditioning | `input mass = accepted output + culls + residues + measured loss`，先统一声明基准。 | input; output; culls; residues; loss | mass-balance result and discrepancy | `mass-balance-identity` |
 
@@ -599,9 +599,9 @@ translation_status: aligned
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_flow` | 参考产品 | 确认一个 1 kg 参考流对应声明门的完整新鲜菠萝，并记录限定信息和身份状态。 | `codex-cxs-182-1993` |
-| `validation_cycle_coverage` | 过程图 | 确认植株、宿根/再生、重植和作物年度处理明确且未重复计算。 | `fao-pineapple-production-guide`；`iso-14044` |
-| `validation_input_completeness` | 生产和采收 | 确认繁殖材料、养分、作物保护、水、土地、能源、运输和排放有数值、合理为零或文件化排除。 | `fao-crop-production-methodology`；`ipcc-2019-refinement` |
-| `validation_water_and_energy` | 灌溉和整理 | 确认取水、输送水、泵送能源、田间燃料和整理电力保持区分并有基准。 | `fao-crop-evapotranspiration-56`；`fao-postharvest-handling` |
+| `validation_cycle_coverage` | 过程图 | 确认植株、宿根/再生、重植和作物年度处理明确且未重复计算。 | `fao-gap-framework-2003`；`iso-14044` |
+| `validation_input_completeness` | 生产和采收 | 确认繁殖材料、养分、作物保护、水、土地、能源、运输和排放有数值、合理为零或文件化排除。 | `fao-gap-framework-2003`；`ipcc-2019-refinement` |
+| `validation_water_and_energy` | 灌溉和整理 | 确认取水、输送水、泵送能源、田间燃料和整理电力保持区分并有基准。 | `fao-crop-evapotranspiration-56`；`fao-postharvest-handling-ae075e` |
 | `validation_mass_balance` | 采收和整理 | 确认投入、合格果实、次品、残余物、废水和损失核对，并为非参考产出声明归宿。 | `mass-balance-identity` |
 | `validation_allocation_and_disclosure` | 共享负荷和产出 | 确认周期分配、多产出处理、门、质量、地理位置、作物年度和敏感性已披露。 | `iso-14044`；`iso-14067` |
 
@@ -617,15 +617,14 @@ translation_status: aligned
 | required_quality_disclosure | 所代表周期和年份；原始记录覆盖；秤和仪表校准；水处理；质量平衡容差；因子来源和方法；parameterized 和 unmapped 流；排除项；不确定性和敏感性 |
 | update_trigger | 周期模型、品种、路线、水源、养分或作物保护实践、产量、整理边界、身份分类、排放方法或代表性时期变化 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
 | `codex-cxs-182-1993` | standard | Codex Alimentarius CXS 182-1993, Standard for Pineapples | 新鲜范围、质量描述和加工排除 |
-| `fao-crop-production-methodology` | official_guidance | FAO crop production and farm-data methodology guidance | 田间记录、边界、投入采集和农场门要求 |
-| `fao-pineapple-production-guide` | extension_guidance | Pineapple production and crop-management extension guidance | 繁殖材料、植株和宿根/再生周期、管理、采收和产量背景 |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, Crop evapotranspiration | 灌溉记录和水平衡区分 |
-| `fao-postharvest-handling` | extension_guidance | FAO post-harvest handling guidance for fresh horticultural produce | 采收、田间交接、整理、处理和损失记录 |
 | `ipcc-2019-refinement` | method_factor | 2019 IPCC Refinement to the 2006 IPCC Guidelines | 管理土壤和残余物排放计算 |
 | `emep-eea-2023-guidebook` | method_factor | EMEP/EEA air pollutant emission inventory guidebook, agricultural chapters | 农业排放方法选择 |
 | `iso-14044` | standard | ISO 14044, Environmental management — LCA requirements and guidelines | 分配层级、共产品处理和校验 |
@@ -635,3 +634,5 @@ translation_status: aligned
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
+| `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), FAO-hosted original, https://www.fao.org/4/ae075e/ae075e00.htm | 仅为一般采后处理、冷却和损失记录背景；作物特定参数及本 PCR 截止点和归属须另行证据支持。 |

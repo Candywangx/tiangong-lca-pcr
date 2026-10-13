@@ -802,7 +802,7 @@ Required product-instance qualifiers: goat species; farm identifier; lactation a
 
 ## 11. Data Sources
 
-| source_id | type | citation | use |
+| source_id | type | reference | use |
 | --- | --- | --- | --- |
 | `un-cpc-3-02292` | official_guidance | [UN Statistics Division, CPC 3.0 02292: explanatory note](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/02292) | Species-specific classification scope and low-fat/skimmed/partly skimmed exclusion; not a general quality or emission threshold |
 | `cpc-3-2025` | `official_guidance` | UN Statistics Division, CPC Version 3.0 Explanatory Notes (2025), https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Classification product scope |

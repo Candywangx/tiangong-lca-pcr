@@ -73,7 +73,7 @@ When constructing a foreground data package, the items listed in `Required quali
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `boundary_orchard_cycle` | date palm orchard production | Include orchard establishment or renewal inputs assigned to the declared productive cycle, orchard management, harvest, and basic farm-gate handling up to the fresh-fruit hand-off. | `iso-14044-2006` |
-| `boundary_fresh_unprocessed_gate` | reference product and farm-gate output | Stop the foreground boundary at transfer of fresh, unprocessed date fruit. Exclude washing, drying, preservation, packaging, off-farm storage, transport, and downstream processing. | `codex-cxs-143-1985-dates`; `iso-14044-2006` |
+| `boundary_fresh_unprocessed_gate` | reference product and farm-gate output | This PCR chooses the fresh unprocessed farm-gate cutoff: exclude washing, drying, preservation, packaging, off-farm storage, transport and downstream processing. This is an author LCA boundary decision, not a prohibition in Codex CXS 143-1985. | `iso-14044-2006` |
 | `boundary_direct_environmental_exchanges` | nutrient-related soil and air exchanges | Include direct and applicable indirect nutrient-related environmental exchanges calculated from the same crop-cycle activity records used for nutrient and residue accounting, using a geographically applicable method. | `ipcc-2019-refinement-vol-4` |
 | `boundary_recursive_product_inputs` | same-category product inputs | Do not loop a fresh date-fruit output back into the same date PCR. Use a distinct upstream identity for planting material or other purchased inputs and disclose retained material separately. | `iso-14044-2006` |
 
@@ -448,7 +448,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `codex-cxs-143-1985-dates` | standard | Codex Alimentarius CXS 143-1985, Standard for Dates | fresh-date product state, quality qualifiers, and rejected-product distinction |
+| `codex-cxs-143-1985-dates` | standard | Codex Alimentarius CXS 143-1985, Standard for Dates | Prepared dates packed ready for consumption; only explicitly transferable quality context. Allows processing such as washing, drying/hydration and pasteurisation; does not define this PCR fresh agricultural gate. |
 | `fao-56-crop-evapotranspiration-1998` | official_guidance | FAO Irrigation and drainage paper 56, Crop evapotranspiration | irrigation activity records, water-balance evidence, and irrigation disclosure |
 | `ipcc-2019-refinement-vol-4` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines, Volume 4: Agriculture, Forestry and Other Land Use | nutrient-related soil and air emission calculation method selection |
 | `iso-14040-2006` | standard | ISO 14040:2006, Environmental management — Life cycle assessment — Principles and framework | life-cycle boundary and data interpretation context |

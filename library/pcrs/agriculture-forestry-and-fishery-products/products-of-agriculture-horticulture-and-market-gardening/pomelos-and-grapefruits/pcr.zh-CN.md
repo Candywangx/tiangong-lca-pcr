@@ -74,7 +74,7 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_orchard_year` | 建植和果园种植 | 纳入归属于声明生产年度的果园管理和直接作物排放；只有在明确声明面积、树龄和分摊依据时才纳入建植，并排除无关基础设施建设。 | `fao-citrus-production-guidance`; `fao-good-agricultural-practices` |
+| `boundary_orchard_year` | 建植和果园种植 | 纳入归属于声明生产年度的果园管理和直接作物排放；只有在明确声明面积、树龄和分摊依据时才纳入建植，并排除无关基础设施建设。 | `fao-gap-framework-2003` |
 | `boundary_harvest_gate` | 采收、调理和包装 | 默认前景边界止于声明的农场门或包装场交接点。只有在交接点之前发生时，才纳入分拣、清洗、冷却、初级包装和门前运输。 | `codex-fresh-produce-hygiene`; `usda-ams-citrus-standards` |
 | `boundary_residue_fate` | 次果、田间残余物、废水和包装废物 | 分别记录田间归还、堆肥、饲料利用、处理、运输或处置去向。没有文件化接收方和预期用途时，不得给予共产品抵扣。 | `iso-14044-2006`; `mass-balance-identity` |
 
@@ -109,7 +109,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-citrus-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -130,7 +130,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-citrus-production-guidance`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -159,7 +159,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_protection_records`
-- 来源：`fao-fertilizer-and-plant-nutrition`; `ipcc-2019-refinement-volume-4`; `fao-crop-evapotranspiration-56`
+- 来源：`fao-gap-framework-2003`; `ipcc-2019-refinement-volume-4`; `fao-crop-evapotranspiration-56`
 
 ###### 灌溉及施肥灌溉用水（`orchard_irrigation_water`）
 
@@ -193,7 +193,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_and_protection_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 田间和抽水电力（`field_electricity_input`）
 
@@ -210,7 +210,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_and_energy_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 移动机械燃料（`mobile_machinery_fuel`）
 
@@ -227,7 +227,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_and_energy_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -311,7 +311,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_and_packaging_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -487,7 +487,7 @@ translation_status: aligned
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_orchard_year_normalization` | 所有生产年度记录 | 将归属的果园年度清单除以声明交接点的合格新鲜完整果实质量，并缩放至 1,000 kg。 | 区块面积、归属投入记录、合格产出质量 | PCR 归一化清单 | `mass-balance-identity` |
-| `calc_nutrient_equivalents` | 肥料和土壤改良剂行 | 养分当量 = 配方产品质量 × 文件化养分比例；产品质量和养分基准保留为独立字段。 | 产品质量、N/P2O5/K2O 比例 | 养分当量投入 | `fao-fertilizer-and-plant-nutrition` |
+| `calc_nutrient_equivalents` | 肥料和土壤改良剂行 | 养分当量 = 配方产品质量 × 文件化养分比例；产品质量和养分基准保留为独立字段。 | 产品质量、N/P2O5/K2O 比例 | 养分当量投入 | `fao-gap-framework-2003` |
 | `calc_water_withdrawal_balance` | 灌溉和施肥灌溉 | 取水量 = 源头取水记录与输送水、声明回流或消耗平衡的核对结果；不得仅依据降雨推断取水。 | 源头仪表、输送水、回流 | 取水和输送灌溉水投入 | `fao-crop-evapotranspiration-56` |
 | `calc_citrus_mass_balance` | 采收、调理和交接点产出 | 采收质量 = 合格产品 + 次果 + 已记录的田间、分拣和包装损失；无法解释的残余质量必须复核。 | 批次质量和废物记录 | 核对后的产品和废物流 | `mass-balance-identity` |
 
@@ -506,7 +506,7 @@ translation_status: aligned
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validate_mass_balance` | 采收、调理和交接点产出 | 合格产品、次果和已记录损失必须在声明计量容差内与采收果质量核对；无法解释的残余需要复核。 | `mass-balance-identity` |
-| `validate_input_records` | 果园种植和调理 | 每个前景数量必须标识果园区块或设施、生产年度或活动期间、单位、采集协议，以及共用时的分配依据。 | `fao-good-agricultural-practices`; `iso-14044-2006` |
+| `validate_input_records` | 果园种植和调理 | 每个前景数量必须标识果园区块或设施、生产年度或活动期间、单位、采集协议，以及共用时的分配依据。 | `fao-gap-framework-2003`; `iso-14044-2006` |
 | `validate_reference_qualifiers` | 参考流和数据集元数据 | 数据包在下游使用前必须声明物种或品种组、地理位置、果园树龄、生产年度、交接状态、可销售等级和未解决身份状态。 | `codex-fresh-produce-hygiene`; `usda-ams-citrus-standards` |
 
 ## 10. 发布数据集画像
@@ -521,16 +521,16 @@ translation_status: aligned
 | required_quality_disclosure | 计量依据、时间覆盖、分配方法、质量平衡结果、水和养分核算方法、数据缺口及流身份状态 |
 | update_trigger | 新的果园路线、灌溉或植保技术、产量或等级结构发生实质变化、养分或排放方法更新、交接状态改变，或未解决身份得到确认 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-citrus-production-guidance` | official_guidance | FAO 柑橘生产和果园管理指南 | 果园建植、果园管理、种植材料和生产年度边界 |
 | `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56, Crop evapotranspiration | 灌溉和水量平衡采集规则 |
-| `fao-fertilizer-and-plant-nutrition` | official_guidance | FAO fertilizer and plant nutrition guidance | 养分产品和养分当量计算 |
-| `fao-good-agricultural-practices` | extension_guidance | FAO good agricultural practices guidance | 植保、机械和田间记录要求 |
 | `ipcc-2019-refinement-volume-4` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 | 管理土壤和作物残余物排放计算 |
 | `codex-fresh-produce-hygiene` | standard | Codex code of hygienic practice for fresh fruits and vegetables | 清洗、调理、包装和交接限定信息 |
 | `usda-ams-citrus-standards` | official_guidance | USDA Agricultural Marketing Service citrus grade and condition standards | 可销售产出、等级、次果和交接质量 |
 | `iso-14044-2006` | standard | ISO 14044:2006 Environmental management—Life cycle assessment—Requirements and guidelines | 分配和共产品处理 |
 | `mass-balance-identity` | method_factor | PCR mass-balance and identity reconciliation method | 产品、次果、废物和交接点产出核对 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

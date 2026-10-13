@@ -22,12 +22,12 @@ system_boundary:
       rule: "Include bed preparation attributable to the crop cycle, planting, crop management, irrigation, nutrient and crop protection, and direct crop emissions; disclose prior land use and exclude unrelated infrastructure construction."
       source_ids:
         - fao-crop-evapotranspiration-56
-        - fao-good-agricultural-practices
+        - fao-gap-framework-2003
     - rule_id: boundary_repeated_harvest
       applies_to: "harvest rounds"
       rule: "Attribute every harvest round from one planting to the same crop cycle and reconcile marketable fruit, downgraded fruit, field losses, and residues before normalization."
       source_ids:
-        - fao-eggplant-production-guide
+        - fao-gap-framework-2003
         - usda-ams-eggplant-standard
     - rule_id: boundary_gate_preparation
       applies_to: "sorting, washing, cooling, and packing"
@@ -164,7 +164,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_establishment_records
               source_ids:
-                - fao-eggplant-production-guide
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0.1"
@@ -221,7 +221,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_area_cycle_records
               source_ids:
-                - fao-eggplant-production-guide
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0.01"
@@ -259,7 +259,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_nutrient_records
               source_ids:
-                - fao-soil-fertilizer-plant-nutrition
+                - fao-gap-framework-2003
                 - ipcc-2019-managed-soils-n2o
             ranges:
               - role: qa_guardrail
@@ -303,7 +303,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_crop_protection_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -357,7 +357,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -384,7 +384,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -445,7 +445,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_residue_fate_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "100"
@@ -585,7 +585,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -639,7 +639,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_packaging_transport_records
               source_ids:
-                - fao-good-agricultural-practices
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -885,7 +885,7 @@ dataset_production:
         - "protected status"
       output: "ha*a or declared area-time"
       source_ids:
-        - fao-eggplant-production-guide
+        - fao-gap-framework-2003
     - id: calc_nutrient_equivalents
       applies_to: "nutrient inputs"
       rule: "nutrient mass = formulated product mass × documented nutrient fraction; retain product and nutrient bases separately"
@@ -894,7 +894,7 @@ dataset_production:
         - "label or plan concentration"
       output: "kg N, kg P2O5, and kg K2O"
       source_ids:
-        - fao-soil-fertilizer-plant-nutrition
+        - fao-gap-framework-2003
     - id: calc_managed_soil_emissions
       applies_to: "nitrogen-related elementary outputs"
       rule: "apply one declared nitrogen-emission method to nutrient inputs, crop residues, and environmental factors; do not duplicate pathways"
@@ -914,7 +914,7 @@ dataset_production:
         - "load and route record"
       output: "t*km"
       source_ids:
-        - fao-good-agricultural-practices
+        - fao-gap-framework-2003
     - id: calc_reference_normalization
       applies_to: "all inventory rows"
       rule: "normalized value = crop-cycle quantity × 1,000 kg / accepted marketable output at the declared gate"
@@ -979,7 +979,7 @@ validation_rules:
     applies_to: "system boundary"
     rule: "Reject a dataset that omits the declared gate, crop cycle, route, irrigation source, nutrient basis, residue fate, or pre-gate handling included by the scope."
     source_ids:
-      - fao-good-agricultural-practices
+      - fao-gap-framework-2003
       - usda-ams-eggplant-standard
   - rule_id: validation_soil_emissions
     applies_to: "managed nitrogen and residues"
@@ -1000,22 +1000,10 @@ published_dataset_profile:
   required_quality_disclosure: "Measurement sources, missing or estimated fields, allocation basis, crop-cycle completeness, mass-balance result, emission method, concrete flow identity verification, and identity evidence gap findings"
   update_trigger: "New cultivation or protected-production route, material change in gate conditioning or packaging, revised emission method, changed product qualifiers, or evidence that alters the default collection and validation rules"
 data_sources:
-  - id: "fao-eggplant-production-guide"
-    type: "extension_guidance"
-    reference: "FAO or national extension guidance for eggplant establishment, crop management, harvest rounds, and production records"
-    used_for: "crop-cycle decomposition, establishment, harvest, and residue context"
   - id: "fao-crop-evapotranspiration-56"
     type: "official_guidance"
     reference: "FAO Irrigation and drainage paper 56, Crop evapotranspiration"
     used_for: "irrigation and water-balance method context"
-  - id: "fao-good-agricultural-practices"
-    type: "official_guidance"
-    reference: "FAO good agricultural practices guidance for crop inputs, field operations, and harvest handling"
-    used_for: "boundary, field operations, crop protection, energy, and transport context"
-  - id: "fao-soil-fertilizer-plant-nutrition"
-    type: "official_guidance"
-    reference: "FAO soil fertility and plant-nutrition guidance"
-    used_for: "nutrient product and nutrient-equivalent calculation"
   - id: "ipcc-2019-managed-soils-n2o"
     type: "method_factor"
     reference: "2019 IPCC Refinement, managed soils and nitrogen emissions guidance"
@@ -1036,9 +1024,13 @@ data_sources:
     type: "method_factor"
     reference: "Declared crop and packaging mass-balance reconciliation method"
     used_for: "normalization, loss, cull, residue, and packaging checks"
+  - id: "fao-gap-framework-2003"
+    type: "official_guidance"
+    reference: "FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm"
+    used_for: "Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:148632673bfb3f30b7bde58402214523cfaa99f6ef0b85f88b5349eb63799dbd"
+  source_sha256: "sha256:a24fadad890fea496ce7deb70080bd4ac756c04e9938e86b20203086cf5e3910"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6142"
@@ -1049,10 +1041,10 @@ normative_context:
           line: 62
           column: 1
         end:
-          offset: 8772
+          offset: 8756
           line: 84
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared field bed or protected cultivation unit receiving eggplant seed or transplant material, with prior land use and excluded infrastructure work disclosed |\n| starting_condition_role | Start of the declared eggplant crop cycle and foreground input accounting |\n| product_classification_scope | CPC 3.0 `01233`, Eggplants (aubergines), through the declared farm-gate or pack-house hand-off |\n| recursive_input_rule | Eggplant seed or transplant material is recorded at its received hand-off state and linked to an upstream dataset; its own production is not recreated inside this PCR. |\n| upstream_dataset_requirement | Use upstream datasets for planting material, nutrient products, crop-protection products, supplied water, fuels, electricity, packaging, purchased transport, and waste-treatment services when those inputs cross the boundary. |\n| disclosure | Declare cultivar group, geography, route, planting density, crop-cycle dates, irrigation source and method, nutrient basis, crop-protection program, harvest rounds, marketable yield, culls and residues, washing and cooling, packaging, fate of wastes, and declared gate. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_cycle` | establishment and cultivation | Include bed preparation attributable to the crop cycle, planting, crop management, irrigation, nutrient and crop protection, and direct crop emissions; disclose prior land use and exclude unrelated infrastructure construction. | `fao-crop-evapotranspiration-56`; `fao-good-agricultural-practices` |\n| `boundary_repeated_harvest` | harvest rounds | Attribute every harvest round from one planting to the same crop cycle and reconcile marketable fruit, downgraded fruit, field losses, and residues before normalization. | `fao-eggplant-production-guide`; `usda-ams-eggplant-standard` |\n| `boundary_gate_preparation` | sorting, washing, cooling, and packing | End the default foreground boundary at the declared farm-gate or pack-house gate. Include sorting, washing, cooling, primary packaging, and pre-gate transport only when they occur before that gate. | `usda-ams-eggplant-standard`; `codex-fresh-produce-hygiene` |\n| `boundary_residue_fate` | fruit culls, crop residues, and packaging waste | Record field return, composting, feed use, treatment, transport, or disposal for each residue stream. Do not assign a co-product credit without a documented recipient and intended use. | `iso-14044-2006`; `mass-balance-identity` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared field bed or protected cultivation unit receiving eggplant seed or transplant material, with prior land use and excluded infrastructure work disclosed |\n| starting_condition_role | Start of the declared eggplant crop cycle and foreground input accounting |\n| product_classification_scope | CPC 3.0 `01233`, Eggplants (aubergines), through the declared farm-gate or pack-house hand-off |\n| recursive_input_rule | Eggplant seed or transplant material is recorded at its received hand-off state and linked to an upstream dataset; its own production is not recreated inside this PCR. |\n| upstream_dataset_requirement | Use upstream datasets for planting material, nutrient products, crop-protection products, supplied water, fuels, electricity, packaging, purchased transport, and waste-treatment services when those inputs cross the boundary. |\n| disclosure | Declare cultivar group, geography, route, planting density, crop-cycle dates, irrigation source and method, nutrient basis, crop-protection program, harvest rounds, marketable yield, culls and residues, washing and cooling, packaging, fate of wastes, and declared gate. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_cycle` | establishment and cultivation | Include bed preparation attributable to the crop cycle, planting, crop management, irrigation, nutrient and crop protection, and direct crop emissions; disclose prior land use and exclude unrelated infrastructure construction. | `fao-crop-evapotranspiration-56`; `fao-gap-framework-2003` |\n| `boundary_repeated_harvest` | harvest rounds | Attribute every harvest round from one planting to the same crop cycle and reconcile marketable fruit, downgraded fruit, field losses, and residues before normalization. | `fao-gap-framework-2003`; `usda-ams-eggplant-standard` |\n| `boundary_gate_preparation` | sorting, washing, cooling, and packing | End the default foreground boundary at the declared farm-gate or pack-house gate. Include sorting, washing, cooling, primary packaging, and pre-gate transport only when they occur before that gate. | `usda-ams-eggplant-standard`; `codex-fresh-produce-hygiene` |\n| `boundary_residue_fate` | fruit culls, crop residues, and packaging waste | Record field return, composting, feed use, treatment, transport, or disposal for each residue stream. Do not assign a co-product credit without a documented recipient and intended use. | `iso-14044-2006`; `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1089,15 +1081,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35183"
+    - unit_id: "normative_35086"
       family: "allocation"
       span:
         start:
-          offset: 35183
+          offset: 35086
           line: 668
           column: 1
         end:
-          offset: 35992
+          offset: 35895
           line: 675
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_shared_crop_inputs` | multiple crops or products sharing a field, bed, meter, or facility | Allocate shared inputs using measured crop-specific records where available. If a shared record cannot be separated, use a documented physical basis such as area-time, operating time, or mass and disclose the basis. | `iso-14044-2006` |\n| `allocation_cull_fates` | culls, downgraded fruit, and residues | Treat culls and residues as waste or residue unless a recipient, intended use, quality, and hand-off are documented. Apply a co-product allocation only when the secondary product has a defined function and the allocation basis is stated. | `iso-14044-2006`; `mass-balance-identity` |\n\n"
@@ -1117,11 +1109,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35183
+              offset: 35086
               line: 668
               column: 1
             end:
-              offset: 35223
+              offset: 35126
               line: 668
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1137,18 +1129,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_45604"
+    - unit_id: "normative_45478"
       family: "validation"
       span:
         start:
-          offset: 45604
+          offset: 45478
           line: 717
           column: 1
         end:
-          offset: 47235
+          offset: 47100
           line: 728
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_definition` | reference flow | Confirm the 1,000 kg functional unit, all required qualifiers, and the platform-verified reference product, mass property, and unit-group identities before foreground generation. | `mass-balance-identity` |\n| `validation_flow_identity_binding` | parameterized product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_mass_reconciliation` | harvest and gate preparation | Check accepted output, culls, rejects, residues, field losses, handling losses, and packaging waste against the declared mass basis, with container tare and moisture treatment explicit. | `mass-balance-identity` |\n| `validation_boundary_disclosure` | system boundary | Reject a dataset that omits the declared gate, crop cycle, route, irrigation source, nutrient basis, residue fate, or pre-gate handling included by the scope. | `fao-good-agricultural-practices`; `usda-ams-eggplant-standard` |\n| `validation_soil_emissions` | managed nitrogen and residues | Verify that one declared emissions method is used and that direct and indirect nitrogen pathways are not double counted. | `ipcc-2019-managed-soils-n2o` |\n| `validation_data_quality` | all foreground records | Report identity, measurement, temporal coverage, completeness, allocation, and disclosure findings separately; inconclusive or error findings fail validation by default. | `iso-14044-2006` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_definition` | reference flow | Confirm the 1,000 kg functional unit, all required qualifiers, and the platform-verified reference product, mass property, and unit-group identities before foreground generation. | `mass-balance-identity` |\n| `validation_flow_identity_binding` | parameterized product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_mass_reconciliation` | harvest and gate preparation | Check accepted output, culls, rejects, residues, field losses, handling losses, and packaging waste against the declared mass basis, with container tare and moisture treatment explicit. | `mass-balance-identity` |\n| `validation_boundary_disclosure` | system boundary | Reject a dataset that omits the declared gate, crop cycle, route, irrigation source, nutrient basis, residue fate, or pre-gate handling included by the scope. | `fao-gap-framework-2003`; `usda-ams-eggplant-standard` |\n| `validation_soil_emissions` | managed nitrogen and residues | Verify that one declared emissions method is used and that direct and indirect nitrogen pathways are not double counted. | `ipcc-2019-managed-soils-n2o` |\n| `validation_data_quality` | all foreground records | Report identity, measurement, temporal coverage, completeness, allocation, and disclosure findings separately; inconclusive or error findings fail validation by default. | `iso-14044-2006` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1165,11 +1157,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 45604
+              offset: 45478
               line: 717
               column: 1
             end:
-              offset: 45626
+              offset: 45500
               line: 717
               column: 23
           text: "## 9. Validation Rules"
@@ -1196,33 +1188,33 @@ normative_context:
           line: 79
           column: 1
         end:
-          offset: 7841
+          offset: 7832
           line: 79
-          column: 357
+          column: 348
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_repeated_harvest"
       identity_kind: "explicit"
       unit_id: "normative_6142"
       source_span:
         start:
-          offset: 7842
+          offset: 7833
           line: 80
           column: 1
         end:
-          offset: 8126
+          offset: 8110
           line: 80
-          column: 285
+          column: 278
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_gate_preparation"
       identity_kind: "explicit"
       unit_id: "normative_6142"
       source_span:
         start:
-          offset: 8127
+          offset: 8111
           line: 81
           column: 1
         end:
-          offset: 8461
+          offset: 8445
           line: 81
           column: 335
     - pointer: "/system_boundary/rules/3"
@@ -1231,115 +1223,115 @@ normative_context:
       unit_id: "normative_6142"
       source_span:
         start:
-          offset: 8462
+          offset: 8446
           line: 82
           column: 1
         end:
-          offset: 8770
+          offset: 8754
           line: 82
           column: 309
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_shared_crop_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_35183"
+      unit_id: "normative_35086"
       source_span:
         start:
-          offset: 35296
+          offset: 35199
           line: 672
           column: 1
         end:
-          offset: 35638
+          offset: 35541
           line: 672
           column: 343
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_cull_fates"
       identity_kind: "explicit"
-      unit_id: "normative_35183"
+      unit_id: "normative_35086"
       source_span:
         start:
-          offset: 35639
+          offset: 35542
           line: 673
           column: 1
         end:
-          offset: 35990
+          offset: 35893
           line: 673
           column: 352
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_definition"
       identity_kind: "explicit"
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 45699
+          offset: 45573
           line: 721
           column: 1
         end:
-          offset: 45960
+          offset: 45834
           line: 721
           column: 262
     - pointer: "/validation_rules/1"
       rule_id: "validation_flow_identity_binding"
       identity_kind: "explicit"
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 45961
+          offset: 45835
           line: 722
           column: 1
         end:
-          offset: 46204
+          offset: 46078
           line: 722
           column: 244
     - pointer: "/validation_rules/2"
       rule_id: "validation_mass_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 46205
+          offset: 46079
           line: 723
           column: 1
         end:
-          offset: 46486
+          offset: 46360
           line: 723
           column: 282
     - pointer: "/validation_rules/3"
       rule_id: "validation_boundary_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 46487
+          offset: 46361
           line: 724
           column: 1
         end:
-          offset: 46768
+          offset: 46633
           line: 724
-          column: 282
+          column: 273
     - pointer: "/validation_rules/4"
       rule_id: "validation_soil_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 46769
+          offset: 46634
           line: 725
           column: 1
         end:
-          offset: 46987
+          offset: 46852
           line: 725
           column: 219
     - pointer: "/validation_rules/5"
       rule_id: "validation_data_quality"
       identity_kind: "explicit"
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 46988
+          offset: 46853
           line: 726
           column: 1
         end:
-          offset: 47233
+          offset: 47098
           line: 726
           column: 246
   diagnostics:
@@ -1369,26 +1361,26 @@ normative_context:
           column: 287
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35183"
+      unit_id: "normative_35086"
       source_span:
         start:
-          offset: 35183
+          offset: 35086
           line: 668
           column: 1
         end:
-          offset: 35223
+          offset: 35126
           line: 668
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_45604"
+      unit_id: "normative_45478"
       source_span:
         start:
-          offset: 45604
+          offset: 45478
           line: 717
           column: 1
         end:
-          offset: 45626
+          offset: 45500
           line: 717
           column: 23
 projection_metadata:
@@ -1398,5 +1390,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:148632673bfb3f30b7bde58402214523cfaa99f6ef0b85f88b5349eb63799dbd"
-  generated_content_sha256: "sha256:5f1e21c8cbe23f0ca99ad582317c3019932011265041e89fdfe632c485d510a5"
+    sha256: "sha256:a24fadad890fea496ce7deb70080bd4ac756c04e9938e86b20203086cf5e3910"
+  generated_content_sha256: "sha256:23561745eca34d7e52ef1c424bd9fc210ae25133312c657524866920336bce7c"

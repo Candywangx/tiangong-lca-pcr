@@ -73,7 +73,7 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | 建植和植株群体管理 | 纳入产生声明鲜洋蓟产出的整畦、建植或多年生再生、作物管理、作物周期投入和采收准备；披露先前土地用途，排除无关基础设施建设。 | `ucanr-artichoke-production-1997`; `ucanr-artichoke-cultural-tips-2026` |
+| `boundary_crop_cycle` | 建植和植株群体管理 | 纳入产生声明鲜洋蓟产出的整畦、建植或多年生再生、作物管理、作物周期投入和采收准备；披露先前土地用途，排除无关基础设施建设。 | `ucanr-artichoke-production-2008`; `ucanr-artichoke-cultural-tips-2026` |
 | `boundary_gate_conditioning` | 采收和初级调理 | 前景系统止于声明农场或包装场交接节点；在该节点之前发生的切割、分级、修整、清洗、冷却和初级包装均纳入。 | `ucanr-artichoke-cultural-tips-2026` |
 | `boundary_soil_nitrogen` | 肥料、作物残余物和受管理土壤 | 使用一种声明方法及已记录的养分投入和残余物去向，估计适用的直接和间接氮排放；避免重复计算同一氮路径。 | `ipcc-2019-refinement-nitrogen` |
 | `boundary_residue_fate` | 田间残余物、拒收物和修整物 | 分别记录还田、堆肥、饲料利用、处理或处置；没有证据证明生产性用途的材料仍作为残余物或废物流。 | `ucanr-artichoke-weed-management-2005`; `ucanr-artichoke-cultural-tips-2026` |
@@ -179,16 +179,15 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
-- 来源：`ucanr-artichoke-production-1997`
-- 数量范围：建植灌溉筛选
+- 来源：`ucanr-artichoke-production-2008`
+- 数量范围：建植用水暂定估计；原始端点依据未解决
   - 范围角色：典型范围（`typical_range`）
   - 下限：200
   - 上限：600
   - 单位：m3/ha
   - 基准：冠层充分形成前建植期输送的灌溉水
   - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-artichoke-production-1997`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 流：建植移动机械燃料（`establishment_machinery_fuel`）
 
@@ -205,7 +204,7 @@ translation_status: aligned
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`ucanr-artichoke-production-1997`
+- 来源：`ucanr-artichoke-production-2008`
 - 数量范围：建植燃料筛选
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：50
@@ -234,7 +233,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_field_records`
-- 来源：`ucanr-artichoke-production-1997`
+- 来源：`ucanr-artichoke-production-2008`
 - 数量范围：生产面积筛选
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0.1
@@ -343,15 +342,14 @@ translation_status: aligned
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估计（`reasoned_estimate`）
 
-- 数量范围：作物周期钾投入筛选
+- 数量范围：钾肥施用暂定估计；未核实为施肥区间，不能混同作物吸收量
   - 范围角色：典型范围（`typical_range`）
   - 下限：0
   - 上限：450
   - 单位：kg K2O/ha
   - 基准：待土壤检测和农场记录支持的作物养分施用筛选
   - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`shinohara-artichoke-irrigation-nitrogen-2011`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 流：植株群体管理期灌溉水（`crop_irrigation_water`）
 
@@ -368,16 +366,16 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_irrigation_records`
-- 来源：`ucanr-artichoke-production-1997`; `shinohara-artichoke-irrigation-nitrogen-2011`
-- 数量范围：作物周期灌溉筛选
+- 来源：`ucanr-artichoke-production-2008`; `shinohara-artichoke-irrigation-nitrogen-2011`
+- 数量范围：加州灌溉一年生和多年生路线用水背景
   - 范围角色：典型范围（`typical_range`）
-  - 下限：1860
-  - 上限：2480
+  - 下限：4572
+  - 上限：6096
   - 单位：m3/ha/year
-  - 基准：所引加利福尼亚生产情境下的年度洋蓟生产灌溉；按当地降雨和路线调整
+  - 基准：UC ANR 7221：多年生每年 18–24 acre-inches/acre，即 4572–6096 m3/ha/year；一年生 20–24，即 5080–6096。1 英寸水深 = 254 m3/ha；取决于灌溉路线和降雨，不是雨养下限或普遍有效性界限。
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-artichoke-production-1997`
+  - 来源：`ucanr-artichoke-production-2008`
 
 ###### 流：植保产品（`crop_protection_input`）
 
@@ -444,7 +442,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_energy_records`
-- 来源：`ucanr-artichoke-production-1997`
+- 来源：`ucanr-artichoke-production-2008`
 - 数量范围：植株群体管理用电筛选
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -473,7 +471,7 @@ translation_status: aligned
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_field_records`
-- 来源：`ucanr-artichoke-production-1997`
+- 来源：`ucanr-artichoke-production-2008`
 
 #### 输出
 
@@ -800,7 +798,7 @@ translation_status: aligned
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_single_crop_cycle` | 共用田块、种植畦、设施单元或多年生植株群体 | 根据记录的面积、植株群体、日期和可销售产出，将作物周期或生产年度投入归属于洋蓟；没有其他作物或年度自身记录时，不得分配至其他作物或年度。 | `ucanr-artichoke-production-1997` |
+| `allocation_single_crop_cycle` | 共用田块、种植畦、设施单元或多年生植株群体 | 根据记录的面积、植株群体、日期和可销售产出，将作物周期或生产年度投入归属于洋蓟；没有其他作物或年度自身记录时，不得分配至其他作物或年度。 | `ucanr-artichoke-production-2008` |
 | `allocation_perennial_stand` | 多年生洋蓟建植、回剪、休眠和再生 | 披露植株群体年龄，并按有记录的归属规则在声明生产年度间分配建植或共用植株群体负荷；不得不加说明地将全部建植负荷归至一个采收年度。 | `ucanr-artichoke-cultural-tips-2026` |
 | `allocation_residue_fate` | 作物残余物、田间损失、拒收物和修整物 | 仅在有接收方、数量和预期用途记录时才给予残余物或拒收物副产品抵扣；否则保留洋蓟生产负荷并报告去向。 | `ucanr-artichoke-weed-management-2005` |
 
@@ -832,7 +830,7 @@ translation_status: aligned
 | `calc_nutrient_mass` | 肥料、粪肥、堆肥和改良剂行 | 产品质量乘以有记录的养分分数；保留原产品质量及养分基准。 | 产品发票；养分浓度；施用记录 | 按周期或年度记录的 kg N、kg P2O5 或 kg K2O | `ucanr-artichoke-cultural-tips-2026` |
 | `calc_crop_cycle_normalization` | 全部作物周期和生产年度投入 | 作物周期或生产年度数量除以可销售鲜洋蓟质量，再乘以 1,000 kg。 | 投入记录；可销售交接输出 | 每 1,000 kg 产出的归一化数量 |  |
 | `calc_perennial_attribution` | 多年生植株群体建植、回剪和再生 | 按有记录的植株群体年龄或生产年度归属规则分配共用投入，再将各年度与其可销售产出核对。 | 植株群体登记；日期；投入记录；年度产出 | 生产年度数量 | `ucanr-artichoke-cultural-tips-2026` |
-| `calc_area_time` | 土地占用 | 生产面积乘以所代表作物周期或生产年度时长；披露设施面积的处理方式。 | 面积登记；作物或生产日期 | 面积时间数量 | `ucanr-artichoke-production-1997` |
+| `calc_area_time` | 土地占用 | 生产面积乘以所代表作物周期或生产年度时长；披露设施面积的处理方式。 | 面积登记；作物或生产日期 | 面积时间数量 | `ucanr-artichoke-production-2008` |
 | `calc_nitrogen_emission` | 土壤直接氧化亚氮和氨排放 | 对适用养分投入和声明土壤或气候方法应用选定 IPCC 兼容因子，并在数据集中记录因子。 | 养分记录；方法选择；土壤或气候参数 | 排放的 kg N2O 或 kg NH3 | `ipcc-2019-refinement-nitrogen` |
 | `calc_nitrate_loss` | 硝酸盐进入淡水 | 根据适用氮盈余及选定场址或方法因子计算；不得仅依据购买量推断损失。 | 养分记录；盈余计算；因子 | 排放的 kg NO3- | `ipcc-2019-refinement-nitrogen` |
 | `calc_gate_mass_balance` | 采收和交接准备 | 在测量不确定度内，接收花蕾质量等于可销售交接输出加田间或调理拒收物、残余物、废水相关固体及有记录的搬运损失。 | 采收单；调理记录；发货及拒收记录 | 核对后的质量平衡 | `ucanr-artichoke-cultural-tips-2026` |
@@ -852,7 +850,7 @@ translation_status: aligned
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_output` | 参考流和交接输出 | 声明参考输出必须是声明交接节点的可销售鲜洋蓟花蕾，质量单位为 kg；开放花朵、冷冻、罐藏、熟制或零售产品不在本 PCR 范围内。 | `ucanr-artichoke-cultural-tips-2026` |
-| `validate_crop_cycle_dates` | 建植、管理、采收和交接准备 | 建植、施用、灌溉、回剪或休眠、采收轮次、调理和交接输出必须发生于声明作物周期或生产年度内，或明确归属于该周期或年度。 | `ucanr-artichoke-production-1997`; `ucanr-artichoke-cultural-tips-2026` |
+| `validate_crop_cycle_dates` | 建植、管理、采收和交接准备 | 建植、施用、灌溉、回剪或休眠、采收轮次、调理和交接输出必须发生于声明作物周期或生产年度内，或明确归属于该周期或年度。 | `ucanr-artichoke-production-2008`; `ucanr-artichoke-cultural-tips-2026` |
 | `validate_nutrient_basis` | 养分投入和排放 | 须有产品质量、养分浓度、养分基准及排放计算方法，且内部一致；不得将产品质量和养分质量视为同一交换重复计入。 | `ucanr-artichoke-cultural-tips-2026`; `ipcc-2019-refinement-nitrogen` |
 | `validate_mass_balance` | 采收和交接准备 | 在声明测量不确定度内，总采收及接收质量须与可销售产出、拒收物、残余物、废水相关固体及损失核对。 | `ucanr-artichoke-cultural-tips-2026` |
 | `validate_flow_identity_resolution` | 参数化行 | 按具体流 UUID、物理状态、属性和单位核实每项实际交换；无法确认时保留明确未解决身份。 |  |
@@ -874,7 +872,7 @@ translation_status: aligned
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `ucanr-artichoke-production-1997` | literature | University of California Agriculture and Natural Resources, *Artichoke Production in California*, ANR Publication 7221, https://my.ucanr.edu/repository/a/?a=54030 | 生产路线、多年生和一年生管理、灌溉及田间边界背景 |
+| `ucanr-artichoke-production-2008` | literature | University of California ANR, Artichoke Production in California, Publication 7221, revised 2008, https://escholarship.org/content/qt7253845k/qt7253845k.pdf | 生产路线、多年生和一年生管理、灌溉及田间边界背景 |
 | `ucanr-artichoke-cultural-tips-2026` | official_guidance | UC Statewide IPM Program, *Cultural Tips for Growing Artichoke*, https://ipm.ucanr.edu/home-and-landscape/cultural-tips-for-growing-artichoke/ | 建植、养分实践、灌溉原则、采收成熟度、产品限定信息及交接前调理背景 |
 | `ucanr-artichoke-weed-management-2005` | official_guidance | UC Statewide IPM Program, *Agriculture: Artichoke Pest Management Guidelines — Integrated Weed Management*, https://ipm.ucanr.edu/agriculture/artichoke/integrated-weed-management/ | 一年生和多年生植株群体管理、杂草防控、回剪、残余物及植保背景 |
 | `shinohara-artichoke-irrigation-nitrogen-2011` | literature | Shinohara, Agehara, Yoo, and Leskovar, *Irrigation and Nitrogen Management of Artichoke: Yield, Head Quality, and Phenolic Content*, HortScience 46(3), 377–386, https://doi.org/10.21273/HORTSCI.46.3.377 | 灌溉和氮处理范围及产量与质量关系 |

@@ -5,7 +5,7 @@ product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pistachios-in-shell"
   classification_refs: "CPC 3.0 01375, Pistachios, in shell; mapping relation: exact"
   covered_products: "Whole pistachio fruit with husk and shell retained, and dehusked pistachios with the hard shell retained when the extended gate is declared"
-  excluded_products: "Shelled or split pistachios; pistachio kernel, pistachio oil, roasted or otherwise processed pistachio products, shell products, and post-gate logistics or retail products"
+  excluded_products: "Shelled pistachios or detached kernels; pistachio kernel, pistachio oil, roasted or otherwise processed pistachio products, shell products, and post-gate logistics or retail products"
   representative_product: "Mature or declared-maturity pistachios in shell with cultivar, husk status, moisture or freshness state, grade, accepted mass, reject mass, and gate declared"
   production_route: "Perennial pistachio-tree establishment and management, harvest and collection, optional dehusking while retaining the shell, primary conditioning, grading, optional storage, and declared hand-off"
   market_state: "Fresh whole fruit at plant gate or dehusked/conditioned in-shell lot at a declared extended gate, with crop year, geography, maturity, husk status, shell condition, grade, and fate records"
@@ -19,7 +19,7 @@ system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
       applies_to: "foreground_system_boundary"
-      rule: "The default foreground boundary runs from the declared tree-orchard starting condition through perennial tree management, harvest and collection, and the fresh plant-gate hand-off of accepted pistachios in shell. An extended route additionally includes dehusking that leaves the hard shell intact, cleaning, grading, storage, and the declared post-harvest gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, retail, post-gate transport, and post-gate storage are outside the default boundary."
+      rule: "The default foreground boundary runs from the declared tree-orchard starting condition through perennial tree management, harvest and collection, and the fresh plant-gate hand-off of accepted pistachios in shell. An extended route additionally includes dehusking that leaves the hard shell intact, cleaning, grading, storage, and the declared post-harvest gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, retail, post-gate transport, and post-gate storage are outside the default boundary."
       source_ids: []
     - rule_id: boundary_tree_to_farm_gate
       applies_to: "all conforming datasets"
@@ -41,7 +41,7 @@ system_boundary:
         - iso-14044-2006
     - rule_id: boundary_no_shell_removal
       applies_to: "in-shell product"
-      rule: "Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, and shell processing."
+      rule: "Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, and shell processing."
       source_ids:
         - codex-tree-nuts-hygiene-cxc-6-1972
         - ucdavis-pistachio-postharvest
@@ -54,7 +54,7 @@ system_boundary:
 boundary_abstraction:
   declared_starting_condition: "tree-orchard site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land use and existing tree history are disclosed"
   starting_condition_role: "start of managed perennial pistachio production and tree-asset accounting"
-  product_classification_scope: "CPC 3.0 01375, Pistachios, in shell; shelled, split, kernel, oil, shell, and downstream processed pistachio products are outside this PCR"
+  product_classification_scope: "CPC 3.0 01375, Pistachios, in shell; shelled, detached-kernel, oil, shell, and downstream processed pistachio products are outside this PCR"
   recursive_input_rule: "Same-category planting material or retained pistachios crossing the boundary are recorded as upstream inputs and are not recursively expanded into another in-shell product output. Internal hand-offs between orchard, harvest, conditioning, grading, and storage are process links and are not additional market outputs."
   upstream_dataset_requirement: "Use representative upstream datasets for nursery material, nutrient products, crop protection, irrigation supply, fuel, electricity, dehusking or grading services, packaging, machinery services, and waste treatment when these inputs cross the boundary."
   disclosure: "cultivar and tree block; geography, soil, climate, and land history; establishment year, tree age, productive life, and replacement; irrigation source and quality; nutrient and crop-protection records; harvest maturity; whole-fruit or dehusked state; moisture or freshness; shell quality; grade, reject, husk, and storage records; gate; and any intended husk co-product hand-off"
@@ -638,7 +638,7 @@ process_inventory:
           name: "rejected or downgraded pistachios in shell"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record cracked, moldy, insect-damaged, immature, over-mature, contaminated, or otherwise off-spec pistachios, with rework, recovery, treatment, or disposal destination. Raw activity or stage basis: per 1,000 kg received conditioning lot."
+          description: "Record broken-shell damaged, moldy, insect-damaged, immature, over-mature, contaminated, or otherwise off-spec pistachios, with rework, recovery, treatment, or disposal destination. Raw activity or stage basis: per 1,000 kg received conditioning lot."
           amount:
             expression: "measured mutually exclusive grade, downgrade, rework, and reject masses"
             value_mode: "foreground_record"
@@ -1144,7 +1144,7 @@ dataset_production:
   data_quality_requirements:
     - id: quality_01
       applies_to: "flow identity"
-      requirement: "Use the verified Pistachios, in shell UUID with Mass and kg. Preserve the fresh plant-gate or explicitly extended-gate qualifier and do not substitute shelled, split, or kernel identities."
+      requirement: "Use the verified Pistachios, in shell UUID with Mass and kg. Preserve the fresh plant-gate or explicitly extended-gate qualifier and do not substitute shelled or detached-kernel identities."
       evidence: "platform identity record; dataset metadata"
     - id: quality_02
       applies_to: "tree and harvest quantities"
@@ -1177,7 +1177,7 @@ dataset_production:
 validation_rules:
   - rule_id: validation_01
     applies_to: "reference flow"
-    rule: "Reference product is the verified Pistachios, in shell UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled or split pistachio."
+    rule: "Reference product is the verified Pistachios, in shell UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled pistachio or detached kernel."
     source_ids:
       - codex-tree-nuts-hygiene-cxc-6-1972
   - rule_id: validation_02
@@ -1228,7 +1228,7 @@ published_dataset_profile:
   dataset_role: "secondary_dataset for a reviewed pistachio-in-shell foreground dataset; may be promoted to background_dataset only after the required review and publication gates"
   downstream_use: "Construction and validation of process and lifecyclemodel projections for pistachios in shell at the declared fresh plant-gate or extended dehusked, conditioned, or storage gate"
   allowed_use: "Tree management, harvest, collection, dehusking, cleaning, grading, storage, and gate modelling when the declared product state, husk status, maturity, quality, crop year, geography, and allocation treatment are retained"
-  excluded_use: "Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, shell products, retail products, consumer use, post-gate logistics, and unreported product categories"
+  excluded_use: "Shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, shell products, retail products, consumer use, post-gate logistics, and unreported product categories"
   required_metadata: "reference UUID; Mass property and Units of mass unit group; CPC 3.0 01375; cultivar; geography; tree phase and age; crop year; irrigation; maturity; whole-fruit or dehusked state; husk fate; shell and grade quality; accepted, rejected, residue, loss, and storage records"
   required_quality_disclosure: "measurement versus estimate; freshness or moisture method; mass-balance completeness; tree-life and intercropping allocation; husk co-product allocation; rework and reject fate; storage duration; data period; geography; technology; and unresolved identity gaps"
   update_trigger: "new crop-year records, material change in tree phase or replacement, change in harvest or dehusking technology, new intended husk route, changed storage practice, evidence-backed range replacement, or platform identity revision"
@@ -1257,23 +1257,27 @@ data_sources:
     type: "method_factor"
     reference: "This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing."
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
+  - id: "usda-pistachio-in-shell-standard"
+    type: "standard"
+    reference: "USDA Agricultural Marketing Service, Pistachios in the Shell Grades and Standards, https://www.ams.usda.gov/grades-standards/pistachios-shell-grades-and-standards"
+    used_for: "Shell retention, natural suture opening and grade-specific split/non-split context; not an LCA allocation rule"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:af7909a5564b201c75b1a873a977cf3eedbf7ae02a044c446b26593ef8a50624"
+  source_sha256: "sha256:608993b163842374a261cb17bfbb5d2605718b1274f8b04e15ed7b75f407964c"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8775"
+    - unit_id: "normative_9182"
       family: "system_boundary"
       span:
         start:
-          offset: 8775
-          line: 72
+          offset: 9182
+          line: 74
           column: 1
         end:
-          offset: 12835
-          line: 97
+          offset: 13300
+          line: 99
           column: 1
-      markdown: "## 5. System Boundary\n\nThe default foreground boundary runs from the declared tree-orchard starting condition through perennial tree management, harvest and collection, and the fresh plant-gate hand-off of accepted pistachios in shell. An extended route additionally includes dehusking that leaves the hard shell intact, cleaning, grading, storage, and the declared post-harvest gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, retail, post-gate transport, and post-gate storage are outside the default boundary.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | tree-orchard site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land use and existing tree history are disclosed |\n| starting_condition_role | start of managed perennial pistachio production and tree-asset accounting |\n| product_classification_scope | CPC 3.0 `01375`, Pistachios, in shell; shelled, split, kernel, oil, shell, and downstream processed pistachio products are outside this PCR |\n| recursive_input_rule | Same-category planting material or retained pistachios crossing the boundary are recorded as upstream inputs and are not recursively expanded into another in-shell product output. Internal hand-offs between orchard, harvest, conditioning, grading, and storage are process links and are not additional market outputs. |\n| upstream_dataset_requirement | Use representative upstream datasets for nursery material, nutrient products, crop protection, irrigation supply, fuel, electricity, dehusking or grading services, packaging, machinery services, and waste treatment when these inputs cross the boundary. |\n| disclosure | cultivar and tree block; geography, soil, climate, and land history; establishment year, tree age, productive life, and replacement; irrigation source and quality; nutrient and crop-protection records; harvest maturity; whole-fruit or dehusked state; moisture or freshness; shell quality; grade, reject, husk, and storage records; gate; and any intended husk co-product hand-off |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_tree_to_farm_gate` | all conforming datasets | Include perennial tree establishment, immature years, productive management, harvest, collection, and the declared fresh plant-gate hand-off of accepted pistachios in shell. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `boundary_dehusking_extension` | extended post-harvest route | Include dehusking, cleaning, grading, and storage only when the declared dataset gate extends beyond the fresh whole-fruit plant gate. Report the extended gate and do not relabel it as the platform fresh/unprocessed state. | `ucdavis-pistachio-postharvest`; `codex-tree-nuts-hygiene-cxc-6-1972` |\n| `boundary_perennial_tree_disclosure` | establishment and replacement | Allocate establishment, immature years, replacement trees, and removal over the declared tree life and accepted-output basis; disclose life, non-bearing years, intercropping, and replacement events. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `boundary_no_shell_removal` | in-shell product | Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, and shell processing. | `codex-tree-nuts-hygiene-cxc-6-1972`; `ucdavis-pistachio-postharvest` |\n| `boundary_quality_and_fate` | all outputs | Separate accepted in-shell pistachios, husk, downgraded lots, rejected fruit, foreign material, dust, water loss, storage loss, and unexplained loss by measured mass and declared fate. | `ucdavis-pistachio-postharvest`; `mass-balance-identity` |\n\n"
+      markdown: "## 5. System Boundary\n\nThe default foreground boundary runs from the declared tree-orchard starting condition through perennial tree management, harvest and collection, and the fresh plant-gate hand-off of accepted pistachios in shell. An extended route additionally includes dehusking that leaves the hard shell intact, cleaning, grading, storage, and the declared post-harvest gate. Upstream production of planting material, fertilizers, crop-protection products, supplied irrigation water, energy carriers, machinery services, and packaging uses representative background datasets. Shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, retail, post-gate transport, and post-gate storage are outside the default boundary.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | tree-orchard site before or at establishment, with planting material and purchased management inputs crossing the foreground boundary; prior land use and existing tree history are disclosed |\n| starting_condition_role | start of managed perennial pistachio production and tree-asset accounting |\n| product_classification_scope | CPC 3.0 `01375`, Pistachios, in shell; shelled, detached-kernel, oil, shell, and downstream processed pistachio products are outside this PCR |\n| recursive_input_rule | Same-category planting material or retained pistachios crossing the boundary are recorded as upstream inputs and are not recursively expanded into another in-shell product output. Internal hand-offs between orchard, harvest, conditioning, grading, and storage are process links and are not additional market outputs. |\n| upstream_dataset_requirement | Use representative upstream datasets for nursery material, nutrient products, crop protection, irrigation supply, fuel, electricity, dehusking or grading services, packaging, machinery services, and waste treatment when these inputs cross the boundary. |\n| disclosure | cultivar and tree block; geography, soil, climate, and land history; establishment year, tree age, productive life, and replacement; irrigation source and quality; nutrient and crop-protection records; harvest maturity; whole-fruit or dehusked state; moisture or freshness; shell quality; grade, reject, husk, and storage records; gate; and any intended husk co-product hand-off |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_tree_to_farm_gate` | all conforming datasets | Include perennial tree establishment, immature years, productive management, harvest, collection, and the declared fresh plant-gate hand-off of accepted pistachios in shell. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `boundary_dehusking_extension` | extended post-harvest route | Include dehusking, cleaning, grading, and storage only when the declared dataset gate extends beyond the fresh whole-fruit plant gate. Report the extended gate and do not relabel it as the platform fresh/unprocessed state. | `ucdavis-pistachio-postharvest`; `codex-tree-nuts-hygiene-cxc-6-1972` |\n| `boundary_perennial_tree_disclosure` | establishment and replacement | Allocate establishment, immature years, replacement trees, and removal over the declared tree life and accepted-output basis; disclose life, non-bearing years, intercropping, and replacement events. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `boundary_no_shell_removal` | in-shell product | Retain the hard shell in the product boundary. Exclude hatcheting or shell removal, destructive kernel-recovery splitting, kernel processing, oil extraction, roasted or otherwise processed pistachio products, and shell processing. | `codex-tree-nuts-hygiene-cxc-6-1972`; `ucdavis-pistachio-postharvest` |\n| `boundary_quality_and_fate` | all outputs | Separate accepted in-shell pistachios, husk, downgraded lots, rejected fruit, foreign material, dust, water loss, storage loss, and unexplained loss by measured mass and declared fate. | `ucdavis-pistachio-postharvest`; `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1290,12 +1294,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8775
-              line: 72
+              offset: 9182
+              line: 74
               column: 1
             end:
-              offset: 8796
-              line: 72
+              offset: 9203
+              line: 74
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1310,16 +1314,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46118"
+    - unit_id: "normative_46624"
       family: "allocation"
       span:
         start:
-          offset: 46118
-          line: 773
+          offset: 46624
+          line: 775
           column: 1
         end:
-          offset: 48994
-          line: 786
+          offset: 49500
+          line: 788
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | tree management and harvest with an intended husk output | Prefer process subdivision when tree, harvest, dehusking, husk collection, and nut records are independently available. When husk is deliberately collected and transferred as an intended co-product, allocate shared burdens by measured dry-matter mass; if dry-matter data are unavailable, use measured as-received mass and disclose the limitation. | `iso-14044-2006`; `ucdavis-pistachio-postharvest` |\n| `allocation_02` | husk retained on site or discarded | If husk remains on the field, is composted without an intended product hand-off, or is discarded as residue, do not assign a co-product credit. Retain its mass and fate as residue or waste and assign shared burden to the intended in-shell pistachio output. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | premium, standard, and downgraded in-shell grades | Use physical mass allocation between mutually exclusive accepted grade outputs when common conditioning burdens cannot be subdivided. Grade-specific operations remain with the grade receiving them; do not allocate the same lot to both a grade row and an aggregate output row. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_04` | perennial tree periods and phases | Annualize establishment, immature years, replacement, intercropping attribution, and removal over the declared tree life and accepted output basis. Link every input and output to a crop year or lifecycle phase; do not count a replacement event in both the original and replacement tree phases. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `allocation_05` | downgraded, reworked, rejected, and recovered lots | Keep rejected and downgraded lots separate from accepted product. Rework retains the producing-node burden and is linked once; recovered or intentionally marketed material requires a declared destination and allocation decision; discarded material receives its declared treatment burden. | `mass-balance-identity`; `iso-14044-2006` |\n| `allocation_06` | batch, campaign, and changeover attribution | Link tree, harvest, conditioning, dehusking, grading, and storage inputs and outputs to the batch or campaign that generated them. Record cleaning and changeover events once and do not allocate shared-run burdens to more than one batch without a documented driver. | `mass-balance-identity`; `iso-14044-2006` |\n\nThe hard shell remains part of the in-shell reference product and is not a separate co-product in this PCR. Kernel, oil, and shell-removal outputs belong to downstream pistachio-product PCRs and must not be introduced into this inventory. No output may be counted both as a marketed husk co-product and as orchard or conditioning residue.\n\n"
       headings:
@@ -1338,12 +1342,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46118
-              line: 773
+              offset: 46624
+              line: 775
               column: 1
             end:
-              offset: 46158
-              line: 773
+              offset: 46664
+              line: 775
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1358,18 +1362,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_60733"
+    - unit_id: "normative_61240"
       family: "validation"
       span:
         start:
-          offset: 60733
-          line: 831
+          offset: 61240
+          line: 833
           column: 1
         end:
-          offset: 63237
-          line: 845
+          offset: 63754
+          line: 847
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Reference product is the verified `Pistachios, in shell` UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled or split pistachio. | `codex-tree-nuts-hygiene-cxc-6-1972` |\n| `validation_02` | process map | Every required process is present; conditional dehusking, cleaning, grading, and storage processes are present when the declared gate or route requires them. | `ucdavis-pistachio-postharvest` |\n| `validation_03` | perennial production | Tree establishment, immature years, productive phase, replacement, intercropping attribution, and removal are linked to declared crop years and are not double-counted. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `validation_04` | harvest and collection | Harvested, collected, uncollected, damaged, residue, and accepted pistachio masses are mutually reconciled; maturity and hand-off state are declared. | `mass-balance-identity` |\n| `validation_05` | dehusking and quality | Whole-fruit input, husk, accepted in-shell product, grade, downgraded/rework, reject, foreign material, water loss, and residuals are mutually exclusive and mass-balanced. | `mass-balance-identity`; `ucdavis-pistachio-postharvest` |\n| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, product state, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `ucdavis-pistachio-postharvest` |\n| `validation_07` | allocation and rework | Husk allocation, grade allocation, downgraded routes, rework loops, rejected-material treatment, and any intercropping attribution are explicit and no burden or output is counted twice. | `iso-14044-2006` |\n| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, husk fate, and evidence limitations are disclosed. | `ucdavis-pistachio-postharvest`; `mass-balance-identity` |\n| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow | Reference product is the verified `Pistachios, in shell` UUID with Mass and kg. The dataset declares whole-fruit or extended dehusked gate state and does not substitute a shelled pistachio or detached kernel. | `codex-tree-nuts-hygiene-cxc-6-1972` |\n| `validation_02` | process map | Every required process is present; conditional dehusking, cleaning, grading, and storage processes are present when the declared gate or route requires them. | `ucdavis-pistachio-postharvest` |\n| `validation_03` | perennial production | Tree establishment, immature years, productive phase, replacement, intercropping attribution, and removal are linked to declared crop years and are not double-counted. | `ucdavis-pistachio-postharvest`; `iso-14044-2006` |\n| `validation_04` | harvest and collection | Harvested, collected, uncollected, damaged, residue, and accepted pistachio masses are mutually reconciled; maturity and hand-off state are declared. | `mass-balance-identity` |\n| `validation_05` | dehusking and quality | Whole-fruit input, husk, accepted in-shell product, grade, downgraded/rework, reject, foreign material, water loss, and residuals are mutually exclusive and mass-balanced. | `mass-balance-identity`; `ucdavis-pistachio-postharvest` |\n| `validation_06` | storage and gate | Opening stock, receipts, dispatches, closing stock, storage damage, product state, storage duration, and gate output reconcile. Storage losses are excluded from accepted output. | `mass-balance-identity`; `ucdavis-pistachio-postharvest` |\n| `validation_07` | allocation and rework | Husk allocation, grade allocation, downgraded routes, rework loops, rejected-material treatment, and any intercropping attribution are explicit and no burden or output is counted twice. | `iso-14044-2006` |\n| `validation_08` | evidence and disclosure | All important quantitative flows have a foreground collection rule and candidate range or method constraint; estimates, unresolved identities, gate state, husk fate, and evidence limitations are disclosed. | `ucdavis-pistachio-postharvest`; `mass-balance-identity` |\n| `validation_09` | batch and campaign records | Every harvest round, conditioning batch, grade lot, and storage receipt has a declared boundary, linked inputs and outputs, cleaning or changeover status, and reporting period; shared-run burdens are not counted twice. | `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1386,12 +1390,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 60733
-              line: 831
+              offset: 61240
+              line: 833
               column: 1
             end:
-              offset: 60755
-              line: 831
+              offset: 61262
+              line: 833
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1410,337 +1414,337 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 8798
-          line: 74
+          offset: 9205
+          line: 76
           column: 1
         end:
-          offset: 9556
-          line: 74
-          column: 759
+          offset: 9991
+          line: 76
+          column: 787
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_tree_to_farm_gate"
       identity_kind: "explicit"
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 11239
-          line: 91
+          offset: 11676
+          line: 93
           column: 1
         end:
-          offset: 11525
-          line: 91
+          offset: 11962
+          line: 93
           column: 287
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_dehusking_extension"
       identity_kind: "explicit"
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 11526
-          line: 92
+          offset: 11963
+          line: 94
           column: 1
         end:
-          offset: 11887
-          line: 92
+          offset: 12324
+          line: 94
           column: 362
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_perennial_tree_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 11888
-          line: 93
+          offset: 12325
+          line: 95
           column: 1
         end:
-          offset: 12213
-          line: 93
+          offset: 12650
+          line: 95
           column: 326
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_no_shell_removal"
       identity_kind: "explicit"
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 12214
-          line: 94
+          offset: 12651
+          line: 96
           column: 1
         end:
-          offset: 12541
-          line: 94
-          column: 328
+          offset: 13006
+          line: 96
+          column: 356
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_quality_and_fate"
       identity_kind: "explicit"
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 12542
-          line: 95
+          offset: 13007
+          line: 97
           column: 1
         end:
-          offset: 12833
-          line: 95
+          offset: 13298
+          line: 97
           column: 292
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 46231
-          line: 777
+          offset: 46737
+          line: 779
           column: 1
         end:
-          offset: 46710
-          line: 777
+          offset: 47216
+          line: 779
           column: 480
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 46711
-          line: 778
+          offset: 47217
+          line: 780
           column: 1
         end:
-          offset: 47070
-          line: 778
+          offset: 47576
+          line: 780
           column: 360
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 47071
-          line: 779
+          offset: 47577
+          line: 781
           column: 1
         end:
-          offset: 47464
-          line: 779
+          offset: 47970
+          line: 781
           column: 394
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 47465
-          line: 780
+          offset: 47971
+          line: 782
           column: 1
         end:
-          offset: 47868
-          line: 780
+          offset: 48374
+          line: 782
           column: 404
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 47869
-          line: 781
+          offset: 48375
+          line: 783
           column: 1
         end:
-          offset: 48275
-          line: 781
+          offset: 48781
+          line: 783
           column: 407
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 48276
-          line: 782
+          offset: 48782
+          line: 784
           column: 1
         end:
-          offset: 48652
-          line: 782
+          offset: 49158
+          line: 784
           column: 377
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 48654
-          line: 784
+          offset: 49160
+          line: 786
           column: 1
         end:
-          offset: 48992
-          line: 784
+          offset: 49498
+          line: 786
           column: 339
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 60828
-          line: 835
+          offset: 61335
+          line: 837
           column: 1
         end:
-          offset: 61104
-          line: 835
-          column: 277
+          offset: 61621
+          line: 837
+          column: 287
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 61105
-          line: 836
+          offset: 61622
+          line: 838
           column: 1
         end:
-          offset: 61332
-          line: 836
+          offset: 61849
+          line: 838
           column: 228
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 61333
-          line: 837
+          offset: 61850
+          line: 839
           column: 1
         end:
-          offset: 61597
-          line: 837
+          offset: 62114
+          line: 839
           column: 265
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 61598
-          line: 838
+          offset: 62115
+          line: 840
           column: 1
         end:
-          offset: 61820
-          line: 838
+          offset: 62337
+          line: 840
           column: 223
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 61821
-          line: 839
+          offset: 62338
+          line: 841
           column: 1
         end:
-          offset: 62097
-          line: 839
+          offset: 62614
+          line: 841
           column: 277
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 62098
-          line: 840
+          offset: 62615
+          line: 842
           column: 1
         end:
-          offset: 62375
-          line: 840
+          offset: 62892
+          line: 842
           column: 278
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 62376
-          line: 841
+          offset: 62893
+          line: 843
           column: 1
         end:
-          offset: 62626
-          line: 841
+          offset: 63143
+          line: 843
           column: 251
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 62627
-          line: 842
+          offset: 63144
+          line: 844
           column: 1
         end:
-          offset: 62939
-          line: 842
+          offset: 63456
+          line: 844
           column: 313
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 62940
-          line: 843
+          offset: 63457
+          line: 845
           column: 1
         end:
-          offset: 63235
-          line: 843
+          offset: 63752
+          line: 845
           column: 296
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 8775
-          line: 72
+          offset: 9182
+          line: 74
           column: 1
         end:
-          offset: 8796
-          line: 72
+          offset: 9203
+          line: 74
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8775"
+      unit_id: "normative_9182"
       source_span:
         start:
-          offset: 9584
-          line: 78
+          offset: 10019
+          line: 80
           column: 1
         end:
-          offset: 11146
-          line: 85
+          offset: 11583
+          line: 87
           column: 396
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46118"
+      unit_id: "normative_46624"
       source_span:
         start:
-          offset: 46118
-          line: 773
+          offset: 46624
+          line: 775
           column: 1
         end:
-          offset: 46158
-          line: 773
+          offset: 46664
+          line: 775
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_60733"
+      unit_id: "normative_61240"
       source_span:
         start:
-          offset: 60733
-          line: 831
+          offset: 61240
+          line: 833
           column: 1
         end:
-          offset: 60755
-          line: 831
+          offset: 61262
+          line: 833
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1749,5 +1753,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:af7909a5564b201c75b1a873a977cf3eedbf7ae02a044c446b26593ef8a50624"
-  generated_content_sha256: "sha256:db108147dc2a5f77f0549c91eb1a197944f9491093a3fd0f3833d068e0488c48"
+    sha256: "sha256:608993b163842374a261cb17bfbb5d2605718b1274f8b04e15ed7b75f407964c"
+  generated_content_sha256: "sha256:a51ac44a2173ba182b47fbe56778f8b20f8cc7748fb690ea2ea75a75e8333d7c"

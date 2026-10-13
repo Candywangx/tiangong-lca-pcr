@@ -76,11 +76,11 @@ When constructing a foreground data package, the items listed in `Required quali
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_declared_crop_cycle` | establishment through final harvest | Include field or protected-site establishment, planting or transplanting, crop management, and every harvest belonging to the declared species-, site-, and year-specific crop cycle. | `fao-good-agricultural-practices`; `fao-crop-production-records` |
+| `boundary_declared_crop_cycle` | establishment through final harvest | Include field or protected-site establishment, planting or transplanting, crop management, and every harvest belonging to the declared species-, site-, and year-specific crop cycle. | `fao-gap-framework-2003` |
 | `boundary_farm_gate` | harvest and conditioning | End the foreground boundary when the marketable whole product is transferred at the declared farm-gate hand-off. Include on-farm grading, washing, cooling, and primary packaging only when they occur before that hand-off. | `fao-postharvest-handling-vegetables`; `codex-cxc-53-2003-fresh-produce` |
-| `boundary_protected_route` | greenhouse, tunnel, or other protected cultivation | Include route-specific energy, water, consumables, and infrastructure services that are assigned to the declared crop cycle. Disclose infrastructure lifetime and allocation when the infrastructure is shared. | `fao-protected-cultivation-guidance` |
+| `boundary_protected_route` | greenhouse, tunnel, or other protected cultivation | Include route-specific energy, water, consumables, and infrastructure services that are assigned to the declared crop cycle. Disclose infrastructure lifetime and allocation when the infrastructure is shared. | `fao-gap-framework-2003` |
 | `boundary_managed_soils` | nutrient, amendment, residue, and soil flows | Include direct and indirect managed-soil emissions attributable to applied nutrients and returned residues under one declared method. Do not double count emissions already represented by an upstream dataset. | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
-| `boundary_residue_and_reject_fate` | off-grade product, rejects, residues, wastewater, and packaging waste | Record the first declared destination of every non-marketable stream: field return, feed, composting, treatment, disposal, or another documented use. An unreported destination is a data-quality gap and is not an automatic co-product. | `fao-postharvest-handling-vegetables`; `fao-crop-residue-management` |
+| `boundary_residue_and_reject_fate` | off-grade product, rejects, residues, wastewater, and packaging waste | Record the first declared destination of every non-marketable stream: field return, feed, composting, treatment, disposal, or another documented use. An unreported destination is a data-quality gap and is not an automatic co-product. | `fao-postharvest-handling-vegetables`; `fao-gap-framework-2003` |
 
 ## 6. Process Inventory Structure
 
@@ -113,7 +113,7 @@ Raw activity or stage basis: per planted hectare or protected-site cycle and per
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_planting_material_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Provisional planting-material screening interval
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -138,7 +138,7 @@ Raw activity or stage basis: per planted hectare or protected-site cycle and per
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_establishment_energy_records`
-- Sources: `fao-crop-production-records`
+- Sources: `fao-gap-framework-2003`
 - Range: Establishment-energy screening interval
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -221,7 +221,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_input_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Nitrogen-input screening interval
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -273,7 +273,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Irrigation-water screening interval
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -298,7 +298,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_crop_protection_records`
-- Sources: `fao-good-agricultural-practices`
+- Sources: `fao-gap-framework-2003`
 - Range: Crop-protection screening interval
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -400,15 +400,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_nutrient_and_residue_records`
 - Sources: `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture`
-- Range: Direct-N2O screening interval
+- Range: Provisional author screening estimate; endpoints are not IPCC limits
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 15
   - Unit: kg N2O/1,000 kg marketable output
   - Basis: broad screening interval for managed-soil direct emissions pending the declared factor method
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Ammonia to air from managed soil (`ammonia_emission`)
 
@@ -426,15 +425,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_nutrient_and_residue_records`
 - Sources: `ipcc-2019-refinement-managed-soils`
-- Range: Ammonia screening interval
+- Range: Provisional author screening estimate; endpoints are not IPCC limits
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 10
   - Unit: kg NH3/1,000 kg marketable output
   - Basis: broad screening interval pending nutrient-form and method-specific evidence
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ipcc-2019-refinement-managed-soils`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Nitrate loss to water (`nitrate_water_emission`)
 
@@ -719,7 +717,7 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_nutrient_and_residue_records`
-- Sources: `fao-crop-residue-management`
+- Sources: `fao-gap-framework-2003`
 - Range: Crop-residue screening interval
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -797,15 +795,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_energy_and_emission_records`
 - Sources: `ipcc-2006-guidelines-agriculture`
-- Range: Energy-CO2 screening interval
+- Range: Provisional author CO2 screening estimate; not derived from an IPCC factor formula
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 500
   - Unit: kg CO2/1,000 kg marketable output
   - Basis: broad pre-gate energy-emission screen pending carrier-specific records and factors
   - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `ipcc-2006-guidelines-agriculture`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Pre-gate particulate matter (`pregate_particulate_emission`)
 
@@ -836,11 +833,11 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate output.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_same_species_and_route` | multiple fields, sites, cultivars, or protected routes | Keep records separate through normalization. If aggregation is necessary, allocate shared inputs and infrastructure by marketable mass unless a more representative physical relationship is documented. | `fao-crop-production-records` |
+| `allocation_same_species_and_route` | multiple fields, sites, cultivars, or protected routes | Keep records separate through normalization. If aggregation is necessary, allocate shared inputs and infrastructure by marketable mass unless a more representative physical relationship is documented. | `fao-gap-framework-2003` |
 | `allocation_marketable_and_off_grade` | marketable and declared off-grade product streams | Use mass allocation when off-grade material has a declared product destination. If off-grade material is discarded or returned to soil, model its destination and do not allocate it as a marketable co-product. | `fao-postharvest-handling-vegetables` |
 | `allocation_reusable_packaging` | reusable crates and containers | Allocate packaging production and replacement over documented service cycles and assign losses to the relevant route. A single-use packaging record is not spread over undocumented cycles. | `fao-postharvest-handling-vegetables` |
-| `allocation_shared_protected_infrastructure` | shared greenhouse, tunnel, irrigation, cooling, or conditioning equipment | Allocate shared infrastructure and energy by documented occupied area, operating time, throughput, or mass. State the selected basis and avoid assigning all shared burden to one crop without evidence. | `fao-protected-cultivation-guidance` |
-| `allocation_residue_destination` | residues and rejects with different destinations | Preserve destination-specific rows. Field return, composting, feed, treatment, and disposal are separate pathways and are not interchangeable co-products. | `fao-crop-residue-management` |
+| `allocation_shared_protected_infrastructure` | shared greenhouse, tunnel, irrigation, cooling, or conditioning equipment | Allocate shared infrastructure and energy by documented occupied area, operating time, throughput, or mass. State the selected basis and avoid assigning all shared burden to one crop without evidence. | `fao-gap-framework-2003` |
+| `allocation_residue_destination` | residues and rejects with different destinations | Preserve destination-specific rows. Field return, composting, feed, treatment, and disposal are separate pathways and are not interchangeable co-products. | `fao-gap-framework-2003` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -870,15 +867,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | all inventory rows | `normalized amount = recorded amount / marketable farm-gate mass * 1,000 kg` | recorded amount; marketable farm-gate mass | normalized row value | `mass-balance-identity` |
-| `calc_species_route_aggregation` | mixed species, cultivars, sites, or routes | Aggregate only after each row is normalized or allocate shared inputs by the declared physical basis; retain the composition table. | site-cycle rows; allocation basis | aggregated PCR value | `fao-crop-production-records` |
-| `calc_nutrient_content` | N, P, K, and organic nutrient cards | `nutrient mass = product mass * documented nutrient fraction`; retain product mass and nutrient basis as separate metadata. | product mass; label or analysis | nutrient mass | `fao-good-agricultural-practices` |
-| `calc_irrigation_withdrawal` | irrigation source withdrawal | Calculate source withdrawal from measured source delivery and the declared conveyance or application loss; do not replace a measured value with a generic factor. | source meter; delivered irrigation; loss method | source withdrawal | `fao-good-agricultural-practices` |
+| `calc_species_route_aggregation` | mixed species, cultivars, sites, or routes | Aggregate only after each row is normalized or allocate shared inputs by the declared physical basis; retain the composition table. | site-cycle rows; allocation basis | aggregated PCR value | `fao-gap-framework-2003` |
+| `calc_nutrient_content` | N, P, K, and organic nutrient cards | `nutrient mass = product mass * documented nutrient fraction`; retain product mass and nutrient basis as separate metadata. | product mass; label or analysis | nutrient mass | `fao-gap-framework-2003` |
+| `calc_irrigation_withdrawal` | irrigation source withdrawal | Calculate source withdrawal from measured source delivery and the declared conveyance or application loss; do not replace a measured value with a generic factor. | source meter; delivered irrigation; loss method | source withdrawal | `fao-gap-framework-2003` |
 | `calc_managed_soil_emissions` | N2O, NH3, nitrate, and phosphate rows | Apply one declared site or IPCC-compatible method to nutrient, amendment, residue, soil, and drainage records; document direct and indirect pathways separately. | nutrient and residue records; method factors | elementary emissions | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
 | `calc_harvest_mass_balance` | marketable, off-grade, field-loss, and residue rows | Reconcile harvested mass with marketable output, off-grade destinations, field losses, residues, and measurement tolerance; investigate unexplained residuals. | grade records; harvest weights; loss and residue records | balanced output set | `mass-balance-identity` |
 | `calc_reusable_packaging` | reusable rigid packaging | Allocate packaging mass and replacement over verified service cycles and assign losses to the route where they occur. | packaging mass; verified cycles; loss record | per-cycle packaging input and waste | `fao-postharvest-handling-vegetables` |
 | `calc_conditioning_water_balance` | conditioning water and wastewater | `wastewater = water input + retained or released product water - reuse - evaporation - measured retained water`, using measured values where available. | water input; reuse; discharge; balance terms | wastewater volume | `fao-postharvest-handling-vegetables` |
 | `calc_energy_emissions` | energy-related CO2 and particulate matter | Multiply recorded carrier or electricity use by the declared factor and retain carrier, factor, and biogenic/fossil basis; avoid upstream double counting. | energy record; factor | elementary emissions | `ipcc-2006-guidelines-agriculture` |
-| `calc_route_specific_infrastructure` | protected-cultivation infrastructure | Allocate infrastructure and shared equipment over documented service life and occupied area, operating time, throughput, or mass; disclose the chosen basis. | infrastructure record; service life; allocation basis | route-specific burden | `fao-protected-cultivation-guidance` |
+| `calc_route_specific_infrastructure` | protected-cultivation infrastructure | Allocate infrastructure and shared equipment over documented service life and occupied area, operating time, throughput, or mass; disclose the chosen basis. | infrastructure record; service life; allocation basis | route-specific burden | `fao-gap-framework-2003` |
 
 ### Data Quality Requirements
 
@@ -898,15 +895,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_identity` | reference flow | The dataset must identify one CPC 01239-compatible fresh whole product at farm gate. An identity evidence gap remains a coverage issue and cannot be silently replaced by a named fruit-bearing vegetable or a processed flow. | `mass-balance-identity` |
-| `validation_required_processes` | process map and process inventory | All three required processes must be present, and every detailed process section must match one process-map id. | `fao-crop-production-records` |
-| `validation_species_route_scope` | mixed category datasets | The declared species, cultivar, site, route, and cycle must be available for every aggregated row. Products covered by CPC 01231–01235 must be excluded or separately mapped. | `fao-good-agricultural-practices` |
-| `validation_nutrient_non_double_counting` | nutrient inputs | A compound fertilizer or amendment must be represented once on the product basis and, when nutrient normalization is needed, once through its documented nutrient allocation. Do not sum product mass as if it were separate N, P, and K products. | `fao-good-agricultural-practices` |
-| `validation_water_balance` | irrigation, withdrawal, conditioning water, and wastewater | Check delivered water, source withdrawal, reuse, evaporation, and discharge for the declared route. Rainfall cannot be used to close a metered irrigation row. | `fao-good-agricultural-practices` |
+| `validation_required_processes` | process map and process inventory | All three required processes must be present, and every detailed process section must match one process-map id. | `fao-gap-framework-2003` |
+| `validation_species_route_scope` | mixed category datasets | The declared species, cultivar, site, route, and cycle must be available for every aggregated row. Products covered by CPC 01231–01235 must be excluded or separately mapped. | `fao-gap-framework-2003` |
+| `validation_nutrient_non_double_counting` | nutrient inputs | A compound fertilizer or amendment must be represented once on the product basis and, when nutrient normalization is needed, once through its documented nutrient allocation. Do not sum product mass as if it were separate N, P, and K products. | `fao-gap-framework-2003` |
+| `validation_water_balance` | irrigation, withdrawal, conditioning water, and wastewater | Check delivered water, source withdrawal, reuse, evaporation, and discharge for the declared route. Rainfall cannot be used to close a metered irrigation row. | `fao-gap-framework-2003` |
 | `validation_mass_balance` | product, waste, and residue outputs | Harvested mass, marketable output, off-grade destinations, field losses, residues, and waste must reconcile within the declared measurement tolerance. | `mass-balance-identity` |
 | `validation_boundary_hand_off` | farm-gate preparation and transport | Conditioning, packaging, and transport are included only when they occur before the declared farm-gate hand-off; post-gate distribution is excluded. | `fao-postharvest-handling-vegetables` |
 | `validation_emission_method` | elementary emissions | Each emission row must state substance, compartment, method, factor basis, and whether the burden is already included in an upstream dataset. | `ipcc-2019-refinement-managed-soils`; `ipcc-2006-guidelines-agriculture` |
 | `validation_parameterized_identity_resolution` | parameterized rows and reference flow | During foreground dataset construction, resolve every parameterized row to a compatible UUID and retain its property, unit, geography, and intended-use checks. Uncovered rows remain unmapped until evidence supports a fixed identity. | `mass-balance-identity` |
-| `validation_quality_disclosure` | published dataset profile | Report temporal, geographic, species, route, measurement, estimate, allocation, residue-fate, and evidence gap-identity limitations before downstream use. | `fao-good-agricultural-practices` |
+| `validation_quality_disclosure` | published dataset profile | Report temporal, geographic, species, route, measurement, estimate, allocation, residue-fate, and evidence gap-identity limitations before downstream use. | `fao-gap-framework-2003` |
 
 ## 10. Published Dataset Profile
 
@@ -920,16 +917,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | source and measurement method; temporal and geographic representativeness; species and route composition; estimated or missing values; nutrient, water, energy, and emission-factor basis; allocation decision; residue, wastewater, and packaging destinations; parameterized-flow UUID resolution; uncertainty and range treatment |
 | update_trigger | Change in CPC interpretation, species or route scope, farm-gate state, boundary or allocation method, concrete flow identity verification|
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO, Good Agricultural Practices for greenhouse vegetable crops and fresh produce production, FAO guidance portal | production records, crop inputs, irrigation, nutrient and route disclosure |
-| `fao-crop-production-records` | official_guidance | FAO, crop production and farm record guidance, FAO agriculture production resources | site, cycle, operation, completeness, and aggregation rules |
-| `fao-protected-cultivation-guidance` | official_guidance | FAO, protected cultivation and greenhouse crop production guidance, FAO agriculture resources | protected-route energy, infrastructure, and shared-equipment allocation |
 | `fao-postharvest-handling-vegetables` | handbook | FAO, Manual for the preparation and sale of fruits and vegetables, 2004, https://www.fao.org/4/y4893e/y4893e00.htm | harvest, grading, washing, conditioning, packaging, and farm-gate boundary |
-| `fao-crop-residue-management` | extension_guidance | FAO, crop-residue and sustainable soil-management resources, FAO soils portal | residue measurement and destination disclosure |
 | `codex-cxc-53-2003-fresh-produce` | standard | Codex Alimentarius, Code of Hygienic Practice for Fresh Fruits and Vegetables (CXC 53-2003), https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ | fresh-produce state, hygiene, grading, and conditioning qualifiers |
 | `ipcc-2019-refinement-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 Agriculture, Forestry and Other Land Use, https://www.ipcc-nggip.iges.or.jp/public/2019rf/index.html | managed-soil N2O, NH3, and nutrient-loss method basis |
 | `ipcc-2006-guidelines-agriculture` | method_factor | IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 4 AFOLU, https://www.ipcc-nggip.iges.or.jp/public/2006gl/ | agricultural emissions and energy-emission factor method basis |
 | `mass-balance-identity` | method_factor | PCR mass-balance identity: declared product and process-output normalization rule | normalization, output reconciliation, and identity evidence gap validation |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

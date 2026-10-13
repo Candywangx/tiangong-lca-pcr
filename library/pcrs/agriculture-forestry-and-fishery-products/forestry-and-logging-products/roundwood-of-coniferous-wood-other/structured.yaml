@@ -38,6 +38,11 @@ system_boundary:
       applies_to: "managed_stand; harvest_extraction; roadside_assortment"
       rule: "Reconcile on-site combustion, actual applications and fugitive releases/leaks at every activated node through unique activity-substance-receiving-medium records in cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment. Upstream production of purchased fuel or chemicals does not replace emissions from their use on site; verify coverage and avoid double counting the same activity inside a supplier service. Evidence must support non-activity; missing data are not zero. This obligation does not expand the existing product gate or downstream-use boundary and does not presume combustion, fertilization, chemicals or equipment occur."
       source_ids: []
+    - rule_id: boundary_forest_carbon_land_coverage
+      applies_to: "managed stand and purchased stand/wood interfaces"
+      rule: "Before claiming a complete stand-to-roadside LCA inventory, select the applicable product-LCA accounting method and period and record one coverage/responsibility decision for land occupation, actual land transformation, above/belowground biomass, deadwood, litter, soil carbon and harvested-carbon transfer. Each relevant item needs compatible measured/modelled evidence, a named upstream coverage owner, or a method-justified exclusion with limitations. IPCC Forest Land identifies pools; its national inventory assumptions are not automatic product-LCA defaults. Do not infer carbon neutrality, gross uptake, net stock change or an uptake credit from reference-log carbon or wet underbark volume alone. Missing relevant land history, pool/time evidence or ownership blocks completeness."
+      source_ids:
+        - ipcc-forest-land-2006
 boundary_abstraction:
   declared_starting_condition: "Identified coniferous stand/block with species, planted/natural source, tenure, management history, and harvest authorization; standing wood is not assumed burden-free."
   starting_condition_role: "Managed biological source entering the foreground stand-to-roadside chain."
@@ -941,6 +946,18 @@ dataset_production:
       site_scope: "Actual activity sites; one owner for each shared event"
       aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix"
+    - protocol_id: cp_forest_carbon_land
+      process_id: "managed_stand"
+      flow_role: "land and forest-carbon coverage"
+      record_type: "stand/method coverage ledger"
+      raw_fields: "area; dates; land history; pool inventory; growth; removals; carbon transfer; slash fate; method; owner; exclusions; uncertainty; reference output"
+      collection_method: "Inventory area and dates; pre/post land use; above/belowground biomass, deadwood, litter and soil evidence; dry mass/carbon fraction where relevant; growth/removals; slash fate; harvested-product carbon transfer; stock and period records; applicable LCA method; upstream coverage/exclusions and uncertainty. Keep occupation in area-time, transformation as from/to area events, carbon as kg C on a stated dry basis. Retained slash remains a source-pool/fate record, not automatically an exported product or waste; disclose any relevant later decomposition responsibility."
+      unit: "ha; ha-year; kg dry matter; kg C"
+      frequency: "inventory and event; period reconciliation"
+      temporal_coverage: "full declared accounting period"
+      site_scope: "represented stand/source"
+      aggregation_rule: "attribute compatible totals once, then normalize to declared reference output"
+      quality_evidence: "source maps; compatible pool records; original method; allocation and coverage ledger"
   calculation_rules:
     - id: calc_mass_volume
       applies_to: "Each assortment lot"
@@ -985,6 +1002,14 @@ dataset_production:
         - "reference quantity"
       output: "Node/substance/medium-specific raw and attributed amounts and unresolved gaps"
       source_ids: []
+    - id: calc_forest_carbon_land
+      applies_to: "land, pools and upstream ownership"
+      rule: "Distinguish gross uptake, releases, harvest carbon transfer and net stock change under the chosen method; never sum stock-change and gain/loss approaches for the same pool/period. Resolve wet volume to dry mass and carbon only with compatible density/moisture/carbon-fraction evidence and correct component scope. A log carbon balance is not a whole-forest pool balance. Attribute land and carbon quantities to the declared period and output once; keep any upstream stand coverage and purchased-wood transfer ownership without double counting. No automatic sequestration credit or fixed forest-neutrality assumption."
+      inputs:
+        - cp_forest_carbon_land
+      output: "method-specific land/carbon quantities and explicit completeness gaps"
+      source_ids:
+        - ipcc-forest-land-2006
   data_quality_requirements:
     - id: dq_identity
       applies_to: "Output lots"
@@ -1039,6 +1064,11 @@ validation_rules:
     applies_to: "managed_stand; harvest_extraction; roadside_assortment"
     rule: "For every activated node, reconcile its activity list against cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment: each relevant event must have quantified concrete elementary exchanges, evidenced upstream-service coverage, or evidenced absence of the activity. Missing/unknown is not zero and blocks data-package completeness. Check each actual substance/medium amount, method/factor units, concrete UUID and existing-card/service coverage for omissions or duplication; empty groups, purchased-electricity upstream emissions or another node's single CO2 card do not replace this node's on-site reconciliation. Shared-asset services must not create duplicate physical release events."
     source_ids: []
+  - rule_id: validate_forest_carbon_land_coverage
+    applies_to: "stand boundary and source responsibility"
+    rule: "Require the selected LCA method/period, pool and land applicability decisions, traceable compatible evidence/exclusions and unique coverage ownership before completeness. Unknown or missing relevant pool/history/time/unit evidence fails the completeness claim; do not interpret missing data as zero or borrow national Tier-1 defaults without justified product-LCA applicability."
+    source_ids:
+      - ipcc-forest-land-2006
 published_dataset_profile:
   dataset_role: "Foreground stand-to-roadside dataset reusable as secondary/background data only for declared species, use, geography, and harvest route"
   downstream_use: "Process and lifecyclemodel production of compatible other-use coniferous logs and downstream systems"
@@ -1064,9 +1094,13 @@ data_sources:
     type: "official_guidance"
     reference: "https://www.fao.org/sustainable-forest-management-toolbox/modules/management-of-planted-forests/1/en?tabInx=1; https://www.fao.org/4/AC601E/ac601e03.htm"
     used_for: "Conditional planting stock, fertilization, protection and watering inputs; no universal application rates"
+  - id: "ipcc-forest-land-2006"
+    type: "official_guidance"
+    reference: "IPCC 2006 Guidelines, Volume 4, Chapter 4 Forest Land, sections 4.1–4.3, https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/4_Volume4/V4_04_Ch4_Forest_Land.pdf"
+    used_for: "Forest pool and land-use accounting context only; national defaults do not independently approve product-LCA methodology"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:11692f1ae4ccf6aaa62ff54dad00d395e06cbc7250f5c739174c9bcb753168c8"
+  source_sha256: "sha256:d286ba50da1cc25e752416225686b093d9bb9891dac8b2a0cc1784db2eae6f34"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4927"
@@ -1077,10 +1111,10 @@ normative_context:
           line: 60
           column: 1
         end:
-          offset: 7698
-          line: 80
+          offset: 8610
+          line: 81
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified coniferous stand/block with species, planted/natural source, tenure, management history, and harvest authorization; standing wood is not assumed burden-free. |\n| starting_condition_role | Managed biological source entering the foreground stand-to-roadside chain. |\n| product_classification_scope | Target other-use logs only; separately record saw/veneer, pulp/panel, fuelwood, and any other assortments. |\n| recursive_input_rule | An input of another roundwood category keeps its upstream dataset once; do not recursively add the same stand or harvest burden. |\n| upstream_dataset_requirement | Use matched datasets for actual purchased inputs and services; disclose proxies. |\n| disclosure | Stand/lot, region, phase, silviculture, harvest equipment, extraction distance, gate, all outputs, bark/moisture, scaling, mass conversion, and asset attribution. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_stand_to_roadside` | All nodes | Include attributable stand operations, felling, on-site extraction, bucking, sorting, scaling, and landing handling. Separate biological production, harvest, and grading because their states and handovers differ. Exclude off-site haulage and subsequent treatment/manufacture. | `fao-wood-harvesting`; `fao-jfsq-definitions` |\n| `boundary_output_classes` | Roadside outputs | Enumerate target logs, other saleable assortments, recovered material, and unrecovered slash separately. Slash left in forest is neither an exported product nor a waste exchange. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `boundary_period_asset` | Stand and shared roads/landing | Link stand establishment/maintenance, thinning, final harvest, road/landing service, disturbance, and replacement by period. Charge shared service once across its consuming nodes/periods. | `fao-wood-harvesting` |\n| `boundary_direct_release_coverage` | `managed_stand`; `harvest_extraction`; `roadside_assortment` | Reconcile on-site combustion, actual applications and fugitive releases/leaks at every activated node through unique activity-substance-receiving-medium records in cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment. Upstream production of purchased fuel or chemicals does not replace emissions from their use on site; verify coverage and avoid double counting the same activity inside a supplier service. Evidence must support non-activity; missing data are not zero. This obligation does not expand the existing product gate or downstream-use boundary and does not presume combustion, fertilization, chemicals or equipment occur. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified coniferous stand/block with species, planted/natural source, tenure, management history, and harvest authorization; standing wood is not assumed burden-free. |\n| starting_condition_role | Managed biological source entering the foreground stand-to-roadside chain. |\n| product_classification_scope | Target other-use logs only; separately record saw/veneer, pulp/panel, fuelwood, and any other assortments. |\n| recursive_input_rule | An input of another roundwood category keeps its upstream dataset once; do not recursively add the same stand or harvest burden. |\n| upstream_dataset_requirement | Use matched datasets for actual purchased inputs and services; disclose proxies. |\n| disclosure | Stand/lot, region, phase, silviculture, harvest equipment, extraction distance, gate, all outputs, bark/moisture, scaling, mass conversion, and asset attribution. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_stand_to_roadside` | All nodes | Include attributable stand operations, felling, on-site extraction, bucking, sorting, scaling, and landing handling. Separate biological production, harvest, and grading because their states and handovers differ. Exclude off-site haulage and subsequent treatment/manufacture. | `fao-wood-harvesting`; `fao-jfsq-definitions` |\n| `boundary_output_classes` | Roadside outputs | Enumerate target logs, other saleable assortments, recovered material, and unrecovered slash separately. Slash left in forest is neither an exported product nor a waste exchange. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `boundary_period_asset` | Stand and shared roads/landing | Link stand establishment/maintenance, thinning, final harvest, road/landing service, disturbance, and replacement by period. Charge shared service once across its consuming nodes/periods. | `fao-wood-harvesting` |\n| `boundary_direct_release_coverage` | `managed_stand`; `harvest_extraction`; `roadside_assortment` | Reconcile on-site combustion, actual applications and fugitive releases/leaks at every activated node through unique activity-substance-receiving-medium records in cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment. Upstream production of purchased fuel or chemicals does not replace emissions from their use on site; verify coverage and avoid double counting the same activity inside a supplier service. Evidence must support non-activity; missing data are not zero. This obligation does not expand the existing product gate or downstream-use boundary and does not presume combustion, fertilization, chemicals or equipment occur. |  |\n| `boundary_forest_carbon_land_coverage` | managed stand and purchased stand/wood interfaces | Before claiming a complete stand-to-roadside LCA inventory, select the applicable product-LCA accounting method and period and record one coverage/responsibility decision for land occupation, actual land transformation, above/belowground biomass, deadwood, litter, soil carbon and harvested-carbon transfer. Each relevant item needs compatible measured/modelled evidence, a named upstream coverage owner, or a method-justified exclusion with limitations. IPCC Forest Land identifies pools; its national inventory assumptions are not automatic product-LCA defaults. Do not infer carbon neutrality, gross uptake, net stock change or an uptake credit from reference-log carbon or wet underbark volume alone. Missing relevant land history, pool/time evidence or ownership blocks completeness. | `ipcc-forest-land-2006` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1117,16 +1151,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49531"
+    - unit_id: "normative_50443"
       family: "allocation"
       span:
         start:
-          offset: 49531
-          line: 699
+          offset: 50443
+          line: 700
           column: 1
         end:
-          offset: 51993
-          line: 711
+          offset: 52905
+          line: 712
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nThe allocation rules below are methodological choices of this PCR, not LCA allocation requirements prescribed by FAO statistical definitions. The FAO source supports product distinctions and the under-bark volume convention only. Justify the selected physical allocation driver against the actual joint production system and retain the required sensitivity comparison.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct_first` | All nodes | Assign directly recorded activities to the actual stand, lot, and assortment first. Enumerate all saleable output classes and roadside handovers; distinguish co-product, retained slash, and removed waste. | `fao-wood-harvesting`; `fao-jfsq-definitions` |\n| `allocation_shared_volume` | Joint stand and harvest burdens | Allocate residual joint burdens among all saleable log assortments by measured under-bark solid m³ at the same gate and period. Record denominator, bark deduction, zero-output lots, and sensitivity to another defensible physical basis. Do not allocate unrecovered slash as a saleable output. | `fao-jfsq-definitions` |\n| `allocation_period` | Establishment, maintenance, thinning, final harvest | Link every input, output, disturbance, and replacement event to stand phase and reporting period. Assign stand burdens over the declared production horizon by attributable harvested under-bark volume, counting thinning outputs once. No universal rotation duration is imposed. | `fao-wood-harvesting` |\n| `allocation_shared_asset` | Shared roads, landing, machinery | Identify every consuming node and service period. Charge construction, maintenance, and operation once by logged use where possible; otherwise use documented harvested-volume share over the service period. | `fao-wood-harvesting` |\n| `physical_ledger_before_allocation` | Physical ledgers and attributed burdens | Retain unallocated physical values for original material balances, handoffs and co-products: q_B = Q_B/R. Apply this PCR's allocation method separately to shared burdens: b_ref = B_shared * a_ref/R; assign direct burdens directly and apply each period/output share once. R is the selected final reference output, excluding internal transfers. Never apply burden share a_ref to original co-product or transfer quantities; distinguish any allocated single-product process projection from the unallocated whole-package material ledger. |  |\n\n"
       headings:
@@ -1145,12 +1179,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49531
-              line: 699
+              offset: 50443
+              line: 700
               column: 1
             end:
-              offset: 49571
-              line: 699
+              offset: 50483
+              line: 700
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1165,18 +1199,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_71298"
+    - unit_id: "normative_74162"
       family: "validation"
       span:
         start:
-          offset: 71298
-          line: 748
+          offset: 74162
+          line: 751
           column: 1
         end:
-          offset: 73890
-          line: 760
+          offset: 77247
+          line: 764
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | Reference product | Require exactly 1 kg normalized as-received other-use coniferous logs at forest roadside, with the verified Mass flow/property/unit group and separate measured under-bark m³. Reject volume-property assertions for the Mass UUID. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `validate_category` | Roadside output set | Check species and intended use; reject saw/veneer, pulp/panel, fuelwood, non-coniferous, or treated/fabricated goods as reference product. Account for every other output once. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `validate_balance` | Harvest and sorting | Reconcile mass and under-bark volume; separately disclose retained biomass, removed waste, unsold stock, and co-products. | `fao-jfsq-definitions` |\n| `validate_period_asset` | Shared activities | Trace each stand phase and shared road/landing service period into one ledger; reject missing disturbance/replacement treatment or duplicate charges. | `fao-wood-harvesting` |\n| `validate_identity_coverage` | Conditional exchanges | Final exchanges need actual material/state, direction, type, property/unit, and verified UUID. Semantic umbrella cards cannot be published as fabricated fixed identities. | `fao-wood-harvesting` |\n| `validate_card_activation_units` | All refined cards | Verify activation and actual material/formulation/task/supply specification; missing records are not zero. Each amount and Range uses one compatible property/unit; retain density and wood mass/volume bridges. Check contractor-service components against fuel, equipment and emissions to avoid double burdens. | `fao-wood-harvesting` |\n| `validate_direct_release_coverage` | `managed_stand`; `harvest_extraction`; `roadside_assortment` | For every activated node, reconcile its activity list against cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment: each relevant event must have quantified concrete elementary exchanges, evidenced upstream-service coverage, or evidenced absence of the activity. Missing/unknown is not zero and blocks data-package completeness. Check each actual substance/medium amount, method/factor units, concrete UUID and existing-card/service coverage for omissions or duplication; empty groups, purchased-electricity upstream emissions or another node's single CO2 card do not replace this node's on-site reconciliation. Shared-asset services must not create duplicate physical release events. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | Reference product | Require exactly 1 kg normalized as-received other-use coniferous logs at forest roadside, with the verified Mass flow/property/unit group and separate measured under-bark m³. Reject volume-property assertions for the Mass UUID. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `validate_category` | Roadside output set | Check species and intended use; reject saw/veneer, pulp/panel, fuelwood, non-coniferous, or treated/fabricated goods as reference product. Account for every other output once. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `validate_balance` | Harvest and sorting | Reconcile mass and under-bark volume; separately disclose retained biomass, removed waste, unsold stock, and co-products. | `fao-jfsq-definitions` |\n| `validate_period_asset` | Shared activities | Trace each stand phase and shared road/landing service period into one ledger; reject missing disturbance/replacement treatment or duplicate charges. | `fao-wood-harvesting` |\n| `validate_identity_coverage` | Conditional exchanges | Final exchanges need actual material/state, direction, type, property/unit, and verified UUID. Semantic umbrella cards cannot be published as fabricated fixed identities. | `fao-wood-harvesting` |\n| `validate_card_activation_units` | All refined cards | Verify activation and actual material/formulation/task/supply specification; missing records are not zero. Each amount and Range uses one compatible property/unit; retain density and wood mass/volume bridges. Check contractor-service components against fuel, equipment and emissions to avoid double burdens. | `fao-wood-harvesting` |\n| `validate_direct_release_coverage` | `managed_stand`; `harvest_extraction`; `roadside_assortment` | For every activated node, reconcile its activity list against cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment: each relevant event must have quantified concrete elementary exchanges, evidenced upstream-service coverage, or evidenced absence of the activity. Missing/unknown is not zero and blocks data-package completeness. Check each actual substance/medium amount, method/factor units, concrete UUID and existing-card/service coverage for omissions or duplication; empty groups, purchased-electricity upstream emissions or another node's single CO2 card do not replace this node's on-site reconciliation. Shared-asset services must not create duplicate physical release events. |  |\n| `validate_forest_carbon_land_coverage` | stand boundary and source responsibility | Require the selected LCA method/period, pool and land applicability decisions, traceable compatible evidence/exclusions and unique coverage ownership before completeness. Unknown or missing relevant pool/history/time/unit evidence fails the completeness claim; do not interpret missing data as zero or borrow national Tier-1 defaults without justified product-LCA applicability. | `ipcc-forest-land-2006` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1193,12 +1227,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 71298
-              line: 748
+              offset: 74162
+              line: 751
               column: 1
             end:
-              offset: 71320
-              line: 748
+              offset: 74184
+              line: 751
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1266,175 +1300,201 @@ normative_context:
           offset: 7696
           line: 78
           column: 796
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_forest_carbon_land_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_4927"
+      source_span:
+        start:
+          offset: 7697
+          line: 79
+          column: 1
+        end:
+          offset: 8608
+          line: 79
+          column: 912
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 49573
-          line: 701
+          offset: 50485
+          line: 702
           column: 1
         end:
-          offset: 49941
-          line: 701
+          offset: 50853
+          line: 702
           column: 369
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_direct_first"
       identity_kind: "explicit"
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 50014
-          line: 705
+          offset: 50926
+          line: 706
           column: 1
         end:
-          offset: 50310
-          line: 705
+          offset: 51222
+          line: 706
           column: 297
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared_volume"
       identity_kind: "explicit"
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 50311
-          line: 706
+          offset: 51223
+          line: 707
           column: 1
         end:
-          offset: 50694
-          line: 706
+          offset: 51606
+          line: 707
           column: 384
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 50695
-          line: 707
+          offset: 51607
+          line: 708
           column: 1
         end:
-          offset: 51074
-          line: 707
+          offset: 51986
+          line: 708
           column: 380
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_shared_asset"
       identity_kind: "explicit"
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 51075
-          line: 708
+          offset: 51987
+          line: 709
           column: 1
         end:
-          offset: 51371
-          line: 708
+          offset: 52283
+          line: 709
           column: 297
     - pointer: "/allocation_rules/5"
       rule_id: "physical_ledger_before_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 51372
-          line: 709
+          offset: 52284
+          line: 710
           column: 1
         end:
-          offset: 51991
-          line: 709
+          offset: 52903
+          line: 710
           column: 620
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 71393
-          line: 752
+          offset: 74257
+          line: 755
           column: 1
         end:
-          offset: 71710
-          line: 752
+          offset: 74574
+          line: 755
           column: 318
     - pointer: "/validation_rules/1"
       rule_id: "validate_category"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 71711
-          line: 753
+          offset: 74575
+          line: 756
           column: 1
         end:
-          offset: 71977
-          line: 753
+          offset: 74841
+          line: 756
           column: 267
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 71978
-          line: 754
+          offset: 74842
+          line: 757
           column: 1
         end:
-          offset: 72171
-          line: 754
+          offset: 75035
+          line: 757
           column: 194
     - pointer: "/validation_rules/3"
       rule_id: "validate_period_asset"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 72172
-          line: 755
+          offset: 75036
+          line: 758
           column: 1
         end:
-          offset: 72395
-          line: 755
+          offset: 75259
+          line: 758
           column: 224
     - pointer: "/validation_rules/4"
       rule_id: "validate_identity_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 72396
-          line: 756
+          offset: 75260
+          line: 759
           column: 1
         end:
-          offset: 72649
-          line: 756
+          offset: 75513
+          line: 759
           column: 254
     - pointer: "/validation_rules/5"
       rule_id: "validate_card_activation_units"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 72650
-          line: 757
+          offset: 75514
+          line: 760
           column: 1
         end:
-          offset: 73040
-          line: 757
+          offset: 75904
+          line: 760
           column: 391
     - pointer: "/validation_rules/6"
       rule_id: "validate_direct_release_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 73041
-          line: 758
+          offset: 75905
+          line: 761
           column: 1
         end:
-          offset: 73888
-          line: 758
+          offset: 76752
+          line: 761
           column: 848
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_forest_carbon_land_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_74162"
+      source_span:
+        start:
+          offset: 76753
+          line: 762
+          column: 1
+        end:
+          offset: 77245
+          line: 762
+          column: 493
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1462,99 +1522,99 @@ normative_context:
           column: 180
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 49531
-          line: 699
+          offset: 50443
+          line: 700
           column: 1
         end:
-          offset: 49571
-          line: 699
+          offset: 50483
+          line: 700
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 49573
-          line: 701
+          offset: 50485
+          line: 702
           column: 1
         end:
-          offset: 49941
-          line: 701
+          offset: 50853
+          line: 702
           column: 369
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 50014
-          line: 705
+          offset: 50926
+          line: 706
           column: 1
         end:
-          offset: 50310
-          line: 705
+          offset: 51222
+          line: 706
           column: 297
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 50311
-          line: 706
+          offset: 51223
+          line: 707
           column: 1
         end:
-          offset: 50694
-          line: 706
+          offset: 51606
+          line: 707
           column: 384
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 50695
-          line: 707
+          offset: 51607
+          line: 708
           column: 1
         end:
-          offset: 51074
-          line: 707
+          offset: 51986
+          line: 708
           column: 380
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 51075
-          line: 708
+          offset: 51987
+          line: 709
           column: 1
         end:
-          offset: 51371
-          line: 708
+          offset: 52283
+          line: 709
           column: 297
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_49531"
+      unit_id: "normative_50443"
       source_span:
         start:
-          offset: 51372
-          line: 709
+          offset: 52284
+          line: 710
           column: 1
         end:
-          offset: 51991
-          line: 709
+          offset: 52903
+          line: 710
           column: 620
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_71298"
+      unit_id: "normative_74162"
       source_span:
         start:
-          offset: 71298
-          line: 748
+          offset: 74162
+          line: 751
           column: 1
         end:
-          offset: 71320
-          line: 748
+          offset: 74184
+          line: 751
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1563,5 +1623,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:11692f1ae4ccf6aaa62ff54dad00d395e06cbc7250f5c739174c9bcb753168c8"
-  generated_content_sha256: "sha256:4495493536b82de9e2747fa5e64e7030987e67d42962ba5d49db08117cb7304c"
+    sha256: "sha256:d286ba50da1cc25e752416225686b093d9bb9891dac8b2a0cc1784db2eae6f34"
+  generated_content_sha256: "sha256:a9007f7feffa872b1989be1e1b9e531f5c3cda13fc1d04d11749da95aeefbec1"

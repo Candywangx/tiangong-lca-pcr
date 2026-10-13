@@ -72,7 +72,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `boundary_orchard_cycle` | 枣椰果园生产 | 包括计入声明生产周期的果园建立或更新投入、果园管理、采收和新鲜果实交接前的基本农场交付处理。 | `iso-14044-2006` |
-| `boundary_fresh_unprocessed_gate` | 参考产品和农场交付输出 | 在新鲜、未加工枣椰果实交接处停止前景边界。排除清洗、干制、保藏、包装、场外储存、运输和下游加工。 | `codex-cxs-143-1985-dates`; `iso-14044-2006` |
+| `boundary_fresh_unprocessed_gate` | 参考产品和农场门输出 | 本 PCR 选择新鲜未加工农场门截止点，排除清洗、干燥、保藏、包装、场外储存、运输和下游加工。这是作者的 LCA 边界选择，不是 Codex CXS 143-1985 的禁止规定。 | `iso-14044-2006` |
 | `boundary_direct_environmental_exchanges` | 营养相关土壤和空气交换 | 使用与营养物和残余物核算相同的生产周期活动记录，并采用具有地理适用性的方法，纳入直接及适用的间接营养相关环境交换。 | `ipcc-2019-refinement-vol-4` |
 | `boundary_recursive_product_inputs` | 同类别产品投入 | 不得将新鲜枣椰果实输出回接到同一椰枣 PCR。对种植材料或其他购买投入使用不同的上游身份，并单独披露保留材料。 | `iso-14044-2006` |
 
@@ -442,7 +442,7 @@ sync_with: pcr.en-US.md
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `codex-cxs-143-1985-dates` | standard | Codex Alimentarius CXS 143-1985，Standard for Dates | 新鲜椰枣产品状态、质量限定信息和淘汰产品区分 |
+| `codex-cxs-143-1985-dates` | standard | Codex Alimentarius CXS 143-1985, Standard for Dates | 适用于商业制备、包装后即食的椰枣；仅在明确说明可迁移条件时参考质量要求。允许清洗、干燥或复水、巴氏杀菌等处理，不定义本 PCR 的新鲜农产品交接点。 |
 | `fao-56-crop-evapotranspiration-1998` | official_guidance | FAO Irrigation and drainage paper 56，Crop evapotranspiration | 灌溉活动记录、水量平衡证据和灌溉披露 |
 | `ipcc-2019-refinement-vol-4` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines，Volume 4：Agriculture, Forestry and Other Land Use | 营养相关土壤和空气排放计算方法选择 |
 | `iso-14040-2006` | standard | ISO 14040:2006，Environmental management — Life cycle assessment — Principles and framework | 生命周期边界和数据解释背景 |

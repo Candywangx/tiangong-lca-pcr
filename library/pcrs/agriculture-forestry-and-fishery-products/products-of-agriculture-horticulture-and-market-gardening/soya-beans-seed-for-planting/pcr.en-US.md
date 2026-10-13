@@ -233,7 +233,8 @@ Raw activity or stage basis: per 1,000 kg harvested seed crop.
 ##### Elementary flows
 ###### Cultivated land occupation (`cultivated_land_occupation`)
 Record cultivated land occupation for the declared seed crop cycle. Verify the exact elementary-flow UUID at data-package generation.
-- Selected flow: cultivated land occupation or transformation according to declared scope
+- Selected flow: Cultivated land occupation (UUID unresolved; occupation only)
+Land occupation is area multiplied by actual occupied duration. Land transformation, if included, is a separate from/to land-state area event with date, previous use, accounting period and attribution; never give it an area-time quantity or repeat it each crop cycle.
 - Flow property / unit: Area-time / ha·crop cycle
 - Amount rule: planted area multiplied by the declared crop-cycle occupation basis
 - Value mode: Calculated value (`calculated_value`)

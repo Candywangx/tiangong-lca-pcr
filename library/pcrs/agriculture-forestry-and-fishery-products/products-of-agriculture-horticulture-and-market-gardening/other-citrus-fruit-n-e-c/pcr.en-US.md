@@ -70,10 +70,10 @@ When constructing a foreground data package, all `Required qualifiers` must be d
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_productive_period` | orchard management | Include management inputs, perennial attribution, and direct field emissions for the represented productive period and campaign; disclose establishment and replacement separately. | `fao-citrus-production-guidance` |
-| `boundary_declared_gate` | harvest and conditioning | End at the declared farm or first packing-site gate; include grading, washing, cooling, and primary packaging only when they occur before hand-off. | `fao-citrus-postharvest-guidance`; `iso-14067-2018` |
+| `boundary_productive_period` | orchard management | Include management inputs, perennial attribution, and direct field emissions for the represented productive period and campaign; disclose establishment and replacement separately. | `fao-gap-framework-2003` |
+| `boundary_declared_gate` | harvest and conditioning | End at the declared farm or first packing-site gate; include grading, washing, cooling, and primary packaging only when they occur before hand-off. | `fao-postharvest-handling-ae075e`; `iso-14067-2018` |
 | `boundary_soil_and_residue_emissions` | nutrients and residues | Apply one declared method to soil and residue emissions and prevent duplicate nitrogen accounting. | `ipcc-2019-managed-soils` |
-| `boundary_residue_fate` | residues and rejects | Record destination; an unspecified residue or reject remains a loss or waste flow and is not a co-product. | `fao-citrus-production-guidance` |
+| `boundary_residue_fate` | residues and rejects | Record destination; an unspecified residue or reject remains a loss or waste flow and is not a co-product. | `fao-gap-framework-2003` |
 
 ## 6. Process Inventory Structure
 
@@ -106,16 +106,15 @@ Raw activity or stage basis: per productive hectare and per 1,000 kg marketable 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_management_records`
-- Sources: `fao-irrigation-water-management`
-- Range: Irrigation screening interval
+- Sources: `fao-crop-evapotranspiration-56`
+- Range: Provisional author irrigation estimate; not an interval supplied by FAO
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 20,000
   - Unit: m3/ha/year
   - Basis: productive orchard area and represented annual campaign
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-irrigation-water-management`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Agricultural nutrient and fertilizer inputs (`orchard_management_agricultural_nutrient_inputs`)
 
@@ -132,7 +131,7 @@ Raw activity or stage basis: per productive hectare and per 1,000 kg marketable 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_application_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ###### Crop-protection products (`crop_protection_input`)
 
@@ -149,7 +148,7 @@ Raw activity or stage basis: per productive hectare and per 1,000 kg marketable 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_orchard_management_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ###### Orchard electricity (`orchard_electricity_input`)
 
@@ -166,7 +165,7 @@ Raw activity or stage basis: per productive hectare and per 1,000 kg marketable 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_management_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ###### Orchard machinery fuel (`orchard_fuel_input`)
 
@@ -183,7 +182,7 @@ Raw activity or stage basis: per productive hectare and per 1,000 kg marketable 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_orchard_management_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -204,7 +203,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_orchard_management_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 #### Outputs
 
@@ -225,7 +224,7 @@ Raw activity or stage basis: per productive period and per 1,000 kg marketable g
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_yield_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -244,7 +243,7 @@ Raw activity or stage basis: per productive hectare and per 1,000 kg marketable 
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_management_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ##### Elementary flows
 
@@ -286,7 +285,7 @@ Raw activity or stage basis: per harvest campaign and per 1,000 kg marketable ga
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_harvest_yield_records`
-- Sources: `fao-citrus-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 
@@ -311,7 +310,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_yield_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ##### Waste flows
 
@@ -330,7 +329,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_harvest_yield_records`
-- Sources: `fao-citrus-production-guidance`
+- Sources: `fao-gap-framework-2003`
 
 ### Process: Other-citrus primary conditioning and packing (`primary_conditioning`)
 
@@ -353,7 +352,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_primary_conditioning_records`
-- Sources: `fao-citrus-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ###### Conditioning electricity (`conditioning_electricity_input`)
 
@@ -370,7 +369,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_primary_conditioning_records`
-- Sources: `fao-citrus-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ###### Primary packaging materials, conditional (`primary_packaging_input`)
 
@@ -387,7 +386,7 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_primary_conditioning_records`
-- Sources: `fao-citrus-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 
@@ -417,7 +416,7 @@ Raw activity or stage basis: reference flow of 1,000 kg marketable gate output.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_primary_conditioning_records`
-- Sources: `fao-citrus-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ##### Waste flows
 
@@ -436,15 +435,15 @@ Raw activity or stage basis: per 1,000 kg marketable gate output.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_primary_conditioning_records`
-- Sources: `fao-citrus-postharvest-guidance`
+- Sources: `fao-postharvest-handling-ae075e`
 
 ## 7. Allocation and Co-product Handling
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_marketable_and_rejects` | shared orchard and conditioning outputs | Allocate shared inputs to marketable fruit, culls, trim, and separately documented outputs using measured mass when outputs are comparable; retain non-comparable streams as disclosed. | `iso-14044-2006`; `fao-citrus-postharvest-guidance` |
-| `allocation_perennial_stand` | orchard establishment and replacement | Annualize establishment, replacement, and shared perennial assets over documented productive years and replacement events. | `fao-citrus-production-guidance`; `iso-14067-2018` |
-| `allocation_reuse_packaging` | reusable crates and pallets | Allocate manufacture and cleaning by documented service count, loss rate, and represented campaign; record one-way packaging separately. | `fao-citrus-postharvest-guidance` |
+| `allocation_marketable_and_rejects` | shared orchard and conditioning outputs | Allocate shared inputs to marketable fruit, culls, trim, and separately documented outputs using measured mass when outputs are comparable; retain non-comparable streams as disclosed. | `iso-14044-2006`; `fao-postharvest-handling-ae075e` |
+| `allocation_perennial_stand` | orchard establishment and replacement | Annualize establishment, replacement, and shared perennial assets over documented productive years and replacement events. | `fao-gap-framework-2003`; `iso-14067-2018` |
+| `allocation_reuse_packaging` | reusable crates and pallets | Allocate manufacture and cleaning by documented service count, loss rate, and represented campaign; record one-way packaging separately. | `fao-postharvest-handling-ae075e` |
 
 Rejected, returned, composted, treated, or discarded fruit remains a waste or loss flow unless separate sale and management evidence supports co-product treatment.
 
@@ -467,10 +466,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | all foreground rows | normalized amount = period or lot amount / marketable gate output × 1,000 kg | collected amount; gate output | amount per reference output | `iso-14067-2018` |
-| `calc_nutrient_equivalent` | nutrient input total | nutrient equivalent = product mass × declared concentration | product mass; label or laboratory concentration | kg N, kg P2O5, or kg K2O | `fao-citrus-production-guidance` |
-| `calc_perennial_attribution` | establishment and replacement | annual attributed amount = documented amount / declared attribution period, adjusted for area and period | establishment; stand age; period; area | annualized orchard amount | `fao-citrus-production-guidance`; `iso-14067-2018` |
+| `calc_nutrient_equivalent` | nutrient input total | nutrient equivalent = product mass × declared concentration | product mass; label or laboratory concentration | kg N, kg P2O5, or kg K2O | `fao-gap-framework-2003` |
+| `calc_perennial_attribution` | establishment and replacement | annual attributed amount = documented amount / declared attribution period, adjusted for area and period | establishment; stand age; period; area | annualized orchard amount | `fao-gap-framework-2003`; `iso-14067-2018` |
 | `calc_soil_emissions` | soil nitrous oxide | apply declared factor or measurement to eligible nutrient and residue nitrogen after duplicate-basis removal | nutrient and residue nitrogen; factor or result | emission amount | `ipcc-2019-managed-soils` |
-| `calc_output_reconciliation` | harvest and conditioning | gross harvest = marketable + cull + trim + loss; investigate unexplained residuals | lot weights and fate records | reconciled products and wastes | `fao-citrus-postharvest-guidance` |
+| `calc_output_reconciliation` | harvest and conditioning | gross harvest = marketable + cull + trim + loss; investigate unexplained residuals | lot weights and fate records | reconciled products and wastes | `fao-postharvest-handling-ae075e` |
 
 ### Data Quality Requirements
 
@@ -487,10 +486,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_mass` | reference flow and gate output | The 1,000 kg reference output must use kg mass and reconcile to product identity, grade, handling state, and gate. | `iso-14067-2018` |
-| `validate_process_reconciliation` | harvest and conditioning | Gross harvest, marketable output, culls, trim, losses, rejects, and wastewater must reconcile or carry a documented residual. | `fao-citrus-postharvest-guidance` |
-| `validate_perennial_period` | orchard management | Stand age, productive area, period, establishment or replacement event, and annualization basis are required before normalization. | `fao-citrus-production-guidance` |
+| `validate_process_reconciliation` | harvest and conditioning | Gross harvest, marketable output, culls, trim, losses, rejects, and wastewater must reconcile or carry a documented residual. | `fao-postharvest-handling-ae075e` |
+| `validate_perennial_period` | orchard management | Stand age, productive area, period, establishment or replacement event, and annualization basis are required before normalization. | `fao-gap-framework-2003` |
 | `validate_flow_identity_resolution` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
-| `validate_qualifiers` | reference flow and metadata | Required qualifiers must include citrus identity, variety, geography, stand age, period, irrigation, nutrient and crop-protection basis, maturity or grade, conditioning, packaging, fates, and gate. | `fao-citrus-production-guidance`; `fao-citrus-postharvest-guidance` |
+| `validate_qualifiers` | reference flow and metadata | Required qualifiers must include citrus identity, variety, geography, stand age, period, irrigation, nutrient and crop-protection basis, maturity or grade, conditioning, packaging, fates, and gate. | `fao-gap-framework-2003`; `fao-postharvest-handling-ae075e` |
 
 ## 10. Published Dataset Profile
 
@@ -504,13 +503,15 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | data year; measured versus estimated values; allocation and annualization; water source and fate; nutrient basis; mass balances |
 | update_trigger | Change in category interpretation, concrete flow identity verification|
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-citrus-production-guidance` | official_guidance | FAO citrus production and orchard management guidance | route, orchard management, planting, residues, and productive-period boundary |
-| `fao-irrigation-water-management` | extension_guidance | FAO irrigation and agricultural water-management guidance | irrigation records, water disclosure, and withdrawal reconciliation |
-| `fao-citrus-postharvest-guidance` | official_guidance | FAO citrus postharvest handling and packing guidance | harvest, grading, washing, cooling, packaging, rejects, and wastewater |
 | `ipcc-2019-managed-soils` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, managed-soils methods | soil emission calculation |
 | `iso-14044-2006` | standard | ISO 14044:2006 Environmental management — Life cycle assessment — Requirements and guidelines | allocation and inventory consistency |
 | `iso-14067-2018` | standard | ISO 14067:2018 Greenhouse gases — Carbon footprint of products | normalization, allocation disclosure, and use conditions |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |
+| `fao-crop-evapotranspiration-56` | official_guidance | Allen et al., FAO Irrigation and Drainage Paper 56, Crop Evapotranspiration (1998), https://www.fao.org/4/X0490E/X0490E00.htm | Water-balance and evapotranspiration methods; not an empirical delivered-irrigation range. |
+| `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), FAO-hosted original, https://www.fao.org/4/ae075e/ae075e00.htm | General handling, cooling and loss-record context only; crop-specific parameters and this PCR gate/attribution require separate evidence. |

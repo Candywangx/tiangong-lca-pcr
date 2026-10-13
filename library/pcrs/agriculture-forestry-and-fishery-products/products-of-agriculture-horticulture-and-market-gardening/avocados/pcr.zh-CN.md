@@ -75,10 +75,10 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_orchard_establishment_to_farm_gate` | all conforming datasets | 纳入场地准备、种植、果园建立、未结果年份、结果期果园管理、收获，以及声明农场交付前进行的调制。 | `fao-crop-production-methodology`; `fao-avocado-production-guide` |
-| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | 只有在按声明的果园寿命或合格果实输出基准分配后，才将建立期和补植树投入纳入；披露分摊年限和未结果年份。 | `fao-avocado-production-guide`; `iso-14067` |
+| `boundary_orchard_establishment_to_farm_gate` | all conforming datasets | 纳入场地准备、种植、果园建立、未结果年份、结果期果园管理、收获，以及声明农场交付前进行的调制。 | `fao-gap-framework-2003` |
+| `boundary_perennial_orchard_disclosure` | establishment and replacement trees | 只有在按声明的果园寿命或合格果实输出基准分配后，才将建立期和补植树投入纳入；披露分摊年限和未结果年份。 | `fao-gap-framework-2003`; `iso-14067` |
 | `boundary_direct_field_emissions` | managed soil and crop residues | 使用适用于地理位置的方法和养分、灌溉及残余物核算所用的相同采集活动数据，纳入直接和间接养分及残余物相关排放。 | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
-| `boundary_farm_gate_conditioning` | optional conditioning | 仅在农场交付前进行且未被收获记录包含时，纳入清洗、分选、分级、修整或短期农场处理；识别拒收果实和去向。 | `fao-crop-production-methodology` |
+| `boundary_farm_gate_conditioning` | optional conditioning | 仅在农场交付前进行且未被收获记录包含时，纳入清洗、分选、分级、修整或短期农场处理；识别拒收果实和去向。 | `fao-gap-framework-2003` |
 | `boundary_post_farm_gate_exclusion` | downstream activities | 排除场外运输、储存、配送、零售、消费者使用、食品加工、油或果泥制造及包装终端处置，除非研究明确扩展本 PCR 边界。 |  |
 
 ## 6. 过程清单结构
@@ -225,7 +225,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_orchard_establishment_records`
-- 来源：`fao-crop-production-methodology`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -529,7 +529,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_orchard_establishment_over_productive_life` | orchard establishment, immature years, and replacement trees | 按声明的结果果园寿命，使用果园面积和合格果实输出，将建立期和未结果期投入分摊到声明生产年。报告果园寿命、建立年份、补植事件和分摊基准。 | `fao-avocado-production-guide`; `iso-14067` |
+| `allocation_orchard_establishment_over_productive_life` | orchard establishment, immature years, and replacement trees | 按声明的结果果园寿命，使用果园面积和合格果实输出，将建立期和未结果期投入分摊到声明生产年。报告果园寿命、建立年份、补植事件和分摊基准。 | `fao-gap-framework-2003`; `iso-14067` |
 | `allocation_accepted_and_named_destinations` | accepted fruit, downgraded fruit, and residues | 仅当共产品去向有证据且在经济或物理上可区分时，才将质量分配给合格鳄梨和有名称的共产品去向。没有声明用途的不可销售损失不得作为共产品。 | `iso-14044` |
 | `allocation_no_double_counting_internal_links` | process links between orchard, harvest, and conditioning | 内部过程链接只用于质量平衡；不得将同一果园输出或果实质量再次计为市场产品。 | `iso-14044` |
 | `allocation_mass_default_for_shared_fruit_output` | multiple avocado grades or destinations | 当没有更强的因果分配证据时，对共享生产采用质量分配，并披露等级定义、水分或干物质基准以及拒收果实处理。 | `iso-14044` |
@@ -556,8 +556,8 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_area_to_reference_mass` | all orchard-year flows | normalized amount = orchard-year activity total / accepted farm-gate fruit mass × 1,000 kg | activity total; accepted fruit mass; reference amount | amount per 1,000 kg accepted fruit |  |
-| `calc_orchard_life_allocation` | establishment and replacement inputs | allocate establishment or replacement total to each declared production year using the documented productive-life horizon and accepted fruit output basis; retain non-bearing years in the denominator when specified | establishment total; replacement events; orchard life; annual accepted output | allocated orchard input per production year and reference flow | `fao-avocado-production-guide`; `iso-14067` |
-| `calc_nutrient_basis` | nutrient and amendment input | nutrient mass = product mass × declared nutrient fraction; report product mass and nutrient mass separately | product quantity; label or supplier nutrient analysis | kg product and kg N, kg P2O5, or kg K2O | `fao-crop-production-methodology` |
+| `calc_orchard_life_allocation` | establishment and replacement inputs | allocate establishment or replacement total to each declared production year using the documented productive-life horizon and accepted fruit output basis; retain non-bearing years in the denominator when specified | establishment total; replacement events; orchard life; annual accepted output | allocated orchard input per production year and reference flow | `fao-gap-framework-2003`; `iso-14067` |
+| `calc_nutrient_basis` | nutrient and amendment input | nutrient mass = product mass × declared nutrient fraction; report product mass and nutrient mass separately | product quantity; label or supplier nutrient analysis | kg product and kg N, kg P2O5, or kg K2O | `fao-gap-framework-2003` |
 | `calc_mass_balance_harvest` | harvest output and rejects | harvested mass = accepted fruit + named co-products + rejects/losses, with documented stock change and measurement basis | harvest tickets; accepted mass; co-product destinations; reject and loss mass; stock change | reconciled harvest balance |  |
 | `calc_conditioning_balance` | conditioning output and waste | incoming fruit + conditioning inputs crossing as product or material = accepted conditioned fruit + named destinations + waste, after documenting moisture or handling adjustments | batch inputs; accepted output; destinations; waste; adjustment basis | reconciled batch balance |  |
 | `calc_direct_field_emissions` | soil, residue, and crop-protection emissions | apply the selected geographically applicable method to collected nutrient, residue, and activity data; do not apply a generic factor without recording tier, geography, and activity basis | nutrient inputs; residue fate; soil or climate context; method parameters | substance-specific elementary flows by compartment | `ipcc-2019-refinement`; `emep-eea-2023-guidebook` |
@@ -578,8 +578,8 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validation_reference_output` | 参考流和终端过程 | 应有且仅有一个终端合格鳄梨输出链接到声明参考流；在身份核实前不得假定固定身份，本候选仍使用参数化绑定。 |  |
-| `validation_orchard_life_disclosure` | 果园建立与管理 | 对包含多年生果园生产但缺少果园年龄、建立期、结果寿命、补植事件或分摊基准的数据集拒收或标记。 | `fao-avocado-production-guide`; `iso-14067` |
-| `validation_irrigation_and_nutrients` | 灌溉和养分投入 | 检查零灌溉或零养分投入是否有农场记录或生产理由支持，并检查产品质量不得与养分质量混淆。 | `fao-crop-production-methodology` |
+| `validation_orchard_life_disclosure` | 果园建立与管理 | 对包含多年生果园生产但缺少果园年龄、建立期、结果寿命、补植事件或分摊基准的数据集拒收或标记。 | `fao-gap-framework-2003`; `iso-14067` |
+| `validation_irrigation_and_nutrients` | 灌溉和养分投入 | 检查零灌溉或零养分投入是否有农场记录或生产理由支持，并检查产品质量不得与养分质量混淆。 | `fao-gap-framework-2003` |
 | `validation_mass_balance` | 收获和调制 | 检查每个收获或调制边界的质量平衡，并要求解释未解决差额、拒收去向、库存变化或水分换算。 |  |
 | `validation_boundary_exclusions` | 下游活动 | 除非研究明确声明扩展边界，否则拒收未披露的场外运输、储存、加工为油或果泥、零售、消费者使用或包装终端处置。 |  |
 | `validation_bilingual_alignment` | 英文和中文呈现 | 要求两个语言文件中的机器标识符、控制词、process id、row id、rule id、protocol id、requirement id 和 source id 完全一致。 |  |
@@ -596,12 +596,12 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | primary-record coverage, temporal coverage, mass-balance result, identity 证据缺口s, 具体流身份核验, emission method and tier, assumptions, and regional representativeness |
 | update_trigger | 果园寿命或分摊方法、产品身份分类、具体流身份核验|
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-crop-production-methodology` | official_guidance | FAO crop production and farm-data methodology guidance | 作物周期分解、田间记录、农场交付边界和投入数据采集 |
-| `fao-avocado-production-guide` | extension_guidance | FAO or national agricultural extension guidance for avocado orchard establishment and management | 多年生果园建立、结果寿命、果园管理和收获背景 |
 | `ipcc-2019-refinement` | method_factor | 2019 IPCC Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories | 管理土壤和残余物排放计算方法 |
 | `emep-eea-2023-guidebook` | method_factor | EMEP/EEA air pollutant emission inventory guidebook, current agricultural chapters | 农业排放方法选择和受纳环境介质处理 |
 | `iso-14044` | standard | ISO 14044, Environmental management — Life cycle assessment — Requirements and guidelines | 分配层级、共产品处理和校验要求 |
@@ -610,3 +610,4 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

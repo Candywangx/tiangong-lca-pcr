@@ -21,12 +21,12 @@ system_boundary:
       applies_to: "all datasets"
       rule: "Include crop management through dispatch; exclude downstream processing and retail."
       source_ids:
-        - source-fao-lca-guidance
+        - fao-gap-framework-2003
     - rule_id: boundary_perennial
       applies_to: "perennial systems"
       rule: "Disclose establishment and productive-period attribution; do not assign all establishment burdens to one season silently."
       source_ids:
-        - source-fao-lca-guidance
+        - fao-gap-framework-2003
 boundary_abstraction:
   declared_starting_condition: "Field or protected-production unit ready for the declared season; purchased inputs enter when received by the operator"
   starting_condition_role: "Foreground begins with crop-stand management and ends at farm-gate or first marketable outlet"
@@ -138,7 +138,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_establishment_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -153,10 +153,10 @@ process_inventory:
       elementary:
         - row_id: establishment_land
           role: "Establishment land occupation"
-          name: "Land occupation or transformation (UUID unresolved; intentionally blank)"
+          name: "Cultivated land occupation (UUID unresolved; occupation only)"
           flow_type: "elementary"
           property_unit: "Area-time / ha-year"
-          description: "Record area, duration and transformation status for the declared stand. Raw activity or stage basis: per 1 kg marketable fresh berry."
+          description: "Record area, duration and transformation status for the declared stand. Land occupation is area multiplied by actual occupied duration. Land transformation, if included, is a separate from/to land-state area event with date, previous use, accounting period and attribution; never give it an area-time quantity or repeat it each crop cycle. Raw activity or stage basis: per 1 kg marketable fresh berry."
           amount:
             expression: "site register and area map"
             value_mode: "foreground_record"
@@ -168,7 +168,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_establishment_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -206,7 +206,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_input_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
                 - source-ipcc-2019-refinement
             ranges:
               - role: qa_guardrail
@@ -234,7 +234,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_input_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -261,7 +261,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_input_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -281,7 +281,118 @@ process_inventory:
       waste:
         []
       elementary:
-        []
+        - row_id: soil_direct_n2o
+          role: "Nitrous oxide to air, direct managed-soil pathway"
+          name: "Nitrous oxide to air, direct managed-soil pathway (UUID unresolved; chemical and receiving-medium identity required)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Document applicability and responsibility by site, N source, climate, route and receiving medium. Missing pathway data are not zero; a justified inapplicable pathway is explicitly disclosed. Raw activity or stage basis: measured nitrogen activity and emissions for the actual plot and reporting period before final normalization."
+          amount:
+            expression: "calculate the named compound from compatible nitrogen activity and the documented pathway method; convert compound-N by 44/28 once, assign upstream/foreground responsibility without duplication, then normalize to accepted reference output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_managed_soil_nitrogen
+              source_ids:
+                - ipcc-managed-soils-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg compound-N/kg available precursor N"
+                basis: "the named pathway and its compatible precursor-N ledger; indirect N2O-N is bounded by its documented deposited/leached precursor, not a second subtraction from the source ledger"
+                basis_kind: "n_input"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: soil_indirect_n2o
+          role: "Nitrous oxide to air, indirect deposition/leaching pathways"
+          name: "Nitrous oxide to air, indirect deposition/leaching pathways (UUID unresolved; chemical and receiving-medium identity required)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Document applicability and responsibility by site, N source, climate, route and receiving medium. Missing pathway data are not zero; a justified inapplicable pathway is explicitly disclosed. Raw activity or stage basis: measured nitrogen activity and emissions for the actual plot and reporting period before final normalization."
+          amount:
+            expression: "calculate the named compound from compatible nitrogen activity and the documented pathway method; convert compound-N by 44/28 once, assign upstream/foreground responsibility without duplication, then normalize to accepted reference output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_managed_soil_nitrogen
+              source_ids:
+                - ipcc-managed-soils-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg compound-N/kg available precursor N"
+                basis: "the named pathway and its compatible precursor-N ledger; indirect N2O-N is bounded by its documented deposited/leached precursor, not a second subtraction from the source ledger"
+                basis_kind: "n_input"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: soil_ammonia
+          role: "Ammonia to air from the documented nitrogen pathway"
+          name: "Ammonia to air from the documented nitrogen pathway (UUID unresolved; chemical and receiving-medium identity required)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Document applicability and responsibility by site, N source, climate, route and receiving medium. Missing pathway data are not zero; a justified inapplicable pathway is explicitly disclosed. Raw activity or stage basis: measured nitrogen activity and emissions for the actual plot and reporting period before final normalization."
+          amount:
+            expression: "calculate the named compound from compatible nitrogen activity and the documented pathway method; convert compound-N by 17/14 once, assign upstream/foreground responsibility without duplication, then normalize to accepted reference output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_managed_soil_nitrogen
+              source_ids:
+                - ipcc-managed-soils-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg compound-N/kg available precursor N"
+                basis: "the named pathway and its compatible precursor-N ledger; indirect N2O-N is bounded by its documented deposited/leached precursor, not a second subtraction from the source ledger"
+                basis_kind: "n_input"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: soil_nitrate
+          role: "Nitrate to water from the documented leaching/runoff pathway"
+          name: "Nitrate to water from the documented leaching/runoff pathway (UUID unresolved; chemical and receiving-medium identity required)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3"
+          description: "Document applicability and responsibility by site, N source, climate, route and receiving medium. Missing pathway data are not zero; a justified inapplicable pathway is explicitly disclosed. Raw activity or stage basis: measured nitrogen activity and emissions for the actual plot and reporting period before final normalization."
+          amount:
+            expression: "calculate the named compound from compatible nitrogen activity and the documented pathway method; convert compound-N by 62/14 once, assign upstream/foreground responsibility without duplication, then normalize to accepted reference output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_managed_soil_nitrogen
+              source_ids:
+                - ipcc-managed-soils-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg compound-N/kg available precursor N"
+                basis: "the named pathway and its compatible precursor-N ledger; indirect N2O-N is bounded by its documented deposited/leached precursor, not a second subtraction from the source ledger"
+                basis_kind: "n_input"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
   - id: process_harvest
     label: "Harvest and field capture"
     inputs:
@@ -303,7 +414,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -336,7 +447,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_yield_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -364,7 +475,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_yield_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -397,7 +508,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -424,7 +535,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -451,7 +562,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -484,7 +595,7 @@ process_inventory:
               kind: "identity_reference"
               collection_protocol_id: cp_yield_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges: []
       waste:
         - row_id: conditioning_rejects
@@ -504,7 +615,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_reject_records
               source_ids:
-                - source-fao-lca-guidance
+                - fao-gap-framework-2003
             ranges:
               - role: qa_guardrail
                 lower: "0"
@@ -521,12 +632,12 @@ allocation_rules:
     applies_to: "outputs and rejects"
     rule: "Separate products, rejects and waste by measured mass and destination. If co-products remain, use a documented physical or economic basis and report sensitivity."
     source_ids:
-      - source-fao-lca-guidance
+      - fao-gap-framework-2003
   - rule_id: allocation_multi_period
     applies_to: "perennial systems"
     rule: "Allocate shared establishment and stand-management burdens over the productive period using disclosed yield or time shares."
     source_ids:
-      - source-fao-lca-guidance
+      - fao-gap-framework-2003
 dataset_production:
   collection_protocols:
     - protocol_id: cp_establishment_records
@@ -613,6 +724,18 @@ dataset_production:
       site_scope: "site/block"
       aggregation_rule: "per declared reference flow"
       quality_evidence: "cited method"
+    - protocol_id: cp_managed_soil_nitrogen
+      process_id: "process_crop_management"
+      flow_role: "direct and indirect soil emissions"
+      record_type: "nitrogen activity and method ledger"
+      raw_fields: "N sources and amounts; amendments; residue N and fate; area; dates; climate; soil; volatilisation; leaching; precursor; factors and units; receiving medium; upstream owner; stocks; accepted output"
+      collection_method: "Reconcile compatible N activity by pathway, retain source worksheets and method applicability, then attribute and normalize once."
+      unit: "kg N; kg compound"
+      frequency: "application and period close"
+      temporal_coverage: "complete represented plot/season"
+      site_scope: "actual plot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "activity records; original factor source; precursor balance; uncertainty"
   calculation_rules:
     - id: calc_normalize_marketable
       applies_to: "all rows"
@@ -622,7 +745,7 @@ dataset_production:
         - "marketable mass"
       output: "per kg"
       source_ids:
-        - source-fao-lca-guidance
+        - fao-gap-framework-2003
     - id: calc_nutrient_application
       applies_to: "fertilizer card"
       rule: "product mass × declared nutrient fraction; retain product mass"
@@ -631,7 +754,7 @@ dataset_production:
         - "nutrient fraction"
       output: "product and nutrient amounts"
       source_ids:
-        - source-fao-lca-guidance
+        - fao-gap-framework-2003
     - id: calc_perennial_share
       applies_to: "establishment"
       rule: "shared burden × declared season/yield share"
@@ -641,7 +764,7 @@ dataset_production:
         - yield
       output: "season amount"
       source_ids:
-        - source-fao-lca-guidance
+        - fao-gap-framework-2003
     - id: calc_mass_balance
       applies_to: "harvest and routing"
       rule: "harvested = marketable + rejects + losses within declared tolerance"
@@ -649,7 +772,16 @@ dataset_production:
         - "all mass records"
       output: "reconciled balance"
       source_ids:
-        - source-fao-lca-guidance
+        - fao-gap-framework-2003
+    - id: calc_managed_soil_nitrogen
+      applies_to: "process_crop_management"
+      rule: "Select compatible direct and indirect methods for fertilizer, organic amendments, returned residues and applicable managed-soil sources. Direct N2O-N = sum of eligible N activity times applicable EF1-family factors plus separately applicable sources; indirect N2O-N = volatilised N precursor times EF4 plus leached/runoff N precursor times EF5, where applicable. Convert N2O-N by44/28 once. Quantify NH3 and nitrate with separately justified species-specific loss fractions, not by assigning all NH3+NOx to NH3 or all leached N to nitrate. Convert NH3-N by17/14 and nitrate-N by62/14 once. Keep components, source pools, media, method uncertainty and burden owner distinct; already covered emissions are not repeated. Missing applicable data prevent completeness; do not invent an emission default."
+      inputs:
+        - cp_managed_soil_nitrogen
+      output: "molecular emission amounts per declared reference flow"
+      source_ids:
+        - ipcc-managed-soils-2019
+        - mass-balance-identity
   data_quality_requirements:
     []
 validation_rules:
@@ -657,23 +789,28 @@ validation_rules:
     applies_to: "reference flow"
     rule: "Confirm one product flow, mass property and kg unit; unresolved identity remains a review finding."
     source_ids:
-      - source-fao-lca-guidance
+      - fao-gap-framework-2003
   - rule_id: validation_completeness
     applies_to: "foreground package"
     rule: "Required processes and protocols must be present or marked not applicable with justification."
     source_ids:
-      - source-fao-lca-guidance
+      - fao-gap-framework-2003
   - rule_id: validation_mass_balance
     applies_to: "harvest and routing"
     rule: "Check harvested mass against marketable output, rejects and losses; unexplained gaps fail validation."
     source_ids:
-      - source-fao-lca-guidance
+      - fao-gap-framework-2003
   - rule_id: validation_nutrient_basis
     applies_to: "fertilizer and amendments"
     rule: "Check product, nutrient content, amount, date, area and source record; generic unlabeled totals fail."
     source_ids:
-      - source-fao-lca-guidance
+      - fao-gap-framework-2003
       - source-ipcc-2019-refinement
+  - rule_id: validation_managed_soil_coverage
+    applies_to: "nitrogen inputs, residues and emissions"
+    rule: "Require each applicable nitrogen pathway to be quantified under the stated method or covered by a named compatible upstream dataset once. Supported inapplicability is recorded; missing activity, factors, species split, medium or attribution remains a blocking completeness gap. Reject automatic zero or double counting of direct/indirect components."
+    source_ids:
+      - ipcc-managed-soils-2019
 published_dataset_profile:
   dataset_role: "secondary_dataset; background_dataset only after completeness and review"
   downstream_use: "Fresh berry foreground production and linked product-system modelling"
@@ -683,17 +820,25 @@ published_dataset_profile:
   required_quality_disclosure: "completeness, representativeness, measurement basis, uncertainty and unresolved identities"
   update_trigger: "new season, replacement, route/input/outlet change, or corrected mass balance"
 data_sources:
-  - id: "source-fao-lca-guidance"
-    type: "official_guidance"
-    reference: "FAO environmental performance guidance for food and agriculture"
-    used_for: "boundary, process map, collection, allocation and quality"
   - id: "source-ipcc-2019-refinement"
     type: "method_factor"
     reference: "IPCC 2019 Refinement to the 2006 Guidelines"
     used_for: "conditional field-emission and nutrient-related calculation method"
+  - id: "fao-gap-framework-2003"
+    type: "official_guidance"
+    reference: "FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm"
+    used_for: "Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence."
+  - id: "ipcc-managed-soils-2019"
+    type: "method_factor"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, sections 11.2.1 and 11.2.2 and Tables 11.1/11.3, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Nitrogen activity and direct/indirect N2O methods; no berry-specific yield or universal per-product emission default"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Physical conservation of mass and nitrogen, as defined by the stated PCR calculation and precursor ledgers"
+    used_for: "Conservation constraints only, not measured loss fractions or empirical factors"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f7843f1e05f27efa62a9b287ec9333a806dc07830dcb8da227390c82ae823f5e"
+  source_sha256: "sha256:5c47bc6ee573b202f110c2627cfdd2eafa7116b292517c4199ac5926960dec39"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3321"
@@ -704,10 +849,10 @@ normative_context:
           line: 54
           column: 1
         end:
-          offset: 4679
+          offset: 4677
           line: 72
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Field or protected-production unit ready for the declared season; purchased inputs enter when received by the operator |\n| starting_condition_role | Foreground begins with crop-stand management and ends at farm-gate or first marketable outlet |\n| product_classification_scope | Fresh raspberries, blackberries, mulberries and loganberries; semantic scope governs inclusion |\n| recursive_input_rule | Same-category fruit used as an input is an internal transfer, not a recursively modelled new crop output |\n| upstream_dataset_requirement | Use separately documented background datasets for electricity, fuel, fertilizer, amendments, packaging, water supply and purchased services |\n| disclosure | Declare land/structure, crop age, season, outlet, yields, losses, irrigation, nutrient products, packaging and exclusions |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_start_end` | all datasets | Include crop management through dispatch; exclude downstream processing and retail. | `source-fao-lca-guidance` |\n| `boundary_perennial` | perennial systems | Disclose establishment and productive-period attribution; do not assign all establishment burdens to one season silently. | `source-fao-lca-guidance` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Field or protected-production unit ready for the declared season; purchased inputs enter when received by the operator |\n| starting_condition_role | Foreground begins with crop-stand management and ends at farm-gate or first marketable outlet |\n| product_classification_scope | Fresh raspberries, blackberries, mulberries and loganberries; semantic scope governs inclusion |\n| recursive_input_rule | Same-category fruit used as an input is an internal transfer, not a recursively modelled new crop output |\n| upstream_dataset_requirement | Use separately documented background datasets for electricity, fuel, fertilizer, amendments, packaging, water supply and purchased services |\n| disclosure | Declare land/structure, crop age, season, outlet, yields, losses, irrigation, nutrient products, packaging and exclusions |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_start_end` | all datasets | Include crop management through dispatch; exclude downstream processing and retail. | `fao-gap-framework-2003` |\n| `boundary_perennial` | perennial systems | Disclose establishment and productive-period attribution; do not assign all establishment burdens to one season silently. | `fao-gap-framework-2003` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -744,18 +889,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_20979"
+    - unit_id: "normative_28144"
       family: "allocation"
       span:
         start:
-          offset: 20979
-          line: 392
+          offset: 28144
+          line: 488
           column: 1
         end:
-          offset: 21547
-          line: 399
+          offset: 28710
+          line: 495
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_marketable_rejects` | outputs and rejects | Separate products, rejects and waste by measured mass and destination. If co-products remain, use a documented physical or economic basis and report sensitivity. | `source-fao-lca-guidance` |\n| `allocation_multi_period` | perennial systems | Allocate shared establishment and stand-management burdens over the productive period using disclosed yield or time shares. | `source-fao-lca-guidance` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_marketable_rejects` | outputs and rejects | Separate products, rejects and waste by measured mass and destination. If co-products remain, use a documented physical or economic basis and report sensitivity. | `fao-gap-framework-2003` |\n| `allocation_multi_period` | perennial systems | Allocate shared establishment and stand-management burdens over the productive period using disclosed yield or time shares. | `fao-gap-framework-2003` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -772,12 +917,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 20979
-              line: 392
+              offset: 28144
+              line: 488
               column: 1
             end:
-              offset: 21019
-              line: 392
+              offset: 28184
+              line: 488
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -792,18 +937,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_25975"
+    - unit_id: "normative_34805"
       family: "validation"
       span:
         start:
-          offset: 25975
-          line: 427
+          offset: 34805
+          line: 525
           column: 1
         end:
-          offset: 26826
-          line: 436
+          offset: 36113
+          line: 535
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference` | reference flow | Confirm one product flow, mass property and kg unit; unresolved identity remains a review finding. | `source-fao-lca-guidance` |\n| `validation_completeness` | foreground package | Required processes and protocols must be present or marked not applicable with justification. | `source-fao-lca-guidance` |\n| `validation_mass_balance` | harvest and routing | Check harvested mass against marketable output, rejects and losses; unexplained gaps fail validation. | `source-fao-lca-guidance` |\n| `validation_nutrient_basis` | fertilizer and amendments | Check product, nutrient content, amount, date, area and source record; generic unlabeled totals fail. | `source-fao-lca-guidance`, `source-ipcc-2019-refinement` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference` | reference flow | Confirm one product flow, mass property and kg unit; unresolved identity remains a review finding. | `fao-gap-framework-2003` |\n| `validation_completeness` | foreground package | Required processes and protocols must be present or marked not applicable with justification. | `fao-gap-framework-2003` |\n| `validation_mass_balance` | harvest and routing | Check harvested mass against marketable output, rejects and losses; unexplained gaps fail validation. | `fao-gap-framework-2003` |\n| `validation_nutrient_basis` | fertilizer and amendments | Check product, nutrient content, amount, date, area and source record; generic unlabeled totals fail. | `fao-gap-framework-2003`, `source-ipcc-2019-refinement` |\n| `validation_managed_soil_coverage` | nitrogen inputs, residues and emissions | Require each applicable nitrogen pathway to be quantified under the stated method or covered by a named compatible upstream dataset once. Supported inapplicability is recorded; missing activity, factors, species split, medium or attribution remains a blocking completeness gap. Reject automatic zero or double counting of direct/indirect components. | `ipcc-managed-soils-2019` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -820,12 +965,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 25975
-              line: 427
+              offset: 34805
+              line: 525
               column: 1
             end:
-              offset: 25997
-              line: 427
+              offset: 34827
+              line: 525
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -851,100 +996,113 @@ normative_context:
           line: 69
           column: 1
         end:
-          offset: 4480
+          offset: 4479
           line: 69
-          column: 154
+          column: 153
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_perennial"
       identity_kind: "explicit"
       unit_id: "normative_3321"
       source_span:
         start:
-          offset: 4481
+          offset: 4480
           line: 70
           column: 1
         end:
-          offset: 4677
+          offset: 4675
           line: 70
-          column: 197
+          column: 196
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_marketable_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_20979"
+      unit_id: "normative_28144"
       source_span:
         start:
-          offset: 21092
-          line: 396
+          offset: 28257
+          line: 492
           column: 1
         end:
-          offset: 21341
-          line: 396
-          column: 250
+          offset: 28505
+          line: 492
+          column: 249
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_multi_period"
       identity_kind: "explicit"
-      unit_id: "normative_20979"
+      unit_id: "normative_28144"
       source_span:
         start:
-          offset: 21342
-          line: 397
+          offset: 28506
+          line: 493
           column: 1
         end:
-          offset: 21545
-          line: 397
-          column: 204
+          offset: 28708
+          line: 493
+          column: 203
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference"
       identity_kind: "explicit"
-      unit_id: "normative_25975"
+      unit_id: "normative_34805"
       source_span:
         start:
-          offset: 26070
-          line: 431
+          offset: 34900
+          line: 529
           column: 1
         end:
-          offset: 26242
-          line: 431
-          column: 173
+          offset: 35071
+          line: 529
+          column: 172
     - pointer: "/validation_rules/1"
       rule_id: "validation_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_25975"
+      unit_id: "normative_34805"
       source_span:
         start:
-          offset: 26243
-          line: 432
+          offset: 35072
+          line: 530
           column: 1
         end:
-          offset: 26417
-          line: 432
-          column: 175
+          offset: 35245
+          line: 530
+          column: 174
     - pointer: "/validation_rules/2"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_25975"
+      unit_id: "normative_34805"
       source_span:
         start:
-          offset: 26418
-          line: 433
+          offset: 35246
+          line: 531
           column: 1
         end:
-          offset: 26601
-          line: 433
-          column: 184
+          offset: 35428
+          line: 531
+          column: 183
     - pointer: "/validation_rules/3"
       rule_id: "validation_nutrient_basis"
       identity_kind: "explicit"
-      unit_id: "normative_25975"
+      unit_id: "normative_34805"
       source_span:
         start:
-          offset: 26602
-          line: 434
+          offset: 35429
+          line: 532
           column: 1
         end:
-          offset: 26824
-          line: 434
-          column: 223
+          offset: 35650
+          line: 532
+          column: 222
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_managed_soil_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_34805"
+      source_span:
+        start:
+          offset: 35651
+          line: 533
+          column: 1
+        end:
+          offset: 36111
+          line: 533
+          column: 461
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -972,27 +1130,27 @@ normative_context:
           column: 139
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_20979"
+      unit_id: "normative_28144"
       source_span:
         start:
-          offset: 20979
-          line: 392
+          offset: 28144
+          line: 488
           column: 1
         end:
-          offset: 21019
-          line: 392
+          offset: 28184
+          line: 488
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_25975"
+      unit_id: "normative_34805"
       source_span:
         start:
-          offset: 25975
-          line: 427
+          offset: 34805
+          line: 525
           column: 1
         end:
-          offset: 25997
-          line: 427
+          offset: 34827
+          line: 525
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1001,5 +1159,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f7843f1e05f27efa62a9b287ec9333a806dc07830dcb8da227390c82ae823f5e"
-  generated_content_sha256: "sha256:926cdf2a7492995e753be824a8b2845133f0fe39a8fd3aab29be66771400ac0f"
+    sha256: "sha256:5c47bc6ee573b202f110c2627cfdd2eafa7116b292517c4199ac5926960dec39"
+  generated_content_sha256: "sha256:81733b37ebf3324a14e51f4ab4bf27909215e9bd84bf08b27a7954430ff32c83"

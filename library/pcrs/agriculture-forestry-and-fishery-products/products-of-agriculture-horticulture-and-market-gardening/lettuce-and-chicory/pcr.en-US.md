@@ -71,10 +71,10 @@ When constructing a foreground data package, the items listed in `Required quali
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | establishment and crop management | Include inputs and direct field or protected-cultivation emissions from establishment through the represented harvest campaign, and allocate them to marketable output from the same declared cycle. | `fao-vegetable-production-guidance` |
+| `boundary_crop_cycle` | establishment and crop management | Include inputs and direct field or protected-cultivation emissions from establishment through the represented harvest campaign, and allocate them to marketable output from the same declared cycle. | `fao-gap-framework-2003` |
 | `boundary_declared_gate` | harvest and handling | End at the declared farm or first packing-site gate; include grading, trimming, washing, cooling, and primary packaging only when they occur before that hand-off. | `usda-leafy-greens-guidance` |
 | `boundary_soil_emissions` | managed soil and residues | Apply one declared method to nitrogen emissions and avoid double counting fertilizer, amendment, and returned-residue nitrogen. | `ipcc-2019-managed-soils` |
-| `boundary_residue_fate` | field residue and rejects | Record field residue and postharvest rejects by destination; an unspecified reject or residue is not a co-product. | `fao-vegetable-production-guidance` |
+| `boundary_residue_fate` | field residue and rejects | Record field residue and postharvest rejects by destination; an unspecified reject or residue is not a co-product. | `fao-gap-framework-2003` |
 
 ## 6. Process Inventory Structure
 
@@ -692,7 +692,7 @@ Raw activity or stage basis: per 1,000 kg marketable output.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_cycle_inputs` | crop establishment and management | Allocate cycle inputs and direct emissions to marketable output from the same field or protected unit and declared cycle; disclose failed area, reseeding, and multi-harvest treatment. | `fao-vegetable-production-guidance` |
+| `allocation_cycle_inputs` | crop establishment and management | Allocate cycle inputs and direct emissions to marketable output from the same field or protected unit and declared cycle; disclose failed area, reseeding, and multi-harvest treatment. | `fao-gap-framework-2003` |
 | `allocation_marketable_and_rejects` | harvest and handling | Reconcile harvest-ready input to marketable output, rejects, trims, and measured mass change; treat rejects as waste unless a documented product specification, buyer, quantity, and destination establish a co-product. | `usda-leafy-greens-guidance` |
 | `allocation_secondary_output` | intentional secondary products | For a documented secondary product, report quantity and hand-off and apply a justified allocation or substitution method; no default avoided burden or economic allocation is assumed. |  |
 
@@ -716,7 +716,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- |
 | `calc_nutrient_equivalent` | fertilizer inputs | Product mass multiplied by documented nutrient fraction equals kg N, P2O5, or K2O on the declared basis. | product mass; nutrient concentration | nutrient-equivalent input |  |
 | `calc_cycle_normalization` | crop-cycle inputs and emissions | Divide complete field or protected-unit cycle quantities by marketable output from the corresponding cycle, then express the result per 1,000 kg reference product. | cycle quantity; marketable output | normalized inventory amount |  |
-| `calc_water_and_withdrawal` | irrigation | Preserve delivered irrigation and source withdrawal as separate quantities; reconcile them where measured and disclose unmeasured losses. | delivery meter; source meter; return or loss record | irrigation input and withdrawal | `fao-vegetable-production-guidance` |
+| `calc_water_and_withdrawal` | irrigation | Preserve delivered irrigation and source withdrawal as separate quantities; reconcile them where measured and disclose unmeasured losses. | delivery meter; source meter; return or loss record | irrigation input and withdrawal | `fao-gap-framework-2003` |
 | `calc_harvest_mass_balance` | harvest and gate handling | Gross harvest plus measured mass change equals marketable output plus rejects, trims, wastewater-associated losses, and other declared outputs. | gross mass; marketable mass; rejects; trims; water; mass change | reconciled output quantities | `usda-leafy-greens-guidance` |
 | `calc_managed_soil_emissions` | nitrogen emissions | Apply the declared IPCC or accepted regional equations to nitrogen activity and preserve N2O-N to N2O conversion without double counting. | nitrogen activity; factors; soil or growing-medium qualifiers | direct and indirect nitrogen emissions | `ipcc-2019-managed-soils` |
 
@@ -753,10 +753,12 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | primary-data coverage; scale and meter quality; cycle linkage; mass balance; method and factor versions; data gaps; provisional ranges; concrete flow identity verification; unmapped identities |
 | update_trigger | verified product or flow identity, reviewed yield or input evidence, crop route or product specification change, emission-method change, or revised gate practice |
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-vegetable-production-guidance` | official_guidance | FAO, Good Agricultural Practices for greenhouse and field vegetable production, https://www.fao.org | crop-cycle boundary, field records, residue handling, and vegetable production route |
 | `usda-leafy-greens-guidance` | official_guidance | U.S. FDA, Guidance for Industry: Guide to Minimize Microbial Food Safety Hazards of Fresh-cut Fruits and Vegetables, https://www.fda.gov | fresh leafy-produce handling, grading, washing, and declared gate controls |
 | `ipcc-2019-managed-soils` | official_guidance | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | managed-soil nitrogen emission method and N2O conversion |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

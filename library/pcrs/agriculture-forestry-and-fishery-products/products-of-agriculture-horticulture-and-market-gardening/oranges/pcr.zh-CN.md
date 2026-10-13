@@ -71,9 +71,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_start_condition` | 所有过程 | 从声明的果园建植或生产年度条件开始，纳入至合格农场出场橙的前景投入、资源使用、排放、采收和产品输出；排除零售、消费者使用和下游加工。 | `fao-good-agricultural-practices`、`codex-fresh-fruits-vegetables-cxc-53` |
-| `boundary_perennial_disclosure` | 建植和栽培 | 声明果园树龄、结果年限、更新或补植，以及是否包含建植；没有分配计算时不得混合年度和多年生时间基准。 | `fao-good-agricultural-practices` |
-| `boundary_recursive_input` | 种植材料 | 在外购或转入种植材料实际跨越边界的位置记录；若材料自繁，则披露亲本材料和分配。 | `fao-good-agricultural-practices` |
+| `boundary_start_condition` | 所有过程 | 从声明的果园建植或生产年度条件开始，纳入至合格农场出场橙的前景投入、资源使用、排放、采收和产品输出；排除零售、消费者使用和下游加工。 | `fao-gap-framework-2003`、`codex-fresh-fruits-vegetables-cxc-53` |
+| `boundary_perennial_disclosure` | 建植和栽培 | 声明果园树龄、结果年限、更新或补植，以及是否包含建植；没有分配计算时不得混合年度和多年生时间基准。 | `fao-gap-framework-2003` |
+| `boundary_recursive_input` | 种植材料 | 在外购或转入种植材料实际跨越边界的位置记录；若材料自繁，则披露亲本材料和分配。 | `fao-gap-framework-2003` |
 
 ## 6. 过程清单结构
 
@@ -105,7 +105,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 农业养分与肥料投入（`p01323_orchard_establishment_agricultural_nutrient_inputs`）
 
@@ -122,7 +122,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_establishment_records`
-- 来源：`fao-good-agricultural-practices`; `ipcc-2019-refinement-agriculture`
+- 来源：`fao-gap-framework-2003`; `ipcc-2019-refinement-agriculture`
 
 ##### 废物流
 
@@ -143,7 +143,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 产品流
@@ -163,7 +163,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -183,7 +183,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 
 ##### 基本流
@@ -208,7 +208,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-good-agricultural-practices`; `ipcc-2019-refinement-agriculture`
+- 来源：`fao-gap-framework-2003`; `ipcc-2019-refinement-agriculture`
 
 ###### 施用灌溉水（`orange_irrigation_water_input`）
 
@@ -225,7 +225,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 移动机械燃料和田间能源（`orange_cultivation_energy_input`）
 
@@ -242,7 +242,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 施用植保制剂（`orange_crop_protection_input`）
 
@@ -259,7 +259,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ##### 废物流
 
@@ -280,7 +280,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 #### 输出
 ##### 基本流
@@ -337,7 +337,7 @@ sync_with: pcr.en-US.md
 - 基准类型：生产周期（`crop_cycle`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_cultivation_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ### 过程：橙子采收与农场端处理（`p01323_harvest_farm_gate`）
 
@@ -359,7 +359,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_harvest_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 ###### 农场端包装功能（`orange_packaging_input`）
 
@@ -400,7 +400,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_01323_harvest_records`
-- 来源：`fao-good-agricultural-practices`、`ipcc-2019-refinement-agriculture`
+- 来源：`fao-gap-framework-2003`、`ipcc-2019-refinement-agriculture`
 
 
 ##### 产品流
@@ -422,7 +422,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_01323_harvest_records`
-- 来源：`fao-good-agricultural-practices`、`codex-fresh-fruits-vegetables-cxc-53`
+- 来源：`fao-gap-framework-2003`、`codex-fresh-fruits-vegetables-cxc-53`
 
 
 ##### 废物流
@@ -449,8 +449,8 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `allocation_accepted_output` | 果园栽培和采收 | 将投入和排放归一化至合格橙产出；单独报告采收但拒收的橙子，不得无说明地纳入参考产品。 | `codex-fresh-fruits-vegetables-cxc-53` |
-| `allocation_establishment_over_life` | 果园建植和更新 | 按声明的结果年限和合格产量分配建植与更新负荷，并披露分配周期和更新事件。 | `fao-good-agricultural-practices` |
-| `allocation_co_products` | 拒收橙和其他路线 | 对有独立市场路线且有记录的拒收橙或副产品采用有依据的物理或经济分配，并报告基准；否则按声明去向处理，不声称存在第二参考产品。 | `fao-good-agricultural-practices` |
+| `allocation_establishment_over_life` | 果园建植和更新 | 按声明的结果年限和合格产量分配建植与更新负荷，并披露分配周期和更新事件。 | `fao-gap-framework-2003` |
+| `allocation_co_products` | 拒收橙和其他路线 | 对有独立市场路线且有记录的拒收橙或副产品采用有依据的物理或经济分配，并报告基准；否则按声明去向处理，不声称存在第二参考产品。 | `fao-gap-framework-2003` |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -470,7 +470,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_accepted_output_normalization` | 所有定量行 | 将年度或生产周期清单量除以农场出场合格整橙质量，按每 1 kg 合格产出报告。 | 合格质量；行数量 | 归一化行值 | `mass-balance-identity` |
-| `calc_establishment_allocation` | 建植行 | 按声明的结果年限和合格产量分配建植和更新量，并保留分配周期。 | 建植量；结果年限；合格产量 | 分配后的果园年度量 | `fao-good-agricultural-practices` |
+| `calc_establishment_allocation` | 建植行 | 按声明的结果年限和合格产量分配建植和更新量，并保留分配周期。 | 建植量；结果年限；合格产量 | 分配后的果园年度量 | `fao-gap-framework-2003` |
 | `calc_nutrient_basis` | 养分投入行 | 保留产品质量，并根据产品分析和施用产品量计算养分质量；不得以养分质量替代产品投入。 | 产品数量；产品分析 | 产品质量和养分质量 | `ipcc-2019-refinement-agriculture` |
 | `calc_reject_mass_balance` | 采收拒收品和产品输出 | 核对采收量与合格产出、拒收品、副产品和库存变化，并解释未解决差额。 | 采收量；合格量；拒收量；副产品；库存变化 | 已核对的质量平衡 | `mass-balance-identity` |
 
@@ -490,8 +490,8 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `validation_reference_qualifiers` | 参考流 | 数据包缺少已知品种、路线、果园树龄或生产年度基准、成熟度、等级、农场出场状态、合格产量或拒收去向时拒绝。 | `codex-fresh-fruits-vegetables-cxc-53` |
 | `validation_mass_balance` | 采收和农场端处理 | 核对采收量、合格产品、拒收品、副产品、库存变化和记录的不确定性；调查无法解释的质量不平衡。 | `mass-balance-identity` |
-| `validation_nutrient_and_water_basis` | 栽培 | 确认肥料产品质量与养分质量、施用灌溉水与水源取水及其计量或计算方法。 | `ipcc-2019-refinement-agriculture`、`fao-good-agricultural-practices` |
-| `validation_perennial_allocation` | 建植和栽培 | 确认结果年限分配，防止在生产年度之间重复计算建植、更新或果园能力。 | `fao-good-agricultural-practices` |
+| `validation_nutrient_and_water_basis` | 栽培 | 确认肥料产品质量与养分质量、施用灌溉水与水源取水及其计量或计算方法。 | `ipcc-2019-refinement-agriculture`、`fao-gap-framework-2003` |
+| `validation_perennial_allocation` | 建植和栽培 | 确认结果年限分配，防止在生产年度之间重复计算建植、更新或果园能力。 | `fao-gap-framework-2003` |
 | `validation_identity_evidence` | 参考流和未映射流 | 将身份证据缺口保留为明确的前景解析要求；不得仅为填充 UUID 而替换为相近柑橘或产品流。 | `tidas-flow-identity-policy` |
 
 ## 10. 发布数据集画像
@@ -506,12 +506,14 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 时间覆盖、场址范围、计量和换算方法、养分和水量基准、质量平衡结果、分配规则和缺失数据处理 |
 | update_trigger | 新的果园路线、品种或市场状态；结果年限或产量证据更新；具体流身份核验|
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-good-agricultural-practices` | official_guidance | FAO 关于良好农业实践、果园管理、记录保存和农场端生产数据的指导 | 果园管理、记录和农场出场生产数据 |
 | `codex-fresh-fruits-vegetables-cxc-53` | official_guidance | Codex 关于鲜食果蔬、产品质量和处理的指导 | 产品质量、处理和农场出场质量限定信息 |
 | `ipcc-2019-refinement-agriculture` | method_factor | IPCC 2019 Refinement 第 4 卷农业方法 | 受管理土壤和养分相关排放计算 |
 | `mass-balance-identity` | method_factor | 质量守恒方法身份 | 采收、拒收品、副产品和合格产出核对 |
 | `tidas-flow-identity-policy` | official_guidance | 仓库流身份规则 | 保持语义并在无核验身份时显式保留 coverage finding |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

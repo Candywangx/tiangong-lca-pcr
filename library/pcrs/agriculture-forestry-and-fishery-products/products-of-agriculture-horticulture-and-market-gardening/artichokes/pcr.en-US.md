@@ -72,7 +72,7 @@ When constructing a foreground data package, the items listed in `Required quali
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_crop_cycle` | establishment and stand management | Include bed preparation, establishment or perennial regrowth, crop management, crop-cycle inputs, and harvest preparation that produce the declared fresh artichoke output; disclose prior land use and exclude unrelated infrastructure construction. | `ucanr-artichoke-production-1997`; `ucanr-artichoke-cultural-tips-2026` |
+| `boundary_crop_cycle` | establishment and stand management | Include bed preparation, establishment or perennial regrowth, crop management, crop-cycle inputs, and harvest preparation that produce the declared fresh artichoke output; disclose prior land use and exclude unrelated infrastructure construction. | `ucanr-artichoke-production-2008`; `ucanr-artichoke-cultural-tips-2026` |
 | `boundary_gate_conditioning` | harvest and primary conditioning | End the foreground system at the declared farm-gate or pack-house gate and include cutting, grading, trimming, washing, cooling, and primary packing when they occur before that gate. | `ucanr-artichoke-cultural-tips-2026` |
 | `boundary_soil_nitrogen` | fertilizer, crop residues, and managed soil | Estimate applicable direct and indirect nitrogen emissions using one declared method and the recorded nutrient inputs and residue fate; avoid double counting a nitrogen pathway. | `ipcc-2019-refinement-nitrogen` |
 | `boundary_residue_fate` | field residue, rejects, and trim | Record field return, composting, feed use, treatment, or disposal separately; a material with no demonstrated productive use remains a residue or waste flow. | `ucanr-artichoke-weed-management-2005`; `ucanr-artichoke-cultural-tips-2026` |
@@ -178,16 +178,15 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes attributed
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
-- Sources: `ucanr-artichoke-production-1997`
-- Range: Establishment irrigation screen
+- Sources: `ucanr-artichoke-production-2008`
+- Range: Provisional establishment-water estimate; original endpoint support unresolved
   - Range role: Typical range (`typical_range`)
   - Lower: 200
   - Upper: 600
   - Unit: m3/ha
   - Basis: delivered irrigation during establishment before full canopy development
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ucanr-artichoke-production-1997`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Flow: Mobile machinery fuel for establishment (`establishment_machinery_fuel`)
 
@@ -204,7 +203,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes attributed
 - Basis kind: Fuel inventory (`fuel_inventory`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_energy_records`
-- Sources: `ucanr-artichoke-production-1997`
+- Sources: `ucanr-artichoke-production-2008`
 - Range: Establishment fuel screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 50
@@ -233,7 +232,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_field_records`
-- Sources: `ucanr-artichoke-production-1997`
+- Sources: `ucanr-artichoke-production-2008`
 - Range: Production-area screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0.1
@@ -342,15 +341,14 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-- Range: Crop-cycle potassium screen
+- Range: Provisional potassium-application estimate; not a verified application interval or crop uptake
   - Range role: Typical range (`typical_range`)
   - Lower: 0
   - Upper: 450
   - Unit: kg K2O/ha
   - Basis: crop nutrient application screen pending soil-test and farm records
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `shinohara-artichoke-irrigation-nitrogen-2011`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Flow: Irrigation water during stand management (`crop_irrigation_water`)
 
@@ -367,16 +365,16 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_irrigation_records`
-- Sources: `ucanr-artichoke-production-1997`; `shinohara-artichoke-irrigation-nitrogen-2011`
-- Range: Crop-cycle irrigation screen
+- Sources: `ucanr-artichoke-production-2008`; `shinohara-artichoke-irrigation-nitrogen-2011`
+- Range: California irrigated annual/perennial crop water context
   - Range role: Typical range (`typical_range`)
-  - Lower: 1860
-  - Upper: 2480
+  - Lower: 4572
+  - Upper: 6096
   - Unit: m3/ha/year
-  - Basis: annual artichoke production irrigation in the cited California production context; adjust for local rainfall and route
+  - Basis: UC ANR 7221: perennial 18–24 acre-inches/acre per year (4572–6096 m3/ha/year), annual 20–24 (5080–6096). One inch depth = 254 m3/ha; conditional on irrigation route and rainfall, not a rain-fed minimum or universal validity bound.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: External source (`external_source`)
-  - Sources: `ucanr-artichoke-production-1997`
+  - Sources: `ucanr-artichoke-production-2008`
 
 ###### Flow: Crop-protection product (`crop_protection_input`)
 
@@ -443,7 +441,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_energy_records`
-- Sources: `ucanr-artichoke-production-1997`
+- Sources: `ucanr-artichoke-production-2008`
 - Range: Stand-management electricity screen
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
@@ -472,7 +470,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_field_records`
-- Sources: `ucanr-artichoke-production-1997`
+- Sources: `ucanr-artichoke-production-2008`
 
 #### Outputs
 
@@ -799,7 +797,7 @@ Raw activity or stage basis: per 1,000 kg marketable fresh artichokes at the dec
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_single_crop_cycle` | shared field, bed, protected unit, or perennial stand | Attribute crop-cycle or production-year inputs to artichokes using the recorded area, stand, dates, and marketable output; do not allocate to another crop or year without its own records. | `ucanr-artichoke-production-1997` |
+| `allocation_single_crop_cycle` | shared field, bed, protected unit, or perennial stand | Attribute crop-cycle or production-year inputs to artichokes using the recorded area, stand, dates, and marketable output; do not allocate to another crop or year without its own records. | `ucanr-artichoke-production-2008` |
 | `allocation_perennial_stand` | perennial artichoke establishment, cutback, dormancy, and regrowth | Disclose stand age and assign establishment or shared stand burdens across the declared production years using a documented attribution rule; do not silently assign all stand establishment to one harvest year. | `ucanr-artichoke-cultural-tips-2026` |
 | `allocation_residue_fate` | crop residue, field loss, rejects, and trim | Do not assign a co-product credit to residue or rejects unless a documented recipient, quantity, and intended use exists; otherwise retain the burden with artichoke production and report the fate. | `ucanr-artichoke-weed-management-2005` |
 
@@ -831,7 +829,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_nutrient_mass` | fertilizer, manure, compost, and amendment rows | Product mass multiplied by the documented nutrient fraction; retain original product mass and nutrient basis. | product invoice; nutrient concentration; application record | kg N, kg P2O5, or kg K2O by cycle or year | `ucanr-artichoke-cultural-tips-2026` |
 | `calc_crop_cycle_normalization` | all crop-cycle and production-year inputs | Crop-cycle or production-year quantity divided by marketable fresh artichoke mass and multiplied by 1,000 kg. | input record; marketable gate output | normalized quantity per 1,000 kg output |  |
 | `calc_perennial_attribution` | perennial stand establishment, cutback, and regrowth | Apply the documented stand-age or production-year attribution rule to shared stand inputs, then reconcile each year to its marketable output. | stand register; dates; input records; annual output | production-year quantity | `ucanr-artichoke-cultural-tips-2026` |
-| `calc_area_time` | land occupation | Production area multiplied by represented crop-cycle or production-year duration; disclose protected area treatment. | area register; crop or production dates | area-time quantity | `ucanr-artichoke-production-1997` |
+| `calc_area_time` | land occupation | Production area multiplied by represented crop-cycle or production-year duration; disclose protected area treatment. | area register; crop or production dates | area-time quantity | `ucanr-artichoke-production-2008` |
 | `calc_nitrogen_emission` | direct soil nitrous oxide and ammonia | Apply the selected IPCC-compatible factor to eligible nutrient inputs and declared soil or climate method; document factors in the dataset. | nutrient records; method choice; soil or climate parameters | kg N2O or kg NH3 emitted | `ipcc-2019-refinement-nitrogen` |
 | `calc_nitrate_loss` | nitrate to freshwater | Calculate from eligible nitrogen surplus and selected site or method factor; do not infer loss from purchase alone. | nutrient records; surplus calculation; factor | kg NO3- emitted | `ipcc-2019-refinement-nitrogen` |
 | `calc_gate_mass_balance` | harvest and gate preparation | Received bud mass equals marketable gate output plus field or conditioning rejects, residue, wastewater-related solids, and documented handling loss within measurement uncertainty. | harvest tickets; conditioning records; dispatch and reject records | reconciled mass balance | `ucanr-artichoke-cultural-tips-2026` |
@@ -851,7 +849,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_output` | reference flow and gate output | The declared reference output must be marketable fresh artichoke buds at the declared gate and use mass in kg; opened flowers, frozen, canned, cooked, or retail products are outside this PCR. | `ucanr-artichoke-cultural-tips-2026` |
-| `validate_crop_cycle_dates` | establishment, management, harvest, and gate preparation | Establishment, applications, irrigation, cutback or dormancy, harvest flushes, conditioning, and gate output must fall within the declared crop cycle or production year or be explicitly attributed to it. | `ucanr-artichoke-production-1997`; `ucanr-artichoke-cultural-tips-2026` |
+| `validate_crop_cycle_dates` | establishment, management, harvest, and gate preparation | Establishment, applications, irrigation, cutback or dormancy, harvest flushes, conditioning, and gate output must fall within the declared crop cycle or production year or be explicitly attributed to it. | `ucanr-artichoke-production-2008`; `ucanr-artichoke-cultural-tips-2026` |
 | `validate_nutrient_basis` | nutrient inputs and emissions | Product mass, nutrient concentration, nutrient basis, and emission calculation method must be present and internally consistent; do not count product mass and nutrient mass as the same exchange. | `ucanr-artichoke-cultural-tips-2026`; `ipcc-2019-refinement-nitrogen` |
 | `validate_mass_balance` | harvest and gate preparation | Gross harvest and received mass must reconcile with marketable output, rejects, residues, wastewater-related solids, and losses within the declared measurement uncertainty. | `ucanr-artichoke-cultural-tips-2026` |
 | `validate_flow_identity_resolution` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
@@ -873,7 +871,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `ucanr-artichoke-production-1997` | literature | University of California Agriculture and Natural Resources, *Artichoke Production in California*, ANR Publication 7221, https://my.ucanr.edu/repository/a/?a=54030 | production route, perennial and annual management, irrigation, and field boundary context |
+| `ucanr-artichoke-production-2008` | literature | University of California ANR, Artichoke Production in California, Publication 7221, revised 2008, https://escholarship.org/content/qt7253845k/qt7253845k.pdf | production route, perennial and annual management, irrigation, and field boundary context |
 | `ucanr-artichoke-cultural-tips-2026` | official_guidance | UC Statewide IPM Program, *Cultural Tips for Growing Artichoke*, https://ipm.ucanr.edu/home-and-landscape/cultural-tips-for-growing-artichoke/ | establishment, nutrient practice, irrigation principles, harvest maturity, product qualifiers, and gate conditioning context |
 | `ucanr-artichoke-weed-management-2005` | official_guidance | UC Statewide IPM Program, *Agriculture: Artichoke Pest Management Guidelines — Integrated Weed Management*, https://ipm.ucanr.edu/agriculture/artichoke/integrated-weed-management/ | annual and perennial stand management, weed control, cutback, residue, and crop-protection context |
 | `shinohara-artichoke-irrigation-nitrogen-2011` | literature | Shinohara, Agehara, Yoo, and Leskovar, *Irrigation and Nitrogen Management of Artichoke: Yield, Head Quality, and Phenolic Content*, HortScience 46(3), 377–386, https://doi.org/10.21273/HORTSCI.46.3.377 | irrigation and nitrogen treatment ranges and yield-quality relationship |

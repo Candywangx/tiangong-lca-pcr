@@ -4,16 +4,16 @@ source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.chillies-and-peppers-green-capsicum-spp-and-pimenta-spp"
   classification_refs: "CPC 3.0:01231 Chillies and peppers, green (Capsicum spp. and Pimenta spp.); mapping relation: exact"
-  covered_products: "Fresh, unprocessed green chillies and peppers harvested at the declared immature green market state and delivered at the farm-gate or pack-house gate"
-  excluded_products: "Seed and nursery planting material, fully ripe red or otherwise mature fruit, dried chillies, sauces, pickles, frozen, cooked, or other processed products, retail, and consumption"
+  covered_products: "Fresh, unprocessed green chillies and peppers harvested at the declared declared fresh maturity and colour state and delivered at the farm-gate or pack-house gate"
+  excluded_products: "Seed and nursery planting material, dried chillies, sauces, pickles, frozen, cooked, or other processed products, retail, and consumption"
   representative_product: "Marketable green Capsicum or Pimenta fruit meeting the declared cultivar, maturity, size, firmness, cleanliness, grade, trimming, and packaging requirements"
-  production_route: "Direct-seeded or transplanted annual crop in open field or protected cultivation, with irrigation, nutrient, weed and pest management, repeated fruit harvest, grading, optional washing or cooling, and primary packing"
+  production_route: "Species-specific annual Capsicum cultivation or perennial Capsicum/Pimenta stand production, with actual establishment/replacement, irrigation, nutrient and pest management, harvest, grading, optional washing/cooling and primary packing"
   market_state: "Fresh, unprocessed green fruit in loose, crate, carton, or another declared primary-packaging state at the farm or pack-house gate"
 functional_unit:
   what: "Marketable fresh green chillies and peppers at the declared farm-gate or pack-house gate"
   how_much: "1,000 kg"
-  how_well: "Fresh and unprocessed, with declared Capsicum or Pimenta species or cultivar group, immature green maturity, fruit size, firmness, cleanliness, grade, trimming, washing and cooling state, and packaging state"
-  how_long_or_cycle: "One declared annual crop cycle, including all harvest rounds attributed to that crop and the declared gate"
+  how_well: "Fresh and unprocessed, with declared Capsicum or Pimenta species or cultivar group, declared fresh maturity and colour, fruit size, firmness, cleanliness, grade, trimming, washing and cooling state, and packaging state"
+  how_long_or_cycle: "One declared annual crop cycle or perennial productive period, including all harvest rounds attributed to that crop and the declared gate"
   reference_flow_link: "marketable_green_fruit_output"
 system_boundary:
   rules:
@@ -42,7 +42,7 @@ system_boundary:
         - fao-good-hygiene-fresh-produce-2003
 boundary_abstraction:
   declared_starting_condition: "Prepared field, bed, or protected-cultivation unit receiving green chilli or pepper seed or transplant material, with prior land use and excluded infrastructure work disclosed"
-  starting_condition_role: "Start of the declared annual crop cycle"
+  starting_condition_role: "Start of the declared annual crop cycle or documented perennial stand-accounting period"
   product_classification_scope: "Fresh green chillies and peppers under CPC 3.0:01231 through the declared farm-gate or pack-house gate"
   recursive_input_rule: "Purchased seed and transplant material is an upstream product input linked once; its own nursery or seed production is outside this PCR unless a separate upstream dataset is supplied."
   upstream_dataset_requirement: "Require upstream datasets for seed or transplants, fertilizers and amendments, crop-protection products, irrigation water, energy, packaging, and purchased transport or treatment services when used."
@@ -65,7 +65,7 @@ reference_flow_definition:
     - "planting date"
     - "crop cycle and harvest rounds"
     - "declared gate"
-    - "immature green maturity"
+    - "declared fresh maturity and colour"
     - "fruit size"
     - firmness
     - "and grade"
@@ -91,7 +91,7 @@ measurement_rules:
       name: "Area and mass"
       uuid: ""
     required_unit: "ha and kg"
-    rule: "Record inputs and harvest rounds by field, bed, or protected unit and normalize them to the marketable output attributed to the same declared annual crop cycle."
+    rule: "Record inputs and harvest rounds by field, bed, or protected unit and normalize them to the marketable output attributed to the same declared production period."
   - id: nutrient_product_basis
     applies_to: "fertilizer, manure, compost, and other nutrient inputs"
     required_property_ref:
@@ -123,7 +123,7 @@ process_map:
   - id: crop_management
     name: "Green chilli and pepper crop management"
     inclusion: "required"
-    inclusion_condition: "each represented annual crop cycle"
+    inclusion_condition: "each represented annual crop cycle or perennial productive period"
     role: "foreground managed biological production"
     quantitative_reference: "managed area and crop-cycle harvest"
   - id: harvest_and_gate_preparation
@@ -204,7 +204,7 @@ process_inventory:
       elementary:
         - row_id: land_occupation_establishment
           role: "Land occupied by green chilli and pepper production"
-          name: "Land occupation for annual crop production"
+          name: "Cultivated land occupation for the actual annual or perennial route"
           flow_type: "elementary"
           property_unit: "Area-time / m2*a"
           description: "Record the field or protected-cultivation area occupied by the crop during establishment and attribute it to the declared crop cycle. Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attributed to the same crop cycle."
@@ -389,10 +389,10 @@ process_inventory:
       elementary:
         - row_id: land_occupation_management
           role: "Land occupied during crop management"
-          name: "Land occupation for annual crop production"
+          name: "Cultivated land occupation for the actual annual or perennial route"
           flow_type: "elementary"
           property_unit: "Area-time / m2*a"
-          description: "Record the area-time occupied by the annual green chilli or pepper crop during the management period. Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attributed to the same crop cycle."
+          description: "Record the area-time occupied by the actual annual or perennial crop during the management period. Raw activity or stage basis: per 1,000 kg marketable fresh green fruit attributed to the same crop cycle."
           amount:
             expression: "Convert measured cultivated area and crop occupancy period to area-time and normalize to marketable output."
             value_mode: "calculated_value"
@@ -956,11 +956,11 @@ dataset_production:
   data_quality_requirements:
     - id: quality_reference_identity
       applies_to: "reference flow and marketable output"
-      requirement: "Declare species or cultivar group, immature green market state, gate, and required qualifiers; resolve the product UUID before a final TIDAS dataset is published."
+      requirement: "Declare species or cultivar group, declared fresh maturity and colour state, gate, and required qualifiers; resolve the product UUID before a final TIDAS dataset is published."
       evidence: "reference-flow metadata, lot specification, and later identity verification"
     - id: quality_temporal_coverage
       applies_to: "all crop-cycle records"
-      requirement: "Cover the complete annual crop cycle and every harvest round represented by the reference output."
+      requirement: "Cover the complete declared production period and every harvest round represented by the reference output."
       evidence: "crop calendar, field log, and harvest records"
     - id: quality_spatial_coverage
       applies_to: "field, protected-unit, and pack-house records"
@@ -981,7 +981,7 @@ dataset_production:
 validation_rules:
   - rule_id: validate_reference_qualifiers
     applies_to: "reference flow"
-    rule: "Reject a foreground package that omits production geography, route, cultivar or species group, immature green state, crop cycle, declared gate, and required harvest or quality qualifiers."
+    rule: "Reject a foreground package that omits production geography, route, cultivar or species group, declared fresh maturity and colour, crop cycle, declared gate, and required harvest or quality qualifiers."
     source_ids:
       - codex-fresh-fruits-vegetables-2003
   - rule_id: validate_crop_cycle_completeness
@@ -1042,23 +1042,31 @@ data_sources:
     type: "official_guidance"
     reference: "FAO and WHO guidance associated with the Codex Code of Hygienic Practice for Fresh Fruits and Vegetables, CXC 53-2003, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/"
     used_for: "washing, gate-preparation, wastewater, and handling records"
+  - id: "kew-pimenta-dioica"
+    type: "official_guidance"
+    reference: "Royal Botanic Gardens, Kew, Plants of the World Online: Pimenta dioica, https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:196799-2/general-information"
+    used_for: "Perennial tree identity; no yield or orchard-life default"
+  - id: "unece-sweet-peppers-ffv28-2020"
+    type: "standard"
+    reference: "UNECE Standard FFV-28 Sweet Peppers (2020), https://unece.org/sites/default/files/2020-12/28_SweetPeppers.pdf"
+    used_for: "Fresh Capsicum annuum sweet-pepper state and colour/maturity context; not Pimenta agronomy or an LCA boundary"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fe2dd8afd2340fd806eaf15b0d6b3e818b8f8d6eaa0befbd505aaa5f2b8f16cc"
+  source_sha256: "sha256:9ccb58059e79842da2a73f27f01df51194caf3c9f990bc7ade21e22fb308162f"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5598"
+    - unit_id: "normative_6205"
       family: "system_boundary"
       span:
         start:
-          offset: 5598
-          line: 57
+          offset: 6205
+          line: 59
           column: 1
         end:
-          offset: 8253
-          line: 79
+          offset: 8908
+          line: 81
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared field, bed, or protected-cultivation unit receiving green chilli or pepper seed or transplant material, with prior land use and excluded infrastructure work disclosed |\n| starting_condition_role | Start of the declared annual crop cycle |\n| product_classification_scope | Fresh green chillies and peppers under CPC 3.0:01231 through the declared farm-gate or pack-house gate |\n| recursive_input_rule | Purchased seed and transplant material is an upstream product input linked once; its own nursery or seed production is outside this PCR unless a separate upstream dataset is supplied. |\n| upstream_dataset_requirement | Require upstream datasets for seed or transplants, fertilizers and amendments, crop-protection products, irrigation water, energy, packaging, and purchased transport or treatment services when used. |\n| disclosure | Declare geography, open-field or protected route, species or cultivar group, establishment material, crop dates, harvest rounds, yield and reject reconciliation, irrigation source and method, nutrient basis, crop-protection program, washing and cooling, packaging, residue fate, and gate location. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_cycle` | establishment and crop management | Include field or protected-unit preparation, establishment, crop management, crop-cycle inputs, and harvest preparation that produce the declared fresh green fruit; disclose prior land use and exclude unrelated infrastructure construction. | `fao-56-crop-evapotranspiration-1998`; `usda-nrcs-nutrient-management-590` |\n| `boundary_gate_conditioning` | harvest and primary conditioning | End the foreground system at the declared farm-gate or pack-house gate and include cutting, grading, trimming, washing, cooling, and primary packing when they occur before that gate. | `codex-fresh-fruits-vegetables-2003`; `fao-good-hygiene-fresh-produce-2003` |\n| `boundary_soil_nitrogen` | nutrient inputs, crop residues, and managed soil | Estimate applicable direct and indirect nitrogen emissions using one declared method and recorded nutrient inputs and residue fate; avoid double counting a nitrogen pathway. | `ipcc-2019-refinement-nitrogen` |\n| `boundary_residue_fate` | field residue, rejects, and trim | Record field return, composting, feed use, treatment, or disposal separately; material without a demonstrated productive use remains a residue or waste flow. | `codex-fresh-fruits-vegetables-2003`; `fao-good-hygiene-fresh-produce-2003` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared field, bed, or protected-cultivation unit receiving green chilli or pepper seed or transplant material, with prior land use and excluded infrastructure work disclosed |\n| starting_condition_role | Start of the declared annual crop cycle or documented perennial stand-accounting period |\n| product_classification_scope | Fresh green chillies and peppers under CPC 3.0:01231 through the declared farm-gate or pack-house gate |\n| recursive_input_rule | Purchased seed and transplant material is an upstream product input linked once; its own nursery or seed production is outside this PCR unless a separate upstream dataset is supplied. |\n| upstream_dataset_requirement | Require upstream datasets for seed or transplants, fertilizers and amendments, crop-protection products, irrigation water, energy, packaging, and purchased transport or treatment services when used. |\n| disclosure | Declare geography, open-field or protected route, species or cultivar group, establishment material, crop dates, harvest rounds, yield and reject reconciliation, irrigation source and method, nutrient basis, crop-protection program, washing and cooling, packaging, residue fate, and gate location. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_cycle` | establishment and crop management | Include field or protected-unit preparation, establishment, crop management, crop-cycle inputs, and harvest preparation that produce the declared fresh green fruit; disclose prior land use and exclude unrelated infrastructure construction. | `fao-56-crop-evapotranspiration-1998`; `usda-nrcs-nutrient-management-590` |\n| `boundary_gate_conditioning` | harvest and primary conditioning | End the foreground system at the declared farm-gate or pack-house gate and include cutting, grading, trimming, washing, cooling, and primary packing when they occur before that gate. | `codex-fresh-fruits-vegetables-2003`; `fao-good-hygiene-fresh-produce-2003` |\n| `boundary_soil_nitrogen` | nutrient inputs, crop residues, and managed soil | Estimate applicable direct and indirect nitrogen emissions using one declared method and recorded nutrient inputs and residue fate; avoid double counting a nitrogen pathway. | `ipcc-2019-refinement-nitrogen` |\n| `boundary_residue_fate` | field residue, rejects, and trim | Record field return, composting, feed use, treatment, or disposal separately; material without a demonstrated productive use remains a residue or waste flow. | `codex-fresh-fruits-vegetables-2003`; `fao-good-hygiene-fresh-produce-2003` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1075,12 +1083,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5598
-              line: 57
+              offset: 6205
+              line: 59
               column: 1
             end:
-              offset: 5619
-              line: 57
+              offset: 6226
+              line: 59
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1095,16 +1103,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36430"
+    - unit_id: "normative_37814"
       family: "allocation"
       span:
         start:
-          offset: 36430
-          line: 658
+          offset: 37814
+          line: 662
           column: 1
         end:
-          offset: 37238
-          line: 665
+          offset: 38622
+          line: 669
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_crop_cycle` | inputs and emissions shared by fields or protected units | Allocate shared inputs and emissions to the represented crop cycle using measured area, operating time, or mass output; document the selected driver and do not allocate by unrecorded assumptions. | `fao-56-crop-evapotranspiration-1998` |\n| `allocation_marketable_and_reject_outputs` | harvest, grading, and gate preparation | Keep marketable green fruit, unmarketable fruit, trimming, and residue as separate outputs. Apply the declared allocation or treatment rule only when a reject has a documented productive use; otherwise retain it as waste or residue. | `codex-fresh-fruits-vegetables-2003` |\n\n"
       headings:
@@ -1123,12 +1131,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36430
-              line: 658
+              offset: 37814
+              line: 662
               column: 1
             end:
-              offset: 36470
-              line: 658
+              offset: 37854
+              line: 662
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1143,18 +1151,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48440"
+    - unit_id: "normative_49846"
       family: "validation"
       span:
         start:
-          offset: 48440
-          line: 710
+          offset: 49846
+          line: 714
           column: 1
         end:
-          offset: 50106
-          line: 721
+          offset: 51526
+          line: 725
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_qualifiers` | reference flow | Reject a foreground package that omits production geography, route, cultivar or species group, immature green state, crop cycle, declared gate, and required harvest or quality qualifiers. | `codex-fresh-fruits-vegetables-2003` |\n| `validate_crop_cycle_completeness` | process inventory | Check that establishment, management, harvest, and all represented harvest rounds are covered by records for the same crop cycle. | `fao-56-crop-evapotranspiration-1998` |\n| `validate_flow_binding_priority` | all flow rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_nutrient_reconciliation` | nutrient and soil-emission rows | Check that product mass, nutrient concentration, nutrient amount, residue fate, and selected emission method reconcile without double counting. | `usda-nrcs-nutrient-management-590`; `ipcc-2019-refinement-nitrogen` |\n| `validate_output_mass_balance` | harvest and gate preparation | Require harvested mass to reconcile to marketable green fruit, reject, trimming, residue, and recorded loss within the declared tolerance. | `codex-fresh-fruits-vegetables-2003` |\n| `validate_gate_and_downstream_cutoff` | boundary and transport rows | Confirm that washing, cooling, packing, treatment, and transport are included only when they occur before the declared gate and that downstream retail and consumption are excluded. | `codex-fresh-fruits-vegetables-2003` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_qualifiers` | reference flow | Reject a foreground package that omits production geography, route, cultivar or species group, declared fresh maturity and colour, crop cycle, declared gate, and required harvest or quality qualifiers. | `codex-fresh-fruits-vegetables-2003` |\n| `validate_crop_cycle_completeness` | process inventory | Check that establishment, management, harvest, and all represented harvest rounds are covered by records for the same crop cycle. | `fao-56-crop-evapotranspiration-1998` |\n| `validate_flow_binding_priority` | all flow rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_nutrient_reconciliation` | nutrient and soil-emission rows | Check that product mass, nutrient concentration, nutrient amount, residue fate, and selected emission method reconcile without double counting. | `usda-nrcs-nutrient-management-590`; `ipcc-2019-refinement-nitrogen` |\n| `validate_output_mass_balance` | harvest and gate preparation | Require harvested mass to reconcile to marketable green fruit, reject, trimming, residue, and recorded loss within the declared tolerance. | `codex-fresh-fruits-vegetables-2003` |\n| `validate_gate_and_downstream_cutoff` | boundary and transport rows | Confirm that washing, cooling, packing, treatment, and transport are included only when they occur before the declared gate and that downstream retail and consumption are excluded. | `codex-fresh-fruits-vegetables-2003` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1171,12 +1179,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48440
-              line: 710
+              offset: 49846
+              line: 714
               column: 1
             end:
-              offset: 48462
-              line: 710
+              offset: 49868
+              line: 714
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1195,207 +1203,207 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_crop_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_5598"
+      unit_id: "normative_6205"
       source_span:
         start:
-          offset: 6949
-          line: 74
+          offset: 7604
+          line: 76
           column: 1
         end:
-          offset: 7329
-          line: 74
+          offset: 7984
+          line: 76
           column: 381
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_gate_conditioning"
       identity_kind: "explicit"
-      unit_id: "normative_5598"
+      unit_id: "normative_6205"
       source_span:
         start:
-          offset: 7330
-          line: 75
+          offset: 7985
+          line: 77
           column: 1
         end:
-          offset: 7660
-          line: 75
+          offset: 8315
+          line: 77
           column: 331
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_soil_nitrogen"
       identity_kind: "explicit"
-      unit_id: "normative_5598"
+      unit_id: "normative_6205"
       source_span:
         start:
-          offset: 7661
-          line: 76
+          offset: 8316
+          line: 78
           column: 1
         end:
-          offset: 7950
-          line: 76
+          offset: 8605
+          line: 78
           column: 290
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_residue_fate"
       identity_kind: "explicit"
-      unit_id: "normative_5598"
+      unit_id: "normative_6205"
       source_span:
         start:
-          offset: 7951
-          line: 77
+          offset: 8606
+          line: 79
           column: 1
         end:
-          offset: 8251
-          line: 77
+          offset: 8906
+          line: 79
           column: 301
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_single_crop_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_36430"
+      unit_id: "normative_37814"
       source_span:
         start:
-          offset: 36543
-          line: 662
+          offset: 37927
+          line: 666
           column: 1
         end:
-          offset: 36874
-          line: 662
+          offset: 38258
+          line: 666
           column: 332
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_marketable_and_reject_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_36430"
+      unit_id: "normative_37814"
       source_span:
         start:
-          offset: 36875
-          line: 663
+          offset: 38259
+          line: 667
           column: 1
         end:
-          offset: 37236
-          line: 663
+          offset: 38620
+          line: 667
           column: 362
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 48535
-          line: 714
+          offset: 49941
+          line: 718
           column: 1
         end:
-          offset: 48816
-          line: 714
-          column: 282
+          offset: 50236
+          line: 718
+          column: 296
     - pointer: "/validation_rules/1"
       rule_id: "validate_crop_cycle_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 48817
-          line: 715
+          offset: 50237
+          line: 719
           column: 1
         end:
-          offset: 49047
-          line: 715
+          offset: 50467
+          line: 719
           column: 231
     - pointer: "/validation_rules/2"
       rule_id: "validate_flow_binding_priority"
       identity_kind: "explicit"
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 49048
-          line: 716
+          offset: 50468
+          line: 720
           column: 1
         end:
-          offset: 49274
-          line: 716
+          offset: 50694
+          line: 720
           column: 227
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 49275
-          line: 717
+          offset: 50695
+          line: 721
           column: 1
         end:
-          offset: 49564
-          line: 717
+          offset: 50984
+          line: 721
           column: 290
     - pointer: "/validation_rules/4"
       rule_id: "validate_output_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 49565
-          line: 718
+          offset: 50985
+          line: 722
           column: 1
         end:
-          offset: 49810
-          line: 718
+          offset: 51230
+          line: 722
           column: 246
     - pointer: "/validation_rules/5"
       rule_id: "validate_gate_and_downstream_cutoff"
       identity_kind: "explicit"
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 49811
-          line: 719
+          offset: 51231
+          line: 723
           column: 1
         end:
-          offset: 50104
-          line: 719
+          offset: 51524
+          line: 723
           column: 294
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5598"
+      unit_id: "normative_6205"
       source_span:
         start:
-          offset: 5598
-          line: 57
+          offset: 6205
+          line: 59
           column: 1
         end:
-          offset: 5619
-          line: 57
+          offset: 6226
+          line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5598"
+      unit_id: "normative_6205"
       source_span:
         start:
-          offset: 5647
-          line: 61
+          offset: 6254
+          line: 63
           column: 1
         end:
-          offset: 6856
-          line: 68
+          offset: 7511
+          line: 70
           column: 315
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36430"
+      unit_id: "normative_37814"
       source_span:
         start:
-          offset: 36430
-          line: 658
+          offset: 37814
+          line: 662
           column: 1
         end:
-          offset: 36470
-          line: 658
+          offset: 37854
+          line: 662
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48440"
+      unit_id: "normative_49846"
       source_span:
         start:
-          offset: 48440
-          line: 710
+          offset: 49846
+          line: 714
           column: 1
         end:
-          offset: 48462
-          line: 710
+          offset: 49868
+          line: 714
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1404,5 +1412,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fe2dd8afd2340fd806eaf15b0d6b3e818b8f8d6eaa0befbd505aaa5f2b8f16cc"
-  generated_content_sha256: "sha256:ca84bf24aca3832c2a6a4e83f4307926f0ac5d838fbdb107581d4fc752092889"
+    sha256: "sha256:9ccb58059e79842da2a73f27f01df51194caf3c9f990bc7ade21e22fb308162f"
+  generated_content_sha256: "sha256:1c1db82c1d531f08a20dba94ae96cbea5c8703c6b55bedc596fea5964a96d00b"

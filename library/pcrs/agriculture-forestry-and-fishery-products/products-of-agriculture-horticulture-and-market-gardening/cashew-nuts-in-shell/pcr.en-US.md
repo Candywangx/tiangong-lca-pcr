@@ -680,7 +680,7 @@ Calculate water removed from the cashew lot from measured as-received and condit
 
 - Selected flow: water released to air during cashew drying
 - Flow property / unit: Mass / kg water
-- Amount rule: received dry matter minus conditioned dry matter, with measured lot moisture and mass
+- Amount rule: incoming water plus water additions minus water retained in all accepted, downgraded, rejected and residue outputs, other water exits and water stock increase; use each stream wet mass multiplied by its measured water fraction
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
 Raw activity or stage basis: per 1,000 kg fresh farm-gate reference product.
@@ -965,7 +965,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `calc_02` | every harvest, conditioning, and storage lot | `opening mass + inputs = accepted outputs + co-products + rejects + residues + measured losses`; investigate any unexplained residual. | lot weights and fates | reconciled mass balance | `mass-balance-identity` |
 | `calc_03` | fresh to dried or conditioned lots | Dry matter = wet mass × (1 − moisture fraction); water removed = input wet mass − output wet mass after accounting for non-water losses. | input/output mass and measured moisture | moisture-corrected mass and drying water loss | `mass-balance-identity`; `fao-cashew-minor-oil-crops` |
 | `calc_04` | cashew apple co-product | If the apple is intended and transferred, apply measured dry-matter mass allocation to shared orchard and harvest burdens; if not intended, model residue fate without co-product credit. | nut mass; apple mass; moisture or dry matter; declared destination | allocated burdens and co-product share | `iso-14044-2006` |
-| `calc_05` | premium, standard, downgraded, and rejected lots | Grade outputs must be mutually exclusive. Conditioned accepted output equals the sum of grade outputs plus declared downgraded, rework, reject, foreign-material, water-loss, and unexplained-loss terms. | batch input; grade and reject records | normalized output rows | `mass-balance-identity` |
+| `calc_05` | graded lots | Accepted output equals the sum of mutually exclusive accepted grades only. Reconcile incoming batch mass plus additions and opening stock with accepted and separately sold downgraded outputs, rejects, residues, measured water/non-water losses and closing stock. Internal rework is a transfer, not another sale; investigate unexplained residual. | batch input; additions; stocks; grade and reject records | accepted output and complete batch balance | `mass-balance-identity` |
 | `calc_06` | storage | `opening stock + receipts − dispatches − closing stock = measured storage loss`; storage loss is not accepted gate output. | stock ledger; dispatches; closing stock; loss records | storage loss per storage duration | `mass-balance-identity` |
 
 ### Data Quality Requirements

@@ -301,14 +301,14 @@ sync_with: pcr.en-US.md
 - 证据类型：根据采集计算（`calculated_from_collection`）
 - 采集协议：`cp_fertilizer_and_amendment_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
-- 数量范围：氮-空气排放筛选区间
+- 数量范围：作者暂定筛查估计；端点不是 IPCC 限值
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
   - 上限：40
   - 单位：kg 物质/1,000 kg 产品
   - 基准：核算的田间氮和参考产出
   - 基准类型：氮投入（`n_input`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+  - 证据类型：推理估计 (`reasoned_estimate`)
 - 数量范围：土壤直接 N2O 筛选区间
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0

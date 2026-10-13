@@ -44,7 +44,7 @@ The farm-gate boundary ends when the harvested fresh figs are available for tran
 | Reference unit | kg |
 | Required qualifiers | species; variety or cultivar; fresh market state; production geography; orchard age and productive status; reporting year or harvest season; irrigation status; yield basis; farm-gate condition |
 
-When constructing a foreground data package, the required qualifiers must be declared in dataset metadata, process notes, the reference-flow comment, product description, or an equivalent data package field. A fresh-fig product UUID is resolved during foreground data generation; this candidate does not assign a fixed UUID.
+When constructing a foreground data package, the required qualifiers must be declared in dataset metadata, process notes, the reference-flow comment, product description, or an equivalent data package field. The reference table binds the verified Figs UUID `f80297fb-fa6f-46e4-8da8-49f2fdcdab34`; foreground production must still verify that species, fresh state and actual gate match that identity. An incompatible output requires its own verified identity, not reuse of this UUID.
 
 ## 4. Measurement and Unit Rules
 

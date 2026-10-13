@@ -81,8 +81,8 @@ The foreground boundary runs from the declared orchard starting condition throug
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_orchard_to_accepted_in_shell` | all conforming datasets | Include establishment, immature years, productive orchard management, harvest, collection, hulling, drying where used, cleaning, grading, and the declared accepted in-shell hand-off. | `fao-crop-production-methodology`; `usda-almonds-in-shell-grade-2013` |
-| `boundary_perennial_orchard_disclosure` | establishment and replacement | Allocate establishment, immature years, replacement trees, and removal over the declared orchard-life and accepted-output basis; disclose the life, non-bearing years, and replacement events. | `iso-14067`; `fao-crop-production-methodology` |
+| `boundary_orchard_to_accepted_in_shell` | all conforming datasets | Include establishment, immature years, productive orchard management, harvest, collection, hulling, drying where used, cleaning, grading, and the declared accepted in-shell hand-off. | `fao-gap-framework-2003`; `usda-almonds-in-shell-grade-2013` |
+| `boundary_perennial_orchard_disclosure` | establishment and replacement | Allocate establishment, immature years, replacement trees, and removal over the declared orchard-life and accepted-output basis; disclose the life, non-bearing years, and replacement events. | `iso-14067`; `fao-gap-framework-2003` |
 | `boundary_hulling_not_shelling` | hulling and downstream processing | Include removal of the outer hull and preparation of the retained-shell nut. Exclude shelling, kernel separation, kernel processing, and shelling co-products because they belong to a downstream shelled-almond route. | `usda-almond-commercial-storage`; `usda-almonds-in-shell-grade-2013` |
 | `boundary_input_completeness` | orchard and conditioning | Provide a collected value, justified zero, or documented exclusion for planting material, nutrients, irrigation, crop protection, land, fuel, electricity, drying, hulling, grading, packaging, direct emissions, and waste treatment when in scope. | `almond-board-irrigation-continuum`; `ipcc-2019-managed-soils-n2o` |
 | `boundary_quality_and_fate` | all outputs | Separate accepted in-shell almonds, almond hulls, downgraded or rejected almonds, foreign material, dust, and unexplained loss by measured mass and declared fate. | `usda-almonds-in-shell-grade-2013`; `mass-balance-identity` |
@@ -118,7 +118,7 @@ Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_almond_orchard_lifecycle_records`
-- Sources: `fao-crop-production-methodology`; `iso-14067`
+- Sources: `fao-gap-framework-2003`; `iso-14067`
 
 ###### Agricultural nutrient and fertilizer inputs (`almond_orchard_establishment_and_management_agricultural_nutrient_inputs`)
 
@@ -170,7 +170,7 @@ Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_almond_energy_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 ###### Crop-protection products (`orchard_crop_protection`)
 
@@ -208,7 +208,7 @@ Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_almond_orchard_lifecycle_records`
-- Sources: `fao-crop-production-methodology`
+- Sources: `fao-gap-framework-2003`
 
 #### Outputs
 
@@ -526,7 +526,7 @@ Record dust, wastewater, and direct conditioning emissions only when the route a
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `allocation_avoidance` | orchard, harvest, and conditioning | First avoid allocation by subdividing orchard blocks, harvest passes, hulling campaigns, grades, and destinations when records permit. | `iso-14044-2006` |
-| `allocation_perennial_time` | establishment, immature years, replacements, and removal | Allocate perennial-orchard burdens over the declared orchard life and accepted in-shell output using the declared area, period, and yield basis. Disclose non-bearing years and replacement events. | `iso-14067`; `fao-crop-production-methodology` |
+| `allocation_perennial_time` | establishment, immature years, replacements, and removal | Allocate perennial-orchard burdens over the declared orchard life and accepted in-shell output using the declared area, period, and yield basis. Disclose non-bearing years and replacement events. | `iso-14067`; `fao-gap-framework-2003` |
 | `allocation_hull_co_product` | accepted in-shell almonds and marketed almond hulls | When hulls are an intended output with a documented hand-off, use mass allocation after subdivision. Economic allocation requires representative prices and a mass-allocation sensitivity. If hulls are waste, retain treatment burdens with the almond route and assign no product credit. | `iso-14044-2006`; `mass-balance-identity` |
 | `allocation_rejects_and_losses` | rejects, broken nuts, dust, and field losses | Assign collection and treatment burdens to the producing process; do not count rejected or lost material as accepted output. Model recovery as a co-product only after its destination and hand-off are evidenced. | `usda-almonds-in-shell-grade-2013`; `iso-14044-2006` |
 | `allocation_no_double_counting_internal_links` | orchard, harvest, and hulling links | Internal hand-offs transfer mass balance only. They are not additional market products and must not duplicate upstream burdens. | `iso-14044-2006` |
@@ -554,7 +554,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calculate_accepted_yield` | orchard and reference product | accepted in-shell mass / represented orchard area, with accepted fraction reported separately | `cp_almond_harvest_records`; `cp_almond_conditioning_records` | kg accepted almonds/ha and accepted fraction | `mass-balance-identity` |
-| `annualize_almond_orchard_life` | establishment and replacement inputs | attributable lifecycle input / declared lifetime accepted in-shell output using age-specific records or a documented yield curve | `cp_almond_orchard_lifecycle_records`; `cp_almond_harvest_records` | annualized input per kg reference product | `iso-14067`; `fao-crop-production-methodology` |
+| `annualize_almond_orchard_life` | establishment and replacement inputs | attributable lifecycle input / declared lifetime accepted in-shell output using age-specific records or a documented yield curve | `cp_almond_orchard_lifecycle_records`; `cp_almond_harvest_records` | annualized input per kg reference product | `iso-14067`; `fao-gap-framework-2003` |
 | `calculate_irrigation_and_withdrawal` | irrigation | source-specific delivered irrigation and withdrawal / accepted output; report consumption or footprint separately | `cp_almond_irrigation_records`; `cp_almond_harvest_records` | m3/kg reference product and source-specific withdrawal | `almond-board-irrigation-continuum`; `almond-board-water-quality` |
 | `calculate_direct_soil_emissions` | nutrient and residue emissions | apply the selected IPCC method tier to declared nutrient and residue records and convert N2O-N to N2O by 44/28 where applicable | `cp_almond_orchard_input_records`; declared factors | kg emissions/kg reference product | `ipcc-2019-managed-soils-n2o` |
 | `reconcile_almond_outputs` | harvest and conditioning | accepted in-shell almonds + marketed hulls + rejects + measured losses = declared conditioning inputs within the stated tolerance | `cp_almond_harvest_records`; `cp_almond_conditioning_records` | mass balance and unexplained residual | `mass-balance-identity` |
@@ -577,13 +577,13 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- |
 | `validation_reference_flow` | reference product | Confirm one 1,000 kg reference flow uses `774866bc-5c13-4def-a264-05a61a532a3e`, Mass, kg, and all required qualifiers. | `usda-almonds-in-shell-grade-2013` |
 | `validation_scope_and_handoff` | process map | Confirm orchard management, independent harvest and collection, hulling, drying where used, cleaning, grading, and the declared gate are represented without shelling or kernel processing. | `usda-almond-commercial-storage`; `usda-almonds-in-shell-grade-2013` |
-| `validation_perennial_periods` | orchard lifecycle | Confirm establishment, immature years, productive years, replacement events, termination or removal, and annualization are declared and not double counted. | `iso-14067`; `fao-crop-production-methodology` |
+| `validation_perennial_periods` | orchard lifecycle | Confirm establishment, immature years, productive years, replacement events, termination or removal, and annualization are declared and not double counted. | `iso-14067`; `fao-gap-framework-2003` |
 | `validation_site_aggregation` | multiple sites or blocks | Confirm every contributing block has a boundary, evidence link, weight, and representativeness decision; reject an aggregate with omitted or duplicated contributors. | `mass-balance-identity` |
 | `validation_outputs_and_attribution` | accepted almonds and hulls | Confirm intended outputs and hand-offs are complete, marketed hulls use the declared allocation rule, and hulls or rejects are not counted at two hand-offs. | `iso-14044-2006`; `mass-balance-identity` |
 | `validation_mass_balance` | harvest and conditioning | Confirm accepted almonds, hulls, rejects, and losses reconcile to declared input mass within the stated tolerance and every non-reference output has a fate. | `usda-almonds-in-shell-grade-2013`; `mass-balance-identity` |
 | `validation_nitrogen_and_water` | nutrient, emissions, and water | Confirm product mass differs from nutrient mass, emission factors and units are declared, and delivered irrigation is not confused with natural withdrawal or consumption. | `ipcc-2019-managed-soils-n2o`; `almond-board-water-quality` |
 | `validation_quality_attributes` | accepted output | Confirm shell type, size or grade, moisture, defect basis, foreign material, and well-dried or equivalent quality evidence are present. | `usda-almonds-in-shell-grade-2013` |
-| `validation_completeness` | data package | Confirm each required input and output category has a value, justified zero, or documented exclusion, and unresolved identity findings are visible. | `fao-crop-production-methodology`; `mass-balance-identity` |
+| `validation_completeness` | data package | Confirm each required input and output category has a value, justified zero, or documented exclusion, and unresolved identity findings are visible. | `fao-gap-framework-2003`; `mass-balance-identity` |
 
 ## 10. Published Dataset Profile
 
@@ -597,6 +597,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | required_quality_disclosure | crop years; primary-record coverage; site aggregation and weights; mass-balance tolerance; scale and meter calibration; water source; factors; hull destination; exclusions; uncertainty and sensitivity |
 | update_trigger | material change in cultivar or shell type, orchard route, irrigation source, age model, yield, hulling or drying technology, grade basis, hull destination, gate, background datasets, emission method, or representativeness period |
 
+Evidence applicability: cited general farm-record and postharvest frameworks do not supply crop-specific yields, lifetimes, gate cutoffs or LCA allocation defaults. Those are this PCR methodology decisions; qualify them by the actual species, route and period and obtain compatible agronomic evidence before asserting completeness. Provisional author ranges are screening aids, not empirical acceptance limits or substituted measurements.
+
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
@@ -606,8 +608,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `almond-board-irrigation-continuum` | extension_guidance | Almond Board of California, Almond Irrigation Improvement Continuum, <https://www.almonds.com/sites/default/files/2020-02/Almond-Irrigation-Improvement-Continuum.pdf> | irrigation scheduling, applied water, and system performance |
 | `almond-board-water-quality` | extension_guidance | Almond Board of California, Orchard Water Supply and Quality, <https://www.almonds.org/almond-industry/orchard-management/water-and-irrigation/water-supply-and-quality> | water source, salinity, nitrate, leaching, and runoff disclosure |
 | `ucipm-almond-hull-split` | official_guidance | UC IPM, Almond Pest Management Guidelines: Identify Hull Split, <https://ipm.ucanr.edu/agriculture/almond/identify-hull-split/> | harvest timing, hull split, harvest passes, and pest exposure |
-| `fao-crop-production-methodology` | official_guidance | FAO crop production and farm data collection guidance | orchard process completeness and production boundary |
 | `ipcc-2019-managed-soils-n2o` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | managed-soil N2O calculation |
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Requirements and guidelines | allocation hierarchy, subdivision, and co-product treatment |
 | `iso-14067` | standard | ISO 14067, Greenhouse gases — Carbon footprint of products | perennial-life allocation and product-footprint disclosure |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity | output reconciliation, site aggregation, and no-double-counting checks |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | Generic monitoring and farm-record context only; crop-specific routes, lifetimes, quantitative ranges and LCA allocation are PCR choices requiring separate applicable evidence. |

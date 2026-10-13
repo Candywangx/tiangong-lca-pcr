@@ -257,15 +257,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_irrigation_and_withdrawal_records`
 - 来源：`fao-crop-water-needs-onion`, `fao-56-crop-evapotranspiration`
 
-- 数量范围：田间灌溉参考区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：3500
-  - 上限：5500
-  - 单位：每公顷洋葱作物周期的 m3
-  - 基准：一个洋葱作物周期的一公顷；使用实测面积和产量换算至 PCR 参考流
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`fao-crop-water-needs-onion`
+范围证据需求：不设灌溉供水默认值。FAO 350–550 mm 是作物需水量（ETc），相当于 3500–5500 m3/ha 蒸散，不是计量灌溉量。结合有效降雨、土壤储水变化和其他供水求净灌溉需求，再按记录的效率和损失求实际供水；雨养供水可为零。
 
 ###### 从声明的天然或市政水源取水（`water_resource_withdrawal`）
 
@@ -399,12 +391,12 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_crop_emission_activity_records`
 - 来源：`ipcc-2019-managed-soils-n2o`
 
-- 数量范围：IPCC 直接 N2O-N 因子范围
+- 数量范围：IPCC 表 11.1 非稻田氮投入因子分组背景；不作为硬性有效性界限
   - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.002
+  - 下限：0
   - 上限：0.019
   - 单位：每 kg N 投入的 kg N2O-N
-  - 基准：每 kg 施用或其他建模的 N 投入
+  - 基准：必须选择有记录的分组：综合 EF1 0.010（不确定性 0.002–0.018）；湿润气候合成氮 0.016（0.013–0.019）；湿润气候其他氮 0.006（0.001–0.011）；干旱气候全部氮 0.005（0–0.011），单位 kg N2O-N/kg N。合并的 0–0.019 仅作背景，不能当作通用因子或一个统计区间。
   - 基准类型：氮投入（`n_input`）
   - 证据类型：外部来源（`external_source`）
   - 来源：`ipcc-2019-managed-soils-n2o`

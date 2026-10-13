@@ -301,15 +301,14 @@ Raw activity or stage basis: per 1,000 kg marketable farm-gate product.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_fertilizer_and_amendment_records`
 - Sources: `ipcc-2019-managed-soils-n2o`
-- Range: Direct soil-N2O screening interval
+- Range: Provisional author screening estimate; endpoints are not IPCC limits
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 30
   - Unit: kg N2O-N/1,000 kg product
   - Basis: accounted field nitrogen and reference output
   - Basis kind: n_input
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ipcc-2019-managed-soils-n2o`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Ammonia emission (`field_nitrogen_emissions`)
 

@@ -65,8 +65,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_start_end` | all datasets | 纳入作物管理至发运；排除下游加工和零售。 | `source-fao-lca-guidance` |
-| `boundary_perennial` | perennial systems | 披露建植和生产期归属，不得默认为单一季节承担全部建植负荷。 | `source-fao-lca-guidance` |
+| `boundary_start_end` | all datasets | 纳入作物管理至发运；排除下游加工和零售。 | `fao-gap-framework-2003` |
+| `boundary_perennial` | perennial systems | 披露建植和生产期归属，不得默认为单一季节承担全部建植负荷。 | `fao-gap-framework-2003` |
 
 ## 6. 过程清单结构
 
@@ -106,11 +106,12 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 ##### 基本流
 ###### 建植土地占用（`establishment_land`）
 记录声明种植区的面积、持续时间和土地转化状态。
-- 选定流：土地占用或转化（UUID unresolved；intentionally blank）
+- 选定流：耕地占用（UUID 未解析；仅表示占用）
+土地占用按面积乘以实际占用时间计量。纳入土地转化时，应单独记录转化前后土地状态的面积事件、日期、既有利用、核算期间和归属；不能给转化赋面积时间数量或按每个作物周期重复计算。
 - 流属性/单位：面积时间 / ha-year
 - 数量规则：地块登记和面积图
 - 数值来源模式：前景记录（`foreground_record`）
@@ -129,7 +130,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ### 过程：季节性作物管理（`process_crop_management`）
 #### 输入
@@ -149,7 +150,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_input_records`
-- 来源：`source-fao-lca-guidance`; `source-ipcc-2019-refinement`
+- 来源：`fao-gap-framework-2003`; `source-ipcc-2019-refinement`
 - 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
   - 范围角色：QA 护栏（`qa_guardrail`）
   - 下限：0
@@ -180,7 +181,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_input_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 ###### 能源服务（`energy_services`）
 记录田间作业和外购服务使用的电力、燃料及其他能源载体。
 - 选定流：电力、燃料或能源载体（UUID unresolved；intentionally blank）
@@ -202,7 +203,102 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_input_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
+
+#### 输出
+##### 基本流
+
+###### 向空气排放的氧化亚氮，管理土壤直接路径（`soil_direct_n2o`）
+按场址、氮源、气候、路线及接收介质声明适用性与核算责任。缺少路径数据不等于零；有依据的不适用路径须明确披露。
+- 选定流：向空气排放的氧化亚氮，管理土壤直接路径（UUID 未解析；须核实化学物质和接收介质身份）
+- 流属性/单位：质量 / kg N2O
+- 数量规则：按兼容的氮活动数据及声明路径方法求该化合物；以氮计的数量仅乘 44/28 换算一次，明确上游和前景责任避免重复，再按合格参考输出归一化
+- 数值来源模式：计算值 (`calculated_value`)
+- 适用范围：场址特定 (`site_specific`)
+原始活动或阶段基准：实际地块和报告期间的实测氮活动及排放，先保留原始量再归一化。
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期 (`crop_cycle`)
+- 证据类型：从采集计算 (`calculated_from_collection`)
+- 采集协议：`cp_managed_soil_nitrogen`
+- 来源：`ipcc-managed-soils-2019`
+- 数量范围：前体氮质量守恒检查；不是经验排放因子范围
+  - 范围角色：QA 护栏 (`qa_guardrail`)
+  - 下限：0
+  - 上限：1
+  - 单位：kg compound-N/kg available precursor N
+  - 基准：对应路径及兼容的前体氮台账；间接 N2O-N 不超过记录的沉降或淋失前体氮，但不再从源台账重复扣减
+  - 基准类型：氮投入 (`n_input`)
+  - 证据类型：方法公式 (`method_formula`)
+  - 来源：`mass-balance-identity`
+
+###### 向空气排放的氧化亚氮，沉降或淋失间接路径（`soil_indirect_n2o`）
+按场址、氮源、气候、路线及接收介质声明适用性与核算责任。缺少路径数据不等于零；有依据的不适用路径须明确披露。
+- 选定流：向空气排放的氧化亚氮，沉降或淋失间接路径（UUID 未解析；须核实化学物质和接收介质身份）
+- 流属性/单位：质量 / kg N2O
+- 数量规则：按兼容的氮活动数据及声明路径方法求该化合物；以氮计的数量仅乘 44/28 换算一次，明确上游和前景责任避免重复，再按合格参考输出归一化
+- 数值来源模式：计算值 (`calculated_value`)
+- 适用范围：场址特定 (`site_specific`)
+原始活动或阶段基准：实际地块和报告期间的实测氮活动及排放，先保留原始量再归一化。
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期 (`crop_cycle`)
+- 证据类型：从采集计算 (`calculated_from_collection`)
+- 采集协议：`cp_managed_soil_nitrogen`
+- 来源：`ipcc-managed-soils-2019`
+- 数量范围：前体氮质量守恒检查；不是经验排放因子范围
+  - 范围角色：QA 护栏 (`qa_guardrail`)
+  - 下限：0
+  - 上限：1
+  - 单位：kg compound-N/kg available precursor N
+  - 基准：对应路径及兼容的前体氮台账；间接 N2O-N 不超过记录的沉降或淋失前体氮，但不再从源台账重复扣减
+  - 基准类型：氮投入 (`n_input`)
+  - 证据类型：方法公式 (`method_formula`)
+  - 来源：`mass-balance-identity`
+
+###### 按声明氮路径向空气排放的氨（`soil_ammonia`）
+按场址、氮源、气候、路线及接收介质声明适用性与核算责任。缺少路径数据不等于零；有依据的不适用路径须明确披露。
+- 选定流：按声明氮路径向空气排放的氨（UUID 未解析；须核实化学物质和接收介质身份）
+- 流属性/单位：质量 / kg NH3
+- 数量规则：按兼容的氮活动数据及声明路径方法求该化合物；以氮计的数量仅乘 17/14 换算一次，明确上游和前景责任避免重复，再按合格参考输出归一化
+- 数值来源模式：计算值 (`calculated_value`)
+- 适用范围：场址特定 (`site_specific`)
+原始活动或阶段基准：实际地块和报告期间的实测氮活动及排放，先保留原始量再归一化。
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期 (`crop_cycle`)
+- 证据类型：从采集计算 (`calculated_from_collection`)
+- 采集协议：`cp_managed_soil_nitrogen`
+- 来源：`ipcc-managed-soils-2019`
+- 数量范围：前体氮质量守恒检查；不是经验排放因子范围
+  - 范围角色：QA 护栏 (`qa_guardrail`)
+  - 下限：0
+  - 上限：1
+  - 单位：kg compound-N/kg available precursor N
+  - 基准：对应路径及兼容的前体氮台账；间接 N2O-N 不超过记录的沉降或淋失前体氮，但不再从源台账重复扣减
+  - 基准类型：氮投入 (`n_input`)
+  - 证据类型：方法公式 (`method_formula`)
+  - 来源：`mass-balance-identity`
+
+###### 按声明淋失或径流路径向水排放的硝酸根（`soil_nitrate`）
+按场址、氮源、气候、路线及接收介质声明适用性与核算责任。缺少路径数据不等于零；有依据的不适用路径须明确披露。
+- 选定流：按声明淋失或径流路径向水排放的硝酸根（UUID 未解析；须核实化学物质和接收介质身份）
+- 流属性/单位：质量 / kg NO3
+- 数量规则：按兼容的氮活动数据及声明路径方法求该化合物；以氮计的数量仅乘 62/14 换算一次，明确上游和前景责任避免重复，再按合格参考输出归一化
+- 数值来源模式：计算值 (`calculated_value`)
+- 适用范围：场址特定 (`site_specific`)
+原始活动或阶段基准：实际地块和报告期间的实测氮活动及排放，先保留原始量再归一化。
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期 (`crop_cycle`)
+- 证据类型：从采集计算 (`calculated_from_collection`)
+- 采集协议：`cp_managed_soil_nitrogen`
+- 来源：`ipcc-managed-soils-2019`
+- 数量范围：前体氮质量守恒检查；不是经验排放因子范围
+  - 范围角色：QA 护栏 (`qa_guardrail`)
+  - 下限：0
+  - 上限：1
+  - 单位：kg compound-N/kg available precursor N
+  - 基准：对应路径及兼容的前体氮台账；间接 N2O-N 不超过记录的沉降或淋失前体氮，但不再从源台账重复扣减
+  - 基准类型：氮投入 (`n_input`)
+  - 证据类型：方法公式 (`method_formula`)
+  - 来源：`mass-balance-identity`
 
 ### 过程：采收和田间捕获（`process_harvest`）
 #### 输入
@@ -228,7 +324,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 #### 输出
 ##### 产品流
 ###### 采收浆果（`harvested_berries`）
@@ -252,7 +348,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_yield_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 ##### 废物流
 ###### 采收损失（`harvest_losses`）
 记录田间损失或有文件依据的估算，并注明去向和估算方法。
@@ -275,7 +371,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_yield_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ### 过程：初级调理和分级（`process_conditioning_grading`）
 #### 输入
@@ -301,7 +397,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 ###### 调理能源（`conditioning_energy`）
 记录冷却、清洗、分选或包装设备使用的电力、燃料和其他能源。
 - 选定流：调理能源供给（UUID unresolved；intentionally blank）
@@ -323,7 +419,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 ###### 调理包装（`conditioning_packaging`）
 适用时记录调理运行消耗的包装和呈现材料。
 - 选定流：调理包装材料（UUID unresolved；intentionally blank）
@@ -345,7 +441,7 @@ sync_with: pcr.en-US.md
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 #### 输出
 ##### 产品流
 ###### 可销售浆果（`marketable_berries`）
@@ -363,7 +459,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：身份引用（`identity_reference`）
 - 采集协议：`cp_yield_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 ##### 废物流
 ###### 调理拒收物（`conditioning_rejects`）
 按去向和处理路线记录分级拒收物。
@@ -386,14 +482,14 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_reject_records`
-- 来源：`source-fao-lca-guidance`
+- 来源：`fao-gap-framework-2003`
 
 ## 7. 分配和副产品处理
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `allocation_marketable_rejects` | outputs and rejects | 按实测质量和去向分开产品、拒收物和废物；仍有副产品时使用有文件依据的物理或经济基础并报告敏感性。 | `source-fao-lca-guidance` |
-| `allocation_multi_period` | perennial systems | 按声明的生产期及产量或时间份额分配共享建植和植株管理负荷。 | `source-fao-lca-guidance` |
+| `allocation_marketable_rejects` | outputs and rejects | 按实测质量和去向分开产品、拒收物和废物；仍有副产品时使用有文件依据的物理或经济基础并报告敏感性。 | `fao-gap-framework-2003` |
+| `allocation_multi_period` | perennial systems | 按声明的生产期及产量或时间份额分配共享建植和植株管理负荷。 | `fao-gap-framework-2003` |
 
 ## 8. 前景数据采集、计算和质量规则
 
@@ -411,15 +507,17 @@ sync_with: pcr.en-US.md
 | `cp_conditioning_records` | `process_conditioning_grading` | conditioning inputs | meter, packing log, invoice | input, amount, lot, energy | 与批次关联的记录；原始汇总与分配：按批次质量分配 | kg, m3, kWh | lot/daily | full season | conditioning unit | 每声明的参考流 | meters, invoices |
 | `cp_reject_records` | `process_reject_routing` | rejects and destinations | grading/destination log | mass, quality, destination, treatment | 每批次质量平衡；原始汇总与分配：对账全部输出 | kg | each lot | full season | site/outlet | 每声明的参考流 | receipts, balance |
 | `cp_emission_calculation` | all relevant processes | elementary exchanges | calculation record | activity, factor, method, uncertainty | 应用声明方法；原始汇总与分配：计算后归一化 | kg substance or MJ | reporting period | declared period | site/block | 每声明的参考流 | cited method |
+| `cp_managed_soil_nitrogen` | `process_crop_management` | direct and indirect soil emissions | nitrogen activity and method ledger | N sources and amounts; amendments; residue N and fate; area; dates; climate; soil; volatilisation; leaching; precursor; factors and units; receiving medium; upstream owner; stocks; accepted output | 按路径核对兼容氮活动，保留原始工作表和方法适用性，再归属并归一化一次。 | kg N; kg compound | application and period close | complete represented plot/season | actual plot | per declared reference flow | activity records; original factor source; precursor balance; uncertainty |
 
 ### 计算规则
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_normalize_marketable` | all rows | inventory amount / marketable fresh berry mass | process amount, marketable mass | per kg | `source-fao-lca-guidance` |
-| `calc_nutrient_application` | fertilizer card | product mass × declared nutrient fraction; retain product mass | product mass, nutrient fraction | product and nutrient amounts | `source-fao-lca-guidance` |
-| `calc_perennial_share` | establishment | shared burden × declared season/yield share | burden, period, yield | season amount | `source-fao-lca-guidance` |
-| `calc_mass_balance` | harvest and routing | harvested = marketable + rejects + losses within declared tolerance | all mass records | reconciled balance | `source-fao-lca-guidance` |
+| `calc_normalize_marketable` | all rows | inventory amount / marketable fresh berry mass | process amount, marketable mass | per kg | `fao-gap-framework-2003` |
+| `calc_nutrient_application` | fertilizer card | product mass × declared nutrient fraction; retain product mass | product mass, nutrient fraction | product and nutrient amounts | `fao-gap-framework-2003` |
+| `calc_perennial_share` | establishment | shared burden × declared season/yield share | burden, period, yield | season amount | `fao-gap-framework-2003` |
+| `calc_mass_balance` | harvest and routing | harvested = marketable + rejects + losses within declared tolerance | all mass records | reconciled balance | `fao-gap-framework-2003` |
+| `calc_managed_soil_nitrogen` | `process_crop_management` | 为肥料、有机改良剂、还田残体及适用的管理土壤源选择兼容的直接和间接方法。直接 N2O-N 按适用氮活动乘以对应 EF1 分组因子并另计其他适用源；间接 N2O-N 按适用的挥发氮前体乘 EF4 加淋失或径流氮前体乘 EF5。N2O-N 仅乘44/28换算一次。NH3 与硝酸根须使用独立有依据的物种特定损失比例，不能把全部 NH3+NOx 当 NH3 或全部淋失氮当硝酸根。NH3-N 仅乘17/14、硝酸根氮仅乘62/14换算一次。分开保留组分、源库、介质、方法不确定性和负荷责任，已覆盖排放不得重复。缺少适用数据时不能声称完整，不虚构排放默认值。 | `cp_managed_soil_nitrogen` | molecular emission amounts per declared reference flow | `ipcc-managed-soils-2019`; `mass-balance-identity` |
 
 必须具备可追溯身份、校准称量、完整季节覆盖、地块范围、批次对账、书面分配和缺失数据处理。披露代表性、不确定性、作物年龄、产量变异和未解析身份。
 
@@ -427,10 +525,11 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validation_reference` | reference flow | 确认一个产品流、质量属性和 kg 单位；未解析身份保留为 review finding。 | `source-fao-lca-guidance` |
-| `validation_completeness` | foreground package | 必需过程和协议必须存在，或有理由标记为不适用。 | `source-fao-lca-guidance` |
-| `validation_mass_balance` | harvest and routing | 核对采收质量、可销售产品、拒收物和损失；无法解释的差额使验证失败。 | `source-fao-lca-guidance` |
-| `validation_nutrient_basis` | fertilizer and amendments | 核对产品、养分含量、数量、日期、面积和原始记录；无标识通用总量不合格。 | `source-fao-lca-guidance`, `source-ipcc-2019-refinement` |
+| `validation_reference` | reference flow | 确认一个产品流、质量属性和 kg 单位；未解析身份保留为 review finding。 | `fao-gap-framework-2003` |
+| `validation_completeness` | foreground package | 必需过程和协议必须存在，或有理由标记为不适用。 | `fao-gap-framework-2003` |
+| `validation_mass_balance` | harvest and routing | 核对采收质量、可销售产品、拒收物和损失；无法解释的差额使验证失败。 | `fao-gap-framework-2003` |
+| `validation_nutrient_basis` | fertilizer and amendments | 核对产品、养分含量、数量、日期、面积和原始记录；无标识通用总量不合格。 | `fao-gap-framework-2003`, `source-ipcc-2019-refinement` |
+| `validation_managed_soil_coverage` | nitrogen inputs, residues and emissions | 每个适用氮路径须按声明方法定量，或由具名兼容上游数据集覆盖一次。有依据的不适用应记录；缺少活动、因子、物种拆分、介质或归属仍是完整性阻断缺口。拒绝自动置零或重复直接、间接组分。 | `ipcc-managed-soils-2019` |
 
 ## 10. 发布数据集画像
 
@@ -444,9 +543,13 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 完整性、代表性、测量基础、不确定性和未解析身份 |
 | update_trigger | 新季节、补植、路线/投入/出口变化或质量平衡更正 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | source_id | type | Reference | Use |
 | --- | --- | --- | --- |
-| `source-fao-lca-guidance` | official_guidance | FAO food and agriculture environmental performance guidance | 边界、过程图、采集、分配和质量 |
 | `source-ipcc-2019-refinement` | method_factor | IPCC 2019 Refinement to the 2006 Guidelines | 条件性田间排放和养分计算方法 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
+| `ipcc-managed-soils-2019` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, sections 11.2.1 and 11.2.2 and Tables 11.1/11.3, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Nitrogen activity and direct/indirect N2O methods; no berry-specific yield or universal per-product emission default |
+| `mass-balance-identity` | method_factor | Physical conservation of mass and nitrogen, as defined by the stated PCR calculation and precursor ledgers | Conservation constraints only, not measured loss fractions or empirical factors |

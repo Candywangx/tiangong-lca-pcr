@@ -110,15 +110,14 @@ Raw activity or stage basis: per cultivated hectare and converted with same-cycl
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_activity_records`
 - Sources: `uga-small-grains-handbook`; `usda-nrcs-triticale-cover-crop`
-- Range: Published seeding-rate screening range
+- Range: Provisional grain-route seed estimate; not a merged published grain/cover-crop interval; retain actual germination and pure-live-seed basis
   - Range role: Typical range (`typical_range`)
   - Lower: 84
   - Upper: 134
   - Unit: kg seed/ha
   - Basis: drilled or comparable establishment; document justified rates outside the range
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `uga-small-grains-handbook`; `usda-nrcs-triticale-cover-crop`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Agricultural nutrient and fertilizer inputs (`triticale_field_production_agricultural_nutrient_inputs`)
 

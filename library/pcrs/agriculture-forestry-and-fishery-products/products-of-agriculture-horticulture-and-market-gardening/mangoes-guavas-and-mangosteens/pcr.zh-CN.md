@@ -111,7 +111,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定建园材料筛选估算
   - 范围角色：默认估计（`default_estimate`）
@@ -137,7 +137,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：暂定建园养分筛选估算
   - 范围角色：默认估计（`default_estimate`）
   - 下限：0
@@ -188,7 +188,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_fuel_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定建园燃料筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -282,7 +282,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 - 数量范围：暂定栽培养分筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
   - 下限：0
@@ -307,7 +307,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_crop_protection_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定作物保护投入筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -333,7 +333,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_fuel_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定栽培电力筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -359,7 +359,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_fuel_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定栽培燃料筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -446,7 +446,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_emission_and_loss_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定移出残余物筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -584,7 +584,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_fuel_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定采收燃料筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -610,7 +610,7 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_fuel_records`
-- 来源：`fao-good-agricultural-practices`
+- 来源：`fao-gap-framework-2003`
 
 - 数量范围：暂定农场交付点电力筛选估算
   - 范围角色：QA 校验（`qa_guardrail`）
@@ -745,9 +745,9 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calculation_establishment_annualization` | 建园和补植投入 | 作物年度合格建园量 = 记录的建园量 ×（声明作物年度占生产寿命的份额）；披露生产寿命分母和替换处理。 | 建园记录；生产寿命假设；替换面积 | 每个作物年度的年度化建园投入 | `mass-balance-identity`; `fao-good-agricultural-practices` |
+| `calculation_establishment_annualization` | 建园和补植投入 | 作物年度合格建园量 = 记录的建园量 ×（声明作物年度占生产寿命的份额）；披露生产寿命分母和替换处理。 | 建园记录；生产寿命假设；替换面积 | 每个作物年度的年度化建园投入 | `mass-balance-identity`; `fao-gap-framework-2003` |
 | `calculation_reference_normalization` | 所有前景行 | 归一化数量 = 作物年度数量 ÷ 合格商品水果质量 × 1,000 kg。对投入、排放、次品和残余物使用相同的合格输出分母。 | 作物年度数量；合格水果质量 | 每 1,000 kg 合格水果的数量 | `mass-balance-identity` |
-| `calculation_nutrient_basis` | 肥料和土壤改良剂总量 | 保留实际产品质量，并仅依据声明配方或分析计算养分质量：养分质量 = 产品质量 × 声明养分比例。不得把产品质量和养分质量当作同一数量相加。 | 产品质量；声明养分比例；施用记录 | 产品总量和养分依据总量 | `fao-good-agricultural-practices`; `mass-balance-identity` |
+| `calculation_nutrient_basis` | 肥料和土壤改良剂总量 | 保留实际产品质量，并仅依据声明配方或分析计算养分质量：养分质量 = 产品质量 × 声明养分比例。不得把产品质量和养分质量当作同一数量相加。 | 产品质量；声明养分比例；施用记录 | 产品总量和养分依据总量 | `fao-gap-framework-2003`; `mass-balance-identity` |
 | `calculation_irrigation_withdrawal_reconciliation` | 灌溉水和水源取水 | 对账关系为：灌溉施用水 = 水源取水 + 再用或蓄水 − 有记录的输配或施用损失，并披露每项和计量依据。 | 施用水；取水量；再用；蓄水；损失 | 对账后的水量投入 | `fao-crop-evapotranspiration-56`; `mass-balance-identity` |
 | `calculation_managed_soil_emissions` | 氨、氧化亚氮、硝酸盐和磷酸盐行 | 使用声明的测量或方法等级、养分依据、接收介质和场址条件。只有方法和记录支持零或不适用时才报告零。 | 养分记录；土壤和排水记录；排放方法；测量值 | 按物质和介质列示的排放 | `ipcc-2019-managed-soils` |
 | `calculation_harvest_mass_reconciliation` | 合格水果、次品、拒收品和残余物 | 采收量 = 合格商品水果 + 次品和拒收品 + 有记录的田间或处理损失，并记录含水率依据和去向。 | 采收票；等级表；次品和损失记录 | 对账后的输出和损失总量 | `mass-balance-identity` |
@@ -770,7 +770,7 @@ sync_with: pcr.en-US.md
 | `validation_reference_definition` | 参考流 | 在生成前景数据集前，确认 1,000 kg 功能单位、全部必需限定信息以及证据缺口的参考产品限定信息。 | `mass-balance-identity`; `codex-fresh-tropical-fruit-standards` |
 | `validation_flow_identity_binding` | 参数化产品投入和基本流输出 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validation_mass_reconciliation` | 采收和农场交付点汇集 | 根据采收质量检查合格水果、次品、拒收品、残余物、田间损失和处理损失，并明确等级、含水率和去向处理。 | `mass-balance-identity` |
-| `validation_crop_year_completeness` | 所有必需过程 | 验证栽培、采收和交付点记录覆盖声明作物年度，并明确条件性建园是有记录还是明确排除。 | `fao-good-agricultural-practices` |
+| `validation_crop_year_completeness` | 所有必需过程 | 验证栽培、采收和交付点记录覆盖声明作物年度，并明确条件性建园是有记录还是明确排除。 | `fao-gap-framework-2003` |
 | `validation_boundary_and_state` | 数据集范围 | 拒绝包含交付点后清洗、打蜡、分级、冷却、包装、加工、零售或运输的数据集，也拒绝缺少声明农场交付点的数据集。 | `iso-14044-2006`; `codex-fresh-tropical-fruit-standards` |
 
 ## 10. 发布数据集画像
@@ -785,6 +785,8 @@ sync_with: pcr.en-US.md
 | required_quality_disclosure | 计量来源、缺失或估算字段、作物年度完整性、建园年度化、分配依据、质量平衡结果、排放方法和等级、具体流身份核验以及身份证据缺口发现 |
 | update_trigger | 新果园或保护地生产路线、交付点处理或产品状态发生重大变化、排放方法修订、新产品限定信息，或有证据改变默认采集、分配或校验规则 |
 
+证据适用性：引用的一般农场记录和采后框架不提供作物特定的产量、寿命、交接截止点或 LCA 分配默认值。这些属于本 PCR 的方法选择，应按实际物种、路线和期间限定，取得兼容的农艺证据后才能声称完整。作者暂定范围仅为筛查辅助，不是经验验收限值，也不能替代实测。
+
 ## 11. 数据源
 
 | Source id | Type | Reference | Used for |
@@ -793,6 +795,6 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-managed-soils` | official_guidance | IPCC，2019 Refinement to the 2006 IPCC Guidelines，第 4 卷 Agriculture, Forestry and Other Land Use，https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 管理土壤和养分损失排放方法 |
 | `ipcc-2006-mobile-combustion` | official_guidance | IPCC，2006 Guidelines for National Greenhouse Gas Inventories，第 2 卷 Energy，第 3 章 Mobile Combustion，https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html | 移动机械燃料相关二氧化碳计算 |
 | `codex-fresh-tropical-fruit-standards` | standard | Codex Alimentarius 标准 CXS 184-1993（芒果）、CXS 215-1999（番石榴）和 CXS 246-2005（山竹） | 鲜食整果状态、质量和商品状态限定信息 |
-| `fao-good-agricultural-practices` | extension_guidance | FAO 关于果园建园、作物管理、投入记录、采收和追溯的良好农业规范指南 | 过程分解、采集协议、投入和采收记录要求 |
 | `iso-14044-2006` | standard | ISO 14044:2006，*Environmental management — Life cycle assessment — Requirements and guidelines*，https://www.iso.org/standard/38498.html | 边界、分配、文件化和校验原则 |
 | `mass-balance-identity` | method_factor | 参考流归一化、年度化和采收输出对账的 PCR 方法身份 | 参考流缩放、建园年度化、养分依据分离和质量平衡 |
+| `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |

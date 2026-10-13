@@ -297,15 +297,14 @@ Raw activity or stage basis: per cultivated hectare; terminal output is scaled t
 - Basis kind: Crop cycle (`crop_cycle`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest_output_records`
-- Range: Fonio grain yield screening range
+- Range: Provisional species/region-dependent grain-yield estimate; endpoints not verified for either fonio species
   - Range role: Typical range (`typical_range`)
   - Lower: 150
   - Upper: 800
   - Unit: kg grain/ha
   - Basis: broad reported fonio yield context; retain local measured yield and moisture
   - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-ecocrop-fonio`
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Fonio straw removed as useful product (`fonio_removed_straw_output`)
 

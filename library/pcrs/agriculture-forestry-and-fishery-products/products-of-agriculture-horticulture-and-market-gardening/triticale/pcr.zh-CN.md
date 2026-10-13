@@ -112,15 +112,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_activity_records`
 - 来源：`uga-small-grains-handbook`; `usda-nrcs-triticale-cover-crop`
-- 数量范围：公开播种率筛选范围
+- 数量范围：粮用路线播种量暂定估计；不是拼接发表的粮用或覆盖作物区间；保留实际发芽率和纯活种子基准
   - 范围角色：典型范围（`typical_range`）
   - 下限：84
   - 上限：134
   - 单位：kg seed/ha
   - 基准：条播或相当的建植方式；范围外数值须说明理由
   - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`uga-small-grains-handbook`; `usda-nrcs-triticale-cover-crop`
+  - 证据类型：推理估计 (`reasoned_estimate`)
 
 ###### 农业养分与肥料投入（`triticale_field_production_agricultural_nutrient_inputs`）
 

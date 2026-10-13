@@ -9,7 +9,9 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
-本 PCR 覆盖 Capsicum 属和 Pimenta 属新鲜绿色辣椒、甜椒的商业生产，从直播或移栽建植开始，经作物管理、灌溉、养分和作物保护投入、采收、分级、可选清洗和冷却、初级包装，到约定农场大门或包装场大门交接。露地和保护地路线均可纳入，但必须声明生产路线、果实类型和作物周期。种子、育苗、成熟红果或其他成熟果、干辣椒、酱料、腌制品、冷冻或烹饪产品、零售、消费者储存和消费均排除在外。只有在约定大门之前发生的初级包装、清洗、冷却和外购运输才纳入。
+本 PCR 覆盖 Capsicum 属和 Pimenta 属新鲜绿色辣椒、甜椒的商业生产，从直播或移栽建植开始，经作物管理、灌溉、养分和作物保护投入、采收、分级、可选清洗和冷却、初级包装，到约定农场大门或包装场大门交接。露地和保护地路线均可纳入，但必须声明生产路线、果实类型和作物周期。种子、育苗、干燥果实、干辣椒、酱料、腌制品、冷冻或烹饪产品、零售、消费者储存和消费均排除在外。只有在约定大门之前发生的初级包装、清洗、冷却和外购运输才纳入。
+
+必须声明新鲜果实的颜色和成熟度；新鲜红色或黄色甜椒不能仅因颜色而排除。CPC 商品名称中的 green 不构成仅限未成熟绿色果实的质量条件。UNECE FFV-28 仅提供新鲜 Capsicum annuum 甜椒的质量背景，不是 Pimenta 生产方法。Pimenta dioica 为多年生乔木（Kew）；不得默认把任何纳入范围的多年生物种当成每年重新建植的作物。只有参考 UUID 的实际物种、状态和交付门与批次匹配时才能采用，否则核实兼容产品身份。
 
 ## 2. 产品类别识别
 
@@ -17,10 +19,10 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.chillies-and-peppers-green-capsicum-spp-and-pimenta-spp |
 | classification_refs | CPC 3.0:01231 Chillies and peppers, green (Capsicum spp. and Pimenta spp.); mapping relation: exact |
-| covered_products | 在约定未成熟绿色市场状态采收、并在农场大门或包装场大门交付的新鲜未加工绿色辣椒和甜椒 |
-| excluded_products | 种子和育苗材料、完全成熟红果或其他成熟果、干辣椒、酱料、腌制品、冷冻品、熟制品和其他加工产品，以及零售和消费 |
+| covered_products | 在约定声明的新鲜成熟度和颜色状态采收、并在农场大门或包装场大门交付的新鲜未加工绿色辣椒和甜椒 |
+| excluded_products | 种子和育苗材料、完全干燥果实、干辣椒、酱料、腌制品、冷冻品、熟制品和其他加工产品，以及零售和消费 |
 | representative_product | 符合约定品种、成熟度、大小、硬度、洁净度、等级、修整和包装要求的可销售绿色 Capsicum 或 Pimenta 果实 |
-| production_route | 露地或保护地直播、移栽的一年生作物，包含灌溉、养分、杂草和病虫害管理、多轮果实采收、分级、可选清洗或冷却及初级包装 |
+| production_route | 按物种区分的一年生 Capsicum 栽培或多年生 Capsicum/Pimenta 植株生产，包含实际建植或更新、灌溉、养分和植保、采收、分级、可选清洗冷却及初级包装 |
 | market_state | 约定农场或包装场大门处，以散装、周转箱、纸箱或其他声明的初级包装状态交付的新鲜未加工绿色果实 |
 
 ## 3. 参考流
@@ -29,8 +31,8 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | What | 约定农场大门或包装场大门处的可销售新鲜绿色辣椒和甜椒 |
 | How much | 1,000 kg |
-| How well | 新鲜、未加工，声明 Capsicum 或 Pimenta 的物种或品种组、未成熟绿色状态、果实大小、硬度、洁净度、等级、修整、清洗和冷却状态以及包装状态 |
-| How long or cycle | 一个声明的一年生作物周期，包括归属于该作物和约定大门的全部采收轮次 |
+| How well | 新鲜、未加工，声明 Capsicum 或 Pimenta 的物种或品种组、声明的新鲜成熟度和颜色、果实大小、硬度、洁净度、等级、修整、清洗和冷却状态以及包装状态 |
+| How long or cycle | 一个声明的一年生作物周期或多年生生产期间，包括归属于该作物和约定大门的全部采收轮次 |
 | reference_flow_link | marketable_green_fruit_output |
 
 | 字段 | 值 |
@@ -40,7 +42,7 @@ sync_with: pcr.en-US.md
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
-| 必需限定信息 | 生产地理位置；露地或保护地路线；Capsicum 或 Pimenta 物种或品种组；种子或移栽建植；种植日期；作物周期和采收轮次；约定大门；未成熟绿色状态；果实大小、硬度和等级；灌溉来源与方式；养分产品与养分基准；作物保护方案；清洗和冷却状态；包装状态；残余物和拒收物去向 |
+| 必需限定信息 | 生产地理位置；露地或保护地路线；Capsicum 或 Pimenta 物种或品种组；种子或移栽建植；种植日期；作物周期和采收轮次；约定大门；声明的新鲜成熟度和颜色；果实大小、硬度和等级；灌溉来源与方式；养分产品与养分基准；作物保护方案；清洗和冷却状态；包装状态；残余物和拒收物去向 |
 
 构建前景数据包时，`必需限定信息` 中列出的信息应在数据集元数据、过程说明、参考流备注、产品说明或等效数据包字段中明确声明。缺失必需限定信息的数据包视为参考流定义不完整。
 
@@ -60,7 +62,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | declared_starting_condition | 接收绿色辣椒或甜椒种子或移栽苗的已整备田块、畦或保护地单元，并披露既有土地利用和排除的基础设施工程 |
-| starting_condition_role | 声明的一年生作物周期起点 |
+| starting_condition_role | 声明的一年生作物周期或多年生植株核算期间起点 |
 | product_classification_scope | CPC 3.0:01231 绿色辣椒和甜椒，从生产至约定农场大门或包装场大门 |
 | recursive_input_rule | 外购种子和移栽苗作为上游产品投入只链接一次；其育苗或制种过程不在本 PCR 内，除非另有上游数据集。 |
 | upstream_dataset_requirement | 使用时应为种子或移栽苗、肥料和改良剂、作物保护产品、灌溉水、能源、包装以及外购运输或处理服务提供上游数据集。 |
@@ -82,7 +84,7 @@ sync_with: pcr.en-US.md
 | process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
 | --- | --- | --- | --- | --- | --- |
 | `crop_establishment` | 绿色辣椒和甜椒作物建植 | required | 每次有记录的直播或移栽事件 | 前景作物建植 | 已建植田块、畦或保护地单元 |
-| `crop_management` | 绿色辣椒和甜椒作物管理 | required | 每个有记录的一年生作物周期 | 前景受管理的生物生产 | 管理面积和作物周期采收量 |
+| `crop_management` | 绿色辣椒和甜椒作物管理 | required | 每个有记录的一年生作物周期或多年生生产期间 | 前景受管理的生物生产 | 管理面积和作物周期采收量 |
 | `harvest_and_gate_preparation` | 绿色辣椒和甜椒采收及大门准备 | required | 每次有记录的采收活动和约定大门 | 前景采收、处理、包装和大门交接 | 1,000 kg 可销售新鲜绿色果实 |
 
 ### 过程：绿色辣椒和甜椒作物建植（`crop_establishment`）
@@ -157,7 +159,7 @@ sync_with: pcr.en-US.md
 
 记录作物建植期间占用的田块或保护地面积，并归属于声明作物周期。
 
-- 选定流：一年生作物生产的土地占用
+- 选定流：实际一年生或多年生路线的耕地占用
 - 流属性/单位：Area-time / m2*a
 - 数量规则：实测耕作面积乘以声明建植期，并换算为要求的面积时间单位。
 - 数值来源模式：计算值（`calculated_value`）
@@ -334,9 +336,9 @@ sync_with: pcr.en-US.md
 
 ###### 作物管理期土地占用（`land_occupation_management`）
 
-记录一年生绿色辣椒和甜椒在管理期占用的面积时间。
+记录实际一年生或多年生作物在管理期占用的面积时间。
 
-- 选定流：一年生作物生产的土地占用
+- 选定流：实际一年生或多年生路线的耕地占用
 - 流属性/单位：Area-time / m2*a
 - 数量规则：将实测耕作面积和作物占用期换算为面积时间，并归一化到可销售产出。
 - 数值来源模式：计算值（`calculated_value`）
@@ -656,6 +658,8 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
+多年生路线须记录建植及未产出年份、各有效采收期间、补植和终止。不得每年重复计入建植。按有记录的有效产出或服务期间归属既有建植及共享服务，并一致结转库存和未采收生产；使用实测产出和明确分配依据，不虚构通用寿命、年产量或植株质量。建植占用与维护占用对应互不重叠的期间，实际土地转化另行记录。缺少植株期间或产出证据时，不得声称多年生数据集完整。
+
 ## 7. 分配与共产品处理
 
 | rule_id | 适用对象 | 规则 | source_ids |
@@ -701,7 +705,7 @@ sync_with: pcr.en-US.md
 
 | requirement_id | 适用对象 | 要求 | 证据 |
 | --- | --- | --- | --- |
-| `quality_reference_identity` | 参考流和可销售产出 | 声明物种或品种组、未成熟绿色市场状态和大门及必需限定信息；最终 TIDAS 数据集发布前解析产品 UUID。 | 参考流元数据、批次规格和后续身份核验 |
+| `quality_reference_identity` | 参考流和可销售产出 | 声明物种或品种组、声明的新鲜成熟度和颜色状态和大门及必需限定信息；最终 TIDAS 数据集发布前解析产品 UUID。 | 参考流元数据、批次规格和后续身份核验 |
 | `quality_temporal_coverage` | 所有作物周期记录 | 覆盖完整年度作物周期及参考产出所代表的每一采收轮次。 | 作物日历、田间日志和采收记录 |
 | `quality_spatial_coverage` | 田块、保护地单元和包装场记录 | 标识每个田块、畦、保护地单元和包装线；没有明确聚合规则时不得混合地点。 | 农场地图、单元登记和包装线记录 |
 | `quality_mass_completeness` | 采收和大门准备 | 在相关情况下核对采收、可销售、拒收、修整、残余物和废水记录。 | 秤量记录、分级记录和质量平衡工作表 |
@@ -712,7 +716,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_qualifiers` | 参考流 | 若前景数据包缺少生产地理位置、路线、品种或物种组、未成熟绿色状态、作物周期、约定大门及采收或质量限定信息，则拒绝该数据包。 | `codex-fresh-fruits-vegetables-2003` |
+| `validate_reference_qualifiers` | 参考流 | 若前景数据包缺少生产地理位置、路线、品种或物种组、声明的新鲜成熟度和颜色、作物周期、约定大门及采收或质量限定信息，则拒绝该数据包。 | `codex-fresh-fruits-vegetables-2003` |
 | `validate_crop_cycle_completeness` | 过程清单 | 检查建植、管理、采收及所有代表性采收轮次是否均由同一作物周期的记录覆盖。 | `fao-56-crop-evapotranspiration-1998` |
 | `validate_flow_binding_priority` | 所有流行 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
 | `validate_nutrient_reconciliation` | 养分和土壤排放行 | 检查产品质量、养分浓度、养分数量、残余物去向和选定排放方法在不重复计算的情况下保持一致。 | `usda-nrcs-nutrient-management-590`; `ipcc-2019-refinement-nitrogen` |
@@ -741,3 +745,5 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-refinement-nitrogen` | method_factor | 2019 Refinement to the 2006 IPCC Guidelines, Volume 4 Agriculture, Forestry and Other Land Use, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 直接和间接氮排放计算方法 |
 | `codex-fresh-fruits-vegetables-2003` | standard | Codex Alimentarius, Code of Hygienic Practice for Fresh Fruits and Vegetables, CXC 53-2003, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ | 新鲜农产品大门、质量、处理、拒收和质量平衡规则 |
 | `fao-good-hygiene-fresh-produce-2003` | official_guidance | FAO and WHO guidance associated with the Codex Code of Hygienic Practice for Fresh Fruits and Vegetables, CXC 53-2003, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ | 清洗、大门准备、废水和处理记录 |
+| `kew-pimenta-dioica` | official_guidance | Royal Botanic Gardens, Kew, Plants of the World Online: Pimenta dioica, https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:196799-2/general-information | Perennial tree identity; no yield or orchard-life default |
+| `unece-sweet-peppers-ffv28-2020` | standard | UNECE Standard FFV-28 Sweet Peppers (2020), https://unece.org/sites/default/files/2020-12/28_SweetPeppers.pdf | Fresh Capsicum annuum sweet-pepper state and colour/maturity context; not Pimenta agronomy or an LCA boundary |

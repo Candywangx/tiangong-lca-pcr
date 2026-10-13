@@ -284,7 +284,7 @@ process_inventory:
           name: "Irrigation water supply"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record water delivered to the onion field or protected unit for establishment and crop growth. Separate metered delivery from rainfall, recirculated water and the source withdrawal. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs."
+          description: "Record water delivered to the onion field or protected unit for establishment and crop growth. Separate metered delivery from rainfall, recirculated water and the source withdrawal. Raw activity or stage basis: per 1,000 kg marketable farm-gate onion bulbs. Range evidence need: no delivered-irrigation default is established. FAO 350–550 mm is crop water need (ETc), equivalent to 3500–5500 m3/ha of evapotranspiration, not metered irrigation. Derive net irrigation after effective rainfall, soil-water change and other supplies, then gross delivery from documented efficiency/losses; rain-fed delivery may be zero."
           amount:
             expression: "Metered or documented water-balance volume delivered to the crop cycle"
             value_mode: "foreground_record"
@@ -298,16 +298,7 @@ process_inventory:
               source_ids:
                 - fao-crop-water-needs-onion
                 - fao-56-crop-evapotranspiration
-            ranges:
-              - role: qa_guardrail
-                lower: "3500"
-                upper: "5500"
-                unit: "m3/ha per onion crop cycle"
-                basis: "one hectare over an onion crop cycle; convert to the PCR reference flow using measured area and output"
-                basis_kind: "crop_cycle"
-                evidence_kind: "external_source"
-                source_ids:
-                  - fao-crop-water-needs-onion
+            ranges: []
         - row_id: water_resource_withdrawal
           role: "Water withdrawn from the declared natural or municipal source"
           name: "Water resource withdrawal"
@@ -443,10 +434,10 @@ process_inventory:
                 - ipcc-2019-managed-soils-n2o
             ranges:
               - role: qa_guardrail
-                lower: "0.002"
+                lower: "0"
                 upper: "0.019"
                 unit: "kg N2O-N per kg N input"
-                basis: "per kg applied or otherwise modelled N input"
+                basis: "Select a documented family: aggregate EF1 0.010 (uncertainty 0.002–0.018); wet synthetic N 0.016 (0.013–0.019); wet other N 0.006 (0.001–0.011); dry all N 0.005 (0–0.011), in kg N2O-N/kg N. The combined 0–0.019 is contextual only, not a universal factor or statistical interval."
                 basis_kind: "n_input"
                 evidence_kind: "external_source"
                 source_ids:
@@ -1209,7 +1200,7 @@ data_sources:
     used_for: "Subdivision, allocation, co-product handling and burden reconciliation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ac9326facf6ebe1251e0b203357209cb1b7b111fa132dc5d3aa34c670bf42d32"
+  source_sha256: "sha256:ba89a26ca5931c132e7550d9dace0328c8a7eb7d97613b022cb02f649912043d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5010"
@@ -1260,16 +1251,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44403"
+    - unit_id: "normative_44627"
       family: "allocation"
       span:
         start:
-          offset: 44403
-          line: 866
+          offset: 44627
+          line: 858
           column: 1
         end:
-          offset: 45412
-          line: 876
+          offset: 45636
+          line: 868
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_rule_1` | shared field and harvest operations | Subdivide operations when separate records exist for onion cultivars, products or destinations. When subdivision is not possible, allocate shared burdens by measured mass of marketable bulbs and co-products at the point of separation. | `iso-14044-2006-allocation` |\n| `allocation_rule_2` | culls and crop residues | Treat culls and residues as co-products or wastes according to their documented destination. Do not apply a credit or substitution claim unless the receiving product, displaced function and evidence are explicitly documented. | `iso-14044-2006-allocation` |\n| `allocation_rule_3` | conditioning, packing and storage | Allocate shared conditioning, packing and storage inputs by mass of handled output, with storage duration retained when energy depends on time. | `iso-14044-2006-allocation` |\n\n"
       headings:
@@ -1288,12 +1279,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44403
-              line: 866
+              offset: 44627
+              line: 858
               column: 1
             end:
-              offset: 44443
-              line: 866
+              offset: 44667
+              line: 858
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1308,16 +1299,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_57126"
+    - unit_id: "normative_57350"
       family: "validation"
       span:
         start:
-          offset: 57126
-          line: 919
+          offset: 57350
+          line: 911
           column: 1
         end:
-          offset: 58976
-          line: 930
+          offset: 59200
+          line: 922
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_rule_1` | reference flow | Confirm that the reference amount is 1,000 kg and that product identity, maturity, moisture, grade, size, geography, crop cycle and included conditioning qualifiers are present. | `codex-cxs-348-onions-2022` |\n| `validation_rule_2` | process map and inventory | Confirm that every required process has an inventory section and that each flow card has a direction, flow type, amount rule, value mode, specificity, basis kind, evidence kind and collection protocol when required. |  |\n| `validation_rule_3` | nutrient and emission completeness | For every applied nutrient product, confirm documented nutrient content and a non-duplicated calculation of direct N2O, volatilization and leaching/runoff pathways when those pathways occur. | `ipcc-2019-managed-soils-n2o` |\n| `validation_rule_4` | irrigation and water withdrawal | Confirm that delivered irrigation and source withdrawal are separate, source and field are identified, and any ETc or water-balance estimate retains its assumptions and units. | `fao-56-crop-evapotranspiration`, `fao-crop-water-needs-onion` |\n| `validation_rule_5` | output mass balance | Confirm lot-level reconciliation of harvested bulbs, marketable output, culls, residues, conditioning rejects, storage losses and declared destinations. Investigate unexplained negative or excess balances. | `iso-14044-2006-allocation` |\n| `validation_rule_6` | quality and hygiene disclosure | Where the farm-gate state is described as fresh market produce, check the declared whole, firm, sound, clean, mature and sufficiently dry state and any applicable hygiene, pesticide-residue and contaminant disclosure. | `codex-cxs-348-onions-2022`, `codex-cxc-53-hygiene-fresh-fruit-vegetables-2003` |\n\n"
       headings:
@@ -1336,12 +1327,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 57126
-              line: 919
+              offset: 57350
+              line: 911
               column: 1
             end:
-              offset: 57148
-              line: 919
+              offset: 57372
+              line: 911
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1412,119 +1403,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "explicit"
-      unit_id: "normative_44403"
+      unit_id: "normative_44627"
       source_span:
         start:
-          offset: 44538
-          line: 872
+          offset: 44762
+          line: 864
           column: 1
         end:
-          offset: 44866
-          line: 872
+          offset: 45090
+          line: 864
           column: 329
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "explicit"
-      unit_id: "normative_44403"
+      unit_id: "normative_44627"
       source_span:
         start:
-          offset: 44867
-          line: 873
+          offset: 45091
+          line: 865
           column: 1
         end:
-          offset: 45174
-          line: 873
+          offset: 45398
+          line: 865
           column: 308
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rule_3"
       identity_kind: "explicit"
-      unit_id: "normative_44403"
+      unit_id: "normative_44627"
       source_span:
         start:
-          offset: 45175
-          line: 874
+          offset: 45399
+          line: 866
           column: 1
         end:
-          offset: 45410
-          line: 874
+          offset: 45634
+          line: 866
           column: 236
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "explicit"
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 57221
-          line: 923
+          offset: 57445
+          line: 915
           column: 1
         end:
-          offset: 57471
-          line: 923
+          offset: 57695
+          line: 915
           column: 251
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "explicit"
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 57472
-          line: 924
+          offset: 57696
+          line: 916
           column: 1
         end:
-          offset: 57744
-          line: 924
+          offset: 57968
+          line: 916
           column: 273
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "explicit"
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 57745
-          line: 925
+          offset: 57969
+          line: 917
           column: 1
         end:
-          offset: 58030
-          line: 925
+          offset: 58254
+          line: 917
           column: 286
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "explicit"
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 58031
-          line: 926
+          offset: 58255
+          line: 918
           column: 1
         end:
-          offset: 58331
-          line: 926
+          offset: 58555
+          line: 918
           column: 301
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "explicit"
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 58332
-          line: 927
+          offset: 58556
+          line: 919
           column: 1
         end:
-          offset: 58615
-          line: 927
+          offset: 58839
+          line: 919
           column: 284
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "explicit"
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 58616
-          line: 928
+          offset: 58840
+          line: 920
           column: 1
         end:
-          offset: 58974
-          line: 928
+          offset: 59198
+          line: 920
           column: 359
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1553,27 +1544,27 @@ normative_context:
           column: 362
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44403"
+      unit_id: "normative_44627"
       source_span:
         start:
-          offset: 44403
-          line: 866
+          offset: 44627
+          line: 858
           column: 1
         end:
-          offset: 44443
-          line: 866
+          offset: 44667
+          line: 858
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_57126"
+      unit_id: "normative_57350"
       source_span:
         start:
-          offset: 57126
-          line: 919
+          offset: 57350
+          line: 911
           column: 1
         end:
-          offset: 57148
-          line: 919
+          offset: 57372
+          line: 911
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1582,5 +1573,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ac9326facf6ebe1251e0b203357209cb1b7b111fa132dc5d3aa34c670bf42d32"
-  generated_content_sha256: "sha256:fe669da878b179a305015456a35ba33fe8c1ce04393cbe8c944608f955a485fc"
+    sha256: "sha256:ba89a26ca5931c132e7550d9dace0328c8a7eb7d97613b022cb02f649912043d"
+  generated_content_sha256: "sha256:6c3e6787f605765ee64cc03f2bd94153aab002c1cb8cb3129f5c6af0d718adea"
