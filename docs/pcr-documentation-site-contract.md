@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-09
-lastReviewedNote: "Reviewed PCR #107/#108 latest browser failure: explicit manual language switches load the verified exported HTML document directly, preserving counterpart, query/fragment, preference and storage-denial behavior; neutral detection remains unchanged. Guide browser acceptance additionally requires exact main-frame HTTP 200 HTML navigation. Unmarked RSC failures remain blocking; no classifier exemptions, dependency or methodology changes. Fresh full CI and updated independent review remain required."
-lastReviewedCommit: e9b91252307d0345defcb709e819799d1aa6ba42
+lastReviewedNote: "Reviewed fork PR 15 integration: lossless sparse score-slot search wire v3 preserves exact engine imports and complete records under unchanged 20 MB raw/4 MB gzip language budgets; retains v1/v2 readers, explicit malformed-metadata rejection and retries, emitted codec module/MIME checks. Existing PCR #107/#108 language-routing and browser failure predicates remain unchanged; methodology and mapping approval remain separate."
+lastReviewedCommit: eff07d1e9764d670de6ea87d7a09b965710d0832
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -355,7 +355,7 @@ Worker and tokenization module are compiled TypeScript browser modules shipped w
 FlexSearch browser bundle, preserving its license header. Static exports must
 not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
 
-New search manifests use `schemaVersion: 2`: each shard's `entries` object stores
+Search manifest version 2 uses `schemaVersion: 2`: each shard's `entries` object stores
 the pinned FlexSearch export as native JSON arrays. Generation requires every
 export value to parse as an array and stringify back to the exact original engine
 string. The Worker stringifies those arrays before engine import and also accepts
@@ -364,6 +364,20 @@ versions and entry types inconsistent with the declared version fail initializat
 failed loads remain retryable. This representation preserves export key order,
 terms, postings, IDs and complete records. The 2 MB text buckets, tokenization,
 30-candidate limit per shard, global ranking and browser size budgets are unchanged.
+
+Search manifest version 3 retains native export arrays and complete result records,
+but marks supported FlexSearch map keys in each shard's `sparseMaps` list. Each
+marked term stores its original score-vector length and ordered non-null slot
+positions with unchanged posting lists. The Worker restores every null slot and
+stringifies the exact original engine export before import. The pinned nine-slot
+bound prevents malformed sparse lengths from allocating unbounded arrays. Dense
+or unsupported map shapes stay native; compression is used only when smaller.
+Version 1 string entries and version 2 native arrays remain readable and reject
+version 3 sparse metadata. Missing, duplicate, foreign or malformed sparse metadata
+fails initialization and remains retryable. Export key order, terms, posting IDs,
+slot positions, complete records, tokenization, text buckets, ranking and both
+browser budgets remain unchanged. The shared codec is an emitted TypeScript
+browser module with the same executable MIME/noindex checks as the Worker.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading

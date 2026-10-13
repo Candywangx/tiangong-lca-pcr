@@ -1,10 +1,12 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
   "agriculture-forestry-and-fishery-products": "农业、林业和渔业产品",
+  "audio-original-assets": "录音原作资产",
   "basic-chemicals": "基础化学品",
   "basic-metals": "基本金属",
   beverages: "饮料",
   "brand-assets": "品牌资产",
+  "broadcast-content-originals": "广播内容原作",
   "business-and-production-services": "商务和生产服务",
   "coal-and-peat": "煤和泥炭",
   "community-social-and-personal-services": "社区、社会和个人服务",
