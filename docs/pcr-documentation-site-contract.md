@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-13
-lastReviewedNote: "Reviewed PR #110 and #111 combined integration: both retain identical lossless sparse score-slot search wire v3, complete records and exact engine imports, v1/v2 readers and rejection/retry behavior under unchanged 20 MB raw/4 MB gzip budgets. Original source-bound browser/docs receipts were independently verified; the combined 1085-record candidate requires fresh full qualification. Language-routing behavior, candidate methodology and mapping/translation approval boundaries remain unchanged."
-lastReviewedCommit: d2da1f7ca147f43924fbbef609d797acf65fdecd
+lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

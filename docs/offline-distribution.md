@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-09
-lastReviewedCommit: f2e1d1f63dcec0c4b240b5ed0e0a3f6a36907d19
-lastReviewedNote: "Reviewed PCR #107/#108: explicit scalar browser diagnostics avoid cyclic partial receipts; new homepage probes align live acceptance with preserved language URLs at HTTP 200 and sealed hashes. Historical two-catalog manifests retain exact artifact verification/materialization. Complete fresh CI and independent review remain required; immutable v0.4.5 candidate receipts, methodology status, English-only npm content and runtime pins are preserved."
+lastReviewedAt: 2026-10-13
+lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
+lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
