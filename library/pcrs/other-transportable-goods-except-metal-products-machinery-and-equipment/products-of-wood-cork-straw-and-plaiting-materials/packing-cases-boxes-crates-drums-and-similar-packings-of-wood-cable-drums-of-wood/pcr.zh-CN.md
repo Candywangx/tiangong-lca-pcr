@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.packing-cases-boxes-crates-drums-and-similar-packings-of-wood-cable-drums-of-wood |
-| classification_refs | CPC 3.0 31701; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31701; narrower; 待独立接受，当前未映射 |
 | covered_products | 未涂饰钉装针叶实木锯材运输空箱，含配套盖板及整体木档 |
 | excluded_products | 电缆盘、木桶、托盘、开敞条板箱、结构框架箱、人造板箱、胶合箱、拆装箱片、再用箱 |
 | representative_product | 外购窑干针叶板料裁切钉装的新制运输箱；不指定默认尺寸、载荷或质量 |
@@ -53,7 +53,7 @@ translation_status: aligned
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | reference_mass | 参考产品 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 参考量为 1 kg 工厂门口验收成品空箱；采用 cp_output。按同一配置称量完整箱体、配套盖板、整体木档和已装钢钉，排除货物、缓冲物和独立运输包装。 |
-| campaign_basis | 所有清单行共用的参考产品质量分母 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 所有行均按每 1 kg 参考流报告；同一批次验收净质量总量 Q 是共同分母。按件计量须使用同一配置实测 kg/件和实际件数换算至 Q，不得用容量或载荷代替。 必需质量/kg仅描述验收产品Q；各分子保留自身原生行参考属性和单位。 |
+| campaign_basis | 所有清单行 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 所有行均按每 1 kg 参考流报告；同一批次验收净质量总量 Q 是共同分母。按件计量须使用同一配置实测 kg/件和实际件数换算至 Q，不得用容量或载荷代替。 |
 | wood_mass | sawn_timber, wood_offcut, sawdust_waste | 质量 | kg | 交付/转出湿质量与烘干木质量分别记录；干基含水分数 u=(湿质量-干质量)/干质量，干木质量=湿质量/(1+u)。背景采购 kg 基准须兼容同一水分状态。 |
 | electric_units | electricity | 净热值, 低位热值 `93a60a56-a3c8-11da-a746-0800200c9a66` | MJ | 电力以记录的电能参考属性表示；1 kWh=3.6 MJ。这不是燃料热值相乘；仅汇总用户侧实际电量，并核对低压接口。 |
 
@@ -327,7 +327,6 @@ translation_status: aligned
 | wood_water_balance | all wood rows; water_vapour | 对各纯木材流：干木质量=湿木质量/(1+u)，木材水=湿木质量-干木质量。成品箱湿木质量=验收空箱净质量减去同 SKU 钉装账中的已装钢钉质量；绝不能将含钉的整个箱质量除以 1+u。木材干质量输入+期初库存=成品干木+废木干质量+排出颗粒中的干木质量+期末库存+经证实其他损失；钢钉和油分别核对。输入水+期初水库存=成品及残料保留水+排出颗粒所含水+期末水库存+经证实水蒸气损失；本路线不加工艺水。排水量仅由本同批水分账确定；须表征颗粒的木材/水/碳分数，不假定全部颗粒物都是烘干木。 | cp_material; cp_output; cp_residue; cp_air; cp_moisture | unallocated dry wood and water balance | usda-wood-handbook-2021 |
 | electric_conversion | electricity | 同批实际电量 kWh×3.6 得 MJ，再除 Q；记录各阶段，不重复加压缩空气能量。 | cp_energy; Q | MJ per 1 kg reference flow | usda-nailing-1959 |
 | particle_intervals | pm_fine; pm_coarse; pm_large | 仅在同采样、时段、介质及控制基准时：细颗粒=PM2.5；中间颗粒=PM10-PM2.5；大颗粒=总可过滤颗粒物-PM10。各区间非负；计入相应行前按 Q 归一化。互不兼容、不完整或负差值须复核，不能强行截零。 | cp_air; Q | three disjoint kg exchanges per 1 kg reference flow | epa-sawmill-dust-2014 |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 

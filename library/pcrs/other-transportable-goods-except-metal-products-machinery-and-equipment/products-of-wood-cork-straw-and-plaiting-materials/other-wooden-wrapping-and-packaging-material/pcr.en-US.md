@@ -31,7 +31,7 @@ Excluded: wood boxes/crates/cable drums, pallets/load boards or their assembly s
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-wooden-wrapping-and-packaging-material |
-| classification_refs | CPC 3.0 31709; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
+| classification_refs | CPC 3.0 31709; narrower |
 | covered_products | Accepted solid-wood packaging wedges and contoured/notched blocks with cargo-contact geometry |
 | excluded_products | The exclusions in section 1; classification labels alone do not establish applicability |
 | representative_product | Unglued uncoated tapered pine packaging wedge, cut to order from kiln-dried sawn stock |
@@ -88,7 +88,7 @@ Declare all required qualifiers in dataset metadata or equivalent reference-flow
 | --- | --- |
 | declared_starting_condition | Purchased kiln-dried untreated sawn stock received at workshop; supplier drying burdens remain upstream |
 | starting_condition_role | Gate-to-gate electric conversion to accepted packaging articles |
-| product_classification_scope | Only specified solid-wood packaging wedge/contoured-block subset; CPC31709 narrower scope |
+| product_classification_scope | Only specified solid-wood packaging wedge/contoured-block subset; proposed CPC31709 narrower |
 | recursive_input_rule | Purchased same-category unfinished/reworked packaging articles change the route and require separate disclosed supplier gate; never silently substitute for sawn stock or create repeated finishing credit |
 | upstream_dataset_requirement | Match stock species, drying, moisture/reference quantity, forestry carbon/allocation, supplier gate and inbound transport; match delivered electricity voltage/geography/period, oil and PE supplier specifications. Identity UUID is not a background dataset. |
 | disclosure | Disclose all gates, actual operations, meters, transport providers, exclusions and pending identities/background compatibility; gate-to-gate alone is not cradle-to-gate |
@@ -677,7 +677,6 @@ The dry-mass fallback is a candidate PCR methodological choice for residual join
 | `dry_balance` | wood and residue ledger | Convert each measured wet mass using its own dry-basis moisture per moisture_basis. Dry inputs plus stock decrease equal dry accepted wood, coproducts, discarded wood, emitted wood dust and unexplained residual. Keep water and carbon balances separate; investigate uncertainty rather than assigning a made-up yield. | cp_material; cp_reference; cp_residue; cp_dust | unallocated dry mass, water and carbon closure | `usda-wood-handbook-2021` |
 | `dust_bins` | pm_fine; pm_coarse; pm_large | When nested quantities are measured under identical conditions: fine=PM2.5; coarse=PM10-PM2.5; large=compatible total particulate-PM10. Require nonnegative differences and consistent methods/coverage. Otherwise measure disjoint bins or retain missing-bin uncertainty. Never sum PM2.5+PM10+total or subtract incompatible condensable/filterable measurements. | cp_dust | three disjoint emitted masses | `epa-sawmill-pte-2014` |
 | `burden_shares` | joint burdens only | Use each accepted product or genuine coproduct dry mass divided by the sum of those dry masses for residual joint burdens after subdivision. Shares sum to1; do not apply shares to physical outputs, waste or internal links. Document any justified causal alternative. | cp_reference; cp_material; cp_residue | separate allocated environmental-burden account | `usda-wood-handbook-2021` |
-| complete_period_normalization | all inventory rows | Every existing campaign, batch or lot amount rule and linked collection protocol uses one documented complete reporting-period pool for the same declared product, grade, route, configuration, site and reference state. Accepted-lot wording identifies the denominator only; retain all attributable startup, shutdown, wholly failed or zero-output batches, rejects, work in progress and rework in the raw native-unit numerator records. Count reworked reference product once only when finally accepted. Sum each attributable exchange over this matched pool, divide once by its strictly positive accepted reference-product quantity in the declared denominator unit, and scale to the declared reference quantity. Do not average batch ratios, drop a failed batch, pool unrelated products/periods or replace native numerator units. If the entire matched pool has no accepted output, retain the unnormalized absolute inventory and require review; issue no normalized result or fabricated output. Preserve stock/return and physical-transfer ledgers independently of burden allocation; allocation never removes already-incurred failed/rework activity. | all linked raw collection protocols; accepted reference-product pool; stock and rework links | native exchange unit per declared reference quantity; zero-output pool remains unnormalized |  |
 
 ### Data Quality Requirements
 

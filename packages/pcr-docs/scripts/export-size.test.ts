@@ -1,6 +1,32 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { summarizeExportFiles } from "./export-size.ts";
+import { inlineManifestUrl, decodeInlineManifestUrl } from "./raw-download.ts";
+
+test("bounded candidate manifest downloads preserve exact bytes and physical release artifacts", () => {
+  const source = "library/pcrs/domain/category/product/manifest.yaml";
+  const bytes = Buffer.from("\ufeffstatus: candidate\r\ncontent_maturity: authored_methodology\r\ntitle: 测试\r\n");
+  const url = inlineManifestUrl(source, bytes, false);
+  assert.ok(url);
+  assert.deepEqual(decodeInlineManifestUrl(url), bytes);
+  const exact = Buffer.concat([bytes, Buffer.alloc(8192 - bytes.length, 32)]);
+  assert.ok(inlineManifestUrl(source, exact, false));
+  for (const [file, content, history] of [
+    [source, Buffer.concat([exact, Buffer.from(" ")]), false],
+    [source, bytes, true],
+    [source.replace("manifest.yaml", "structured.yaml"), bytes, false],
+    [source.replace("manifest.yaml", "releases/1.0.0/manifest.snapshot.yaml"), bytes, false],
+    [source.replace("manifest.yaml", "revision/manifest.next.yaml"), bytes, false],
+    [source.replace("pcrs", "modules"), bytes, false],
+    [source, Buffer.from("status: active\ncontent_maturity: reviewed_methodology\n"), false],
+    [source, Buffer.from("status: deprecated\ncontent_maturity: deprecated_methodology\n"), false],
+    [source, Buffer.from("status: candidate\ncontent_maturity: empty_scaffold\n"), false],
+  ] as const) assert.equal(inlineManifestUrl(file, content, history), undefined);
+  assert.equal(decodeInlineManifestUrl("/generated/raw/manifest.yaml"), undefined);
+  for (const malformed of ["data:text/html;base64,PGgxPng8L2gxPg==", "data:application/octet-stream;base64,!!!!", "data:application/octet-stream;base64,YQ", "data:application/octet-stream;base64," + Buffer.alloc(8193).toString("base64")]) {
+    assert.throws(() => decodeInlineManifestUrl(malformed), /inline manifest/iu);
+  }
+});
 
 test("export accounting separates navigation, documents and shared artifacts", () => {
   const report = summarizeExportFiles([

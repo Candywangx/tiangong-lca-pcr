@@ -1,10 +1,1190 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33710"
-  title: "Fuel elements (cartridges), non-irradiated, for nuclear reactors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.fuel-elements-cartridges-non-irradiated-for-nuclear-reactors"
+  classification_refs: "CPC 3.0 33710; narrower; scope recommendation requiring independent acceptance"
+  covered_products: "Complete non-irradiated civilian UO2 PWR assemblies"
+  excluded_products: "Fuel and routes excluded in section 1"
+  representative_product: "PWR assembly qualified by actual supplier and acceptance state; no default model"
+  production_route: "Purchased sealed rods and finished structural components; high-level assembly, inspection and packaged delivery"
+  market_state: "Complete fresh assembly at factory delivery, never reactor-irradiated"
+functional_unit:
+  what: "Provide complete civilian assembly in declared accepted condition"
+  how_much: "1 kg accepted assembly net mass"
+  how_well: "Actual model, supplier, completeness and civilian UO2 PWR use; no performance optimization requirement"
+  how_long_or_cycle: "One factory delivery; no reactor service duration or electricity yield asserted"
+  reference_flow_link: "out_assembly"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "foreground_system_boundary"
+      rule: "Include receipt, assembly, acceptance, packaging, attributable utilities and waste-management environmental quantities. Upstream nuclear-material processing enters only through qualified supplier environmental backgrounds, without recipes or key parameters."
+      source_ids:
+        - iaea-ssr4-2017
+        - framatome-htp
+    - rule_id: boundary_discharge
+      applies_to: "foreground_system_boundary"
+      rule: "Waste transfer is a technosphere output; elementary flows record only actual environmental releases after controls. Distinguish air/freshwater and each nuclide; this boundary does not cover seawater discharge."
+      source_ids:
+        - iaea-ssr4-2017
+    - rule_id: boundary_physical
+      applies_to: "foreground_system_boundary"
+      rule: "Include all actual wet-air, H2O, chemical/particle, energy, packaging, container, maintenance and return exchanges plus stocks and paired internal links. Add individually verified atomic cards for actual missing flows. Physical accounts and service/allocated environmental accounts remain separate; missing quantities or monitoring do not establish zero."
+      source_ids:
+        - iaea-ssr4-2017
+boundary_abstraction:
+  declared_starting_condition: "Accepted sealed rods and separately finished structural components received at assembly facility"
+  starting_condition_role: "Foreground start, not elimination of upstream environmental burdens"
+  product_classification_scope: "The defined civilian PWR subset of CPC33710"
+  recursive_input_rule: "Repackaging an incoming complete assembly is a disclosed repackaging service, not this rod-assembly route; do not recursively attribute the same assembly"
+  upstream_dataset_requirement: "Complete upstream environmental provider data for sealed rods on actual quantity denominators; each separately supplied component includes manufacture, energy and delivery; missing data are not zero"
+  disclosure: "Actual providers, completeness, period, site, process boundary, receivers and excluded stages; assembly gate-to-gate result is not a complete fuel cycle"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Fuel elements (cartridges), non-irradiated, for nuclear reactors"
+    uuid: "bc68ae27-dcc2-4716-aa92-264c1f7e7308"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Civilian UO2 PWR"
+    - "never irradiated"
+    - "complete assembly model and acceptance state"
+    - "supplier/lot"
+    - "measured net mass and completeness"
+    - "separate fuel-compound"
+    - heavy-metal
+    - cladding
+    - "each support-metal and moisture accounts"
+    - "packaging exclusion"
+    - "provider quantity/background denominator"
+    - "start/end state and monitoring coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reference output is 1 kg accepted complete assembly net mass. Use cp_mass; all inventory quantities use measured accepted net mass of the same campaign, never assembly count."
+process_map:
+  - id: assembly
+    name: "Receipt, assembly, inspection and packaged delivery"
+    inclusion: "required"
+    inclusion_condition: "Route in section 1"
+    role: "One aggregated foreground unit with independent stage metering"
+    quantitative_reference: "out_assembly"
+process_inventory:
+  - id: assembly
+    label: "Receipt, assembly, inspection and packaged delivery"
+    inputs:
+      product:
+        - row_id: in_rods
+          role: "Received sealed fuel rods"
+          name: "Nuclear Fuel Rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28f5ac8d-dbfb-415d-afd2-36d0860a1cc3"
+          property_unit: "Mass / kg"
+          description: "Required; certified fresh civilian UO2 rods, including their cladding, sealed contents and internal hardware. Record gross receipts, supplier returns and stock change separately. No pellet or cladding input is added again."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_zr_grid
+          role: "Separate zirconium-alloy spacer grid"
+          name: "Zircaloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "397d43c1-8e3e-4718-80ac-25ca8309c9b7"
+          property_unit: "Mass / kg"
+          description: "Conditional on this separate purchased structural component being in the actual BOM. Use only actual certified Zircaloy grid material; M5 or another incompatible alloy requires its own identity. Supplier background must include finished-grid manufacture. No default grade or proportion."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_steel_end
+          role: "Stainless-steel assembly end fitting"
+          name: "Stainless-steel assembly end fitting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on separately supplied end fitting; actual steel grade, delivered condition and full component provider basis are required. Do not substitute pipe fittings or primary steel mass for finished-component supply."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_electricity
+          role: "Purchased grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Use this identity only at a 1–35 kV grid-average user supply interface. Collect assembly, inspection, ventilation and shared-service electricity; separately identify voltage, transformation losses, region, time and provider. Database property naming is retained; this is electrical energy, not heat."
+          amount:
+            expression: "Attributable metered electricity amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_energy"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_water
+          role: "Purchased cleaning water"
+          name: "water, process"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2f102a77-b596-4289-8a8d-ce7d6e347a2d"
+          property_unit: "Mass / kg"
+          description: "Conditional on water actually consumed in hardware cleaning or auxiliary services. Record treatment grade, source and meter/density basis. It is supplied liquid water, not an elementary withdrawal or solution recipe."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_pe
+          role: "Protective polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual PE protective wrap. Measure polymer film net mass separately from rods, structures and water. Verify actual resin, contamination and supplier; record classification metadata debt."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_pack"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_cradle
+          role: "Wooden transport cradle"
+          name: "Wooden transport cradle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual single-use wooden cradle. Record wood condition, moisture, treatment and component supplier; it is not a pallet by assumption."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_pack"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_container
+          role: "Reusable steel fuel transport container"
+          name: "Reusable steel fuel transport container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual reusable steel container fleet. This exchange records full measured new/replacement container acquisitions for the campaign physical ledger, not an allocation fraction of a circulating container. Keep dispatch/return masses, retirement and fleet stock in full and linked by container identity. Separately attribute container manufacture and maintenance environmental burdens using evidenced service use and provider denominators, never an assumed rotation count; do not charge both an allocated service and its already included manufacture."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_pack"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_zr_tube
+          role: "Zircaloy assembly guide tube"
+          name: "Zircaloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "397d43c1-8e3e-4718-80ac-25ca8309c9b7"
+          property_unit: "Mass / kg"
+          description: "Conditional on separately supplied finished guide tube certified as actual Zircaloy. Include its manufacturing in the provider, not bare-alloy production alone; M5 or another incompatible alloy needs its own identity. No tube design or process parameter is prescribed."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_nickel_spring
+          role: "Nickel-alloy assembly spring"
+          name: "Nickel-alloy assembly spring"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on separately supplied finished nickel-alloy spring in the actual BOM; collect each actual alloy/grade and finished-component supplier basis. A nickel profile or ferronickel is not the delivered component."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: in_wipe
+          role: "Cellulose cleaning wipe"
+          name: "Cellulose cleaning wipe"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual cellulose wipe consumption; verify supplied composition and moisture. Bare cellulose, pulp or toilet-paper stock does not establish a qualified delivered cleaning wipe."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_assembly
+          role: "Accepted complete fresh assembly"
+          name: "Fuel elements (cartridges), non-irradiated, for nuclear reactors"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bc68ae27-dcc2-4716-aa92-264c1f7e7308"
+          property_unit: "Mass / kg"
+          description: "1 kg; accepted complete non-irradiated civilian UO2 PWR assembly, excluding transport packaging. Include sealed fuel contents, cladding and all installed support hardware."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: out_return_rods
+          role: "Intact rods returned to supplier"
+          name: "Nuclear Fuel Rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28f5ac8d-dbfb-415d-afd2-36d0860a1cc3"
+          property_unit: "Mass / kg"
+          description: "Conditional on intact non-irradiated sealed rods returned to the supplier; track actual condition, mass, ownership and receiving record. No automatic environmental credit; reconcile purchased input and upstream provider treatment."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: out_pe
+          role: "Film delivered with assembly"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Conditional on protective PE film leaving with the assembly; retain full physical mass. It is auxiliary packaging, not an allocated co-product or part of reference net mass."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_pack"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+        - row_id: out_cradle
+          role: "Wooden transport cradle delivered with assembly"
+          name: "Wooden transport cradle delivered with assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the same single-use cradle leaving the gate; record the physical delivery mass and receiving party without applying the environmental allocation fraction."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_pack"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - iaea-ssr4-2017
+                - framatome-htp
+            ranges: []
+      waste:
+        - row_id: waste_zr
+          role: "Rejected uncontaminated zirconium-alloy grid"
+          name: "Rejected uncontaminated zirconium-alloy grid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on a rejected non-fuel structural grid sent to waste management; record actual alloy, radiation survey, receiving facility and destination. Internal reuse is not waste output."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: waste_steel
+          role: "Rejected uncontaminated stainless-steel end fitting"
+          name: "Rejected uncontaminated stainless-steel end fitting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on rejected end fitting sent to a receiver after contamination characterization; forming offcuts and casting scrap are incompatible identities for this assembly-only route."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: waste_pe
+          role: "Untreated waste polyethylene protective film"
+          name: "Untreated waste polyethylene protective film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on discarded PE wrap; record cleanliness, grade and actual receiver. A cleaned mechanical-recycling feed is not the same delivered waste state."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: waste_wipe
+          role: "Uranium-contaminated cellulose cleaning wipe"
+          name: "Uranium-contaminated cellulose cleaning wipe"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual contaminated solid waste; characterize cellulose, moisture and contamination/activity separately. An intact rejected sealed rod is returned product or its own radioactive waste, not this wipe."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: wastewater
+          role: "Untreated assembly-hardware cleaning wastewater"
+          name: "Untreated assembly-hardware cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on off-site treatment of this actual liquid waste; record water and individual contaminants with receiver and treatment basis. Do not also record its contained radionuclides as a direct freshwater release at this gate."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: waste_rods
+          role: "Unopened rejected UO2 sealed fuel rod"
+          name: "Unopened rejected UO2 sealed fuel rod"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on an intact fresh rejected rod transferred to authorized radioactive waste management instead of supplier return. Record complete rod mass and isotope activity separately; no spent-fuel or separated powder substitute."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+      elementary:
+        - row_id: water_release
+          role: "Liquid water discharged to freshwater"
+          name: "Water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume / m3"
+          description: "Conditional on measured direct liquid-water discharge to freshwater after controls. This Volume/m3 exchange is the net H2O portion, not the whole mixed liquid or carrier volume. Establish it from independently evidenced liquid composition, water mass and a compatible density/volume basis; retain whole-liquid mass/volume and each dissolved or suspended constituent separately. No water-vapour or freshwater resource-withdrawal identity. Do not also count the same liquid as off-site wastewater transfer."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_water_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: u238_air
+          role: "Uranium-238 discharge to air"
+          name: "uranium-238"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c44-0050c2490048"
+          property_unit: "Radioactivity / kBq"
+          description: "Conditional on measured uranium-238 discharge to outdoor air, unspecified subcompartment. Record isotope-resolved activity after controls; no default positive release. Do not use total alpha, total uranium mass or a long-term/correction flow. No simultaneous off-site-waste emission."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: u238_water
+          role: "Uranium-238 discharge to water"
+          name: "uranium-238"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-8db4-0050c2490048"
+          property_unit: "Radioactivity / kBq"
+          description: "Conditional on measured uranium-238 discharge to freshwater. Record isotope-resolved activity after controls; no default positive release. Do not use total alpha, total uranium mass or a long-term/correction flow. No simultaneous off-site-waste emission."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: u235_air
+          role: "Uranium-235 discharge to air"
+          name: "uranium-235"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c3c-0050c2490048"
+          property_unit: "Radioactivity / kBq"
+          description: "Conditional on measured uranium-235 discharge to outdoor air, unspecified subcompartment. Record isotope-resolved activity after controls; no default positive release. Do not use total alpha, total uranium mass or a long-term/correction flow. No simultaneous off-site-waste emission."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: u235_water
+          role: "Uranium-235 discharge to water"
+          name: "uranium-235"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c40-0050c2490048"
+          property_unit: "Radioactivity / kBq"
+          description: "Conditional on measured uranium-235 discharge to freshwater. Record isotope-resolved activity after controls; no default positive release. Do not use total alpha, total uranium mass or a long-term/correction flow. No simultaneous off-site-waste emission."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: u234_air
+          role: "Uranium-234 discharge to air"
+          name: "uranium-234"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-8daf-0050c2490048"
+          property_unit: "Radioactivity / kBq"
+          description: "Conditional on measured uranium-234 discharge to outdoor air, unspecified subcompartment. Record isotope-resolved activity after controls; no default positive release. Do not use total alpha, total uranium mass or a long-term/correction flow. No simultaneous off-site-waste emission."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+        - row_id: u234_water
+          role: "Uranium-234 discharge to water"
+          name: "uranium-234"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ae3f-0050c2490048"
+          property_unit: "Radioactivity / kBq"
+          description: "Conditional on measured uranium-234 discharge to freshwater. Record isotope-resolved activity after controls; no default positive release. Do not use total alpha, total uranium mass or a long-term/correction flow. No simultaneous off-site-waste emission."
+          amount:
+            expression: "Full measured physical amount of this atomic exchange for the same period divided by the accepted assembly net-mass total in cp_mass; never divide by item count; use cp_release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - iaea-ssr4-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "foreground_burden_allocation"
+    rule: "Subdivide by same-model campaigns and retain full physical mass, water, metal/heavy-metal and packaging-reuse accounts. Never multiply physical co-product outputs by allocation shares. No generic yield, recipe or scrap fraction."
+    source_ids:
+      - iaea-ssr4-2017
+  - rule_id: allocation_burdens
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer separately metered stages/campaigns; attribute shared energy using actual causal metering evidence and demonstrate shares sum to one. Unknown causal relationships remain disclosed, without default allocation of every burden by heavy-metal mass. Rejected items, wastes and packaging receive no automatic substitution credit; do not reallocate an already allocated supplier background."
+    source_ids:
+      - iaea-ssr4-2017
+  - rule_id: allocation_services
+    applies_to: "foreground_burden_allocation"
+    rule: "Preserve full physical packaging/container acquisitions, circulation, retirement, maintenance and stocks independently of service use. Attribute only environmental burdens using evidenced service pools and provider denominators; no assumed lifetime or rotation count, and no duplicated manufacture already included in a service."
+    source_ids:
+      - iaea-ssr4-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "assembly"
+      flow_role: "reference product"
+      record_type: "weighing"
+      raw_fields: "model; supplier; lot; serial; net accepted mass; fuel-compound mass; elemental heavy-metal mass; cladding mass; support-metal mass by material; moisture; package tare"
+      collection_method: "Calibrated weighing or traceable accepted complete-assembly net-mass records; reconcile supplier certified mass accounts; accepted net-mass total; all exchanges per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each accepted lot"
+      temporal_coverage: "whole declared campaign"
+      site_scope: "complete accepted assembly at gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; acceptance; supplier certificate"
+    - protocol_id: cp_material
+      process_id: "assembly"
+      flow_role: "purchased rods and structural components; returned rods"
+      record_type: "supplier and stock records"
+      raw_fields: "SKU; sealed status; lot; gross receipts; installed mass; supplier returns; opening/closing stock; each support component; provider denominator"
+      collection_method: "Weigh or reconcile actual certified supplier net-mass records by delivered identity and lot; same-period physical and stock reconciliation; per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each receipt and campaign closure"
+      temporal_coverage: "same campaign"
+      site_scope: "assembly inputs, returns and stocks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "supplier BOM; invoices; delivery/return receipts; provider scope"
+    - protocol_id: cp_energy
+      process_id: "assembly"
+      flow_role: "electricity"
+      record_type: "meter log"
+      raw_fields: "stage; interval; voltage; meter reading; utility sharing evidence; provider; reference quantity"
+      collection_method: "Read calibrated meters and verify complete assembly/support-services coverage; attributable same-period electricity per 1 kg reference flow"
+      unit: "MJ"
+      frequency: "each metered interval"
+      temporal_coverage: "same campaign"
+      site_scope: "assembly and attributable utilities"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; provider voltage/region/time; causal allocation record"
+    - protocol_id: cp_water
+      process_id: "assembly"
+      flow_role: "cleaning water and wastewater"
+      record_type: "meter and discharge records"
+      raw_fields: "source; treatment; water mass; density if volume meter; wastewater mass; contaminants; stock/reuse; receiver"
+      collection_method: "Meter or weigh water and wastewater separately; verify actual treatment/receiver; retain water balance; same-period water/wastewater per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each metered interval and transfer"
+      temporal_coverage: "same campaign"
+      site_scope: "cleaning and auxiliary boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; density measurement; sample and receiver records"
+    - protocol_id: cp_pack
+      process_id: "assembly"
+      flow_role: "packaging input/output and container fleet"
+      record_type: "weighing and reuse ledger"
+      raw_fields: "material; grade; moisture; incoming/outgoing single-use mass; container serial; full new/replacement acquisitions; dispatch/return/retirement mass; opening/closing fleet stock; maintenance inputs and wastes; service use; provider denominator; environmental allocation shares"
+      collection_method: "Weigh full packaging and container physical exchanges; pair dispatch/return records; reconcile fleet stocks; keep service use and manufacture/maintenance environmental attribution separate, without assumed life; per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each delivery and campaign closure"
+      temporal_coverage: "same campaign"
+      site_scope: "packaging and fleet interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "tare; supplier; delivery/return and fleet records; service allocation evidence"
+    - protocol_id: cp_waste
+      process_id: "assembly"
+      flow_role: "each waste identity"
+      record_type: "transfer record"
+      raw_fields: "mass; material; moisture; isotope-resolved activity; contamination; storage change; receiver; destination"
+      collection_method: "Characterize and weigh each segregated waste; retain authorized receiving evidence; same-period transferred waste per 1 kg reference flow; stock separately"
+      unit: "kg"
+      frequency: "each transfer and stock closure"
+      temporal_coverage: "same campaign"
+      site_scope: "assembly waste-management interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; laboratory; waste transfer and stock records"
+    - protocol_id: cp_release
+      process_id: "assembly"
+      flow_role: "each nuclide and medium"
+      record_type: "monitoring"
+      raw_fields: "isotope; detector/assay report; calibration; sampling location; medium/submedium; isotope activity concentration; matching gas/liquid discharge quantity; sampling interval; activity reference date UTC Z; control stage; background; detection limit; isotope-specific uncertainty; linked physical particle/chemical record"
+      collection_method: "Use qualified isotope-resolved assay and monitoring records; integrate post-control isotope concentration with matched measured discharge quantity on the same reference-date basis; retain non-detect uncertainty and coverage; link physical releases without duplicate impact contribution; per 1 kg reference flow"
+      unit: "kBq"
+      frequency: "site monitoring programme intervals"
+      temporal_coverage: "same campaign"
+      site_scope: "actual outdoor-air or freshwater release point"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "detector and laboratory QA; calibration; sampling; reference-date and monitoring coverage records"
+    - protocol_id: cp_water_release
+      process_id: "assembly"
+      flow_role: "net H2O portion of freshwater liquid release"
+      record_type: "discharge meter and composition record"
+      raw_fields: "whole-liquid mass/volume; H2O mass; independently evidenced composition; water density and conditions; net H2O volume basis; receiving freshwater; meter interval; post-control stage; isotope/chemical sample coverage; event links"
+      collection_method: "Measure whole discharge and independently establish its net H2O portion on a compatible density/volume basis; keep every solute/suspended constituent and isotope activity separate with matched intervals; per 1 kg reference flow"
+      unit: "m3"
+      frequency: "each discharge interval"
+      temporal_coverage: "same campaign"
+      site_scope: "direct freshwater outlet"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; composition and density evidence; receiver and sample records"
+  calculation_rules:
+    - id: campaign_basis
+      applies_to: "all inventory rows"
+      rule: "Divide full measured physical exchange totals and separately evidenced service attribution for the same period by accepted assembly net-mass total in cp_mass; out_assembly is fixed at 1 kg; never divide by count."
+      inputs:
+        - cp_mass
+        - cp_material
+        - cp_energy
+        - cp_water
+        - cp_pack
+        - cp_waste
+        - cp_release
+        - cp_water_release
+      output: "Atomic exchange amount per 1 kg reference flow"
+      source_ids:
+        - iaea-ssr4-2017
+  data_quality_requirements:
+    - id: complete_provider
+      applies_to: "upstream and reference"
+      requirement: "Preserve physical identity, completeness, actual provider quantity/environmental denominator, time, geography and allocation; missing items are not zero and a UUID does not establish complete background."
+      evidence: "Original provider environmental data and acceptance certificates"
+    - id: environmental_coverage
+      applies_to: "all exchanges"
+      requirement: "Include every actual BOM material and consumed utility; additional actual flows need individually verified atomic identities. No supplied-solution default; if actually used, account separately for each component, active matter and carrier water and add atomic cards. Missing monitoring is not zero release; disclose uncovered nuclides/chemicals."
+      evidence: "Actual invoices, campaign records, discharge and waste survey"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm complete non-irradiated civilian UO2 PWR assembly, distinct rod identity and provider start/end states; exclude the other fuels above; finished identity cannot represent rods or pellets."
+    source_ids:
+      - framatome-htp
+      - iaea-ssr4-2017
+  - rule_id: validate_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Same-period, same-model net-mass denominator applies across bilingual reference, inventory, collection and calculation; reconcile full physical/water/heavy-metal/support-metal and packaging accounts before environmental attribution; allocated mass is not physical output."
+    source_ids:
+      - iaea-ssr4-2017
+  - rule_id: validate_releases
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check each nuclide, medium, unit and detection coverage; never sum total alpha/total uranium with their isotope components; nuclides in off-site wastewater/solid waste are not direct releases here; retain every evidenced emission. Report absent monitoring coverage, detection limits or unresolved identities."
+    source_ids:
+      - iaea-ssr4-2017
+  - rule_id: validate_metrology
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require isotope-specific detector/assay evidence, calibration, uncertainty and UTC Z activity reference date for kBq. Link physical chemical/particle mass and radioactivity without duplicate characterization; particle fundamental quantities must match the model. Net H2O Volume/m3 is not whole-liquid volume. Total mass and element balances have no reaction source/sink; species formation/consumption is a separate evidenced account. A permit limit is not an actual release."
+    source_ids:
+      - iaea-ssr4-2017
+published_dataset_profile:
+  dataset_role: "Public assembly/delivery environmental foreground dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Civilian environmental LCA with matching physical and provider denominators"
+  excluded_use: "Nuclear-material preparation, design/optimization, key-parameter inference, radiological safety/licensing decisions or full-fuel-cycle claims"
+  required_metadata: "Section 3 qualifiers, denominator, provider backgrounds, stage coverage and attribution"
+  required_quality_disclosure: "Identity metadata defects, missing provider/nuclide monitoring/actual materials, detection limits, uncertainty and unresolved items"
+  update_trigger: "Changes in SKU, provider, delivery state, material, utilities, monitoring or quantity basis"
+data_sources:
+  - id: "iaea-ssr4-2017"
+    type: "official_guidance"
+    reference: "IAEA, Safety of Nuclear Fuel Cycle Facilities, SSR-4 (2017), 1.8 (printed 3/PDF23), 9.102–9.108 (printed 110–111/PDF130–131); https://www-pub.iaea.org/MTCD/Publications/PDF/PUB1791_web.pdf"
+    used_for: "Nuclear-facility scope and environmental record categories. No LCI factors, recipes, permit limits or quantity defaults. Denominator, physical/species/service accounts and metrology requirements are authored PCR collection rules."
+  - id: "framatome-htp"
+    type: "handbook"
+    reference: "Framatome, PWR Fuel Assembly HTP, A0529, manufacturer original; https://www.framatome.com/solutions-portfolio/portfolio/product/A0529/pwr-fuel-assembly-htp; HTP product sheet PS_US_328_ENG_05_18, pages 1–2; https://www.framatome.com/solutions-portfolio//app/uploads/2025/09/a0529-p-us-g-en-328-05-18-htp.pdf"
+    used_for: "Example of civilian PWR complete-assembly and zirconium-alloy-cladding category. One manufacturer; no generic mass, energy, recipe or design requirement."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1a855b23b4eaf8b315f121feffcd602be1901349e9c12e14db01c534b23644f1"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5899"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5899
+          line: 60
+          column: 1
+        end:
+          offset: 7889
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted sealed rods and separately finished structural components received at assembly facility |\n| starting_condition_role | Foreground start, not elimination of upstream environmental burdens |\n| product_classification_scope | The defined civilian PWR subset of CPC33710 |\n| recursive_input_rule | Repackaging an incoming complete assembly is a disclosed repackaging service, not this rod-assembly route; do not recursively attribute the same assembly |\n| upstream_dataset_requirement | Complete upstream environmental provider data for sealed rods on actual quantity denominators; each separately supplied component includes manufacture, energy and delivery; missing data are not zero |\n| disclosure | Actual providers, completeness, period, site, process boundary, receivers and excluded stages; assembly gate-to-gate result is not a complete fuel cycle |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_complete | Include receipt, assembly, acceptance, packaging, attributable utilities and waste-management environmental quantities. Upstream nuclear-material processing enters only through qualified supplier environmental backgrounds, without recipes or key parameters. | iaea-ssr4-2017; framatome-htp |\n| boundary_discharge | Waste transfer is a technosphere output; elementary flows record only actual environmental releases after controls. Distinguish air/freshwater and each nuclide; this boundary does not cover seawater discharge. | iaea-ssr4-2017 |\n| boundary_physical | Include all actual wet-air, H2O, chemical/particle, energy, packaging, container, maintenance and return exchanges plus stocks and paired internal links. Add individually verified atomic cards for actual missing flows. Physical accounts and service/allocated environmental accounts remain separate; missing quantities or monitoring do not establish zero. | iaea-ssr4-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 310
+              line: 9
+              column: 1
+            end:
+              offset: 384
+              line: 9
+              column: 75
+          text: "# Assembly and delivery of non-irradiated civilian UO2 PWR fuel assemblies"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5899
+              line: 60
+              column: 1
+            end:
+              offset: 5920
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33729"
+      family: "allocation"
+      span:
+        start:
+          offset: 33729
+          line: 525
+          column: 1
+        end:
+          offset: 34901
+          line: 533
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_physical | Subdivide by same-model campaigns and retain full physical mass, water, metal/heavy-metal and packaging-reuse accounts. Never multiply physical co-product outputs by allocation shares. No generic yield, recipe or scrap fraction. | iaea-ssr4-2017 |\n| allocation_burdens | Prefer separately metered stages/campaigns; attribute shared energy using actual causal metering evidence and demonstrate shares sum to one. Unknown causal relationships remain disclosed, without default allocation of every burden by heavy-metal mass. Rejected items, wastes and packaging receive no automatic substitution credit; do not reallocate an already allocated supplier background. | iaea-ssr4-2017 |\n| allocation_services | Preserve full physical packaging/container acquisitions, circulation, retirement, maintenance and stocks independently of service use. Attribute only environmental burdens using evidenced service pools and provider denominators; no assumed lifetime or rotation count, and no duplicated manufacture already included in a service. | iaea-ssr4-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 310
+              line: 9
+              column: 1
+            end:
+              offset: 384
+              line: 9
+              column: 75
+          text: "# Assembly and delivery of non-irradiated civilian UO2 PWR fuel assemblies"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33729
+              line: 525
+              column: 1
+            end:
+              offset: 33769
+              line: 525
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43684"
+      family: "validation"
+      span:
+        start:
+          offset: 43684
+          line: 565
+          column: 1
+        end:
+          offset: 45191
+          line: 574
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_identity | Confirm complete non-irradiated civilian UO2 PWR assembly, distinct rod identity and provider start/end states; exclude the other fuels above; finished identity cannot represent rods or pellets. | framatome-htp; iaea-ssr4-2017 |\n| validate_balance | Same-period, same-model net-mass denominator applies across bilingual reference, inventory, collection and calculation; reconcile full physical/water/heavy-metal/support-metal and packaging accounts before environmental attribution; allocated mass is not physical output. | iaea-ssr4-2017 |\n| validate_releases | Check each nuclide, medium, unit and detection coverage; never sum total alpha/total uranium with their isotope components; nuclides in off-site wastewater/solid waste are not direct releases here; retain every evidenced emission. Report absent monitoring coverage, detection limits or unresolved identities. | iaea-ssr4-2017 |\n| validate_metrology | Require isotope-specific detector/assay evidence, calibration, uncertainty and UTC Z activity reference date for kBq. Link physical chemical/particle mass and radioactivity without duplicate characterization; particle fundamental quantities must match the model. Net H2O Volume/m3 is not whole-liquid volume. Total mass and element balances have no reaction source/sink; species formation/consumption is a separate evidenced account. A permit limit is not an actual release. | iaea-ssr4-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 310
+              line: 9
+              column: 1
+            end:
+              offset: 384
+              line: 9
+              column: 75
+          text: "# Assembly and delivery of non-irradiated civilian UO2 PWR fuel assemblies"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43684
+              line: 565
+              column: 1
+            end:
+              offset: 43706
+              line: 565
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5899"
+      source_span:
+        start:
+          offset: 6926
+          line: 75
+          column: 1
+        end:
+          offset: 7239
+          line: 75
+          column: 314
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_discharge"
+      identity_kind: "explicit"
+      unit_id: "normative_5899"
+      source_span:
+        start:
+          offset: 7240
+          line: 76
+          column: 1
+        end:
+          offset: 7491
+          line: 76
+          column: 252
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_5899"
+      source_span:
+        start:
+          offset: 7492
+          line: 77
+          column: 1
+        end:
+          offset: 7887
+          line: 77
+          column: 396
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_33729"
+      source_span:
+        start:
+          offset: 33823
+          line: 529
+          column: 1
+        end:
+          offset: 34094
+          line: 529
+          column: 272
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_burdens"
+      identity_kind: "explicit"
+      unit_id: "normative_33729"
+      source_span:
+        start:
+          offset: 34095
+          line: 530
+          column: 1
+        end:
+          offset: 34527
+          line: 530
+          column: 433
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_services"
+      identity_kind: "explicit"
+      unit_id: "normative_33729"
+      source_span:
+        start:
+          offset: 34528
+          line: 531
+          column: 1
+        end:
+          offset: 34899
+          line: 531
+          column: 372
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43684"
+      source_span:
+        start:
+          offset: 43760
+          line: 569
+          column: 1
+        end:
+          offset: 44010
+          line: 569
+          column: 251
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_43684"
+      source_span:
+        start:
+          offset: 44011
+          line: 570
+          column: 1
+        end:
+          offset: 44322
+          line: 570
+          column: 312
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_releases"
+      identity_kind: "explicit"
+      unit_id: "normative_43684"
+      source_span:
+        start:
+          offset: 44323
+          line: 571
+          column: 1
+        end:
+          offset: 44672
+          line: 571
+          column: 350
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_metrology"
+      identity_kind: "explicit"
+      unit_id: "normative_43684"
+      source_span:
+        start:
+          offset: 44673
+          line: 572
+          column: 1
+        end:
+          offset: 45189
+          line: 572
+          column: 517
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5899"
+      source_span:
+        start:
+          offset: 5899
+          line: 60
+          column: 1
+        end:
+          offset: 5920
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5899"
+      source_span:
+        start:
+          offset: 5948
+          line: 64
+          column: 1
+        end:
+          offset: 6872
+          line: 71
+          column: 170
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33729"
+      source_span:
+        start:
+          offset: 33729
+          line: 525
+          column: 1
+        end:
+          offset: 33769
+          line: 525
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43684"
+      source_span:
+        start:
+          offset: 43684
+          line: 565
+          column: 1
+        end:
+          offset: 43706
+          line: 565
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1a855b23b4eaf8b315f121feffcd602be1901349e9c12e14db01c534b23644f1"
+  generated_content_sha256: "sha256:41728c58c75def0fc4aceb76717b3ba17a91f010288a57b71ddf7a52ae120f53"

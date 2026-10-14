@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-13
-lastReviewedNote: "Reviewed the 156-record restoration and retained v4 search codec from ca46d655: bounded score masks, signed posting deltas and keyed inspector packs retain exact engine exports, complete record data and backward readers under unchanged browser and provider file budgets. PCR lifecycle, translation, canonical bytes, dependency and product-version contracts remain unchanged. Full source-bound qualification and coordinated publication remain separate requirements."
-lastReviewedCommit: 4cb1e0c9021e191c1d7d2ab6552aaf715fc170ab
+lastReviewedAt: 2026-10-14
+lastReviewedNote: "Reviewed bounded inline downloads for unpublished candidate manifests up to 8192 bytes. All canonical sources, physical published/history/language/projection downloads and native navigation payloads remain intact. Complete export and source-bound CI remain required before merge."
+lastReviewedCommit: 6b99296b0b935404abdf900b2566fe2ff59a966d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -74,9 +74,21 @@ exact release metadata bytes. Old snapshots are never rewritten by migration.
 ## Losslessness and generated artifacts
 
 The core document bundle contains the complete manifest, verified structured
-projection, declared languages and original artifact buffers. Raw downloads copy
-those buffers byte for byte. Exact-byte download hashes are distinct from the
+projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
+
+Current candidate PCR manifests with authored methodology, no release history and at most
+8,192 original bytes use native `data:application/octet-stream;base64,` download links
+with the `manifest.yaml` filename. These bounded inline downloads work without
+JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
+byte to the pinned source. Current candidate HTTP manifest URLs may change with
+this transport; use each record's current download links. Published/deprecated
+current manifests, all release/history artifacts, larger manifests, language
+Markdown and structured projections retain physical downloads. Physical responses
+keep attachment/noindex headers; inline bytes create no separately indexable HTTP
+resource. Source-relative links reuse the same source-bound download and filename.
+The exporter verifies rendered download anchors, and sealed-site qualification
+checks actual downloads without JavaScript in Chromium, Firefox and WebKit.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -86,7 +98,7 @@ Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
 
 Generated metadata lives in `.generated/site.json`; page HTML and complete
-structured data are separate artifacts read only at build time. Public downloads
+structured data are separate artifacts read only at build time. Physical downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
@@ -153,7 +165,7 @@ Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
 internal revisions, search/filter permutations and raw downloads are not normal
-indexing targets. Raw download responses carry attachment and noindex headers.
+indexing targets. Physical raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation

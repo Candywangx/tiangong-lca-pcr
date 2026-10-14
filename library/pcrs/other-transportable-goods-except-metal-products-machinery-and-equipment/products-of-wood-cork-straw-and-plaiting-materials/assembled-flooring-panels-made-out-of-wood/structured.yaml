@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.assembled-flooring-panels-made-out-of-wood"
-  classification_refs: "CPC 3.0 31626; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
+  classification_refs: "CPC 3.0 31626; narrower methodology scope; no accepted mapping implied"
   covered_products: "UF-bonded all-non-tropical-hardwood-veneer, clear UV-prefinished assembled multilayer flooring"
   excluded_products: "Single-layer solid parquet; HDF laminate/composite; unassembled strips; alternate cores/glues/finishes"
   representative_product: "A declared species-layer recipe of factory-finished profiled multilayer wood flooring; no invented thickness, density or proportions"
@@ -38,7 +38,7 @@ boundary_abstraction:
   starting_condition_role: "Foreground gate-to-gate assembly/finishing plus explicit upstream product, utility, transport and waste-treatment links for cradle-to-gate use"
   product_classification_scope: "Only the specified multilayer assembled wood subset of CPC 3.0 31626"
   recursive_input_rule: "Purchased assembled floor panels or recovered same-category material terminate tracing at a documented upstream dataset; disclose identity, previous processing and amount. Rework within this unit is internal WIP, not a new external reference product."
-  upstream_dataset_requirement: "Matched species/veneer drying/peeling, actual independently supplied UF resin or verified complete UF adhesive with compatible supplied-state/reference basis and supplier manufacture/preparation/delivery, coating formulation, grid region/year/voltage, thermal supplier reference and actual treatment; missing compatibility remains pending"
+  upstream_dataset_requirement: "Matched species/veneer drying/peeling, resin solids, coating formulation, grid region/year/voltage, thermal supplier reference and actual treatment; missing compatibility remains pending"
   disclosure: "Gate, period, configurations, starting moisture, purchased/on-site split, WIP/stock changes, heat generation boundary, losses and excluded downstream scenarios"
 reference_flow_definition:
   reference_amount: "1"
@@ -54,7 +54,8 @@ reference_flow_definition:
     - "Species and source for each wood layer"
     - "thickness of each layer and total"
     - "grain arrangement and bond line"
-    - "UF formulation and supplied solids/water"
+    - "UF formulation"
+    - "supplied solids/water and evidenced cure extent"
     - "clear UV coating SKU and chemistry per stage"
     - "retained coating/additive mass"
     - "measured cover dimensions and joining profile"
@@ -87,21 +88,14 @@ measurement_rules:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Use dry-basis moisture u = (wet wood mass - dry wood mass) / dry wood mass. Measure separate wood layers with a species-calibrated method verified against representative oven-dry samples; do not treat resin/coating volatilization as water. No default moisture or density."
+    rule: "Use dry-basis moisture u = (wet wood mass - dry wood mass) / dry wood mass. Measure separate wood layers with a species-calibrated method verified against representative oven-dry samples; do not treat resin/coating volatilization as water. No default moisture or density. Supplied resin nonvolatile solids and cured retained solids are distinct measured states, not a universally conserved component; use layer_balance for reaction-aware reconciliation."
   - id: utility_basis
-    applies_to: "electricity"
+    applies_to: "electricity; press_heat"
     required_property_ref:
-      name: "Net calorific value"
+      name: "Net calorific value ; Gross calorific value"
       uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
     required_unit: "MJ"
-    rule: "Electricity retains the recorded NCV property; convert metered kWh using 3.6 MJ/kWh. This is electrical-energy unit conversion, not fuel heat or efficiency."
-  - id: utility_heat_basis
-    applies_to: "press_heat"
-    required_property_ref:
-      name: "Gross calorific value"
-      uuid: "93a60a56-a3c8-14da-a746-0800200c9a66"
-    required_unit: "MJ"
-    rule: "Purchased steam heat retains its GCV reference and requires supplier-defined reference-energy and delivery/return compatibility. Preserve measured steam/condensate mass, state and physical net enthalpy separately; a bare MJ value does not establish net useful heat or a GCV conversion. Unknown provider correspondence remains pending."
+    rule: "Electricity has the recorded NCV property; convert metered kWh using 3.6 MJ/kWh. Steam heat has a GCV identity and requires supplier-defined reference-energy compatibility; a bare MJ value cannot establish net useful heat."
 process_map:
   - id: flooring
     name: "Assembly, machining, clear UV cure and packing"
@@ -186,7 +180,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "This is a separate uf glue exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions."
           amount:
-            expression: "Use this generic UF-resin row only for a real independently supplied resin state and mass reference supported by its native identity and actual provider; record supplied resin mass, measured solids/moisture and actual onsite mixing/application. A bought complete prepared aqueous or compounded UF adhesive requires one specific compatible complete-formulation supply row and provider retaining supplier resin manufacture, formulation preparation and delivery before use; the generic resin UUID alone does not establish that complete supply. Its included resin, catalyst, carrier water and additives are analytical composition, not new external purchases. Actual independently purchased additions and onsite dilution/mixing water, utilities and losses remain separate. Preserve supplier wet/active reference correspondence; never equate whole wet preparation kg to dry-resin kg or count included water twice. No default solids fraction."
+            expression: "Record net UF resin delivered to glue mixing/application, receipt formulation, solids and water mass; the purchased preparation is one exchange. Background wet-resin versus dry-resin basis must agree; no default solids. Water already in supplied resin is not a second water input. Retain actual supplied precondensation state, recipe and cure-extent evidence under cp_recipe; supplied solids do not automatically equal cured retained resin mass."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -200,12 +194,14 @@ process_inventory:
             ranges: []
         - row_id: glue_hardener
           role: "glue hardener"
-          name: "Separately supplied solid ammonium-chloride catalyst"
+          name: "Ammonium Chloride"
           flow_type: "product"
+          flow_ref:
+            uuid: "0d0e3c27-1f93-4dc1-80d0-392a3226cd4f"
           property_unit: "Mass / kg"
-          description: "Conditional one actually separately supplied solid ammonium-chloride catalyst at the flooring procurement boundary, supported by supplier/SDS assay, form and actual delivery/interface/reference evidence. The selected physical exchange has no verified UUID: chemical CAS and Mass/kg alone do not establish a matching delivered supplier state. Require positive actual delivered-state/interface and native-reference compatibility before linking a directly verified identity. A supplied solution or blend requires its own complete-product identity. Unknown composition, dose or route equivalence is not invented."
+          description: "This is a separate glue hardener exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions."
           amount:
-            expression: "Only when ammonium chloride is separately dosed: weigh pure salt, record concentration/purity and mixing losses; embedded catalyst in purchased adhesive is not a duplicate input. Absent dosing requires evidence of absence. Retain actual supplier assay and delivered solid reference quantity; a supplied solution or blend needs its own compatible complete-formulation identity."
+            expression: "Only when ammonium chloride is separately dosed: weigh pure salt, record concentration/purity and mixing losses; embedded catalyst in purchased adhesive is not a duplicate input. Absent dosing requires evidence of absence."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -403,7 +399,7 @@ process_inventory:
           flow_ref:
             uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
           property_unit: "Mass / kg"
-          description: "This is a separate carton exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions. The selected corrugated-box record specifies16.6% primary and83.4% recycled fibre on its source fibre basis, production mix at plant and technology mix. Retain this locator only when actual whole supplied carton composition, construction, state and supplier/reference basis demonstrably match those constraints; these figures are source-identity conditions, never a factory recipe or universal recycled-content default. Other or unverified actual boxes remain whole physical exchanges requiring another compatible verified identity or a precise UUID gap, with supplier box manufacture and delivery retained once."
+          description: "This is a separate carton exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions."
           amount:
             expression: "Weigh new corrugated boxes issued to this product lot; record board grade and fibre sourcing, separate damaged scrap and material leaving with product. Packaging is outside accepted flooring net mass."
             value_mode: "foreground_record"
@@ -739,7 +735,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "This is a separate water air exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions."
           amount:
-            expression: "Record water vapour released to outdoor air from wood moisture change and water in UF/coating operations, using matched input/output/storage water balances. Do not use a freshwater water-vapour flow or count internally returned condensate as an air release. Compartment: outdoor air, unspecified; do not assume urban, rural, stack height or long-term release. Record presence/absence from site evidence, not from the identity lookup."
+            expression: "Record actual water vapour released to outdoor air after controls using cp_air monitoring or a validated H2O-species balance specified in section 8, including evidenced reaction formation/consumption, wood/carrier water, retained water, liquid/waste outlets and stocks. Net out inlet/background humidity on the same gas basis. UF condensation can generate water, but actual recipe and cure extent determine its amount and destination; neither all formed water nor an unexplained residual is an air emission. Do not use a freshwater water-vapour flow or count internally returned condensate as an air release. Compartment: outdoor air, unspecified; do not assume urban, rural, stack height or long-term release. Record presence/absence from site evidence, not from the identity lookup."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -750,6 +746,7 @@ process_inventory:
               collection_protocol_id: cp_air
               source_ids:
                 - corrim-flooring-2011
+                - ding-uf-curing-2020
             ranges: []
 allocation_rules:
   - rule_id: allocation_physical
@@ -797,8 +794,8 @@ dataset_production:
       process_id: "flooring"
       flow_role: "Glue and each coating/cleaner chemical"
       record_type: "primary measurement and records"
-      raw_fields: "SKU; SDS; supplier formulation; wet mass; solids; water; dose; issue; return; retained dry glue/coating; catalyst/additive; cleaning recovery; stage; cure schedule; QC"
-      collection_method: "Calibrated weighing and material issue/return/stock balances for each actual SKU; retain press temperature/time/pressure, UV lamp dose/speed and cure acceptance without numerical defaults. Verify each actual independent UF-resin supply versus a bought whole prepared adhesive: complete formulations require specific compatible complete-product identities/providers and supplier manufacture/preparation/delivery once; included ingredients/carrier water remain analytical. Record true separately purchased additions and actual onsite dilution/mixing water/utilities/losses separately, with matched provider wet/active reference basis; unresolved whole identities remain pending, never recaption a constituent UUID."
+      raw_fields: "SKU; SDS; supplier formulation and supplied precondensation state; wet mass; nonvolatile-solids test basis; water/solvent fractions; dose; issue; return; retained cured glue/coating; residual reactive species; catalyst/additive; cleaning recovery; stage opening/closing stocks and paired handoffs; cure schedule; measured cure extent and method; formation/consumption evidence; sampling and uncertainty; QC"
+      collection_method: "Calibrated weighing and issue/return/stock balances for each actual SKU; pair stage endpoints with moisture/composition measured on compatible bases. Retain press temperature/time/pressure and UV lamp dose/speed; establish actual cure extent and retained composition by validated representative analysis or supplier/site evidence, not acceptance alone. Quantify reaction terms only from actual recipe/extent with uncertainty; unavailable terms remain pending, never zero or default yield."
       unit: "kg"
       frequency: "Each lot/shift; continuous meters; representative emission campaign"
       temporal_coverage: "One matched full production period covering route/product variability"
@@ -845,8 +842,8 @@ dataset_production:
       process_id: "flooring"
       flow_role: "Each released species/particle bin"
       record_type: "primary measurement and records"
-      raw_fields: "source; controls; species/CAS; sample time; concentration; gas flow; pressure/temperature; wet/dry gas basis; operating hours; detection limits; PM cutpoints; background; solvent/wood-water balance"
-      collection_method: "Matched stack/fugitive monitoring after controls, with site-specific validated mass balance where monitoring is unavailable; distinguish absence from below detection and unresolved. Identify every actual chemical, not one VOC total."
+      raw_fields: "source; controls; species/CAS; sample time; concentration; gas flow; pressure/temperature; wet/dry gas basis; inlet/background humidity; operating hours; detection limits; PM cutpoints; matched wood/carrier-water and solvent stocks/outlets; actual recipe/cure extent; evidenced species formation/consumption; sampling and uncertainty"
+      collection_method: "Matched stack/fugitive monitoring after controls, net of inlet/background contributions, or a site-specific validated species balance under layer_balance where monitoring is unavailable. Separate initial/carrier water from reaction water and retained/recovered/liquid outlets. Do not assign reaction yields from qualitative chemistry or unexplained mass loss. Distinguish absence, below detection and unresolved; identify every actual chemical, not one VOC total."
       unit: "kg"
       frequency: "Each lot/shift; continuous meters; representative emission campaign"
       temporal_coverage: "One matched full production period covering route/product variability"
@@ -888,18 +885,23 @@ dataset_production:
       source_ids:
         - nwfa-wood-definition
     - id: layer_balance
-      applies_to: "face_veneer; core_veneer; back_veneer"
-      rule: "For each pure wood layer, u = (m_wet - m_dry)/m_dry; m_dry = m_wet/(1+u). Sum dry wood retained, dry resin, dry coating/additives and measured retained water to reconcile G. Separate incoming - outgoing - stock change for wood, resin solids, water and carbon; never infer carbon content from total coated-board mass."
+      applies_to: "flooring"
+      rule: "For each pure wood layer, u = (m_wet - m_dry)/m_dry; m_dry = m_wet/(1+u). Reconcile G from measured retained dry wood, cured resin/coating/additives and water in non-overlapping fractions at the accepted state; incoming nonvolatile solids are not automatically retained cured solids. On the same stage boundary/period before allocation, total physical mass obeys opening + inputs = closing + outputs; apply the same conservation separately to each relevant element, including C/H/O/N for UF, using actual compositions and every material outlet. Do not add chemical generation/consumption to total mass or elemental balances, sum energy/freight into mass, or infer carbon from total coated-board mass. For each species s, including H2O and reactive resin/coating constituents, opening_s + inputs_s + formation_s = closing_s + outputs_s + consumption_s. Quantify reaction terms only with actual supplied recipe, cure extent and validated analysis/stoichiometry; include retained material, wastes, condensate and actual air releases once, with paired stage handoffs and stocks. Document nonreactive terms as zero only with evidence. Unknown terms/residuals remain unresolved with propagated uncertainty; never force closure by invented water/emissions or a universal solids yield."
       inputs:
         - "Layer masses"
         - u
-        - "retained resin/coating/water"
+        - "retained composition"
+        - stocks
+        - "actual recipe/cure extent and reaction evidence"
+        - cp_output
         - cp_layers
         - cp_recipe
         - cp_waste
-      output: "Separate material/water/carbon residuals"
+        - cp_air
+      output: "Separate total-mass, elemental and reaction-aware species residuals with uncertainty"
       source_ids:
         - usda-wood-handbook-2021
+        - ding-uf-curing-2020
     - id: metered_electricity
       applies_to: "electricity"
       rule: "E_MJ = 3.6 * E_kWh; sum mutually exclusive stage readings, reconcile whole-unit meter and remove documented unrelated loads."
@@ -925,13 +927,15 @@ dataset_production:
         - corrim-flooring-2011
     - id: emission_quantity
       applies_to: "formaldehyde; acetone_air; pm25; pmcoarse; pmover10; water_air"
-      rule: "Integrate matched mass concentration * gas volume over measured operation, with unit/temperature/pressure/wet-dry conversions and controls. Particle differences require matched nested samplings; sums include exclusive bins only. Water/solvent balances exclude recovered and retained quantities. No positive factors are supplied."
+      rule: "Integrate matched mass concentration * gas volume over measured operation, with unit/temperature/pressure/wet-dry conversions, controls and inlet/background subtraction. Particle differences require matched nested samplings; sums include exclusive bins only. Species balances use layer_balance formation/consumption terms supported by actual recipe/cure extent and exclude retained/recovered material and other outlets. Water formation is not itself an air release; unexplained losses or unknown reaction terms cannot establish an emission quantity. No positive factors are supplied."
       inputs:
         - "Monitoring/balance records"
         - cp_air
-      output: "Species-specific released mass"
+        - cp_recipe
+      output: "Species-specific released mass with uncertainty"
       source_ids:
         - corrim-flooring-2011
+        - ding-uf-curing-2020
   data_quality_requirements:
     - id: quality_identity
       applies_to: "all inventory rows"
@@ -939,8 +943,8 @@ dataset_production:
       evidence: "Direct flow definition; primary supplier specification"
     - id: quality_balances
       applies_to: "flooring"
-      requirement: "Close separate physical wood, nonwood solids, water, solvent and carbon balances with stocks and full outputs; declare instrument uncertainty and investigate residuals, no invented universal tolerance."
-      evidence: "cp_output; cp_layers; cp_recipe; cp_waste; cp_air"
+      requirement: "Assess unallocated whole-stream total mass and elemental conservation separately from reaction-aware H2O, resin/coating and solvent species ledgers under layer_balance. Reconcile actual wet/dry test bases, cure extent, all retained/waste/air outlets, paired WIP handoffs and stocks. Propagate measurement, composition and reaction-term uncertainty; investigate residuals without a universal tolerance. Missing reaction evidence prevents dependent species-balance closure/emission estimation; disclose the gap instead of assuming zero formation/consumption or treating supplied dry solids as conserved."
+      evidence: "cp_output; cp_layers; cp_recipe; cp_waste; cp_air; actual supplier/site reaction evidence"
     - id: quality_scope
       applies_to: "flooring"
       requirement: "Use the actual facility period, declared product recipe and supplier region/year. Do not transfer coniferous, paper, optical, wafer or wet-rendering surveys. Unknown, absent and below detection remain distinct."
@@ -965,9 +969,11 @@ validation_rules:
       - corrim-flooring-2011
   - rule_id: validate_ledgers
     applies_to: "foreground_dataset_conformance"
-    rule: "Retain complete physical balances before environmental allocation, matched WIP handoffs, non-overlapping PM bins and all combustion LCI including biogenic CO2 in linked heat datasets. Background and foreground emissions must not duplicate."
+    rule: "Retain complete unallocated total-mass/elemental balances and separately test species ledgers with evidenced formation/consumption under layer_balance. UF cure is a chemical transformation; actual recipe, supplied precondensation state, cure extent, retained composition and uncertainty are required for dependent balances. Do not force H2O or dry-resin closure, equate generated water with discharge, or fill missing evidence with zero/default yields. Preserve matched WIP handoffs, non-overlapping PM bins and all combustion LCI including biogenic CO2 in linked heat datasets; those separately bounded combustion records require actual fuel/air composition and reaction/measurement evidence for their own water-species balances. Background and foreground emissions must not duplicate. Unknown terms leave dependent dataset checks incomplete."
     source_ids:
       - corrim-flooring-2011
+      - usda-wood-handbook-2021
+      - ding-uf-curing-2020
 published_dataset_profile:
   dataset_role: "Measured flooring manufacture with explicit upstream links; candidate method does not itself publish a dataset"
   downstream_use: "secondary_dataset; background_dataset after independent validation of actual foreground records and pending identities/bases"
@@ -991,25 +997,29 @@ data_sources:
     used_for: "Layered hardwood veneers; UF/PVA alternatives; hot pressing, machining, UV coats/curing and cardboard; joint wood burdens. No survey parameter, proxy, transport distance or emission factor adopted."
   - id: "usda-wood-handbook-2021"
     type: "handbook"
-    reference: "[USDA Forest Products Laboratory, Wood Handbook—Wood as an Engineering Material, FPL-GTR-282 (2021)](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf), chapters 4 and 13, printed pp. 4–1 and 13–2"
-    used_for: "Wood dry-basis moisture and representative oven-dry method; avoid resin/coating volatile interference; no industry density/moisture target"
+    reference: "[USDA Forest Products Laboratory, Wood Handbook—Wood as an Engineering Material, FPL-GTR-282 (2021)](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf), chapters 4, 10 and 13, printed pp. 4–1, 10–8 to 10–13 and 13–2; glossary Polymer, p. G–12"
+    used_for: "Wood dry-basis moisture and representative oven-dry method; adhesive cure/formulation context and qualitative addition/condensation chemistry distinction; no industry density/moisture target or reaction yield"
+  - id: "ding-uf-curing-2020"
+    type: "literature"
+    reference: "[Ding, Ding, Ma and Zhang, Condensation reaction and crystallization of urea-formaldehyde resin during the curing process, BioResources 15(2), 2924–2936 (2020)](https://bioresources.cnr.ncsu.edu/resources/condensation-reaction-and-crystallization-of-urea-formaldehyde-resin-during-the-curing-process/), DOI 10.15376/biores.15.2.2924-2936, Experimental and Results and Discussion"
+    used_for: "Qualitative UF condensation and reaction-water formation distinct from initial water; cure depends on actual formulation/conditions. Laboratory recipes, conversion, mass losses and emissions are not factory defaults."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7c7fbacdd85a95c7a3f8951c2228f86b198ad8444928c55227751e56c7087094"
+  source_sha256: "sha256:879590719961e869a914842fd8fa37dcb32abbc80798a27c4448f443dbcd3ba4"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6874"
+    - unit_id: "normative_6723"
       family: "system_boundary"
       span:
         start:
-          offset: 6874
-          line: 64
+          offset: 6723
+          line: 63
           column: 1
         end:
-          offset: 9387
-          line: 85
+          offset: 9084
+          line: 84
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Dry separate non-tropical hardwood veneer at flooring factory receiving gate; resin and coating preparations received as declared formulations |\n| starting_condition_role | Foreground gate-to-gate assembly/finishing plus explicit upstream product, utility, transport and waste-treatment links for cradle-to-gate use |\n| product_classification_scope | Only the specified multilayer assembled wood subset of CPC 3.0 31626 |\n| recursive_input_rule | Purchased assembled floor panels or recovered same-category material terminate tracing at a documented upstream dataset; disclose identity, previous processing and amount. Rework within this unit is internal WIP, not a new external reference product. |\n| upstream_dataset_requirement | Matched species/veneer drying/peeling, actual independently supplied UF resin or verified complete UF adhesive with compatible supplied-state/reference basis and supplier manufacture/preparation/delivery, coating formulation, grid region/year/voltage, thermal supplier reference and actual treatment; missing compatibility remains pending |\n| disclosure | Gate, period, configurations, starting moisture, purchased/on-site split, WIP/stock changes, heat generation boundary, losses and excluded downstream scenarios |\n\n### Boundary Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_stages | Include conditioning, glue preparation, lay-up/press cure, machining, dust collection, all clear-coating operations/UV cure, QC, electrical material handling and packing. Collect each stage independently, then aggregate one foreground unit; WIP handoffs retain equal physical quantities on both stage ledgers. | corrim-flooring-2011 |\n| boundary_upstream | Link upstream veneer, adhesive/coating, utilities and actual waste treatment once. Separate utility generation prevents duplicated boiler emissions; site integration does not justify dropping fuel emissions or ash. Retain biogenic CO2 in any linked combustion LCI irrespective of climate accounting treatment. | corrim-flooring-2011 |\n| boundary_downstream | Installation, underlay/installation adhesive, actual cutting loss, use, repair, replacement and end of life require a separately evidenced scenario. No lifetime or installation loss multiplier is supplied by this manufacturing PCR. Do not omit low-mass resins/coatings because of mass alone. | corrim-flooring-2011; nwfa-wood-definition |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Dry separate non-tropical hardwood veneer at flooring factory receiving gate; resin and coating preparations received as declared formulations |\n| starting_condition_role | Foreground gate-to-gate assembly/finishing plus explicit upstream product, utility, transport and waste-treatment links for cradle-to-gate use |\n| product_classification_scope | Only the specified multilayer assembled wood subset of CPC 3.0 31626 |\n| recursive_input_rule | Purchased assembled floor panels or recovered same-category material terminate tracing at a documented upstream dataset; disclose identity, previous processing and amount. Rework within this unit is internal WIP, not a new external reference product. |\n| upstream_dataset_requirement | Matched species/veneer drying/peeling, resin solids, coating formulation, grid region/year/voltage, thermal supplier reference and actual treatment; missing compatibility remains pending |\n| disclosure | Gate, period, configurations, starting moisture, purchased/on-site split, WIP/stock changes, heat generation boundary, losses and excluded downstream scenarios |\n\n### Boundary Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_stages | Include conditioning, glue preparation, lay-up/press cure, machining, dust collection, all clear-coating operations/UV cure, QC, electrical material handling and packing. Collect each stage independently, then aggregate one foreground unit; WIP handoffs retain equal physical quantities on both stage ledgers. | corrim-flooring-2011 |\n| boundary_upstream | Link upstream veneer, adhesive/coating, utilities and actual waste treatment once. Separate utility generation prevents duplicated boiler emissions; site integration does not justify dropping fuel emissions or ash. Retain biogenic CO2 in any linked combustion LCI irrespective of climate accounting treatment. | corrim-flooring-2011 |\n| boundary_downstream | Installation, underlay/installation adhesive, actual cutting loss, use, repair, replacement and end of life require a separately evidenced scenario. No lifetime or installation loss multiplier is supplied by this manufacturing PCR. Do not omit low-mass resins/coatings because of mass alone. | corrim-flooring-2011; nwfa-wood-definition |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1026,12 +1036,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6874
-              line: 64
+              offset: 6723
+              line: 63
               column: 1
             end:
-              offset: 6895
-              line: 64
+              offset: 6744
+              line: 63
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1046,16 +1056,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40472"
+    - unit_id: "normative_38816"
       family: "allocation"
       span:
         start:
-          offset: 40472
-          line: 574
+          offset: 38816
+          line: 573
           column: 1
         end:
-          offset: 41735
-          line: 582
+          offset: 40079
+          line: 581
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_physical | Keep the physical wood/water/carbon ledger and the allocated environmental burden ledger separately. Accepted floor panels, WIP changes, offcuts, captured dust and external wastes keep their full measured quantities. Never multiply co-product physical output by an allocation share. | corrim-flooring-2011 |\n| allocation_subdivide | First use stage metering/subdivision for avoidable joint burdens. External waste disposal with no saleable product is not a co-product allocation denominator. Internal recovered solvent, heat and rework stay internal and receive no external substitution credit. | corrim-flooring-2011 |\n| allocation_joint | For demonstrated saleable wood co-products with similar wood material, disclose a dry-wood-mass allocation of remaining inseparable wood-conversion burdens using measured moisture-corrected masses; report sensitivity where prices or contamination invalidate that physical relation. UF/coating/finishing-specific burdens follow their measured consumption and destinations, not all wood outputs automatically. Document shares summing to one and a separate allocated dataset view. | corrim-flooring-2011 |\n\n"
       headings:
@@ -1074,12 +1084,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40472
-              line: 574
+              offset: 38816
+              line: 573
               column: 1
             end:
-              offset: 40512
-              line: 574
+              offset: 38856
+              line: 573
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1094,18 +1104,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52331"
+    - unit_id: "normative_52866"
       family: "validation"
       span:
         start:
-          offset: 52331
-          line: 618
+          offset: 52866
+          line: 617
           column: 1
         end:
-          offset: 53608
-          line: 627
+          offset: 54793
+          line: 626
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Confirm real wood in every structural ply, individual species/source and thickness, UF bond and clear factory UV finish; reject excluded solid, HDF, strip and alternate-route products. | unsd-cpc-31626; nwfa-wood-definition; corrim-flooring-2011 |\n| validate_denominator | Exactly one reference_output of 1 kg accepted net finished flooring. All inventories and collection aggregation use per 1 kg reference flow. Reconcile same-lot effective joined area, measured thickness, net mass and wood moisture; no assumed life or installation waste. | usda-wood-handbook-2021 |\n| validate_atomic | Every row is one material/species/formulation/waste/emission. Split physical variants; confirm exact Chinese names and original UUID route/property. Chemical/product tests cannot replace manufacturing emission records. Unknown thermal basis or UUID remains incomplete, not zero. | corrim-flooring-2011 |\n| validate_ledgers | Retain complete physical balances before environmental allocation, matched WIP handoffs, non-overlapping PM bins and all combustion LCI including biogenic CO2 in linked heat datasets. Background and foreground emissions must not duplicate. | corrim-flooring-2011 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Confirm real wood in every structural ply, individual species/source and thickness, UF bond and clear factory UV finish; reject excluded solid, HDF, strip and alternate-route products. | unsd-cpc-31626; nwfa-wood-definition; corrim-flooring-2011 |\n| validate_denominator | Exactly one reference_output of 1 kg accepted net finished flooring. All inventories and collection aggregation use per 1 kg reference flow. Reconcile same-lot effective joined area, measured thickness, net mass and wood moisture; no assumed life or installation waste. | usda-wood-handbook-2021 |\n| validate_atomic | Every row is one material/species/formulation/waste/emission. Split physical variants; confirm exact Chinese names and original UUID route/property. Chemical/product tests cannot replace manufacturing emission records. Unknown thermal basis or UUID remains incomplete, not zero. | corrim-flooring-2011 |\n| validate_ledgers | Retain complete unallocated total-mass/elemental balances and separately test species ledgers with evidenced formation/consumption under layer_balance. UF cure is a chemical transformation; actual recipe, supplied precondensation state, cure extent, retained composition and uncertainty are required for dependent balances. Do not force H2O or dry-resin closure, equate generated water with discharge, or fill missing evidence with zero/default yields. Preserve matched WIP handoffs, non-overlapping PM bins and all combustion LCI including biogenic CO2 in linked heat datasets; those separately bounded combustion records require actual fuel/air composition and reaction/measurement evidence for their own water-species balances. Background and foreground emissions must not duplicate. Unknown terms leave dependent dataset checks incomplete. | corrim-flooring-2011; usda-wood-handbook-2021; ding-uf-curing-2020 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1122,12 +1132,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52331
-              line: 618
+              offset: 52866
+              line: 617
               column: 1
             end:
-              offset: 52353
-              line: 618
+              offset: 52888
+              line: 617
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1146,181 +1156,181 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_stages"
       identity_kind: "explicit"
-      unit_id: "normative_6874"
+      unit_id: "normative_6723"
       source_span:
         start:
-          offset: 8311
-          line: 81
+          offset: 8008
+          line: 80
           column: 1
         end:
-          offset: 8665
-          line: 81
+          offset: 8362
+          line: 80
           column: 355
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_6874"
+      unit_id: "normative_6723"
       source_span:
         start:
-          offset: 8666
-          line: 82
+          offset: 8363
+          line: 81
           column: 1
         end:
-          offset: 9022
-          line: 82
+          offset: 8719
+          line: 81
           column: 357
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_downstream"
       identity_kind: "explicit"
-      unit_id: "normative_6874"
+      unit_id: "normative_6723"
       source_span:
         start:
-          offset: 9023
-          line: 83
+          offset: 8720
+          line: 82
           column: 1
         end:
-          offset: 9385
-          line: 83
+          offset: 9082
+          line: 82
           column: 363
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_40472"
+      unit_id: "normative_38816"
       source_span:
         start:
-          offset: 40566
-          line: 578
+          offset: 38910
+          line: 577
           column: 1
         end:
-          offset: 40897
-          line: 578
+          offset: 39241
+          line: 577
           column: 332
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_40472"
+      unit_id: "normative_38816"
       source_span:
         start:
-          offset: 40898
-          line: 579
+          offset: 39242
+          line: 578
           column: 1
         end:
-          offset: 41209
-          line: 579
+          offset: 39553
+          line: 578
           column: 312
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_joint"
       identity_kind: "explicit"
-      unit_id: "normative_40472"
+      unit_id: "normative_38816"
       source_span:
         start:
-          offset: 41210
-          line: 580
+          offset: 39554
+          line: 579
           column: 1
         end:
-          offset: 41733
-          line: 580
+          offset: 40077
+          line: 579
           column: 524
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_52331"
+      unit_id: "normative_52866"
       source_span:
         start:
-          offset: 52407
-          line: 622
+          offset: 52942
+          line: 621
           column: 1
         end:
-          offset: 52673
-          line: 622
+          offset: 53208
+          line: 621
           column: 267
     - pointer: "/validation_rules/1"
       rule_id: "validate_denominator"
       identity_kind: "explicit"
-      unit_id: "normative_52331"
+      unit_id: "normative_52866"
       source_span:
         start:
-          offset: 52674
-          line: 623
+          offset: 53209
+          line: 622
           column: 1
         end:
-          offset: 52996
-          line: 623
+          offset: 53531
+          line: 622
           column: 323
     - pointer: "/validation_rules/2"
       rule_id: "validate_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_52331"
+      unit_id: "normative_52866"
       source_span:
         start:
-          offset: 52997
-          line: 624
+          offset: 53532
+          line: 623
           column: 1
         end:
-          offset: 53320
-          line: 624
+          offset: 53855
+          line: 623
           column: 324
     - pointer: "/validation_rules/3"
       rule_id: "validate_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_52331"
+      unit_id: "normative_52866"
       source_span:
         start:
-          offset: 53321
-          line: 625
+          offset: 53856
+          line: 624
           column: 1
         end:
-          offset: 53606
-          line: 625
-          column: 286
+          offset: 54791
+          line: 624
+          column: 936
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6874"
+      unit_id: "normative_6723"
       source_span:
         start:
-          offset: 6874
-          line: 64
+          offset: 6723
+          line: 63
           column: 1
         end:
-          offset: 6895
-          line: 64
+          offset: 6744
+          line: 63
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6874"
+      unit_id: "normative_6723"
       source_span:
         start:
-          offset: 6923
-          line: 68
+          offset: 6772
+          line: 67
           column: 1
         end:
-          offset: 8237
-          line: 75
+          offset: 7934
+          line: 74
           column: 177
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40472"
+      unit_id: "normative_38816"
       source_span:
         start:
-          offset: 40472
-          line: 574
+          offset: 38816
+          line: 573
           column: 1
         end:
-          offset: 40512
-          line: 574
+          offset: 38856
+          line: 573
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52331"
+      unit_id: "normative_52866"
       source_span:
         start:
-          offset: 52331
-          line: 618
+          offset: 52866
+          line: 617
           column: 1
         end:
-          offset: 52353
-          line: 618
+          offset: 52888
+          line: 617
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1329,5 +1339,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7c7fbacdd85a95c7a3f8951c2228f86b198ad8444928c55227751e56c7087094"
-  generated_content_sha256: "sha256:66bf7a70d283d9ea3b7f78a6acc7d6b1d8bea761ad92e35eec073ec1871f7278"
+    sha256: "sha256:879590719961e869a914842fd8fa37dcb32abbc80798a27c4448f443dbcd3ba4"
+  generated_content_sha256: "sha256:2f16fef198b4a5ad5754c3267793b1286c5d060e52a1923c8b2137f76ce7f71a"
