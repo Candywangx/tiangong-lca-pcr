@@ -36,11 +36,13 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | 覆盆子、黑莓、桑葚和罗甘莓 `562e96d5-9c9f-4b90-877c-b2ebf33c87cc` |
+| 参考产品流 | 覆盆子、黑莓、桑葚和罗甘莓 `562e96d5-9c9f-4b90-877c-b2ebf33c87cc` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | 物种；品种；生产系统；采收季；质量等级；可销售产量；出口状态；分配基础；作物年龄或建植处理 |
+
+本参考 UUID 表示新鲜、未加工的农场门产品。使用该绑定前须核对实际物种、产品状态及交接门；独立包装站、进一步加工或不兼容状态的输出必须单独核实身份，不得直接继承此 UUID。身份核实不改变本 PCR 的实际系统边界或数量归一化要求。
 
 ## 4. 计量与单位规则
 | rule_id | Applies to | Required property | Required unit | Rule |
@@ -135,30 +137,154 @@ sync_with: pcr.en-US.md
 ### 过程：季节性作物管理（`process_crop_management`）
 #### 输入
 ##### 产品流
-###### 农业养分与肥料投入（`process_crop_management_agricultural_nutrient_inputs`）
+###### 尿素肥料（`process_crop_management_agricultural_nutrient_inputs_urea`）
 
-本过程使用的全部矿质肥料、有机肥料和含养分改良剂统一记录在此卡。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+**process_crop_management_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
-- 选定流：农业养分与肥料供应
-- 流属性/单位：产品数量和养分含量 / 视情况采用 kg 产品、m3 产品、kg N、kg P2O5 和 kg K2O
-- 数量规则：每种实际产品仅采集一次数量并保留其组成；计算声明的 N、P 或 P2O5、K 或 K2O 数量，不重复计算复合或有机产品；生成前景数据时展开记录，并将每个输出的产品交换解析到一个经核实 UUID。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
 原始活动或阶段基准：每 1 kg 可销售鲜浆果.
 
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
+- 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_input_records`
-- 来源：`fao-gap-framework-2003`; `source-ipcc-2019-refinement`
-- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+- 来源：`fao-gap-framework-2003`；`source-ipcc-2019-refinement`；`fao-fertilizer-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
   - 范围角色：QA 护栏（`qa_guardrail`）
   - 下限：0
-  - 上限：1000
-  - 单位：每 kg 可销售浆果的声明流单位
-  - 基准：一个声明的作物周期；超出范围须说明
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计（`reasoned_estimate`）
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 硫酸铵肥料（`process_crop_management_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_input_records`
+- 来源：`fao-gap-framework-2003`；`source-ipcc-2019-refinement`；`fao-fertilizer-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 重过磷酸钙肥料（`process_crop_management_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_input_records`
+- 来源：`fao-gap-framework-2003`；`source-ipcc-2019-refinement`；`fao-fertilizer-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 氯化钾肥料（`process_crop_management_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_input_records`
+- 来源：`fao-gap-framework-2003`；`source-ipcc-2019-refinement`；`fao-fertilizer-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 作为肥料施用的牛粪（`process_crop_management_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_input_records`
+- 来源：`fao-gap-framework-2003`；`source-ipcc-2019-refinement`；`fao-organic-nutrients`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 施入土壤的植物残体堆肥（`process_crop_management_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_input_records`
+- 来源：`fao-gap-framework-2003`；`source-ipcc-2019-refinement`；`fao-organic-nutrients`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
 
 ###### 灌溉水（`irrigation_water_services`）
 按地块、来源、作业和季节记录灌溉水。
@@ -182,28 +308,58 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_input_records`
 - 来源：`fao-gap-framework-2003`
-###### 能源服务（`energy_services`）
+###### 设备供电点的电力（`energy_services_electricity`）
+
+**energy_services 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
 记录田间作业和外购服务使用的电力、燃料及其他能源载体。
-- 选定流：电力、燃料或能源载体（UUID unresolved；intentionally blank）
-- 流属性/单位：能量或质量 / kWh、MJ 或 kg
-- 数量规则：水表、交付单、发票或作业日志
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1 kg 可销售鲜浆果.
 
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
-  - 范围角色：QA 护栏（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：每 kg 可销售浆果的声明流单位
-  - 基准：一个声明的作物周期；超出范围须说明
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-- 基准类型：作物周期（`crop_cycle`）
+- 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_input_records`
-- 来源：`fao-gap-framework-2003`
+- 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kWh / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 供应设备的柴油（`energy_services_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_input_records`
+- 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
 
 #### 输出
 ##### 基本流
@@ -420,33 +576,88 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_records`
 - 来源：`fao-gap-framework-2003`
-###### 调理包装（`conditioning_packaging`）
+###### 木制板条箱（`conditioning_packaging_wood_crate`）
+
+**conditioning_packaging 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
 适用时记录调理运行消耗的包装和呈现材料。
-- 选定流：调理包装材料（UUID unresolved；intentionally blank）
-- 流属性/单位：质量 / kg
-- 数量规则：发票、领用记录和批次关联的运行日志
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1 kg 可销售鲜浆果.
 
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：木制板条箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_conditioning_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
-  - 范围角色：QA 护栏（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：每 kg 可销售浆果的声明流单位
-  - 基准：一个声明的作物周期；超出范围须说明
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-- 基准类型：作物周期（`crop_cycle`）
+- 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_records`
-- 来源：`fao-gap-framework-2003`
+- 来源：`fao-gap-framework-2003`；`fao-package-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 瓦楞纸板箱（`conditioning_packaging_corrugated_box`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：瓦楞纸板箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_conditioning_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_records`
+- 来源：`fao-gap-framework-2003`；`fao-package-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
+###### 聚乙烯包装薄膜（`conditioning_packaging_pe_film`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：聚乙烯包装薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_conditioning_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_records`
+- 来源：`fao-gap-framework-2003`；`fao-package-identities`
+
+- 数量范围：独立台账可用量核对，不是推荐用量
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：同期本身份可用量 * 声明参考量 / 同边界合格产出量
+  - 单位：kg / 声明参考流
+  - 基准：库存期初量加同期收货、实测自产或计量供给，扣除期末库存及向其他边界的转出；均采用本卡单位，归属份额不得超过 1；缺失台账则本核对不可执行
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：采集记录（`collected_record`）
+
 #### 输出
 ##### 产品流
 ###### 可销售浆果（`marketable_berries`）
 使用声明农场交付或首个可销售出口处的最终称量产品。
-- 选定流：覆盆子、黑莓、桑葚和罗甘莓（参考流中已绑定 UUID）
+- 选定流：覆盆子、黑莓、桑葚和罗甘莓 `562e96d5-9c9f-4b90-877c-b2ebf33c87cc`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：批次发运重量
 
@@ -490,6 +701,8 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `allocation_marketable_rejects` | outputs and rejects | 按实测质量和去向分开产品、拒收物和废物；仍有副产品时使用有文件依据的物理或经济基础并报告敏感性。 | `fao-gap-framework-2003` |
 | `allocation_multi_period` | perennial systems | 按声明的生产期及产量或时间份额分配共享建植和植株管理负荷。 | `fao-gap-framework-2003` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
 ## 8. 前景数据采集、计算和质量规则
 
@@ -553,3 +766,7 @@ sync_with: pcr.en-US.md
 | `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
 | `ipcc-managed-soils-2019` | method_factor | IPCC 2019 Refinement, Volume 4, Chapter 11, sections 11.2.1 and 11.2.2 and Tables 11.1/11.3, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Nitrogen activity and direct/indirect N2O methods; no berry-specific yield or universal per-product emission default |
 | `mass-balance-identity` | method_factor | Physical conservation of mass and nitrogen, as defined by the stated PCR calculation and precursor ledgers | Conservation constraints only, not measured loss fractions or empirical factors |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

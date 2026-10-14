@@ -281,7 +281,6 @@ Raw quantity and calculation requirements: Apply declared IPCC enteric method to
 
 - Selected flow: Methane, biogenic, to air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -309,7 +308,6 @@ Raw quantity and calculation requirements: Apply declared IPCC manure pathway me
 
 - Selected flow: Methane, biogenic, to air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -339,7 +337,6 @@ Raw quantity and calculation requirements: Use declared IPCC manure nitrogen and
 
 - Selected flow: Nitrous oxide to air `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -367,7 +364,6 @@ Raw quantity and calculation requirements: Calculate from collected manure nitro
 
 - Selected flow: Ammonia to air `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -463,7 +459,7 @@ Raw quantity and calculation requirements: Sum calibrated milking lot masses, in
 
 ###### First-conditioning water (`conditioning_water`)
 
-Conditional umbrella: record only actual supplied water crossing for straining, equipment hygiene and first farm quality preparation, excluding herd drinking water. Resolve the concrete water function from site records.
+Conditional collection requirement: record only actual supplied water crossing for straining, equipment hygiene and first farm quality preparation, excluding herd drinking water. Resolve the concrete water function from site records.
 
 Denominator and scope requirements：per kg accepted milk
 
@@ -605,7 +601,6 @@ Producer-handover linkage: Only when selected as the actual terminal source for 
 
 - Selected flow: Raw goat milk, chilled, farm gate `2c001731-6bd5-4e32-b3cf-15f4c67d4038`
 - Flow property / unit: Mass / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)

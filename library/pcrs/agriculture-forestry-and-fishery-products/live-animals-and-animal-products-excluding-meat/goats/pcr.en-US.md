@@ -195,30 +195,55 @@ Denominator and scope requirements：per kg live goat at farm gate
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Energy supply (`energy_supply`)
+###### Electricity at the equipment supply point (`energy_supply_electricity`)
+
+**Collection scope and applicability for energy_supply.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Record purchased electricity, fuels, heat, or other energy carriers used for housing, lighting, pumping, milking, fibre collection, feeding, manure handling, and weighing. Foreground records determine the actual carrier.
-
 Denominator and scope requirements：per kg live goat at farm gate
 
-- Selected flow: Energy carriers and utilities for goat production
-- Flow property / unit: Energy or carrier-specific property / MJ, kWh, or carrier unit
-- Amount rule: Record each carrier separately by use, meter, invoice, or fuel log; retain conversion factors and do not collapse unlike carriers before final exchange selection.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Electricity at the equipment supply point
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_water_energy` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
+- Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_water_energy`
-- Sources: `fao-leap-small-ruminants-2016`
-- Range: Provisional direct-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 50
-  - Unit: MJ/kg reference live weight
-  - Basis: broad replaceable screen across extensive and mechanized housed routes
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `fao-leap-small-ruminants-2016`; `fao-agricultural-energy`
+
+###### Diesel fuel supplied to equipment (`energy_supply_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel supplied to equipment
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_water_energy` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_energy`
+- Sources: `fao-leap-small-ruminants-2016`; `fao-agricultural-energy`
+
+###### Purchased heat at the process inlet (`energy_supply_heat`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Purchased heat at the process inlet
+- Flow property / unit: Energy / MJ
+- Amount rule: Collect raw quantities for this identity under `cp_water_energy` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_energy`
+- Sources: `fao-leap-small-ruminants-2016`; `fao-agricultural-energy`
 
 ###### Inbound freight transport service (`inbound_freight_transport`)
 
@@ -397,7 +422,6 @@ Denominator and scope requirements：per kg live goat at farm gate
 
 - Selected flow: Methane, biogenic, to unspecified air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate from animal population and phase, feed or energy intake, and the documented IPCC or country-specific method; normalize after cohort calculation.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -423,7 +447,6 @@ Denominator and scope requirements：per kg live goat at farm gate
 
 - Selected flow: Methane, biogenic, to unspecified air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate by animal class, volatile-solids production, pathway share, climate, storage duration, methane conversion factor, and recovery where present.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -451,7 +474,6 @@ Denominator and scope requirements：per kg live goat at farm gate
 
 - Selected flow: Nitrous oxide to unspecified air `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate nitrogen excretion by animal class and phase, allocate it to manure pathways, apply documented direct and indirect factors, and convert N2O-N to N2O where needed.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -477,7 +499,6 @@ Denominator and scope requirements：per kg live goat at farm gate
 
 - Selected flow: Ammonia to unspecified air `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate nitrogen entering each pathway, apply documented NH3-N volatilization factors, and convert NH3-N to NH3 where required; prevent overlap with nitrogen exported in manure.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -504,6 +525,8 @@ Denominator and scope requirements：per kg live goat at farm gate
 | `output_attribution_decision` | multi-output process instances | When subdivision does not remove joint burdens, document one PCR-specific attribution method, its output quantities and prices or other drivers, period, evidence, and sensitivity. Apply it consistently to all intended outputs. | `fao-leap-small-ruminants-2016` |
 | `multi_period_attribution` | breeding animals, replacements, shared assets, and outputs spanning periods | Assign burdens to the actual service, biological, or reporting periods using recorded events and service duration. Record replacement and termination decisions and prevent carry-over burdens from appearing in two periods. | `fao-leap-small-ruminants-2016` |
 | `shared_infrastructure_attribution` | housing, fencing, water, handling, milking, fibre, transport, and manure assets shared by groups or periods | Enumerate all consumers and service periods, choose and evidence a physical service driver where possible, and reconcile allocated shares to the total asset or service burden exactly once. | `fao-leap-small-ruminants-2016` |
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -587,3 +610,4 @@ Denominator and scope requirements：per kg live goat at farm gate
 | `ipcc-2019-livestock-manure` | method_factor | IPCC, *2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management*. https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf | Goat class, feed and energy drivers, enteric methane, manure methane, direct and indirect N2O, and required activity data. |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Direct/indirect nitrogen pathways and coordination of manure storage with managed-soil emissions; select applicable species and management evidence. |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |

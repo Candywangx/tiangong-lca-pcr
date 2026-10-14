@@ -174,31 +174,26 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 种禽舍能源载体 (`house_energy`)
+###### 设备供电点的电力（`house_energy_electricity`）
+
+**house_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 分开计量通风、照明和供暖的能源载体。
-
 分母与范围要求：每 kg 验收鲜带壳孵化蛋
-
 原始数量及计算要求：记录各载体及有凭据的换算。 原始采集分母类型：reference_flow。
 
-- 选定流：能源载体与公用工程
-- 流属性/单位：Energy / 按载体 MJ 或 kWh
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_inputs`
-- 数量范围：暂定宽范围质量检查
-  - 范围角色：质量检查（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：MJ/kg reference
-  - 基准：初轮宽范围筛查；须以鸟种、批次的实测数据替换
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-agricultural-energy`
 
 ##### 废物流
 
@@ -724,7 +719,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：其他鸟类的带壳蛋，新鲜，用于孵化（农场交付） `3ee29323-915c-4635-b8a2-8942a155e806`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定（`fixed`）
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -861,6 +855,8 @@ sync_with: pcr.en-US.md
 | `period_attribution` | 种禽年份与蛋批次 | 将替换、产蛋、集蛋、资产和损失关联至实际服务/生产期间；不得假定通用群寿命或在替换/退出时重复归属。 | `fao-animal-genetic-resources` |
 | `shared_asset_attribution` | 禽舍、集蛋室、分级机和蛋托 | 列出种禽、集蛋、分级及包装的使用节点和服务期；按实际服务、吞吐量或复用次数仅计一次资产负担。 | `fao-animal-genetic-resources` |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
@@ -934,3 +930,4 @@ sync_with: pcr.en-US.md
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 氮流方法；采用参数前核实实际物种、管理方式及地域适用性 |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 管理土壤直接及间接氮路径与边界核对 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

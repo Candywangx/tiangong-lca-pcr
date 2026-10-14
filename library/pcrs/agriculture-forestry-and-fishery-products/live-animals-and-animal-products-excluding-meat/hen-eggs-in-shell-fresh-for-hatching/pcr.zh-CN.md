@@ -41,7 +41,6 @@ sync_with: pcr.en-US.md
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | 鸡物种、农场及交接门、鸡群日龄、批次和周期、配种证据、枚数与 kg、蛋壳等级、采集日期、贮存时间和温度、已有活胚检测、剔除物、蛋托及包装复用 |
-| Binding | Fixed (`fixed`) |
 
 ## 4. 计量与单位规则
 
@@ -167,31 +166,56 @@ sync_with: pcr.en-US.md
   - 基准类型: 参考流 (`reference_flow`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 种鸡舍能源 (`house_energy`)
+###### 设备供电点的电力（`house_energy_electricity`）
+
+**house_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按实际载体记录电、热和燃料。
-
 分母与范围要求：每 kg 农场门合格孵化用带壳鸡蛋
-
 能量核算基准：按载体分别保留原生单位数量。电力 kWh 乘 3.6 换算为 MJ；燃料质量或体积仅凭有证据的载体专属热值及必要密度换算。本卡记录 MJ 能量核算量，不是质量交换或多载体合并交换。最终交换保留实际载体的流属性和单位；不得直接相加 kg、L、kWh 与 MJ，也不得把多载体总量绑定给单一载体 UUID。
 
-- 选定流： 能源载体与公用工程
-- 流属性/单位：Energy / MJ
-- 数量规则: 按实际载体记录电、热和燃料。
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_inputs`
-- 数量范围: 暂定可替换 QA 筛查范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 60
-  - 单位: MJ/kg reference
-  - 基准: 按农场门参考质量的宽泛初轮筛查；用审核数据替换
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_inputs`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`house_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_inputs`
+- 来源：`fao-agricultural-energy`
+
+###### 过程入口的外购热量（`house_energy_heat`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：过程入口的外购热量
+- 流属性 / 单位：能源 / MJ
+- 数量规则：依 `cp_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_inputs`
+- 来源：`fao-agricultural-energy`
 
 ##### 废物流
 
@@ -313,7 +337,6 @@ sync_with: pcr.en-US.md
 
 - 选定流: 向空气排放的生物源甲烷 `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位: Mass / kg CH4
-- 绑定: 固定 (`fixed`)
 - 数量规则: 依据记录模拟有证据的粪便 CH4 路径。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -341,7 +364,6 @@ sync_with: pcr.en-US.md
 
 - 选定流: 向空气排放的氧化亚氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
-- 绑定: 固定 (`fixed`)
 - 数量规则: 模拟有证据的粪便 N2O；将 N2O-N 换算为 N2O。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -367,7 +389,6 @@ sync_with: pcr.en-US.md
 
 - 选定流: 向空气排放的氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
-- 绑定: 固定 (`fixed`)
 - 数量规则: 仅记录有证据的 NH3 挥发路径。
 - 数值来源模式: 前景记录 (`foreground_record`)
 - 适用范围: 场址特定 (`site_specific`)
@@ -727,31 +748,41 @@ sync_with: pcr.en-US.md
   - 基准类型: 参考流 (`reference_flow`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 贮存能源 (`storage_energy`)
+###### 设备供电点的电力（`storage_energy_electricity`）
+
+**storage_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按批次或共享库房计量实际冷却和通风能源。
-
 分母与范围要求：每 kg 农场门合格孵化用带壳鸡蛋
-
 能量核算基准：按载体分别保留原生单位数量。电力 kWh 乘 3.6 换算为 MJ；燃料质量或体积仅凭有证据的载体专属热值及必要密度换算。本卡记录 MJ 能量核算量，不是质量交换或多载体合并交换。最终交换保留实际载体的流属性和单位；不得直接相加 kg、L、kWh 与 MJ，也不得把多载体总量绑定给单一载体 UUID。
 
-- 选定流： 能源载体与公用工程
-- 流属性/单位：Energy / MJ
-- 数量规则: 按批次或共享库房计量实际冷却和通风能源。
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_storage`
-- 数量范围: 暂定可替换 QA 筛查范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 50
-  - 单位: MJ/kg reference
-  - 基准: 按农场门参考质量的宽泛初轮筛查；用审核数据替换
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_storage` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`storage_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_storage` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage`
+- 来源：`fao-agricultural-energy`
 
 ##### 废物流
 
@@ -895,7 +926,6 @@ sync_with: pcr.en-US.md
 
 - 选定流: 孵化用鲜带壳鸡蛋 `e5791c05-2fe6-4cb4-aec8-30adb5e85b0b`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定: 固定 (`fixed`)
 - 数量规则：1 千克
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围: 场址特定 (`site_specific`)
@@ -951,6 +981,8 @@ sync_with: pcr.en-US.md
 | `output_priority` | 孵化用鸡蛋、出售的食用蛋、淘汰鸡及出售的粪便 | 枚举各目标产品的真实交接门。可分过程直接归属；不可分鸡群周期负担优先采用有证据的物理因果关系，否则使用同期农场门经济分配并披露价格、质量及敏感性。废物和死亡个体无产品份额。 | `fao-leap-poultry-2016` |
 | `period_shared` | 鸡群、鸡舍、蛋窝、贮存间与蛋托 | 区分补群、生产、贮存及复用周期；投入事件和产出关联周期。共享资产按实测使用或有依据的服务时长/能力仅归属一次，避免重复负担。 | `fao-leap-poultry-2016`; `aviagen-egg-handling-2015` |
 | `internal_states` | 产蛋到贮存状态 | 内部转移用于质量核对而非副产品；仅独立产品离开边界时才分配。 | `mass-balance-identity` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -1027,3 +1059,4 @@ sync_with: pcr.en-US.md
 | `mass-balance-identity` | `method_factor` | Conservation of measured shell-on egg mass by mutually exclusive inventory state | 状态核对与归一化 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 直接及间接氮路径，以及粪污贮存与管理土壤排放的衔接；须选择适用的物种及管理证据。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

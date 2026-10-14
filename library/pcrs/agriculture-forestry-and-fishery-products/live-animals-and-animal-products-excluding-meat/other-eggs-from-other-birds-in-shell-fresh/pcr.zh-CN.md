@@ -170,30 +170,25 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 禽舍能源载体 (`energy`)
+###### 设备供电点的电力（`energy_electricity`）
+
+**energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按物种、批次及实际节点记录实物身份与去向；不得从名称推断其他状态。
-
 分母与范围要求：每 kg 农场门口交付的其他鸟类非孵化用鲜壳蛋
 
-- 选定流： 禽舍能源载体
-- 流属性/单位： 能量 / MJ
-- 数量规则： 按实际物种、批次及节点计量，并与相邻节点和库存核对。
-- 数值来源模式：前景记录 (`foreground_record`)
-- 适用范围：场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流 (`reference_flow`)
-- 证据类型：采集记录 (`collected_record`)
-- 采集协议： `cp_utilities`
-- 来源： `fao-codex-eggs`
-- 数量范围： 暂定且可替换的宽泛筛查范围
-  - 范围角色：QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 100
-  - 单位： MJ/kg reference
-  - 基准： 非合规限值；以审查后的批次数据替代
-  - 基准类型：参考流 (`reference_flow`)
-  - 证据类型：推理估算 (`reasoned_estimate`)
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-codex-eggs`；`fao-agricultural-energy`
 
 ##### 废物流
 
@@ -602,30 +597,40 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 防护包装材料 (`package`)
+###### 模塑木浆蛋托（`package_pulp_tray`）
+
+**package 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按物种、批次及实际节点记录实物身份与去向；不得从名称推断其他状态。
-
 分母与范围要求：每 kg 农场门口交付的其他鸟类非孵化用鲜壳蛋
 
-- 选定流： 防护包装材料
-- 流属性/单位： 质量或件数 / kg 或件
-- 数量规则： 按实际物种、批次及节点计量，并与相邻节点和库存核对。
-- 数值来源模式：前景记录 (`foreground_record`)
-- 适用范围：场址特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流 (`reference_flow`)
-- 证据类型：采集记录 (`collected_record`)
-- 采集协议： `cp_pack`
-- 来源： `fao-codex-eggs`
-- 数量范围： 暂定且可替换的宽泛筛查范围
-  - 范围角色：QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 100
-  - 单位： kg/kg reference
-  - 基准： 非合规限值；以审查后的批次数据替代
-  - 基准类型：参考流 (`reference_flow`)
-  - 证据类型：推理估算 (`reasoned_estimate`)
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：模塑木浆蛋托
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_pack` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_pack`
+- 来源：`fao-codex-eggs`；`fao-egg-packaging`
+
+###### 瓦楞纸板箱（`package_corrugated_box`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：瓦楞纸板箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_pack` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_pack`
+- 来源：`fao-codex-eggs`；`fao-package-identities`
 
 ##### 废物流
 
@@ -725,7 +730,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：其他鸟类的带壳蛋，新鲜的（本卡限定为非孵化用、农场交付） `c533a91e-a111-484e-a6a5-8fb8d3c41363`
 - 流属性/单位： 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定 (`fixed`)
 - 数量规则：1 千克
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定 (`site_specific`)
@@ -760,6 +764,8 @@ sync_with: pcr.en-US.md
 | `period` | 育成/产蛋/退出 | 入群/育成负担仅在实际产蛋服务期分配一次，并核对期初期末鸟群存量。 | `fao-codex-eggs`; `fao-leap-poultry` |
 | `shared` | housing/collection/分选/包装 assets | 记录每个使用节点与期间；按实测占用、工时或吞吐分摊，份额合计等于来源总量。 | `fao-codex-eggs`; `fao-leap-poultry` |
 | `grade` | 合格、转用与废弃 | 每个状态仅在一个交付点计一次；孵化转用须有适用性，加工转用须有合法接收，否则为损失或废物。 | `fao-codex-eggs`; `fao-leap-poultry` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -835,3 +841,6 @@ sync_with: pcr.en-US.md
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 氮流方法；采用参数前核实实际物种、管理方式及地域适用性 |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 管理土壤直接及间接氮路径与边界核对 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-egg-packaging` | official_guidance | FAO Egg packaging, transport and storage, https://www.fao.org/4/Y4628E/y4628e05.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

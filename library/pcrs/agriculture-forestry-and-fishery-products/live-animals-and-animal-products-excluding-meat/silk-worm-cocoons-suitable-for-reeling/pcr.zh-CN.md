@@ -178,31 +178,56 @@ sync_with: pcr.en-US.md
   - 基准类型: 过程产出 (`process_output`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 养蚕能源供应（`rear_energy`）
+###### 设备供电点的电力（`rear_energy_electricity`）
+
+**rear_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 根据记录将电力、热力与燃料拆为具体交换；待确认流身份 本身不是单一能源商品。
-
 分母与范围要求：每 kg 已结蚕茧（按蚕批）
-
 原始数量及计算要求：按能源载体、蚕批、房间和期间计量。 原始采集分母类型：process_output。
 
-- 选定流: 场址实际能源载体（UUID 未解析）
-- 流属性/单位: 能量 / MJ
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围: 场址特定 (`site_specific`)
-- 归一化基准：每参考流
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议: `cp_utilities`
-- 数量范围: 暂定完整性筛查范围（非默认因子）
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100000
-  - 单位: MJ/kg
-  - 基准: 每 kg 已结蚕茧（按蚕批）
-  - 基准类型: 过程产出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`rear_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
+
+###### 过程入口的外购热量（`rear_energy_heat`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：过程入口的外购热量
+- 流属性 / 单位：能源 / MJ
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
 
 ###### 蚕匾与蔟具服务（`tray_service`）
 
@@ -543,31 +568,56 @@ sync_with: pcr.en-US.md
   - 基准类型: 过程产出 (`process_output`)
   - 证据类型: 采集记录 (`collected_record`)
 
-###### 杀蛹干燥能源（`dry_energy`）
+###### 设备供电点的电力（`dry_energy_electricity`）
+
+**dry_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按能源载体记录实际燃料、热力或电力；不得由鲜干质量差反推能耗。
-
 分母与范围要求：每 kg 干燥节点接收鲜茧
-
 原始数量及计算要求：按批次与期间计量或归属各能源载体。 原始采集分母类型：process_output。
 
-- 选定流: 实际干燥能源载体（UUID 未解析）
-- 流属性/单位: 能量 / MJ
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围: 场址特定 (`site_specific`)
-- 归一化基准：每参考流
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议: `cp_utilities`
-- 数量范围: 暂定完整性筛查范围（非默认因子）
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100000
-  - 单位: MJ/kg
-  - 基准: 每 kg 干燥节点接收鲜茧
-  - 基准类型: 过程产出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`dry_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
+
+###### 过程入口的外购热量（`dry_energy_heat`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：过程入口的外购热量
+- 流属性 / 单位：能源 / MJ
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
 
 ##### 废物流
 
@@ -711,7 +761,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：适于缫丝的丝茧 `2e62f60f-611b-4e07-bc8a-958260a9cba1`
 - 流属性/单位: 质量 / kg
-- 绑定: 固定 (`fixed`)
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围: 场址特定 (`site_specific`)
@@ -846,6 +895,8 @@ sync_with: pcr.en-US.md
 | a_period | 蚕批和寄主作物阶段 | 将叶片投入、养蚕操作与蚕茧产出归属实际蚕批和报告期间；跨日历截点结转期初／期末存量及未完成蚕批。 | fao-cocoon-quality |
 | a_shared | 共用基础设施 | 记录寄主地块、蚕室、蚕匾、蔟具、分级设备和烘干机的实际使用节点、蚕批与服务期间；按观察到的使用量或有理由且披露的代理量，只归属一次制造、维修和公用工程负担。 | fao-cocoon-quality;fao-cocoon-drying |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
@@ -914,3 +965,4 @@ sync_with: pcr.en-US.md
 | `fao-cocoon-quality` | handbook | [FAO《缫丝与测试手册》第 3 章](https://www.fao.org/4/x2099e/x2099e04.htm) | 养蚕／上蔟质量、采茧、分级以及穿孔／不可缫区分。 |
 | `fao-cocoon-drying` | handbook | [FAO《缫丝与测试手册》第 4 章](https://www.fao.org/4/x2099e/x2099e05.htm) | 可选生产者杀蛹／干燥、储存和状态特定计量。 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

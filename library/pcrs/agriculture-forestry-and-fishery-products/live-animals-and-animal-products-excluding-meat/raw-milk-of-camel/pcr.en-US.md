@@ -281,7 +281,6 @@ Raw quantity and calculation requirements: Obtain by event, route and period, th
 
 - Selected flow: Methane, biogenic to air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: `fixed`
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -309,7 +308,6 @@ Raw quantity and calculation requirements: Apply selected method to herd-class a
 
 - Selected flow: Methane, biogenic to air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: `fixed`
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -339,7 +337,6 @@ Raw quantity and calculation requirements: Apply selected method to herd-class a
 
 - Selected flow: Nitrous oxide to air `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: `fixed`
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -367,7 +364,6 @@ Raw quantity and calculation requirements: Apply selected method to herd-class a
 
 - Selected flow: Ammonia to air `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: Mass / kg
-- Binding: `fixed`
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -864,7 +860,6 @@ Producer-handover linkage: Only when selected as the actual terminal source for 
 
 - Selected flow: Raw milk of camel, chilled, production mix at farm gate `c20da2ab-1dac-40ad-9206-43996d07bcff`
 - Flow property / unit: Mass / kg
-- Binding: `fixed`
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)

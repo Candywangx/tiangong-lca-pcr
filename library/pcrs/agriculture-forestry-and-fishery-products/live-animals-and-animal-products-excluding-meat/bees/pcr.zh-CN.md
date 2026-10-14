@@ -33,20 +33,22 @@ sync_with: pcr.en-US.md
 | How much | 1 kg 活蜂质量 |
 | How well | 声明物种、生命阶段、蜂群角色组成、蜂群或蜂包单元、蜂王状态、群势、健康状态，以及活蜂质量或数量换算 |
 | How long or cycle | 一个声明的蜂群生产、分群、蜂王生产、蜂包生产或发运周期 |
-| reference_flow_link | 见下方参考数量和产品流 |
+| reference_flow_link | `declared_transferred_live_bees` |
 
 | 字段 | 值 |
 | --- | --- |
-| Reference amount | 1 kg |
+| 参考数量 | 1 |
 | Reference product flow | Bees `0be7ee1d-758e-458f-9dba-56d8c5298875` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
-| Reference unit | kg live bee mass |
+| Reference unit | kg |
 | Required qualifiers | species; life stage; caste mix; colony, nucleus, package, queen, brood-frame, or other unit type; queen presence and status; colony strength or bee count basis; health or certification status; geography and declared gate; transport inclusion status |
 
 构建前景数据包时，`Required qualifiers` 中列出的项目必须在数据集元数据、过程说明、参考流注释、产品描述或等效字段中声明。缺少这些限定信息会使该数据包的参考流定义不完整。
 
 活蜂质量是主要参考流基础。蜂群数、蜂包数、蜂王数、子脾数或蜜蜂数量记录只有在提供有文件支持的活蜂质量换算时才能使用。
+
+原始批次、群体、过程转移和联产品数量按原采集口径完整保留。对每个交换，先完成实际路线、期间及联产品归属，再以归属原始量 × 1 kg / 同边界同期最终合格产品质量换算为声明参考流。必须记录真实阶段产出、损失、收率和分配，不得把中间转移量固定为最终 1 kg，也不得以缺失数据假定无损失。
 
 ## 4. 测量和单位规则
 
@@ -109,7 +111,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按单元类型实测活蜂质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个活蜂种群进入批次
+原始采集或过程口径：每个活蜂种群进入批次
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_bee_stock_entry_records`
@@ -123,27 +127,62 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 种群进入用蜂箱消耗品（`hive_consumables_for_stock_entry`）
+###### 蜂箱部件用锯材 (`hive_consumables_for_stock_entry_wood`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当巢框、巢础、笼具、饲喂罐、网片和短寿命蜂箱消耗品为了活蜂生产跨越前景边界时记录。
 
-- 选定流：Select applicable hive, cage, frame, wax foundation, or packaging material flow
-- 流属性/单位：Mass or number of items / kg or item
-- 数量规则：实测材料质量或件数；按件数记录时给出单件质量
+- 选定流：蜂箱部件用锯材
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个活蜂种群进入批次
+原始采集或过程口径：每个活蜂种群进入批次
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_hive_material_and_packaging_records`
-- 数量范围：暂定蜂箱消耗品筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：5
-  - 单位：kg material/kg live bee output
-  - 基准：短寿命蜂箱、笼具、巢框或包装材料投入的宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-bee-hive-materials`
+
+###### 蜂蜡巢础 (`hive_consumables_for_stock_entry_wax`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当巢框、巢础、笼具、饲喂罐、网片和短寿命蜂箱消耗品为了活蜂生产跨越前景边界时记录。
+
+- 选定流：蜂蜡巢础
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个活蜂种群进入批次
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_hive_material_and_packaging_records`
+- 来源：`fao-bee-hive-materials`
+
+###### 聚丙烯蜂王笼 (`hive_consumables_for_stock_entry_cage`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当巢框、巢础、笼具、饲喂罐、网片和短寿命蜂箱消耗品为了活蜂生产跨越前景边界时记录。
+
+- 选定流：聚丙烯蜂王笼
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个活蜂种群进入批次
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_hive_material_and_packaging_records`
+- 来源：`fao-bee-hive-materials`
 
 ##### 废物流
 
@@ -166,7 +205,9 @@ sync_with: pcr.en-US.md
 - 数量规则：种群进入检查后的接收活蜂质量或数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：stock entry process output
+原始采集或过程口径：stock entry process output
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_bee_stock_entry_records`
@@ -182,28 +223,24 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 种群进入时拒收或死亡的蜜蜂（`rejected_or_dead_bees_at_stock_entry`）
+###### 死亡蜜蜂生物质 (`rejected_or_dead_bees_at_stock_entry_dead_bees`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 死亡蜜蜂、拒收蜂王、失败蜂包或被判定不合格的种群，应记录质量或数量换算及去向。
 
-- 选定流：Select applicable bee mortality, biological waste, or rejected live-animal flow
-- 流属性/单位：Mass / kg
-- 数量规则：实测或估算活蜂质量和处置路线
+- 选定流：死亡蜜蜂生物质
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个活蜂种群进入批次
+原始采集或过程口径：每个活蜂种群进入批次
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_mortality_escape_and_reject_records`
 - 来源：`fao-good-beekeeping-2019`
-- 数量范围：暂定种群进入拒收筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：0.5
-  - 单位：kg/kg live bee stock entry
-  - 基准：种群进入时拒收或死亡蜂质量的宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
@@ -224,7 +261,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按蜂群、蜂包、蜂王、小群或子脾单元实测质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个受管理活蜂单元
+原始采集或过程口径：每个受管理活蜂单元
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_bee_colony_management_records`
@@ -237,28 +276,43 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 补充糖饲料（`supplemental_sugar_feed`）
+###### 葡萄糖饲料 (`supplemental_sugar_feed_glucose`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
 
 糖浆、糖饼、糖膏、干糖和类似补充碳水饲料按产品质量和糖浓度记录。
 
-- 选定流：Glucose `7c6f0597-0a8b-4677-abca-a5f59b1c012c`; sugar syrup or feed selected from site records
-- 流属性/单位：Mass / kg sugar, kg dry matter, or kg as-fed
-- 数量规则：实测饲喂量和浓度或干物质基础
+- 选定流：葡萄糖饲料
+- 流属性 / 单位：质量 / kg
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个管理蜂群、蜂包、育王批次或 kg 活蜂输出
+原始采集或过程口径：每个管理蜂群、蜂包、育王批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_feed_and_water_records`
 - 来源：`fao-good-beekeeping-2019`
-- 数量范围：暂定补充糖饲料筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg sugar/kg live bee output
-  - 基准：分配给活蜂生产的补充糖饲料宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 蔗糖饲喂溶液 (`supplemental_sugar_feed_sucrose_solution`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
+
+糖浆、糖饼、糖膏、干糖和类似补充碳水饲料按产品质量和糖浓度记录。
+
+- 选定流：蔗糖饲喂溶液
+- 流属性 / 单位：质量 / kg 溶液
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个管理蜂群、蜂包、育王批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_feed_and_water_records`
+- 来源：`fao-good-beekeeping-2019`
 
 ###### 蛋白饲料和补充料（`protein_feed_and_supplements`）
 
@@ -269,7 +323,9 @@ sync_with: pcr.en-US.md
 - 数量规则：实测饲喂量和声明组成
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每个管理蜂群、批次或 kg 活蜂输出
+原始采集或过程口径：每个管理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_feed_and_water_records`
@@ -291,7 +347,9 @@ sync_with: pcr.en-US.md
 - 数量规则：实测用水或配制饲料中的水分计算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个管理蜂群、批次或 kg 活蜂输出
+原始采集或过程口径：每个管理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_feed_and_water_records`
@@ -304,27 +362,41 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 蜂场能源和移群燃料（`apiary_energy_and_movement_fuel`）
+###### 设备供电点的电力 (`apiary_energy_and_movement_fuel_electricity`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 用于蜂场巡查、搬运、饲喂、通风、短距离移群、制冷和暂养的电力和燃料按能源载体记录。
 
-- 选定流：Electricity `f872677d-2f66-428a-a94e-f0fba61231df`; Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816` where used
-- 流属性/单位：Net calorific value / MJ or kWh
-- 数量规则：实测电表、燃料发票、设备日志或路线分配
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个管理蜂群、批次、路线或 kg 活蜂输出
+原始采集或过程口径：每个管理蜂群、批次、路线或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_and_movement_records`
-- 数量范围：暂定蜂场能源筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：50
-  - 单位：MJ/kg live bee output
-  - 基准：分配给活蜂生产的能源和移群燃料宽泛首轮估算
-  - 基准类型：燃料清单（`fuel_inventory`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油 (`apiary_energy_and_movement_fuel_diesel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+用于蜂场巡查、搬运、饲喂、通风、短距离移群、制冷和暂养的电力和燃料按能源载体记录。
+
+- 选定流：柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个管理蜂群、批次、路线或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_energy_and_movement_records`
 
 ##### 废物流
 
@@ -341,7 +413,9 @@ sync_with: pcr.en-US.md
 - 数量规则：由水源和数量记录计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 kg 活蜂输出
+原始采集或过程口径：每 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_feed_and_water_records`
@@ -367,7 +441,9 @@ sync_with: pcr.en-US.md
 - 数量规则：实测质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：colony management process output
+原始采集或过程口径：colony management process output
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_bee_colony_management_records`
@@ -383,41 +459,39 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 死蜂、失败蜂王和分蜂损失（`dead_bees_failed_queens_and_swarm_loss`）
+###### 死亡蜜蜂生物质 (`dead_bees_failed_queens_and_swarm_loss_dead_bees`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 死蜂、失败蜂王、非商品蜂群、分蜂损失和逃逸损失应记录质量或数量换算及去向。
 
-- 选定流：Select applicable bee mortality, biological waste, escaped live-animal, or rejected live-bee flow
-- 流属性/单位：Mass / kg
-- 数量规则：按事件和去向记录的实测或估算活蜂质量
+- 选定流：死亡蜜蜂生物质
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个管理蜂群、批次或 kg 活蜂输出
+原始采集或过程口径：每个管理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_mortality_escape_and_reject_records`
 - 来源：`fao-good-beekeeping-2019`, `woah-bee-diseases`
-- 数量范围：暂定死亡和分蜂损失筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg/kg live bee output
-  - 基准：死蜂、失败蜂王、非商品种群和分蜂损失宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
 ###### 蜂场能源化石二氧化碳（`fossil_carbon_dioxide_from_apiary_energy`）
 
-蜂场能源化石二氧化碳根据燃料和电力记录以及声明排放因子计算。
+仅核算前景直接燃烧的化石 CO2。
 
 - 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
-- 数量规则：能源数量乘以声明燃料或电力排放因子
+- 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：通用（`generic`）
-- 归一化基准：per fuel inventory
+原始采集或过程口径：per fuel inventory
+
+- 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_and_movement_records`
@@ -436,50 +510,100 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 兽医和害虫防治处理（`veterinary_and_pest_control_treatments`）
+###### 甲酸处理制剂 (`veterinary_and_pest_control_treatments_formic_acid`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
 
 蜂药、瓦螨或害虫处理、消毒剂、卫生化学品和其他健康投入在施用或对认证有实质影响时记录。
 
-- 选定流：Veterinary Chemical Drug Raw Materials `b2891b2b-41b0-46b5-bf2f-e5726c977d74`; Cypermethrin `7fcf6100-764e-41ca-af06-056495e2b8c4` only when specifically used
-- 流属性/单位：Mass or product-specific unit / kg active ingredient, kg product, dose, or item
-- 数量规则：实测产品用量、可用时的活性成分、处理蜂群数、日期和处理目的
+- 选定流：甲酸处理制剂
+- 流属性 / 单位：质量 / kg 制剂
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每个处理蜂群、批次或 kg 活蜂输出
+原始采集或过程口径：每个处理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_treatment_and_health_records`
-- 来源：`fao-good-beekeeping-2019`, `woah-varroosis-code`
-- 数量范围：暂定处理投入筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg product/kg live bee output
-  - 基准：蜂健康和害虫防治产品投入宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-good-beekeeping-2019`, `woah-varroosis-code`；`codex-organic-beekeeping`
 
-###### 蜂箱修理和维护材料（`hive_repair_and_maintenance_materials`）
+###### 草酸处理制剂 (`veterinary_and_pest_control_treatments_oxalic_acid`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
+
+蜂药、瓦螨或害虫处理、消毒剂、卫生化学品和其他健康投入在施用或对认证有实质影响时记录。
+
+- 选定流：草酸处理制剂
+- 流属性 / 单位：质量 / kg 制剂
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+原始采集或过程口径：每个处理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_treatment_and_health_records`
+- 来源：`fao-good-beekeeping-2019`, `woah-varroosis-code`；`codex-organic-beekeeping`
+
+###### 蜂箱部件用锯材 (`hive_repair_and_maintenance_materials_wood`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 替换巢框、巢础、笼具、网片、紧固件、油漆、清洁材料和其他短寿命材料在使用时记录。
 
-- 选定流：Select applicable hive repair, frame, wax foundation, cage, screen, or maintenance material flow
-- 流属性/单位：Mass or number of items / kg or item
-- 数量规则：实测材料质量或件数；按件数记录时给出单件质量
+- 选定流：蜂箱部件用锯材
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个维护蜂群、批次或 kg 活蜂输出
+原始采集或过程口径：每个维护蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_hive_material_and_packaging_records`
-- 数量范围：暂定维护材料筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：5
-  - 单位：kg material/kg live bee output
-  - 基准：蜂箱维护和短寿命材料投入宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-bee-hive-materials`
+
+###### 蜂蜡巢础 (`hive_repair_and_maintenance_materials_wax`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+替换巢框、巢础、笼具、网片、紧固件、油漆、清洁材料和其他短寿命材料在使用时记录。
+
+- 选定流：蜂蜡巢础
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个维护蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_hive_material_and_packaging_records`
+- 来源：`fao-bee-hive-materials`
+
+###### 钢丝 (`hive_repair_and_maintenance_materials_steel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+替换巢框、巢础、笼具、网片、紧固件、油漆、清洁材料和其他短寿命材料在使用时记录。
+
+- 选定流：钢丝
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个维护蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_hive_material_and_packaging_records`
+- 来源：`fao-bee-hive-materials`
 
 ##### 废物流
 
@@ -502,7 +626,9 @@ sync_with: pcr.en-US.md
 - 数量规则：检查或处理后的实测质量或有文件支持的数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：health treatment process output
+原始采集或过程口径：health treatment process output
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_health_inspection_and_certification_records`
@@ -518,28 +644,43 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 处理残余物和判废蜂材料（`treatment_residues_and_condemned_bee_material`）
+###### 废弃蜂蜡巢脾 (`treatment_residues_and_condemned_bee_material_wax_waste`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 处理包装、污染巢脾、判废蜜蜂、病蜂群和拒收蜂箱材料应记录质量和去向。
 
-- 选定流：Select applicable treatment residue, biological waste, contaminated comb, or rejected hive material flow
-- 流属性/单位：Mass / kg
-- 数量规则：实测残余物或判废材料质量和处理路线
+- 选定流：废弃蜂蜡巢脾
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个处理蜂群、批次或 kg 活蜂输出
+原始采集或过程口径：每个处理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_treatment_residue_and_waste_records`
 - 来源：`fao-good-beekeeping-2019`, `woah-bee-diseases`
-- 数量范围：暂定处理残余物筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg residue/kg live bee output
-  - 基准：处理残余物、判废蜂材料或污染巢脾宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 废弃木质蜂箱部件 (`treatment_residues_and_condemned_bee_material_wood_waste`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+处理包装、污染巢脾、判废蜜蜂、病蜂群和拒收蜂箱材料应记录质量和去向。
+
+- 选定流：废弃木质蜂箱部件
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个处理蜂群、批次或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_treatment_residue_and_waste_records`
+- 来源：`fao-good-beekeeping-2019`, `woah-bee-diseases`
 
 ##### 基本流
 
@@ -560,7 +701,9 @@ sync_with: pcr.en-US.md
 - 数量规则：进入包装时的实测质量或数量到质量换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：pack-out input
+原始采集或过程口径：pack-out input
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_bee_packing_dispatch_records`
@@ -573,49 +716,99 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 活蜂包装和暂养材料（`live_bee_packaging_and_holding_materials`）
+###### 聚丙烯蜂王笼 (`live_bee_packaging_and_holding_materials_cage`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 笼具、蜂包盒、网片、罐、蜂王笼、标签、运输饲料、吸收材料和其他发运材料按件数和可用质量记录。
 
-- 选定流：Packaging materials, unspecified `7336a8ee-9e4d-49a6-9fe5-ce285f613245`; specific cage or package material selected from site records
-- 流属性/单位：Mass or number of items / kg or item
-- 数量规则：实测件数、材料质量和单元容量
+- 选定流：聚丙烯蜂王笼
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个蜂包、蜂王发运、蜂群发运或 kg 活蜂输出
+原始采集或过程口径：每个蜂包、蜂王发运、蜂群发运或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_hive_material_and_packaging_records`
-- 数量范围：暂定活蜂包装筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：10
-  - 单位：kg packaging/kg live bee output
-  - 基准：笼具、包装和运输材料投入宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-bee-hive-materials`
 
-###### 发运能源和运输服务（`dispatch_energy_and_transport_service`）
+###### 蜂箱部件用锯材 (`live_bee_packaging_and_holding_materials_wood`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+笼具、蜂包盒、网片、罐、蜂王笼、标签、运输饲料、吸收材料和其他发运材料按件数和可用质量记录。
+
+- 选定流：蜂箱部件用锯材
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个蜂包、蜂王发运、蜂群发运或 kg 活蜂输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_hive_material_and_packaging_records`
+- 来源：`fao-bee-hive-materials`
+
+###### 设备供电点的电力 (`dispatch_energy_and_transport_service_electricity`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当声明门包括相关活动时，记录电力、通风、制冷、燃料和路线特定运输服务。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`; electricity or transport service selected from route records
-- 流属性/单位：Net calorific value or transport service / MJ, kWh, or tonne-km
-- 数量规则：实测燃料、电力、承运人发票、路线距离或 tonne-km
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
-- 归一化基准：每发运 kg 活蜂质量
+原始采集或过程口径：每发运 kg 活蜂质量
+
+- 归一化基准：每声明的参考流
 - 基准类型：运输服务（`transport_service`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_dispatch_energy_and_transport_records`
-- 数量范围：暂定发运能源筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：100
-  - 单位：MJ/kg dispatched live bee mass
-  - 基准：暂养、通风、制冷和路线能源宽泛首轮估算
-  - 基准类型：运输服务（`transport_service`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油 (`dispatch_energy_and_transport_service_diesel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当声明门包括相关活动时，记录电力、通风、制冷、燃料和路线特定运输服务。
+
+- 选定流：柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始采集或过程口径：每发运 kg 活蜂质量
+
+- 归一化基准：每声明的参考流
+- 基准类型：运输服务（`transport_service`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_dispatch_energy_and_transport_records`
+
+###### 公路货运服务（`dispatch_energy_and_transport_service_road_freight`）
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当声明门包括相关活动时，记录电力、通风、制冷、燃料和路线特定运输服务。
+
+- 选定流：公路货运服务
+- 流属性 / 单位：运输量 / t km
+- 数量规则：实测燃料、电力、承运人发票、路线距离或 tonne-km
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始采集或过程口径：每发运 kg 活蜂质量
+
+- 归一化基准：每声明的参考流
+- 基准类型：运输服务（`transport_service`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_dispatch_energy_and_transport_records`
+
+仅适用于实际委外的公路运输，保留活体质量、距离、车辆类型、装载率及服务边界。同一承运环节不得同时计入本服务及其燃料、电力和直接排放。
 
 ##### 废物流
 
@@ -631,14 +824,18 @@ sync_with: pcr.en-US.md
 
 ###### 声明转移活蜂（`declared_transferred_live_bees`）
 
+参考单位 kg 表示交接时活体净质量，排除包装、笼具及附带材料；头数或蜂群数须保留同类活体的实测质量换算。
+
 声明转移活蜂是在声明门的参考产品输出。
 
 - 选定流：Bees `0be7ee1d-758e-458f-9dba-56d8c5298875`
-- 流属性/单位：Mass / kg live bee mass
-- 数量规则：声明转移门的实测质量或有文件支持的数量到质量换算
+- 流属性 / 单位：质量 / kg
+- 数量规则：1 千克
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：PCR reference output
+原始采集或过程口径：PCR reference output
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_bee_packing_dispatch_records`
@@ -654,27 +851,41 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 发运死亡和退回包装（`dispatch_mortalities_and_returned_packaging`）
+###### 死亡蜜蜂生物质 (`dispatch_mortalities_and_returned_packaging_dead_bees`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 暂养或发运期间死蜂、失败发运、退回笼具、饲喂罐和包装废物应记录质量和去向。
 
-- 选定流：Select applicable bee mortality, biological waste, packaging waste, or returned package material flow
-- 流属性/单位：Mass / kg
-- 数量规则：实测或估算死蜂质量、包装材料质量，以及处置或再用路线
+- 选定流：死亡蜜蜂生物质
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每发运 kg 活蜂质量
+原始采集或过程口径：每发运 kg 活蜂质量
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_dispatch_mortality_and_packaging_waste_records`
-- 数量范围：暂定发运死亡和包装废物筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：2
-  - 单位：kg waste/kg dispatched live bee mass
-  - 基准：发运死亡和包装废物宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 废弃木质蜂箱部件 (`dispatch_mortalities_and_returned_packaging_wood_waste`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+暂养或发运期间死蜂、失败发运、退回笼具、饲喂罐和包装废物应记录质量和去向。
+
+- 选定流：废弃木质蜂箱部件
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每发运 kg 活蜂质量
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_dispatch_mortality_and_packaging_waste_records`
 
 ##### 基本流
 
@@ -684,10 +895,12 @@ sync_with: pcr.en-US.md
 
 - 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
-- 数量规则：发运燃料或能源数量乘以声明排放因子
+- 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：路线特定（`route_specific`）
-- 归一化基准：per dispatch energy inventory
+原始采集或过程口径：per dispatch energy inventory
+
+- 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_dispatch_energy_and_transport_records`
@@ -717,18 +930,18 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_live_bee_stock_entry_records | live_bee_stock_entry | parent colony or purchased live bee stock | purchase, split, queen, package, nucleus, brood-frame, or receiving record | source; species; unit type; queen status; life stage; caste mix; colony strength; bee count or mass; health status; acquisition date; upstream burden treatment | receiving record, breeder certificate, health certificate, scale record, colony inspection, or count-to-mass conversion | kg live bee mass, colony, nucleus, package, queen, frame, or head | per stock entry or batch | production cycle | apiary, breeder, or stock-entry lot | 将单元记录换算为活蜂质量，并核对接收、拒收、死亡或逃逸蜜蜂 | scale record, receiving record, health certificate, inspection record |
-| cp_live_bee_colony_management_records | colony_management_and_feeding | managed live bee stock | colony inspection, split, queen rearing, package production, or apiary management record | colony id; unit type; queen status; brood stage; adult bee estimate; frame or seam count; date; management action | apiary log, inspection record, production batch record, or breeder log | colony, frame, seam, head, or kg live bee mass | inspection, batch, week, month, or production cycle | production cycle | apiary, breeder yard, queen yard, or package production unit | 按单元类型和质量换算核对活蜂进入、分群、损失和输出 | apiary log, inspection sheet, breeder record |
-| cp_feed_and_water_records | colony_management_and_feeding | supplemental feed and water | feed issue, syrup preparation, water, or feeding record | feed type; sugar concentration; dry matter or as-fed basis; product mass; water quantity; treated colonies; date | feed log, invoice, syrup mixing sheet, meter, or tank record | kg, L, m3, kg dry matter, kg sugar | per feeding event, batch, or reporting period | production cycle | apiary, feed room, or production batch | 必要时换算为 kg 糖或干物质，并按蜂群、批次或活蜂输出分配 | invoice, feed log, mixing sheet, meter record |
-| cp_energy_and_movement_records | colony_management_and_feeding | apiary energy and movement fuel | electricity, fuel, equipment, or movement record | carrier; quantity; route; operation; colonies served; period; allocation method | utility bill, fuel invoice, route log, equipment log, or telematics | kWh, MJ, L, kg fuel, km, or tonne-km | operation, route, month, or cycle | production cycle | apiary, route, holding room, or production site | 换算为 MJ 或 kWh，并按有文件支持的基础分配到活蜂生产 | invoice, meter record, fuel log, route record |
-| cp_treatment_and_health_records | health_treatment_and_hive_maintenance | veterinary and pest-control treatments | treatment, pest monitoring, medicine, or certification record | product; active ingredient; dose; treated colony count; date; target pest or disease; certification relevance | treatment log, veterinary record, product label, laboratory result, health certificate, or inspection record | kg, L, dose, strip, item, or product-specific unit | per treatment or inspection event | production cycle | apiary, colony, queen yard, or package lot | 汇总活性成分或产品用量，并归一化到处理单元和活蜂输出 | treatment log, product label, inspection result, health certificate |
-| cp_hive_material_and_packaging_records | live_bee_stock_entry; health_treatment_and_hive_maintenance; live_bee_packing_and_dispatch | hive consumables and packaging | material purchase, cage, frame, comb, package, or dispatch material record | material type; mass; item count; capacity; reuse status; batch or shipment | inventory issue record, packing log, invoice, or unit mass specification | kg or item | per batch, shipment, replacement, or reporting period | production cycle or dispatch period | apiary, shop, packing room, or shipment | 汇总材料质量和件数；只有在范围内时按声明再用或折旧规则分配可重复使用材料 | invoice, packing log, inventory record |
-| cp_health_inspection_and_certification_records | health_treatment_and_hive_maintenance | healthy live bee unit for dispatch | inspection, certification, or release record | species; unit type; queen status; colony strength; disease or pest status; treatment status; release date | apiary inspection, veterinary certificate, lab result, or dispatch approval | kg live bee mass, colony, package, queen, or frame | per inspection, lot, or shipment | dispatch cycle | apiary, breeder, or dispatch lot | 识别接收的活蜂单元并换算到参考质量 | certificate, inspection record, laboratory result |
-| cp_treatment_residue_and_waste_records | health_treatment_and_hive_maintenance | treatment residues and condemned bee material | residue, contaminated comb, condemned colony, or disposal record | waste type; mass; treatment product; colony or batch; fate | scale record, disposal ticket, treatment log, or inspection record | kg | per event or reporting period | production cycle | apiary, treatment area, or waste route | 按去向汇总残余物和判废材料质量 | disposal ticket, treatment log, inspection record |
-| cp_live_bee_packing_dispatch_records | live_bee_packing_and_dispatch | declared transferred live bees | package, queen cage, colony, nucleus, brood frame, or shipment record | unit type; unit count; bee count or mass; queen status; shipment id; gate; date; receiver; health status | packing log, scale record, shipping document, certificate, or count-to-mass conversion | kg live bee mass, package, colony, queen, frame, or head | per shipment or batch | dispatch period | packing room, apiary, holding room, or route | 将蜂包或蜂群记录换算为 kg 活蜂质量并核对发运输出 | packing log, scale record, dispatch note, health certificate |
-| cp_dispatch_energy_and_transport_records | live_bee_packing_and_dispatch | dispatch energy and transport | holding, ventilation, cooling, carrier, fuel, or route record | route; distance; vehicle; energy; fuel; carrier invoice; shipment mass; holding duration | carrier invoice, route log, fuel log, utility meter, or dispatch record | kWh, MJ, L fuel, km, tonne-km | per shipment or dispatch period | dispatch period | holding room, loading area, route, or declared gate | 将路线特定能源归一化到发运 kg 活蜂质量 | carrier invoice, route record, fuel or energy record |
-| cp_mortality_escape_and_reject_records | live_bee_stock_entry; colony_management_and_feeding | mortality, rejected bees, and swarm loss | dead bee, failed queen, rejected stock, swarm, escape, or non-marketable colony record | unit id; event date; unit type; estimated mass or count; cause where available; fate | apiary log, inspection record, disposal record, or count-to-mass estimate | kg live bee mass, head, colony, queen, or package | per event or reporting period | production cycle | apiary, breeder yard, holding room, or shipment | 将事件记录换算为质量，按去向汇总，并归一化到活蜂输出 | apiary log, inspection record, disposal record |
-| cp_dispatch_mortality_and_packaging_waste_records | live_bee_packing_and_dispatch | dispatch mortalities and returned packaging | shipment loss, returned package, cage, feed can, or waste record | shipment id; dead bee count or mass; returned material; waste mass; fate | receiving claim, return record, scale ticket, or waste contractor record | kg or item | per shipment or return | dispatch period | route, receiver, packing room, or waste route | 按去向汇总发运死亡和包装废物 | claim record, return log, disposal ticket |
+| cp_live_bee_stock_entry_records | live_bee_stock_entry | parent colony or purchased live bee stock | purchase, split, queen, package, nucleus, brood-frame, or receiving record | source; species; unit type; queen status; life stage; caste mix; colony strength; bee count or mass; health status; acquisition date; upstream burden treatment | receiving record, breeder certificate, health certificate, scale record, colony inspection, or count-to-mass conversion；原活动量汇总：将单元记录换算为活蜂质量，并核对接收、拒收、死亡或逃逸蜜蜂 | kg live bee mass, colony, nucleus, package, queen, frame, or head | per stock entry or batch | production cycle | apiary, breeder, or stock-entry lot | 每声明的参考流 | scale record, receiving record, health certificate, inspection record |
+| cp_live_bee_colony_management_records | colony_management_and_feeding | managed live bee stock | colony inspection, split, queen rearing, package production, or apiary management record | colony id; unit type; queen status; brood stage; adult bee estimate; frame or seam count; date; management action | apiary log, inspection record, production batch record, or breeder log；原活动量汇总：按单元类型和质量换算核对活蜂进入、分群、损失和输出 | colony, frame, seam, head, or kg live bee mass | inspection, batch, week, month, or production cycle | production cycle | apiary, breeder yard, queen yard, or package production unit | 每声明的参考流 | apiary log, inspection sheet, breeder record |
+| cp_feed_and_water_records | colony_management_and_feeding | supplemental feed and water | feed issue, syrup preparation, water, or feeding record | feed type; sugar concentration; dry matter or as-fed basis; product mass; water quantity; treated colonies; date | feed log, invoice, syrup mixing sheet, meter, or tank record；原活动量汇总：必要时换算为 kg 糖或干物质，并按蜂群、批次或活蜂输出分配 | kg, L, m3, kg dry matter, kg sugar | per feeding event, batch, or reporting period | production cycle | apiary, feed room, or production batch | 每声明的参考流 | invoice, feed log, mixing sheet, meter record |
+| cp_energy_and_movement_records | colony_management_and_feeding | apiary energy and movement fuel | electricity, fuel, equipment, or movement record | carrier; quantity; route; operation; colonies served; period; allocation method | utility bill, fuel invoice, route log, equipment log, or telematics；原活动量汇总：换算为 MJ 或 kWh，并按有文件支持的基础分配到活蜂生产 | kWh, MJ, L, kg fuel, km, or tonne-km | operation, route, month, or cycle | production cycle | apiary, route, holding room, or production site | 每声明的参考流 | invoice, meter record, fuel log, route record |
+| cp_treatment_and_health_records | health_treatment_and_hive_maintenance | veterinary and pest-control treatments | treatment, pest monitoring, medicine, or certification record | product; active ingredient; dose; treated colony count; date; target pest or disease; certification relevance | treatment log, veterinary record, product label, laboratory result, health certificate, or inspection record；原活动量汇总：汇总活性成分或产品用量，并归一化到处理单元和活蜂输出 | kg, L, dose, strip, item, or product-specific unit | per treatment or inspection event | production cycle | apiary, colony, queen yard, or package lot | 每声明的参考流 | treatment log, product label, inspection result, health certificate |
+| cp_hive_material_and_packaging_records | live_bee_stock_entry; health_treatment_and_hive_maintenance; live_bee_packing_and_dispatch | hive consumables and packaging | material purchase, cage, frame, comb, package, or dispatch material record | material type; mass; item count; capacity; reuse status; batch or shipment | inventory issue record, packing log, invoice, or unit mass specification；原活动量汇总：汇总材料质量和件数；只有在范围内时按声明再用或折旧规则分配可重复使用材料 | kg or item | per batch, shipment, replacement, or reporting period | production cycle or dispatch period | apiary, shop, packing room, or shipment | 每声明的参考流 | invoice, packing log, inventory record |
+| cp_health_inspection_and_certification_records | health_treatment_and_hive_maintenance | healthy live bee unit for dispatch | inspection, certification, or release record | species; unit type; queen status; colony strength; disease or pest status; treatment status; release date | apiary inspection, veterinary certificate, lab result, or dispatch approval；原活动量汇总：识别接收的活蜂单元并换算到参考质量 | kg live bee mass, colony, package, queen, or frame | per inspection, lot, or shipment | dispatch cycle | apiary, breeder, or dispatch lot | 每声明的参考流 | certificate, inspection record, laboratory result |
+| cp_treatment_residue_and_waste_records | health_treatment_and_hive_maintenance | treatment residues and condemned bee material | residue, contaminated comb, condemned colony, or disposal record | waste type; mass; treatment product; colony or batch; fate | scale record, disposal ticket, treatment log, or inspection record；原活动量汇总：按去向汇总残余物和判废材料质量 | kg | per event or reporting period | production cycle | apiary, treatment area, or waste route | 每声明的参考流 | disposal ticket, treatment log, inspection record |
+| cp_live_bee_packing_dispatch_records | live_bee_packing_and_dispatch | declared transferred live bees | package, queen cage, colony, nucleus, brood frame, or shipment record | unit type; unit count; bee count or mass; queen status; shipment id; gate; date; receiver; health status | packing log, scale record, shipping document, certificate, or count-to-mass conversion；原活动量汇总：将蜂包或蜂群记录换算为 kg 活蜂质量并核对发运输出 | kg live bee mass, package, colony, queen, frame, or head | per shipment or batch | dispatch period | packing room, apiary, holding room, or route | 每声明的参考流 | packing log, scale record, dispatch note, health certificate |
+| cp_dispatch_energy_and_transport_records | live_bee_packing_and_dispatch | dispatch energy and transport | holding, ventilation, cooling, carrier, fuel, or route record | route; distance; vehicle; energy; fuel; carrier invoice; shipment mass; holding duration | carrier invoice, route log, fuel log, utility meter, or dispatch record；原活动量汇总：将路线特定能源归一化到发运 kg 活蜂质量 | kWh, MJ, L fuel, km, tonne-km | per shipment or dispatch period | dispatch period | holding room, loading area, route, or declared gate | 每声明的参考流 | carrier invoice, route record, fuel or energy record |
+| cp_mortality_escape_and_reject_records | live_bee_stock_entry; colony_management_and_feeding | mortality, rejected bees, and swarm loss | dead bee, failed queen, rejected stock, swarm, escape, or non-marketable colony record | unit id; event date; unit type; estimated mass or count; cause where available; fate | apiary log, inspection record, disposal record, or count-to-mass estimate；原活动量汇总：将事件记录换算为质量，按去向汇总，并归一化到活蜂输出 | kg live bee mass, head, colony, queen, or package | per event or reporting period | production cycle | apiary, breeder yard, holding room, or shipment | 每声明的参考流 | apiary log, inspection record, disposal record |
+| cp_dispatch_mortality_and_packaging_waste_records | live_bee_packing_and_dispatch | dispatch mortalities and returned packaging | shipment loss, returned package, cage, feed can, or waste record | shipment id; dead bee count or mass; returned material; waste mass; fate | receiving claim, return record, scale ticket, or waste contractor record；原活动量汇总：按去向汇总发运死亡和包装废物 | kg or item | per shipment or return | dispatch period | route, receiver, packing room, or waste route | 每声明的参考流 | claim record, return log, disposal ticket |
 
 ### 计算规则
 
@@ -737,8 +950,8 @@ sync_with: pcr.en-US.md
 | normalize_live_bee_mass_output | reference product | kg transferred live bee mass / PCR reference amount | cp_live_bee_packing_dispatch_records | kg live bees per reference output | `mass-balance-identity` |
 | convert_count_to_live_bee_mass | colony, package, queen, brood-frame, or bee-count records | 使用有文件支持的质量、单元换算或群势基础，将基于数量的单元换算为 kg 活蜂质量 | cp_live_bee_stock_entry_records; cp_live_bee_colony_management_records; cp_live_bee_packing_dispatch_records | kg live bee mass by unit type | `fao-good-beekeeping-2019` |
 | normalize_supplemental_feed | supplemental feed | 将糖浆、糖饼、干糖、花粉替代物和蛋白饲料换算为声明的糖、干物质或原样基础，并按蜂群、批次或活蜂输出分配 | cp_feed_and_water_records | kg feed per reference output | `fao-good-beekeeping-2019` |
-| calculate_apiary_energy_co2 | apiary energy fossil CO2 | 燃料和电力数量乘以声明排放因子，并归一化到活蜂输出 | cp_energy_and_movement_records | kg fossil CO2 per reference output |  |
-| calculate_dispatch_energy_co2 | dispatch energy fossil CO2 | 发运能源或燃料数量乘以声明排放因子，并归一化到发运活蜂质量 | cp_dispatch_energy_and_transport_records | kg fossil CO2 per reference output |  |
+| calculate_apiary_energy_co2 | apiary energy fossil CO2 | 仅核算前景直接运营设备的化石燃料燃烧 CO2，再按合格产出归一化；外购电力及委外运输排放由相应上游数据承担，不得重复 | cp_energy_and_movement_records | kg fossil CO2 per reference output |  |
+| calculate_dispatch_energy_co2 | dispatch energy fossil CO2 | 仅核算前景直接运营设备的化石燃料燃烧 CO2，再按合格产出归一化；外购电力及委外运输排放由相应上游数据承担，不得重复 | cp_dispatch_energy_and_transport_records | kg fossil CO2 per reference output |  |
 | allocate_colony_coproducts | co-products | 当前景边界内计入蜂蜜、蜂蜡、授粉服务、育王服务或其他共产品时，进行过程细分或分配 | cp_live_bee_colony_management_records; co-product records | allocation factors or subdivision rule | `fao-leap-guidelines` |
 
 ### 数据质量要求
@@ -787,3 +1000,5 @@ sync_with: pcr.en-US.md
 | `oregon-honeybee-colony-evaluation` | extension_guidance | <https://extension.oregonstate.edu/catalog/pnw-623-evaluating-honey-bee-colonies-pollination> | 群势和受管理蜜蜂蜂群评估背景 |
 | `fao-leap-guidelines` | official_guidance | <https://www.fao.org/partnerships/leap/resources/publications/fao-leap-guidelines/en> | 畜牧和动物供应链 LCA 边界、数据质量和分配背景 |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for live-bee output, stock reconciliation, and process reference outputs. | 参考输出和活蜂质量平衡检查的 QA 校验 |
+| `fao-bee-hive-materials` | official_guidance | FAO Beekeeping and sustainable livelihoods; hive and wax material identity context, https://www.fao.org/4/y5110e/y5110e0e.htm | 条件性身份依据；实际场址用量和适用性须单独核实 |
+| `codex-organic-beekeeping` | official_guidance | Codex organically produced foods, beekeeping provisions; conditional treatment identities, no dose or prescription, https://www.fao.org/docrep/pdf/010/a1385e/a1385e00.pdf | 条件性身份依据；实际场址用量和适用性须单独核实 |

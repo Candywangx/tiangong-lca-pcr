@@ -718,7 +718,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- |
 | `validate_route` | reference | Exactly one route and gate declared. | error |
 | `validate_reference_identity` | reference | Before activation bind exact Product UUID, property and unit group. | error |
-| `validate_nutrients` | cultivation | Exactly one set-only nutrient card and no group. | error |
+| `validate_nutrients` | cultivation | Give every actual fertilizer or amendment product its own card, retaining physical product mass, formulation, nutrient composition and application records. Nutrient quantities are not additional inputs of the same product; collection or group identifiers cannot substitute for a concrete flow identity. | error |
 | `validate_balance` | harvest/gin | Close mass balance within declared uncertainty. | error |
 | `validate_states` | outputs | Every accepted, downgraded, reworked and discarded state has one destination. | error |
 | `validate_runs` | gin | Startup, cleaning and changeover are assigned once. | error |

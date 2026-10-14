@@ -33,20 +33,22 @@ sync_with: pcr.en-US.md
 | How much | 1 kg 活重 |
 | How well | 声明年龄组、性别、品种或类型、预期用途、健康状态、活重测量基础和生产系统 |
 | How long or cycle | 从声明起始条件到转移门的一个动物饲养周期；纳入繁育群负荷时单独声明群体维持期 |
-| reference_flow_link | 见下方参考数量和产品流 |
+| reference_flow_link | `declared_transferred_live_ass` |
 
 | 字段 | 值 |
 | --- | --- |
-| Reference amount | 1 kg |
+| 参考数量 | 1 |
 | Reference product flow | Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
-| Reference unit | kg live weight |
+| Reference unit | kg |
 | Required qualifiers | age class; sex; breed or type; intended use; live-weight measurement method; production system; health or certification status; geography and declared gate; transport inclusion status |
 
 构建前景数据包时，`Required qualifiers` 中列出的项目必须在数据集元数据、过程说明、参考流注释、产品描述或等效数据包字段中声明。缺少这些必需限定信息会使该数据包的参考流定义不完整。
 
 活重质量是主要参考流基础。头数记录只有在提供实测活重或有文件支持的活重换算时才能使用。
+
+原始批次、群体、过程转移和联产品数量按原采集口径完整保留。对每个交换，先完成实际路线、期间及联产品归属，再以归属原始量 × 1 kg / 同边界同期最终合格产品质量换算为声明参考流。必须记录真实阶段产出、损失、收率和分配，不得把中间转移量固定为最终 1 kg，也不得以缺失数据假定无损失。
 
 ## 4. 测量和单位规则
 
@@ -109,7 +111,9 @@ sync_with: pcr.en-US.md
 - 数量规则：系统进入时的实测活重和头数
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个进入前景系统的动物批次或群体
+原始采集或过程口径：每个进入前景系统的动物批次或群体
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_stock_entry_records`
@@ -131,7 +135,9 @@ sync_with: pcr.en-US.md
 - 数量规则：实测外购或自产饲料质量，必要时换算为干物质
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个群体维持期或分配到的 kg 活重输出
+原始采集或过程口径：每个群体维持期或分配到的 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_feed_and_forage_records`
@@ -151,16 +157,38 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 放牧或舍饲土地占用（`grazing_or_housing_land_occupation`）
+###### 牧场占用 (`grazing_or_housing_land_occupation_pasture`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
 
 当放牧面积、运动场面积、舍饲面积或饲养场占用被纳入前景范围时，记录土地占用。
 
-- 选定流：Select applicable land occupation elementary flow
-- 流属性/单位：Area-time / ha a or m2 a
-- 数量规则：实测面积和占用时长
+- 选定流：牧场占用
+- 流属性 / 单位：面积时间 / m2 a
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个群体维持期或动物批次
+原始采集或过程口径：每个群体维持期或动物批次
+
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_land_and_housing_records`
+
+###### 畜舍用地占用 (`grazing_or_housing_land_occupation_built_land`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
+
+当放牧面积、运动场面积、舍饲面积或饲养场占用被纳入前景范围时，记录土地占用。
+
+- 选定流：畜舍用地占用
+- 流属性 / 单位：面积时间 / m2 a
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个群体维持期或动物批次
+
+- 归一化基准：每声明的参考流
 - 基准类型：作物周期（`crop_cycle`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_land_and_housing_records`
@@ -178,34 +206,32 @@ sync_with: pcr.en-US.md
 - 数量规则：转入育成或饲养过程时的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：stock entry process output
+原始采集或过程口径：stock entry process output
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_stock_entry_records`
 
 ##### 废物流
 
-###### 补栏阶段非商品死亡或淘汰（`non_marketable_mortality_or_cull_from_stock_entry`）
+###### 驴尸体废物 (`non_marketable_mortality_or_cull_from_stock_entry_dead_ass`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 补栏分配前发生的死亡或非商品淘汰动物，应记录质量和去向。
 
-- 选定流：Select applicable animal mortality, carcass, or biological waste flow
-- 流属性/单位：Mass / kg
-- 数量规则：实测或估算活重或胴体质量，以及处置路线
+- 选定流：驴尸体废物
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个动物批次
+原始采集或过程口径：每个动物批次
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_mortality_and_cull_records`
-- 数量范围：暂定补栏阶段死亡筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：0.2
-  - 单位：kg/kg live-weight output
-  - 基准：育成分配前死亡或淘汰质量的宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
@@ -226,7 +252,9 @@ sync_with: pcr.en-US.md
 - 数量规则：进入育成期的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个动物批次
+原始采集或过程口径：每个动物批次
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_weight_records`
@@ -240,7 +268,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按动物类别记录的实测饲料领用、放牧估算或饲料平衡
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 kg 活重输出或 animal-day
+原始采集或过程口径：每 kg 活重输出或 animal-day
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_feed_and_forage_records`
@@ -263,7 +293,9 @@ sync_with: pcr.en-US.md
 - 数量规则：实测水表、罐装水、井泵记录，或按动物类别估算的饮水量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 kg 活重输出或 animal-day
+原始采集或过程口径：每 kg 活重输出或 animal-day
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_water_records`
@@ -276,55 +308,96 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 垫料和舍饲材料（`bedding_and_housing_materials`）
+###### 小麦秸秆垫料 (`bedding_and_housing_materials_straw`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 垫料、铺料、消毒剂和舍饲消耗品在跨越前景边界时记录。
 
-- 选定流：Select applicable bedding or housing material flow
-- 流属性/单位：Mass / kg
-- 数量规则：实测外购或自产垫料质量，以及垫料更换频率
+- 选定流：小麦秸秆垫料
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 animal-day 或 kg 活重输出
+原始采集或过程口径：每 animal-day 或 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_bedding_and_housing_records`
 
-###### 兽医和动物健康投入（`veterinary_and_animal_health_inputs`）
+###### 木刨花垫料 (`bedding_and_housing_materials_shavings`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+垫料、铺料、消毒剂和舍饲消耗品在跨越前景边界时记录。
+
+- 选定流：木刨花垫料
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每 animal-day 或 kg 活重输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_bedding_and_housing_records`
+
+###### 伊维菌素口服糊剂，供应商特定制剂 (`veterinary_and_animal_health_inputs_ivermectin_paste`)
+
+仅在实际路线和现场记录证明该身份适用时启用；不是必用投入、默认配方、用药或剂量建议。供应商制剂须记录配方与浓度，制剂实物量与活性成分量不得重复。其他实际身份必须单独列卡，缺少记录不得视为零。
 
 当兽医产品、疫苗、药品、消毒剂、耳标和标识材料对研究目标和范围有实质影响时记录。
 
-- 选定流：Select applicable veterinary, medicine, disinfectant, or identification material flow
-- 流属性/单位：Mass, volume, or number of items
-- 数量规则：按动物批次记录的实测产品量、剂量或件数
+- 选定流：伊维菌素口服糊剂，供应商特定制剂
+- 流属性 / 单位：质量 / kg 制剂
+- 数量规则：仅采集本身份的实际数量，保留供应商组成、状态、单位及使用记录，按原过程归属和参考流口径换算。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每个动物批次或 kg 活重输出
+原始采集或过程口径：每个动物批次或 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_veterinary_and_health_records`
+- 来源：`aphis-equine-treatment-context`
 
-###### 饲养农场能源（`farm_energy_for_husbandry`）
+###### 设备供电点的电力 (`farm_energy_for_husbandry_electricity`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 用于抽水、照明、舍饲、饲料处理、粪污移动、称重和场内运输的电力和燃料按能源载体记录。
 
-- 选定流：Electricity `f872677d-2f66-428a-a94e-f0fba61231df`; Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816` where used
-- 流属性/单位：Net calorific value / MJ or kWh
-- 数量规则：实测电表、燃料发票、设备日志或分配到动物类别的能源
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个动物批次或 kg 活重输出
+原始采集或过程口径：每个动物批次或 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_energy_records`
-- 数量范围：暂定饲养能源筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：20
-  - 单位：MJ/kg live-weight output
-  - 基准：分配给活驴日常饲养的宽泛首轮农场能源
-  - 基准类型：燃料清单（`fuel_inventory`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油 (`farm_energy_for_husbandry_diesel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+用于抽水、照明、舍饲、饲料处理、粪污移动、称重和场内运输的电力和燃料按能源载体记录。
+
+- 选定流：柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始采集或过程口径：每个动物批次或 kg 活重输出
+
+- 归一化基准：每声明的参考流
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_energy_records`
 
 ##### 废物流
 
@@ -341,7 +414,9 @@ sync_with: pcr.en-US.md
 - 数量规则：由水源和数量记录计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 kg 活重输出
+原始采集或过程口径：每 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_water_records`
@@ -367,7 +442,9 @@ sync_with: pcr.en-US.md
 - 数量规则：声明门的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：PCR reference output
+原始采集或过程口径：PCR reference output
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_weight_records`
@@ -383,40 +460,38 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 死亡和非商品淘汰（`mortality_and_non_marketable_culls`）
+###### 驴尸体废物 (`mortality_and_non_marketable_culls_dead_ass`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 死亡和非商品淘汰应记录质量、可用时的原因类别和去向。
 
-- 选定流：Select applicable animal mortality, carcass, or biological waste flow
-- 流属性/单位：Mass / kg
-- 数量规则：按事件和处置路线记录的实测或估算质量
+- 选定流：驴尸体废物
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 kg 活重输出
+原始采集或过程口径：每 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_mortality_and_cull_records`
-- 数量范围：暂定育成死亡筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：0.2
-  - 单位：kg/kg live-weight output
-  - 基准：育成期间死亡和非商品淘汰质量的宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
 ###### 农场能源化石二氧化碳（`fossil_carbon_dioxide_from_farm_energy`）
 
-农场能源化石二氧化碳根据燃料和电力记录以及声明排放因子计算。
+仅核算前景直接燃烧的化石 CO2。
 
 - 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
-- 数量规则：能源数量乘以声明燃料或电力排放因子
+- 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：通用（`generic`）
-- 归一化基准：per fuel inventory
+原始采集或过程口径：per fuel inventory
+
+- 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_records`
@@ -444,7 +519,9 @@ sync_with: pcr.en-US.md
 - 数量规则：实测粪污质量、垫料质量、粪污储存记录，或按动物类别计算排泄量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个动物批次或 kg 活重输出
+原始采集或过程口径：每个动物批次或 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_manure_and_excreta_records`
@@ -479,7 +556,9 @@ sync_with: pcr.en-US.md
 - 数量规则：作为商品或转移时的实测粪肥产品质量和养分含量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个粪肥产品输出和 kg 活重输出
+原始采集或过程口径：每个粪肥产品输出和 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_manure_and_excreta_records`
@@ -494,27 +573,23 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 送往处理或处置的粪污（`manure_sent_to_treatment_or_disposal`）
+###### 驴粪废物 (`manure_sent_to_treatment_or_disposal_manure`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当不主张共产品信用时，送往处理或处置的粪污、污染垫料和死畜残余物为废物输出。
 
-- 选定流：Select applicable manure, bedding, or biological waste flow
-- 流属性/单位：Mass / kg
-- 数量规则：按管理路线记录的实测废物质量和去向
+- 选定流：驴粪废物
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 kg 活重输出
+原始采集或过程口径：每 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_manure_and_excreta_records`
-- 数量范围：暂定粪污处置筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg manure waste/kg live-weight output
-  - 基准：送往处理或处置的粪污、垫料或生物废物质量宽泛首轮估算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
@@ -527,7 +602,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按动物群体、动物类别、活重、采食量和声明 IPCC 或区域排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：通用（`generic`）
-- 归一化基准：每 animal-year 或 kg 活重输出
+原始采集或过程口径：每 animal-year 或 kg 活重输出
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_live_weight_records`
@@ -550,7 +627,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按挥发性固体和声明粪污管理甲烷方法计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个粪污管理路线
+原始采集或过程口径：每个粪污管理路线
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_manure_and_excreta_records`
@@ -573,7 +652,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按粪污氮和声明的直接或间接 N2O 方法计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个粪污管理路线或 N 输入
+原始采集或过程口径：每个粪污管理路线或 N 输入
+
+- 归一化基准：每声明的参考流
 - 基准类型：氮输入（`n_input`）
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_manure_and_excreta_records`
@@ -596,7 +677,9 @@ sync_with: pcr.en-US.md
 - 数量规则：按粪污氮、管理路线、气候或储存条件以及声明 NH3 方法计算
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每个粪污管理路线或 N 输入
+原始采集或过程口径：每个粪污管理路线或 N 输入
+
+- 归一化基准：每声明的参考流
 - 基准类型：氮输入（`n_input`）
 - 证据类型：方法公式（`method_formula`）
 - 采集协议：`cp_manure_and_excreta_records`
@@ -617,32 +700,68 @@ sync_with: pcr.en-US.md
 - 数量规则：进入处理或交付期的实测活重
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：handling process input
+原始采集或过程口径：handling process input
+
+- 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_weight_records`
 
-###### 处理能源和交付运输（`handling_energy_and_delivery_transport`）
+###### 设备供电点的电力 (`handling_energy_and_delivery_transport_electricity`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
 
 当声明门包括超出正常农场门转移的处理或交付时，记录电力、燃料、装载设备和路线特定运输服务。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`; electricity or transport service selected from route records
-- 流属性/单位：Net calorific value or transport service / MJ, kWh, or tonne-km
-- 数量规则：实测燃料、电力、承运人发票或路线特定运输服务
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：路线特定（`route_specific`）
-- 归一化基准：每交付 kg 活重
+原始采集或过程口径：每交付 kg 活重
+
+- 归一化基准：每声明的参考流
 - 基准类型：运输服务（`transport_service`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_gate_handling_and_transport_records`
-- 数量范围：暂定处理和交付能源筛选估算
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：10
-  - 单位：MJ/kg delivered live weight
-  - 基准：声明门内处理和路线能源的宽泛首轮估算
-  - 基准类型：运输服务（`transport_service`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油 (`handling_energy_and_delivery_transport_diesel`)
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当声明门包括超出正常农场门转移的处理或交付时，记录电力、燃料、装载设备和路线特定运输服务。
+
+- 选定流：柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：按原采集协议分别计量本卡身份的实际用量或产生量，保留原始组成、状态和单位，按同期间产出和原分配规则归一化；不得重复分摊原集合总量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始采集或过程口径：每交付 kg 活重
+
+- 归一化基准：每声明的参考流
+- 基准类型：运输服务（`transport_service`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_gate_handling_and_transport_records`
+
+###### 公路货运服务（`handling_energy_and_delivery_transport_road_freight`）
+
+仅在本过程实际使用或产生该具体身份时启用；此卡不是默认配方或推荐投入。按原采集协议保留该身份的原始量、组成、状态和实际用途，单独归属到声明参考流。其他实际材料须另建具体身份卡；不能把未列出材料的量填在此卡，也不能把缺失记录记成零。原集合卡的范围不适用于单项，不继承为本卡默认量。
+
+当声明门包括超出正常农场门转移的处理或交付时，记录电力、燃料、装载设备和路线特定运输服务。
+
+- 选定流：公路货运服务
+- 流属性 / 单位：运输量 / t km
+- 数量规则：实测燃料、电力、承运人发票或路线特定运输服务
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始采集或过程口径：每交付 kg 活重
+
+- 归一化基准：每声明的参考流
+- 基准类型：运输服务（`transport_service`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_gate_handling_and_transport_records`
+
+仅适用于实际委外的公路运输，保留活体质量、距离、车辆类型、装载率及服务边界。同一承运环节不得同时计入本服务及其燃料、电力和直接排放。
 
 ##### 废物流
 
@@ -658,14 +777,18 @@ sync_with: pcr.en-US.md
 
 ###### 声明转移活驴（`declared_transferred_live_ass`）
 
+参考单位 kg 表示交接时活体净质量，排除包装、笼具及附带材料；头数或蜂群数须保留同类活体的实测质量换算。
+
 声明转移活驴是在声明门的活体动物输出。
 
 - 选定流：Asses `40fd68b3-1ea0-4828-8532-f64140fc3ea3`
-- 流属性/单位：Mass / kg live weight
-- 数量规则：声明转移门的实测活重
+- 流属性 / 单位：质量 / kg
+- 数量规则：1 千克
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：PCR reference output
+原始采集或过程口径：PCR reference output
+
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_weight_records`
@@ -682,10 +805,12 @@ sync_with: pcr.en-US.md
 
 - 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
-- 数量规则：能源或运输燃料数量乘以声明排放因子
+- 数量规则：仅用前景直接运营设备的实际化石燃料量和相容燃烧因子计算本卡 CO2；排除外购电力发电排放和已由委外运输服务覆盖的排放。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：路线特定（`route_specific`）
-- 归一化基准：每个交付或处理能源清单
+原始采集或过程口径：每个交付或处理能源清单
+
+- 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：由采集记录计算（`calculated_from_collection`）
 - 采集协议：`cp_gate_handling_and_transport_records`
@@ -715,17 +840,17 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_stock_entry_records | stock_entry_and_breeding_basis | declared breeding herd or purchased stock entry | animal receiving, birth, purchase, or herd inventory record | animal or lot id; source; age class; sex; breed or type; intended use; live weight; acquisition or birth date; health status; upstream burden treatment | scale record, veterinary certificate, herd book, purchase invoice, or birth record | head and kg live weight | per birth, purchase, transfer, or inventory period | rearing cycle or herd maintenance period | declared herd, farm, or lot | 按动物类别汇总活重，并在纳入繁育基础负荷时分配到活重输出 | scale calibration, herd book, animal movement record, purchase invoice, health certificate |
-| cp_live_weight_records | rearing_and_husbandry; farm_gate_handling_and_delivery | live ass weight and output | weighing, sale, dispatch, or animal movement record | animal or lot id; age class; sex; breed or type; weighing date; live weight; gate; buyer or destination; health status | calibrated scale, weigh tape with conversion, sale ticket, or animal movement record | kg live weight and head | per weighing, sale, or dispatch event | rearing cycle and delivery period | animal lot, farm, and transfer gate | 汇总声明门活重，并与进入、出生、购买、死亡和销售记录核对 | scale calibration, sale ticket, movement certificate, dispatch note |
-| cp_feed_and_forage_records | stock_entry_and_breeding_basis; rearing_and_husbandry | feed and forage | feed purchase, grazing, feed issue, or feed balance record | feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period | invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record | kg as-fed and kg dry matter | daily, batch, month, or feeding period | rearing cycle or herd maintenance period | farm, pasture, housing unit, or animal class | 必要时换算为干物质；按 animal-days、活重或有文件支持的日粮组分配 | invoice, feed analysis, inventory reconciliation, pasture record |
-| cp_water_records | rearing_and_husbandry | drinking and husbandry water | water meter, tank fill, pump, well, or use estimate record | source; volume; period; animal class; use type; allocation method | meter reading, pump log, water invoice, tank record, or documented estimate | L, m3, or kg | daily, month, batch, or reporting period | rearing cycle | water source, housing unit, pasture, or animal lot | 按水源汇总并在需要时换算为 kg；按 animal-days 或活重分配 | meter calibration, pump log, water invoice, documented estimate |
-| cp_bedding_and_housing_records | rearing_and_husbandry | bedding and housing materials | bedding purchase, issue, or replacement record | material type; quantity; moisture where relevant; replacement frequency; housing unit; fate | invoice, stock issue log, housing operation record, or bedding balance | kg | per delivery, replacement, or reporting period | rearing cycle | housing unit or animal lot | 汇总垫料输入，并在相关时分配到粪污或废物路线 | invoice, inventory log, housing record |
-| cp_veterinary_and_health_records | rearing_and_husbandry | veterinary and animal health inputs | treatment, vaccine, medicine, disinfectant, or identification record | product; active ingredient if applicable; dose; item count; treated animals; date; reason | veterinary log, invoice, product label, treatment certificate, or farm health record | kg, L, dose, item, or product-specific unit | per treatment event or reporting period | rearing cycle | animal lot or farm | 按动物批次汇总产品数量，并在有实质影响时归一化到活重输出 | veterinary record, invoice, treatment log, product label |
-| cp_energy_records | rearing_and_husbandry | farm energy | electricity, fuel, equipment, or service energy record | carrier; quantity; meter or invoice id; operation; period; allocation method | utility bill, meter reading, fuel invoice, equipment log, or telematics | kWh, MJ, L, or kg fuel | month, batch, or operation | rearing cycle | farm, housing unit, pump, feed system, or manure system | 换算为 MJ 或 kWh，并按有文件支持的基础分配到活驴生产 | invoice, meter record, fuel log, equipment record |
-| cp_manure_and_excreta_records | manure_and_excreta_management | manure, urine, bedding, and excreta | manure collection, storage, grazing, field application, transfer, or treatment record | animal class; manure-management system; mass or volume; dry matter; volatile solids; N content where available; storage duration; climate or temperature; fate | scale, storage volume estimate, manure analysis, farm log, grazing record, or transfer ticket | kg wet mass, kg dry matter, kg VS, kg N, m3 | daily, batch, storage cycle, application event, or reporting period | rearing cycle and manure storage period | housing, yard, pasture, storage, field, or transfer point | 核对粪污生成、储存、处理、沉积、转移、出售或处置；按声明方法计算排放 | manure analysis, storage log, transfer ticket, application record, IPCC or EMEP method documentation |
-| cp_mortality_and_cull_records | stock_entry_and_breeding_basis; rearing_and_husbandry | mortality and non-marketable culls | animal death, cull, disposal, or rendering record | animal id or lot; date; age class; estimated live weight or carcass mass; cause category when available; fate | farm mortality log, veterinary record, disposal ticket, rendering receipt, or burial/compost record | head and kg | per event or reporting period | rearing cycle | farm or animal lot | 按去向汇总死亡和淘汰质量并归一化到活重输出 | veterinary note, disposal ticket, mortality log |
-| cp_land_and_housing_records | stock_entry_and_breeding_basis; rearing_and_husbandry | land occupation and housing area | pasture, yard, housing, or GIS area record | area; duration; animal class; stocking period; housing or grazing system | GIS record, pasture map, farm record, housing plan, or stocking log | ha a, m2 a, ha, or m2 | season, month, or rearing cycle | rearing cycle | pasture, yard, housing unit, or farm | 面积乘以占用时长，并按 animal-days 或活重分配 | GIS file, farm map, stocking log |
-| cp_gate_handling_and_transport_records | farm_gate_handling_and_delivery | handling and delivery | pre-sale holding, loading, quarantine, carrier, or transport record | gate; holding duration; live weight; route; distance; vehicle; fuel; electricity; carrier invoice; tonne-km | dispatch note, carrier invoice, route log, fuel log, or meter record | kg live weight, km, tonne-km, L fuel, kWh, MJ | per shipment or handling period | delivery period | declared gate, holding area, and delivery route | 将处理和路线特定能源归一化到交付 kg 活重 | dispatch record, carrier invoice, route record, fuel or energy record |
+| cp_stock_entry_records | stock_entry_and_breeding_basis | declared breeding herd or purchased stock entry | animal receiving, birth, purchase, or herd inventory record | animal or lot id; source; age class; sex; breed or type; intended use; live weight; acquisition or birth date; health status; upstream burden treatment | scale record, veterinary certificate, herd book, purchase invoice, or birth record；原活动量汇总：按动物类别汇总活重，并在纳入繁育基础负荷时分配到活重输出 | head and kg live weight | per birth, purchase, transfer, or inventory period | rearing cycle or herd maintenance period | declared herd, farm, or lot | 每声明的参考流 | scale calibration, herd book, animal movement record, purchase invoice, health certificate |
+| cp_live_weight_records | rearing_and_husbandry; farm_gate_handling_and_delivery | live ass weight and output | weighing, sale, dispatch, or animal movement record | animal or lot id; age class; sex; breed or type; weighing date; live weight; gate; buyer or destination; health status | calibrated scale, weigh tape with conversion, sale ticket, or animal movement record；原活动量汇总：汇总声明门活重，并与进入、出生、购买、死亡和销售记录核对 | kg live weight and head | per weighing, sale, or dispatch event | rearing cycle and delivery period | animal lot, farm, and transfer gate | 每声明的参考流 | scale calibration, sale ticket, movement certificate, dispatch note |
+| cp_feed_and_forage_records | stock_entry_and_breeding_basis; rearing_and_husbandry | feed and forage | feed purchase, grazing, feed issue, or feed balance record | feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period | invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record；原活动量汇总：必要时换算为干物质；按 animal-days、活重或有文件支持的日粮组分配 | kg as-fed and kg dry matter | daily, batch, month, or feeding period | rearing cycle or herd maintenance period | farm, pasture, housing unit, or animal class | 每声明的参考流 | invoice, feed analysis, inventory reconciliation, pasture record |
+| cp_water_records | rearing_and_husbandry | drinking and husbandry water | water meter, tank fill, pump, well, or use estimate record | source; volume; period; animal class; use type; allocation method | meter reading, pump log, water invoice, tank record, or documented estimate；原活动量汇总：按水源汇总并在需要时换算为 kg；按 animal-days 或活重分配 | L, m3, or kg | daily, month, batch, or reporting period | rearing cycle | water source, housing unit, pasture, or animal lot | 每声明的参考流 | meter calibration, pump log, water invoice, documented estimate |
+| cp_bedding_and_housing_records | rearing_and_husbandry | bedding and housing materials | bedding purchase, issue, or replacement record | material type; quantity; moisture where relevant; replacement frequency; housing unit; fate | invoice, stock issue log, housing operation record, or bedding balance；原活动量汇总：汇总垫料输入，并在相关时分配到粪污或废物路线 | kg | per delivery, replacement, or reporting period | rearing cycle | housing unit or animal lot | 每声明的参考流 | invoice, inventory log, housing record |
+| cp_veterinary_and_health_records | rearing_and_husbandry | veterinary and animal health inputs | treatment, vaccine, medicine, disinfectant, or identification record | product; active ingredient if applicable; dose; item count; treated animals; date; reason | veterinary log, invoice, product label, treatment certificate, or farm health record；原活动量汇总：按动物批次汇总产品数量，并在有实质影响时归一化到活重输出 | kg, L, dose, item, or product-specific unit | per treatment event or reporting period | rearing cycle | animal lot or farm | 每声明的参考流 | veterinary record, invoice, treatment log, product label |
+| cp_energy_records | rearing_and_husbandry | farm energy | electricity, fuel, equipment, or service energy record | carrier; quantity; meter or invoice id; operation; period; allocation method | utility bill, meter reading, fuel invoice, equipment log, or telematics；原活动量汇总：换算为 MJ 或 kWh，并按有文件支持的基础分配到活驴生产 | kWh, MJ, L, or kg fuel | month, batch, or operation | rearing cycle | farm, housing unit, pump, feed system, or manure system | 每声明的参考流 | invoice, meter record, fuel log, equipment record |
+| cp_manure_and_excreta_records | manure_and_excreta_management | manure, urine, bedding, and excreta | manure collection, storage, grazing, field application, transfer, or treatment record | animal class; manure-management system; mass or volume; dry matter; volatile solids; N content where available; storage duration; climate or temperature; fate | scale, storage volume estimate, manure analysis, farm log, grazing record, or transfer ticket；原活动量汇总：核对粪污生成、储存、处理、沉积、转移、出售或处置；按声明方法计算排放 | kg wet mass, kg dry matter, kg VS, kg N, m3 | daily, batch, storage cycle, application event, or reporting period | rearing cycle and manure storage period | housing, yard, pasture, storage, field, or transfer point | 每声明的参考流 | manure analysis, storage log, transfer ticket, application record, IPCC or EMEP method documentation |
+| cp_mortality_and_cull_records | stock_entry_and_breeding_basis; rearing_and_husbandry | mortality and non-marketable culls | animal death, cull, disposal, or rendering record | animal id or lot; date; age class; estimated live weight or carcass mass; cause category when available; fate | farm mortality log, veterinary record, disposal ticket, rendering receipt, or burial/compost record；原活动量汇总：按去向汇总死亡和淘汰质量并归一化到活重输出 | head and kg | per event or reporting period | rearing cycle | farm or animal lot | 每声明的参考流 | veterinary note, disposal ticket, mortality log |
+| cp_land_and_housing_records | stock_entry_and_breeding_basis; rearing_and_husbandry | land occupation and housing area | pasture, yard, housing, or GIS area record | area; duration; animal class; stocking period; housing or grazing system | GIS record, pasture map, farm record, housing plan, or stocking log；原活动量汇总：面积乘以占用时长，并按 animal-days 或活重分配 | ha a, m2 a, ha, or m2 | season, month, or rearing cycle | rearing cycle | pasture, yard, housing unit, or farm | 每声明的参考流 | GIS file, farm map, stocking log |
+| cp_gate_handling_and_transport_records | farm_gate_handling_and_delivery | handling and delivery | pre-sale holding, loading, quarantine, carrier, or transport record | gate; holding duration; live weight; route; distance; vehicle; fuel; electricity; carrier invoice; tonne-km | dispatch note, carrier invoice, route log, fuel log, or meter record；原活动量汇总：将处理和路线特定能源归一化到交付 kg 活重 | kg live weight, km, tonne-km, L fuel, kWh, MJ | per shipment or handling period | delivery period | declared gate, holding area, and delivery route | 每声明的参考流 | dispatch record, carrier invoice, route record, fuel or energy record |
 
 ### 计算规则
 
@@ -737,7 +862,7 @@ sync_with: pcr.en-US.md
 | calculate_enteric_ch4 | enteric methane | 使用动物类别、活重、采食量和 population-time，应用声明 IPCC tier 或经审查区域方法 | cp_live_weight_records; cp_feed_and_forage_records | kg CH4 per reference output | `ipcc-2019-livestock-manure` |
 | calculate_manure_ch4_n2o | manure CH4 and N2O | 使用挥发性固体、氮排泄、管理系统、储存路线和所需气候数据，应用声明 IPCC 粪污管理方法 | cp_manure_and_excreta_records; cp_live_weight_records; cp_feed_and_forage_records | kg CH4 and kg N2O per reference output | `ipcc-2019-livestock-manure` |
 | calculate_manure_nh3 | manure ammonia | 使用粪污氮、舍饲、储存、田间施用、放牧沉积以及所需气候或管理数据，应用声明 EMEP/EEA 或区域氨方法 | cp_manure_and_excreta_records | kg NH3 per reference output | `emep-eea-2023-manure-management` |
-| calculate_energy_co2 | farm energy fossil CO2 | 能源或燃料数量乘以声明排放因子，并归一化到活重输出 | cp_energy_records; cp_gate_handling_and_transport_records | kg fossil CO2 per reference output |  |
+| calculate_energy_co2 | farm energy fossil CO2 | 仅核算前景直接运营设备的化石燃料燃烧 CO2，再按合格产出归一化；外购电力及委外运输排放由相应上游数据承担，不得重复 | cp_energy_records; cp_gate_handling_and_transport_records | kg fossil CO2 per reference output |  |
 | allocate_breeding_basis | breeding herd burdens | 当繁育群在范围内时，使用有文件支持的群体输出基础将繁育群维持负荷分配到商品活驴输出 | cp_stock_entry_records; cp_feed_and_forage_records; cp_live_weight_records | breeding-basis burden per kg live-weight output |  |
 
 ### 数据质量要求
@@ -785,5 +910,6 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-livestock-manure` | official_guidance | <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf> | 肠道 CH4、粪污 CH4、粪污 N2O、挥发性固体、氮排泄和粪污管理方法背景 |
 | `fao-leap-guidelines` | official_guidance | <https://www.fao.org/partnerships/leap/resources/publications/fao-leap-guidelines/en> | 畜牧 LCA 边界、数据质量和供应链评估背景 |
 | `fao-leap-animal-feeds-2016` | official_guidance | <https://openknowledge.fao.org/handle/20.500.14283/i6433e> | 动物饲料供应链评估和饲料数据采集基础 |
-| `emep-eea-2023-manure-management` | official_guidance | <https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023/@@download/file> | 粪污管理的氨和空气污染物过程分解 |
+| `emep-eea-2023-manure-management` | official_guidance | <https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023/> | 粪污管理的氨和空气污染物过程分解 |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for live-weight output, animal inventory reconciliation, and process reference outputs. | 参考输出和动物质量平衡检查的 QA 校验 |
+| `aphis-equine-treatment-context` | official_guidance | APHIS equine import treatment context; identity example only, not a universal treatment rule or evidence of use, https://www.aphis.usda.gov/news/program-update/resumption-equine-imports-mexico-after-new-world-screwworm-detection | 条件性身份依据；实际场址用量和适用性须单独核实 |

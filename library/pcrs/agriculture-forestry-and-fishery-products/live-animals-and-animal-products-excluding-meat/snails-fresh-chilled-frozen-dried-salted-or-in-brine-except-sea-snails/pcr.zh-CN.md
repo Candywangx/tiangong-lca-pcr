@@ -271,31 +271,41 @@ sync_with: pcr.en-US.md
   - 基准类型：过程产出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 采收或采集能源（`gather_energy`）
+###### 设备供电点的电力（`gather_energy_electricity`）
+
+**gather_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 若用动力采集设备则计量能耗；人工采集不虚构用电。
-
 分母与范围要求：每 kg 原料采集蜗牛
-
 原始数量及计算要求：按事件计量电力或记录燃料。 原始采集分母类型：process_output。
 
-- 选定流：实际采集能源载体（UUID 未解析）
-- 流属性/单位：Energy 或 Mass / kWh、MJ 或 kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_utilities`
-- 数量范围：暂定数量完整性筛查，不作为默认投入或合格阈值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kWh/kg
-  - 基准：每 kg 原料采集蜗牛；超范围需核对原始记录
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`gather_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utilities`
+- 来源：`fao-agricultural-energy`
 
 ##### Waste flows
 
@@ -541,31 +551,26 @@ sync_with: pcr.en-US.md
   - 基准类型：过程产出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 保藏能源（`preserve_energy`）
+###### 设备供电点的电力（`preserve_energy_electricity`）
+
+**preserve_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 仅对实际实施的冷藏、冷冻或干制计量能源；记录载体及共享服务期间。
-
 分母与范围要求：每 kg 稳定状态产出
-
 原始数量及计算要求：计量能源按实测服务量及产出归属一次。 原始采集分母类型：process_output。
 
-- 选定流：实际保藏能源载体（UUID 未解析）
-- 流属性/单位：Energy 或 Mass / kWh、MJ 或 kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_utilities` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_utilities`
-- 数量范围：暂定保藏能源筛查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10000
-  - 单位：kWh/kg
-  - 基准：每 kg 稳定产出；成为基准前须取得路线特定证据
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-agricultural-energy`
 
 ###### 盐、盐水和工艺水（`preserve_medium`）
 
@@ -787,6 +792,8 @@ sync_with: pcr.en-US.md
 | a_period | 养殖批次和可周转资产 | 将幼体、饲料、设施维护及种群更换链接到实际批次和报告期；记录期初/期末生物存量及终止，不在其他期间重复归属。 | fao-improved-snail-farming |
 | a_shared | 养殖设施、准备、冷库及可周转包装 | 记录资产/服务、消费节点及服务期间；按实测占用、吞吐、计量用量或其他有证据的因果驱动量归属，每项服务只计一次。野采不纳入未使用的农场资产。 | fao-improved-snail-farming |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
@@ -853,3 +860,4 @@ sync_with: pcr.en-US.md
 | `fao-improved-snail-farming` | official_guidance | [FAO，改进蜗牛养殖](https://www.fao.org/4/aq106e/aq106e00.pdf) | 人工养殖、采收、处理和产品路线分解。 |
 | `fao-snail-farming-gathering` | official_guidance | [FAO，蜗牛养殖与采集](https://www.fao.org/4/v6200t/v6200T0c.htm) | 区分人工养殖与野外采集。 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

@@ -362,31 +362,41 @@ Denominator and scope requirements：per 1 kg saleable honey constituent
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Extraction energy supply (`extraction_energy`)
+###### Electricity at the equipment supply point (`extraction_energy_electricity`)
+
+**Collection scope and applicability for extraction_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Meter electricity or fuel for extraction and primary straining.
-
 Denominator and scope requirements：per 1 kg saleable honey constituent
-
 Energy accounting basis: retain separate carrier quantities in their native units. Convert electricity from kWh to MJ using 3.6; convert fuel mass/volume only with documented carrier-specific calorific value and, where needed, density. This card reports the MJ accounting quantity, not a mass exchange or a summed mixed-carrier flow. Final exchanges retain their actual carrier property and unit; do not add kg, L, kWh and MJ or assign one carrier UUID to their total.
 
-- Selected flow: Extraction energy carriers
-- Flow property / unit: Energy / MJ
-- Amount rule: Collect by lot and reconcile with actual handovers and stock changes.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Electricity at the equipment supply point
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_extraction` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
+- Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_extraction`
-- Range: Provisional replaceable screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: MJ/kg honey constituent
-  - Basis: broad first-pass screen per kg honey constituent; replace with records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `fao-agricultural-energy`
+
+###### Diesel fuel supplied to equipment (`extraction_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel supplied to equipment
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_extraction` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_extraction`
+- Sources: `fao-agricultural-energy`
 
 ###### Extraction-room cleaning water (`cleaning_water`)
 
@@ -432,7 +442,6 @@ Denominator and scope requirements：per 1 kg saleable honey constituent
 
 - Selected flow: Raw natural honey at farm gate `fec12529-d2e9-429f-8adb-aaa39b2e88b1`
 - Flow property / unit: Mass / kg honey
-- Binding: Fixed (`fixed`)
 - Amount rule: Collect by lot and reconcile with actual handovers and stock changes.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -659,6 +668,8 @@ No prescribed flow; record actual exchanges if present.
 | `period_attribution` | managed colony | Assign overwintering, colony buildup, carry-over stores, replacement and termination to dated service/harvest periods based on observed service and output; no double booking across seasons. | `fao-beekeeping-2021` |
 | `shared_asset` | hive, transport, extractor | Identify each consuming node and service period. Attribute shared burdens once by observed hours, trips or throughput. | `fao-beekeeping-2021` |
 
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Data Collection Protocols
@@ -727,3 +738,4 @@ No prescribed flow; record actual exchanges if present.
 | `fao-bee-products` | official_guidance | FAO, Value-added products from beekeeping, Ch. 2; https://www.fao.org/4/w0076e/w0076e05.htm | Colony, harvest, extraction, honey/wax outputs. |
 | `fao-beekeeping-2021` | official_guidance | FAO, Good beekeeping practices for sustainable apiculture (2021); https://www.fao.org/family-farming/detail/en/c/1442505/ | Managed production, seasonal records and service attribution. |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |

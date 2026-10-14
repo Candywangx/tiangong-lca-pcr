@@ -37,7 +37,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Artichokes, production mix, at farm gate `5e964a73-63a6-458b-a013-9785e776c3b6` |
+| 参考产品流 | 朝鲜蓟 `5e964a73-63a6-458b-a013-9785e776c3b6` |
 | 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -46,13 +46,15 @@ translation_status: aligned
 
 构建前景数据包时，`Required qualifiers` 所列信息必须在数据集元数据、过程说明、参考流备注、产品说明或等效数据包字段中声明。缺少必需限定信息时，该数据包的参考流定义不完整。
 
+本参考 UUID 表示新鲜、未加工的农场门产品。使用该绑定前须核对实际物种、产品状态及交接门；独立包装站、进一步加工或不兼容状态的输出必须单独核实身份，不得直接继承此 UUID。身份核实不改变本 PCR 的实际系统边界或数量归一化要求。
+
 ## 4. 计量与单位规则
 
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | `reference_artichoke_mass` | 可销售花蕾和采收记录 | 质量 | kg | 将花蕾总采收量、可销售鲜花蕾、不可销售花蕾、修整物、土壤或异物及田间残余物作为独立数量测量或计算。 |
 | `crop_cycle_normalization` | 田间、设施栽培和多年生植株群体记录 | 面积和质量 | ha 和 kg | 按田块、种植畦、设施单元或多年生植株群体记录投入和采收，并归一化至同一声明作物周期或生产年度的可销售产出。 |
-| `nutrient_product_basis` | 肥料、粪肥、堆肥和其他养分投入 | 产品及声明养分的质量 | kg 产品、kg N、kg P2O5 或 kg K2O | 保留购买产品质量，仅根据有记录的标签、供应商规格、养分计划或实验室结果换算至养分基准。 |
+| `nutrient_product_basis` | 肥料、粪肥、堆肥和其他养分投入 | 产品及声明养分的质量 | kg 产品、kg N、kg P2O5 或 kg K2O | 每种实际肥料或改良剂产品单独列卡，保留实物质量、配方、养分组成和施用记录；养分量不是同一产品的另一次投入，不使用集合或分组标识代替具体流身份。 |
 | `water_volume_basis` | 灌溉和采后清洗水 | 体积 | m3 | 使用计量记录或有文件支持的水量平衡，分别记录输送的作物灌溉水和采后清洗水。 |
 | `perennial_stand_attribution` | 多年生洋蓟植株群体 | 面积时间和质量 | ha*a 和 kg | 将回剪、休眠、再生和采收投入归属于声明生产年度；披露植株群体年龄及建植负荷处理方式。 |
 
@@ -119,50 +121,100 @@ translation_status: aligned
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估计（`reasoned_estimate`）
 
-###### 农业养分与肥料投入（`crop_establishment_agricultural_nutrient_inputs`）
+###### 尿素肥料（`crop_establishment_agricultural_nutrient_inputs_urea`）
 
-本过程使用的全部矿质肥料、有机肥料和含养分改良剂统一记录在此卡。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+**crop_establishment_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
-- 选定流：农业养分与肥料供应
-- 流属性/单位：产品数量和养分含量 / 按实际采用 kg 产品、m3 产品、kg N、kg P2O5 和 kg K2O
-- 数量规则：每种实际产品仅采集一次数量并保留组成，计算声明的 N、P 或 P2O5、K 或 K2O 数量，不重复计算复合或有机产品；生成前景数据时展开记录，并将每个生成的产品交换解析到一个经核实的 UUID。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
 原始活动或阶段基准：每 1,000 kg 归属于同一作物周期或生产年度的可销售鲜洋蓟。
 
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`ucanr-artichoke-cultural-tips-2026`; `shinohara-artichoke-irrigation-nitrogen-2011`
-- 数量范围：建植有机改良剂筛选
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：0
-  - 上限：15000
-  - 单位：kg 产品/ha
-  - 基准：种植前施入的堆肥或粪肥；以田间记录替换
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-artichoke-cultural-tips-2026`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
 
-- 数量范围：建植氮投入筛选
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：0
-  - 上限：80
-  - 单位：kg N/ha
-  - 基准：鲜洋蓟作物的种植前或种植时施用
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`ucanr-artichoke-cultural-tips-2026`
+###### 硫酸铵肥料（`crop_establishment_agricultural_nutrient_inputs_ammonium_sulfate`）
 
-- 数量范围：依土壤检测确定的磷投入筛选
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：125
-  - 单位：kg P2O5/ha
-  - 基准：待土壤检测和养分计划记录支持的建植期施用
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计（`reasoned_estimate`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
+
+###### 重过磷酸钙肥料（`crop_establishment_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`crop_establishment_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`crop_establishment_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`crop_establishment_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-organic-nutrients`
 
 ###### 流：建植灌溉水（`establishment_irrigation_water`）
 
@@ -307,49 +359,100 @@ translation_status: aligned
 
 ##### 产品流
 
-###### 农业养分与肥料投入（`crop_management_agricultural_nutrient_inputs`）
+###### 尿素肥料（`crop_management_agricultural_nutrient_inputs_urea`）
 
-本过程使用的全部矿质肥料、有机肥料和含养分改良剂统一记录在此卡。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+**crop_management_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
-- 选定流：农业养分与肥料供应
-- 流属性/单位：产品数量和养分含量 / 按实际采用 kg 产品、m3 产品、kg N、kg P2O5 和 kg K2O
-- 数量规则：每种实际产品仅采集一次数量并保留组成，计算声明的 N、P 或 P2O5、K 或 K2O 数量，不重复计算复合或有机产品；生成前景数据时展开记录，并将每个生成的产品交换解析到一个经核实的 UUID。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
 原始活动或阶段基准：每 1,000 kg 可销售鲜洋蓟。
 
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
+- 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
-- 来源：`ucanr-artichoke-cultural-tips-2026`; `shinohara-artichoke-irrigation-nitrogen-2011`
-- 数量范围：作物周期氮投入筛选
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：0
-  - 上限：180
-  - 单位：kg N/ha
-  - 基准：生长季及作物总氮施用筛选
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`shinohara-artichoke-irrigation-nitrogen-2011`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
 
-- 数量范围：生长季磷投入筛选
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：125
-  - 单位：kg P2O5/ha
-  - 基准：依土壤检测确定的生长季改良剂投入
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计（`reasoned_estimate`）
+###### 硫酸铵肥料（`crop_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
-- 数量范围：钾肥施用暂定估计；未核实为施肥区间，不能混同作物吸收量
-  - 范围角色：典型范围（`typical_range`）
-  - 下限：0
-  - 上限：450
-  - 单位：kg K2O/ha
-  - 基准：待土壤检测和农场记录支持的作物养分施用筛选
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估计 (`reasoned_estimate`)
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
+
+###### 重过磷酸钙肥料（`crop_management_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`crop_management_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`crop_management_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`crop_management_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_nutrient_records`
+- 来源：`ucanr-artichoke-cultural-tips-2026`；`shinohara-artichoke-irrigation-nitrogen-2011`；`fao-organic-nutrients`
 
 ###### 流：植株群体管理期灌溉水（`crop_irrigation_water`）
 
@@ -709,7 +812,7 @@ translation_status: aligned
 
 记录农场或包装场交接节点符合声明等级和产品状态限定信息的可销售鲜洋蓟花蕾。
 
-- 选定流：声明交接节点的鲜洋蓟
+- 选定流：朝鲜蓟 `5e964a73-63a6-458b-a013-9785e776c3b6`
 - 流属性/单位：质量 / kg
 
 原参考状态单位注释：质量 / kg 湿洋蓟
@@ -802,6 +905,8 @@ translation_status: aligned
 | `allocation_perennial_stand` | 多年生洋蓟建植、回剪、休眠和再生 | 披露植株群体年龄，并按有记录的归属规则在声明生产年度间分配建植或共用植株群体负荷；不得不加说明地将全部建植负荷归至一个采收年度。 | `ucanr-artichoke-cultural-tips-2026` |
 | `allocation_residue_fate` | 作物残余物、田间损失、拒收物和修整物 | 仅在有接收方、数量和预期用途记录时才给予残余物或拒收物副产品抵扣；否则保留洋蓟生产负荷并报告去向。 | `ucanr-artichoke-weed-management-2005` |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 在各采集协议中保留场址、批次、周期和阶段的原始数量及分母。先核对库存、损失、水分及副产品归属，再归一化：归一化交换量 = 应归属原始交换量 × 声明参考数量 / 同一边界和计量基准的合格交接产品数量。归一化前先完成多年生建植和共用作业归属。不得将内部转移量设为最终参考数量。“每声明的参考流”指第 3 节的数量、单位和产品状态；数据包必须声明实际路线及交接节点。
@@ -877,3 +982,5 @@ translation_status: aligned
 | `ucanr-artichoke-weed-management-2005` | official_guidance | UC Statewide IPM Program, *Agriculture: Artichoke Pest Management Guidelines — Integrated Weed Management*, https://ipm.ucanr.edu/agriculture/artichoke/integrated-weed-management/ | 一年生和多年生植株群体管理、杂草防控、回剪、残余物及植保背景 |
 | `shinohara-artichoke-irrigation-nitrogen-2011` | literature | Shinohara, Agehara, Yoo, and Leskovar, *Irrigation and Nitrogen Management of Artichoke: Yield, Head Quality, and Phenolic Content*, HortScience 46(3), 377–386, https://doi.org/10.21273/HORTSCI.46.3.377 | 灌溉和氮处理范围及产量与质量关系 |
 | `ipcc-2019-refinement-nitrogen` | method_factor | IPCC, *2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories*, https://www.ipcc.ch/report/2019-refinement-to-the-2006-ipcc-guidelines-for-national-greenhouse-gas-inventories/ | 受管理土壤氮排放方法及计算规则 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

@@ -14,7 +14,7 @@ functional_unit:
   how_much: "1 kg live weight"
   how_well: "declared age class, sex, breed or type, intended use, health status, live-weight measurement basis, and production system"
   how_long_or_cycle: "one animal rearing cycle from declared starting condition to transfer gate; herd maintenance period declared when breeding herd burdens are included"
-  reference_flow_link: "Reference amount and product flow below"
+  reference_flow_link: "declared_transferred_live_ass"
 system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
@@ -49,7 +49,7 @@ boundary_abstraction:
   upstream_dataset_requirement: "disclose source, live weight, age class, sex, breed or type, health status, acquisition date, and whether upstream live-animal burdens are included, excluded, or represented by secondary data"
   disclosure: "record production system, herd or lot boundary, live-weight basis, animal movement, mortality and cull fate, manure-management system, grazing or housing split, and declared gate"
 reference_flow_definition:
-  reference_amount: "1 kg"
+  reference_amount: "1"
   product_flow_ref:
     name: "Asses"
     uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
@@ -57,7 +57,7 @@ reference_flow_definition:
     uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
   unit_group_ref:
     uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
-  reference_unit: "kg live weight"
+  reference_unit: "kg"
   required_qualifiers:
     - "age class"
     - sex
@@ -150,13 +150,13 @@ process_inventory:
           flow_ref:
             uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
           property_unit: "Mass / kg live weight"
-          description: "Declared breeding herd, foals, or purchased replacement animals are recorded as the live-animal starting condition for the foreground package."
+          description: "Declared breeding herd, foals, or purchased replacement animals are recorded as the live-animal starting condition for the foreground package. Raw collection or process basis: per animal lot or herd entering the foreground system"
           amount:
             expression: "measured live weight and head count at system entry"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per animal lot or herd entering the foreground system"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -178,13 +178,13 @@ process_inventory:
           flow_ref:
             uuid: "cb2b142b-0ed1-4d6f-9283-cfef94451a75"
           property_unit: "Mass / kg dry matter and kg as-fed"
-          description: "Feed and forage used to maintain breeding or replacement stock before allocation to marketable animals are recorded by feed type and moisture basis."
+          description: "Feed and forage used to maintain breeding or replacement stock before allocation to marketable animals are recorded by feed type and moisture basis. Raw collection or process basis: per herd maintenance period or allocated kg live-weight output"
           amount:
             expression: "measured purchased or produced feed mass, converted to dry matter where needed"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per herd maintenance period or allocated kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -203,18 +203,36 @@ process_inventory:
       waste:
         []
       elementary:
-        - row_id: grazing_or_housing_land_occupation
-          role: "Grazing or housing land occupation"
-          name: "Select applicable land occupation elementary flow"
+        - row_id: grazing_or_housing_land_occupation_pasture
+          role: "Pasture occupation"
+          name: "Pasture occupation"
           flow_type: "elementary"
-          property_unit: "Area-time / ha a or m2 a"
-          description: "Land occupation is recorded when grazing area, yard area, housing area, or feedlot occupation is included in the foreground scope."
+          property_unit: "Area-time / m2 a"
+          description: "Activate only where the actual route and site records establish this identity. This is not a mandatory input, default recipe, treatment or dosage recommendation. Record formulation and concentration for supplier products without double counting formulation mass and active ingredient. Other actual identities require separate cards; missing records are not zero. Land occupation is recorded when grazing area, yard area, housing area, or feedlot occupation is included in the foreground scope. Raw collection or process basis: per herd maintenance period or animal lot"
           amount:
-            expression: "measured area and occupation duration"
+            expression: "Collect only the actual quantity of this identity, retaining supplier composition, state, unit and use records; apply the original process attribution and reference-flow basis."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per herd maintenance period or animal lot"
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_land_and_housing_records
+              source_ids: []
+            ranges: []
+        - row_id: grazing_or_housing_land_occupation_built_land
+          role: "Occupation by livestock housing"
+          name: "Occupation by livestock housing"
+          flow_type: "elementary"
+          property_unit: "Area-time / m2 a"
+          description: "Activate only where the actual route and site records establish this identity. This is not a mandatory input, default recipe, treatment or dosage recommendation. Record formulation and concentration for supplier products without double counting formulation mass and active ingredient. Other actual identities require separate cards; missing records are not zero. Land occupation is recorded when grazing area, yard area, housing area, or feedlot occupation is included in the foreground scope. Raw collection or process basis: per herd maintenance period or animal lot"
+          amount:
+            expression: "Collect only the actual quantity of this identity, retaining supplier composition, state, unit and use records; apply the original process attribution and reference-flow basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
               kind: "crop_cycle"
             evidence:
               kind: "collected_record"
@@ -230,13 +248,13 @@ process_inventory:
           flow_ref:
             uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
           property_unit: "Mass / kg live weight"
-          description: "Live ass stock entering rearing is recorded as the product output from stock entry and breeding basis."
+          description: "Live ass stock entering rearing is recorded as the product output from stock entry and breeding basis. Raw collection or process basis: stock entry process output"
           amount:
             expression: "measured live weight at transfer into rearing or husbandry process"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "stock entry process output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -244,32 +262,24 @@ process_inventory:
               source_ids: []
             ranges: []
       waste:
-        - row_id: non_marketable_mortality_or_cull_from_stock_entry
-          role: "Non-marketable mortality or cull from stock entry"
-          name: "Select applicable animal mortality, carcass, or biological waste flow"
+        - row_id: non_marketable_mortality_or_cull_from_stock_entry_dead_ass
+          role: "Ass carcass waste"
+          name: "Ass carcass waste"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Mortality or non-marketable cull animals are recorded with mass and fate when they occur before rearing allocation."
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Mortality or non-marketable cull animals are recorded with mass and fate when they occur before rearing allocation. Raw collection or process basis: per animal lot"
           amount:
-            expression: "measured or estimated live weight or carcass mass and disposal route"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per animal lot"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_mortality_and_cull_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "0.2"
-                unit: "kg/kg live-weight output"
-                basis: "broad first-pass mortality or cull mass before rearing allocation"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       elementary:
         []
   - id: rearing_and_husbandry
@@ -283,13 +293,13 @@ process_inventory:
           flow_ref:
             uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
           property_unit: "Mass / kg live weight"
-          description: "Live ass stock for rearing is the animal input from breeding, purchase, or stock entry records."
+          description: "Live ass stock for rearing is the animal input from breeding, purchase, or stock entry records. Raw collection or process basis: per animal lot"
           amount:
             expression: "measured live weight entering the rearing period"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per animal lot"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -303,13 +313,13 @@ process_inventory:
           flow_ref:
             uuid: "cb2b142b-0ed1-4d6f-9283-cfef94451a75"
           property_unit: "Mass / kg dry matter and kg as-fed"
-          description: "Feed, forage, crop residues, grazing intake estimates, concentrates, mineral supplements, and purchased feed are recorded separately when records allow."
+          description: "Feed, forage, crop residues, grazing intake estimates, concentrates, mineral supplements, and purchased feed are recorded separately when records allow. Raw collection or process basis: per kg live-weight output or animal-day"
           amount:
             expression: "measured feed issue, grazing estimate, or feed balance by animal class"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per kg live-weight output or animal-day"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -332,13 +342,13 @@ process_inventory:
           flow_ref:
             uuid: "ec205030-248c-496f-9cf2-06d9d26dc6ff"
           property_unit: "Mass or volume / kg, L, or m3"
-          description: "Water used for drinking, cleaning, cooling, and animal handling is recorded by source and use where possible."
+          description: "Water used for drinking, cleaning, cooling, and animal handling is recorded by source and use where possible. Raw collection or process basis: per kg live-weight output or animal-day"
           amount:
             expression: "measured water meter, tank fill, well pump, or estimated drinking-water use by animal class"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per kg live-weight output or animal-day"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -353,70 +363,97 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: bedding_and_housing_materials
-          role: "Bedding and housing materials"
-          name: "Select applicable bedding or housing material flow"
+        - row_id: bedding_and_housing_materials_straw
+          role: "Wheat straw bedding"
+          name: "Wheat straw bedding"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Bedding, litter, disinfectants, and housing consumables are recorded when they cross the foreground boundary."
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Bedding, litter, disinfectants, and housing consumables are recorded when they cross the foreground boundary. Raw collection or process basis: per animal-day or kg live-weight output"
           amount:
-            expression: "measured purchased or produced bedding mass and bedding replacement frequency"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per animal-day or kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_bedding_and_housing_records
               source_ids: []
             ranges: []
-        - row_id: veterinary_and_animal_health_inputs
-          role: "Veterinary and animal health inputs"
-          name: "Select applicable veterinary, medicine, disinfectant, or identification material flow"
+        - row_id: bedding_and_housing_materials_shavings
+          role: "Wood shavings bedding"
+          name: "Wood shavings bedding"
           flow_type: "product"
-          property_unit: "Mass, volume, or number of items"
-          description: "Veterinary products, vaccines, medicines, disinfectants, ear tags, and identification materials are recorded when material to the study goal and scope."
+          property_unit: "Mass / kg"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Bedding, litter, disinfectants, and housing consumables are recorded when they cross the foreground boundary. Raw collection or process basis: per animal-day or kg live-weight output"
           amount:
-            expression: "measured product amount, dose, or item count by animal lot"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bedding_and_housing_records
+              source_ids: []
+            ranges: []
+        - row_id: veterinary_and_animal_health_inputs_ivermectin_paste
+          role: "Ivermectin oral paste, supplier formulation"
+          name: "Ivermectin oral paste, supplier formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg formulation"
+          description: "Activate only where the actual route and site records establish this identity. This is not a mandatory input, default recipe, treatment or dosage recommendation. Record formulation and concentration for supplier products without double counting formulation mass and active ingredient. Other actual identities require separate cards; missing records are not zero. Veterinary products, vaccines, medicines, disinfectants, ear tags, and identification materials are recorded when material to the study goal and scope. Raw collection or process basis: per animal lot or kg live-weight output"
+          amount:
+            expression: "Collect only the actual quantity of this identity, retaining supplier composition, state, unit and use records; apply the original process attribution and reference-flow basis."
             value_mode: "foreground_record"
             specificity: "product_specific"
             basis:
-              text: "per animal lot or kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_veterinary_and_health_records
-              source_ids: []
+              source_ids:
+                - aphis-equine-treatment-context
             ranges: []
-        - row_id: farm_energy_for_husbandry
-          role: "Farm energy for husbandry"
-          name: "Electricity ; Diesel oil where used"
+        - row_id: farm_energy_for_husbandry_electricity
+          role: "Electricity at equipment supply"
+          name: "Electricity at equipment supply"
           flow_type: "product"
-          flow_ref:
-            uuid: "f872677d-2f66-428a-a94e-f0fba61231df"
-          property_unit: "Net calorific value / MJ or kWh"
-          description: "Electricity and fuel used for pumping, lighting, housing, feed handling, manure movement, weighing, and internal transport are recorded by carrier."
+          property_unit: "Energy / kWh"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Electricity and fuel used for pumping, lighting, housing, feed handling, manure movement, weighing, and internal transport are recorded by carrier. Raw collection or process basis: per animal lot or kg live-weight output"
           amount:
-            expression: "measured meter, fuel invoice, equipment log, or allocation to animal class"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per animal lot or kg live-weight output"
+              text: "per declared reference flow"
               kind: "fuel_inventory"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "20"
-                unit: "MJ/kg live-weight output"
-                basis: "broad first-pass farm energy assigned to live-ass husbandry"
-                basis_kind: "fuel_inventory"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: farm_energy_for_husbandry_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Electricity and fuel used for pumping, lighting, housing, feed handling, manure movement, weighing, and internal transport are recorded by carrier. Raw collection or process basis: per animal lot or kg live-weight output"
+          amount:
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -427,13 +464,13 @@ process_inventory:
           flow_ref:
             uuid: "419682fe-60fb-4b43-be89-bf2824b51104"
           property_unit: "Mass / kg"
-          description: "Water withdrawal is calculated from drinking and husbandry water records when the data package reports elementary water flows."
+          description: "Water withdrawal is calculated from drinking and husbandry water records when the data package reports elementary water flows. Raw collection or process basis: per kg live-weight output"
           amount:
             expression: "calculated from water source and quantity records"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "calculated_from_collection"
@@ -457,13 +494,13 @@ process_inventory:
           flow_ref:
             uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
           property_unit: "Mass / kg live weight"
-          description: "Marketable live ass at farm gate is the reference product output."
+          description: "Marketable live ass at farm gate is the reference product output. Raw collection or process basis: PCR reference output"
           amount:
             expression: "measured live weight at declared gate"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "PCR reference output"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
@@ -480,32 +517,24 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
       waste:
-        - row_id: mortality_and_non_marketable_culls
-          role: "Mortality and non-marketable culls"
-          name: "Select applicable animal mortality, carcass, or biological waste flow"
+        - row_id: mortality_and_non_marketable_culls_dead_ass
+          role: "Ass carcass waste"
+          name: "Ass carcass waste"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Mortality and non-marketable culls are recorded with mass, cause category when available, and fate."
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Mortality and non-marketable culls are recorded with mass, cause category when available, and fate. Raw collection or process basis: per kg live-weight output"
           amount:
-            expression: "measured or estimated mass by event and disposal route"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_mortality_and_cull_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "0.2"
-                unit: "kg/kg live-weight output"
-                basis: "broad first-pass mortality and non-marketable cull mass during rearing"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       elementary:
         - row_id: fossil_carbon_dioxide_from_farm_energy
           role: "Fossil carbon dioxide from farm energy"
@@ -514,13 +543,13 @@ process_inventory:
           flow_ref:
             uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Fossil carbon dioxide from farm energy is calculated from fuel and electricity records with declared emission factors."
+          description: "Account only for foreground direct-combustion fossil CO2. Raw collection or process basis: per fuel inventory"
           amount:
-            expression: "energy quantity multiplied by declared fuel or electricity emission factor"
+            expression: "Calculate this CO2 exchange only from actual fossil fuel used in directly operated foreground equipment and a compatible combustion factor; exclude purchased-electricity generation and emissions already covered by outsourced transport services."
             value_mode: "calculated_value"
             specificity: "generic"
             basis:
-              text: "per fuel inventory"
+              text: "per declared reference flow"
               kind: "fuel_inventory"
             evidence:
               kind: "calculated_from_collection"
@@ -546,13 +575,13 @@ process_inventory:
           flow_ref:
             uuid: "e7f0099e-ecb6-48b5-a683-c0da022022b4"
           property_unit: "Mass / kg wet mass, kg dry matter, kg volatile solids, and kg N where applicable"
-          description: "Manure, urine, bedding, and excreta are tracked from housing, yards, storage, grazing deposition, or collection systems into the declared management route."
+          description: "Manure, urine, bedding, and excreta are tracked from housing, yards, storage, grazing deposition, or collection systems into the declared management route. Raw collection or process basis: per animal lot or kg live-weight output"
           amount:
             expression: "measured manure mass, bedding mass, manure storage records, or calculated excretion by animal class"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per animal lot or kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -582,13 +611,13 @@ process_inventory:
           flow_ref:
             uuid: "e7f0099e-ecb6-48b5-a683-c0da022022b4"
           property_unit: "Mass / kg and kg N where applicable"
-          description: "Manure, compost, or nutrient products are product outputs only when sold, transferred, or intentionally used as a co-product outside the live-animal reference flow."
+          description: "Manure, compost, or nutrient products are product outputs only when sold, transferred, or intentionally used as a co-product outside the live-animal reference flow. Raw collection or process basis: per manure product output and kg live-weight output"
           amount:
             expression: "measured manure product mass and nutrient content when marketed or transferred"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per manure product output and kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
@@ -604,32 +633,24 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
       waste:
-        - row_id: manure_sent_to_treatment_or_disposal
-          role: "Manure sent to treatment or disposal"
-          name: "Select applicable manure, bedding, or biological waste flow"
+        - row_id: manure_sent_to_treatment_or_disposal_manure
+          role: "Ass manure waste"
+          name: "Ass manure waste"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Manure, soiled bedding, and deadstock residues sent to treatment or disposal are waste outputs when no co-product credit is claimed."
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Manure, soiled bedding, and deadstock residues sent to treatment or disposal are waste outputs when no co-product credit is claimed. Raw collection or process basis: per kg live-weight output"
           amount:
-            expression: "measured waste mass and fate by management route"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "per kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_manure_and_excreta_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "100"
-                unit: "kg manure waste/kg live-weight output"
-                basis: "broad first-pass manure, bedding, or biological waste sent to treatment or disposal"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       elementary:
         - row_id: enteric_methane_to_air
           role: "Enteric methane to air"
@@ -638,13 +659,13 @@ process_inventory:
           flow_ref:
             uuid: "fe0acd60-3ddc-11dd-a8ea-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Enteric methane is calculated using the declared IPCC tier or reviewed regional method for non-ruminant equines."
+          description: "Enteric methane is calculated using the declared IPCC tier or reviewed regional method for non-ruminant equines. Raw collection or process basis: per animal-year or kg live-weight output"
           amount:
             expression: "calculate from animal population, animal class, live weight, feed intake, and declared IPCC or regional emission factor"
             value_mode: "calculated_value"
             specificity: "generic"
             basis:
-              text: "per animal-year or kg live-weight output"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "method_formula"
@@ -667,13 +688,13 @@ process_inventory:
           flow_ref:
             uuid: "fe0acd60-3ddc-11dd-a8ea-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Manure methane is calculated from manure-management system, climate, volatile solids, and storage or deposition route."
+          description: "Manure methane is calculated from manure-management system, climate, volatile solids, and storage or deposition route. Raw collection or process basis: per manure-management route"
           amount:
             expression: "calculate from volatile solids and declared manure-management methane method"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per manure-management route"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "method_formula"
@@ -696,13 +717,13 @@ process_inventory:
           flow_ref:
             uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Manure nitrous oxide is calculated from nitrogen excretion, manure-management system, and direct or indirect N2O method."
+          description: "Manure nitrous oxide is calculated from nitrogen excretion, manure-management system, and direct or indirect N2O method. Raw collection or process basis: per manure-management route or N input"
           amount:
             expression: "calculate from manure nitrogen and declared direct or indirect N2O method"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per manure-management route or N input"
+              text: "per declared reference flow"
               kind: "n_input"
             evidence:
               kind: "method_formula"
@@ -725,13 +746,13 @@ process_inventory:
           flow_ref:
             uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Ammonia volatilization is calculated or recorded for housing, storage, field application under farm control, and grazing deposition where in scope."
+          description: "Ammonia volatilization is calculated or recorded for housing, storage, field application under farm control, and grazing deposition where in scope. Raw collection or process basis: per manure-management route or N input"
           amount:
             expression: "calculate from manure nitrogen, management route, climate or storage condition, and declared NH3 method"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per manure-management route or N input"
+              text: "per declared reference flow"
               kind: "n_input"
             evidence:
               kind: "method_formula"
@@ -750,47 +771,73 @@ process_inventory:
           flow_ref:
             uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
           property_unit: "Mass / kg live weight"
-          description: "Live animals entering pre-sale holding, quarantine, sorting, loading, or delivery are recorded when those activities are inside the declared gate."
+          description: "Live animals entering pre-sale holding, quarantine, sorting, loading, or delivery are recorded when those activities are inside the declared gate. Raw collection or process basis: handling process input"
           amount:
             expression: "measured live weight entering handling or delivery period"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "handling process input"
+              text: "per declared reference flow"
               kind: "process_output"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_live_weight_records
               source_ids: []
             ranges: []
-        - row_id: handling_energy_and_delivery_transport
-          role: "Handling energy and delivery transport"
-          name: "Diesel oil ; electricity or transport service selected from route records"
+        - row_id: handling_energy_and_delivery_transport_electricity
+          role: "Electricity at equipment supply"
+          name: "Electricity at equipment supply"
           flow_type: "product"
-          flow_ref:
-            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
-          property_unit: "Net calorific value or transport service / MJ, kWh, or tonne-km"
-          description: "Electricity, fuel, loading equipment, and route-specific transport service are recorded when the declared gate includes handling or delivery beyond normal farm-gate transfer."
+          property_unit: "Energy / kWh"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Electricity, fuel, loading equipment, and route-specific transport service are recorded when the declared gate includes handling or delivery beyond normal farm-gate transfer. Raw collection or process basis: per delivered kg live weight"
           amount:
-            expression: "measured fuel, electricity, carrier invoice, or route-specific transport service"
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
             value_mode: "foreground_record"
             specificity: "route_specific"
             basis:
-              text: "per delivered kg live weight"
+              text: "per declared reference flow"
               kind: "transport_service"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_gate_handling_and_transport_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "10"
-                unit: "MJ/kg delivered live weight"
-                basis: "broad first-pass handling and route energy inside declared gate"
-                basis_kind: "transport_service"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: handling_energy_and_delivery_transport_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Electricity, fuel, loading equipment, and route-specific transport service are recorded when the declared gate includes handling or delivery beyond normal farm-gate transfer. Raw collection or process basis: per delivered kg live weight"
+          amount:
+            expression: "Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "transport_service"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gate_handling_and_transport_records
+              source_ids: []
+            ranges: []
+        - row_id: handling_energy_and_delivery_transport_road_freight
+          role: "Road freight service"
+          name: "Road freight service"
+          flow_type: "product"
+          property_unit: "Transport / t km"
+          description: "Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited. Electricity, fuel, loading equipment, and route-specific transport service are recorded when the declared gate includes handling or delivery beyond normal farm-gate transfer. Raw collection or process basis: per delivered kg live weight Only actual outsourced road transport applies. Retain live mass, distance, vehicle type, loading and service boundary. Do not count this service together with its fuel, electricity or direct emissions for the same carrier leg."
+          amount:
+            expression: "measured fuel, electricity, carrier invoice, or route-specific transport service"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "transport_service"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gate_handling_and_transport_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -803,14 +850,14 @@ process_inventory:
           flow_type: "product"
           flow_ref:
             uuid: "40fd68b3-1ea0-4828-8532-f64140fc3ea3"
-          property_unit: "Mass / kg live weight"
-          description: "Declared transferred live ass is the live animal output at the declared gate."
+          property_unit: "Mass / kg"
+          description: "The kg reference is net live mass at handoff, excluding packaging, cages and ancillary materials; retain measured live-mass conversion for corresponding animal or colony counts. Declared transferred live ass is the live animal output at the declared gate. Raw collection or process basis: PCR reference output"
           amount:
-            expression: "measured live weight at declared transfer gate"
+            expression: "1 kg"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "PCR reference output"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
@@ -827,13 +874,13 @@ process_inventory:
           flow_ref:
             uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Fossil carbon dioxide from handling and delivery energy is calculated from fuel and energy records."
+          description: "Fossil carbon dioxide from handling and delivery energy is calculated from fuel and energy records. Raw collection or process basis: per delivery or handling energy inventory"
           amount:
-            expression: "energy or transport fuel quantity multiplied by declared emission factor"
+            expression: "Calculate this CO2 exchange only from actual fossil fuel used in directly operated foreground equipment and a compatible combustion factor; exclude purchased-electricity generation and emissions already covered by outsourced transport services."
             value_mode: "calculated_value"
             specificity: "route_specific"
             basis:
-              text: "per delivery or handling energy inventory"
+              text: "per declared reference flow"
               kind: "fuel_inventory"
             evidence:
               kind: "calculated_from_collection"
@@ -876,132 +923,132 @@ dataset_production:
       flow_role: "declared breeding herd or purchased stock entry"
       record_type: "animal receiving, birth, purchase, or herd inventory record"
       raw_fields: "animal or lot id; source; age class; sex; breed or type; intended use; live weight; acquisition or birth date; health status; upstream burden treatment"
-      collection_method: "scale record, veterinary certificate, herd book, purchase invoice, or birth record"
+      collection_method: "scale record, veterinary certificate, herd book, purchase invoice, or birth record; original activity aggregation: sum live weight by animal class and allocate breeding-basis burdens to live-weight output when included"
       unit: "head and kg live weight"
       frequency: "per birth, purchase, transfer, or inventory period"
       temporal_coverage: "rearing cycle or herd maintenance period"
       site_scope: "declared herd, farm, or lot"
-      aggregation_rule: "sum live weight by animal class and allocate breeding-basis burdens to live-weight output when included"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "scale calibration, herd book, animal movement record, purchase invoice, health certificate"
     - protocol_id: cp_live_weight_records
       process_id: "rearing_and_husbandry_farm_gate_handling_and_delivery"
       flow_role: "live ass weight and output"
       record_type: "weighing, sale, dispatch, or animal movement record"
       raw_fields: "animal or lot id; age class; sex; breed or type; weighing date; live weight; gate; buyer or destination; health status"
-      collection_method: "calibrated scale, weigh tape with conversion, sale ticket, or animal movement record"
+      collection_method: "calibrated scale, weigh tape with conversion, sale ticket, or animal movement record; original activity aggregation: sum live weight at declared gate and reconcile with entries, births, purchases, deaths, and sales"
       unit: "kg live weight and head"
       frequency: "per weighing, sale, or dispatch event"
       temporal_coverage: "rearing cycle and delivery period"
       site_scope: "animal lot, farm, and transfer gate"
-      aggregation_rule: "sum live weight at declared gate and reconcile with entries, births, purchases, deaths, and sales"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "scale calibration, sale ticket, movement certificate, dispatch note"
     - protocol_id: cp_feed_and_forage_records
       process_id: "stock_entry_and_breeding_basis_rearing_and_husbandry"
       flow_role: "feed and forage"
       record_type: "feed purchase, grazing, feed issue, or feed balance record"
       raw_fields: "feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period"
-      collection_method: "invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record"
+      collection_method: "invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record; original activity aggregation: convert to dry matter where needed; allocate by animal-days, live weight, or documented ration group"
       unit: "kg as-fed and kg dry matter"
       frequency: "daily, batch, month, or feeding period"
       temporal_coverage: "rearing cycle or herd maintenance period"
       site_scope: "farm, pasture, housing unit, or animal class"
-      aggregation_rule: "convert to dry matter where needed; allocate by animal-days, live weight, or documented ration group"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "invoice, feed analysis, inventory reconciliation, pasture record"
     - protocol_id: cp_water_records
       process_id: "rearing_and_husbandry"
       flow_role: "drinking and husbandry water"
       record_type: "water meter, tank fill, pump, well, or use estimate record"
       raw_fields: "source; volume; period; animal class; use type; allocation method"
-      collection_method: "meter reading, pump log, water invoice, tank record, or documented estimate"
+      collection_method: "meter reading, pump log, water invoice, tank record, or documented estimate; original activity aggregation: sum by source and convert to kg where needed; allocate by animal-days or live weight"
       unit: "L, m3, or kg"
       frequency: "daily, month, batch, or reporting period"
       temporal_coverage: "rearing cycle"
       site_scope: "water source, housing unit, pasture, or animal lot"
-      aggregation_rule: "sum by source and convert to kg where needed; allocate by animal-days or live weight"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "meter calibration, pump log, water invoice, documented estimate"
     - protocol_id: cp_bedding_and_housing_records
       process_id: "rearing_and_husbandry"
       flow_role: "bedding and housing materials"
       record_type: "bedding purchase, issue, or replacement record"
       raw_fields: "material type; quantity; moisture where relevant; replacement frequency; housing unit; fate"
-      collection_method: "invoice, stock issue log, housing operation record, or bedding balance"
+      collection_method: "invoice, stock issue log, housing operation record, or bedding balance; original activity aggregation: sum bedding input and assign to manure or waste route where relevant"
       unit: "kg"
       frequency: "per delivery, replacement, or reporting period"
       temporal_coverage: "rearing cycle"
       site_scope: "housing unit or animal lot"
-      aggregation_rule: "sum bedding input and assign to manure or waste route where relevant"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "invoice, inventory log, housing record"
     - protocol_id: cp_veterinary_and_health_records
       process_id: "rearing_and_husbandry"
       flow_role: "veterinary and animal health inputs"
       record_type: "treatment, vaccine, medicine, disinfectant, or identification record"
       raw_fields: "product; active ingredient if applicable; dose; item count; treated animals; date; reason"
-      collection_method: "veterinary log, invoice, product label, treatment certificate, or farm health record"
+      collection_method: "veterinary log, invoice, product label, treatment certificate, or farm health record; original activity aggregation: sum product amount by animal lot and normalize to live-weight output when material"
       unit: "kg, L, dose, item, or product-specific unit"
       frequency: "per treatment event or reporting period"
       temporal_coverage: "rearing cycle"
       site_scope: "animal lot or farm"
-      aggregation_rule: "sum product amount by animal lot and normalize to live-weight output when material"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "veterinary record, invoice, treatment log, product label"
     - protocol_id: cp_energy_records
       process_id: "rearing_and_husbandry"
       flow_role: "farm energy"
       record_type: "electricity, fuel, equipment, or service energy record"
       raw_fields: "carrier; quantity; meter or invoice id; operation; period; allocation method"
-      collection_method: "utility bill, meter reading, fuel invoice, equipment log, or telematics"
+      collection_method: "utility bill, meter reading, fuel invoice, equipment log, or telematics; original activity aggregation: convert to MJ or kWh and allocate to live-ass production using documented basis"
       unit: "kWh, MJ, L, or kg fuel"
       frequency: "month, batch, or operation"
       temporal_coverage: "rearing cycle"
       site_scope: "farm, housing unit, pump, feed system, or manure system"
-      aggregation_rule: "convert to MJ or kWh and allocate to live-ass production using documented basis"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "invoice, meter record, fuel log, equipment record"
     - protocol_id: cp_manure_and_excreta_records
       process_id: "manure_and_excreta_management"
       flow_role: "manure, urine, bedding, and excreta"
       record_type: "manure collection, storage, grazing, field application, transfer, or treatment record"
       raw_fields: "animal class; manure-management system; mass or volume; dry matter; volatile solids; N content where available; storage duration; climate or temperature; fate"
-      collection_method: "scale, storage volume estimate, manure analysis, farm log, grazing record, or transfer ticket"
+      collection_method: "scale, storage volume estimate, manure analysis, farm log, grazing record, or transfer ticket; original activity aggregation: reconcile manure generated, stored, treated, deposited, transferred, sold, or disposed; calculate emissions by declared method"
       unit: "kg wet mass, kg dry matter, kg VS, kg N, m3"
       frequency: "daily, batch, storage cycle, application event, or reporting period"
       temporal_coverage: "rearing cycle and manure storage period"
       site_scope: "housing, yard, pasture, storage, field, or transfer point"
-      aggregation_rule: "reconcile manure generated, stored, treated, deposited, transferred, sold, or disposed; calculate emissions by declared method"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "manure analysis, storage log, transfer ticket, application record, IPCC or EMEP method documentation"
     - protocol_id: cp_mortality_and_cull_records
       process_id: "stock_entry_and_breeding_basis_rearing_and_husbandry"
       flow_role: "mortality and non-marketable culls"
       record_type: "animal death, cull, disposal, or rendering record"
       raw_fields: "animal id or lot; date; age class; estimated live weight or carcass mass; cause category when available; fate"
-      collection_method: "farm mortality log, veterinary record, disposal ticket, rendering receipt, or burial/compost record"
+      collection_method: "farm mortality log, veterinary record, disposal ticket, rendering receipt, or burial/compost record; original activity aggregation: sum mortality and cull mass by fate and normalize to live-weight output"
       unit: "head and kg"
       frequency: "per event or reporting period"
       temporal_coverage: "rearing cycle"
       site_scope: "farm or animal lot"
-      aggregation_rule: "sum mortality and cull mass by fate and normalize to live-weight output"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "veterinary note, disposal ticket, mortality log"
     - protocol_id: cp_land_and_housing_records
       process_id: "stock_entry_and_breeding_basis_rearing_and_husbandry"
       flow_role: "land occupation and housing area"
       record_type: "pasture, yard, housing, or GIS area record"
       raw_fields: "area; duration; animal class; stocking period; housing or grazing system"
-      collection_method: "GIS record, pasture map, farm record, housing plan, or stocking log"
+      collection_method: "GIS record, pasture map, farm record, housing plan, or stocking log; original activity aggregation: multiply area by occupation duration and allocate by animal-days or live weight"
       unit: "ha a, m2 a, ha, or m2"
       frequency: "season, month, or rearing cycle"
       temporal_coverage: "rearing cycle"
       site_scope: "pasture, yard, housing unit, or farm"
-      aggregation_rule: "multiply area by occupation duration and allocate by animal-days or live weight"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "GIS file, farm map, stocking log"
     - protocol_id: cp_gate_handling_and_transport_records
       process_id: "farm_gate_handling_and_delivery"
       flow_role: "handling and delivery"
       record_type: "pre-sale holding, loading, quarantine, carrier, or transport record"
       raw_fields: "gate; holding duration; live weight; route; distance; vehicle; fuel; electricity; carrier invoice; tonne-km"
-      collection_method: "dispatch note, carrier invoice, route log, fuel log, or meter record"
+      collection_method: "dispatch note, carrier invoice, route log, fuel log, or meter record; original activity aggregation: normalize handling and route-specific energy to delivered kg live weight"
       unit: "kg live weight, km, tonne-km, L fuel, kWh, MJ"
       frequency: "per shipment or handling period"
       temporal_coverage: "delivery period"
       site_scope: "declared gate, holding area, and delivery route"
-      aggregation_rule: "normalize handling and route-specific energy to delivered kg live weight"
+      aggregation_rule: "per declared reference flow"
       quality_evidence: "dispatch record, carrier invoice, route record, fuel or energy record"
   calculation_rules:
     - id: normalize_live_weight_output
@@ -1060,7 +1107,7 @@ dataset_production:
         - emep-eea-2023-manure-management
     - id: calculate_energy_co2
       applies_to: "farm energy fossil CO2"
-      rule: "energy or fuel quantity multiplied by declared emission factor and normalized to live-weight output"
+      rule: "Calculate fossil fuel combustion CO2 only for directly operated foreground equipment, then normalize to accepted output; purchased electricity and outsourced transport emissions belong to their linked upstream datasets and must not be duplicated"
       inputs:
         - cp_energy_records
         - cp_gate_handling_and_transport_records
@@ -1164,27 +1211,31 @@ data_sources:
     used_for: "animal feed supply-chain assessment and feed data collection basis"
   - id: "emep-eea-2023-manure-management"
     type: "official_guidance"
-    reference: "<https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023/@@download/file>"
+    reference: "<https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023/>"
     used_for: "ammonia and air-pollutant process decomposition for manure management"
   - id: "mass-balance-identity"
     type: "method_factor"
     reference: "Conservation of mass applied as a PCR calculation identity for live-weight output, animal inventory reconciliation, and process reference outputs."
     used_for: "QA guardrails for reference outputs and animal mass-balance checks"
+  - id: "aphis-equine-treatment-context"
+    type: "official_guidance"
+    reference: "APHIS equine import treatment context; identity example only, not a universal treatment rule or evidence of use, https://www.aphis.usda.gov/news/program-update/resumption-equine-imports-mexico-after-new-world-screwworm-detection"
+    used_for: "Conditional identity context; verify actual site use, quantities and applicability separately"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:4f3ad7f4f09928f3e9c8d0345bc71ddb8b7bbf3b665c686c7b0f22d750c10f2f"
+  source_sha256: "sha256:9dda5b503f5805f78f91e46ac9c4b1ab0521d0cabcfac8d5a2667f3000c2f0db"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5143"
+    - unit_id: "normative_5576"
       family: "system_boundary"
       span:
         start:
-          offset: 5143
-          line: 62
+          offset: 5576
+          line: 64
           column: 1
         end:
-          offset: 7496
-          line: 86
+          offset: 7929
+          line: 88
           column: 1
       markdown: "## 5. System Boundary\n\nThe default boundary is foreground data collection to the declared live-animal transfer gate:\n\n1. Breeding herd, purchased foals or replacement animals, feed, forage, bedding, water, veterinary inputs, fuel, electricity, and purchased services when they are part of the foreground data package.\n2. Animal housing, grazing or yard management, feeding, watering, health management, bedding management, weighing, identification, and routine husbandry.\n3. Manure, urine, bedding, and excreta collection, storage, treatment, deposition during grazing, field application controlled by the farm, or transfer to a manure handler.\n4. Farm-gate sorting, quarantine or pre-sale holding, loading, and short-distance delivery when the declared gate is delivered live animal.\n\nThe completed foreground package represents live-animal production to the declared gate. Downstream work service, transport service performed by the animal, slaughter, hide recovery, milk production, and product use after sale are outside the default boundary unless a study explicitly expands scope.\n\nThis boundary is a data-production abstraction. Declared breeding stock, purchased foals, or replacement animals are starting-condition records for the foreground package. Same-category live-ass inputs are not recursively traced as a new live-ass PCR inside the same package; their identity, mass, source, and prior-burden treatment are disclosed.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | breeding_herd_or_live_ass_stock_entry |\n| starting_condition_role | animal_identity_and_reproduction_condition |\n| product_classification_scope | current CPC 3.0 product category `02132`, `Asses` |\n| recursive_input_rule | input flow in the same product category that causes recursive tracing is recorded as declared starting condition or purchased stock entry, with prior-burden treatment disclosed |\n| upstream_dataset_requirement | disclose source, live weight, age class, sex, breed or type, health status, acquisition date, and whether upstream live-animal burdens are included, excluded, or represented by secondary data |\n| disclosure | record production system, herd or lot boundary, live-weight basis, animal movement, mortality and cull fate, manure-management system, grazing or housing split, and declared gate |\n\n"
       headings:
@@ -1203,12 +1254,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5143
-              line: 62
+              offset: 5576
+              line: 64
               column: 1
             end:
-              offset: 5164
-              line: 62
+              offset: 5597
+              line: 64
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1223,16 +1274,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36439"
+    - unit_id: "normative_49000"
       family: "allocation"
       span:
         start:
-          offset: 36439
-          line: 701
+          offset: 49000
+          line: 826
           column: 1
         end:
-          offset: 37434
-          line: 712
+          offset: 49995
+          line: 837
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nNo allocation is required when the only product output is the transferred live ass and manure or mortalities are treated as wastes with declared treatment. If manure, compost, draught service during the rearing period, milk, hide, breeding service, or another co-product is intentionally marketed inside the foreground boundary, allocation must be declared before publication.\n\nPreferred hierarchy:\n\n1. Subdivide processes when records separate live-animal production from manure product preparation, milk production, work service, or another co-product route.\n2. Use physical allocation only when a causal physical relationship is documented, such as nutrient content for marketed manure products.\n3. Use economic allocation when physical allocation is not defensible and market values are available.\n4. Report system expansion or substitution only as an additional scenario, with substituted product, geography, and avoided-burden dataset disclosed.\n\n"
       headings:
@@ -1251,12 +1302,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36439
-              line: 701
+              offset: 49000
+              line: 826
               column: 1
             end:
-              offset: 36479
-              line: 701
+              offset: 49040
+              line: 826
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1271,16 +1322,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49017"
+    - unit_id: "normative_62384"
       family: "validation"
       span:
         start:
-          offset: 49017
-          line: 754
+          offset: 62384
+          line: 879
           column: 1
         end:
-          offset: 50342
-          line: 769
+          offset: 63709
+          line: 894
           column: 1
       markdown: "## 9. Validation Rules\n\nBefore publishing a foreground data package using this PCR, check:\n\n- reference flow is expressed as kg live ass and includes age class, sex, breed or type, intended use, production system, health status, geography, and declared gate\n- live-ass product is not confused with horses, mules and hinnies, equine meat, hides, milk, semen, embryos, or animal work service\n- starting-condition treatment for breeding herd, foals, purchased stock, and same-category live-ass inputs is declared\n- feed quantities preserve dry matter or as-fed basis and animal class allocation\n- water, bedding where used, veterinary inputs when material, energy, land occupation when in scope, and handling or delivery transport are addressed\n- manure-management system, grazing deposition, storage, transfer, and field application under farm control are declared\n- enteric CH4, manure CH4, manure N2O, manure NH3, and fossil CO2 from energy are calculated only with declared methods and source references\n- mortality, culls, manure products, bedding waste, and other outputs have declared fates\n- allocation or subdivision is declared when manure, milk, work service, breeding service, or other co-products are credited\n- values outside provisional screening ranges include source notes, corrected data, or method rationale\n\n"
       headings:
@@ -1299,12 +1350,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49017
-              line: 754
+              offset: 62384
+              line: 879
               column: 1
             end:
-              offset: 49039
-              line: 754
+              offset: 62406
+              line: 879
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1323,324 +1374,324 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 5261
-          line: 66
+          offset: 5694
+          line: 68
           column: 1
         end:
-          offset: 5460
-          line: 66
+          offset: 5893
+          line: 68
           column: 200
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 5461
-          line: 67
+          offset: 5894
+          line: 69
           column: 1
         end:
-          offset: 5614
-          line: 67
+          offset: 6047
+          line: 69
           column: 154
     - pointer: "/system_boundary/rules/2"
       rule_id: "system_boundary_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 5615
-          line: 68
+          offset: 6048
+          line: 70
           column: 1
         end:
-          offset: 5787
-          line: 68
+          offset: 6220
+          line: 70
           column: 173
     - pointer: "/system_boundary/rules/3"
       rule_id: "system_boundary_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 5788
-          line: 69
+          offset: 6221
+          line: 71
           column: 1
         end:
-          offset: 5927
-          line: 69
+          offset: 6360
+          line: 71
           column: 140
     - pointer: "/system_boundary/rules/4"
       rule_id: "system_boundary_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 5929
-          line: 71
+          offset: 6362
+          line: 73
           column: 1
         end:
-          offset: 6229
-          line: 71
+          offset: 6662
+          line: 73
           column: 301
     - pointer: "/system_boundary/rules/5"
       rule_id: "system_boundary_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 6231
-          line: 73
+          offset: 6664
+          line: 75
           column: 1
         end:
-          offset: 6578
-          line: 73
+          offset: 7011
+          line: 75
           column: 348
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_36439"
+      unit_id: "normative_49000"
       source_span:
         start:
-          offset: 36481
-          line: 703
+          offset: 49042
+          line: 828
           column: 1
         end:
-          offset: 36857
-          line: 703
+          offset: 49418
+          line: 828
           column: 377
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_36439"
+      unit_id: "normative_49000"
       source_span:
         start:
-          offset: 36881
-          line: 707
+          offset: 49442
+          line: 832
           column: 1
         end:
-          offset: 37041
-          line: 707
+          offset: 49602
+          line: 832
           column: 161
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_36439"
+      unit_id: "normative_49000"
       source_span:
         start:
-          offset: 37042
-          line: 708
+          offset: 49603
+          line: 833
           column: 1
         end:
-          offset: 37179
-          line: 708
+          offset: 49740
+          line: 833
           column: 138
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_36439"
+      unit_id: "normative_49000"
       source_span:
         start:
-          offset: 37180
-          line: 709
+          offset: 49741
+          line: 834
           column: 1
         end:
-          offset: 37282
-          line: 709
+          offset: 49843
+          line: 834
           column: 103
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_36439"
+      unit_id: "normative_49000"
       source_span:
         start:
-          offset: 37283
-          line: 710
+          offset: 49844
+          line: 835
           column: 1
         end:
-          offset: 37432
-          line: 710
+          offset: 49993
+          line: 835
           column: 150
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49109
-          line: 758
+          offset: 62476
+          line: 883
           column: 1
         end:
-          offset: 49274
-          line: 758
+          offset: 62641
+          line: 883
           column: 166
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49275
-          line: 759
+          offset: 62642
+          line: 884
           column: 1
         end:
-          offset: 49406
-          line: 759
+          offset: 62773
+          line: 884
           column: 132
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49407
-          line: 760
+          offset: 62774
+          line: 885
           column: 1
         end:
-          offset: 49526
-          line: 760
+          offset: 62893
+          line: 885
           column: 120
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49527
-          line: 761
+          offset: 62894
+          line: 886
           column: 1
         end:
-          offset: 49608
-          line: 761
+          offset: 62975
+          line: 886
           column: 82
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49609
-          line: 762
+          offset: 62976
+          line: 887
           column: 1
         end:
-          offset: 49758
-          line: 762
+          offset: 63125
+          line: 887
           column: 150
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49759
-          line: 763
+          offset: 63126
+          line: 888
           column: 1
         end:
-          offset: 49879
-          line: 763
+          offset: 63246
+          line: 888
           column: 121
     - pointer: "/validation_rules/6"
       rule_id: "validation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49880
-          line: 764
+          offset: 63247
+          line: 889
           column: 1
         end:
-          offset: 50021
-          line: 764
+          offset: 63388
+          line: 889
           column: 142
     - pointer: "/validation_rules/7"
       rule_id: "validation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 50022
-          line: 765
+          offset: 63389
+          line: 890
           column: 1
         end:
-          offset: 50111
-          line: 765
+          offset: 63478
+          line: 890
           column: 90
     - pointer: "/validation_rules/8"
       rule_id: "validation_rule_9"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 50112
-          line: 766
+          offset: 63479
+          line: 891
           column: 1
         end:
-          offset: 50236
-          line: 766
+          offset: 63603
+          line: 891
           column: 125
     - pointer: "/validation_rules/9"
       rule_id: "validation_rule_10"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 50237
-          line: 767
+          offset: 63604
+          line: 892
           column: 1
         end:
-          offset: 50340
-          line: 767
+          offset: 63707
+          line: 892
           column: 104
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 5143
-          line: 62
+          offset: 5576
+          line: 64
           column: 1
         end:
-          offset: 5164
-          line: 62
+          offset: 5597
+          line: 64
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5143"
+      unit_id: "normative_5576"
       source_span:
         start:
-          offset: 6606
-          line: 77
+          offset: 7039
+          line: 79
           column: 1
         end:
-          offset: 7494
-          line: 84
+          offset: 7927
+          line: 86
           column: 196
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36439"
+      unit_id: "normative_49000"
       source_span:
         start:
-          offset: 36439
-          line: 701
+          offset: 49000
+          line: 826
           column: 1
         end:
-          offset: 36479
-          line: 701
+          offset: 49040
+          line: 826
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49017"
+      unit_id: "normative_62384"
       source_span:
         start:
-          offset: 49017
-          line: 754
+          offset: 62384
+          line: 879
           column: 1
         end:
-          offset: 49039
-          line: 754
+          offset: 62406
+          line: 879
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1649,5 +1700,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:4f3ad7f4f09928f3e9c8d0345bc71ddb8b7bbf3b665c686c7b0f22d750c10f2f"
-  generated_content_sha256: "sha256:d53ce749aedcfd2c9632f1694355f3c366f5f8d374c2b0bd1b37c2858804d115"
+    sha256: "sha256:9dda5b503f5805f78f91e46ac9c4b1ab0521d0cabcfac8d5a2667f3000c2f0db"
+  generated_content_sha256: "sha256:9070c8dcd63cee97f10aeb75d4927da66701c6e6190c7ef2278ec3e8b9cb59ba"

@@ -41,7 +41,6 @@ This PCR governs fresh, shell-on chicken eggs selected for hatching at the produ
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | hen species; farm and gate; flock and breeder age; cohort and period; mating evidence; count and kg; shell grade; collection date; storage time and temperature; tested viability if available; rejects; tray/package reuse |
-| Binding | Fixed (`fixed`) |
 
 ## 4. Measurement and Unit Rules
 
@@ -167,31 +166,56 @@ Denominator and scope requirements：per kg saleable shell-on hatching eggs at b
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Breeder-house energy (`house_energy`)
+###### Electricity at the equipment supply point (`house_energy_electricity`)
+
+**Collection scope and applicability for house_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Record electricity, heat and fuels by actual carrier.
-
 Denominator and scope requirements：per kg saleable shell-on hatching eggs at breeder-farm gate
-
 Energy accounting basis: retain separate carrier quantities in their native units. Convert electricity from kWh to MJ using 3.6; convert fuel mass/volume only with documented carrier-specific calorific value and, where needed, density. This card reports the MJ accounting quantity, not a mass exchange or a summed mixed-carrier flow. Final exchanges retain their actual carrier property and unit; do not add kg, L, kWh and MJ or assign one carrier UUID to their total.
 
-- Selected flow: Energy carriers and utilities
-- Flow property / unit: Energy / MJ
-- Amount rule: Record electricity, heat and fuels by actual carrier.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Electricity at the equipment supply point
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
+- Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_inputs`
-- Range: Provisional replaceable QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 60
-  - Unit: MJ/kg reference
-  - Basis: broad first-pass reference-mass screen; replace with reviewed data
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `fao-agricultural-energy`
+
+###### Diesel fuel supplied to equipment (`house_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel supplied to equipment
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_inputs`
+- Sources: `fao-agricultural-energy`
+
+###### Purchased heat at the process inlet (`house_energy_heat`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Purchased heat at the process inlet
+- Flow property / unit: Energy / MJ
+- Amount rule: Collect raw quantities for this identity under `cp_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_inputs`
+- Sources: `fao-agricultural-energy`
 
 ##### Waste flows
 
@@ -313,7 +337,6 @@ Denominator and scope requirements：per kg saleable shell-on hatching eggs at b
 
 - Selected flow: Methane, biogenic, to air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg CH4
-- Binding: Fixed (`fixed`)
 - Amount rule: Model documented manure CH4 pathway from records.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -341,7 +364,6 @@ Denominator and scope requirements：per kg saleable shell-on hatching eggs at b
 
 - Selected flow: Nitrous oxide to air `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass / kg N2O
-- Binding: Fixed (`fixed`)
 - Amount rule: Model documented manure N2O; convert N2O-N to N2O.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -367,7 +389,6 @@ Denominator and scope requirements：per kg saleable shell-on hatching eggs at b
 
 - Selected flow: Ammonia to air `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: Mass / kg NH3
-- Binding: Fixed (`fixed`)
 - Amount rule: Record only a documented NH3 volatilization pathway.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -727,31 +748,41 @@ Denominator and scope requirements：per kg saleable shell-on hatching eggs at b
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Storage energy (`storage_energy`)
+###### Electricity at the equipment supply point (`storage_energy_electricity`)
+
+**Collection scope and applicability for storage_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Measure actual cooling/ventilation use by lot or shared room.
-
 Denominator and scope requirements：per kg saleable shell-on hatching eggs at breeder-farm gate
-
 Energy accounting basis: retain separate carrier quantities in their native units. Convert electricity from kWh to MJ using 3.6; convert fuel mass/volume only with documented carrier-specific calorific value and, where needed, density. This card reports the MJ accounting quantity, not a mass exchange or a summed mixed-carrier flow. Final exchanges retain their actual carrier property and unit; do not add kg, L, kWh and MJ or assign one carrier UUID to their total.
 
-- Selected flow: Energy carriers and utilities
-- Flow property / unit: Energy / MJ
-- Amount rule: Measure actual cooling/ventilation use by lot or shared room.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Electricity at the equipment supply point
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_storage` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
+- Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_storage`
-- Range: Provisional replaceable QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 50
-  - Unit: MJ/kg reference
-  - Basis: broad first-pass reference-mass screen; replace with reviewed data
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `fao-agricultural-energy`
+
+###### Diesel fuel supplied to equipment (`storage_energy_diesel`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Diesel fuel supplied to equipment
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_storage` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_storage`
+- Sources: `fao-agricultural-energy`
 
 ##### Waste flows
 
@@ -895,7 +926,6 @@ Denominator and scope requirements：per reference flow
 
 - Selected flow: Hen eggs in shell, fresh, for hatching `e5791c05-2fe6-4cb4-aec8-30adb5e85b0b`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: 1 kg
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -951,6 +981,8 @@ No prescribed flow in this coordinate; add only with observed and verified ident
 | `output_priority` | hatching eggs, marketed table eggs, cull birds, exported manure | Enumerate intended outputs at their actual gates. Attribute separable activities directly. For inseparable flock-period burdens use documented physical causality if supportable, otherwise period-matched farm-gate economic allocation with prices, masses and sensitivity. Waste and mortality receive no product share. | `fao-leap-poultry-2016` |
 | `period_shared` | flock, house, nest equipment, store, trays | Index replacement, productive, storage and reuse periods; link input events and outputs to period. Attribute shared assets to measured users or justified service duration/capacity once, avoiding duplicate burden. | `fao-leap-poultry-2016`; `aviagen-egg-handling-2015` |
 | `internal_states` | laid through stored eggs | Internal transfers are mass reconciliation, not co-products; allocate only when a separate product exits the declared boundary. | `mass-balance-identity` |
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -1027,3 +1059,4 @@ No prescribed flow in this coordinate; add only with observed and verified ident
 | `mass-balance-identity` | `method_factor` | Conservation of measured shell-on egg mass by mutually exclusive inventory state | state reconciliation and normalization |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Direct/indirect nitrogen pathways and coordination of manure storage with managed-soil emissions; select applicable species and management evidence. |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |

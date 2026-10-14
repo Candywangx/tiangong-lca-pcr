@@ -397,7 +397,6 @@ Denominator and scope requirements：per kg live chicken output
 
 - Selected flow: Methane, biogenic, to air `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: Fixed (`fixed`)
 - Amount rule: manure-system-specific CH4 calculated from measured volatile solids and documented factor tier
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -425,7 +424,6 @@ Denominator and scope requirements：per kg live chicken output
 
 - Selected flow: Nitrous oxide to air `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
-- Binding: Fixed (`fixed`)
 - Amount rule: pathway-specific N2O from measured manure nitrogen and documented factor tier
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -451,7 +449,6 @@ Denominator and scope requirements：per kg live chicken output
 
 - Selected flow: Ammonia to air `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
-- Binding: Fixed (`fixed`)
 - Amount rule: pathway-specific NH3 from measured manure nitrogen and documented method
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)

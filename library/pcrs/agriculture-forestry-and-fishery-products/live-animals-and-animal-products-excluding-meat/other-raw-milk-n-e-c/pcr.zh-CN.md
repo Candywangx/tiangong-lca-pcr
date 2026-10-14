@@ -357,31 +357,26 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 挤乳设备能源（`milking_energy`）
+###### 设备供电点的电力（`milking_energy_electricity`）
+
+**milking_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 只计物理挤乳能源，与冷却及共用房间服务分开。
-
 分母与范围要求：每 kg 挤出总乳
-
 原始数量及计算要求：按实际挤乳时段分配表计。 原始采集分母类型：process_output。
 
-- 选定流：挤乳用能源载体
-- 流属性/单位：Energy / kWh 或实际载体单位
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_milking` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_milking`
-- 数量范围：暂定挤乳能源 QA 筛查，非默认能耗
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kWh
-  - 基准：每 kg 挤出总乳，以表计为准
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-agricultural-energy`
 
 #### 输出
 
@@ -561,31 +556,26 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 冷却能源（`cool_energy`）
+###### 设备供电点的电力（`cool_energy_electricity`）
+
+**cool_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 只计实际冷却期间的制冷表计，不含交接后配送。
-
 分母与范围要求：每 kg 冷却乳
-
 原始数量及计算要求：按真实批次和时间计量或分配能源。 原始采集分母类型：process_output。
 
-- 选定流：全脂生乳冷却能源载体
-- 流属性/单位：Energy / kWh 或实际载体单位
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_cooling` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cooling`
-- 数量范围：暂定冷却能源 QA 筛查，非默认能耗
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kWh
-  - 基准：每 kg 冷却乳，以表计为准
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-agricultural-energy`
 
 #### 输出
 
@@ -716,6 +706,8 @@ sync_with: pcr.en-US.md
 | `asset_once` | 房间/罐/表计/清洗 | 依表计、使用时间或披露的处理量份额将共用服务仅一次分配给实际节点与期间。 | `review-fao-pig-lca-2018` |
 | `allocation_method_basis` | 剩余共同负担与共用服务 | 采用一般 LCA 层级：剩余分配前先考虑细分或有适当依据的系统扩展；随后优先使用有证据的物理因果关系，无法确立物理归属时才论证经济基准。供体日、占用时间或处理量驱动是本 PCR 的建模选择，须有个案证据及敏感性分析，并非卫生指南的要求。服务期间须包含失败尝试及损失；不得只选成功产出，也不得引入假设替代抵扣。 | `review-fao-pig-lca-2018` |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
@@ -791,3 +783,4 @@ sync_with: pcr.en-US.md
 | `review-ipcc-livestock-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf) | 物种与路径适用性；CH4 和 N2O 方法选择，不作为通用排放因子 |
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 氮流方法；采用参数前核实实际物种、管理方式及地域适用性 |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 管理土壤直接及间接氮路径与边界核对 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
