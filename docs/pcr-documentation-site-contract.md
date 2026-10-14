@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-13
-lastReviewedNote: "Reviewed the 156-record restoration and retained v4 search codec from ca46d655: bounded score masks, signed posting deltas and keyed inspector packs retain exact engine exports, complete record data and backward readers under unchanged browser and provider file budgets. PCR lifecycle, translation, canonical bytes, dependency and product-version contracts remain unchanged. Full source-bound qualification and coordinated publication remain separate requirements."
-lastReviewedCommit: 4cb1e0c9021e191c1d7d2ab6552aaf715fc170ab
+lastReviewedAt: 2026-10-14
+lastReviewedNote: "Reviewed native prefetch bundling for the first 50 audited PCR delivery: the pinned Next runtime combines shared layout segments under finite 16 KiB candidate and 32 KiB bundle gzip thresholds. Canonical bytes, raw downloads, HTML, routes, search and provider limits remain intact. Real export, sealed browser qualification and full source-bound CI are required before merge."
+lastReviewedCommit: 185ad391d3941a29009f8d0f8fbc05d23ec7386f
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -261,6 +261,17 @@ server-rendered structured rule views; the scoped navigation must pass the same
 full-corpus export gate.
 Next.js retains both initial HTML and static navigation payloads; these are part
 of its supported export and are not deleted after building.
+
+The pinned Next runtime uses bounded native prefetch inlining: shared segment
+candidates may be up to 16 KiB gzip, with at most 32 KiB gzip of accumulated
+inlined content per bundle. Next emits the matching client hints and complete
+prefetch responses; no post-build deletion or hosting rewrite substitutes for
+that protocol. This combines shared layouts instead of repeating standalone
+transport files on every route. It changes neither source content, raw download
+bytes, route identities nor the provider limits below. A real Next fixture checks
+that the layout remains in the page payload and both pages retain their complete
+HTML, full response and route tree. The full-corpus export and sealed browser
+qualification remain the acceptance gates for the actual site.
 
 The export has no project-owned total-byte cap. The former 1.5 GB budget was a
 local retention allowance and was removed by the owner's decision in PCR #61.

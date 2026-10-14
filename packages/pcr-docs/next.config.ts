@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     useTypeScriptCli: true,
     // The deployment provider allocates 4 cores and 6 GB; keep the builder inside that budget.
     cpus: 4,
+    // Bundle shared layouts through Next's native prefetch protocol, keeping
+    // the static file count bounded without dropping navigation payloads.
+    prefetchInlining: { maxSize: 16 * 1024, maxBundleSize: 32 * 1024 },
   },
 };
 
