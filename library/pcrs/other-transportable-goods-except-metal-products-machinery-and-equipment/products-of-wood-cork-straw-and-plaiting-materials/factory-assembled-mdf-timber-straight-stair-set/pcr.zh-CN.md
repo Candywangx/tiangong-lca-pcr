@@ -20,14 +20,14 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.factory-assembled-mdf-timber-straight-stair-set |
-| classification_refs | CPC 3.0 31629; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31629；拟议 narrower 子范围；无已接受映射 |
 | covered_products | 上述唯一配置的工厂装配 MDF 梯梁直跑楼梯交付套件 |
 | excluded_products | 窗 31621；门 31622；混凝土模板 31623；木瓦 31624；单独柱梁 31625；地板拼装板 31626；工程结构木 31627；竹制品；弯曲、转向或螺旋楼梯；单独出售的散件；全实木楼梯；涂饰或处理楼梯；已安装工程 |
 | representative_product | 直跑 MDF 梯梁梯段及指定斜段栏杆和楼梯柱套件；完整工厂发运配置 |
 | production_route | 接收储存 → CNC 加工及横截 → 胶接、紧固、夹具装配 → 验收 → 包裹打包 |
 | market_state | 验收合格工厂发运套件净量；披露已装配和散件状态；排除包装质量 |
 
-现有锯材、连续成型木竹材和 MDF PCR 在各自输入产品出厂状态处结束。路线适用时可支持上游制造，但不覆盖楼梯物料完整性、装配、混合材料质量或发运套件配置。CPC 31629 为剩余类别；排除相邻子类只支持该更窄边界，不代表整个类别覆盖。正式 CPC 说明本身未明确列举楼梯。来源：`un-cpc-3-2025`; `staircraft-stairs-2023`.
+现有锯材、连续成型木竹材和 MDF PCR 在各自输入产品出厂状态处结束。路线适用时可支持上游制造，但不覆盖楼梯物料完整性、装配、混合材料质量或发运套件配置。CPC 31629 为剩余类别；排除相邻子类只支持拟议更窄边界，不代表整个类别覆盖。正式 CPC 说明本身未明确列举楼梯。来源：`un-cpc-3-2025`; `staircraft-stairs-2023`.
 
 ## 3. 参考流
 
@@ -67,7 +67,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 外购干燥木材、MDF、实际装配及包装用品于工厂接收处 |
 | starting_condition_role | foreground production |
-| product_classification_scope | 31629 下的一种配置直跑木材及 MDF 楼梯套件子集 |
+| product_classification_scope | 31629 下拟议的一种配置直跑木材及 MDF 楼梯套件子集 |
 | recursive_input_rule | 不能将外购成品楼梯重新标记为本制造过程。返工留在内部；外购替换组件须具备独立核实的上游状态。 |
 | upstream_dataset_requirement | 连接实际兼容的木材、MDF、胶、紧固件、电力、包装、入厂运输与废物处理；身份本身不是背景数据资格 |
 | disclosure | 工厂采集期、套件配置、阶段计量、库存、装配状态、排除项、废物去向、上游交接点及未决链接 |
@@ -437,7 +437,6 @@ CAS 7732-18-5；室外空气未特指。纳入平衡含水率和胶干燥过程�
 | calc_electric | electricity | q_electricity = 3.6 × kWh | 已归属电表 kWh | MJ | `staircraft-stairs-2023` |
 | calc_moisture | wood and board | dry_mass = wet_mass / (1 + u); water_mass = wet_mass - dry_mass; w = u / (1 + u) | 经验证的干基含水率小数 u；需要时进行树脂或挥发物修正 | 独立固体及水账 | `usda-wood-handbook-2021` |
 | calc_air | PM bins; formaldehyde | q_i = integral(C_i × Vdot × dt)，kg/m3、m3/时间及时间须同基准；使用实测互斥粒径段 | cp_air 排放采样及控制记录 | 排向室外空气的实际 kg；未测粒径段仍为缺失 |  |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 
@@ -474,4 +473,4 @@ CAS 7732-18-5；室外空气未特指。纳入平衡含水率和胶干燥过程�
 | --- | --- | --- | --- |
 | `staircraft-stairs-2023` | literature | [Staircraft Timber Staircases with Balustrades, HUB-0834](https://staircraftgroup.com/wp-content/uploads/2024/06/EPD_Staircraft_Group_Ltd_Timber_staircases_HUB-0834_2024-06-19.pdf); pp. 2–7; 10 November 2023 | 实际木材与 MDF 产品、工厂装配及包裹散件楼梯柱、1 kg 缩放、边界与分配案例。英国 2021–2022 多工厂证据；不移植物料比例、能耗、60 年寿命、碳因子或填埋情景。EPD 路线不证明更窄的未涂饰、PVAc、全电力准入条件。 |
 | `usda-wood-handbook-2021` | handbook | [Wood handbook, FPL-GTR-282](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf); Chapter 13, pp. 13–1 to 13–2, eq. 13–1 | 含水测量、干湿基准及树脂、挥发物、电测法局限。无楼梯排放因子、固定密度、通用含水率或清单范围。空气通量与平衡协议为明确前景要求，不是 USDA 排放规定。 |
-| `un-cpc-3-2025` | official_guidance | [CPC 3.0 Explanatory Notes, 30 June 2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf); pp. 142–143, subclasses 31621–31629 | 仅支持相邻子类排除和剩余细木工分类背景。楼梯套件的 narrower 关系属于分类解释，以权威映射及其 ADR 为准；说明未提供楼梯工厂方法或参考 UUID。 |
+| `un-cpc-3-2025` | official_guidance | [CPC 3.0 Explanatory Notes, 30 June 2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf); pp. 142–143, subclasses 31621–31629 | 仅支持相邻子类排除和剩余细木工分类背景。楼梯套件的 narrower 映射为作者解释，待独立接受；说明未提供楼梯工厂方法或参考 UUID。 |

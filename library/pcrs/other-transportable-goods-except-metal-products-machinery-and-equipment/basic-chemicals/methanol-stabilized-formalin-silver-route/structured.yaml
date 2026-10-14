@@ -1,0 +1,1436 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.methanol-stabilized-formalin-silver-route"
+  classification_refs: "CPC 3.0:34170; proposed narrower relation, acceptance remains separate"
+  covered_products: "Bulk conventional nominal 37 wt% aqueous formalin, formaldehyde CAS 50-00-0, methanol CAS 67-56-1, water CAS 7732-18-5; actual grade and assay disclosed"
+  excluded_products: "Section 1 excluded chemicals, mixtures, manufacturing and delivery routes"
+  representative_product: "Actual accepted methanol-stabilised formalin SKU; no default composition"
+  production_route: "Fossil methanol receipt → vaporisation with air/water → crystalline silver reaction → water absorption → grade adjustment → bulk storage/loading; dedicated tail-gas thermal oxidation/heat recovery"
+  market_state: "Full aqueous supply mixture, bulk at plant loading gate; packaging is not included in the reference mass"
+functional_unit:
+  what: "Methanol-stabilised aqueous formalin supplied as a chemical intermediate"
+  how_much: "1 kg accepted net product as supplied"
+  how_well: "Meets the actual declared SKU acceptance; assayed HCHO-equivalent, overall methanol/water and distinct impurities; true/free-species basis separate; no assumed purity"
+  how_long_or_cycle: "At gate delivery; storage time and temperature collected, no service-life default"
+  reference_flow_link: "out_formalin"
+system_boundary:
+  rules:
+    - rule_id: b_route
+      applies_to: "formalin_train"
+      rule: "Include feed receipt and storage, vaporisation, air supply, crystalline-silver conversion, cooling/heat recovery, multistage water absorption, actual methanol stabilisation/dilution, storage/loading and their final controls. Retain stage meters in one integrated foreground unit; do not make the same solution an additional reference output between absorption and finishing."
+      source_ids:
+        - jrc-lvoc-2017
+        - hexion-formalin
+    - rule_id: b_tailgas
+      applies_to: "formalin_train"
+      rule: "Include dedicated thermal oxidation and heat-recovery boiler, support fuel/start-ups, condensate, cooling and final stack. Absorber gas, hydrogen and recovered heat used internally are measured internal transfers; do not also count them as fuel purchases, product sales or pre-control emissions."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_water
+      applies_to: "formalin_train"
+      rule: "Include collection/rework of cleaning, spill and contaminated condensate streams, pretreatment and any wastewater treatment actually inside the foreground. External treatment uses a composition/receiver-specific waste interface; final elementary releases occur only at the declared nature boundary. No normal-operation effluent assumption permits deleting episodic releases."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_ledger
+      applies_to: "physical_ledger"
+      rule: "Retain unallocated mass, water, carbon, hydrogen, oxygen and energy ledgers, with composition/quantity equality at both endpoints of every internal link. Include stocks, precipitation, catalysts, nitrogen/oxygen carriers, reaction water, collected residues and abnormal losses. Recovered solvent has its actual composition/state, not fresh feed identity by name alone."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_complete
+      applies_to: "additional_exchanges"
+      rule: "Inventory cards are a conditional minimum checklist. Add one atomic row for every additional actual reagent, filter, ion-exchange resin/regenerant, captured dust, sludge type, packaging component, transport, cooling chemical, fuel or pollutant. State documented absence rather than silent zero; missing identity/provider stays incomplete. For actual packed deliveries, add each container/closure component separately while excluding it from net product mass. Account for actual returnable containers/tankers, packing, maintenance replacements, cleaning, transport and return losses using evidenced service/cycle shares; do not assume disposable packaging or zero equipment burden. Preserve carried upstream burdens of purchased feed, rework and regenerated material without crediting the same recovery twice."
+      source_ids:
+        - jrc-lvoc-2017
+boundary_abstraction:
+  declared_starting_condition: "Accepted externally supplied fossil industrial methanol and declared fresh catalyst/utility inputs at plant receipt"
+  starting_condition_role: "Chemical feed and utility supply; methanol manufacture remains in compatible upstream providers"
+  product_classification_scope: "The stated aqueous methanol-stabilised silver-route formalin subset of CPC 3.0:34170"
+  recursive_input_rule: "Preserve equal-endpoint internal absorption liquor/methanol/formalin returns. Purchased same-category formalin retains a separate upstream provider and measured rework contribution; do not recurse to zero burden or treat dilution-only as this manufacture route"
+  upstream_dataset_requirement: "Composition/route-compatible methanol, refined silver or actual regeneration service, demineralised water, electricity, fuel, steam and external waste-treatment providers with matching reference quantities"
+  disclosure: "Actual flow diagram, unit boundaries, supplier/receiver states, all stocks/rework/recycles, final discharge media, normal/abnormal operating modes, meter and laboratory bases, allocated burden account and unresolved links"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Formalin ()"
+    uuid: "a7fad773-b7f9-4027-8488-4108c2c41d45"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual SKU and assay method"
+    - "aqueous supply state"
+    - "HCHO-equivalent/overall methanol/overall water/distinct impurity mass fractions and analytical convention"
+    - "free versus bound quantities explicitly distinguished"
+    - "net accepted supply mass"
+    - "fossil methanol origin/provider"
+    - "crystalline-silver high-conversion configuration"
+    - "dedicated oxidiser/heat-recovery boundary"
+    - "site/period/stocks"
+    - "bulk delivery temperature"
+    - "recovered-stream destinations"
+    - "utility pressure/enthalpy/volume reference"
+    - "allocation and provider basis compatibility"
+reference_flows:
+  []
+measurement_rules:
+  - id: m_supply
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use 1 kg accepted net formalin supply mixture, including methanol, water and actual impurities. Pure HCHO-equivalent mass is reported separately and never silently replaces the denominator."
+  - id: m_assay
+    applies_to: "out_formalin, in_methanol, w_aqueous"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure mass fractions on the actual supplied or discharged basis. For out_formalin determine industrial solution HCHO-equivalent mass fraction using iso-formalin-assay-1972 and cp_product; free-carbonyl analysis alone is not a full product assay. Report overall water/methanol composition separately from true free/bound species. Record sample state, dilution, recovery, impurities and propagated uncertainty. Raw methanol and dilute/contaminated wastes require their own compatible assays; do not transfer the commercial-solution procedure outside its matrix/concentration limits."
+  - id: m_electricity
+    applies_to: "in_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the selected reference-property label. Convert metered kWh using 1 kWh = 3.6 MJ; this identity supplies no grid mix, voltage, losses or generation factor."
+  - id: m_steam
+    applies_to: "in_steam, out_steam"
+    required_property_ref:
+      name: "Net delivered thermal energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Use calibrated physical mass/state measurements and iapws-if97-2012 enthalpies within its validity regions, following cp_energy and c_heat. Measure wet-steam quality; pressure and temperature on the saturation line do not determine it. Provider/receiver net heat definition must agree; NCV/GCV labels do not establish enthalpy service."
+  - id: m_gas
+    applies_to: "in_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Reconcile measured volume with provider absolute temperature/pressure, wet/dry gas composition and compressibility; preserve actual heating-value basis separately. Database secondary mass coefficients do not supply density."
+  - id: m_species
+    applies_to: "elementary outputs"
+    required_property_ref:
+      name: "Mass or Volume as selected"
+      uuid: ""
+    required_unit: "kg or m3 as selected"
+    rule: "Integrate compatible species concentrations and actual gas/liquid volumes over the operating period. Preserve phase, origin, medium, dry/wet/standard-state conventions and monitoring quantity definition; volume discharge is separate from pollutant mass."
+process_map:
+  - id: formalin_train
+    name: "Integrated silver-route aqueous formalin manufacture and dedicated tail-gas control"
+    inclusion: "required"
+    inclusion_condition: "Stated route and bulk product state"
+    role: "Foreground with independent stage metering and complete internal links"
+    quantitative_reference: "1 kg accepted net formalin as supplied"
+process_inventory:
+  - id: formalin_train
+    label: "Integrated silver-route aqueous formalin manufacture and dedicated tail-gas control"
+    inputs:
+      product:
+        - row_id: in_methanol
+          role: "Methanol (market average)"
+          name: "Methanol (market average) ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "adbc8430-7937-4ade-b7a5-cb1797dda661"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Fresh fossil industrial methanol, CAS 67-56-1, for vaporiser feed and conditional finishing stabilisation. Meter these purposes separately and aggregate only net external additions. This market-average identity explicitly covers coal gasification/coking and natural-gas routes; record the actual supplier mix, purity and water, with no biomass assignment or default background. Internal recovered methanol is not fresh input. The row quantity is the whole accepted industrial methanol supply on its verified provider basis, not a purity-corrected alcohol component substituted without conversion. Record consumed alcohol, retained stabiliser, recovered alcohol and losses separately; no complete conversion or stabiliser dose is assumed."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_water
+          role: "Demineralized water"
+          name: "Demineralized water ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9385842f-1815-4f19-a6b9-3dbb7ccbbffc"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Externally supplied ion-exchange/RO demineralised water for absorption, measured grade adjustment, cleaning and boiler make-up. Separate the purpose meters; water already in methanol supply or recycled scrubber liquor is not another external input. On-site production requires its own actual raw-water and treatment exchanges."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_silver
+          role: "silver"
+          name: "silver ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7db0c01b-7605-4e92-90a1-c4bc6dd8e157"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Unalloyed refined crystalline silver, CAS 7440-22-4, supplied to the catalyst bed. The broad refined-metal identity applies only to actual silver metal, not silver salts, supported composites, foil or conductive paste. Weigh installed/replaced fresh and regenerated charges separately; a regeneration service and its losses are separate exchanges. No catalyst life, silver recovery or loading is prescribed."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_catalyst
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_electricity
+          role: "Alternating current"
+          name: "Alternating current ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value (93a60a56-a3c8-11da-a746-0800200c9a66); unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter vaporiser, blowers, pumps, cooling, loading and pollution controls. This selected record is China 1–35 kV grid-average consumption supply to user; use it only where the actual location, voltage and provider boundary agree. Another geography, voltage or generation contract needs a separately verified flow/provider."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_steam
+          role: "Imported process-steam heat"
+          name: "Imported process-steam heat"
+          flow_type: "product"
+          property_unit: "Net delivered thermal energy (property/unit group pending compatible provider) / MJ"
+          description: "Conditional imported process-steam heat for start-up, vaporisation or finishing. Determine actual pressure, temperature, dryness, steam/condensate masses and delivered enthalpy difference; the supplier/background must define the same net delivered heat basis. Record 11.0 MPaG or 0.45 MPaG streams only when those pressures are real; no currently verified record establishes this unspecified site heat service. Retain the utility link as incomplete until matched."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume (93a60a56-a3c8-22da-a746-0800200c9a66); unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Conditional compressed pipeline fossil natural gas for start-up or support firing in the dedicated thermal oxidiser/heat-recovery boiler. The selected reference is Volume, not Mass. Collect absolute pressure, temperature, wet/dry composition and compressibility and reconcile supplier cubic-metre conditions; a secondary mass coefficient is not a density. No firing rate or heating value is assumed."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: air_input
+          role: "air"
+          name: "air ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa4-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure net fresh atmospheric air drawn into the vaporiser/reaction and combustion system; do not count recycled tail gas as fresh air. This is a resource from air. Derive mass from recorded volume, pressure, temperature, humidity and composition; keep O2/N2/carrier-water components in the physical ledger without also entering them as duplicate air-resource inputs."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+    outputs:
+      product:
+        - row_id: out_formalin
+          role: "Formalin"
+          name: "Formalin ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a7fad773-b7f9-4027-8488-4108c2c41d45"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted bulk methanol-stabilised aqueous formalin at the loading gate. The selected oxidation-route solution identity describes conventional nominal 37 wt% formalin with methanol stabilisation; verify actual SKU/assay compatibility before using it. Its descriptive composition is not a dose, exact purity or universal assay. The native oxidation treatment is compatible with this declared silver oxidative-dehydrogenation subset but does not independently prove a site route. Verify producer gate and any post-absorption methanol adjustment; preserve the native percentage ambiguity rather than assuming 10–12 wt% or imposing an invented tolerance. Declare actual HCHO-equivalent, methanol, carrier water and impurities; exclude crude reaction gas, methanol-free solutions, urea precondensates, solid paraformaldehyde and recovered-solvent sales."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+                - hexion-formalin
+            ranges: []
+        - row_id: out_steam
+          role: "Net exported steam heat"
+          name: "Net exported steam heat"
+          flow_type: "product"
+          property_unit: "Net delivered thermal energy (property/unit group pending compatible provider) / MJ"
+          description: "Conditional net exported useful steam heat after own process use and measured losses. Keep separate gross generation, internal use, imported heat and export meters; retain actual steam mass, pressure, temperature, dryness, condensate return and receiver enthalpy reference. Do not subtract export from input or assign an avoided-energy credit automatically. A compatible net heat identity/provider remains unresolved."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      waste:
+        - row_id: w_catalyst
+          role: "Spent crystalline silver catalyst to metal recovery"
+          name: "Spent crystalline silver catalyst to metal recovery"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent crystalline silver catalyst crossing the gate to a documented external metal reclaimer. Weigh the actual wet/contaminated charge, silver fraction and recipient acceptance; retain returned metal/service separately. Generic disposal catalyst waste does not establish this specific recycling interface. No recovery percentage or negative virgin-silver credit is prescribed."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: w_paraform
+          role: "Collected paraformaldehyde deposit waste"
+          name: "Collected paraformaldehyde deposit waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional collected paraformaldehyde deposits removed from filters, pipes or cold spots and sent outside the gate. Weigh each consignment, water, organic contamination and receiving treatment. Internal dissolution/rework is an equal-endpoint internal link, not this waste output or a marketed paraformaldehyde coproduct."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: w_aqueous
+          role: "Formaldehyde-bearing aqueous effluent to external treatment"
+          name: "Formaldehyde-bearing aqueous effluent to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional formaldehyde-bearing aqueous purge/cleaning liquor sent to external treatment. Measure volume and density or wet mass, HCHO assay definition, methanol, formate, COD/TOC, salts and receiver. Keep each different composition/source stream separately in the site record; aggregate only compatible receiver interfaces. Waste water reworked internally is not an external output; this row is not direct discharge to nature."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: w_sludge
+          role: "Excess biological-treatment sludge"
+          name: "Excess biological-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional excess biological-treatment sludge if wastewater treatment is inside the foreground. Collect wet mass, dry solids, retained formaldehyde/methanol, mineral fraction and receiver acceptance. Return activated sludge is internal; chemical precipitate and screening residues require separate actual rows, not this identity."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      elementary:
+        - row_id: air_formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Formaldehyde to outdoor air, CAS 50-00-0. Quantify final stack, storage/loading vents, fugitives and abnormal releases after actual controls; not raw absorber gas subsequently burnt. Use a validated Method0011 sampling/8315A analysis implementation with matrix recovery, blanks and wet/dry flow correspondence, or another demonstrated compatible method."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+                - epa-carbonyl-8315a
+            ranges: []
+        - row_id: air_methanol
+          role: "methanol"
+          name: "methanol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Methanol to outdoor air, CAS 67-56-1, from final stack and measured handling/fugitive releases. Use species-specific analysis and compatible gas flow, not TVOC carbon-equivalent mass."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_methylformate
+          role: "methyl formate"
+          name: "methyl formate ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-afcf-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional measured methyl formate, CAS 107-31-3, to outdoor air; separate from formic acid and methanol. A trace in process gas is not a default positive gate release."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_methylal
+          role: "dimethoxymethane"
+          name: "dimethoxymethane ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9c6a-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional measured dimethoxymethane, CAS 109-87-5, to outdoor air; not formaldehyde or dimethyl ether. Verify final controls and compound-specific mass."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Fossil CO2 to outdoor air from over-oxidation and dedicated off-gas/support-fuel combustion; reconcile measured stack carbon with fossil feed/fuel and stocks. Do not add an untreated tail-gas CO2 amount to a final-stack amount that already includes it. Carbon origin is measured/disclosed; any actual biogenic carbon requires its own CO2 row and remains in LCI regardless of greenhouse-gas reporting conventions."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_co
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Fossil CO to outdoor air, CAS 630-08-0, remaining after oxidation/combustion. Measure the final released species; raw process gas sent to the oxidiser remains internal."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_hydrogen
+          role: "hydrogen"
+          name: "hydrogen ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-949c-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Molecular hydrogen, CAS 1333-74-0, actually released to outdoor air after recovery/control or during abnormal modes. Measure residual hydrogen; hydrogen internally combusted is not an external sale or emission. Do not use acidity as H+ or hydrogen-sulfide records."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_nox
+          role: "Nitrogen oxides"
+          name: "Nitrogen oxides ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional NOx from the dedicated combustion unit. Record the monitoring convention and LCIA quantity definition; kg alone does not prove NO2-equivalent mass. Link this aggregate only after measured NO/NO2 composition or the provider definition establishes compatibility; otherwise the quantity/background link is pending. Exclude N2O and do not also total separately entered NO/NO2. A result reported as NO2 equivalent is an analytical/impact convention, not automatically the physical mass of NO plus NO2; use separately measured species/speciation for the elemental and physical ledger."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual sulfur dioxide, CAS 7446-09-5, from the combustion unit; verify measured sulfur/speciation and final controls. Do not substitute a sulfur-oxide aggregate or invent positive sulfur emissions for sulfur-free supplies."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional final outdoor-air particles no larger than PM2.5. Obtain a compatible particle-size measurement at the dedicated combustion/handling outlets; this disjoint fraction is not added to an overlapping total PM10."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_pm2510
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional final outdoor-air particles larger than PM2.5 and no larger than PM10. Derive only from compatible size-resolved measurements, distinguishing captured dust and inventory time; no guessed size fractions."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_pmover10
+          role: "particles (> PM10)"
+          name: "particles (> PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional final outdoor-air particles larger than PM10. Keep this fraction separate from PM2.5 and PM2.5–PM10. Collected dust sent to a receiver is a separate waste exchange, and internally returned dust is not another emission."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_water_vapour
+          role: "water vapour"
+          name: "water vapour ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Water vapour actually released to outdoor air from final gas and cooling/steam losses. Retain actual humidity/condensate measurements and phase; do not map liquid freshwater discharge to vapour or double count process water already retained in formalin. This row is H2O vapour mass, not whole wet vent-gas mass, bound hydrogen/oxygen totals or steam heat. Track generated combustion/reaction water, intake humidity, evaporation, condensed water and actual emitted vapour separately; constituent species do not add another whole carrier stream."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_methane
+          role: "methane (fossil)"
+          name: "methane (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional fossil methane, CAS 74-82-8, actually escaping from pipeline support-fuel handling or final combustion exhaust. Verify leak tests/species mass and final-control boundary; gas input does not imply a methane emission factor."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-9ee6-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional formaldehyde actually discharged to fresh surface water after included treatment. Match free-carbonyl 8315A results, any validated total-HCHO-equivalent result, sampling recovery and the LCI/LCIA definition; do not silently equate free monomer, hydrated/oligomeric formaldehyde and total organic carbon. Assess the unmeasured portion and use an appropriate validated assay before a complete release inventory."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvoc-2017
+                - epa-carbonyl-8315a
+            ranges: []
+        - row_id: water_methanol
+          role: "methanol"
+          name: "methanol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a939-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional methanol, CAS 67-56-1, actually discharged to fresh surface water. Measure final outfall species mass; wastewater handed to an external treatment provider is represented by the waste interface, with no duplicate untreated elementary release here."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_formic
+          role: "formic acid"
+          name: "formic acid ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "d86c88e9-6555-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional free formic acid, CAS 64-18-6, in final freshwater discharge, only when actual species/assay definition and pH support this identity. Sodium formate, total formate reported as acid equivalent and COD are different quantities; keep them in the analytical ledger and add appropriate atomic exchanges rather than converting silently."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_discharge
+          role: "Water"
+          name: "Water ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume (93a60a56-a3c8-22da-a746-0800200c9a66); unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Conditional liquid water actually discharged to fresh surface water, including uncontaminated cooling blowdown and treated outfall carrier water. Meter actual discharge volume; do not use a resource-withdrawal or water-vapour record. The native water flow represents the liquid-water constituent, not every component of wet effluent. Product overall-water assay does not establish free carrier-water quantity at an outfall. Retain whole effluent volume/wet mass separately for sampling integration; establish carrier-water volume from measured composition and compatible water density/state, without assigning a default density or equating contaminated effluent volume with pure-water volume. Pollutant species and carrier water are components of that same discharge, not additional physical outfall mass."
+          amount:
+            expression: "Measured period boundary quantity from the linked collection protocol divided by accepted net formalin supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+allocation_rules:
+  - rule_id: a_hierarchy
+    applies_to: "formalin_train"
+    rule: "First investigate stage subdivision and system expansion; report any expanded system as that system, not a silently credited single-product result. Use a demonstrated causal physical relationship for inseparable joint burdens where avoidance is impossible. If that cannot be established, justify economic allocation using actual same-period gate quantities and prices, disclose rejected alternatives and sensitivity. Do not assign a fixed share or infer allocation from formalin/steam mass ratios, sale labels or process-gas heating value."
+    source_ids:
+      - eu-ef-2021-allocation
+  - rule_id: a_accounts
+    applies_to: "physical_ledger, burden_account"
+    rule: "Keep actual unallocated formalin, exported steam, catalyst waste and effluent quantities and their physical links unchanged. Only the environmental burden account is partitioned: retain each dedicated burden plus the evidenced share of each joint burden, normalized to accepted formalin supply mass. Record shares, included joint stages and evidence; shares sum to one for the joint pool. Never multiply co-product physical output by the allocation share."
+    source_ids:
+      - eu-ef-2021-allocation
+      - jrc-lvoc-2017
+  - rule_id: a_recovery
+    applies_to: "formalin_train"
+    rule: "Internal methanol/formalin/condensate returns are internal transfers, with no coproduct credit. Identify useful exported steam by actual receiver acceptance and measured net heat. Treat spent silver and paraformaldehyde deposits according to actual waste/product status and receiver; a recycling intention does not automatically make either a co-product or justify avoided virgin production. Do not combine allocation and substitution for the same burden."
+    source_ids:
+      - eu-ef-2021-allocation
+      - jrc-lvoc-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "formalin_train"
+      flow_role: "Accepted net formalin and composition"
+      record_type: "Delivery and laboratory records"
+      raw_fields: "SKU; lot; net loading mass; beginning/end stocks; acceptance; rejected/rework mass; HCHO-equivalent assay method; methanol; water; impurities; temperature"
+      collection_method: "Calibrated net loading scale/mass meter and actual tare/stock reconciliation. ISO2227 Sections4–8: clear/slightly cloudy25–45% HCHO; prompt sealed sampling, no precipitate; fresh neutral sulphite, weighed sample/sample neutralisation, covered handling,2min mixing and standardised acid endpoint. w_HCHO = 30.03 × c × V / (1000 × m_sample), c mol/L, V mL, m_sample g, with actual dilution/titer and demonstrated blank. Breitkreuz Section2.4.3:0.2g sample+1g dry methanol, condition≥24h, volumetric KF repeated≥2, weighed dilution/reagent blank corrections; validate comparable impurity matrix/time response. w_MeOH = 1 - w_HCHO - w_water_overall - sum(w_distinct_impurities), using independently measured distinct impurities; propagate uncertainty. Check phase coverage, interfering carbonyl/acid/redox constituents, recovery and dilution consistency. Never borrow the study’s omitted acid or numerical errors; unknown impurities/interferences prevent closure. Overall composition is not free-species mass; whole product remains1kg."
+      unit: "kg; mass fractions"
+      frequency: "Each delivery/lot; stock census at period ends"
+      temporal_coverage: "Same declared period, all relevant operating modes"
+      site_scope: "Actual plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed acceptance, CoA/raw assay, stocks and mass closure"
+    - protocol_id: cp_material
+      process_id: "formalin_train"
+      flow_role: "Fresh methanol reaction and stabiliser inputs"
+      record_type: "Receipt, meter, stock and assay records"
+      raw_fields: "Supplier route/carbon origin; grade; delivered mass; purity/water; stage dosing; stock changes; internal recovery"
+      collection_method: "Calibrated weighing or matched density/temperature volume-to-mass conversion; separate fresh reaction and finishing additions from internal returns; distinguish whole industrial methanol supply mass from its CH3OH component mass and accompanying water/impurities; reconcile the provider reference with the supplied basis"
+      unit: "kg"
+      frequency: "Each receipt and dosing campaign; period-end reconciliation"
+      temporal_coverage: "Same declared period"
+      site_scope: "Methanol receipt, vaporiser and finishing"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Supplier certificate, meter/scale calibration, stage balance"
+    - protocol_id: cp_catalyst
+      process_id: "formalin_train"
+      flow_role: "Fresh/regenerated silver charge"
+      record_type: "Weighing and service records"
+      raw_fields: "Crystalline grade; metal/contamination/water assay; installed/removed mass; stock; reclaimer return; service period"
+      collection_method: "Calibrated charge/removal weighing and metal assays; link each actual regeneration shipment/return; distribute measured campaign use over production served without assuming lifetime or recovery"
+      unit: "kg"
+      frequency: "Each charge/change/return; period reconciliation"
+      temporal_coverage: "Actual catalyst campaigns spanning the same declared production allocation"
+      site_scope: "Actual catalyst bed and receiving service"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Charge log, assays, receiver/service receipts, stock closure"
+    - protocol_id: cp_water
+      process_id: "formalin_train"
+      flow_role: "External demineralised make-up"
+      record_type: "Water meter and quality records"
+      raw_fields: "Source; treatment grade; density; absorption/dilution/cleaning/boiler meter readings; composition water; recycles"
+      collection_method: "Calibrated purpose meters with actual density/temperature when mass conversion is needed; identify carrier/reaction water separately"
+      unit: "kg"
+      frequency: "Continuous or batch meters; period reconciliation"
+      temporal_coverage: "Same declared period"
+      site_scope: "Supply and purpose boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, water-quality results and unallocated water balance"
+    - protocol_id: cp_energy
+      process_id: "formalin_train"
+      flow_role: "Electricity, imported/exported steam heat and natural gas"
+      record_type: "Separate meter and utility records"
+      raw_fields: "kWh; voltage/grid/location; gas m3/T/absolute P/wet-dry/composition/Z; heating basis; steam mass/P/T/dryness; condensate mass/enthalpy; own use; export; receiver basis"
+      collection_method: "Separate calibrated electricity/fuel/steam/condensate meters with synchronised intervals. Collect actual absolute P (gauge plus measured ambient P), T, phase and wet quality x. Use IAPWS-IF97 valid regions for ordinary-water h(p,T), or h=(1-x)h_liquid+x h_vapour at saturation; P/T alone cannot establish x. Verify implementation against release test values/common datum and include state/meter uncertainty. For the actual mass-closed steam-to-condensate interface apply c_heat; unequal returns, non-returned condensate, make-up, drains, leaks, residual steam/storage require a complete mass/enthalpy-port account including material loss/work/kinetic/potential terms. Contaminated mixtures need separate thermodynamic qualification. Reconcile supplier/receiver accepted net heat with dedicated oxidiser/boiler; kg/state water and MJ service are different ledgers, counted once each, not NCV/GCV conversion."
+      unit: "MJ; m3; steam kg as raw records"
+      frequency: "Meter interval and each start-up/export; period reconciliation"
+      temporal_coverage: "Same declared period including abnormal operation"
+      site_scope: "Actual utility supply, reactor heat recovery and dedicated boiler"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration, fuel certificate, steam state/receiver evidence, full heat balance"
+    - protocol_id: cp_air
+      process_id: "formalin_train"
+      flow_role: "Fresh atmospheric resource input"
+      record_type: "Air meter and composition records"
+      raw_fields: "Fresh flow; recirculated flow; T/P/humidity/O2/N2; mass conversion; combustion air"
+      collection_method: "Calibrated fresh-air flow and measured state/composition; retain recycled gas as internal link"
+      unit: "kg"
+      frequency: "Meter interval; representative mode-specific composition"
+      temporal_coverage: "Same declared period"
+      site_scope: "Fresh intake boundaries"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, gas state record and oxygen/carrier-gas balance"
+    - protocol_id: cp_emission
+      process_id: "formalin_train"
+      flow_role: "Each outdoor-air species and size fraction"
+      record_type: "Stack/fugitive sampling and operating records"
+      raw_fields: "Outlet; species/CAS; concentration; flow; time; T/P; wet-dry/O2 corrections; detection limits; recovery; control modes; leak/load events; NOx definition; size bins"
+      collection_method: "Species-specific validated sampling/analysis and compatible gas flow after final controls; integrate actual operating modes and measured handling/LDAR releases. Carbonyl sampling/analysis must demonstrate matrix recovery; occupational concentration alone is not a plant release inventory"
+      unit: "kg; gas volume as raw record"
+      frequency: "Representative tests for each operating mode plus continuous/event records where needed"
+      temporal_coverage: "Same period; include starts/stops, loading, relief and maintenance"
+      site_scope: "Final stack, loading vents and actual fugitives"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Laboratory QA blanks/spikes, flow calibration, sampling recovery, leak/event log, uncertainty"
+    - protocol_id: cp_waste
+      process_id: "formalin_train"
+      flow_role: "Each external residual interface"
+      record_type: "Weighbridge, assay and receiver records"
+      raw_fields: "Stream/source; consignment; wet mass/volume/density; solids; Ag or organic fractions; actual pollutants; internal rework; recipient; treatment/product status"
+      collection_method: "Calibrated weighing/volume measurement and representative composition tests; separate catalyst, paraformaldehyde deposits, aqueous waste and biological sludge; document receiver acceptance"
+      unit: "kg; volume/density as raw records"
+      frequency: "Every shipment or discharge; period reconciliation"
+      temporal_coverage: "Same period including episodic cleaning"
+      site_scope: "Actual external receiver interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Waste transfer receipts, assay/solids basis, receiver and treatment evidence"
+    - protocol_id: cp_effluent
+      process_id: "formalin_train"
+      flow_role: "Each final freshwater species and carrier water"
+      record_type: "Outfall flow and analytical records"
+      raw_fields: "Whole effluent volume/wet mass; measured carrier-water fraction/density/state; temperature; species/CAS; free/total HCHO definition; methanol; pH/formic acid/formate; COD/TOC; solids; treatment performance; recovery; detection limits"
+      collection_method: "Calibrated final outfall flow with time-matched samples; matrix-validated free-carbonyl analysis, supplemented where needed for total HCHO-equivalent. Retain COD/TOC/salt diagnostics separately; track all measured additional species; preserve total effluent sampling volume separately from the verified water-constituent exchange"
+      unit: "kg species; m3 water"
+      frequency: "Flow interval, representative mode-specific composites and every episodic discharge"
+      temporal_coverage: "Same declared period"
+      site_scope: "Actual final surface-freshwater boundary only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Laboratory QA/recovery/speciation, calibrated flow, destination and treatment logs"
+    - protocol_id: cp_allocation
+      process_id: "formalin_train"
+      flow_role: "Joint and dedicated environmental burdens"
+      record_type: "Stage/receiver/market records"
+      raw_fields: "Stage meters; dedicated/joint burden pools; accepted formalin; useful net steam; receiver function; physical relationship; actual prices/quantities; uncertainty"
+      collection_method: "Investigate subdivision/expanded-system option first; verify causal relationship or gather comparable same-period gate revenue records; retain physical ledger separately"
+      unit: "kg formalin; MJ useful heat; actual currency and unit prices"
+      frequency: "Same-period records; update when outputs/markets change"
+      temporal_coverage: "Same declared period"
+      site_scope: "Declared joint stages and actual receivers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Stage causality, functional/price evidence, rejected alternatives and sensitivity"
+  calculation_rules:
+    - id: c_reference
+      applies_to: "all inventory rows"
+      rule: "B = accepted net formalin supply mass for the period in kg; each measured period boundary quantity is divided by B. The reference product amount is 1 kg; all stage internal links retain both endpoints and are not additional boundary outputs."
+      inputs:
+        - cp_product
+        - "each row's linked protocol"
+      output: "Physical inventory per 1 kg reference flow"
+      source_ids:
+        - jrc-lvoc-2017
+        - hexion-formalin
+    - id: c_composition
+      applies_to: "out_formalin, in_methanol, w_aqueous"
+      rule: "Constituent mass = measured supply/stream mass × measured mass fraction on the same basis. Report HCHO-equivalent, methanol, water and impurities separately; total HCHO-equivalent is not free gas mass or TOC. Use the measured overall water convention and derive methanol only after separately measured non-overlapping impurities; propagate all measurement uncertainty. This analytical ledger and true molecular-species ledger are alternatives, not additive physical outputs. No default assay or density."
+      inputs:
+        - cp_product
+        - cp_material
+        - cp_waste
+      output: "Component ledger in kg, alongside full mixture mass"
+      source_ids:
+        - jrc-lvoc-2017
+        - hexion-formalin
+        - iso-formalin-assay-1972
+        - breitkreuz-formalin-analysis-2023
+    - id: c_release
+      applies_to: "elementary outputs"
+      rule: "Released species mass = sum over measured operating intervals of compatible species concentration × actual gas/liquid flow × time, after unit/state/recovery corrections; add independently measured event/fugitive releases without overlap. NOx and particle intervals must have verified compatible definitions. The whole sampled gas/liquid volume belongs to the concentration integration; its component water or air exchange is not another independent carrier mass."
+      inputs:
+        - cp_emission
+        - cp_effluent
+      output: "Actual released species kg; carrier water m3 separately"
+      source_ids:
+        - jrc-lvoc-2017
+        - epa-carbonyl-8315a
+    - id: c_heat
+      applies_to: "in_steam, out_steam"
+      rule: "For a mass-closed steam-to-condensate service interval, Q_net = m × (h_supply - h_condensate) / 1000, with m in kg, h from iapws-if97-2012 in kJ/kg and Q_net in MJ. Integrate actual intervals. For unequal returns, include every documented water/steam port and storage change on a common enthalpy reference; a mass imbalance cannot be hidden in this formula. Reconcile gross generation = actual own use + useful export + measured losses and inventory change, with imports separate. Do not use a mass-to-MJ constant or assume the provider reference is net heat."
+      inputs:
+        - cp_energy
+      output: "Separate imported/exported useful heat in MJ"
+      source_ids:
+        - jrc-lvoc-2017
+        - iapws-if97-2012
+    - id: c_burden
+      applies_to: "burden_account"
+      rule: "For each evidenced joint pool, product-assigned burden = dedicated product burden + joint burden × justified product share; divide by B for product reporting. Keep actual coproduct physical outputs unchanged and show shares summing to one; an expanded-system model is disclosed separately."
+      inputs:
+        - cp_allocation
+        - cp_product
+        - "stage meters"
+      output: "Allocated formalin environmental-burden account"
+      source_ids:
+        - eu-ef-2021-allocation
+  data_quality_requirements:
+    - id: q_identity
+      applies_to: "all rows"
+      requirement: "Verify name/CAS, route/state, origin, actual mixture composition, medium, reference property/unit and provider definition separately. A confirmed flow UUID is not a complete dataset; incompatible identity or quantity basis remains open."
+      evidence: "Supplier/receiver declarations; direct identity and native property/unit chain; lab method"
+    - id: q_closure
+      applies_to: "physical_ledger"
+      requirement: "Close mass, water, carbon, hydrogen, oxygen and heat using measured stocks/returns; disclose residual and uncertainty without an invented tolerance, conversion, yield or concentration. Include atmospheric carriers and reaction water in the unallocated physical ledger. Reconcile molecular hydrogen production, internal combustion/recycle, residual emissions and any actual external recovery separately; add verified sale rows if an actual recovery crosses the boundary. Do not suppress an actual product to fit the minimum checklist."
+      evidence: "Stage meters, independent assays and reconciliation"
+    - id: q_sources
+      applies_to: "all source-based rules"
+      requirement: "Retain each source's route and conditions. BREF historical/2013–2014 observations are not present-site values, universal ratios or default emissions. Hexion supports supply state only; EPA 8315A supports free-carbonyl analysis with matrix limits, not commercial total assay. ISO2227 supplies the industrial HCHO-equivalent procedure; the reactive-mixture study supplies overall-water analysis and composition convention; IAPWS supplies water/steam state properties. Their matrix, phase, time and validity limits remain binding, and reported research uncertainties are not universal acceptance thresholds."
+      evidence: "Original locators and actual collection evidence"
+    - id: q_coverage
+      applies_to: "dataset"
+      requirement: "Every conditional row is measured, demonstrated absent or explicitly unresolved. Unknown is not zero. Add actual exchanges outside the minimum checklist, including actual products and recovered streams, and retain treatment/site/provider completeness and operating-mode representativeness."
+      evidence: "Site flow diagram, monitoring/stock/receiver records and omissions register"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "dataset"
+    rule: "Require one accepted out_formalin reference output at 1 kg full supply mixture; collect all qualifiers and actual assay/state. Internal same-solution staging is not another reference output. Reject a pure-HCHO, different mixture or excluded-route substitution."
+    source_ids:
+      - jrc-lvoc-2017
+      - hexion-formalin
+  - rule_id: v_measurement
+    applies_to: "all inventory rows"
+    rule: "Require the same per 1 kg supply-mass denominator in inventory, collection and calculation; verify all unit conversions, steam state/provider bases and gas volume conventions. A missing utility UUID/provider alone does not invalidate the defined mass/state/enthalpy method, but the actual dataset link remains incomplete until quantity compatibility is verified."
+    source_ids:
+      - jrc-lvoc-2017
+      - iapws-if97-2012
+  - rule_id: v_environment
+    applies_to: "elementary outputs"
+    rule: "Check exact final media/species/origin/phase, carbonyl assay coverage, NOx definition and disjoint particle intervals. Exclude correction flows and avoid untreated/final or aggregate/species duplication. Retain actual biogenic CO2 in LCI if present, with a separate origin row."
+    source_ids:
+      - jrc-lvoc-2017
+      - epa-carbonyl-8315a
+  - rule_id: v_balances
+    applies_to: "physical_ledger, burden_account"
+    rule: "Require unallocated physical closure, equal internal endpoints, separate external treatment interfaces and final nature releases, and transparent allocated joint pools. Physical coproduct outputs cannot be scaled by burden shares or netted away."
+    source_ids:
+      - jrc-lvoc-2017
+      - eu-ef-2021-allocation
+  - rule_id: v_gaps
+    applies_to: "dataset"
+    rule: "A blank UUID retains one specific exchange and a review gap; resolve its identity/provider before a complete usable dataset. Preserve unresolved assays, unsupported monitoring/quantity bases and missing streams as incomplete findings. Candidate methodology and structural checks do not establish independent scientific approval."
+    source_ids:
+      - jrc-lvoc-2017
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Composition- and route-compatible purchased formalin input, after complete foreground collection and independent review"
+  allowed_use: "The declared actual aqueous methanol-stabilised grade, silver high-conversion route, bulk gate and dedicated thermal-oxidiser/heat-recovery configuration"
+  excluded_use: "Section 1 exclusions; assuming 1 kg pure HCHO; other product concentrations/provider quantity bases; automatic steam displacement credits; claiming PEF compliance solely from the allocation hierarchy"
+  required_metadata: "All reference qualifiers; geography/time; process map; component and internal link ledger; provider/receiver references; operating modes; allocation method and shares"
+  required_quality_disclosure: "Measurement/assay/closure uncertainty; temporal and route representativeness; incomplete identity/provider links; additional/absent exchanges; historical source limitations; scientific and translation state"
+  update_trigger: "Product grade/composition, methanol origin/provider, catalyst form, process/control configuration, utility pressure/reference, waste receiver, treatment or allocation/market change"
+data_sources:
+  - id: "jrc-lvoc-2017"
+    type: "official_guidance"
+    reference: "European Commission JRC, LVOC BREF 2017, JRC109279, DOI 10.2760/77304; [official original](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/JRC109279_LVOC_Bref.pdf), Chapter 6, printed pp.335–348 and 350–353 (PDF372–385,387,389–390), especially 6.2.2.1/Fig6.1, 6.3.1–6.3.5, 6.4.1.1.1, 6.4.1.3 and 6.4.2.1"
+    used_for: "Silver-route decomposition, tail-gas control/heat recovery, solution/carrier-water distinction, measured final species, episodic wastewater/rework, catalyst/deposit streams and monitoring conditions. Other routes and historical plant quantities remain excluded from defaults."
+  - id: "hexion-formalin"
+    type: "literature"
+    reference: "Hexion, [Formalin product original](https://www.hexion.com/products/formalin), “Confidence built into every delivery”, aqueous solution concentrations and tailored methanol inhibition; dated source snapshot 2026-10-13"
+    used_for: "Producer evidence of aqueous supplied mixtures and actual grade diversity only; no process attribution or standard recipe."
+  - id: "epa-carbonyl-8315a"
+    type: "method_factor"
+    reference: "US EPA, [Method 8315A, Revision1, December1996](https://www.epa.gov/sites/default/files/2015-07/documents/epa-8315a.pdf), Sections1–3, procedure1; aqueous/waste samples and Method0011 stack samples"
+    used_for: "Free-carbonyl HPLC/derivatisation scope, unfamiliar-matrix confirmation, method recovery/interference requirements. It does not establish total commercial formalin assay or a universal emissions factor."
+  - id: "eu-ef-2021-allocation"
+    type: "official_guidance"
+    reference: "European Commission, [Recommendation (EU)2021/2279 AnnexesI–II](https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf), AnnexI Section4.5, PDF/printed pp.63–64"
+    used_for: "General multifunctionality hierarchy and justification of causal/economic allocation only. Sector-specific exceptions and recycling formulas are not imported; no full PEF compliance claim."
+  - id: "iso-formalin-assay-1972"
+    type: "method_factor"
+    reference: "ISO2227:1972, Formaldehyde solutions for industrial use — Determination of formaldehyde content, Sections 1–9, printed pp.1–2; [publisher](https://www.iso.org/standard/7032.html), [complete method preview](https://cdn.standards.iteh.ai/samples/7032/c62779bef47d456f90f7fa483c8ad37e/ISO-2227-1972.pdf)"
+    used_for: "Industrial solution HCHO-equivalent mass-fraction assay, weighed sampling, neutral sulphite/acid titration; clear/slightly cloudy 25–45% applicability, precipitation and prompt-sampling limits. No pure-gas denominator or default factory composition."
+  - id: "breitkreuz-formalin-analysis-2023"
+    type: "literature"
+    reference: "Christian Frederik Breitkreuz, Thermodynamic Properties of Formaldehyde Solutions and Poly(oxymethylene) dimethyl ether (OME) Production, Scientific Report Series41, ISBN978-3-944433-34-9, 2023; [original](https://kluedo.ub.rptu.de/files/7238/_230413%2BOnline-Version-1.pdf), Sections2.3–2.4.3, AppendixA.1–A.2, printed pp.7–12,137–138"
+    used_for: "Overall versus true-species convention, sulphite overall-HCHO assay, conditioned volumetric KF overall-water assay and ternary methanol closure. Phase, time, impurity and matrix limitations retained; no OME manufacture, equilibrium parameters, research uncertainty or ignored-acid assumption imported."
+  - id: "iapws-if97-2012"
+    type: "method_factor"
+    reference: "IAPWS R7-97(2012), Revised Release on the IAPWS Industrial Formulation1997 for the Thermodynamic Properties of Water and Steam; [official original](https://iapws.org/technical-guidance/release/IF97-Rev.download), Sections2–3,5–9,12, including Tables3/12/31 and saturation equations"
+    used_for: "Ordinary water/steam state enthalpy and validity/uncertainty reference for actual mass/state heat measurement. No utility pressure, dryness, provider quantity, calorific-value conversion or constant kg-to-MJ factor."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:5694d1bc9dc129f17726b5c598b975f2df2a91024ef2883e8b29dc9ba9b6faca"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_12743"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 12743
+          line: 75
+          column: 1
+        end:
+          offset: 16550
+          line: 96
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted externally supplied fossil industrial methanol and declared fresh catalyst/utility inputs at plant receipt |\n| starting_condition_role | Chemical feed and utility supply; methanol manufacture remains in compatible upstream providers |\n| product_classification_scope | The stated aqueous methanol-stabilised silver-route formalin subset of CPC 3.0:34170 |\n| recursive_input_rule | Preserve equal-endpoint internal absorption liquor/methanol/formalin returns. Purchased same-category formalin retains a separate upstream provider and measured rework contribution; do not recurse to zero burden or treat dilution-only as this manufacture route |\n| upstream_dataset_requirement | Composition/route-compatible methanol, refined silver or actual regeneration service, demineralised water, electricity, fuel, steam and external waste-treatment providers with matching reference quantities |\n| disclosure | Actual flow diagram, unit boundaries, supplier/receiver states, all stocks/rework/recycles, final discharge media, normal/abnormal operating modes, meter and laboratory bases, allocated burden account and unresolved links |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | formalin_train | Include feed receipt and storage, vaporisation, air supply, crystalline-silver conversion, cooling/heat recovery, multistage water absorption, actual methanol stabilisation/dilution, storage/loading and their final controls. Retain stage meters in one integrated foreground unit; do not make the same solution an additional reference output between absorption and finishing. | jrc-lvoc-2017, hexion-formalin |\n| b_tailgas | formalin_train | Include dedicated thermal oxidation and heat-recovery boiler, support fuel/start-ups, condensate, cooling and final stack. Absorber gas, hydrogen and recovered heat used internally are measured internal transfers; do not also count them as fuel purchases, product sales or pre-control emissions. | jrc-lvoc-2017 |\n| b_water | formalin_train | Include collection/rework of cleaning, spill and contaminated condensate streams, pretreatment and any wastewater treatment actually inside the foreground. External treatment uses a composition/receiver-specific waste interface; final elementary releases occur only at the declared nature boundary. No normal-operation effluent assumption permits deleting episodic releases. | jrc-lvoc-2017 |\n| b_ledger | physical_ledger | Retain unallocated mass, water, carbon, hydrogen, oxygen and energy ledgers, with composition/quantity equality at both endpoints of every internal link. Include stocks, precipitation, catalysts, nitrogen/oxygen carriers, reaction water, collected residues and abnormal losses. Recovered solvent has its actual composition/state, not fresh feed identity by name alone. | jrc-lvoc-2017 |\n| b_complete | additional_exchanges | Inventory cards are a conditional minimum checklist. Add one atomic row for every additional actual reagent, filter, ion-exchange resin/regenerant, captured dust, sludge type, packaging component, transport, cooling chemical, fuel or pollutant. State documented absence rather than silent zero; missing identity/provider stays incomplete. For actual packed deliveries, add each container/closure component separately while excluding it from net product mass. Account for actual returnable containers/tankers, packing, maintenance replacements, cleaning, transport and return losses using evidenced service/cycle shares; do not assume disposable packaging or zero equipment burden. Preserve carried upstream burdens of purchased feed, rework and regenerated material without crediting the same recovery twice. | jrc-lvoc-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 296
+              line: 11
+              column: 1
+            end:
+              offset: 365
+              line: 11
+              column: 70
+          text: "# Methanol-stabilised aqueous formalin from the silver-catalyst route"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 12743
+              line: 75
+              column: 1
+            end:
+              offset: 12764
+              line: 75
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_51103"
+      family: "allocation"
+      span:
+        start:
+          offset: 51103
+          line: 587
+          column: 1
+        end:
+          offset: 52891
+          line: 595
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_hierarchy | formalin_train | First investigate stage subdivision and system expansion; report any expanded system as that system, not a silently credited single-product result. Use a demonstrated causal physical relationship for inseparable joint burdens where avoidance is impossible. If that cannot be established, justify economic allocation using actual same-period gate quantities and prices, disclose rejected alternatives and sensitivity. Do not assign a fixed share or infer allocation from formalin/steam mass ratios, sale labels or process-gas heating value. | eu-ef-2021-allocation |\n| a_accounts | physical_ledger, burden_account | Keep actual unallocated formalin, exported steam, catalyst waste and effluent quantities and their physical links unchanged. Only the environmental burden account is partitioned: retain each dedicated burden plus the evidenced share of each joint burden, normalized to accepted formalin supply mass. Record shares, included joint stages and evidence; shares sum to one for the joint pool. Never multiply co-product physical output by the allocation share. | eu-ef-2021-allocation, jrc-lvoc-2017 |\n| a_recovery | formalin_train | Internal methanol/formalin/condensate returns are internal transfers, with no coproduct credit. Identify useful exported steam by actual receiver acceptance and measured net heat. Treat spent silver and paraformaldehyde deposits according to actual waste/product status and receiver; a recycling intention does not automatically make either a co-product or justify avoided virgin production. Do not combine allocation and substitution for the same burden. | eu-ef-2021-allocation, jrc-lvoc-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 296
+              line: 11
+              column: 1
+            end:
+              offset: 365
+              line: 11
+              column: 70
+          text: "# Methanol-stabilised aqueous formalin from the silver-catalyst route"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 51103
+              line: 587
+              column: 1
+            end:
+              offset: 51143
+              line: 587
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67822"
+      family: "validation"
+      span:
+        start:
+          offset: 67822
+          line: 633
+          column: 1
+        end:
+          offset: 69736
+          line: 643
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | dataset | Require one accepted out_formalin reference output at 1 kg full supply mixture; collect all qualifiers and actual assay/state. Internal same-solution staging is not another reference output. Reject a pure-HCHO, different mixture or excluded-route substitution. | jrc-lvoc-2017, hexion-formalin |\n| v_measurement | all inventory rows | Require the same per 1 kg supply-mass denominator in inventory, collection and calculation; verify all unit conversions, steam state/provider bases and gas volume conventions. A missing utility UUID/provider alone does not invalidate the defined mass/state/enthalpy method, but the actual dataset link remains incomplete until quantity compatibility is verified. | jrc-lvoc-2017, iapws-if97-2012 |\n| v_environment | elementary outputs | Check exact final media/species/origin/phase, carbonyl assay coverage, NOx definition and disjoint particle intervals. Exclude correction flows and avoid untreated/final or aggregate/species duplication. Retain actual biogenic CO2 in LCI if present, with a separate origin row. | jrc-lvoc-2017, epa-carbonyl-8315a |\n| v_balances | physical_ledger, burden_account | Require unallocated physical closure, equal internal endpoints, separate external treatment interfaces and final nature releases, and transparent allocated joint pools. Physical coproduct outputs cannot be scaled by burden shares or netted away. | jrc-lvoc-2017, eu-ef-2021-allocation |\n| v_gaps | dataset | A blank UUID retains one specific exchange and a review gap; resolve its identity/provider before a complete usable dataset. Preserve unresolved assays, unsupported monitoring/quantity bases and missing streams as incomplete findings. Candidate methodology and structural checks do not establish independent scientific approval. | jrc-lvoc-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 296
+              line: 11
+              column: 1
+            end:
+              offset: 365
+              line: 11
+              column: 70
+          text: "# Methanol-stabilised aqueous formalin from the silver-catalyst route"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67822
+              line: 633
+              column: 1
+            end:
+              offset: 67844
+              line: 633
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_route"
+      identity_kind: "explicit"
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 14060
+          line: 90
+          column: 1
+        end:
+          offset: 14498
+          line: 90
+          column: 439
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_tailgas"
+      identity_kind: "explicit"
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 14499
+          line: 91
+          column: 1
+        end:
+          offset: 14843
+          line: 91
+          column: 345
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_water"
+      identity_kind: "explicit"
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 14844
+          line: 92
+          column: 1
+        end:
+          offset: 15265
+          line: 92
+          column: 422
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 15266
+          line: 93
+          column: 1
+        end:
+          offset: 15683
+          line: 93
+          column: 418
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 15684
+          line: 94
+          column: 1
+        end:
+          offset: 16548
+          line: 94
+          column: 865
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_51103"
+      source_span:
+        start:
+          offset: 51216
+          line: 591
+          column: 1
+        end:
+          offset: 51814
+          line: 591
+          column: 599
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_accounts"
+      identity_kind: "explicit"
+      unit_id: "normative_51103"
+      source_span:
+        start:
+          offset: 51815
+          line: 592
+          column: 1
+        end:
+          offset: 52360
+          line: 592
+          column: 546
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_51103"
+      source_span:
+        start:
+          offset: 52361
+          line: 593
+          column: 1
+        end:
+          offset: 52889
+          line: 593
+          column: 529
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_67822"
+      source_span:
+        start:
+          offset: 67917
+          line: 637
+          column: 1
+        end:
+          offset: 68238
+          line: 637
+          column: 322
+    - pointer: "/validation_rules/1"
+      rule_id: "v_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_67822"
+      source_span:
+        start:
+          offset: 68239
+          line: 638
+          column: 1
+        end:
+          offset: 68675
+          line: 638
+          column: 437
+    - pointer: "/validation_rules/2"
+      rule_id: "v_environment"
+      identity_kind: "explicit"
+      unit_id: "normative_67822"
+      source_span:
+        start:
+          offset: 68676
+          line: 639
+          column: 1
+        end:
+          offset: 69030
+          line: 639
+          column: 355
+    - pointer: "/validation_rules/3"
+      rule_id: "v_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_67822"
+      source_span:
+        start:
+          offset: 69031
+          line: 640
+          column: 1
+        end:
+          offset: 69366
+          line: 640
+          column: 336
+    - pointer: "/validation_rules/4"
+      rule_id: "v_gaps"
+      identity_kind: "explicit"
+      unit_id: "normative_67822"
+      source_span:
+        start:
+          offset: 69367
+          line: 641
+          column: 1
+        end:
+          offset: 69734
+          line: 641
+          column: 368
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 12743
+          line: 75
+          column: 1
+        end:
+          offset: 12764
+          line: 75
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_12743"
+      source_span:
+        start:
+          offset: 12792
+          line: 79
+          column: 1
+        end:
+          offset: 13987
+          line: 86
+          column: 239
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51103"
+      source_span:
+        start:
+          offset: 51103
+          line: 587
+          column: 1
+        end:
+          offset: 51143
+          line: 587
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67822"
+      source_span:
+        start:
+          offset: 67822
+          line: 633
+          column: 1
+        end:
+          offset: 67844
+          line: 633
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5694d1bc9dc129f17726b5c598b975f2df2a91024ef2883e8b29dc9ba9b6faca"
+  generated_content_sha256: "sha256:a5fa27ac40195e2add5f9e1705788670db1c30e7536f6c07de3ff5d920f091dd"

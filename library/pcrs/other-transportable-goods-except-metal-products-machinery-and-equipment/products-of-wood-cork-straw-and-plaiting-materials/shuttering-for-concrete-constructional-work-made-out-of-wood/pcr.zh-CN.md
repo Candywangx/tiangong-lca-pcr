@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.shuttering-for-concrete-constructional-work-made-out-of-wood |
-| classification_refs | CPC 3.0 31623; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0:31623; narrower (建议，尚未接受) |
 | covered_products | 按具体模板图纸加工且全部裸露边孔重新封漆的新制无框架桦木模板面板 |
 | excluded_products | 库存原板；其他木质模板路线；完整模板系统；使用服务 |
 | representative_product | 单件按图成品，无默认厚度、尺寸、配方或质量 |
@@ -247,7 +247,7 @@ content_maturity: authored_methodology
 
 ###### 酚醛膜覆面 PF 胶合桦木胶合板边角料（`coated_offcut`）
 
-送外部处理的未团聚、未再压制成木砖的已固化酚醛膜覆面PF胶合桦木边角料及不合格板块。保留胶、膜、水组成和去向。该未团聚限定不否认原板已热压固化；压制木砖及未处理锯屑不兼容，内部返工保持内部循环。
+送外部处理的未压制成型覆膜胶合边角料及不合格板块。保留胶、膜、水组成和去向。压制木砖及未处理锯屑不兼容；内部返工保持内部循环。
 
 - 选定流：酚醛膜覆面 PF 胶合桦木胶合板边角料
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -488,7 +488,6 @@ content_maturity: authored_methodology
 | calc_air_mass | formaldehyde; butoxyethanol | 实际排气质量=匹配标准状态的浓度×排气体积，按现场实际运行时间积分并转换 kg；现场验证的组分账可作独立核对。不得把舱 ppm 或职业暴露值直接当工厂 kg。 | cp_air; cp_coating | 实际室外物种质量 | metsa-overlaid-epd-2024 |
 | calc_carbon | co2_bio | 输入生物碳=成品+废物+实际排气+存量变化生物碳，化石碳另账。只有实证木碳氧化份额可按 CO2/C 摩尔质量比转换；树脂/膜/漆不能假定生物碳，CO2 仍留在 LCI。 | cp_carbon; cp_product; cp_waste; cp_air | 生物/化石碳账 | metsa-overlaid-epd-2024 |
 | calc_transport | road_freight | 各实际路段 kg*km=运输湿质量 kg×实测路段 km；原始 t*km 按 1 t*km=1000 kg*km 换算，再除同批验收净产品 kg。回程与载荷按承运者背景声明核对，不再额外假定空返负荷。 | cp_transport; cp_product | 每 1 kg 参考流的公路货运质量距离 |  |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 

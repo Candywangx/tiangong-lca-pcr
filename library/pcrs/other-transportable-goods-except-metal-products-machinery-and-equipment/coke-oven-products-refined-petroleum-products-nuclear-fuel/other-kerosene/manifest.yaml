@@ -1,37 +1,123 @@
 schema_version: 1
 id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.other-kerosene
 title:
-  en-US: "Other kerosene"
-  zh-CN: null
-status: scaffold
+  en-US: Hydrotreated non-aviation kerosene
+  zh-CN: 加氢精制非航空煤油
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "other-transportable-goods-except-metal-products-machinery-and-equipment"
+- other-transportable-goods-except-metal-products-machinery-and-equipment
 modules:
   core:
-    - pcr-minimum-content
-    - unit-of-analysis
-    - reference-flow
-    - inventory-flow-taxonomy
-    - system-boundary
-    - allocation
-    - data-quality
-    - validation-rules
+  - pcr-minimum-content
+  - unit-of-analysis
+  - reference-flow
+  - inventory-flow-taxonomy
+  - system-boundary
+  - allocation
+  - data-quality
+  - validation-rules
 target_entities:
-  - flow
-  - process
-  - lifecyclemodel
+- flow
+- process
+- lifecyclemodel
+- dataset
 languages:
   canonical: en-US
   available:
-    - en-US
-    - zh-CN
+  - en-US
+  - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
-  - system: CPC
-    version: "3.0"
-    code: "33349"
-    title: "Other kerosene"
-    mapping_type: exact
+- system: CPC
+  version: '3.0'
+  code: '33349'
+  title: Other kerosene
+  mapping_type: narrower
+review_metadata:
+  authoring_decision: promote_semantically_matching_unpublished_scaffold
+  semantic_boundary: Refinery-distilled and hydrotreated non-aviation kerosene; no untreated finished route or stand-alone terminal
+    blending. Existing material kerosene-type-jet-fuel, naphtha, gas-oil and fuel-oils-n-e-c scopes do not cover this released product.
+  mapping_recommendation: narrower; controller independent review and serial integration required
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_rows: &id001
+  - straight_run_component
+  - hydrogen_input
+  - steam_input
+  - natural_gas_input
+  - amine_input
+  - catalyst_input
+  - drum_input
+  - propane_output
+  - refinery_gas_output
+  - residual_fuel_output
+  - coke_output
+  - bitumen_output
+  - steam_export
+  - electricity_export
+  - lpg_output
+  - drum_return
+  - spent_catalyst_output
+  - spent_caustic_output
+  - wastewater_output
+  - primary_sludge_output
+  - bio_sludge_output
+  - sour_gas_output
+  - drum_waste
+  - nox_air
+  unresolved_identity_issues:
+  - code: non_reference_atomic_flow_identity_pending
+    row_ids: *id001
+    note: Bounded direct searches retain concrete physical rows without approximate UUIDs. Untreated distillate is distinct from finished
+      hydrotreated kerosene; natural-gas methane-CAS/mixture ambiguity and LPG input-only interface remain unresolved. Whole acid gas
+      is not its H2S component. Steel-drum candidates have incompatible native CTUe reference property; pressure-specific steam or heat
+      identities are not generic steam. These gaps prevent complete foreground linkage and publication.
+  provider_compatibility_pending:
+  - 'All rows: actual site/SKU/quantity/composition/receiver/provider evidence must be collected; dimensional consistency is not actual
+    dataset binding or scientific approval'
+  - 'crude_input: native nominal calorific-value qualifier must match supplier evidence; no fixed heating value or oil/water fraction
+    is a site default'
+  - 'electricity_input: native CN, 1–35 kV customer-side grid-average interface; actual generation geography, period, losses and voltage
+    must match; outside CN requires another identity'
+  - 'natural_gas_input: unresolved variable mixture versus methane CAS/high-pressure synonyms; native Volume/m3 alone states no reference
+    T/P/purity, and secondary property factors are not actual density/energy'
+  - 'hydrogen_input: actual H2 fraction, whole make-up gas versus pure-H2 basis, pressure/temperature/purity/source route and purge/recycle
+    remain site requirements; coal-methanol-ethylene identity is not generic refinery supply'
+  - 'steam_input and steam_export: actual absolute/gauge pressure, temperature, dryness, mass, enthalpy datum and actual condensate/steam-return
+    quantity define net energy; no arbitrary pressure or heat default'
+  - 'caustic_input: only actual supplied solid industrial 95–98% NaOH; no universal grade requirement; other solution/concentration
+    requires a separate whole-solution identity'
+  - 'ferric_chloride_input: only actual supplied anhydrous chemical matching CAS 7705-08-0; other solution/hydrate requires its own
+    whole-material identity'
+  - 'nox_air: native Mass/kg does not define NO2-equivalent quantity; monitoring/flow/LCIA definitions remain unresolved'
+  - 'Waste and container rows: whole wet stream, composition, source and actual treatment/reuse receiver remain independent of elementary
+    discharge identities'
+  - 'effluent_water: native freshwater Water/Volume/m3 identifies liquid-water component, not automatically the entire wastewater-carrier
+    volume; actual fractions/density required'
+  - 'lpg_output: external refinery mixed-LPG export identity unresolved; existing industrial fuel/feedstock input interface not reinterpreted
+    as export'
+  source_limitations:
+  - JRC BREF process descriptions reused for the actual petroleum route, not historical or single-site recipes/amount factors
+  - AP-42 source structure only; no historical emission factor adopted
+  - UNSD historical numeric descriptors not used as universal modern quality limits
+  independent_review_status: independent_identity_and_method_consistency_review_completed_scientific_approval_pending
+  blocking_issues:
+  - code: foreground_linkage_and_scientific_approval_pending
+    note: Reference identity is supported for this hydrotreated non-aviation method. Unresolved non-reference identities, future actual
+      site/provider/receiver collection and independent scientific approval still prevent complete foreground linkage and publication;
+      no mapping acceptance or publication authorized.
+  scientific_review_status: pending
+  independent_review_findings_resolved:
+  - accepted whole-mixture water/additive mass
+  - CN electricity interface
+  - withdraw ambiguous natural gas and input-only LPG bindings
+  - whole acid-gas carrier versus H2S species
+  - physical water versus whole effluent volume
+  - VOC species versus whole kerosene vapour
+  - total mass and conserved elements exclude reaction source/sink
+  - conditional container return/maintenance physical ledger and separate burdens
+updated_at_utc: '2026-10-13T05:36:31.108Z'

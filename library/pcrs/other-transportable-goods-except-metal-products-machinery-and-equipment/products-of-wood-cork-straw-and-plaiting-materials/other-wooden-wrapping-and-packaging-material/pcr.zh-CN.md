@@ -31,7 +31,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-wooden-wrapping-and-packaging-material |
-| classification_refs | CPC 3.0 31709; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31709; narrower |
 | covered_products | 具有货物接触形状并验收的实木包装楔块及异形/开槽垫块 |
 | excluded_products | 第1节所列排除项；分类名称本身不证明适用性 |
 | representative_product | 以窑干锯材按订单锯切的未胶合未涂饰松木斜面包装楔块 |
@@ -88,7 +88,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 车间收到购入的窑干未处理锯材；供方干燥负荷保留在上游 |
 | starting_condition_role | 厂门至厂门电动加工为验收包装制品 |
-| product_classification_scope | 仅指定实木包装楔块/异形垫块子集；CPC31709的narrower范围 |
+| product_classification_scope | 仅指定实木包装楔块/异形垫块子集；CPC31709建议narrower |
 | recursive_input_rule | 购入同类未成品/返工包装制品会改变路线，须另行披露供方边界；不得默替锯材或重复计精加工收益 |
 | upstream_dataset_requirement | 匹配木坯树种、干燥、含水率/参考量、林业碳/分配、供方边界及运入运输；匹配交付电压/地区/时期、润滑油和PE供方规格。身份UUID不等于背景数据集。 |
 | disclosure | 披露所有厂门、实际操作、计量表、运输供方、排除项及待决身份/背景兼容问题；厂门至厂门本身不是摇篮至厂门 |
@@ -677,7 +677,6 @@ translation_status: aligned
 | `dry_balance` | 木料及残余物账 | 按moisture_basis以各自干基含水率转换实测湿质量。干投入加库存减少等于干验收木料、联产品、废弃木、排放木粉尘及未解释残差。水与碳平衡分别保留，按不确定性调查而不编造出材率。 | cp_material; cp_reference; cp_residue; cp_dust | 未分配干质量、水及碳闭合 | `usda-wood-handbook-2021` |
 | `dust_bins` | pm_fine; pm_coarse; pm_large | 在完全相同条件下测得嵌套量时：细粒=PM2.5；粗粒=PM10-PM2.5；大粒=相符总颗粒物-PM10。要求差值非负且方法/覆盖一致，否则测量独立区间或保留缺失区间不确定性。不累加PM2.5+PM10+总量，也不在不相容可凝结/可过滤测量间作差。 | cp_dust | 三个不重叠排放质量 | `epa-sawmill-pte-2014` |
 | `burden_shares` | 仅共同负荷 | 细分后剩余共同负荷使用各验收产品或真实联产品干质量除以其干质量之和的份额。份额和为1，不将份额用于实物输出、废物或内部链接。记录有依据的因果替代方案。 | cp_reference; cp_material; cp_residue | 独立分配环境负荷账 | `usda-wood-handbook-2021` |
-| complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求
 

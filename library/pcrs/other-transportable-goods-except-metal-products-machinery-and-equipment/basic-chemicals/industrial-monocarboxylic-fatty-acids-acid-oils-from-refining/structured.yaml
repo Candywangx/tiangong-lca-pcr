@@ -1,10 +1,1458 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34120"
-  title: "Industrial monocarboxylic fatty acids; acid oils from refining"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.industrial-monocarboxylic-fatty-acids-acid-oils-from-refining"
+  classification_refs: "CPC 3.0 34120; proposed narrower scope, accepted mapping is a separate decision"
+  covered_products: "Nonhydrogenated distilled mixed free fatty acids made by catalyst-free hydrolysis of refined coconut oil"
+  excluded_products: "Acid oils, deodorizer distillates, other feedstock origins, esters/salts, hydrogenated products, purified single acids and formulated solutions"
+  representative_product: "One measured coconut-derived distilled-acid SKU in the producer distilled coconut product family; no universal SKU specification"
+  production_route: "Refined oil receipt → hydrolysis → sweet-water separation → flash/dehydration → vacuum distillation → storage → bulk loading"
+  market_state: "Net bulk mixture at factory gate with declared water and residual components; no added carrier solution or package in reference mass"
+functional_unit:
+  what: "Industrial supply of the specified coconut-derived free-fatty-acid mixture"
+  how_much: "1 kg net accepted bulk mixture"
+  how_well: "Measured lot specification: full acid composition, water, free-acid fraction, residual glycerides/unsaponifiables, acid/saponification/iodine values where specified, contaminants and acceptance"
+  how_long_or_cycle: "One release at the gate; declared representative production period, no lifetime service assertion"
+  reference_flow_link: "mixed_acid"
+system_boundary:
+  rules:
+    - rule_id: sb_route
+      applies_to: "fatty_acid_unit"
+      rule: "Include receipt, storage, splitting, sweet-water separation, flash/dehydration, vacuum distillation, recovery, loading, cleaning and actual on-site environmental controls. Preserve stage-specific measurements within the aggregated unit."
+      source_ids:
+        - ifc-oleochemicals-2007
+        - desmet-oleochemicals
+    - rule_id: sb_upstream
+      applies_to: "external inputs"
+      rule: "Attach origin-, state-, technology-, geography- and quantity-compatible upstream datasets to oil, water, electricity, chemicals and steam. This gate is not a zero-burden raw-material boundary."
+      source_ids:
+        - eu-pef-multifunctionality-2021
+    - rule_id: sb_internal
+      applies_to: "internal transfers"
+      rule: "Retain a physical flow diagram and matched amounts at both ends of every internal transfer, including recirculated acid residue, recovered fat, water and condensate. Do not turn internal returns into external products, wastes or avoided-product credits."
+      source_ids:
+        - ifc-oleochemicals-2007
+        - jrc-cww-bref-2016
+    - rule_id: sb_environment
+      applies_to: "outfalls and vents"
+      rule: "Use a stream register to distinguish sewer exports, direct freshwater releases, captured organics, post-control vents and sludge. Monitor normal operation, startups, shutdowns, cleaning and upset conditions; do not inventory upstream supply emissions again."
+      source_ids:
+        - jrc-cww-bref-2016
+        - ifc-oleochemicals-2007
+    - rule_id: sb_refinement
+      applies_to: "oil receipt and site operations"
+      rule: "Prior coconut-oil refining belongs in the refined-oil upstream dataset and is not repeated inside this gate. Include any actual additional filtration, pretreatment, maintenance, cleaning or loading operation, with each real auxiliary, replacement material, lubricant, container service and resulting waste separately recorded. Bulk delivery excludes container tare from reference mass, not actual container manufacture, reuse, cleaning or disposal burdens within the declared boundary."
+      source_ids:
+        - ifc-oleochemicals-2007
+        - jrc-cww-bref-2016
+boundary_abstraction:
+  declared_starting_condition: "Received refined coconut triglyceride oil and externally supplied utilities at the selected manufacturing gate"
+  starting_condition_role: "Measured foreground receiving condition, not virgin raw-material creation or burden-free residue recovery"
+  product_classification_scope: "CPC 3.0 34120 distilled coconut hydrolysis-acid subset only"
+  recursive_input_rule: "Internal same-category returns stay internal and balanced. External recovered fatty-acid input requires explicit identity, origin and upstream burden; it is outside this base coconut-oil recipe until reviewed."
+  upstream_dataset_requirement: "Verified physical identity plus matching supplier reference quantity, grade, moisture/composition, technology, location, period and boundary; an unresolved provider is an open boundary, not zero"
+  disclosure: "Stage flow diagram, physical mass/water/biological-carbon/fossil-carbon balances, net exchange register, all receivers, separate allocated-burden ledger and unmeasured scope"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Fatty Acid"
+    uuid: "ac9714b9-4722-4831-b3b4-d0d5fad447ec"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual SKU"
+    - "refined coconut-oil origin and supplier"
+    - "biological/fossil carbon"
+    - "catalyst-free hydrolysis"
+    - "absence of hydrogenation/esterification"
+    - "distillation cut"
+    - "full composition"
+    - "free-acid/water/residual fractions and test basis"
+    - "net bulk acceptance"
+    - "electricity voltage/mix"
+    - "steam conditions and supplier basis"
+    - "plant/period"
+    - "co-product and waste destinations"
+    - allocation
+    - "foreground gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reference amount is 1 kg accepted net as-delivered bulk mixture. Preserve water and residuals; exclude transport-container tare."
+  - id: mixture_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Row-declared property"
+      uuid: ""
+    required_unit: "Row-declared unit"
+    rule: "Normalize every exchange to per 1 kg reference flow using the same period and accepted net mixed-acid denominator B. Separately preserve physical totals, including all co-product outputs."
+  - id: solution_basis
+    applies_to: "cleaning_naoh; sweetwater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet supplied mass and measured solute/water fractions. Active-mass calculations are supplementary; they do not replace wet mass or add a second water input."
+  - id: steam_basis
+    applies_to: "splitting_steam; distillation_steam"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain actual steam mass and thermodynamic state; net delivered heat requires supply/return enthalpies and a matching provider definition. MJ or GCV alone is insufficient."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "The recorded property is Net calorific value; meter electricity in kWh and convert by 1 kWh = 3.6 MJ, preserving voltage and supply boundary. It is electrical energy, not a fuel heating-value estimate."
+  - id: composition_basis
+    applies_to: "mixed_acid; oil; sweetwater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure species distribution, glycerides, unsaponifiables and water on stated analytical bases. Acid value is not free-acid mass without measured mixture composition/molar-mass basis; GC ester derivatization does not change product into esters. No assumed chain length."
+  - id: carrier_basis
+    applies_to: "water_fresh; water_vapour; offsite_effluent"
+    required_property_ref:
+      name: "Row-declared property"
+      uuid: ""
+    required_unit: "Row-declared unit"
+    rule: "Keep whole effluent and wet-gas carrier totals in the physical ledger. Water-species quantities and pollutant/species loads are separate analytical accounts, not quantities to add again to the whole stream. Outfall volume does not by itself establish water-species volume."
+process_map:
+  - id: fatty_acid_unit
+    name: "Integrated coconut-oil splitting, distillation, bulk release and controls"
+    inclusion: "required"
+    inclusion_condition: "Declared catalyst-free nonhydrogenated route; all actual on-site controls included"
+    role: "foreground"
+    quantitative_reference: "mixed_acid; 1 kg"
+process_inventory:
+  - id: fatty_acid_unit
+    label: "Integrated coconut-oil splitting, distillation, bulk release and controls"
+    inputs:
+      product:
+        - row_id: oil
+          role: "Coconut oil, refined"
+          name: "Coconut oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "570397b9-62ae-4576-b584-56691c7fed08"
+          property_unit: "Mass / kg"
+          description: "Refined coconut triglyceride oil received for this route; record lot composition, water, free acids and actual biological/fossil carbon. Crude oil and acid oil are different starting states."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: hydrolysis_water
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass / kg"
+          description: "Externally supplied deionised water used for hydrolysis; record treatment and quality. Internal recovered condensate is a measured internal transfer, not a repeated external input."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: utility_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Purchased treated tap water for cooling-system makeup, cleaning and treatment; measure net makeup separately from circulation. Convert meters with measured density and supply reference basis."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Chinese grid consumption at the 1–35 kV user connection only: this native identity declares locationOfSupply CN. Record the actual Chinese regional mix, losses, transformer scope and voltage; supply outside China, another voltage or generation route requires a separately verified identity and provider."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: splitting_steam
+          role: "High-pressure steam delivered to the fat splitter"
+          name: "High-pressure steam delivered to the fat splitter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this delivered steam stream with actual pressure, temperature, dryness, mass, supply system and condensate return. Steam enthalpy and supplier MJ definitions must be reconciled before an energy-based background link."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: distillation_steam
+          role: "Steam delivered to fatty-acid distillation heating"
+          name: "Steam delivered to fatty-acid distillation heating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the separately metered distillation heating steam header only when it actually supplies the reboiler. Identify indirect heating, direct stripping and vacuum-motive duties separately; do not infer the heat-delivery route from a vacuum setpoint or generic technology page. Verify that actual steam pressure/temperature and exchanger conditions can deliver the required heat. Other heating media require their own concrete reviewed exchanges. Shared header totals must reconcile to stage readings without double counting. (desmet-distillation)"
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: cleaning_naoh
+          role: "Aqueous sodium hydroxide cleaning solution"
+          name: "Aqueous sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual NaOH cleaning or control-unit neutralisation use; this is not alkaline soapstock acidulation or product saponification. Record the commercial grade and supplied concentration, measure delivered solution as one flow, and assay NaOH mass fraction, water fraction and impurities. Disclose active NaOH mass separately in the composition ledger. Do not count carried water again as makeup; prepare a site dilution from separately measured purchased reagent and added water without also inventing a second purchased solution."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: activated_carbon
+          role: "Activated carbon"
+          name: "Activated carbon"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5cad53b5-252a-4e2f-8197-8be465707405"
+          property_unit: "Mass / kg"
+          description: "Conditional on activated-carbon air or water treatment. Record grade, carbon origin, moisture, adsorption duty, replacement and regeneration; the broad chemical identity is not a background technology."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mixed_acid
+          role: "Fatty Acid"
+          name: "Fatty Acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ac9714b9-4722-4831-b3b4-d0d5fad447ec"
+          property_unit: "Mass / kg"
+          description: "Accepted nonhydrogenated distilled coconut-oil free-fatty-acid mixture in bulk at loading. Retain measured water, residual glycerides and unsaponifiables in net mass; this is not pure lauric acid or a methyl ester."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: sweetwater
+          role: "Aqueous glycerine sweet water from coconut-oil hydrolysis"
+          name: "Aqueous glycerine sweet water from coconut-oil hydrolysis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated aqueous glycerine stream transferred as a product to a documented glycerine-recovery receiver. Measure total as-supplied wet mass, glycerol, water, residual fat and dissolved solids. Glycerol and water species explain the carrier; they are not additional external outputs. Pure glycerol UUIDs do not identify this solution; downstream concentration and refining are outside this gate. Any waste portion retains its separate actual disposition, never a presumed zero-burden credit."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: heavy_coproduct
+          role: "Marketed heavy fatty-acid distillation fraction"
+          name: "Marketed heavy fatty-acid distillation fraction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Activate only for the marketed portion with a documented product specification, legal status and receiver; record water, acids, glycerides and degraded material. Each lot or portion has one disposition. Marketed, waste and internal-return portions may coexist and must partition the measured total heavy fraction without overlap."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: light_coproduct
+          role: "Marketed condensed light fatty-acid distillation fraction"
+          name: "Marketed condensed light fatty-acid distillation fraction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual marketed heads portion with verified specification, receiver and product status. Record whole wet mass and acid/water composition; partition it from light_ends waste and any internal recycle. Commercial sale is not inferred from technical recoverability."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: returned_condensate
+          role: "Condensate returned to the external steam supplier"
+          name: "Condensate returned to the external steam supplier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only condensate actually crossing the selected foreground gate back to the steam supplier. Meter mass, temperature, pressure, contamination and destination. Internal condensate reuse stays in the transfer ledger. Supplier return entitlement and energy reference must be reconciled; a physical return does not automatically earn an avoided-water or heat credit."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+      waste:
+        - row_id: heavy_waste
+          role: "Waste pitch from fatty-acid distillation"
+          name: "Waste pitch from fatty-acid distillation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only the disposed portion of distillation heavy residue crosses this boundary. Measure wet mass, retained acids, glycerides, carbon and treatment destination; internally rehydrolysed residue is not an external waste. Do not double count heavy_coproduct."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: light_ends
+          role: "Condensed light ends from fatty-acid distillation"
+          name: "Condensed light ends from fatty-acid distillation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure the captured light-end condensate with actual water and organic composition and disposal receiver. Captured condensate is not an air release. If marketed, add a separately reviewed product disposition instead of a waste credit."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: sweetwater_waste
+          role: "Discarded aqueous glycerine sweet water from coconut-oil hydrolysis"
+          name: "Discarded aqueous glycerine sweet water from coconut-oil hydrolysis"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only an actual separately exported waste portion; record wet mass, glycerol, water, residual fat, contaminants and treatment receiver. Each portion is assigned once between sweetwater product, this waste transfer, internal recovery and any physically combined offsite_effluent. Combining streams does not erase the origin or glycerol account."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: offsite_effluent
+          role: "Fat-splitting and fatty-acid-distillation wastewater exported for treatment"
+          name: "Fat-splitting and fatty-acid-distillation wastewater exported for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One physically mixed wastewater transfer after documented mixing, with component-origin records preserved. Record wet mass or measured volume/density, oil/grease, glycerol, COD, pH and receiving treatment. Pollutants in this transfer are not direct environmental releases."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: primary_sludge
+          role: "Sludge"
+          name: "Sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass / kg"
+          description: "Only primary oily separation sludge exported from flotation or settlement; disclose wet/dry mass, oil, residual free acids, contaminants and receiver. Internal recovered fat is recorded as an internal return."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: biological_sludge
+          role: "Sludge"
+          name: "Sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass / kg"
+          description: "Conditional on on-site biological wastewater treatment: external excess biological sludge only, distinct from primary sludge and internal return activated sludge; record water, dry solids, carbon, contamination and receiver."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: spent_carbon
+          role: "spent activated carbon"
+          name: "spent activated carbon"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aff33890-3f08-40f9-9310-a7f77213de05"
+          property_unit: "Mass / kg"
+          description: "Only spent activated carbon crossing the gate to a receiver; weigh wet mass and assay moisture and adsorbed organics. Internal regeneration is not a second disposal flow."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Water vapour actually escaping to outdoor air after condensers and cooling; measure H2O species mass from a closed water balance or matched moisture and gas measurements, retaining the complete wet-gas carrier separately. Dry-air mass, wet vent volume and the entire flashed steam inventory are not this H2O exchange. Air subcompartment unspecified; change identity when a known subcompartment requires it."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: water_fresh
+          role: "Liquid water discharged to fresh water"
+          name: "Liquid water discharged to fresh water"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional H2O-species discharge from on-site treatment or a documented uncontaminated outlet to fresh water. Retain whole effluent volume/mass, water fraction and pollutant loads separately. Express water-species volume from measured H2O mass and the declared water-density/reference convention; treating whole outfall volume as pure water requires demonstrated equivalence. COD oxygen demand is not physical dissolved mass. Do not count off-site sewer transfer again as direct release or add overlapping carrier and species totals in the mass balance."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: cod_fresh
+          role: "chemical oxygen demand"
+          name: "chemical oxygen demand"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-97ed-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct freshwater outfall COD load as measured oxygen demand, kg O2-equivalent, not kg fatty acid or carbon. Retain COD as a sum indicator and inventory identified harmful substances separately; disclose LCIA overlaps rather than adding overlapping indicator burdens."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: tss_fresh
+          role: "Total suspended solids discharged to fresh water"
+          name: "Total suspended solids discharged to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct freshwater outfall suspended-solid load from matched filtered gravimetric samples and discharge volume. Keep dissolved material, oil/grease and sludge exports separate; do not sum solid constituents again into total mass."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: co2_bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual biogenic CO2 from on-site degradation of coconut-derived organic carbon. Reconcile measured carbon conversion and gas evidence; exclude upstream boiler emissions already in supply datasets. Preserve this LCI exchange regardless of climate-accounting treatment."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: co2_fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only identified fossil-carbon conversion inside this foreground unit, for example degradation of fossil-derived auxiliary carbon; no positive quantity inferred from a vegetable feed or purchased energy. Keep actual fossil and biological carbon ledgers separate."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: hexanoic_air
+          role: "hexanoic acid"
+          name: "hexanoic acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0c09ad1f-8a46-45e6-bb54-078a197e7e66"
+          property_unit: "Mass / kg"
+          description: "Only chemically identified hexanoic acid (CAS 142-62-1) remaining in outdoor process vents or diffuse releases after capture. Screen actual vent composition; do not assume this species represents all low-molecular fatty-acid odour."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: acetaldehyde_air
+          role: "acetaldehyde"
+          name: "acetaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a7a5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only analytically identified acetaldehyde (CAS 75-07-0) from thermal degradation reaching outdoor air. No generic aldehyde or total VOC substitution; add every other measured species as its own reviewed row."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: methane_bio
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8e8-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional on biological treatment or storage producing biogenic methane; record actual generated, captured, destroyed and leaked methane. A captured biogas flow is a technosphere transfer and must not be counted as atmospheric methane."
+          amount:
+            expression: "Measured physical quantity for the same period divided by accepted net mixed-acid output; retain the unallocated total. Demonstrated absence may be recorded as zero; missing evidence is unknown."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+allocation_rules:
+  - rule_id: al_physical
+    applies_to: "all physical flows"
+    rule: "Keep actual oil, water, acid, sweet-water, heavy-fraction, waste and emission quantities in an unallocated physical mass/water/carbon balance. Never multiply the physical co-product output by an allocation share. Record stock changes and internal transfers explicitly."
+    source_ids:
+      - jrc-cww-bref-2016
+      - ifc-oleochemicals-2007
+  - rule_id: al_hierarchy
+    applies_to: "shared burdens"
+    rule: "First subdivide direct product-specific measurements or consider justified system expansion for an expanded system. For the product dataset, shared burdens require a demonstrated causal physical relationship; equal wet-mass shares are not automatic, especially for dilute sweet water. If this cannot be established, justify a period- and gate-matched economic relationship. No universal allocation fraction or glycerine yield."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: al_receivers
+    applies_to: "sweetwater; sweetwater_waste; heavy_coproduct; heavy_waste; light_coproduct; light_ends"
+    rule: "Use actual specifications, contracts and legal receiver status to establish each co-product; zero price alone does not prove waste. Preserve each actual product, waste and internal-return portion of sweet water, heads and heavies; each portion is assigned once and the portions reconcile to their physical stream total. Glycerine refining belongs downstream. Waste treatment remains linked to its generating route. No assumed sale, suppressed co-product or artificial zero credit."
+    source_ids:
+      - ifc-oleochemicals-2007
+      - eu-pef-multifunctionality-2021
+  - rule_id: al_ledger
+    applies_to: "reported product burdens"
+    rule: "Maintain a separate environmental-burden ledger with direct assignments, shared pools, allocation factors, sum checks and sensitivity. Internal recovery alone earns no avoided-product credit. Product-normalized burden quantities are not substituted for the physical balances."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "fatty_acid_unit"
+      flow_role: "reference product"
+      record_type: "measured_record"
+      raw_fields: "SKU; lot; net mass; tare; composition; water; free acids; glycerides; unsaponifiables; carbon source; method/uncertainty; acceptance; opening/closing accepted stock; dispatch; rejects; returns"
+      collection_method: "Calibrated net bulk weighing or calibrated tank/mass-meter balance with measured density/temperature. Derive accepted production for the same activity period by reconciling dispatch, accepted stock changes, returns and rejects; do not divide current production inputs by unmatched shipments from earlier stocks. Use representative lot sampling and validated analytical methods; preserve chromatographic species/mass basis and test-method limits."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_material
+      process_id: "fatty_acid_unit"
+      flow_role: "feed, solution, carbon and sweet water"
+      record_type: "measured_record"
+      raw_fields: "flow identity; lot; wet mass; concentration; water; contaminants; supplier; carbon origin; receiver; opening/closing stocks"
+      collection_method: "Calibrated receiving/dispatch measurements and representative paired samples; reconcile invoices, inventories and composition assays. Keep sweet-water wet output and glycerol component separately."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_water
+      process_id: "fatty_acid_unit"
+      flow_role: "water inputs"
+      record_type: "measured_record"
+      raw_fields: "meter; inlet/outlet; net makeup; internal circulation/recovery; water quality; density; temperature; solution-carried water"
+      collection_method: "Meter distinct supply headers; document density for mass conversion; separate net purchases, internal circulation, steam-derived condensate and chemical carrier water."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_energy
+      process_id: "fatty_acid_unit"
+      flow_role: "electricity"
+      record_type: "measured_record"
+      raw_fields: "stage meters; kWh; voltage; supplier; country/region; grid mix; losses; operating hours; shared allocation"
+      collection_method: "Calibrated electricity meters; retain stage readings and measured shared-service assignment; verify CN geography and 1–35 kV consumption supply compatibility or select another verified physical identity."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_steam
+      process_id: "fatty_acid_unit"
+      flow_role: "individual steam headers"
+      record_type: "measured_record"
+      raw_fields: "delivered mass; pressure absolute/gauge; temperature; dryness; inlet/return enthalpy; condensate mass; makeup; losses; supplier MJ convention"
+      collection_method: "Meter each header and condensate return over matched intervals; use traceable steam-property calculations from actual state; verify supplier steam quantity/heat boundary before background conversion. Unknown pressure, state or MJ convention blocks that link."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_residual
+      process_id: "fatty_acid_unit"
+      flow_role: "heavy fraction, light ends and distinct residuals"
+      record_type: "measured_record"
+      raw_fields: "origin; wet mass; dry solids; water; acid/glyceride fraction; carbon; contaminants; receiver; product/waste status; internal returns"
+      collection_method: "Weigh and sample each physically distinct stream, including primary and biological sludge separately; reconcile dispatch manifests and internal return meters; document legal receiver and specification."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_effluent
+      process_id: "fatty_acid_unit"
+      flow_role: "wastewater and direct water outputs"
+      record_type: "measured_record"
+      raw_fields: "origin; mixing point; sewer/direct receiver; flow time series; density; pH; COD; BOD; TOC; TSS; oil/grease; specific substances; laboratory method; detection limit"
+      collection_method: "Matched outfall flow and representative samples, including non-routine events; monitor influent and treated outlet separately. Keep sewer-transfer composition in its waste record; direct releases occur only at the environmental outfall."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_air
+      process_id: "fatty_acid_unit"
+      flow_role: "vent species and evaporation"
+      record_type: "measured_record"
+      raw_fields: "source; post-control gas volume; temperature/pressure; wet/dry basis; chemical species/CAS; concentration; capture; operating time; detection limits; water loss"
+      collection_method: "Representative species-specific post-control vent measurements and documented fugitive sampling/mass balances. No total VOC-to-species factor; test actual fatty acids, aldehydes and other degradation products."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+    - protocol_id: cp_carbon
+      process_id: "fatty_acid_unit"
+      flow_role: "carbon partition and treatment gases"
+      record_type: "measured_record"
+      raw_fields: "biogenic/fossil input carbon; product/residual carbon; gas species; generated/captured/destroyed/leaked CH4; CO2; stock changes; carbon-content analysis"
+      collection_method: "Separate biological/fossil carbon balances using supplier origin and measured material/gas carbon; on-site treatment gas monitoring and captured-gas meters. Do not infer CO2 from COD or unknown acid chain length."
+      unit: "row-declared units"
+      frequency: "each lot and continuous/representative operating intervals"
+      temporal_coverage: "one declared representative period including cleaning/upsets"
+      site_scope: "all included stages and gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sample representativeness; lab method; stock/receiver reconciliation; uncertainty"
+  calculation_rules:
+    - id: calc_normalized
+      applies_to: "all inventory rows"
+      rule: "N = sum(Q) / B; Q is a measured exchange total and B is accepted net bulk mixed-acid kg from cp_release for the same period; retain Q and B and separate internal amounts."
+      inputs:
+        - Q
+        - B
+        - cp_release
+      output: "exchange quantity per 1 kg reference flow"
+      source_ids:
+        - jrc-cww-bref-2016
+    - id: calc_component
+      applies_to: "cleaning_naoh; sweetwater; mixed_acid"
+      rule: "component_mass = wet_mass × measured_mass_fraction; water_mass = wet_mass × measured_water_fraction. Components explain the parent wet flow and must not be added to it as extra exchanges."
+      inputs:
+        - wet_mass
+        - measured_mass_fraction
+        - measured_water_fraction
+      output: "component and water ledgers"
+      source_ids:
+        - ifc-oleochemicals-2007
+    - id: calc_load
+      applies_to: "cod_fresh; tss_fresh"
+      rule: "load_kg = sum(C_mg_per_L × V_m3 × 0.001) for matched sampling intervals; retain pollutant analytical quantity definition. COD is kg oxygen demand, TSS is kg dry suspended material."
+      inputs:
+        - concentration
+        - outfall_volume
+        - cp_effluent
+      output: "measured direct outfall loads"
+      source_ids:
+        - jrc-cww-bref-2016
+    - id: calc_steam
+      applies_to: "splitting_steam; distillation_steam; returned_condensate"
+      rule: "Keep steam mass as the exchange basis. For an indirect heater, matched steady operation with all incoming steam recovered as the measured return and negligible documented work, storage and other heat losses permits heat_MJ = sum(m × (h_in − h_return)) / 1000. Use one enthalpy datum and actual absolute pressure, temperature and phase/dryness with traceable IAPWS-IF97 calculations (h in kJ/kg, m in kg) within their validity regions. Otherwise require a complete boundary-specific energy balance including flash, leakage, blowdown, stocks and losses once; this simplified formula cannot be applied to direct injection or unmatched return mass. Reconcile the provider reference definition before an energy link; never equate GCV with delivered heat."
+      inputs:
+        - matched_mass
+        - actual_states
+        - return_mass
+        - actual_enthalpies
+        - boundary_evidence
+        - cp_steam
+      output: "conditional heat supplement; physical steam and condensate remain separate"
+      source_ids:
+        - iapws-if97-2012
+        - ifc-oleochemicals-2007
+    - id: calc_burden
+      applies_to: "allocated environmental burdens"
+      rule: "For product j, burden_j = directly_attributed_j + share_j × shared_pool; shares sum to one for each pool. If justified economic allocation is selected, share_j = measured_output_j × gate_price_j / sum(measured_output_k × gate_price_k), using priced wet or active quantity exactly as contracted. Keep physical outputs unscaled."
+      inputs:
+        - shared_pool
+        - direct_attribution
+        - measured_outputs
+        - prices
+        - justified_relationship
+      output: "separate allocated burden ledger and sensitivity"
+      source_ids:
+        - eu-pef-multifunctionality-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all flows"
+      requirement: "Physical identity, property/unit and actual quantity/provider compatibility are separate checks; disclose every blank UUID and open provider, no substitute pure-acid or route-incompatible dataset."
+      evidence: "primary specifications, raw assays and provider reference definitions"
+    - id: dq_balances
+      applies_to: "fatty_acid_unit"
+      requirement: "Close stage and aggregated wet-mass, water, biological-carbon and fossil-carbon balances including stock changes, all actual co-products, residues and direct releases; report residual imbalance with measurement uncertainty, no invented tolerance. Retain species and C/H/O accounts separately using actual acid/glyceride profiles and analytically supported molecular bases. Hydrolysis consumes water into products; no universal acid molecular weight, glycerol yield or measured-species inventory follows from a generic fatty-acid identity."
+      evidence: "flow diagram, paired transfer totals, measured profiles, carbon and composition assays"
+    - id: dq_operations
+      applies_to: "maintenance, stocks and bulk containers"
+      requirement: "Cover non-routine cleaning and maintenance, each actual lubricant, replacement/filter material, loading loss and container service at the declared gate. Reconcile reuse cycles, container stocks, delivered contents and tare; add each actual exchange with its own identity and measured amount before claiming full coverage. Excluding retail packaging is not evidence that bulk handling has no burden."
+      evidence: "maintenance orders, chemical invoices/assays, container ownership/reuse/cleaning records and stock ledger"
+    - id: dq_coverage
+      applies_to: "all active rows"
+      requirement: "Cover a representative complete period; report gaps and detection limits. Missing data is unknown, not zero. Any additional actual species/auxiliary requires an atomic row before a complete dataset claim."
+      evidence: "stream register and monitoring plan"
+    - id: dq_sources
+      applies_to: "source applicability"
+      requirement: "Use IFC sector guidance and CWW chemical-sector monitoring for their declared scope. Historical EPA and producer/technology pages support distinctions only; their numerical cases, limits, recipes and source pressures are not defaults."
+      evidence: "source sections and actual local applicability assessment"
+validation_rules:
+  - rule_id: v_identity
+    applies_to: "reference and inputs"
+    rule: "Require refined coconut oil, hydrolysis/distillation and measured mixed free-acid product, with no excluded route. A broad industrial hydrolysis identity requires the actual nonhydrogenated coconut profile and whole commercial-mass basis; native hydrogenation, different feedstock, pure-acid, ester or conflicting grade restrictions cannot be waived with qualifiers. Broad classifications are not proof of composition."
+    source_ids:
+      - ifc-oleochemicals-2007
+      - klk-palmera-fatty-acids
+  - rule_id: v_reference
+    applies_to: "mixed_acid"
+    rule: "Exactly one completed reference product output: 1 kg net mixture; all inventory denominators and collection aggregations match it in both languages. Stage handovers are internal."
+    source_ids:
+      - jrc-cww-bref-2016
+  - rule_id: v_supply
+    applies_to: "steam; electricity; solutions"
+    rule: "Require actual voltage, steam pressure/state/return and supply reference basis, and solution wet/active/water reconciliation. Unresolved provider quantity conventions prevent claiming a complete background link."
+    source_ids:
+      - ifc-oleochemicals-2007
+  - rule_id: v_physical
+    applies_to: "mass and allocation ledgers"
+    rule: "Require mass/water/carbon balance closure evidence with every actual output; internal endpoints equal; heavy-product/waste dispositions nonoverlapping. Allocation may change burden shares, never erase physical co-products or emissions."
+    source_ids:
+      - jrc-cww-bref-2016
+      - eu-pef-multifunctionality-2021
+  - rule_id: v_emissions
+    applies_to: "all environmental releases"
+    rule: "Separate true substance, carbon origin, current/delayed timing and receiving medium. COD, TOC and species inventories must not produce duplicated impact; no generic VOC substitution. PM size classes, if present, must be nonoverlapping; captured dust/condensate is waste or recovery, not another emitted mass. Retain actual biogenic CO2 in LCI."
+    source_ids:
+      - jrc-cww-bref-2016
+      - ifc-oleochemicals-2007
+  - rule_id: v_completeness
+    applies_to: "data package"
+    rule: "Every active exchange needs measurement evidence, identity decision, provider/receiver and unit basis. Any omitted actual exchange, blank required identity, missing sample, unsupported conversion or unknown quantity remains explicit and prevents a complete-data claim. Method authorship is not scientific approval or dataset verification."
+    source_ids:
+      - jrc-cww-bref-2016
+published_dataset_profile:
+  dataset_role: "foreground production dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared catalyst-free nonhydrogenated refined-coconut-oil splitting/distillation bulk grade, after actual data and applicability checks"
+  excluded_use: "Whole-CPC average; acidulation oil; pure single acid; esters; other feedstocks; hydrogenation; unmeasured supplier/default recipes"
+  required_metadata: "SKU/composition/state; net gate mass; supplier/reference conventions; carbon origin; process map; period/site; receivers; allocation; evidence and uncertainty"
+  required_quality_disclosure: "UUID gaps, provider/measurement gaps, carbon and water balances, omitted scope, monitoring/detection coverage and independent-review status"
+  update_trigger: "Feedstock, supplier, composition, hydrogenation/esterification, distillation cut, utilities, receivers, measurement basis or allocation changes"
+data_sources:
+  - id: "ifc-oleochemicals-2007"
+    type: "official_guidance"
+    reference: "[World Bank Group/IFC, EHS Guidelines for Oleochemicals Manufacturing, 30 April 2007](https://www.ifc.org/content/dam/ifc/doc/2000/2007-oleochemicals-manufacturing-ehs-guidelines-en.pdf)"
+    used_for: "pp. 1–5, 10, 13–14: sector applicability, water/air/residues, representative monitoring, splitting/distillation and sweet-water separation. Source numeric examples and Table 3 are not inventory defaults."
+  - id: "jrc-cww-bref-2016"
+    type: "official_guidance"
+    reference: "[JRC, CWW BREF, 2016, JRC103096](https://publications.jrc.ec.europa.eu/repository/bitstream/JRC103096/jrc103096_cww_bref_10_2016.pdf)"
+    used_for: "Scope p. xxiii (PDF29), BAT2–4 pp.543–544 (PDF573–574): chemical-sector stream register, process sheets and matched flow/load monitoring. No BAT-AEL-to-inventory conversion or legal-conformance claim."
+  - id: "klk-palmera-fatty-acids"
+    type: "handbook"
+    reference: "[KLK OLEO, PALMERA Fatty Acids, publisher product page](https://www.klkoleo.com/brand/palmera-fatty-acids/)"
+    used_for: "Description and Distilled Fatty Acids → Coconut Fatty Acid family: actual marketed vegetable mixed-acid route distinct from fractionated acid grades. Product family only; no universal composition, grade purity or plant recipe."
+  - id: "desmet-oleochemicals"
+    type: "handbook"
+    reference: "[Desmet, Oleochemicals, publisher technology page](https://www.desmet.com/en/biofuel/oleochemicals)"
+    used_for: "How does it work; Raw materials: triglyceride/water splitting, two main products, distillation and coconut-oil applicability. Equipment/route evidence only, not performance or recipe defaults."
+  - id: "epa-soap-fat-splitting-1974"
+    type: "official_guidance"
+    reference: "[US EPA, Soap and Detergent Manufacturing Development Document, EPA-440/1-74-018-a, April 1974](https://www.epa.gov/sites/default/files/2016-08/documents/soap-detergent-mfg_dd_1974.pdf)"
+    used_for: "pp.24–26 (PDF39–41): historical fat splitting, glycerine separation, subsequent acid distillation and soap neutralisation distinctions. Historical catalytic examples, pressures, yields and soap recipes do not apply as defaults to the catalyst-free route."
+  - id: "eu-pef-multifunctionality-2021"
+    type: "official_guidance"
+    reference: "[European Commission, Recommendation (EU) 2021/2279, Annex I §4.5, pp.63–64](https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf)"
+    used_for: "Subdivision/system expansion, causal physical relationship and justified alternative/economic allocation hierarchy only; no assertion that this PCR or future dataset is fully PEF compliant."
+  - id: "epo-soapstock-separation-1985"
+    type: "literature"
+    reference: "[EP0160326A1, Process for obtaining fatty acid product from glyceride oil soapstock, 6 November 1985](https://patents.google.com/patent/EP0160326A1/en)"
+    used_for: "Background of the invention: alkaline refining soapstock, mineral-acid acidulation and separate aqueous/emulsified/fatty-acid layers; exclusion boundary only. Patent process disclosure is not proof of a universal deployed route or recipe; its numeric composition and examples are not defaults."
+  - id: "iapws-if97-2012"
+    type: "official_guidance"
+    reference: "[IAPWS R7-97(2012), Revised Release on the Industrial Formulation 1997 for Water and Steam](https://iapws.org/technical-guidance/release/IF97-Rev)"
+    used_for: "§§1–4 and region property equations: traceable actual-state steam/water enthalpy, phase and validity checks. Thermophysical properties do not establish process duty, provider reference quantity or a universal steam amount."
+  - id: "desmet-distillation"
+    type: "handbook"
+    reference: "[Desmet, Distillation & Fractionation, publisher technology page](https://www.desmet.com/en/biofuel/oleochemicals/distillation-fractionation)"
+    used_for: "Tailor-made reboiler, steam/condenser and heat-recovery options establish why actual heat-delivery configuration must be verified. No plant recipe, performance default or universal steam-heated reboiler is established."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f4f27e5704d9148881beef1ae2070ee15977171b80836a4530ab8324dbd38ec3"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7594"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7594
+          line: 64
+          column: 1
+        end:
+          offset: 10644
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_route | fatty_acid_unit | Include receipt, storage, splitting, sweet-water separation, flash/dehydration, vacuum distillation, recovery, loading, cleaning and actual on-site environmental controls. Preserve stage-specific measurements within the aggregated unit. | `ifc-oleochemicals-2007`; `desmet-oleochemicals` |\n| sb_upstream | external inputs | Attach origin-, state-, technology-, geography- and quantity-compatible upstream datasets to oil, water, electricity, chemicals and steam. This gate is not a zero-burden raw-material boundary. | `eu-pef-multifunctionality-2021` |\n| sb_internal | internal transfers | Retain a physical flow diagram and matched amounts at both ends of every internal transfer, including recirculated acid residue, recovered fat, water and condensate. Do not turn internal returns into external products, wastes or avoided-product credits. | `ifc-oleochemicals-2007`; `jrc-cww-bref-2016` |\n| sb_environment | outfalls and vents | Use a stream register to distinguish sewer exports, direct freshwater releases, captured organics, post-control vents and sludge. Monitor normal operation, startups, shutdowns, cleaning and upset conditions; do not inventory upstream supply emissions again. | `jrc-cww-bref-2016`; `ifc-oleochemicals-2007` |\n| sb_refinement | oil receipt and site operations | Prior coconut-oil refining belongs in the refined-oil upstream dataset and is not repeated inside this gate. Include any actual additional filtration, pretreatment, maintenance, cleaning or loading operation, with each real auxiliary, replacement material, lubricant, container service and resulting waste separately recorded. Bulk delivery excludes container tare from reference mass, not actual container manufacture, reuse, cleaning or disposal burdens within the declared boundary. | `ifc-oleochemicals-2007`; `jrc-cww-bref-2016` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received refined coconut triglyceride oil and externally supplied utilities at the selected manufacturing gate |\n| starting_condition_role | Measured foreground receiving condition, not virgin raw-material creation or burden-free residue recovery |\n| product_classification_scope | CPC 3.0 34120 distilled coconut hydrolysis-acid subset only |\n| recursive_input_rule | Internal same-category returns stay internal and balanced. External recovered fatty-acid input requires explicit identity, origin and upstream burden; it is outside this base coconut-oil recipe until reviewed. |\n| upstream_dataset_requirement | Verified physical identity plus matching supplier reference quantity, grade, moisture/composition, technology, location, period and boundary; an unresolved provider is an open boundary, not zero |\n| disclosure | Stage flow diagram, physical mass/water/biological-carbon/fossil-carbon balances, net exchange register, all receivers, separate allocated-burden ledger and unmeasured scope |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 268
+              line: 9
+              column: 1
+            end:
+              offset: 325
+              line: 9
+              column: 58
+          text: "# Distilled mixed fatty acids from coconut-oil hydrolysis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7594
+              line: 64
+              column: 1
+            end:
+              offset: 7615
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40925"
+      family: "allocation"
+      span:
+        start:
+          offset: 40925
+          line: 544
+          column: 1
+        end:
+          offset: 42898
+          line: 553
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_physical | all physical flows | Keep actual oil, water, acid, sweet-water, heavy-fraction, waste and emission quantities in an unallocated physical mass/water/carbon balance. Never multiply the physical co-product output by an allocation share. Record stock changes and internal transfers explicitly. | `jrc-cww-bref-2016`; `ifc-oleochemicals-2007` |\n| al_hierarchy | shared burdens | First subdivide direct product-specific measurements or consider justified system expansion for an expanded system. For the product dataset, shared burdens require a demonstrated causal physical relationship; equal wet-mass shares are not automatic, especially for dilute sweet water. If this cannot be established, justify a period- and gate-matched economic relationship. No universal allocation fraction or glycerine yield. | `eu-pef-multifunctionality-2021` |\n| al_receivers | sweetwater; sweetwater_waste; heavy_coproduct; heavy_waste; light_coproduct; light_ends | Use actual specifications, contracts and legal receiver status to establish each co-product; zero price alone does not prove waste. Preserve each actual product, waste and internal-return portion of sweet water, heads and heavies; each portion is assigned once and the portions reconcile to their physical stream total. Glycerine refining belongs downstream. Waste treatment remains linked to its generating route. No assumed sale, suppressed co-product or artificial zero credit. | `ifc-oleochemicals-2007`; `eu-pef-multifunctionality-2021` |\n| al_ledger | reported product burdens | Maintain a separate environmental-burden ledger with direct assignments, shared pools, allocation factors, sum checks and sensitivity. Internal recovery alone earns no avoided-product credit. Product-normalized burden quantities are not substituted for the physical balances. | `eu-pef-multifunctionality-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 268
+              line: 9
+              column: 1
+            end:
+              offset: 325
+              line: 9
+              column: 58
+          text: "# Distilled mixed fatty acids from coconut-oil hydrolysis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40925
+              line: 544
+              column: 1
+            end:
+              offset: 40965
+              line: 544
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_55120"
+      family: "validation"
+      span:
+        start:
+          offset: 55120
+          line: 589
+          column: 1
+        end:
+          offset: 57422
+          line: 600
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_identity | reference and inputs | Require refined coconut oil, hydrolysis/distillation and measured mixed free-acid product, with no excluded route. A broad industrial hydrolysis identity requires the actual nonhydrogenated coconut profile and whole commercial-mass basis; native hydrogenation, different feedstock, pure-acid, ester or conflicting grade restrictions cannot be waived with qualifiers. Broad classifications are not proof of composition. | `ifc-oleochemicals-2007`; `klk-palmera-fatty-acids` |\n| v_reference | mixed_acid | Exactly one completed reference product output: 1 kg net mixture; all inventory denominators and collection aggregations match it in both languages. Stage handovers are internal. | `jrc-cww-bref-2016` |\n| v_supply | steam; electricity; solutions | Require actual voltage, steam pressure/state/return and supply reference basis, and solution wet/active/water reconciliation. Unresolved provider quantity conventions prevent claiming a complete background link. | `ifc-oleochemicals-2007` |\n| v_physical | mass and allocation ledgers | Require mass/water/carbon balance closure evidence with every actual output; internal endpoints equal; heavy-product/waste dispositions nonoverlapping. Allocation may change burden shares, never erase physical co-products or emissions. | `jrc-cww-bref-2016`; `eu-pef-multifunctionality-2021` |\n| v_emissions | all environmental releases | Separate true substance, carbon origin, current/delayed timing and receiving medium. COD, TOC and species inventories must not produce duplicated impact; no generic VOC substitution. PM size classes, if present, must be nonoverlapping; captured dust/condensate is waste or recovery, not another emitted mass. Retain actual biogenic CO2 in LCI. | `jrc-cww-bref-2016`; `ifc-oleochemicals-2007` |\n| v_completeness | data package | Every active exchange needs measurement evidence, identity decision, provider/receiver and unit basis. Any omitted actual exchange, blank required identity, missing sample, unsupported conversion or unknown quantity remains explicit and prevents a complete-data claim. Method authorship is not scientific approval or dataset verification. | `jrc-cww-bref-2016` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 268
+              line: 9
+              column: 1
+            end:
+              offset: 325
+              line: 9
+              column: 58
+          text: "# Distilled mixed fatty acids from coconut-oil hydrolysis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 55120
+              line: 589
+              column: 1
+            end:
+              offset: 55142
+              line: 589
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "sb_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 7688
+          line: 68
+          column: 1
+        end:
+          offset: 8008
+          line: 68
+          column: 321
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "sb_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 8009
+          line: 69
+          column: 1
+        end:
+          offset: 8272
+          line: 69
+          column: 264
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "sb_internal"
+      identity_kind: "explicit"
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 8273
+          line: 70
+          column: 1
+        end:
+          offset: 8613
+          line: 70
+          column: 341
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "sb_environment"
+      identity_kind: "explicit"
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 8614
+          line: 71
+          column: 1
+        end:
+          offset: 8961
+          line: 71
+          column: 348
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "sb_refinement"
+      identity_kind: "explicit"
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 8962
+          line: 72
+          column: 1
+        end:
+          offset: 9549
+          line: 72
+          column: 588
+    - pointer: "/allocation_rules/0"
+      rule_id: "al_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_40925"
+      source_span:
+        start:
+          offset: 41038
+          line: 548
+          column: 1
+        end:
+          offset: 41393
+          line: 548
+          column: 356
+    - pointer: "/allocation_rules/1"
+      rule_id: "al_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_40925"
+      source_span:
+        start:
+          offset: 41394
+          line: 549
+          column: 1
+        end:
+          offset: 41891
+          line: 549
+          column: 498
+    - pointer: "/allocation_rules/2"
+      rule_id: "al_receivers"
+      identity_kind: "explicit"
+      unit_id: "normative_40925"
+      source_span:
+        start:
+          offset: 41892
+          line: 550
+          column: 1
+        end:
+          offset: 42542
+          line: 550
+          column: 651
+    - pointer: "/allocation_rules/3"
+      rule_id: "al_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_40925"
+      source_span:
+        start:
+          offset: 42543
+          line: 551
+          column: 1
+        end:
+          offset: 42896
+          line: 551
+          column: 354
+    - pointer: "/validation_rules/0"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 55215
+          line: 593
+          column: 1
+        end:
+          offset: 55727
+          line: 593
+          column: 513
+    - pointer: "/validation_rules/1"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 55728
+          line: 594
+          column: 1
+        end:
+          offset: 55959
+          line: 594
+          column: 232
+    - pointer: "/validation_rules/2"
+      rule_id: "v_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 55960
+          line: 595
+          column: 1
+        end:
+          offset: 56245
+          line: 595
+          column: 286
+    - pointer: "/validation_rules/3"
+      rule_id: "v_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 56246
+          line: 596
+          column: 1
+        end:
+          offset: 56584
+          line: 596
+          column: 339
+    - pointer: "/validation_rules/4"
+      rule_id: "v_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 56585
+          line: 597
+          column: 1
+        end:
+          offset: 57023
+          line: 597
+          column: 439
+    - pointer: "/validation_rules/5"
+      rule_id: "v_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 57024
+          line: 598
+          column: 1
+        end:
+          offset: 57420
+          line: 598
+          column: 397
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 7594
+          line: 64
+          column: 1
+        end:
+          offset: 7615
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7594"
+      source_span:
+        start:
+          offset: 9577
+          line: 76
+          column: 1
+        end:
+          offset: 10642
+          line: 83
+          column: 191
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40925"
+      source_span:
+        start:
+          offset: 40925
+          line: 544
+          column: 1
+        end:
+          offset: 40965
+          line: 544
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_55120"
+      source_span:
+        start:
+          offset: 55120
+          line: 589
+          column: 1
+        end:
+          offset: 55142
+          line: 589
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f4f27e5704d9148881beef1ae2070ee15977171b80836a4530ab8324dbd38ec3"
+  generated_content_sha256: "sha256:a226c26cf504dce7b7332d189b315d25d807bd990ecaea96f964946197e55691"

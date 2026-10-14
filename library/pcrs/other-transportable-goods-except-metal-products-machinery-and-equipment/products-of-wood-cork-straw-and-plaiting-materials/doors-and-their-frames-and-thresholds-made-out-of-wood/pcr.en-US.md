@@ -20,7 +20,7 @@ Distinguish solid-wood leaves from wood-frame filled-core/flush leaves (paper ho
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.doors-and-their-frames-and-thresholds-made-out-of-wood |
-| classification_refs | CPC 3.0 31622; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
+| classification_refs | CPC 3.0 31622; narrower |
 | covered_products | Uncoated, unglazed solid hardwood mortise-and-tenon door leaves |
 | excluded_products | Filled-core leaves; frames; thresholds; complete door sets; cellular panel semifinished products; veneered/engineered or coated leaves |
 | representative_product | One sanded, accepted solid hardwood panel door leaf with no fitted hardware |
