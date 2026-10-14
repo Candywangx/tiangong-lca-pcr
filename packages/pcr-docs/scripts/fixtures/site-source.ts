@@ -337,6 +337,10 @@ async function run(temporary: string, scenario: string): Promise<void> {
         assert.match(emptyHome.body.textContent ?? '', /invalid-date/);
         const { DownloadList } = await load('components/download-list') as {DownloadList:ComponentType<{downloads:Download[];labels:{heading:string;note:string;hash:string}}>};
         const labels = { heading: 'Sources', note: 'Byte verified', hash: 'Hash' };
+        const inlineUrl = 'data:application/octet-stream;base64,' + Buffer.from('status: candidate\n').toString('base64');
+        const inlineDownload = render(createElement(DownloadList, {labels, downloads:[{name:'manifest.yaml',url:inlineUrl,bytes:18,sha256:'sha256:'+'a'.repeat(64)}]}));
+        assert.equal(inlineDownload.querySelector('a')?.getAttribute('href'), inlineUrl);
+        assert.equal(inlineDownload.querySelector('a')?.getAttribute('download'), 'manifest.yaml');
         assert.equal(renderToStaticMarkup(createElement(DownloadList, { downloads: [], labels })), '');
         const downloads = render(createElement(DownloadList, { labels, downloads: [0, 512, 1024, 10240, 1048576, 1073741824, -1].map((bytes, index) => ({ name: 'pcr<' + index + '>', url: '/' + index, bytes, sha256: index ? 'sha256:' + 'c'.repeat(64) : '' })) }));
         assert.match(downloads.body.textContent ?? '', /512 B/);

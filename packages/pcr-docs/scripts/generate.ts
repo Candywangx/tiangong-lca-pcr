@@ -3,6 +3,7 @@ import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResu
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
 import {compileDocsBrowserAssets} from "./browser-assets.ts";
 import {writeRecordDataPacks} from "./record-data-packs.ts";
+import {inlineManifestUrl} from "./raw-download.ts";
 type ClassificationRef={system:string;version:string;code:string;title?:string;mapping_type?:string};
 interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:ClassificationRef[];modules?:Record<string,string[]>}
 type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
@@ -209,10 +210,15 @@ function bindSource(relative: string, bytes: Uint8Array) {
     manifest.counts.sourceBytes += bytes.length;
   }
 }
+const downloadsBySource = new Map<string, Download>();
 function download(relative: string, bytes: Uint8Array) {
   bindSource(relative, bytes);
-  const url = "/generated/raw/" + relative;
-  write("public/raw/" + relative, bytes);
+  const cached = downloadsBySource.get(relative);
+  if (cached) return cached;
+  const inline = inlineManifestUrl(relative, bytes,
+    fs.existsSync(path.join(root, path.posix.dirname(relative), 'release-history.yaml')));
+  const url = inline ?? "/generated/raw/" + relative;
+  if (!inline) write("public/raw/" + relative, bytes);
   const item = {
     name: path.posix.basename(relative),
     url,
@@ -221,6 +227,7 @@ function download(relative: string, bytes: Uint8Array) {
   };
   if (!report.downloads.some((d) => d.url === url))
     report.downloads.push({ ...item, sourcePath: relative });
+  downloadsBySource.set(relative, item);
   return item;
 }
 function addSearch(page: DocPage, text: string) {
@@ -957,8 +964,9 @@ async function generate() {
       }
       if (!target) {
         const bytes = fs.readFileSync(path.join(root, relative));
-        target =
-          download(relative, bytes).url + (fragment ? "#" + fragment : "");
+        const artifact = download(relative, bytes);
+        target = artifact.url + (fragment ? "#" + fragment : "");
+        if (attr === 'href' && artifact.url.startsWith('data:')) node.setAttribute('download', artifact.name);
       }
       node.setAttribute(attr, target);
       report.links.push({ source: page.sourcePath!, original: value, target });

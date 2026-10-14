@@ -2,6 +2,7 @@ import {isUnknownRecord} from "../../pcr-core/src/types.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createHash } from "node:crypto";
 import { matchesPath, verifyHostingContract } from "./hosting-contract.ts";
 const rawConfig: unknown = JSON.parse(
   fs.readFileSync(new URL("../../../edgeone.json", import.meta.url), "utf8"),
@@ -14,6 +15,14 @@ const downloads = [
     url: "/generated/raw/library/pcrs/a/b/c/releases/1.0.0/manifest.snapshot.yaml",
   },
 ];
+test("inline metadata exception validates bytes and cannot waive physical download headers", () => {
+  const bytes = Buffer.from('status: candidate\ncontent_maturity: authored_methodology\n');
+  const inline = {name:'manifest.yaml',url:'data:application/octet-stream;base64,'+bytes.toString('base64'),bytes:bytes.length,sha256:'sha256:'+createHash('sha256').update(bytes).digest('hex')};
+  assert.doesNotThrow(() => verifyHostingContract(config, [...downloads, inline]));
+  for (const changed of [{...inline,name:'pcr.en-US.md'},{...inline,bytes:0},{...inline,sha256:'sha256:'+'0'.repeat(64)},{...inline,url:'data:text/html;base64,PGgxPng8L2gxPg=='}])
+    assert.throws(() => verifyHostingContract(config, [changed]));
+  assert.throws(() => verifyHostingContract({...config,headers:config.headers.filter(rule => rule.source !== "/generated/raw/*")}, [...downloads,inline]), /Raw artifact (?:noindex|attachment)/u);
+});
 test("production headers cover nested raw sources and executable Worker modules", () => {
   assert.equal(
     matchesPath("/generated/*.mjs", "/generated/search-worker.mjs"),

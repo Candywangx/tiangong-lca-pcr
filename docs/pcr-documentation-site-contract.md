@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-14
-lastReviewedNote: "Reviewed native prefetch bundling for the first 50 audited PCR delivery: the pinned Next runtime combines shared layout segments under finite 16 KiB candidate and 32 KiB bundle gzip thresholds. Canonical bytes, raw downloads, HTML, routes, search and provider limits remain intact. Real export, sealed browser qualification and full source-bound CI are required before merge."
-lastReviewedCommit: 185ad391d3941a29009f8d0f8fbc05d23ec7386f
+lastReviewedNote: "Reviewed bounded inline downloads for unpublished candidate manifests up to 8192 bytes. All canonical sources, physical published/history/language/projection downloads and native navigation payloads remain intact. Complete export and source-bound CI remain required before merge."
+lastReviewedCommit: 6b99296b0b935404abdf900b2566fe2ff59a966d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -74,9 +74,21 @@ exact release metadata bytes. Old snapshots are never rewritten by migration.
 ## Losslessness and generated artifacts
 
 The core document bundle contains the complete manifest, verified structured
-projection, declared languages and original artifact buffers. Raw downloads copy
-those buffers byte for byte. Exact-byte download hashes are distinct from the
+projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
+
+Current candidate PCR manifests with authored methodology, no release history and at most
+8,192 original bytes use native `data:application/octet-stream;base64,` download links
+with the `manifest.yaml` filename. These bounded inline downloads work without
+JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
+byte to the pinned source. Current candidate HTTP manifest URLs may change with
+this transport; use each record's current download links. Published/deprecated
+current manifests, all release/history artifacts, larger manifests, language
+Markdown and structured projections retain physical downloads. Physical responses
+keep attachment/noindex headers; inline bytes create no separately indexable HTTP
+resource. Source-relative links reuse the same source-bound download and filename.
+The exporter verifies rendered download anchors, and sealed-site qualification
+checks actual downloads without JavaScript in Chromium, Firefox and WebKit.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -86,7 +98,7 @@ Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
 
 Generated metadata lives in `.generated/site.json`; page HTML and complete
-structured data are separate artifacts read only at build time. Public downloads
+structured data are separate artifacts read only at build time. Physical downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
@@ -153,7 +165,7 @@ Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
 internal revisions, search/filter permutations and raw downloads are not normal
-indexing targets. Raw download responses carry attachment and noindex headers.
+indexing targets. Physical raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation
@@ -261,17 +273,6 @@ server-rendered structured rule views; the scoped navigation must pass the same
 full-corpus export gate.
 Next.js retains both initial HTML and static navigation payloads; these are part
 of its supported export and are not deleted after building.
-
-The pinned Next runtime uses bounded native prefetch inlining: shared segment
-candidates may be up to 16 KiB gzip, with at most 32 KiB gzip of accumulated
-inlined content per bundle. Next emits the matching client hints and complete
-prefetch responses; no post-build deletion or hosting rewrite substitutes for
-that protocol. This combines shared layouts instead of repeating standalone
-transport files on every route. It changes neither source content, raw download
-bytes, route identities nor the provider limits below. A real Next fixture checks
-that the layout remains in the page payload and both pages retain their complete
-HTML, full response and route tree. The full-corpus export and sealed browser
-qualification remain the acceptance gates for the actual site.
 
 The export has no project-owned total-byte cap. The former 1.5 GB budget was a
 local retention allowance and was removed by the owner's decision in PCR #61.
