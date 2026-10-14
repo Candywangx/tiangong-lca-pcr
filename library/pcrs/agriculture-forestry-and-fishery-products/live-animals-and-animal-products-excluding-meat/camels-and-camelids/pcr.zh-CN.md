@@ -43,7 +43,6 @@ sync_with: pcr.en-US.md
 | Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | 物种组；动物类别和用途；重要时的性别；重要时的基因型；生产路线；饲料与灌木采食制度；活重约定和称重点；地域；农场门口移交；群组或报告期 |
-| Binding | Fixed (`fixed`) |
 
 该宽口径固定身份要求上述所有限定项；不得用其替代骆驼奶、纤维、肉或服务。
 
@@ -192,28 +191,55 @@ sync_with: pcr.en-US.md
   - 基准类型： Reference flow (`reference_flow`)
   - 证据类型： Reasoned estimate (`reasoned_estimate`)
 
-###### 能源载体 (`energy_supply`)
+###### 设备供电点的电力（`energy_supply_electricity`）
+
+**energy_supply 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按实际用途和报告期记录购入的电力、燃料、热力及其他能源载体。
 分母与范围要求：per kg reference live weight
 
-- 选定流：能源载体供应
-- 流属性/单位： Energy or carrier quantity / kWh, MJ, L or kg
-- 数量规则： Record each carrier by activity, meter/allocation and period.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 适用范围： Technology-specific (`technology_specific`)
-- 归一化基准：每参考流
-- 基准类型： Reference flow (`reference_flow`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_water_energy_transport`
-- 数量范围： Energy QA screen
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 30
-  - 单位： kWh-equivalent/kg reference live weight
-  - 基准： broad replaceable route screen
-  - 基准类型： Reference flow (`reference_flow`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_water_energy_transport` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_energy_transport`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`energy_supply_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_water_energy_transport` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_energy_transport`
+- 来源：`fao-agricultural-energy`
+
+###### 过程入口的外购热量（`energy_supply_heat`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：过程入口的外购热量
+- 流属性 / 单位：能源 / MJ
+- 数量规则：依 `cp_water_energy_transport` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_energy_transport`
+- 来源：`fao-agricultural-energy`
 
 ###### 纳入边界的入场运输 (`inbound_transport`)
 
@@ -254,7 +280,6 @@ sync_with: pcr.en-US.md
 参考产出的原始记录：Record accepted live weight and head by species, class, route, lot, weighing point and transfer date; normalize to 1 kg. 保留实测合格批次数量及全部必需限定项。下方数量是归一化参考交换，并不表示实际批次只有一个单位。
 
 - 选定流：骆驼和驼科动物（活体、未加工，农场交付） `d5b8e5ed-dfcc-4755-a7fb-d51316970d8b`
-- 绑定： Fixed (`fixed`)
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 千克
 - 数值来源模式：计算值（`calculated_value`）
@@ -379,7 +404,6 @@ sync_with: pcr.en-US.md
 分母与范围要求：per kg reference live weight
 
 - 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
-- 绑定： Fixed (`fixed`)
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
 - 数量规则： Calculate by species/category and period from population, feed/gross energy and reviewed factors.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -404,7 +428,6 @@ sync_with: pcr.en-US.md
 分母与范围要求：per kg reference live weight
 
 - 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
-- 绑定： Fixed (`fixed`)
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
 - 数量规则： Calculate by species, volatile solids, pathway, climate and storage; keep separate from enteric CH4.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -429,7 +452,6 @@ sync_with: pcr.en-US.md
 分母与范围要求：per kg reference live weight
 
 - 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
-- 绑定： Fixed (`fixed`)
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - 数量规则： Calculate by species/class, nitrogen excretion, period and manure/deposition pathway; retain basis conversion.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -454,7 +476,6 @@ sync_with: pcr.en-US.md
 分母与范围要求：per kg reference live weight
 
 - 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
-- 绑定： Fixed (`fixed`)
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - 数量规则： Calculate only for documented volatilization or leaching/runoff precursors; do not duplicate direct N2O.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -479,7 +500,6 @@ sync_with: pcr.en-US.md
 分母与范围要求：per kg reference live weight
 
 - 选定流：氨（排放至空气） `08a91e70-3ddc-11dd-a2a9-0050c2490048`
-- 绑定： Fixed (`fixed`)
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
 - 数量规则： Calculate by manure nitrogen pathway and reviewed factors; preserve basis and precursor linkage.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -507,6 +527,8 @@ sync_with: pcr.en-US.md
 | `residual_allocation` | inseparable joint outputs | Use representative farm-gate economic value unless reviewed physical causation is demonstrated; disclose prices, currency, period and sensitivity. | `fao-ruminant-lca-2013` |
 | `period_attribution` | breeding/replacement animals and long-lived assets | Link events to phases/periods, attribute over actual service and prohibit later duplicate attribution. | `fao-ruminant-lca-2013` |
 | `shared_asset_attribution` | 共享饮水、庇护、操作、车辆和粪污资产 | 列举消费者和期间；优先使用计量值，其次为运行小时、动物日或活重时间；仅计一次。 | `fao-ruminant-lca-2013` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -584,3 +606,4 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-livestock-manure` | method_factor | IPCC, *2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management*. <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf> (retrieved 2026-09-29). | category, feed, CH4, N2O, methods and factors |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 直接及间接氮路径，以及粪污贮存与管理土壤排放的衔接；须选择适用的物种及管理证据。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

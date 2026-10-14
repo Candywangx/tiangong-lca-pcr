@@ -195,30 +195,55 @@ sync_with: pcr.en-US.md
   - Basis kind: 参考流（`reference_flow`）
   - Evidence kind: 推理估计（`reasoned_estimate`）
 
-###### 能源供给（`energy_supply`）
+###### 设备供电点的电力（`energy_supply_electricity`）
+
+**energy_supply 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 记录用于圈舍、照明、泵送、挤奶、纤维采集、饲喂、粪污处理和称量的外购电力、燃料、热力或其他能源载体。由前景记录确定实际载体。
-
 分母与范围要求：每 kg 农场门口活山羊
 
-- Selected flow: 山羊生产能源载体和公用工程
-- Flow property / unit: 能源或载体特异属性 / MJ、kWh 或载体单位
-- Amount rule: 按用途、仪表、发票或燃料日志分别记录每种载体；保留换算因子，在最终交换选择前不得合并不同载体。
-- Value mode: 前景记录（`foreground_record`）
-- Specificity: 场址特异（`site_specific`）
-- 归一化基准：每参考流
-- Basis kind: 参考流（`reference_flow`）
-- Evidence kind: 采集记录（`collected_record`）
-- Collection protocol: `cp_water_energy`
-- Sources: `fao-leap-small-ruminants-2016`
-- Range: 暂定直接能源筛查范围
-  - Range role: 质量保证护栏（`qa_guardrail`）
-  - Lower: 0
-  - Upper: 50
-  - Unit: MJ/kg 参考活重
-  - Basis: 跨粗放和机械化舍饲路线的宽泛可替换筛查范围
-  - Basis kind: 参考流（`reference_flow`）
-  - Evidence kind: 推理估计（`reasoned_estimate`）
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_water_energy` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_energy`
+- 来源：`fao-leap-small-ruminants-2016`；`fao-agricultural-energy`
+
+###### 供应设备的柴油（`energy_supply_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_water_energy` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_energy`
+- 来源：`fao-leap-small-ruminants-2016`；`fao-agricultural-energy`
+
+###### 过程入口的外购热量（`energy_supply_heat`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：过程入口的外购热量
+- 流属性 / 单位：能源 / MJ
+- 数量规则：依 `cp_water_energy` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_energy`
+- 来源：`fao-leap-small-ruminants-2016`；`fao-agricultural-energy`
 
 ###### 入场货运服务（`inbound_freight_transport`）
 
@@ -397,7 +422,6 @@ sync_with: pcr.en-US.md
 
 - Selected flow: 排放至未指定空气的生物源甲烷 `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: 固定（`fixed`）
 - Amount rule: 根据动物群体和阶段、饲料或能量摄入及文件化 IPCC 或国家特异方法计算；群组计算后归一化。
 - Value mode: 计算值（`calculated_value`）
 - Specificity: 场址特异（`site_specific`）
@@ -423,7 +447,6 @@ sync_with: pcr.en-US.md
 
 - Selected flow: 排放至未指定空气的生物源甲烷 `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: 固定（`fixed`）
 - Amount rule: 按动物类别、挥发性固体产量、路径份额、气候、贮存时长、甲烷转化因子及存在时的回收计算。
 - Value mode: 计算值（`calculated_value`）
 - Specificity: 场址特异（`site_specific`）
@@ -451,7 +474,6 @@ sync_with: pcr.en-US.md
 
 - Selected flow: 排放至未指定空气的氧化亚氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
-- Binding: 固定（`fixed`）
 - Amount rule: 按动物类别和阶段计算氮排泄量，将其分配至粪污路径，应用文件化直接和间接因子，并在需要时将 N2O-N 换算为 N2O。
 - Value mode: 计算值（`calculated_value`）
 - Specificity: 场址特异（`site_specific`）
@@ -477,7 +499,6 @@ sync_with: pcr.en-US.md
 
 - Selected flow: 排放至未指定空气的氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
-- Binding: 固定（`fixed`）
 - Amount rule: 计算进入各路径的氮，应用文件化 NH3-N 挥发因子，并在需要时将 NH3-N 换算为 NH3；防止与粪污外运氮重叠。
 - Value mode: 计算值（`calculated_value`）
 - Specificity: 场址特异（`site_specific`）
@@ -503,6 +524,8 @@ sync_with: pcr.en-US.md
 | `output_attribution_decision` | 多产出过程实例 | 当细分不能消除共同负担时，记录一种 PCR 特异归属方法、产出数量和价格或其他驱动因素、期间、证据及敏感性，并一致应用于所有预期产出。 | `fao-leap-small-ruminants-2016` |
 | `multi_period_attribution` | 跨时期的种用动物、补充动物、共享资产和产出 | 使用记录事件和服务时长，将负担归属于实际服务期、生物期或报告期。记录补充和终止决策，防止结转负担出现在两个期间。 | `fao-leap-small-ruminants-2016` |
 | `shared_infrastructure_attribution` | 群组或时期共用的圈舍、围栏、供水、处理、挤奶、纤维、运输及粪污资产 | 列举所有消费者和服务期，尽可能选择并举证物理服务驱动因素，并使分配份额与资产或服务总负担仅核对一次。 | `fao-leap-small-ruminants-2016` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -586,3 +609,4 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-livestock-manure` | method_factor | IPCC，*2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management*。https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf | 山羊类别、饲料和能量驱动因素、肠道甲烷、粪污甲烷、直接和间接 N2O 及必需活动数据。 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 直接及间接氮路径，以及粪污贮存与管理土壤排放的衔接；须选择适用的物种及管理证据。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

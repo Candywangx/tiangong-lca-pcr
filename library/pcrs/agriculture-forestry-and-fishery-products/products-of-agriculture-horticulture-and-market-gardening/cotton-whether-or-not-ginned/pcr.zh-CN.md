@@ -618,7 +618,7 @@ sync_with: pcr.en-US.md
 - 选定流：Accepted seed cotton or ginned cotton lint, declared route
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
-- 数值模式：前景记录（`foreground_record`）
+- 数值来源模式：前景记录（`foreground_record`）
 - 特异性：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
@@ -644,7 +644,7 @@ sync_with: pcr.en-US.md
 - 选定流：Accepted seed cotton or ginned cotton lint, declared route
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
-- 数值模式：前景记录（`foreground_record`）
+- 数值来源模式：前景记录（`foreground_record`）
 - 特异性：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
 - 基准类型：过程输出（`process_output`）
@@ -717,7 +717,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | `validate_route` | reference | Exactly one route and gate declared. | error |
 | `validate_reference_identity` | reference | Before activation bind exact Product UUID, property and unit group. | error |
-| `validate_nutrients` | cultivation | Exactly one set-only nutrient card and no group. | error |
+| `validate_nutrients` | cultivation | 每种实际肥料或改良剂产品单独列卡，保留实物质量、配方、养分组成和施用记录；养分量不是同一产品的另一次投入，不使用集合或分组标识代替具体流身份。 | error |
 | `validate_balance` | harvest/gin | Close mass balance within declared uncertainty. | error |
 | `validate_states` | outputs | Every accepted, downgraded, reworked and discarded state has one destination. | error |
 | `validate_runs` | gin | Startup, cleaning and changeover are assigned once. | error |

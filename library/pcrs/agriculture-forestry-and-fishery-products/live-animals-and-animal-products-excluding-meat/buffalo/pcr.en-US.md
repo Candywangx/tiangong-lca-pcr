@@ -45,7 +45,6 @@ Pastoral or mixed, dairy-linked, and housed or semi-intensive variants may coexi
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
 | Required qualifiers | animal class; sex where material; production purpose; pastoral or mixed, dairy-linked, housed or semi-intensive route; breed or type where material; measured live-weight basis and timing; geography; farm-gate handover; cohort or reporting period; included lifecycle phases |
-| Binding | Fixed (`fixed`) |
 
 Head count is collected as supporting activity data and never substitutes for the mass reference property.
 
@@ -161,7 +160,7 @@ Raw quantity and calculation requirements: Use separate feed-supply, intake and 
 
 ###### Supplied drinking, service, cooling, and wallowing water (`buffalo_water`)
 
-This umbrella card covers supplied water crossing the system boundary. Foreground records select concrete exchanges and distinguish drinking, cleaning, cooling, and wallowing from rainfall or unmanaged surface water.
+This collection requirement covers supplied water crossing the system boundary. Foreground records select concrete exchanges and distinguish drinking, cleaning, cooling, and wallowing from rainfall or unmanaged surface water.
 
 Denominator and scope requirements：per 1,000 kg farm-gate live buffalo output
 
@@ -369,7 +368,6 @@ Raw quantity and calculation requirements: IPCC-consistent calculation from coll
 
 - Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -554,7 +552,6 @@ Raw quantity and calculation requirements: IPCC-consistent calculation from coll
 
 - Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -584,7 +581,6 @@ Raw quantity and calculation requirements: IPCC-consistent calculation from coll
 
 - Selected flow: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -612,7 +608,6 @@ Raw quantity and calculation requirements: method calculation from collected nit
 
 - Selected flow: ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg NH3
-- Binding: Fixed (`fixed`)
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -737,7 +732,6 @@ Denominator and scope requirements：per reference flow
 
 - Selected flow: Buffalo `d9cae6eb-5ff2-46f0-9114-14d4444262c1`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: 1 kg
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)

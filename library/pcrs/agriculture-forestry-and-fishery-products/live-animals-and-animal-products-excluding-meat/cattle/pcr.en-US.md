@@ -160,7 +160,7 @@ Raw quantity and calculation requirements: Use separate feed-supply, intake and 
 
 ###### Drinking and husbandry water (`herd_water_input`)
 
-This conditional umbrella card covers supplied drinking, cleaning and cooling water. Foreground records determine concrete water exchanges and keep service water distinct from ambient rainfall.
+This conditional collection requirement covers supplied drinking, cleaning and cooling water. Foreground records determine concrete water exchanges and keep service water distinct from ambient rainfall.
 
 Denominator and scope requirements：per 1,000 kg farm-gate live cattle output
 
@@ -303,7 +303,7 @@ Raw quantity and calculation requirements: measured live mass and count entering
 
 ###### Independently intended cattle-system co-products (`intended_coproducts`)
 
-Record milk, breeding animals, culled animals or other intended outputs only when separately intended and transferred, with a distinct handover, quantity and destination. This umbrella row is expanded into concrete exchanges from foreground records.
+Record milk, breeding animals, culled animals or other intended outputs only when separately intended and transferred, with a distinct handover, quantity and destination. This collection requirement is expanded into concrete exchanges from foreground records.
 
 Denominator and scope requirements：per herd reporting period and per 1,000 kg reference output after attribution
 
@@ -395,7 +395,6 @@ Denominator and scope requirements：per cohort-period and per 1,000 kg farm-gat
 Raw quantity and calculation requirements: IPCC-consistent calculation from collected animal-category and feed activity data or measured farm evidence Original collection denominator kind: process_output.
 
 - Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
-- Binding: Fixed (`fixed`)
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
@@ -577,7 +576,6 @@ Denominator and scope requirements：per manure pathway and per 1,000 kg farm-ga
 Raw quantity and calculation requirements: IPCC-consistent calculation from collected animal and manure-system activity data, adjusted for measured recovery where applicable Original collection denominator kind: process_output.
 
 - Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
-- Binding: Fixed (`fixed`)
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CH4
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)
@@ -607,7 +605,6 @@ Denominator and scope requirements：per manure pathway and per 1,000 kg farm-ga
 Raw quantity and calculation requirements: IPCC-consistent calculation from collected nitrogen and manure-pathway activity data Original collection denominator kind: process_output.
 
 - Selected flow: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
-- Binding: Fixed (`fixed`)
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg N2O
 - Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
 - Value mode: Calculated value (`calculated_value`)

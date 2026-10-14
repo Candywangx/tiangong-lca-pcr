@@ -328,7 +328,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定（`fixed`）
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：`site_specific`
@@ -355,7 +354,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定（`fixed`）
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：`site_specific`
@@ -384,7 +382,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定（`fixed`）
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：`site_specific`
@@ -411,7 +408,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：氨（排放至空气） `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定（`fixed`）
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：`site_specific`
@@ -483,33 +479,43 @@ sync_with: pcr.en-US.md
   - 基准：每 1 kg 最终绵羊生乳
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
-###### 挤奶泵能源 (`milking_energy`)
+###### 设备供电点的电力（`milking_energy_electricity`）
+
+**milking_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 记录实际能源载体及归属服务期间。
-
 分母与范围要求：每 1 kg 最终绵羊生乳
-
 原始数量及计算要求：计量/发票能源量归属挤奶。 原始采集分母类型：reference_flow。
-
 能量核算基准：按载体分别保留原生单位数量。电力 kWh 乘 3.6 换算为 MJ；燃料质量或体积仅凭有证据的载体专属热值及必要密度换算。本卡记录 MJ 能量核算量，不是质量交换或多载体合并交换。最终交换保留实际载体的流属性和单位；不得直接相加 kg、L、kWh 与 MJ，也不得把多载体总量绑定给单一载体 UUID。
 
-- 选定流：挤奶能源载体
-- 流属性/单位：Energy / MJ
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：`site_specific`
-- 归一化基准：每参考流
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_milking_services` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_milking_services`
-- 数量范围：暂定筛选区间
-  - 范围角色：`default_estimate`
-  - 下限：0
-  - 上限：1000
-  - 单位：MJ/kg 奶
-  - 基准：每 1 kg 最终绵羊生乳
-  - 基准类型：`reference_flow`
-  - 证据类型：`reasoned_estimate`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`milking_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_milking_services` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_milking_services`
+- 来源：`fao-agricultural-energy`
+
 ##### 废物流
 
 ##### 基本流
@@ -746,33 +752,43 @@ sync_with: pcr.en-US.md
   - 基准：每 1 kg 最终绵羊生乳
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
-###### 制冷能源 (`chilling_energy`)
+###### 设备供电点的电力（`chilling_energy_electricity`）
+
+**chilling_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 记录实际载体与表计；不设通用制冷因子。
-
 分母与范围要求：每 1 kg 最终绵羊生乳
-
 原始数量及计算要求：将计量能源归属奶批次。 原始采集分母类型：reference_flow。
-
 能量核算基准：按载体分别保留原生单位数量。电力 kWh 乘 3.6 换算为 MJ；燃料质量或体积仅凭有证据的载体专属热值及必要密度换算。本卡记录 MJ 能量核算量，不是质量交换或多载体合并交换。最终交换保留实际载体的流属性和单位；不得直接相加 kg、L、kWh 与 MJ，也不得把多载体总量绑定给单一载体 UUID。
 
-- 选定流：场内冷却能源载体
-- 流属性/单位：Energy / MJ
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：`site_specific`
-- 归一化基准：每参考流
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_chilling_lot` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_chilling_lot`
-- 数量范围：暂定筛选区间
-  - 范围角色：`default_estimate`
-  - 下限：0
-  - 上限：1000
-  - 单位：MJ/kg 奶
-  - 基准：每 1 kg 最终绵羊生乳
-  - 基准类型：`reference_flow`
-  - 证据类型：`reasoned_estimate`
+- 来源：`fao-agricultural-energy`
+
+###### 供应设备的柴油（`chilling_energy_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_chilling_lot` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_chilling_lot`
+- 来源：`fao-agricultural-energy`
+
 ##### 废物流
 
 ##### 基本流
@@ -939,7 +955,6 @@ sync_with: pcr.en-US.md
 
 - 选定流：生羊奶（绵羊生乳、冷藏，农场交付） `8b3a0949-2be7-413b-bdc3-0f1f8942eb61`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 绑定：固定（`fixed`）
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：`site_specific`
@@ -1072,6 +1087,8 @@ sync_with: pcr.en-US.md
 | `period_attribution` | 繁殖/泌乳/替换 | 将饲料、服务、奶、羔羊、淘汰羊和事件归属实测期间；跨期负荷仅一次传递，并披露羔羊留奶。 | `fao-leap-small-ruminants-2016` |
 | `shared_attribution` | 挤奶厅、奶罐、水泵、表计 | 列出羊群/挤奶/调理/冷却各受益方及服务期间；按表计或有据时间/吞吐量分配，与总量核对且不重复。 | `fao-leap-small-ruminants-2016` |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
@@ -1151,3 +1168,4 @@ sync_with: pcr.en-US.md
 | `mass-balance-identity` | `method_factor` | 实测奶、物料及服务数量守恒 | QA 恒等式，并非绵羊奶经验因子。 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 直接及间接氮路径，以及粪污贮存与管理土壤排放的衔接；须选择适用的物种及管理证据。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

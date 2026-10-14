@@ -170,30 +170,25 @@ Denominator and scope requirements：per kg farm-gate transferred fresh non-hatc
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Housing energy carriers (`energy`)
+###### Electricity at the equipment supply point (`energy_electricity`)
+
+**Collection scope and applicability for energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Record physical identity and destination by species, lot and actual node; do not infer another state from a name.
-
 Denominator and scope requirements：per kg farm-gate transferred fresh non-hatching other-bird eggs
 
-- Selected flow: Housing energy carriers
-- Flow property / unit: Energy / MJ
-- Amount rule: Measure actual species, lot and node; reconcile adjacent nodes and stock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+
+- Selected flow: Electricity at the equipment supply point
+- Flow property / unit: Energy / kWh
+- Amount rule: Collect raw quantities for this identity under `cp_utilities` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
+- Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_utilities`
-- Sources: `fao-codex-eggs`
-- Range: Provisional replaceable broad screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: MJ/kg reference
-  - Basis: not a compliance limit; replace with reviewed lot data
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `fao-codex-eggs`; `fao-agricultural-energy`
 
 ##### Waste flows
 
@@ -602,30 +597,40 @@ Denominator and scope requirements：per kg farm-gate transferred fresh non-hatc
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Protective packaging materials (`package`)
+###### Moulded wood-pulp egg tray (`package_pulp_tray`)
+
+**Collection scope and applicability for package.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Record physical identity and destination by species, lot and actual node; do not infer another state from a name.
-
 Denominator and scope requirements：per kg farm-gate transferred fresh non-hatching other-bird eggs
 
-- Selected flow: Protective packaging materials
-- Flow property / unit: Mass or count / kg or pieces
-- Amount rule: Measure actual species, lot and node; reconcile adjacent nodes and stock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Record composition, net mass, reuse cycles and return losses; attribute reusable items by actual use and separate packaging from product mass. Keep distinct treatment destinations separate without assuming recycling credits.
+
+- Selected flow: Moulded wood-pulp egg tray
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_pack` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
+- Normalization basis: per declared reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_pack`
-- Sources: `fao-codex-eggs`
-- Range: Provisional replaceable broad screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/kg reference
-  - Basis: not a compliance limit; replace with reviewed lot data
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `fao-codex-eggs`; `fao-egg-packaging`
+
+###### Corrugated fibreboard box (`package_corrugated_box`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Record composition, net mass, reuse cycles and return losses; attribute reusable items by actual use and separate packaging from product mass. Keep distinct treatment destinations separate without assuming recycling credits.
+
+- Selected flow: Corrugated fibreboard box
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_pack` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_pack`
+- Sources: `fao-codex-eggs`; `fao-package-identities`
 
 ##### Waste flows
 
@@ -725,7 +730,6 @@ Raw reference-output records: Measure transferred fresh shell-on mass, normalize
 
 - Selected flow: Fresh non-hatching other-bird eggs at farm gate `c533a91e-a111-484e-a6a5-8fb8d3c41363`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Binding: Fixed (`fixed`)
 - Amount rule: 1 kg
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -760,6 +764,8 @@ No prescribed exchange; verify any actual exchange.
 | `period` | rearing/laying/exit | Assign admission/rearing burden once across actual laying service and reconcile opening/closing flock stock. | `fao-codex-eggs`; `fao-leap-poultry` |
 | `shared` | housing/collection/sorting/packing assets | Record every consuming node and period; allocate by measured occupancy, hours or throughput, with shares summing to source total. | `fao-codex-eggs`; `fao-leap-poultry` |
 | `grade` | accepted, diverted and rejected | Count each state at one handover only; hatching diversion needs suitability, processing diversion lawful acceptance, otherwise loss or waste. | `fao-codex-eggs`; `fao-leap-poultry` |
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -835,3 +841,6 @@ No prescribed exchange; verify any actual exchange.
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 nitrogen-flow method; verify actual species, management and geographical applicability before adopting parameters |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Managed-soil direct and indirect nitrogen pathways and boundary reconciliation |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-egg-packaging` | official_guidance | FAO Egg packaging, transport and storage, https://www.fao.org/4/Y4628E/y4628e05.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |

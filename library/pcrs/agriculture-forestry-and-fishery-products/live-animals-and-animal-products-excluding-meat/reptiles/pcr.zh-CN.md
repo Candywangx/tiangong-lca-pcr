@@ -163,29 +163,25 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 环境控制能源（`captive_energy`）
+###### 设备供电点的电力（`captive_energy_electricity`）
+
+**captive_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 按所选物种和场址记录供热、照明、过滤或湿度控制的真实能源载体。
-
 分母与范围要求：每 kg 验收活体产出
 
-- 选定流：爬行动物设施能源载体
-- 流属性/单位：能量 / MJ
-- 数量规则：将计量能源归至群组和服务期间
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_resources` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
+- 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_resources`
-- 数量范围：暂定非负设施能源核查
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000000
-  - 单位：MJ/kg 活体产出
-  - 基准：每 kg 验收活体产出；无通用爬行动物默认值
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`fao-agricultural-energy`
 
 ##### Waste flows
 
@@ -694,6 +690,8 @@ sync_with: pcr.en-US.md
 | `a_period` | 人工群组或捕获行动 | 将存栏、设施、饲料、损失和活体关联实际期间；期初存栏和共享资产在真实产出及服务期间只分配一次；不假定通用寿命，不重复计内部转移。 | `mass-balance-identity` |
 | `a_shared` | 加温房间、池、笼具及操作服务 | 记录每个使用节点/群组和期间；按实测服务时间、能源/水或有依据的能力驱动分配，不在最终交接再次计费。 | `mass-balance-identity` |
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
@@ -758,3 +756,4 @@ sync_with: pcr.en-US.md
 | `cites-guide-2022` | official_guidance | [CITES 贸易数据库指南](https://trade.cites.org/cites_trade_guidelines/en-CITES_Trade_Database_Guide.pdf) | 区分所报野外、人工和牧养来源代码；代码本身非许可 |
 | `mass-balance-identity` | method_factor | 质量守恒与实测前景投入/产出核对 | 归一化、存栏、水及共享服务核对 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |

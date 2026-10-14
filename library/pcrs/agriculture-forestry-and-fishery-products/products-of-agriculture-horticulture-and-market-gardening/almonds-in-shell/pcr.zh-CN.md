@@ -117,20 +117,99 @@ translation_status: aligned
 - 采集协议：`cp_almond_orchard_lifecycle_records`
 - 来源：`fao-gap-framework-2003`; `iso-14067`
 
-###### 农业养分及肥料投入（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs`）
+###### 尿素肥料（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_urea`）
+
+**almond_orchard_establishment_and_management_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 在声明边界内按下述数量规则采集和核对；没有确认的流 UUID 保持未解析。
 
-- 选定流：农业养分及肥料供应
-- 流属性/单位：产品数量及养分含量 / kg 产品、m3 产品、kg N、kg P2O5、kg K2O（按实际采用）
-- 数量规则：每种实际产品只采集一次数量，保留组成并计算声明的 N、P 或 P2O5、K 或 K2O 数量，不重复计算复合肥或有机肥。生成前景数据时逐一展开产品交换并核验 UUID。
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 基准类型：`reference_flow`
-- 证据类型：`collected_record`
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_almond_orchard_input_records`
-- 来源：`ipcc-2019-managed-soils-n2o`; `almond-board-water-quality`
+- 来源：`ipcc-2019-managed-soils-n2o`；`almond-board-water-quality`；`fao-fertilizer-identities`
+
+###### 硫酸铵肥料（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_orchard_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`almond-board-water-quality`；`fao-fertilizer-identities`
+
+###### 重过磷酸钙肥料（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_orchard_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`almond-board-water-quality`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_orchard_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`almond-board-water-quality`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_orchard_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`almond-board-water-quality`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_orchard_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`almond-board-water-quality`；`fao-organic-nutrients`
 
 ###### 果园灌溉供水（`orchard_irrigation_water`）
 
@@ -147,20 +226,39 @@ translation_status: aligned
 - 采集协议：`cp_almond_irrigation_records`
 - 来源：`almond-board-irrigation-continuum`; `almond-board-water-quality`
 
-###### 果园燃料及电力（`orchard_energy_input`）
+###### 设备供电点的电力（`orchard_energy_input_electricity`）
+
+**orchard_energy_input 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 在声明边界内按下述数量规则采集和核对；没有确认的流 UUID 保持未解析。
 
-- 选定流：果园作业能源供应；生成前景数据时分别记录电力和移动机械燃料
-- 流属性/单位：质量或能量 / kg、L、MJ 或 kWh
-- 数量规则：按作业和果园地块记录实测或供应商记录的能源数量。
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_almond_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 基准类型：`reference_flow`
-- 证据类型：`collected_record`
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_almond_energy_records`
-- 来源：`fao-gap-framework-2003`
+- 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
+
+###### 供应设备的柴油（`orchard_energy_input_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_energy_records`
+- 来源：`fao-gap-framework-2003`；`fao-agricultural-energy`
 
 ###### 植保产品（`orchard_crop_protection`）
 
@@ -361,20 +459,39 @@ translation_status: aligned
 - 采集协议：`cp_almond_conditioning_records`
 - 来源：`usda-almond-commercial-storage`; `mass-balance-identity`
 
-###### 调理能源供应（`conditioning_energy_and_water`）
+###### 设备供电点的电力（`conditioning_energy_and_water_electricity`）
+
+**conditioning_energy_and_water 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
 
 在声明边界内按下述数量规则采集和核对；没有确认的流 UUID 保持未解析。
 
-- 选定流：调理能源供应；生成前景数据时分别记录电力或固定燃烧燃料
-- 流属性/单位：能量或质量 / kWh、MJ、L 或 kg
-- 数量规则：按加工活动及产品处理量记录电表、燃料或供应商记录。
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：设备供电点的电力
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_almond_conditioning_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每声明的参考流
-- 基准类型：`reference_flow`
-- 证据类型：`collected_record`
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_almond_conditioning_records`
-- 来源：`usda-almond-commercial-storage`
+- 来源：`usda-almond-commercial-storage`；`fao-agricultural-energy`
+
+###### 供应设备的柴油（`conditioning_energy_and_water_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：供应设备的柴油
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_almond_conditioning_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_almond_conditioning_records`
+- 来源：`usda-almond-commercial-storage`；`fao-agricultural-energy`
 
 ###### 调理过程用水（`conditioning_process_water`）
 
@@ -466,6 +583,8 @@ translation_status: aligned
 
 本 PCR 对有证据支持的杏仁外果皮共产品采用“过程细分后质量分配”的默认规则。数据集必须声明外果皮是销售、饲用、堆肥、焚烧、还田还是丢弃，并披露分配敏感性。
 
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
 ## 8. 前景数据采集、计算和质量规则
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
@@ -546,3 +665,6 @@ translation_status: aligned
 | `iso-14067` | standard | ISO 14067, Greenhouse gases — Carbon footprint of products | 多年生寿命分配和产品碳足迹披露 |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity | 输出核对、地点聚合和防止重复计数 |
 | `fao-gap-framework-2003` | official_guidance | FAO Committee on Agriculture, COAG/2003/6, Development of a Framework for Good Agricultural Practices, section IV paragraphs 24–26 and Annex, https://www.fao.org/4/y8704e/y8704e.htm | 仅为一般监测和农场记录背景；作物特定路线、寿命、数量范围及 LCA 分配属于 PCR 选择，须补充适用证据。 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
