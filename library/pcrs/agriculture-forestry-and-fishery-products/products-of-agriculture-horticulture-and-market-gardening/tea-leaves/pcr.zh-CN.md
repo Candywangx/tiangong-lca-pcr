@@ -228,29 +228,7 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 
-###### 植保配方产品（`tea_crop_protection_input`）
-
-记录每种植保产品、可得的活性成分、施用事件和处理面积。
-
-- Selected flow: Named crop-protection formulation（路线特定 UUID 未解析）
-- Flow property / unit: Mass of formulated product / kg
-- Amount rule: 按施用事件计量产品质量
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-原始活动或阶段基准：每处理面积并换算到 1 kg 干茶.
-
-- 归一化基准：每声明的参考流
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_activity_records`
-- Range: 临时植保产品筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.03
-  - Unit: kg formulated product/kg dry tea
-  - Basis: 初步宽范围；保留产品身份用于背景链接
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 灌溉和田间用水（`tea_field_water_input`）
 
@@ -419,29 +397,35 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### 采摘和收集能源（`tea_plucking_energy`）
+###### 中压电力（`tea_plucking_energy`）
 
-记录采摘、装载、周转容器和收集设备的燃料或电力。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每 1 kg 收集鲜叶并换算到 1 kg 干茶。
 
-- Selected flow: Plucking and collection energy（路线特定 UUID 未解析）
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: 按采摘、装载和收集设备计量燃料或电力
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-原始活动或阶段基准：每 1 kg 收集鲜叶并换算到 1 kg 干茶.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_activity_records`
-- Range: 临时采摘能源筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.5
-  - Unit: MJ/kg dry tea
-  - Basis: 采摘、装载和田间收集设备
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_field_activity_records`
+
+###### 柴油（`tea_plucking_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每 1 kg 收集鲜叶并换算到 1 kg 干茶。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_field_activity_records`
 
 #### Outputs
 
@@ -821,29 +805,80 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 ##### 基本流
 
-###### 热干燥直接空气排放（`tea_drying_direct_emissions`）
+###### 化石二氧化碳，排放至空气（`tea_drying_direct_emissions`）
 
-记录燃料燃烧或工艺干燥产生的有报告污染物及接收介质；已有实测或因子时不得以宽泛的无名排放替代具体物质。
+仅在实测或所选适用方法确认该排放路径时，将化石二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1 kg 干茶。
 
-- Selected flow: Reported drying emissions by substance and receiving medium（UUID 未解析）
-- Flow property / unit: Mass / kg substance
-- Amount rule: 由烟气测量或燃料、工艺记录计算排放
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
-原始活动或阶段基准：每 1 kg 干茶.
-
+- 选定流：化石二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算化石二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_emission_records`
-- Range: 临时直接排放筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.20
-  - Unit: kg reported substance/kg dry tea
-  - Basis: 具体物质或因子计算结果，不代表统一污染物身份
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_emission_records`
+
+###### 生物源二氧化碳，排放至空气（`tea_drying_direct_emissions_co2_biogenic`）
+
+仅在实测或所选适用方法确认该排放路径时，将生物源二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1 kg 干茶。
+
+- 选定流：生物源二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算生物源二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_emission_records`
+
+###### 甲烷，排放至空气（`tea_drying_direct_emissions_ch4`）
+
+仅在实测或所选适用方法确认该排放路径时，将甲烷，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1 kg 干茶。
+
+- 选定流：甲烷，排放至空气
+- 流属性/单位：质量 / kg CH4
+- 数量规则：实测或按方法计算甲烷，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_emission_records`
+
+###### 氧化亚氮，排放至空气（`tea_drying_direct_emissions_n2o`）
+
+仅在实测或所选适用方法确认该排放路径时，将氧化亚氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1 kg 干茶。
+
+- 选定流：氧化亚氮，排放至空气
+- 流属性/单位：质量 / kg N2O
+- 数量规则：实测或按方法计算氧化亚氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以 N2O-N 报告时，按 44/28 换算为 N2O 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_emission_records`
+
+###### 颗粒物，粒径未指定，排放至空气（`tea_drying_direct_emissions_dust`）
+
+仅在实测或所选适用方法确认该排放路径时，将颗粒物，粒径未指定，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1 kg 干茶。
+
+- 选定流：颗粒物，粒径未指定，排放至空气
+- 流属性/单位：质量 / kg
+- 数量规则：实测或按方法计算颗粒物，粒径未指定，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_emission_records`
 
 ### Process: 分级、储存和初级加工门 (`tea_grading_storage_gate`)
 
@@ -878,29 +913,35 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### 分级和筛选电力（`tea_grading_energy`）
+###### 中压电力（`tea_grading_energy`）
 
-记录筛选、分选、筛分和质量分级使用的电力或燃料。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每 1 kg 干茶。
 
-- Selected flow: Grading and screening energy（路线特定 UUID 未解析）
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: 按计量或批次归属分级茶用能
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-原始活动或阶段基准：每 1 kg 干茶.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_activity_records`
-- Range: 临时分级能源筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.5
-  - Unit: MJ/kg dry tea
-  - Basis: 筛选、分选和分级服务
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_field_activity_records`
+
+###### 柴油（`tea_grading_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每 1 kg 干茶。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_field_activity_records`
 
 #### Outputs
 
@@ -1037,30 +1078,20 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 ##### Elementary flows
 
-###### 储存粉尘和仓储排放（`tea_storage_emissions`）
+###### 颗粒物，粒径未指定，排放至空气（`tea_storage_emissions`）
 
-记录干茶储存产生的粉尘、通风和有报告排放；有测量或因子时使用具体物质和接收介质。
+仅在实测或所选适用方法确认该排放路径时，将颗粒物，粒径未指定，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1 kg 干茶参考流。
 
-- Selected flow: Reported storage dust or emission by substance and medium（UUID 未解析）
-- Flow property / unit: Mass / kg substance
-- Amount rule: 按储存时长和批次测量或计算归属排放
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-原始活动或阶段基准：每 1 kg 干茶参考流.
-
+- 选定流：颗粒物，粒径未指定，排放至空气
+- 流属性/单位：质量 / kg
+- 数量规则：实测或按方法计算颗粒物，粒径未指定，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- Basis kind: Storage duration (`storage_duration`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_emission_records`
-- Range: 临时储存排放筛选范围
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.02
-  - Unit: kg reported substance/kg dry tea
-  - Basis: 仓储通风和粉尘记录，需具体物质报告
-  - Basis kind: Storage duration (`storage_duration`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
+- 基准类型：`storage_duration`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_emission_records`
 
 ### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
 该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
@@ -1133,6 +1164,8 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 ## 8. 前景数据采集、计算和质量规则
 
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -1150,14 +1183,14 @@ alternative-production-route 模块只作为经营性生物生产的路线拓扑
 
 ### Calculation rules
 
-| rule_id | Inputs | Calculation |
-| --- | --- | --- |
-| `calc_01` | 鲜叶质量、水分、干茶质量 | 以干茶质量除以鲜叶质量计算路线产率，并保留湿基和干基水分记录。 |
-| `calc_02` | 面积、期间、茶园阶段、产出 | 将面积时间和阶段负荷归属于报告期茶产出，避免建植、补植和生产阶段重复归属。 |
-| `calc_03` | 肥料产品记录和营养含量 | 将配方肥产品转换为 N、P、K 营养质量，同时保留产品身份以链接背景数据集。 |
-| `calc_04` | 批次投入、中间体、产出、残余、损失 | 逐批按质量平衡核算；未解决差额是验证发现，不得静默分配给合格茶。 |
-| `calc_05` | 等级产出和去向 | 按声明交接将主等级、次等级、回收茶产品、残余、拒收、返工和处置分类。 |
-| `calc_06` | 路线、批次、能源、换线、储存期 | 按有文件的运行基准向路线和期间记录分配共享服务，防止共享负荷出现在多个产品系统中。 |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_01` | tea_route_processing | 以干茶质量除以鲜叶质量计算路线产率，并保留湿基和干基水分记录。 | 鲜叶质量、水分、干茶质量 | 保留实测含水率基准的鲜叶到干茶产率 |  |
+| `calc_02` | tea_plantation_management | 将面积时间和阶段负荷归属于报告期茶产出，避免建植、补植和生产阶段重复归属。 | 面积、期间、茶园阶段、产出 | 归属于报告期产出一次的面积时间及阶段负荷 |  |
+| `calc_03` | tea_plantation_management | 将配方肥产品转换为 N、P、K 营养质量，同时保留产品身份以链接背景数据集。 | 肥料产品记录和营养含量 | 独立产品数量和声明的养分组分质量 |  |
+| `calc_04` | route-wide processes | 逐批按质量平衡核算；未解决差额是验证发现，不得静默分配给合格茶。 | 批次投入、中间体、产出、残余、损失 | 经核对的批次质量平衡及未解释差额 |  |
+| `calc_05` | tea_grading_storage_gate | 按声明交接将主等级、次等级、回收茶产品、残余、拒收、返工和处置分类。 | 等级产出和去向 | 按去向区分的预期产出、残余物、拒收物和返工分类 |  |
+| `calc_06` | route-wide shared operations | 按有文件的运行基准向路线和期间记录分配共享服务，防止共享负荷出现在多个产品系统中。 | 路线、批次、能源、换线、储存期 | 按路线、批次和期间归属一次的共享服务负荷 |  |
 
 ### Data quality requirements
 

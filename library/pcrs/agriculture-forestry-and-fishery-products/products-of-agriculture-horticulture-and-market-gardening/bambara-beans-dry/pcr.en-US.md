@@ -16,7 +16,7 @@ This PCR covers foreground production of mature dry shelled Bambara groundnut or
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.bambara-beans-dry |
-| classification_refs | CPC 3.0: 01708 Bambara beans, dry; mapping relation: exact |
+| classification_refs | CPC 3.0: 01708 Bambara beans, dry; mapping relation: narrower |
 | covered_products | Mature dry shelled *Vigna subterranea* seed at farm gate |
 | excluded_products | Fresh pods; planting seed sold as seed; roasted/boiled seed; flour; canned product; oil; downstream products |
 | representative_product | Food-grade mature dry Bambara bean seed |
@@ -257,24 +257,7 @@ Raw activity or stage basis: per 1,000 kg accepted reference product.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_crop_cycle_records`
 
-###### Route-specific crop-protection formulation (`crop_protection_products`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record each crop-protection product separately by formulated-product identity and application event.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-Raw activity or stage basis: per 1,000 kg accepted reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_crop_cycle_records`
-- Sources: `sa-daff-bambara-2016`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -425,30 +408,35 @@ Raw activity or stage basis: per kg lifted pod lot.
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_harvest_lot_records`
 
-###### Non-energy harvest service (`harvest_non_energy_service`)
+###### Manual crop harvesting service (`harvest_non_energy_service`)
 
-Record manual labour or animal traction separately when represented as a Product-service input.
-
-- Selected flow: Manual or animal-traction harvest service
-- Flow property / unit: Service / service-hour
-- Amount rule: measured service quantity by harvest lot
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
+Record Manual crop harvesting service only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per kg lifted pod lot.
 
+- Selected flow: Manual crop harvesting service
+- Flow property / unit: Service / worker-hour
+- Amount rule: Measured net quantity of Manual crop harvesting service, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_lot_records`
-- Sources:
-- Range: Provisional non-energy harvest-service screen
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 10
-  - Unit: service-hour/kg lifted pod lot
-  - Basis: one lifted pod lot
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+
+###### Animal-traction crop harvesting service (`harvest_non_energy_service_animal_harvest`)
+
+Record Animal-traction crop harvesting service only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per kg lifted pod lot.
+
+- Selected flow: Animal-traction crop harvesting service
+- Flow property / unit: Service / operating hour
+- Amount rule: Measured net quantity of Animal-traction crop harvesting service, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_lot_records`
 
 ##### Waste flows
 
@@ -1043,6 +1031,8 @@ Raw activity or stage basis: per 1,000 kg accepted reference product.
 | `allocation_rework` | Rework/rejects | Retain rework burdens in the producing lot, count material only at final disposition, and never count rejects as accepted output. | `iso-14044-2006` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

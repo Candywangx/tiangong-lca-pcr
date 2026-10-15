@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pulses-n-e-c"
-  classification_refs: "CPC 3.0:01709, exact; CPC 2.1 correspondence: 01709; HS 2012/2017 correspondence: 071390; mapping relation: exact"
+  classification_refs: "CPC 3.0:01709, narrower; CPC 2.1 correspondence: 01709; HS 2012/2017 correspondence: 071390; mapping relation: narrower"
   covered_products: "Dried seeds of annual leguminous pulse crops assigned to CPC 01709 and not covered by a more specific pulse subclass; one declared species/crop type per dataset"
   excluded_products: "Specifically classified pulses; fresh green or immature leguminous vegetables; planting seed sold as seed; pulse flour, split or otherwise processed pulses, cooked foods, and retail-packed products"
   representative_product: "One species-identified, mature, dry, threshed or shelled, cleaned and graded pulse seed lot at its declared farm or primary-conditioning handoff"
@@ -323,7 +323,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -336,32 +336,6 @@ process_inventory:
               collection_protocol_id: cp_crop_establishment
               source_ids: []
             ranges: []
-        - row_id: crop_protection_products
-          role: "Crop-protection and seed-treatment products"
-          name: "Crop-protection or seed-treatment product, actual identity to be resolved from use records"
-          flow_type: "product"
-          property_unit: "Product-specific property / kg or L as supported by the product identity"
-          description: "Use this conditional card for seed treatment, inoculant, pesticide, or other crop-protection products actually applied. At data production, create a separate concrete exchange for each recorded product and disclose active ingredient, formulation, amount, target, application event, and use. Do not treat unrecorded or unused products as inputs. Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff."
-          amount:
-            expression: "measured amount applied to the field-season, itemized by product and active ingredient"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_establishment
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.1"
-                unit: "kg product/kg reference product"
-                basis: "per kg dry cleaned pulse seed; retain each formulation and active ingredient"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -1120,7 +1094,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared post-storage handoff."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared post-storage handoff. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -1133,34 +1107,6 @@ process_inventory:
               collection_protocol_id: cp_storage_balance
               source_ids: []
             ranges: []
-        - row_id: storage_protection_products
-          role: "Storage protection products"
-          name: "Storage protection product, actual identity to be resolved from use records"
-          flow_type: "product"
-          property_unit: "Product-specific property / kg or L as supported by the product identity"
-          description: "Record any pesticide, insecticide, fumigant, or other protection product actually applied to the pulse lot or storage facility. Report product, active ingredient, use location, dose, and safety or residue status. Do not presume chemical treatment; record zero when none was applied. Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared post-storage handoff."
-          amount:
-            expression: "measure product used for the included storage interval and allocate shared-facility treatment by recorded service"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_storage_balance
-              source_ids:
-                - fao-pulse-postharvest-2020
-                - fao-onfarm-grain-manual-2009
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.05"
-                unit: "kg product/kg reference product"
-                basis: "per kg accepted post-storage reference output; conditional on actual treatment"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -1560,18 +1506,18 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:9dc3955f4c7d14c674e9f07e3cc4409c16d426ef06bb75777ba1b34a07f42aa7"
+  source_sha256: "sha256:bbf6f0fc890353a4e912548fc6ce6ce0fb4575882490842f05c60475a2c8f8ab"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6359"
+    - unit_id: "normative_6365"
       family: "system_boundary"
       span:
         start:
-          offset: 6359
+          offset: 6365
           line: 64
           column: 1
         end:
-          offset: 11234
+          offset: 11240
           line: 100
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified farm field or plot immediately before field preparation and sowing for one declared crop season |\n| starting_condition_role | Foreground field-season boundary; report location, area, prior crop or land use, soil context, crop species, cultivar or seed lot, and production regime |\n| product_classification_scope | One CPC 3.0:01709 product type; species assigned to a more specific CPC pulse class are outside this PCR |\n| recursive_input_rule | Sowing seed is a product input. If it is the same physical pulse category, use an upstream seed-production dataset or model that seed lot separately; do not recursively reuse the current crop output as its own seed input. |\n| upstream_dataset_requirement | Link purchased seed, actual nutrient products, crop-protection products, supplied irrigation water, and energy carriers to appropriate upstream datasets when available. Identify missing background data. |\n| disclosure | Declare the field-season, prior crop/land state, species and cultivar, water regime, inputs, harvest and conditioning route, output grade, moisture and basis, handoff, and any included storage period. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_cycle` | cultivation through first product handoff | Include field operations and crop management assigned to the declared crop season, followed by harvest and the conditioning steps required to reach the stated dry pulse output. Include field preparation where it occurs within the declared crop campaign. | `fao-pulse-postharvest-2020` |\n| `boundary_first_handoff` | farm or primary-conditioning gate | End the default boundary at the first farm or primary-conditioning handoff of dry, threshed/shelled, cleaned and graded pulse seed. Exclude later distribution and food processing. | `unsd-cpc21-01709` |\n| `boundary_optional_storage` | on-farm storage | Include storage only when the declared handoff is after storage. Record the storage interval, facility and container, energy and treatment use, condition monitoring, and measured loss. | `fao-pulse-postharvest-2020`; `fao-onfarm-grain-manual-2009` |\n| `boundary_same_category_seed` | sowing seed input | Record the seed lot as a product input and link its upstream production where available. Do not count it as current-season output or recursively apply this same output dataset to the seed input. |  |\n| `boundary_land_history` | land and field history | Disclose prior land use and any land conversion. Include conversion burdens only under an identified applicable land-use method and declared time period; do not invent an allocation period. |  |\n\n### Route Variants\n\nThe managed biological production process is the parent route. The actual field-season may be rainfed or irrigated, and establishment or field operations may be manual, mechanized, or mixed. Record a separate route case only when it changes the process topology, inventory categories, calculations, collection needs, or validation. Rainfed and irrigation strategies are mutually exclusive descriptions for the same water event, although supplementary irrigation may occur within a primarily rainfed season; retain the measured events instead of forcing a binary label. Variants on different lots or fields may coexist in one reporting organization only when each field-season remains identifiable.\n\nThe harvest and conditioning parent route includes harvest, threshing/shelling, drying when needed, and cleaning/sorting. Manual versus mechanized threshing changes recorded service and energy inputs. Sun drying, solar-assisted drying, and powered drying change the drying equipment, batch records, and energy inputs; these methods may be sequential on the same lot, so record each stage that actually occurs. FAO describes sun drying and renewable, fossil-fuel, or electricity-powered drying options for pulses; do not infer that every lot uses all of them.\n\n### Boundary Rules Continued\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route_parent` | alternative field production | Attach a claimed production variant to the managed biological production parent and report the changed topology, inventory, calculation, collection, or validation requirement. Use the actual field-season records; a route label alone is insufficient. | `fao-pulse-postharvest-2020` |\n| `boundary_technology_parent` | alternative harvest and conditioning technology | Attach manual, mechanical, sun, solar-assisted, or powered operations to the relevant parent process and report each actual change in inputs and process data. Declare when technologies are sequential or mutually exclusive for a batch. | `fao-pulse-postharvest-2020`; `fao-postharvest-system-1994` |\n\n"
@@ -1591,11 +1537,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6359
+              offset: 6365
               line: 64
               column: 1
             end:
-              offset: 6380
+              offset: 6386
               line: 64
               column: 22
           text: "## 5. System Boundary"
@@ -1611,16 +1557,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_73238"
+    - unit_id: "normative_71189"
       family: "allocation"
       span:
         start:
-          offset: 73238
-          line: 1200
+          offset: 71189
+          line: 1150
           column: 1
         end:
-          offset: 75504
-          line: 1212
+          offset: 73455
+          line: 1162
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_separate_processes` | cultivation, harvest, threshing, conditioning, grading and storage | Subdivide independently measured processes and assign operation-specific inputs directly before allocating any remaining shared burden. |  |\n| `allocation_all_outputs` | each node with multiple intended outputs | Enumerate each intended product and its separate handoff, grade, condition, quantity, destination and use. Distinguish marketable products from residues, incidental material and waste. | `fao-pulse-postharvest-2020`; `fao-onfarm-grain-manual-2009` |\n| `allocation_method_choice` | shared burdens for intended co-products | When two or more intended products share a process burden that cannot be separated, declare and justify a PCR-compatible physical, economic, or other applicable allocation method using the selected standard or study method. Record the allocation factor, reference period, input measurements and source. This PCR does not impose a universal default factor. |  |\n| `allocation_rejects` | rejects, downgraded material and residues | Exclude discarded waste from accepted product quantities. Reworked or recovered material follows its linked process route; downgraded or feed-directed material is an intended output only when the actual destination and handoff are recorded. | `fao-pulse-postharvest-2020` |\n| `allocation_shared_assets` | equipment or storage shared across fields, lots or periods | Identify the shared asset/service, all consuming nodes and periods, and the measured driver used to assign its energy and service burden. Count each shared carrier or service once across the reporting boundary. |  |\n\nWhere several grades from one sorting batch are sold, report all grades as intended outputs and designate the reference grade. Do not treat cleaning rejects, spoiled seed, chaff or other discarded material as a co-product. If residue is actually sold or deliberately used as feed, report its identity, quality, amount and destination as a separate intended output and resolve attribution explicitly. For a single intended product with no other product handoff, no co-product allocation is applied.\n\n"
       headings:
@@ -1639,12 +1585,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 73238
-              line: 1200
+              offset: 71189
+              line: 1150
               column: 1
             end:
-              offset: 73278
-              line: 1200
+              offset: 71229
+              line: 1150
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1659,16 +1605,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_87132"
+    - unit_id: "normative_85848"
       family: "validation"
       span:
         start:
-          offset: 87132
-          line: 1250
+          offset: 85848
+          line: 1202
           column: 1
         end:
-          offset: 90161
-          line: 1265
+          offset: 88877
+          line: 1217
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_single_product_identity` | dataset reference product | Confirm one species/crop type, cultivar or seed lot, grade, crop year and production geography; do not combine pulses with distinct CPC leaves or unlike output identities without separate records. | `unsd-cpc21-01709` |\n| `validate_gate_qualifiers` | reference flow | Require the declared farm or primary-conditioning handoff, net mass, moisture value and basis, grade, and storage status/duration when included. | `fao-pulse-postharvest-2020`; `fao-onfarm-grain-manual-2009` |\n| `validate_nutrient_cardinality` | `pulse_cultivation` product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_water_source` | crop water inputs | Use the `water-use` irrigation-water group only for supplied product water. Record direct surface or groundwater abstraction as a separately identified elementary resource flow, not as supplied product water. |  |\n| `validate_emission_basis` | elementary crop emissions | Accept emissions only when the substance, receiving compartment, method/version and required field records are explicit. Keep nitrate-N separate from nitrate mass and identify a missing UUID as unresolved rather than substituting another species or compartment. |  |\n| `validate_route_and_handoff` | process map and process inventory | Confirm the production, harvest, threshing, conditioning, sorting and included storage handoffs are linked in order. Describe actual alternatives by requirement delta and identify which alternatives coexist or are exclusive for the reported lot. | `fao-pulse-postharvest-2020`; `fao-postharvest-system-1994` |\n| `validate_outputs_and_rejects` | each multiple-output or reject node | Enumerate intended products and their separate handoffs; classify each off-spec fraction as downgraded, reworked, recovered, or discarded; exclude rejects and losses from accepted reference output. | `fao-pulse-postharvest-2020` |\n| `validate_storage_condition` | included farm storage | Check the measured entry/exit mass and moisture on a consistent basis, declared storage interval and protection route. The cited tropical/subtropical moisture guidance is a context-specific QA reference, not a universal allowed range. | `fao-pulse-postharvest-2020`; `fao-onfarm-grain-manual-2009` |\n| `validate_shared_burden` | shared machinery, pumps, dryers, graders and storage | Identify each consuming node and period, reconcile assigned service/energy to shared meter or provider totals, and prohibit duplicate burden. |  |\n| `validate_provisional_ranges` | every provisional range | Treat reasoned ranges as replaceable QA screens, never as crop-specific production requirements or allowed limits. Replace them with source-backed or reviewed foreground evidence before any reviewed methodology claim. |  |\n\n"
       headings:
@@ -1687,12 +1633,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 87132
-              line: 1250
+              offset: 85848
+              line: 1202
               column: 1
             end:
-              offset: 87154
-              line: 1250
+              offset: 85870
+              line: 1202
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1711,376 +1657,376 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_crop_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 7701
+          offset: 7707
           line: 81
           column: 1
         end:
-          offset: 8057
+          offset: 8063
           line: 81
           column: 357
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_first_handoff"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 8058
+          offset: 8064
           line: 82
           column: 1
         end:
-          offset: 8325
+          offset: 8331
           line: 82
           column: 268
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_optional_storage"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 8326
+          offset: 8332
           line: 83
           column: 1
         end:
-          offset: 8625
+          offset: 8631
           line: 83
           column: 300
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_same_category_seed"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 8626
+          offset: 8632
           line: 84
           column: 1
         end:
-          offset: 8879
+          offset: 8885
           line: 84
           column: 254
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_land_history"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 8880
+          offset: 8886
           line: 85
           column: 1
         end:
-          offset: 9127
+          offset: 9133
           line: 85
           column: 248
     - pointer: "/system_boundary/rules/5"
       rule_id: "system_boundary_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 9149
+          offset: 9155
           line: 89
           column: 1
         end:
-          offset: 9846
+          offset: 9852
           line: 89
           column: 698
     - pointer: "/system_boundary/rules/6"
       rule_id: "system_boundary_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 9848
+          offset: 9854
           line: 91
           column: 1
         end:
-          offset: 10406
+          offset: 10412
           line: 91
           column: 559
     - pointer: "/system_boundary/rules/7"
       rule_id: "boundary_route_parent"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 10509
+          offset: 10515
           line: 97
           column: 1
         end:
-          offset: 10850
+          offset: 10856
           line: 97
           column: 342
     - pointer: "/system_boundary/rules/8"
       rule_id: "boundary_technology_parent"
       identity_kind: "explicit"
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 10851
+          offset: 10857
           line: 98
           column: 1
         end:
-          offset: 11232
+          offset: 11238
           line: 98
           column: 382
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_separate_processes"
       identity_kind: "explicit"
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 73351
-          line: 1204
+          offset: 71302
+          line: 1154
           column: 1
         end:
-          offset: 73596
-          line: 1204
+          offset: 71547
+          line: 1154
           column: 246
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_all_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 73597
-          line: 1205
+          offset: 71548
+          line: 1155
           column: 1
         end:
-          offset: 73918
-          line: 1205
+          offset: 71869
+          line: 1155
           column: 322
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_method_choice"
       identity_kind: "explicit"
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 73919
-          line: 1206
+          offset: 71870
+          line: 1156
           column: 1
         end:
-          offset: 74352
-          line: 1206
+          offset: 72303
+          line: 1156
           column: 434
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 74353
-          line: 1207
+          offset: 72304
+          line: 1157
           column: 1
         end:
-          offset: 74695
-          line: 1207
+          offset: 72646
+          line: 1157
           column: 343
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 74696
-          line: 1208
+          offset: 72647
+          line: 1158
           column: 1
         end:
-          offset: 75003
-          line: 1208
+          offset: 72954
+          line: 1158
           column: 308
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 75005
-          line: 1210
+          offset: 72956
+          line: 1160
           column: 1
         end:
-          offset: 75502
-          line: 1210
+          offset: 73453
+          line: 1160
           column: 498
     - pointer: "/validation_rules/0"
       rule_id: "validate_single_product_identity"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 87227
-          line: 1254
+          offset: 85943
+          line: 1206
           column: 1
         end:
-          offset: 87513
-          line: 1254
+          offset: 86229
+          line: 1206
           column: 287
     - pointer: "/validation_rules/1"
       rule_id: "validate_gate_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 87514
-          line: 1255
+          offset: 86230
+          line: 1207
           column: 1
         end:
-          offset: 87771
-          line: 1255
+          offset: 86487
+          line: 1207
           column: 258
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 87772
-          line: 1256
+          offset: 86488
+          line: 1208
           column: 1
         end:
-          offset: 88018
-          line: 1256
+          offset: 86734
+          line: 1208
           column: 247
     - pointer: "/validation_rules/3"
       rule_id: "validate_water_source"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 88019
-          line: 1257
+          offset: 86735
+          line: 1209
           column: 1
         end:
-          offset: 88280
-          line: 1257
+          offset: 86996
+          line: 1209
           column: 262
     - pointer: "/validation_rules/4"
       rule_id: "validate_emission_basis"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 88281
-          line: 1258
+          offset: 86997
+          line: 1210
           column: 1
         end:
-          offset: 88605
-          line: 1258
+          offset: 87321
+          line: 1210
           column: 325
     - pointer: "/validation_rules/5"
       rule_id: "validate_route_and_handoff"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 88606
-          line: 1259
+          offset: 87322
+          line: 1211
           column: 1
         end:
-          offset: 88984
-          line: 1259
+          offset: 87700
+          line: 1211
           column: 379
     - pointer: "/validation_rules/6"
       rule_id: "validate_outputs_and_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 88985
-          line: 1260
+          offset: 87701
+          line: 1212
           column: 1
         end:
-          offset: 89288
-          line: 1260
+          offset: 88004
+          line: 1212
           column: 304
     - pointer: "/validation_rules/7"
       rule_id: "validate_storage_condition"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 89289
-          line: 1261
+          offset: 88005
+          line: 1213
           column: 1
         end:
-          offset: 89645
-          line: 1261
+          offset: 88361
+          line: 1213
           column: 357
     - pointer: "/validation_rules/8"
       rule_id: "validate_shared_burden"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 89646
-          line: 1262
+          offset: 88362
+          line: 1214
           column: 1
         end:
-          offset: 89876
-          line: 1262
+          offset: 88592
+          line: 1214
           column: 231
     - pointer: "/validation_rules/9"
       rule_id: "validate_provisional_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 89877
-          line: 1263
+          offset: 88593
+          line: 1215
           column: 1
         end:
-          offset: 90159
-          line: 1263
+          offset: 88875
+          line: 1215
           column: 283
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 6359
+          offset: 6365
           line: 64
           column: 1
         end:
-          offset: 6380
+          offset: 6386
           line: 64
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6359"
+      unit_id: "normative_6365"
       source_span:
         start:
-          offset: 6408
+          offset: 6414
           line: 68
           column: 1
         end:
-          offset: 7608
+          offset: 7614
           line: 75
           column: 218
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_73238"
+      unit_id: "normative_71189"
       source_span:
         start:
-          offset: 73238
-          line: 1200
+          offset: 71189
+          line: 1150
           column: 1
         end:
-          offset: 73278
-          line: 1200
+          offset: 71229
+          line: 1150
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_87132"
+      unit_id: "normative_85848"
       source_span:
         start:
-          offset: 87132
-          line: 1250
+          offset: 85848
+          line: 1202
           column: 1
         end:
-          offset: 87154
-          line: 1250
+          offset: 85870
+          line: 1202
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2089,5 +2035,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:9dc3955f4c7d14c674e9f07e3cc4409c16d426ef06bb75777ba1b34a07f42aa7"
-  generated_content_sha256: "sha256:367ec0a522561d2df94de049692cb79e8e6f0b8547f9f1f5130f00c24ca3e680"
+    sha256: "sha256:bbf6f0fc890353a4e912548fc6ce6ce0fb4575882490842f05c60475a2c8f8ab"
+  generated_content_sha256: "sha256:5112f601e60852f1ca2bafa1d5862b94e951cabe634cf82398d6f4586132db85"

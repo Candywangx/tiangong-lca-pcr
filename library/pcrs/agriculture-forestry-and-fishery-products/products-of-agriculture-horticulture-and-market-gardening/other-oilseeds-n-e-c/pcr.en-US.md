@@ -206,21 +206,7 @@ Raw activity or stage basis: per crop cycle, normalized by accepted oilseed outp
 - Evidence kind: Collected Record (`collected_record`)
 - Collection protocol: `cp_field`
 
-###### Route-specific crop-protection formulation (`crop_protection_inputs`)
-
-Instantiate this card once for each crop-protection formulation actually applied in the declared route. Identify the formulation from application records, measure its product quantity, and record active-ingredient content separately; do not infer a named chemical or combine distinct formulations.
-
-- Selected flow: Route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg formulation
-- Amount rule: Measured applied quantity of one identified formulation in this process and period; a second formulation requires a separate exchange.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site Specific (`site_specific`)
-Raw activity or stage basis: per crop cycle, normalized by accepted oilseed output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: `crop_cycle`
-- Evidence kind: Collected Record (`collected_record`)
-- Collection protocol: `cp_field`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Diesel fuel input (`field_energy`)
 
@@ -266,12 +252,12 @@ None.
 
 ##### Product flows
 
-###### Standing harvestable crop (`standing_crop`)
+###### Harvest-ready oilseed crop, declared species (`standing_crop`)
 
 This card records the real physical flow for this process role; model it by the declared batch or crop cycle only when the route is active.
 
-- Selected flow: Select species-specific intermediate product if separately modelled
-- Flow property / unit: kg
+- Selected flow: Harvest-ready oilseed crop, declared species
+- Flow property / unit: Mass / kg
 - Amount rule: Calculated harvestable crop mass transferred to harvest.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site Specific (`site_specific`)
@@ -350,12 +336,12 @@ Raw activity or stage basis: per crop cycle, normalized by accepted oilseed outp
 
 ##### Product flows
 
-###### Standing harvestable crop input (`standing_crop_input`)
+###### Harvest-ready oilseed crop, declared species (`standing_crop_input`)
 
 This card records the real physical flow for this process role; model it by the declared batch or crop cycle only when the route is active.
 
-- Selected flow: Select species-specific intermediate product if separately modelled
-- Flow property / unit: kg
+- Selected flow: Harvest-ready oilseed crop, declared species
+- Flow property / unit: Mass / kg
 - Amount rule: Transfer the measured harvestable crop from managed production.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site Specific (`site_specific`)
@@ -834,6 +820,8 @@ None.
 | shared_assets | shared machinery, drying and storage | Attribute once by measured hours, energy or throughput and prevent duplication between field and conditioning nodes. | mass-balance-identity |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

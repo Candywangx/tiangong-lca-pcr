@@ -322,7 +322,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per hectare newly established stand before stand-life annualization."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per hectare newly established stand before stand-life annualization. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "calculated_value"
@@ -334,25 +334,6 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_establishment_records
               source_ids: []
-            ranges: []
-        - row_id: establishment_crop_protection
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record each formulated herbicide, fungicide or insect-control product actually applied during establishment; no default treatment is imposed. Raw activity or stage basis: per hectare newly established stand before stand-life annualization."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_establishment_records
-              source_ids:
-                - uc-alfalfa-establishment
             ranges: []
       waste:
         []
@@ -594,7 +575,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per productive hectare-year before yield normalization. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "calculated_value"
@@ -606,25 +587,6 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_stand_year_records
               source_ids: []
-            ranges: []
-        - row_id: annual_crop_protection
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record each formulated product actually applied by date, active ingredient, treated area and regrowth period. Raw activity or stage basis: per productive hectare-year before yield normalization."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_stand_year_records
-              source_ids:
-                - uc-alfalfa-established-ipm
             ranges: []
       waste:
         []
@@ -690,33 +652,100 @@ process_inventory:
         []
       elementary:
         - row_id: managed_soil_n_emissions
-          role: "Direct and indirect nitrogen field emissions"
-          name: "Nitrogen emission species from managed soils"
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg species"
-          description: "Calculate nitrogen emissions by species and receiving compartment from actual nitrogen inputs, fixation-related residue renewal and other applicable managed-soil sources; do not use this umbrella as a final unspeciated exchange. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per productive hectare-year before yield normalization."
           amount:
-            expression: "calculate separate N2O, NO, NH3 and nitrate-related exchanges using the selected inventory method and recorded activity data"
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "n_input"
             evidence:
-              kind: "method_formula"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_stand_year_records
               source_ids:
                 - ipcc-2019-managed-soils
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg emitted species/kg relevant N input"
-                basis: "species-specific result per kilogram relevant nitrogen input before yield normalization"
-                basis_kind: "n_input"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: managed_soil_n_emissions_nh3
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stand_year_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: managed_soil_n_emissions_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO"
+          description: "Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stand_year_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: managed_soil_n_emissions_nitrate
+          role: "Nitrate, to water"
+          name: "Nitrate, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3-"
+          description: "Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stand_year_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: managed_soil_n_emissions_co2_fossil
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per productive hectare-year before yield normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stand_year_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
         - row_id: amendment_co2
           role: "Amendment-related carbon dioxide"
           name: "Carbon dioxide (fossil), emissions to air unspecified"
@@ -1121,7 +1150,7 @@ data_sources:
     used_for: "exact reference output and normalization"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7005f1858766cad40585dfebf0598c24ae8d9604b3ee9e4727be7af62c4e24c7"
+  source_sha256: "sha256:8c485b023a3e850cfe7b08e217082e6cbb4e9bad44377d7fc47965578662da91"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4878"
@@ -1172,16 +1201,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_45315"
+    - unit_id: "normative_47182"
       family: "allocation"
       span:
         start:
-          offset: 45315
-          line: 810
+          offset: 47182
+          line: 827
           column: 1
         end:
-          offset: 46851
-          line: 820
+          offset: 48718
+          line: 837
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_establishment_life` | establishment burdens | Attribute establishment inputs, emissions and losses to all accepted fresh output produced over the actual stand life. Use realized stand termination and output where known; disclose any prospective lifetime used for an incomplete stand. Do not allocate the same establishment burden again in later stand-years. | `umn-alfalfa-establishment`; `usda-ars-alfalfa-management-2024` |\n| `allocation_stand_year` | annual management burdens | Assign stand-year inputs first to the reporting hectare-year, then divide by accepted fresh output from that year. Do not spread annual inputs across other production years. | `area-time-identity` |\n| `allocation_cut` | cut-specific operations | Assign harvest energy, cut-specific irrigation and losses to the identified cut; shared annual operations use a documented physical basis such as area or accepted fresh mass across cuts. | `usda-ars-alfalfa-management-2024` |\n| `allocation_rejects` | rejected or downgraded biomass | Keep burdens with the producing stand-year and cut unless an evidenced recovered-product allocation is declared. Exclude rejected biomass from accepted reference output. |  |\n| `allocation_no_double_count` | all periods | Establishment, stand-year and cut records carry unique phase and period identifiers; each input, output, loss and field event may enter the normalized result once only. |  |\n\n"
       headings:
@@ -1200,12 +1229,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 45315
-              line: 810
+              offset: 47182
+              line: 827
               column: 1
             end:
-              offset: 45355
-              line: 810
+              offset: 47222
+              line: 827
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1220,16 +1249,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_53467"
+    - unit_id: "normative_56099"
       family: "validation"
       span:
         start:
-          offset: 53467
-          line: 854
+          offset: 56099
+          line: 873
           column: 1
         end:
-          offset: 55492
-          line: 868
+          offset: 58124
+          line: 887
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_gate` | reference product | Reject a package that includes ensiling, fermentation, drying, baling or feed manufacture in the reference-product process. |  |\n| `validate_stand_periods` | all processes | Require establishment year, stand age, reporting stand-year, cut identifiers, actual or prospective stand life, and termination treatment; reject double attribution across periods. |  |\n| `validate_nutrient_consolidation` | each applicable process | Require a separate atomic card for each actual fertilizer or amendment with measured product quantity and composition; do not bind a generic nutrient group as one exchange. |  |\n| `validate_n_fixing_crop` | annual nutrient records | Do not accept routine mineral-N input without evidence of the route-specific need; require nodulation or soil/plant evidence when mineral N is reported. | `umn-alfalfa-fertilizer` |\n| `validate_cut_balance` | each cut | Require accepted output plus rejects and other destinations to reconcile with harvest-ready input within disclosed measurement uncertainty. | `mass-balance-identity` |\n| `validate_irrigation_route` | water card | Require zero supplied irrigation water for rainfed strata and event-linked measured or calculated delivery for irrigated strata. |  |\n| `validate_reject_path` | rejected biomass | Require each rejected state to be left in field, recovered, downgraded or discarded with a declared destination; it shall not enter accepted output. |  |\n| `validate_route_delta` | alternative routes | Require evidence for any claimed change in topology, inventory, calculation or validation and prevent averaging mutually exclusive post-harvest product states. |  |\n| `validate_range_shape` | cards with ranges | For each supplied Range, require role, lower/upper bounds, unit, basis, basis kind, evidence kind and applicable source ids. Report missing important-flow ranges as candidate evidence gaps. |  |\n\n"
       headings:
@@ -1248,12 +1277,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 53467
-              line: 854
+              offset: 56099
+              line: 873
               column: 1
             end:
-              offset: 53489
-              line: 854
+              offset: 56121
+              line: 873
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1337,184 +1366,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_establishment_life"
       identity_kind: "explicit"
-      unit_id: "normative_45315"
+      unit_id: "normative_47182"
       source_span:
         start:
-          offset: 45428
-          line: 814
+          offset: 47295
+          line: 831
           column: 1
         end:
-          offset: 45867
-          line: 814
+          offset: 47734
+          line: 831
           column: 440
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_stand_year"
       identity_kind: "explicit"
-      unit_id: "normative_45315"
+      unit_id: "normative_47182"
       source_span:
         start:
-          offset: 45868
-          line: 815
+          offset: 47735
+          line: 832
           column: 1
         end:
-          offset: 46122
-          line: 815
+          offset: 47989
+          line: 832
           column: 255
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_cut"
       identity_kind: "explicit"
-      unit_id: "normative_45315"
+      unit_id: "normative_47182"
       source_span:
         start:
-          offset: 46123
-          line: 816
+          offset: 47990
+          line: 833
           column: 1
         end:
-          offset: 46395
-          line: 816
+          offset: 48262
+          line: 833
           column: 273
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_45315"
+      unit_id: "normative_47182"
       source_span:
         start:
-          offset: 46396
-          line: 817
+          offset: 48263
+          line: 834
           column: 1
         end:
-          offset: 46628
-          line: 817
+          offset: 48495
+          line: 834
           column: 233
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_no_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_45315"
+      unit_id: "normative_47182"
       source_span:
         start:
-          offset: 46629
-          line: 818
+          offset: 48496
+          line: 835
           column: 1
         end:
-          offset: 46849
-          line: 818
+          offset: 48716
+          line: 835
           column: 221
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_gate"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 53562
-          line: 858
+          offset: 56194
+          line: 877
           column: 1
         end:
-          offset: 53740
-          line: 858
+          offset: 56372
+          line: 877
           column: 179
     - pointer: "/validation_rules/1"
       rule_id: "validate_stand_periods"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 53741
-          line: 859
+          offset: 56373
+          line: 878
           column: 1
         end:
-          offset: 53971
-          line: 859
+          offset: 56603
+          line: 878
           column: 231
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_consolidation"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 53972
-          line: 860
+          offset: 56604
+          line: 879
           column: 1
         end:
-          offset: 54213
-          line: 860
+          offset: 56845
+          line: 879
           column: 242
     - pointer: "/validation_rules/3"
       rule_id: "validate_n_fixing_crop"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 54214
-          line: 861
+          offset: 56846
+          line: 880
           column: 1
         end:
-          offset: 54450
-          line: 861
+          offset: 57082
+          line: 880
           column: 237
     - pointer: "/validation_rules/4"
       rule_id: "validate_cut_balance"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 54451
-          line: 862
+          offset: 57083
+          line: 881
           column: 1
         end:
-          offset: 54656
-          line: 862
+          offset: 57288
+          line: 881
           column: 206
     - pointer: "/validation_rules/5"
       rule_id: "validate_irrigation_route"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 54657
-          line: 863
+          offset: 57289
+          line: 882
           column: 1
         end:
-          offset: 54835
-          line: 863
+          offset: 57467
+          line: 882
           column: 179
     - pointer: "/validation_rules/6"
       rule_id: "validate_reject_path"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 54836
-          line: 864
+          offset: 57468
+          line: 883
           column: 1
         end:
-          offset: 55035
-          line: 864
+          offset: 57667
+          line: 883
           column: 200
     - pointer: "/validation_rules/7"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 55036
-          line: 865
+          offset: 57668
+          line: 884
           column: 1
         end:
-          offset: 55248
-          line: 865
+          offset: 57880
+          line: 884
           column: 213
     - pointer: "/validation_rules/8"
       rule_id: "validate_range_shape"
       identity_kind: "explicit"
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 55249
-          line: 866
+          offset: 57881
+          line: 885
           column: 1
         end:
-          offset: 55490
-          line: 866
+          offset: 58122
+          line: 885
           column: 242
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1543,27 +1572,27 @@ normative_context:
           column: 227
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_45315"
+      unit_id: "normative_47182"
       source_span:
         start:
-          offset: 45315
-          line: 810
+          offset: 47182
+          line: 827
           column: 1
         end:
-          offset: 45355
-          line: 810
+          offset: 47222
+          line: 827
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_53467"
+      unit_id: "normative_56099"
       source_span:
         start:
-          offset: 53467
-          line: 854
+          offset: 56099
+          line: 873
           column: 1
         end:
-          offset: 53489
-          line: 854
+          offset: 56121
+          line: 873
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1572,5 +1601,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7005f1858766cad40585dfebf0598c24ae8d9604b3ee9e4727be7af62c4e24c7"
-  generated_content_sha256: "sha256:f015c9a4456f807c95bca103d33899b5ac27c270145028bd4bc4377683365a27"
+    sha256: "sha256:8c485b023a3e850cfe7b08e217082e6cbb4e9bad44377d7fc47965578662da91"
+  generated_content_sha256: "sha256:64d6b97250b82d88654eb1a2eb56e477981ac7202cab68598d48099a2d338278"

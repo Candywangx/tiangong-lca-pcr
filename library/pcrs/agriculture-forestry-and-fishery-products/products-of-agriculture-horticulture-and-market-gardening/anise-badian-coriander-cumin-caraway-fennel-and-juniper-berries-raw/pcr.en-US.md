@@ -223,23 +223,7 @@ Raw activity or stage basis: per cultivated hectare per crop cycle or harvest ye
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Route-specific crop-protection formulation (`field_crop_protection`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record each actual formulation separately.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per cultivated hectare per crop cycle or harvest year.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_production`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -277,32 +261,37 @@ Raw activity or stage basis: per cultivated hectare per crop cycle or harvest ye
 
 ##### Elementary flows
 
-###### Managed land and direct soil N2O (`land_soil_emissions`)
+###### Occupation, cropland (`land_soil_emissions`)
 
-Keep land occupation and N2O as separate calculated elementary-flow records even though they share this card.
-
-- Selected flow: Managed land occupation and dinitrogen monoxide to air, unresolved
-- Flow property / unit: Area × time and mass / ha·year and kg N2O
-- Amount rule: hectares × occupied days ÷ 365.25; normalize by output; Apply IPCC managed-soil equations to recorded synthetic/organic N and residue N; convert N2O-N to N2O by 44/28
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record occupied cropland area and duration by actual land-use class and site; nitrogen emissions are separate substance exchanges.
 Raw activity or stage basis: per 1,000 kg harvest-ready organ.
 
+- Selected flow: Occupation, cropland
+- Flow property / unit: Area × time / ha·year
+- Amount rule: Measured occupied hectares × occupied days / 365.25, normalized once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_production`
 - Sources: `ipcc-2019-managed-soils`
-- Range: Land-occupation QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.02
-  - Upper: 5
-  - Unit: ha·year
-  - Basis: per 1,000 kg harvest-ready organ; N2O is validated separately against the formula
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-Calculation method corresponds to Section 8 rules: `calc_land`, `calc_soil_n2o`.
+###### Dinitrogen monoxide, to air (`land_soil_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg harvest-ready organ.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_production`
+- Sources: `ipcc-2019-managed-soils`
 
 #### Outputs
 
@@ -332,11 +321,11 @@ Raw activity or stage basis: per 1,000 kg harvest-ready organ.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Calculated from collection (`calculated_from_collection`)
 
-###### Other intended co-products (`other_intended_outputs`)
+###### Spice-crop stalk biomass, declared species and beneficial use (`other_intended_outputs`)
 
 Record any separately marketed leaf, stem, straw, planting seed, wood, or other intended product by identity and hand-off; use zero when no such co-product receives an economic function.
 
-- Selected flow: Species- and destination-specific co-product, unresolved
+- Selected flow: Spice-crop stalk biomass, declared species and beneficial use
 - Flow property / unit: Mass / kg
 - Amount rule: Measured mass at declared moisture by output identity and destination
 - Value mode: Foreground record (`foreground_record`)
@@ -602,11 +591,11 @@ Raw activity or stage basis: per 1,000 kg cleaned output.
 
 ##### Waste flows
 
-###### Conditioning rejects (`conditioning_rejects`)
+###### Whole-spice cleaning screenings, declared species (`conditioning_rejects`)
 
 Record soil, chaff, stalks, foreign matter, and off-spec material by rework, return, recovery, or disposal destination.
 
-- Selected flow: Destination-specific conditioning reject, unresolved
+- Selected flow: Whole-spice cleaning screenings, declared species
 - Flow property / unit: Mass / kg
 - Amount rule: Measured reject mass by destination
 - Value mode: Foreground record (`foreground_record`)
@@ -920,6 +909,8 @@ Raw activity or stage basis: per 1,000 kg accepted reference product.
 | `allocation_rejects` | Rework and rejects | Link each rejected state to exactly one rework, downgrade, recovery, return, or disposal path; never count it as accepted output. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

@@ -104,30 +104,23 @@ This seasonal process is indexed by yard and crop year. Establishment, immature,
 
 ##### Product flows
 
-###### Planting and shared yard infrastructure (`establishment_infrastructure`)
+Required asset inventory: record every actual pole, wire, anchor, support, irrigation asset, installation and replacement separately by its concrete material and measured bill of materials. Allocate each asset once over its documented service life and all served crops and processes. Do not treat planting stock as a proxy for infrastructure.
 
-This card records the named flow where it crosses the stated process boundary and keeps its quantity linked to the declared lot, period or route.
+###### Female hop nursery plants (`establishment_infrastructure`)
 
-
-- Selected flow: Female hop planting material, trellis poles, wire, anchors, strings and irrigation assets
-- Amount rule: Record each concrete material, installation or replacement year, service area, consuming nodes and evidenced service life; attribute each burden once across accepted output from its service periods.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Female hop nursery plants only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Attribute establishment and replacement only across the serviced production periods; established stands without such an event do not receive an invented input.
 Raw activity or stage basis: Per 1 kg accepted route-declared farm-gate hop cones over the declared productive-life scenario.
 
+- Selected flow: Female hop nursery plants
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Female hop nursery plants, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_yard_assets`
 - Sources: `cornell-hop-yard-2017`; `cordella-hop-lca-2026`
-- Range: Provisional attributed establishment-material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg material/kg accepted hop cones
-  - Basis: planting and infrastructure material attributed once to 1 kg accepted output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Fertilizer, urea input (`agricultural_nutrient_supply`)
 
@@ -215,6 +208,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
 - Amount rule: Meter or calculate delivered water by block and date; rainfall is not a supplied Product flow.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -235,30 +229,7 @@ Raw activity or stage basis: Per occupied hectare and irrigation week, then norm
   - Evidence kind: External source (`external_source`)
   - Sources: `penn-state-hop-production`
 
-###### Crop-protection and canopy-management inputs (`field_operations_inputs`)
-
-This card records the named flow where it crosses the stated process boundary and keeps its quantity linked to the declared lot, period or route.
-
-
-- Selected flow: Site-reported crop-protection and canopy-management products
-- Amount rule: Record every concrete material, active ingredient where applicable, concentration, quantity, operation, block and date; resolve Product inputs individually before final exchange generation.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: Per occupied hectare and crop year, then normalized to accepted output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_yard_operations`
-- Sources: `cornell-hop-yard-2017`; `cordella-hop-lca-2026`
-- Range: Provisional applied-product mass screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg product/ha/year
-  - Basis: separately identified crop-protection and canopy-management product mass per occupied hectare and crop year
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -322,6 +293,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Mature cone-bearing bines or selectively picked cones at the harvest interface
+- Flow property / unit: Mass / kg
 - Amount rule: Measure harvested wet material consistently with the route and link it to yard, cultivar and lot.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -349,6 +321,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Prunings, leaves, spent bines and cones left in field or otherwise not collected
+- Flow property / unit: Mass / kg
 - Amount rule: Record each state and destination separately and exclude it from accepted product.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -377,30 +350,37 @@ Manual field picking, indoor manual picking and mechanical stripping are alterna
 
 ##### Product flows
 
-###### Harvest energy and services (`harvest_energy`)
+###### Electricity, medium voltage (`harvest_energy`)
 
-This card records the named flow where it crosses the stated process boundary and keeps its quantity linked to the declared lot, period or route.
-
-
-- Selected flow: Fuels, electricity and contracted equipment service used to cut, lower, move, pick or strip the lot
-- Amount rule: Record actual carrier or service, quantity, machine, route, lot and shared run event; resolve each concrete input UUID.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: Per kg material delivered to separation.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_operations`
 - Sources: `uf-ifas-hop-harvest-2019`
-- Range: Provisional harvest-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: MJ/kg collected material
-  - Basis: energy supplied to the selected harvest instance per kg material delivered to separation
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: Per kg material delivered to separation.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_operations`
+- Sources: `uf-ifas-hop-harvest-2019`
 
 ##### Waste flows
 
@@ -416,6 +396,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Selectively picked wet cones or mechanically collected mixture of cones, leaves and stems
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh before separation and declare the physical state and harvest route.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -443,6 +424,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Material lost or removed during cutting, lowering, movement or picking before the separation hand-off
+- Flow property / unit: Mass / kg
 - Amount rule: Reconcile harvest input and collected output and record destination or on-field retention.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
@@ -546,6 +528,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Off-spec whole cones with a documented downgrade, recovery or single-pass rework destination
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh by disposition; link rework to the producing lot and do not count it accepted before successful regrading.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -572,6 +555,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Leaves, stems, chaff and cones rejected after grading
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh chaff and rejected cones separately and record field return, recovery, treatment or disposal destination; exclude all from accepted output.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -705,6 +689,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Cones or fragments rejected after drying with declared destination
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh by batch and exclude from accepted output.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
@@ -731,6 +716,7 @@ This card records the named flow where it crosses the stated process boundary an
 
 
 - Selected flow: Water emitted to air from cone moisture during drying
+- Flow property / unit: Volume / m3
 - Amount rule: Calculate wet input water minus water retained in accepted dried cones and rejects.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -821,6 +807,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_route_exclusivity` | Wet and dried routes | Select one reference route. The wet route excludes drying; the dried route includes the wet-cone chain once and drying once. | `penn-state-hop-production` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

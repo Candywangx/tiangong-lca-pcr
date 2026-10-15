@@ -227,47 +227,22 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Route-specific crop-protection formulation (`parent_crop_protection`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
+###### Diesel fuel (`parent_field_fuel`)
 
-Record this flow at the parent phase boundary and preserve lot, period and destination linkage.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_parent_phase`
-
-###### Field-operation fuel (`parent_field_fuel`)
-
-Record this flow at the parent phase boundary and preserve lot, period and destination linkage.
-
-- Selected flow: Agricultural machinery fuel
-- Flow property / unit: Volume / L
-- Amount rule: Measured fuel consumed for land preparation, sowing or planting, rouging, lifting, storage handling and transplanting attributable to this phase
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_parent_phase`
-- Range: Provisional or method QA interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: L
-  - Basis: broad provisional fuel volume per 1,000 kg accepted reference seed output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Controlled-vernalization electricity (`vernalization_electricity`)
 
@@ -382,29 +357,80 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
 
 ##### Elementary flows
 
-###### Direct managed-soil emissions (`parent_managed_soil_emissions`)
+###### Dinitrogen monoxide, to air (`parent_managed_soil_emissions`)
 
-Record this flow at the parent phase boundary and preserve lot, period and destination linkage.
-
-- Selected flow: Reported managed-soil emission substances to their receiving media
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate each reported substance separately from nutrient, residue and field records; never use a generic pollutant identity
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_parent_phase`
-- Range: Provisional or method QA interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg
-  - Basis: broad provisional aggregate screening mass; concrete dataset retains substances separately per 1,000 kg accepted reference seed output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Ammonia, to air (`parent_managed_soil_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_parent_phase`
+
+###### Nitrogen monoxide, to air (`parent_managed_soil_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_parent_phase`
+
+###### Nitrate, to water (`parent_managed_soil_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_parent_phase`
+
+###### Carbon dioxide, fossil, to air (`parent_managed_soil_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_parent_phase`
 
 ### Process: Reproductive seed production and pollination (`reproductive_seed_production`)
 
@@ -541,47 +567,22 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Route-specific crop-protection formulation (`reproductive_crop_protection`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
+###### Diesel fuel (`reproductive_field_fuel`)
 
-Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_reproductive_phase`
-
-###### Reproductive-field operation fuel (`reproductive_field_fuel`)
-
-Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage.
-
-- Selected flow: Agricultural machinery fuel
-- Flow property / unit: Volume / L
-- Amount rule: Measured fuel for field operations, isolation maintenance, rouging, synchronization and male-row removal
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_reproductive_phase`
-- Range: Provisional or method QA interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: L
-  - Basis: broad provisional fuel volume per 1,000 kg accepted reference seed output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -673,29 +674,80 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
 
 ##### Elementary flows
 
-###### Direct managed-soil emissions (`reproductive_managed_soil_emissions`)
+###### Dinitrogen monoxide, to air (`reproductive_managed_soil_emissions`)
 
-Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage.
-
-- Selected flow: Reported managed-soil emission substances to their receiving media
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate each reported substance separately from nutrient, residue and field records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_reproductive_phase`
-- Range: Provisional or method QA interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg
-  - Basis: broad provisional aggregate screening mass; concrete dataset retains substances separately per 1,000 kg accepted reference seed output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Ammonia, to air (`reproductive_managed_soil_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_reproductive_phase`
+
+###### Nitrogen monoxide, to air (`reproductive_managed_soil_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_reproductive_phase`
+
+###### Nitrate, to water (`reproductive_managed_soil_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_reproductive_phase`
+
+###### Carbon dioxide, fossil, to air (`reproductive_managed_soil_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_reproductive_phase`
 
 ### Process: Harvest, swathing and field stabilization technology delta (`harvest_field_stabilization`)
 
@@ -728,29 +780,20 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Swathing and harvest fuel (`harvest_fuel`)
+###### Diesel fuel (`harvest_fuel`)
 
-Record this flow at the harvest boundary and preserve lot, period and destination linkage.
-
-- Selected flow: Agricultural machinery fuel
-- Flow property / unit: Volume / L
-- Amount rule: Measured fuel consumed for swathing, windrow handling and combine harvest
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest`
-- Range: Provisional or method QA interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 300
-  - Unit: L
-  - Basis: broad provisional fuel volume per 1,000 kg accepted reference seed output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Electricity, medium voltage (`stabilization_energy`)
 
@@ -929,29 +972,20 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Threshing and cleaning fuel (`threshing_cleaning_fuel`)
+###### Diesel fuel (`threshing_cleaning_fuel`)
 
-Record this flow at the conditioning boundary and preserve lot, period and destination linkage.
-
-- Selected flow: Stationary or mobile equipment fuel
-- Flow property / unit: Volume / L
-- Amount rule: Measured fuel when threshing or cleaning is fuel driven
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_conditioning`
-- Range: Provisional or method QA interval
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 300
-  - Unit: L
-  - Basis: broad provisional fuel volume per 1,000 kg accepted reference seed output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -1295,6 +1329,8 @@ Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet
 | `allocation_batch_shared` | shared runs and changeovers | Allocate metered run inputs by causal record or processed mass and assign changeover residues to the affected runs once; never count a shared run at two nodes. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

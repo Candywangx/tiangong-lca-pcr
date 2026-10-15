@@ -233,7 +233,7 @@ process_inventory:
           name: "Irrigation water"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Only supplied irrigation water crosses the foreground product boundary; rainfall is reported separately. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed."
+          description: "Only supplied irrigation water crosses the foreground product boundary; rainfall is reported separately. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Metered or documented delivered irrigation volume; zero for rain-fed fields."
             value_mode: "foreground_record"
@@ -254,40 +254,14 @@ process_inventory:
                 basis_kind: "crop_cycle"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: crop_protection
-          role: "Crop protection product"
-          name: "Crop protection product"
+        - row_id: field_fuel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record applied active product and formulation without assuming every crop receives treatment. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed."
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed."
           amount:
-            expression: "Measured formulation mass applied; zero when absent."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_inputs
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "200"
-                unit: "kg/ha"
-                basis: "per cultivated hectare in one crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: field_fuel
-          role: "Field machinery fuel"
-          name: "Mobile machinery fuel"
-          flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Count combustion fuel used for soil preparation, sowing and crop management, not harvest fuel. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed."
-          amount:
-            expression: "Fuel use from equipment logs or apportioned run records."
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -297,15 +271,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_energy
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "L/ha"
-                basis: "per cultivated hectare in one crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -424,13 +390,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: harvest_fuel
-          role: "Harvest machinery fuel"
-          name: "Mobile machinery fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record combine or other harvest equipment fuel separately from cultivation fuel. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per cultivated hectare per crop cycle, then convert to 1 kg net reference seed."
           amount:
-            expression: "Run-linked fuel consumed in harvest and seed separation."
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -440,15 +406,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_energy
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "L/ha"
-                basis: "per cultivated hectare in one crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: harvest_electricity
           role: "Harvest separation electricity"
           name: "Electricity supply"
@@ -646,13 +604,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: conditioning_fuel
-          role: "Drying heat fuel"
-          name: "Stationary combustion fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record a concrete liquid fuel only if thermal drying uses one; other heat carriers need their own specific exchange. Raw activity or stage basis: per conditioned lot, then convert to 1 kg net reference seed."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per conditioned lot, then convert to 1 kg net reference seed."
           amount:
-            expression: "Measured liquid-fuel input per conditioned seed; zero if absent."
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -662,15 +620,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "2"
-                unit: "L/kg conditioned seed output"
-                basis: "per kg conditioned seed output in an active conditioning run"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1010,7 +960,7 @@ data_sources:
     used_for: "Managed-soil N2O method and input completeness."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:6acac058bd4feea865a937e5e4e26edcddeb58b94f9ab9e717efdd0cd5e769a0"
+  source_sha256: "sha256:7b5e04a5a98939c5a3aeb6fff003a0a146c67ae80297e89e297469aae74bb4e7"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3489"
@@ -1061,16 +1011,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35972"
+    - unit_id: "normative_35236"
       family: "allocation"
       span:
         start:
-          offset: 35972
-          line: 765
+          offset: 35236
+          line: 716
           column: 1
         end:
-          offset: 36884
-          line: 773
+          offset: 36148
+          line: 724
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `single_output_default` | Seed-only field | Capsule, straw and residues without separate collection or independent use remain field residue or waste, not invented co-products. | `eu-poppy-2014` |\n| `straw_coproduct` | Seed plus saleable capsule/straw | If capsules or straw are separately collected and transferred, record both product masses, moisture, destinations and hand-off points. Assign dedicated operations directly; allocate shared cultivation/harvest burdens by consistent dry mass and disclose choice and sensitivity. Latex is not seed. | `eu-poppy-2014` |\n| `run_linkage` | Harvest lot or combined operation | Link each input, output, cleaning and changeover event to a unique run; apportion cross-run shared fuel/electricity once by documented time or throughput, never twice. |  |\n\n"
       headings:
@@ -1089,12 +1039,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35972
-              line: 765
+              offset: 35236
+              line: 716
               column: 1
             end:
-              offset: 36012
-              line: 765
+              offset: 35276
+              line: 716
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1109,16 +1059,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43163"
+    - unit_id: "normative_43192"
       family: "validation"
       span:
         start:
-          offset: 43163
-          line: 809
+          offset: 43192
+          line: 762
           column: 1
         end:
-          offset: 44164
-          line: 819
+          offset: 44193
+          line: 772
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `gate_identity` | reference flow | Match UUID, Mass, kg, farm gate and unprocessed state; never replace with oil, capsule, straw or certified planting seed. |  |\n| `route_and_runs` | harvest technology and runs | Declare hand, combine or sequential operations and throughput; link fuel, seed loss and changeover once. | `eu-poppy-2014`; `usu-seed-poppy` |\n| `coproduct_decision` | capsule/straw | Require independent transfer for co-product status and disclose actual allocation basis; otherwise use residue/waste. | `eu-poppy-2014` |\n| `range_review` | all flow cards | Check bound, unit, denominator, evidence and conditional switch; investigate provisional outliers without replacing real data. |  |\n| `moisture_and_contamination` | food destination and drying | Report actual lot moisture and capsule-dust risk; food-guidance numbers are not category-wide acceptance thresholds. | `eu-poppy-2014` |\n\n"
       headings:
@@ -1137,12 +1087,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43163
-              line: 809
+              offset: 43192
+              line: 762
               column: 1
             end:
-              offset: 43185
-              line: 809
+              offset: 43214
+              line: 762
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1213,106 +1163,106 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "single_output_default"
       identity_kind: "explicit"
-      unit_id: "normative_35972"
+      unit_id: "normative_35236"
       source_span:
         start:
-          offset: 36085
-          line: 769
+          offset: 35349
+          line: 720
           column: 1
         end:
-          offset: 36282
-          line: 769
+          offset: 35546
+          line: 720
           column: 198
     - pointer: "/allocation_rules/1"
       rule_id: "straw_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_35972"
+      unit_id: "normative_35236"
       source_span:
         start:
-          offset: 36283
-          line: 770
+          offset: 35547
+          line: 721
           column: 1
         end:
-          offset: 36655
-          line: 770
+          offset: 35919
+          line: 721
           column: 373
     - pointer: "/allocation_rules/2"
       rule_id: "run_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_35972"
+      unit_id: "normative_35236"
       source_span:
         start:
-          offset: 36656
-          line: 771
+          offset: 35920
+          line: 722
           column: 1
         end:
-          offset: 36882
-          line: 771
+          offset: 36146
+          line: 722
           column: 227
     - pointer: "/validation_rules/0"
       rule_id: "gate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_43163"
+      unit_id: "normative_43192"
       source_span:
         start:
-          offset: 43258
-          line: 813
+          offset: 43287
+          line: 766
           column: 1
         end:
-          offset: 43421
-          line: 813
+          offset: 43450
+          line: 766
           column: 164
     - pointer: "/validation_rules/1"
       rule_id: "route_and_runs"
       identity_kind: "explicit"
-      unit_id: "normative_43163"
+      unit_id: "normative_43192"
       source_span:
         start:
-          offset: 43422
-          line: 814
+          offset: 43451
+          line: 767
           column: 1
         end:
-          offset: 43615
-          line: 814
+          offset: 43644
+          line: 767
           column: 194
     - pointer: "/validation_rules/2"
       rule_id: "coproduct_decision"
       identity_kind: "explicit"
-      unit_id: "normative_43163"
+      unit_id: "normative_43192"
       source_span:
         start:
-          offset: 43616
-          line: 815
+          offset: 43645
+          line: 768
           column: 1
         end:
-          offset: 43794
-          line: 815
+          offset: 43823
+          line: 768
           column: 179
     - pointer: "/validation_rules/3"
       rule_id: "range_review"
       identity_kind: "explicit"
-      unit_id: "normative_43163"
+      unit_id: "normative_43192"
       source_span:
         start:
-          offset: 43795
-          line: 816
+          offset: 43824
+          line: 769
           column: 1
         end:
-          offset: 43962
-          line: 816
+          offset: 43991
+          line: 769
           column: 168
     - pointer: "/validation_rules/4"
       rule_id: "moisture_and_contamination"
       identity_kind: "explicit"
-      unit_id: "normative_43163"
+      unit_id: "normative_43192"
       source_span:
         start:
-          offset: 43963
-          line: 817
+          offset: 43992
+          line: 770
           column: 1
         end:
-          offset: 44162
-          line: 817
+          offset: 44191
+          line: 770
           column: 200
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1341,27 +1291,27 @@ normative_context:
           column: 133
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35972"
+      unit_id: "normative_35236"
       source_span:
         start:
-          offset: 35972
-          line: 765
+          offset: 35236
+          line: 716
           column: 1
         end:
-          offset: 36012
-          line: 765
+          offset: 35276
+          line: 716
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43163"
+      unit_id: "normative_43192"
       source_span:
         start:
-          offset: 43163
-          line: 809
+          offset: 43192
+          line: 762
           column: 1
         end:
-          offset: 43185
-          line: 809
+          offset: 43214
+          line: 762
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1370,5 +1320,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:6acac058bd4feea865a937e5e4e26edcddeb58b94f9ab9e717efdd0cd5e769a0"
-  generated_content_sha256: "sha256:c2b1104ffbeb726b0bb7864cc64bd334dd1e3aadb74b805fdceff8dc98b24580"
+    sha256: "sha256:7b5e04a5a98939c5a3aeb6fff003a0a146c67ae80297e89e297469aae74bb4e7"
+  generated_content_sha256: "sha256:aa93a1f139293f31cd6ab6f8495892872c35035c34ea3bc0dc0ebda18b3b81e4"

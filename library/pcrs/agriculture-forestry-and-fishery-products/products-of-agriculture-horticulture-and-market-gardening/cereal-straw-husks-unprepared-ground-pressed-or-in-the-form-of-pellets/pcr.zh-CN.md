@@ -118,29 +118,35 @@ sync_with: pcr.en-US.md
   - 基准类型: `reference_flow`
   - 证据类型: `reasoned_estimate`
 
-###### 收集机械能源供应（`collection_energy`）
+###### 中压电力（`collection_energy`）
 
-记录收集、打捆和装载残余物所用燃料、电力或承包机械能源。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1,000 kg reference product。
 
-- 选定流: Collection machinery energy supply
-- 流属性/单位: Energy / MJ
-- 数量规则: Measured carrier quantity converted to delivered energy
-- 数值来源模式: `foreground_record`
-- 适用范围: `technology_specific`
-原始活动或阶段基准：per 1,000 kg reference product.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `reference_flow`
-- 证据类型: `collected_record`
-- 采集协议: `cp_energy`
-- 数量范围: 定量校验范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 1500
-  - 单位: MJ/1,000 kg reference product
-  - 基准: per 1,000 kg reference product
-  - 基准类型: `reference_flow`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
+
+###### 柴油（`collection_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1,000 kg reference product。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ###### 从来源地到工厂的公路货运（`inbound_transport`）
 
@@ -261,29 +267,35 @@ sync_with: pcr.en-US.md
   - 证据类型: `method_formula`
   - 来源: `mass-balance-identity`
 
-###### 接收与稳定化能源（`receiving_energy`）
+###### 中压电力（`receiving_energy`）
 
-按能源载体记录输送、筛分、通风或干燥能源。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg accepted stabilized output。
 
-- 选定流: Receiving and stabilization energy supply
-- 流属性/单位: Energy / MJ
-- 数量规则: Metered or invoiced energy assigned to the receiving lot
-- 数值来源模式: `foreground_record`
-- 适用范围: `technology_specific`
-原始活动或阶段基准：per kg accepted stabilized output.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: `collected_record`
-- 采集协议: `cp_energy`
-- 数量范围: 定量校验范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 5
-  - 单位: MJ/kg accepted stabilized output
-  - 基准: per kg accepted stabilized output
-  - 基准类型: `process_output`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
+
+###### 柴油（`receiving_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg accepted stabilized output。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ###### 稳定化或清洁工艺水（`receiving_water`）
 
@@ -452,30 +464,35 @@ sync_with: pcr.en-US.md
   - 证据类型: `method_formula`
   - 来源: `mass-balance-identity`
 
-###### 粒度减小能源（`size_reduction_energy`）
+###### 中压电力（`size_reduction_energy`）
 
-在前景记录中保留实际能源载体。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg size-reduced output。
 
-- 选定流: Size-reduction energy supply
-- 流属性/单位: Energy / MJ
-- 数量规则: Metered energy assigned to cutting, milling, conveying and dust collection
-- 数值来源模式: `foreground_record`
-- 适用范围: `technology_specific`
-原始活动或阶段基准：per kg size-reduced output.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: `collected_record`
-- 采集协议: `cp_energy`
-- 数量范围: 定量校验范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 5
-  - 单位: MJ/kg size-reduced output
-  - 基准: per kg size-reduced output
-  - 基准类型: `process_output`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
+###### 柴油（`size_reduction_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg size-reduced output。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ##### 废物流
 
@@ -595,53 +612,50 @@ sync_with: pcr.en-US.md
   - 证据类型: `method_formula`
   - 来源: `mass-balance-identity`
 
-###### 成形电力与机械能源（`forming_energy`）
+###### 中压电力（`forming_energy`）
 
-按批次或连续报告期分配。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg formed output。
 
-- 选定流: Forming energy supply
-- 流属性/单位: Energy / MJ
-- 数量规则: Metered energy for pressing, pelletizing, cooling and screening
-- 数值来源模式: `foreground_record`
-- 适用范围: `technology_specific`
-原始活动或阶段基准：per kg formed output.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: `collected_record`
-- 采集协议: `cp_energy`
-- 数量范围: 定量校验范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 10
-  - 单位: MJ/kg formed output
-  - 基准: per kg formed output
-  - 基准类型: `process_output`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
-###### 成形用蒸汽或外购工艺热（`forming_heat`）
+###### 柴油（`forming_energy_diesel`）
 
-将这一独立计量的调质服务与机械能源分开。
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg formed output。
 
-- 选定流: Steam or purchased process heat
-- 流属性/单位: Energy / MJ
-- 数量规则: Metered steam energy or purchased heat; zero when inactive
-- 数值来源模式: `foreground_record`
-- 适用范围: `technology_specific`
-原始活动或阶段基准：per kg formed output.
-
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: `collected_record`
-- 采集协议: `cp_energy`
-- 数量范围: 定量校验范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 10
-  - 单位: MJ/kg formed output
-  - 基准: per kg formed output
-  - 基准类型: `process_output`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
+
+###### 购入蒸汽（`forming_heat`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg formed output。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ###### 成形添加水（`forming_water`）
 
@@ -786,29 +800,35 @@ sync_with: pcr.en-US.md
   - 证据类型: `method_formula`
   - 来源: `mass-balance-identity`
 
-###### 储存与装运能源（`storage_energy`）
+###### 中压电力（`storage_energy`）
 
-将能源一次性分配给储存批次或期间。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg reference product。
 
-- 选定流: Storage and loadout energy supply
-- 流属性/单位: Energy / MJ
-- 数量规则: Metered energy for ventilation, conveying, weighing and loadout
-- 数值来源模式: `foreground_record`
-- 适用范围: `site_specific`
-原始活动或阶段基准：per kg reference product.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `reference_flow`
-- 证据类型: `collected_record`
-- 采集协议: `cp_energy`
-- 数量范围: 定量校验范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 3
-  - 单位: MJ/kg reference product
-  - 基准: per kg reference product
-  - 基准类型: `reference_flow`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
+
+###### 柴油（`storage_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg reference product。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ###### 袋装产品柔性包装（`packaging_input`）
 
@@ -955,6 +975,8 @@ sync_with: pcr.en-US.md
 在上游分离点列举谷粒、秸秆、谷壳及全部预期产品。优先采用上游谷物 PCR 或供应商分配；否则先检验细分，若仍有共同种植负担，则依 ISO 14044 一致采用并披露物理或经济分配。仅当适用研究规则明确要求时才允许零负担截断。前景路线按实测批次平衡处理合格、降级和废物状态。返工保留在产生节点内，每项拒收量只能有一个返工、降级、回收或处置路径。按共同干物质基准核对来源、内部转移和最终交接，避免双计。
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

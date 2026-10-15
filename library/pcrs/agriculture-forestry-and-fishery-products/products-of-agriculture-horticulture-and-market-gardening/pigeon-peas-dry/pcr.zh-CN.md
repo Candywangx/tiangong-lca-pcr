@@ -16,7 +16,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pigeon-peas-dry |
-| classification_refs | CPC 3.0:01707 Pigeon peas, dry; mapping relation: exact |
+| classification_refs | CPC 3.0:01707 Pigeon peas, dry; mapping relation: narrower |
 | covered_products | Mature, cleaned and graded dry whole pigeonpea grain at farm gate |
 | excluded_products | Green vegetable pigeonpea; planting seed sold as seed; split dhal; flour; cooked or canned product; downstream milling |
 | representative_product | Mature dry whole grain of *Cajanus cajan* |
@@ -235,42 +235,9 @@ Record delivered irrigation only when it occurs; rainfall is not a product input
   - 基准类型： 作物周期 (`crop_cycle`)
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
-###### 路线特定植保制剂（`cultivation_supplies_services`）
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-按产品身份和田间事件记录每种植保产品及非养分接种剂，不与能源或田间服务合并。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式: Foreground record (`foreground_record`)
-- 适用范围: Site-specific (`site_specific`)
-原始活动或阶段基准：per hectare and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: Crop cycle (`crop_cycle`)
-- 证据类型: Collected record (`collected_record`)
-- 采集协议: `cp_cultivation`
-- 来源:
-###### 路线特定非营养接种剂（`cultivation_supplies_services_inoculant`）
-
-仅对实际施用的一种非营养接种剂使用这张独立卡。核实其制剂、施用事件和产品质量；植保制剂须另列。不得由本模板推定必然使用。
-
-按产品身份和田间事件记录每种植保产品及非养分接种剂，不与能源或田间服务合并。
-
-- 选定流：一种路线特定非营养接种剂；具体身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式: Foreground record (`foreground_record`)
-- 适用范围: Site-specific (`site_specific`)
-原始活动或阶段基准：per hectare and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: Crop cycle (`crop_cycle`)
-- 证据类型: Collected record (`collected_record`)
-- 采集协议: `cp_cultivation`
-- 来源:
+处理材料必需记录：数据包完成前，按具体组成、产品身份、数量和使用事件逐项列出实际使用的田间处理产品或沤制助剂；不得发布通用处理材料交换，身份缺失时不得假定为零。
 
 ###### 中压电力投入（`field_energy`）
 
@@ -304,30 +271,7 @@ Record delivered irrigation only when it occurs; rainfall is not a product input
 - 证据类型: Calculated from collection (`calculated_from_collection`)
 - 采集协议: `cp_cultivation`
 
-###### 非能源田间服务 (`field_non_energy_services`)
-
-当人工、畜力或其他非能源田间服务表示为产品投入时分别记录。
-
-- 选定流: Non-energy field services
-- 流属性/单位: Service / service-hour
-- 数量规则: measured service quantity by operation
-- 数值来源模式: Foreground record (`foreground_record`)
-- 适用范围: Site-specific (`site_specific`)
-原始活动或阶段基准：per hectare and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: Crop cycle (`crop_cycle`)
-- 证据类型: Collected record (`collected_record`)
-- 采集协议: `cp_cultivation`
-- 来源:
-- 数量范围: Provisional non-energy service screen
-  - 范围角色: QA guardrail (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 1000
-  - 单位: service-hour/ha per crop cycle
-  - 基准: recorded non-energy field services for one hectare
-  - 基准类型: Crop cycle (`crop_cycle`)
-  - 证据类型: Reasoned estimate (`reasoned_estimate`)
+作业服务必需记录：数据包完成前，按作业任务、供应商、服务范围、原始计量单位及所含负荷逐项明确实际采购的非能源服务；不得建立通用服务交换。供应商服务已包含的燃料、电力和设备保留在该供应商边界内，同一作业仅计入一次。
 
 ##### 废物流
 
@@ -851,30 +795,53 @@ Record damaged or contaminated grain, foreign matter, dust and physical loss. As
   - 基准类型: Process output (`process_output`)
   - 证据类型: Reasoned estimate (`reasoned_estimate`)
 
-###### 终干燥与返工能源 (`final_drying_energy`)
+###### 中压电力（`final_drying_energy`）
 
-记录终干燥或返工使用的购入燃料、电力及符合条件的能源服务；自然太阳干燥的购入能源为零。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per final-drying or rework batch。
 
-- 选定流: Final-drying and rework energy supply
-- 流属性/单位: Energy / MJ
-- 数量规则: energy converted from measured carrier and qualifying service records by batch
-- 数值来源模式: Calculated value (`calculated_value`)
-- 适用范围: Technology-specific (`technology_specific`)
-原始活动或阶段基准：per final-drying or rework batch.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: Process output (`process_output`)
-- 证据类型: Calculated from collection (`calculated_from_collection`)
-- 采集协议: `cp_final_drying`
-- 来源: `icrisat-pigeonpea-production-1992`
-- 数量范围: Provisional final-drying energy screen
-  - 范围角色: QA guardrail (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 20
-  - 单位: MJ/kg stabilized grain
-  - 基准: one final-drying or rework batch
-  - 基准类型: Process output (`process_output`)
-  - 证据类型: Reasoned estimate (`reasoned_estimate`)
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_final_drying`
+- 来源：`icrisat-pigeonpea-production-1992`
+
+###### 柴油（`final_drying_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per final-drying or rework batch。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_final_drying`
+- 来源：`icrisat-pigeonpea-production-1992`
+
+###### 购入蒸汽（`final_drying_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per final-drying or rework batch。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_final_drying`
+- 来源：`icrisat-pigeonpea-production-1992`
 
 ##### 废物流
 
@@ -1035,6 +1002,8 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 | `allocation_reject_exit` | Downgrade and waste | Downgraded outputs follow the complete-output attribution rule; treatment of waste remains with the producing node unless a disclosed downstream waste convention applies. |  |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

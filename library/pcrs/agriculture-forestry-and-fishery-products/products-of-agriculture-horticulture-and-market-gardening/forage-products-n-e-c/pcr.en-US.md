@@ -203,30 +203,7 @@ Raw activity or stage basis: Per field and crop period, then normalized to 1 kg 
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrients`
 
-###### Crop protection products (`crop_protection_inputs`)
-
-Record only products actually applied, with trade product, active ingredient, treated area and date.
-
-- Selected flow: Actual crop-protection product; UUID unresolved until product identity is known
-- Flow property / unit: Product-specific property and native unit
-- Amount rule: Applied amount reconciled to purchase and application logs
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: Per 1 kg reference forage.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_protection`
-
-- Range: Provisional route-screening interval; replace with product-, site- and technology-specific evidence before reviewed or active use
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg product/kg reference forage
-  - Basis: Broad screening interval for applied crop-protection products
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water (`irrigation_water`)
 
@@ -949,6 +926,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | allocation_shared_assets | Shared fields, machinery and conditioning assets | Prefer metered use or operating time; otherwise use a documented physical driver. Enumerate consuming nodes and periods and prevent duplicate burdens. | iso-14044-allocation |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

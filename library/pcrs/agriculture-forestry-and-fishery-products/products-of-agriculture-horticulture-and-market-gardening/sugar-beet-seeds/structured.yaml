@@ -262,7 +262,7 @@ process_inventory:
           name: "Irrigation water"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record this flow at the parent phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          description: "Record this flow at the parent phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured irrigation water supplied during parent establishment, overwintering and vernalization management"
             value_mode: "foreground_record"
@@ -283,14 +283,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: parent_crop_protection
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
+        - row_id: parent_field_fuel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record this flow at the parent phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
           amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -301,32 +301,6 @@ process_inventory:
               collection_protocol_id: cp_parent_phase
               source_ids: []
             ranges: []
-        - row_id: parent_field_fuel
-          role: "Field-operation fuel"
-          name: "Agricultural machinery fuel"
-          flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record this flow at the parent phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
-          amount:
-            expression: "Measured fuel consumed for land preparation, sowing or planting, rouging, lifting, storage handling and transplanting attributable to this phase"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_parent_phase
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "L"
-                basis: "broad provisional fuel volume per 1,000 kg accepted reference seed output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: vernalization_electricity
           role: "Controlled-vernalization electricity"
           name: "Electricity"
@@ -441,13 +415,13 @@ process_inventory:
                 source_ids: []
       elementary:
         - row_id: parent_managed_soil_emissions
-          role: "Direct managed-soil emissions"
-          name: "Reported managed-soil emission substances to their receiving media"
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record this flow at the parent phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
           amount:
-            expression: "Calculate each reported substance separately from nutrient, residue and field records; never use a generic pollutant identity"
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -457,15 +431,79 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_parent_phase
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "kg"
-                basis: "broad provisional aggregate screening mass; concrete dataset retains substances separately per 1,000 kg accepted reference seed output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: parent_managed_soil_emissions_nh3
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parent_phase
+              source_ids: []
+            ranges: []
+        - row_id: parent_managed_soil_emissions_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO"
+          description: "Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parent_phase
+              source_ids: []
+            ranges: []
+        - row_id: parent_managed_soil_emissions_nitrate
+          role: "Nitrate, to water"
+          name: "Nitrate, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3-"
+          description: "Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parent_phase
+              source_ids: []
+            ranges: []
+        - row_id: parent_managed_soil_emissions_co2_fossil
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parent_phase
+              source_ids: []
+            ranges: []
   - id: reproductive_seed_production
     label: "Reproductive seed production and pollination"
     inputs:
@@ -592,7 +630,7 @@ process_inventory:
           name: "Irrigation water"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          description: "Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured irrigation water supplied during reproductive growth and pollination"
             value_mode: "foreground_record"
@@ -613,14 +651,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: reproductive_crop_protection
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
+        - row_id: reproductive_field_fuel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
           amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -631,32 +669,6 @@ process_inventory:
               collection_protocol_id: cp_reproductive_phase
               source_ids: []
             ranges: []
-        - row_id: reproductive_field_fuel
-          role: "Reproductive-field operation fuel"
-          name: "Agricultural machinery fuel"
-          flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
-          amount:
-            expression: "Measured fuel for field operations, isolation maintenance, rouging, synchronization and male-row removal"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_reproductive_phase
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "L"
-                basis: "broad provisional fuel volume per 1,000 kg accepted reference seed output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -747,13 +759,13 @@ process_inventory:
                 source_ids: []
       elementary:
         - row_id: reproductive_managed_soil_emissions
-          role: "Direct managed-soil emissions"
-          name: "Reported managed-soil emission substances to their receiving media"
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record this flow at the reproductive phase boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
           amount:
-            expression: "Calculate each reported substance separately from nutrient, residue and field records"
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -763,15 +775,79 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_reproductive_phase
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "kg"
-                basis: "broad provisional aggregate screening mass; concrete dataset retains substances separately per 1,000 kg accepted reference seed output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: reproductive_managed_soil_emissions_nh3
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reproductive_phase
+              source_ids: []
+            ranges: []
+        - row_id: reproductive_managed_soil_emissions_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO"
+          description: "Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reproductive_phase
+              source_ids: []
+            ranges: []
+        - row_id: reproductive_managed_soil_emissions_nitrate
+          role: "Nitrate, to water"
+          name: "Nitrate, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3-"
+          description: "Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reproductive_phase
+              source_ids: []
+            ranges: []
+        - row_id: reproductive_managed_soil_emissions_co2_fossil
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reproductive_phase
+              source_ids: []
+            ranges: []
   - id: harvest_field_stabilization
     label: "Harvest, swathing and field stabilization technology delta"
     inputs:
@@ -804,13 +880,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: harvest_fuel
-          role: "Swathing and harvest fuel"
-          name: "Agricultural machinery fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record this flow at the harvest boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
           amount:
-            expression: "Measured fuel consumed for swathing, windrow handling and combine harvest"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -820,15 +896,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "300"
-                unit: "L"
-                basis: "broad provisional fuel volume per 1,000 kg accepted reference seed output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: stabilization_energy
           role: "Electricity, medium voltage"
           name: "Electricity, medium voltage"
@@ -1010,15 +1078,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: threshing_cleaning_fuel
-          role: "Threshing and cleaning fuel"
-          name: "Stationary or mobile equipment fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record this flow at the conditioning boundary and preserve lot, period and destination linkage. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted cleaned seed-grade sugar beet seed."
           amount:
-            expression: "Measured fuel when threshing or cleaning is fuel driven"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -1026,15 +1094,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "300"
-                unit: "L"
-                basis: "broad provisional fuel volume per 1,000 kg accepted reference seed output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1596,7 +1656,7 @@ data_sources:
     used_for: "Reference normalization and material reconciliation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a7b6216f15d87fde17dfc9c1d67dc6e5b7ea04a9720ce3e668ca85cc4e0affc3"
+  source_sha256: "sha256:108aacfaa4948471a7b1cc1d328b393f5eb33b7187794a1610e8204fc85586ca"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4796"
@@ -1647,16 +1707,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_63435"
+    - unit_id: "normative_69563"
       family: "allocation"
       span:
         start:
-          offset: 63435
-          line: 1286
+          offset: 69563
+          line: 1320
           column: 1
         end:
-          offset: 65084
-          line: 1297
+          offset: 71212
+          line: 1331
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_phase_linkage` | multi-period campaign | Attribute first-period establishment/vernalization and second-period reproductive burdens once to the resulting lot using traceable field and crop-year links; do not duplicate burdens across annual datasets. | `cfia-sugar-beet-biology` |\n| `allocation_parent_routes` | route alternatives | Direct-seeded and steckling routes are mutually exclusive. Do not average both unless a production-weighted aggregate reports each route separately before aggregation. | `cfia-sugar-beet-biology` |\n| `allocation_intended_outputs` | accepted and downgraded seed | Treat accepted seed and any intentionally marketed downgraded viable seed as the complete intended output set. Prefer physical mass allocation when subdivision cannot avoid shared burdens; disclose prices and sensitivity if economic allocation is used. |  |\n| `allocation_residue_waste` | parent biomass, field residue, chaff and rejects | Treat material without intended product hand-off as residue or waste; do not assign avoided burden without a documented recovery function and destination. |  |\n| `allocation_rework` | re-cleaned or re-graded seed | Return rework to the producing lot, retain its processing burdens once, and exclude it from accepted output until it passes release criteria. |  |\n| `allocation_batch_shared` | shared runs and changeovers | Allocate metered run inputs by causal record or processed mass and assign changeover residues to the affected runs once; never count a shared run at two nodes. |  |\n\n"
       headings:
@@ -1675,12 +1735,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 63435
-              line: 1286
+              offset: 69563
+              line: 1320
               column: 1
             end:
-              offset: 63475
-              line: 1286
+              offset: 69603
+              line: 1320
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1695,16 +1755,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_71269"
+    - unit_id: "normative_78162"
       family: "validation"
       span:
         start:
-          offset: 71269
-          line: 1332
+          offset: 78162
+          line: 1368
           column: 1
         end:
-          offset: 73206
-          line: 1346
+          offset: 80099
+          line: 1382
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | The flow UUID, mass property, unit group, 1,000 kg amount, market state and required qualifiers shall all be present and consistent. |  |\n| `validate_route_exclusivity` | parent production | Exactly one direct-seeded or steckling route shall be declared per foreground package, with all required phases linked. | `cfia-sugar-beet-biology` |\n| `validate_period_once` | multi-period attribution | Each establishment, vernalization, reproductive and termination event shall be attributed once and only once to released outputs. |  |\n| `validate_isolation_pollination` | reproductive production | Verify isolation evidence, parent identity, flowering/pollination management and male-parent disposition before accepting varietal-identity claims. | `oecd-sugar-fodder-beet-seed-scheme`; `usda-aphis-sugar-beet-seed-production` |\n| `validate_batch_changeover` | conditioning and grading | Runs, shared energy, cleaning and changeover residues shall carry run and lot keys and shall not be double counted. |  |\n| `validate_output_states` | grading | Accepted, downgraded viable, rejected, sample and residue states shall have distinct quantities and hand-offs; rejected material cannot enter the reference output. |  |\n| `validate_rework_loop` | re-cleaning or re-grading | Every rework loop shall return to a named node, retain prior burdens and close before release. |  |\n| `validate_treatment_exclusion` | product state | Reject a dataset that includes polishing, washing, priming, coating, pelleting or chemical seed treatment while claiming this reference state. | `imanishi-et-al-2019` |\n| `validate_mass_balance` | all material nodes | Investigate unexplained mass-balance differences and disclose accepted uncertainty before use as secondary or background data. | `mass-balance-identity` |\n\n"
       headings:
@@ -1723,12 +1783,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 71269
-              line: 1332
+              offset: 78162
+              line: 1368
               column: 1
             end:
-              offset: 71291
-              line: 1332
+              offset: 78184
+              line: 1368
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1812,197 +1872,197 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_phase_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 63548
-          line: 1290
+          offset: 69676
+          line: 1324
           column: 1
         end:
-          offset: 63840
-          line: 1290
+          offset: 69968
+          line: 1324
           column: 293
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_parent_routes"
       identity_kind: "explicit"
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 63841
-          line: 1291
+          offset: 69969
+          line: 1325
           column: 1
         end:
-          offset: 64090
-          line: 1291
+          offset: 70218
+          line: 1325
           column: 250
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_intended_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 64091
-          line: 1292
+          offset: 70219
+          line: 1326
           column: 1
         end:
-          offset: 64413
-          line: 1292
+          offset: 70541
+          line: 1326
           column: 323
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_residue_waste"
       identity_kind: "explicit"
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 64414
-          line: 1293
+          offset: 70542
+          line: 1327
           column: 1
         end:
-          offset: 64655
-          line: 1293
+          offset: 70783
+          line: 1327
           column: 242
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 64656
-          line: 1294
+          offset: 70784
+          line: 1328
           column: 1
         end:
-          offset: 64857
-          line: 1294
+          offset: 70985
+          line: 1328
           column: 202
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_batch_shared"
       identity_kind: "explicit"
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 64858
-          line: 1295
+          offset: 70986
+          line: 1329
           column: 1
         end:
-          offset: 65082
-          line: 1295
+          offset: 71210
+          line: 1329
           column: 225
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 71364
-          line: 1336
+          offset: 78257
+          line: 1372
           column: 1
         end:
-          offset: 71552
-          line: 1336
+          offset: 78445
+          line: 1372
           column: 189
     - pointer: "/validation_rules/1"
       rule_id: "validate_route_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 71553
-          line: 1337
+          offset: 78446
+          line: 1373
           column: 1
         end:
-          offset: 71755
-          line: 1337
+          offset: 78648
+          line: 1373
           column: 203
     - pointer: "/validation_rules/2"
       rule_id: "validate_period_once"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 71756
-          line: 1338
+          offset: 78649
+          line: 1374
           column: 1
         end:
-          offset: 71944
-          line: 1338
+          offset: 78837
+          line: 1374
           column: 189
     - pointer: "/validation_rules/3"
       rule_id: "validate_isolation_pollination"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 71945
-          line: 1339
+          offset: 78838
+          line: 1375
           column: 1
         end:
-          offset: 72237
-          line: 1339
+          offset: 79130
+          line: 1375
           column: 293
     - pointer: "/validation_rules/4"
       rule_id: "validate_batch_changeover"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 72238
-          line: 1340
+          offset: 79131
+          line: 1376
           column: 1
         end:
-          offset: 72417
-          line: 1340
+          offset: 79310
+          line: 1376
           column: 180
     - pointer: "/validation_rules/5"
       rule_id: "validate_output_states"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 72418
-          line: 1341
+          offset: 79311
+          line: 1377
           column: 1
         end:
-          offset: 72625
-          line: 1341
+          offset: 79518
+          line: 1377
           column: 208
     - pointer: "/validation_rules/6"
       rule_id: "validate_rework_loop"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 72626
-          line: 1342
+          offset: 79519
+          line: 1378
           column: 1
         end:
-          offset: 72780
-          line: 1342
+          offset: 79673
+          line: 1378
           column: 155
     - pointer: "/validation_rules/7"
       rule_id: "validate_treatment_exclusion"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 72781
-          line: 1343
+          offset: 79674
+          line: 1379
           column: 1
         end:
-          offset: 73000
-          line: 1343
+          offset: 79893
+          line: 1379
           column: 220
     - pointer: "/validation_rules/8"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 73001
-          line: 1344
+          offset: 79894
+          line: 1380
           column: 1
         end:
-          offset: 73204
-          line: 1344
+          offset: 80097
+          line: 1380
           column: 204
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2031,27 +2091,27 @@ normative_context:
           column: 210
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_63435"
+      unit_id: "normative_69563"
       source_span:
         start:
-          offset: 63435
-          line: 1286
+          offset: 69563
+          line: 1320
           column: 1
         end:
-          offset: 63475
-          line: 1286
+          offset: 69603
+          line: 1320
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_71269"
+      unit_id: "normative_78162"
       source_span:
         start:
-          offset: 71269
-          line: 1332
+          offset: 78162
+          line: 1368
           column: 1
         end:
-          offset: 71291
-          line: 1332
+          offset: 78184
+          line: 1368
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2060,5 +2120,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a7b6216f15d87fde17dfc9c1d67dc6e5b7ea04a9720ce3e668ca85cc4e0affc3"
-  generated_content_sha256: "sha256:ccf130be19da028dbe75758413522e0f4b1e6b94ee01d7c3e93668f20eabb07b"
+    sha256: "sha256:108aacfaa4948471a7b1cc1d328b393f5eb33b7187794a1610e8204fc85586ca"
+  generated_content_sha256: "sha256:1b29f0cb817827c7aaf151a36b83ac7320d2af9fc2b6fda842d39469b47922f4"

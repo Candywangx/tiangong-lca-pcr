@@ -93,12 +93,12 @@ Products with their own named CPC leaf are excluded, as are oil extraction, pres
 
 ##### Product flows
 
-###### One route-identified planting-stock product (`planting_material_input`)
+###### Nursery plants for the declared oil-fruit species (`planting_material_input`)
 
 Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
 
-- Selected flow: One route-identified planting-stock product; exact route identity unresolved
-- Flow property / unit: Product quantity / kg or item, fixed per identified product
+- Selected flow: Nursery plants for the declared oil-fruit species
+- Flow property / unit: Mass / kg
 - Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -245,30 +245,7 @@ Raw activity or stage basis: actual energy supplied to productive and harvest op
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_production_inputs`
 
-###### Crop-protection formulations (`crop_protection_input`)
-
-Record crop-protection formulations at this node while preserving traceable species, state, batch, and destination evidence.
-
-- Selected flow: Declared crop-protection formulations
-- Flow property / unit: Mass of formulation / kg
-- Amount rule: record formulation, active ingredient, concentration and application event
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: all formulations retained by identity before any total.
-
-- Normalization basis: per declared reference flow
-- Basis kind: 过程输出 (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_production_inputs`
-- Range: Foreground QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 150
-  - Unit: kg formulation/ha·year
-  - Basis: all formulations retained by identity before any total
-  - Basis kind: 过程输出 (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -415,30 +392,35 @@ Raw activity or stage basis: zero when water-using route is inactive.
   - Basis kind: 过程输出 (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Sorting, cooling and holding energy (`conditioning_energy_input`)
+###### Electricity, medium voltage (`conditioning_energy_input`)
 
-Record sorting, cooling and holding energy at this node while preserving traceable species, state, batch, and destination evidence.
-
-- Selected flow: Energy supply for actual conditioning equipment
-- Flow property / unit: Carrier quantity or energy / kWh, MJ, kg, L or m3
-- Amount rule: record actual electricity, fuel or purchased cooling by batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: route-conditional energy before farm-gate hand-off.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: 过程输出 (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_conditioning_batch`
-- Range: Foreground QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: MJ/1,000 kg accepted output
-  - Basis: route-conditional energy before farm-gate hand-off
-  - Basis kind: 过程输出 (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+###### Diesel fuel (`conditioning_energy_input_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: route-conditional energy before farm-gate hand-off.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning_batch`
 
 ##### Waste flows
 
@@ -670,6 +652,8 @@ Raw activity or stage basis: fruit and packaging streams remain separate.
 | `allocation_rework` | rework and returns | Attribute the rework loop to its producing node and do not count returned material again as new input. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

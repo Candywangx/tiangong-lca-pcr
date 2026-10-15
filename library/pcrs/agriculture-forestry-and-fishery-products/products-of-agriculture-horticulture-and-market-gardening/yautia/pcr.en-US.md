@@ -226,29 +226,20 @@ Raw activity or stage basis: per ha and crop cycle.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Field machinery fuel (`field_fuel`)
+###### Diesel fuel (`field_fuel`)
 
-Record each fuel by operation and avoid double counting contracted services.
-
-- Selected flow: Mobile-machinery fuel for field operations
-- Flow property / unit: Volume or energy / L or MJ
-- Amount rule: Purchases or machine-use records allocated to the cycle
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per ha and crop cycle.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_water_energy`
-- Range: Provisional field-fuel screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 400
-  - Unit: L diesel-equivalent/ha/cycle
-  - Basis: direct field fuel per occupied hectare; zero requires a manual or externally serviced route
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -371,29 +362,20 @@ Raw activity or stage basis: per harvest operation.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Harvest fuel (`harvest_fuel`)
+###### Diesel fuel (`harvest_fuel`)
 
-Record direct mobile-machinery fuel used to lift and collect the crop; a manual or electric route records zero.
-
-- Selected flow: Mobile-machinery fuel for harvest
-- Flow property / unit: Volume or energy / L or MJ
-- Amount rule: Metered, invoiced or machine-hour-derived fuel allocated to raw lifted output
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg raw lifted output.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_mass`
-- Range: Provisional harvest-fuel screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 50
-  - Unit: L diesel-equivalent/1,000 kg raw lifted output
-  - Basis: direct mobile-machinery fuel per 1,000 kg raw lifted output; zero applies when no fuel-powered harvest equipment is used
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Harvest electricity (`harvest_electricity`)
 
@@ -800,6 +782,8 @@ Raw activity or stage basis: per kg prepared material graded.
 | `allocation_shared_operations` | shared operations | Assign separable inputs directly before allocating remaining shared burdens; disclose output quantities, prices where used, method and precedence. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

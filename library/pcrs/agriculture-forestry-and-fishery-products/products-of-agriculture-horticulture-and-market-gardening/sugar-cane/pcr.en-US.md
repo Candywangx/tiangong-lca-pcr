@@ -198,24 +198,7 @@ Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agr
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 
-###### Route-specific crop-protection formulation (`crop_protection_inputs`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record this flow for the linked field, crop period, harvest event or lot and retain its state and destination.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources: `sra-weed-manual-2021`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Electricity, medium voltage input (`field_energy_supply`)
 
@@ -396,32 +379,21 @@ Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agr
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
-###### Nitrogen loss by leaching and runoff (`nitrogen_leaching_runoff`)
+###### Nitrate, to water (`nitrogen_leaching_runoff`)
 
-Record this flow for the linked field, crop period, harvest event or lot and retain its state and destination.
-
-- Selected flow: Reported nitrogen substance to water or off-field compartment
-- Flow property / unit: Mass / kg
-- Amount rule: calculate from measured nitrogen sources, site conditions and the declared method while preserving substance and compartment
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off.
 
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_emissions`
 - Sources: `ipcc-managed-soils-2019`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.01
-  - Unit: kg N
-  - Basis: nitrogen-loss screening range per kg accepted cane
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
-
 
 ### Process: Sugarcane harvest (`harvest`)
 
@@ -525,20 +497,35 @@ Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agr
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
-###### One identified intended harvest-residue product (`intended_harvest_residue_output`)
+###### Sugarcane leaf trash, for beneficial use (`intended_harvest_residue_output`)
 
-Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
-
-- Selected flow: One identified intended harvest-residue product; exact route identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
+Record Sugarcane leaf trash, for beneficial use only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off.
 
+- Selected flow: Sugarcane leaf trash, for beneficial use
+- Flow property / unit: Mass / kg dry matter
+- Amount rule: Measured net quantity of Sugarcane leaf trash, for beneficial use, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_residue_routes`
+- Sources: `fao-cane-environment-1997`
+
+###### Sugarcane tops, for beneficial use (`intended_harvest_residue_output_cane_tops`)
+
+Record Sugarcane tops, for beneficial use only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off.
+
+- Selected flow: Sugarcane tops, for beneficial use
+- Flow property / unit: Mass / kg dry matter
+- Amount rule: Measured net quantity of Sugarcane tops, for beneficial use, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_residue_routes`
 - Sources: `fao-cane-environment-1997`
 
@@ -759,12 +746,12 @@ Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agr
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### One identified conditioning-residue co-product (`conditioned_residue_coproduct`)
+###### Sugarcane trimming biomass, for beneficial use (`conditioned_residue_coproduct`)
 
 Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
 
-- Selected flow: One identified conditioning-residue co-product; exact route identity unresolved
-- Flow property / unit: Mass / kg product
+- Selected flow: Sugarcane trimming biomass, for beneficial use
+- Flow property / unit: Mass / kg
 - Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -870,6 +857,8 @@ Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agr
 | `allocation_rework_reject` | off-spec cane and returned material | Retain prior burdens on reworked or downgraded cane, add only incremental operations, and count it once at its final exclusive destination; rejects cannot also be accepted output. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

@@ -18,7 +18,7 @@ Green pods or leaves, planting seed marketed as seed, cooked or canned cowpeas, 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.cow-peas-dry |
-| classification_refs | CPC 3.0:01706 Cow peas, dry; mapping relation: exact |
+| classification_refs | CPC 3.0:01706 Cow peas, dry; mapping relation: narrower |
 | covered_products | mature whole dry cowpea grain (Vigna unguiculata), including declared market classes and colours |
 | excluded_products | green pods and leaves; planting seed sold as seed; cooked or canned grain; flour; splits; industrial fractions |
 | representative_product | mature cleaned dry cowpea grain at farm gate |
@@ -204,24 +204,7 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_records`
 
-###### Route-specific crop-protection formulation (`crop_protection`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Quantify this role for the linked field, picking, lot or run and preserve its exclusive hand-off.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_records`
-- Sources:
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water supplied (`irrigation_service`)
 
@@ -249,32 +232,35 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
-###### Field-operation energy carriers (`field_energy`)
+###### Electricity, medium voltage (`field_energy`)
 
-Quantify this role for the linked field, picking, lot or run and preserve its exclusive hand-off.
-
-- Selected flow: Measured fuel and purchased energy used by field operations
-- Flow property / unit: Net energy / MJ
-- Amount rule: record actual carriers by operation and convert with disclosed factors; retain carrier quantities
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_records`
-- Sources:
-- Range: Complete quantitative range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20000
-  - Unit: MJ
-  - Basis: field-operation energy per 1,000 kg accepted grain
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
 
+###### Diesel fuel (`field_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_records`
 
 ##### Elementary flows
 
@@ -452,32 +438,35 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
-###### Harvest energy carriers (`harvest_energy`)
+###### Electricity, medium voltage (`harvest_energy`)
 
-Quantify this role for the linked field, picking, lot or run and preserve its exclusive hand-off.
-
-- Selected flow: Measured fuel and purchased energy used for picking, cutting or collection
-- Flow property / unit: Net energy / MJ
-- Amount rule: record energy by picking event; include all repeated pickings for staggered maturity
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_records`
-- Sources:
-- Range: Complete quantitative range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ
-  - Basis: harvest energy per 1,000 kg accepted grain
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
 
+###### Diesel fuel (`harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_records`
 
 #### Outputs
 
@@ -597,32 +586,50 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources: `iita-farmers-guide-cowpea-2009`
 
-###### Conditioning energy carriers (`conditioning_energy`)
+###### Electricity, medium voltage (`conditioning_energy`)
 
-Quantify this role for the linked field, picking, lot or run and preserve its exclusive hand-off.
-
-- Selected flow: Measured energy for pod drying, threshing, winnowing and cleaning
-- Flow property / unit: Net energy / MJ
-- Amount rule: record actual carriers by lot and pass; zero purchased energy is valid for passive sun drying and manual work when human labour is reported separately
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_conditioning_records`
-- Sources:
-- Range: Complete quantitative range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 15000
-  - Unit: MJ
-  - Basis: conditioning energy per 1,000 kg accepted grain
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
 
+###### Diesel fuel (`conditioning_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning_records`
+
+###### Purchased steam (`conditioning_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning_records`
 
 #### Outputs
 
@@ -742,32 +749,50 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources: `fao-grain-drying-storage`
 
-###### Final-drying energy carriers (`drying_energy`)
+###### Electricity, medium voltage (`drying_energy`)
 
-Quantify this role for the linked field, picking, lot or run and preserve its exclusive hand-off.
-
-- Selected flow: Measured purchased energy or fuel used for final drying
-- Flow property / unit: Net energy / MJ
-- Amount rule: record actual carriers and operating time for each drying pass; passive ambient drying may report zero purchased energy
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_drying_records`
-- Sources:
-- Range: Complete quantitative range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20000
-  - Unit: MJ
-  - Basis: final-drying energy per 1,000 kg accepted grain
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
 
+###### Diesel fuel (`drying_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_drying_records`
+
+###### Purchased steam (`drying_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_drying_records`
 
 #### Outputs
 
@@ -890,31 +915,35 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
-###### Grading and handling energy carriers (`grading_energy`)
+###### Electricity, medium voltage (`grading_energy`)
 
-Quantify this role for the linked field, picking, lot or run and preserve its exclusive hand-off.
-
-- Selected flow: Measured energy used for grading, conveying and lot changeover cleaning
-- Flow property / unit: Net energy / MJ
-- Amount rule: record actual carriers by run and assign shared cleaning or changeover energy once
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_grading_records`
-- Sources:
-- Range: Complete quantitative range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ
-  - Basis: grading and handling energy per 1,000 kg accepted grain
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
+
+###### Diesel fuel (`grading_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_grading_records`
 
 ###### Returned off-spec grain for rework (`rework_return`)
 
@@ -1039,6 +1068,8 @@ Raw activity or stage basis: per 1,000 kg accepted dry cowpea grain at farm gate
 | `allocation_rework` | returned off-spec material | Retain burdens already carried by returned material, add only incremental rework burdens, and count its mass once at the final accepted, downgraded, recovered or discarded destination. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

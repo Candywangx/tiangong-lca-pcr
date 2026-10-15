@@ -263,29 +263,80 @@ Raw activity or stage basis: per field block and period.
 
 ##### Elementary flows
 
-###### Reported field emissions (`field_emissions`)
+###### Dinitrogen monoxide, to air (`field_emissions`)
 
-Record each substance and receiving compartment separately; resolve both before final exchange creation.
-
-- Selected flow: Unresolved per reported substance and compartment
-- Flow property / unit: Mass / kg substance
-- Amount rule: measured release or method result from collected activity data
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per field area and period.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_emissions`
-- Range: Per-substance emission QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: kg/ha
-  - Basis: each substance separately per hectare and period
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Ammonia, to air (`field_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per field area and period.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+
+###### Nitrogen monoxide, to air (`field_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per field area and period.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+
+###### Nitrate, to water (`field_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per field area and period.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+
+###### Carbon dioxide, fossil, to air (`field_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per field area and period.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
 
 ### Process: Repeated picking or terminal harvest (`harvest`)
 
@@ -379,11 +430,11 @@ Raw activity or stage basis: per harvest event.
 
 ##### Waste flows
 
-###### Uncaptured or discarded harvest material (`harvest_loss`)
+###### Unrecovered castor pods (`harvest_loss`)
 
 Keep field loss and incidental material separate from captured capsules; identity and destination follow observed records.
 
-- Selected flow: Unresolved waste identity and destination from foreground records
+- Selected flow: Unrecovered castor pods
 - Flow property / unit: Mass / kg
 - Amount rule: measured, sampled, or mass-balance-derived loss
 - Value mode: Calculated value (`calculated_value`)
@@ -495,11 +546,11 @@ Raw activity or stage basis: per separation run.
 
 ##### Waste flows
 
-###### Pod and separation residues (`pod_residues`)
+###### Castor pod hulls (`pod_residues`)
 
 Record pod hulls, fragments, and unrecovered material by state and destination; do not presume feed use.
 
-- Selected flow: Unresolved waste identity and destination from foreground records
+- Selected flow: Castor pod hulls
 - Flow property / unit: Mass / kg
 - Amount rule: measured residue or mass-balance remainder by destination
 - Value mode: Calculated value (`calculated_value`)
@@ -611,11 +662,11 @@ Raw activity or stage basis: per conditioning lot.
 
 ##### Waste flows
 
-###### Cleaning rejects and foreign material (`cleaning_rejects`)
+###### Castor seed cleaning screenings (`cleaning_rejects`)
 
 Record pod fragments, stones, soil, dust, and damaged seeds separately where destinations differ.
 
-- Selected flow: Unresolved waste identity and destination from foreground records
+- Selected flow: Castor seed cleaning screenings
 - Flow property / unit: Mass / kg
 - Amount rule: measured reject mass excluding moisture removed
 - Value mode: Calculated value (`calculated_value`)
@@ -721,11 +772,11 @@ Raw activity or stage basis: one reference flow.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Downgraded or rework seed (`downgraded_rework_seed`)
+###### Downgraded castor seeds (`downgraded_rework_seed`)
 
 Route off-spec seed to one declared internal rework return or external downgraded destination; concrete external identity is deferred.
 
-- Selected flow: Internal rework state or unresolved downgraded product identity
+- Selected flow: Downgraded castor seeds
 - Flow property / unit: Mass / kg
 - Amount rule: measured mass outside the accepted grade
 - Value mode: Foreground record (`foreground_record`)
@@ -747,11 +798,11 @@ Raw activity or stage basis: per kg accepted seed.
 
 ##### Waste flows
 
-###### Final grading rejects (`grading_rejects`)
+###### Rejected castor seeds (`grading_rejects`)
 
 Record discarded seed and foreign material by state and destination; exclude them from accepted output.
 
-- Selected flow: Unresolved waste identity and destination from foreground records
+- Selected flow: Rejected castor seeds
 - Flow property / unit: Mass / kg
 - Amount rule: measured reject mass leaving grading
 - Value mode: Foreground record (`foreground_record`)
@@ -782,6 +833,8 @@ Raw activity or stage basis: per kg accepted seed.
 | `allocation_multi_period` | perennial route | Separate establishment, production, replacement, and termination; attribute phases over evidenced productive output and prevent double attribution. | `fao-ecocrop-ricinus-communis` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

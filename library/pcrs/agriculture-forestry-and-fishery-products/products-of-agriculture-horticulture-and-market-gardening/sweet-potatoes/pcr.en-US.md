@@ -232,31 +232,35 @@ Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated
   - Basis kind: reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Field machinery energy supply (`field_energy`)
+###### Electricity, medium voltage (`field_energy`)
 
-Fuel or energy for land preparation and crop management crosses the declared process boundary only under the stated condition.
-
-- Selected flow: Fuel or energy for land preparation and crop management
-- Flow property / unit: Declared compatible property / MJ
-- Amount rule: measured or calculated amount linked to the declared process event and destination
-- Value mode: foreground record (`foreground_record`)
-- Specificity: site specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: reference flow (`reference_flow`)
-- Evidence kind: collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_cycle_records`
-- Sources:
-- Range: Provisional QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: MJ
-  - Basis: per 1,000 kg accepted reference roots or the stated linked event; replace provisional bounds with reviewed evidence
-  - Basis kind: reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+###### Diesel fuel (`field_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_cycle_records`
 
 ##### Waste flows
 
@@ -326,32 +330,80 @@ Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated
 
 ##### Elementary flows
 
-###### Reported nutrient-related field emissions (`field_emissions`)
+###### Dinitrogen monoxide, to air (`field_emissions`)
 
-Substance- and receiving-medium-specific emissions crosses the declared process boundary only under the stated condition.
-
-- Selected flow: Substance- and receiving-medium-specific emissions
-- Flow property / unit: Declared compatible property / kg reported substance
-- Identity status: unresolved: broad emissions cannot justify an elementary UUID
-- Amount rule: measured or calculated amount linked to the declared process event and destination
-- Value mode: foreground record (`foreground_record`)
-- Specificity: site specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: reference flow (`reference_flow`)
-- Evidence kind: collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_cycle_records`
-- Sources:
-- Range: Provisional QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg reported substance
-  - Basis: per 1,000 kg accepted reference roots or the stated linked event; replace provisional bounds with reviewed evidence
-  - Basis kind: reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+###### Ammonia, to air (`field_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_cycle_records`
+
+###### Nitrogen monoxide, to air (`field_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_cycle_records`
+
+###### Nitrate, to water (`field_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_cycle_records`
+
+###### Carbon dioxide, fossil, to air (`field_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_cycle_records`
 
 ### Process: Harvest and collection (`harvest_capture`)
 
@@ -385,30 +437,35 @@ Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated
   - Basis kind: process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Harvest machinery energy supply (`harvest_energy`)
+###### Electricity, medium voltage (`harvest_energy`)
 
-Fuel or energy for lifting, collection, and loading crosses the declared process boundary only under the stated condition.
-
-- Selected flow: Fuel or energy for lifting, collection, and loading
-- Flow property / unit: Declared compatible property / MJ
-- Amount rule: measured or calculated amount linked to the declared process event and destination
-- Value mode: foreground record (`foreground_record`)
-- Specificity: site specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: process output (`process_output`)
-- Evidence kind: collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_event_records`
-- Sources:
-- Range: Provisional QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2000
-  - Unit: MJ
-  - Basis: per 1,000 kg accepted reference roots or the stated linked event; replace provisional bounds with reviewed evidence
-  - Basis kind: process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_event_records`
 
 ###### On-farm road movement service (`harvest_transport`)
 
@@ -680,12 +737,12 @@ Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated
 
 ##### Waste flows
 
-###### One identified solid conditioning reject (`conditioning_residuals`)
+###### Sweet-potato root trimming rejects (`conditioning_residuals`)
 
 Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
 
-- Selected flow: One identified solid conditioning reject; exact route identity unresolved
-- Flow property / unit: Mass / kg material
+- Selected flow: Sweet-potato root trimming rejects
+- Flow property / unit: Mass / kg
 - Identity status: unresolved until material and destination are verified
 - Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
 - Value mode: calculated value (`calculated_value`)
@@ -767,31 +824,20 @@ Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated
 - Evidence kind: collected record (`collected_record`)
 - Collection protocol: `cp_curing_storage_records`
 
-###### Purchased curing heat supply (`curing_heat`)
+###### Purchased district heat (`curing_heat`)
 
-Purchased process heat for active curing; passive curing may be zero crosses the declared process boundary only under the stated condition.
-
-- Selected flow: Purchased process heat for active curing; passive curing may be zero
-- Flow property / unit: Declared compatible property / MJ
-- Amount rule: measured or calculated amount linked to the declared process event and destination
-- Value mode: foreground record (`foreground_record`)
-- Specificity: site specific (`site_specific`)
+Include this exchange only when Purchased district heat is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted reference roots or the stated linked event.
 
+- Selected flow: Purchased district heat
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased district heat supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: process output (`process_output`)
-- Evidence kind: collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_curing_storage_records`
-- Sources:
-- Range: Provisional QA screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ
-  - Basis: per 1,000 kg accepted reference roots or the stated linked event; replace provisional bounds with reviewed evidence
-  - Basis kind: process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ##### Waste flows
 
@@ -957,6 +1003,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_shared_runs` | Shared runs | Allocate only indivisible records by a disclosed physical driver and prove conservation without double counting. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

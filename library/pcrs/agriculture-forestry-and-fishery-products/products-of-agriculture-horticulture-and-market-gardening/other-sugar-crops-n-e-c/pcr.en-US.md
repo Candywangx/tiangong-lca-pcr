@@ -453,27 +453,7 @@ Raw activity or stage basis: per kg harvested stalk.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_sorghum_field_records`
 
-###### Crop-protection products (`sorghum_crop_protection`)
-If applied, record each actual formulation and application separately in the data package; this umbrella card does not authorize UUID selection. Identity UUID unresolved.
-- Selected flow: Crop-protection product applied to sweet sorghum (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Record product mass applied by active ingredient, formulation, target, and date; record zero when none is used.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per kg harvested stalk.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_sorghum_field_records`
-- Range: Provisional crop-protection screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.01
-  - Unit: kg formulated product/kg harvested stalk
-  - Basis: broad conditional screen, not a recommended application rate
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -673,27 +653,7 @@ Raw activity or stage basis: per kg dried leaves.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_stevia_field_records`
 
-###### Crop-protection products (`stevia_crop_protection`)
-If used, record the actual crop-protection formulation and application; no generic UUID is assigned.
-- Selected flow: Crop-protection product applied to stevia (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Record product mass, formulation, active ingredient, target, date, and treated area; report zero when unused.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per kg dried leaves.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_stevia_field_records`
-- Range: Provisional crop-protection screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.01
-  - Unit: kg formulated product/kg dried leaves
-  - Basis: broad conditional screen, not a recommended application rate
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -792,6 +752,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 Inventory one crop branch only. If one stand or field produces multiple intended products in the declared period, first test subdivision by field, operation, harvest, or lot. If subdivision is not feasible, choose and justify a physical or economic allocation driver consistent with the question, document all products and hand-offs, and test a material alternative. Maple timber, sorghum grain, and stevia stems are co-products only when they are intentionally harvested and leave the process as useful products. Leaves, tops, roots, weeds, rejected material, sap leakage, and field losses are residues or waste unless a real use and hand-off are documented. Record multi-year assets and shared equipment once, allocate them by measured productive area, use, tap-season, or machine time, and prevent duplicate attribution across periods or outputs.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

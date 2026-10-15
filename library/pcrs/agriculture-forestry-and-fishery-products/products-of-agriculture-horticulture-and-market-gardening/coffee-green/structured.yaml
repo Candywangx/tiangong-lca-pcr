@@ -288,7 +288,7 @@ process_inventory:
           name: "Irrigation water supply [parameterized]"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record delivered irrigation separately from natural-resource withdrawal and rainfall. A verified rain-fed route records a justified zero with source and block evidence. Raw activity or stage basis: per 1 kg green coffee at gate."
+          description: "Record delivered irrigation separately from natural-resource withdrawal and rainfall. A verified rain-fed route records a justified zero with source and block evidence. Raw activity or stage basis: per 1 kg green coffee at gate. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "metered or evidenced delivered water by source, block and crop year"
             value_mode: "foreground_record"
@@ -309,25 +309,6 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: coffee_crop_protection
-          role: "Crop-protection products"
-          name: "Named crop-protection product or active substance [unmapped]"
-          flow_type: "product"
-          property_unit: "Mass or volume / kg product or L product"
-          description: "Record named products and active substances used for insects, disease, weeds or other declared crop-protection functions. Raw activity or stage basis: per 1 kg green coffee at gate."
-          amount:
-            expression: "measured application by product, active substance, date and block"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_coffee_crop_protection_records
-              source_ids:
-                - fao-good-farming-practices
-            ranges: []
         - row_id: coffee_field_energy
           role: "Electricity, medium voltage input"
           name: "Electricity, medium voltage"
@@ -506,15 +487,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: coffee_harvest_energy
-          role: "Harvest fuel and services"
-          name: "Harvest energy or service [unmapped]"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy, carrier or service / MJ, kWh, L, kg or service unit"
-          description: "Record fuel, electricity, hired harvesting service and field-to-mill handling energy included in the foreground boundary. Raw activity or stage basis: per 1 kg green coffee at gate."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
           amount:
-            expression: "measured or supplier-recorded quantity by harvest lot"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "route_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -522,15 +503,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_coffee_energy_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "2"
-                unit: "kWh-equivalent/kg green coffee"
-                basis: "broad first-pass harvest and field-handling interval"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: coffee_harvest_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coffee_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -644,15 +635,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: coffee_processing_energy
-          role: "Processing and drying energy"
-          name: "Processing and drying energy [parameterized]"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or carrier mass / kWh, MJ, L or kg"
-          description: "Record electricity, fuel, mechanical energy and drying heat by batch, run, machine and processing stage. Raw activity or stage basis: per 1 kg green coffee at gate."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
           amount:
-            expression: "meter, fuel receipt, equipment log or supplier service record allocated to the batch"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -660,15 +651,43 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_coffee_energy_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "10"
-                unit: "kWh-equivalent/kg green coffee"
-                basis: "broad first-pass wet/dry processing and drying interval"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: coffee_processing_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coffee_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: coffee_processing_energy_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
+          amount:
+            expression: "Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coffee_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -760,33 +779,25 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
         - row_id: coffee_processing_wastewater
-          role: "Processing wastewater and treatment outputs"
-          name: "Coffee-processing wastewater or treatment service [unmapped]"
+          role: "Coffee-processing wastewater, for treatment"
+          name: "Coffee-processing wastewater, for treatment"
           flow_type: "waste"
-          property_unit: "Volume, mass or treatment service / m3, kg or service unit"
-          description: "Record wastewater volume, pollutant or solids basis, treatment service, discharge medium and destination. A dry route records no process wastewater only when the batch route supports that conclusion. Raw activity or stage basis: per 1 kg green coffee at gate."
+          property_unit: "Volume / m3"
+          description: "Record Coffee-processing wastewater, for treatment only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Raw activity or stage basis: per 1 kg green coffee at gate."
           amount:
-            expression: "meter, treatment receipt, discharge record or calculated batch water balance"
-            value_mode: "calculated_value"
-            specificity: "technology_specific"
+            expression: "Measured net quantity of Coffee-processing wastewater, for treatment, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
             evidence:
-              kind: "calculated_from_collection"
+              kind: "collected_record"
               collection_protocol_id: cp_coffee_wastewater_records
               source_ids:
                 - fao-green-coffee-processing-africa
                 - mass-balance-identity
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "20"
-                unit: "m3/t green coffee at gate"
-                basis: "broad wet-to-dry route interval; replace with batch meter or treatment records"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       elementary:
         []
   - id: coffee_hulling_and_grading
@@ -812,15 +823,15 @@ process_inventory:
               source_ids: []
             ranges: []
         - row_id: coffee_dry_mill_energy
-          role: "Dry-mill energy and services"
-          name: "Hulling, cleaning and grading energy or service [parameterized]"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or carrier mass / kWh, MJ, L or kg"
-          description: "Record hulling, cleaning, sorting and grading energy or service use by dry-mill batch. Raw activity or stage basis: per 1 kg green coffee at gate."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
           amount:
-            expression: "meter, fuel receipt or machine service record allocated to the batch"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -828,15 +839,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_coffee_energy_records
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "5"
-                unit: "kWh-equivalent/kg green coffee at gate"
-                basis: "broad first-pass hulling, cleaning and grading interval; replace with meter or service records"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: coffee_dry_mill_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg green coffee at gate."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coffee_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1497,7 +1518,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a48a9fd8e602a40b52d67f6534050b98fdaf5d068ca4e9447ad91236ab3cb5d3"
+  source_sha256: "sha256:f1e37f727b40665e3a0d7952b0f8ee800d189c706222a59db4f5129132286cc4"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7061"
@@ -1548,16 +1569,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56067"
+    - unit_id: "normative_58687"
       family: "allocation"
       span:
         start:
-          offset: 56067
-          line: 978
+          offset: 58687
+          line: 987
           column: 1
         end:
-          offset: 58170
-          line: 990
+          offset: 60790
+          line: 999
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | perennial coffee production | Allocate establishment, replacement, shade or support systems and shared production phases by documented area-time, plant-year, crop-year, throughput or another justified physical basis. Disclose the represented phases and prevent double attribution across crop years. | `iso-14044-2006`; `fao-good-farming-practices` |\n| `allocation_02` | shared farm, wet mill and dry mill resources | Attribute shared meters, machinery, water, storage, operators, cleaning and changeover burdens once using measured activity, run time, batch throughput, lot mass or documented service. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | green coffee and intended co-products | Treat accepted green coffee as the reference output. Apply one documented PCR-specific allocation decision at each genuine multi-output boundary; use physical properties, economic allocation or another justified method consistently and disclose sensitivity when material. | `iso-14044-2006` |\n| `allocation_04` | pulp, mucilage, parchment, husk, residues and rejects | Treat a stream as a co-product or recovered material only when function, recipient, quantity, quality, destination and hand-off are documented. Otherwise retain its burden as residue or waste through treatment or disposal. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_05` | rework, downgrade and storage loss | Keep burden on off-spec, reworked, downgraded or storage-loss material until its next declared hand-off; never count a lot as both accepted green coffee and reject, co-product or loss. | `mass-balance-identity` |\n\nThe PCR does not force one universal allocation method. The dataset must select and justify one method for each genuine multi-output boundary and apply it consistently. Avoided-production credit is not allowed from a destination label alone; it requires a documented recipient, function, comparable product, quantity, quality and attribution decision.\n\n"
       headings:
@@ -1576,12 +1597,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56067
-              line: 978
+              offset: 58687
+              line: 987
               column: 1
             end:
-              offset: 56107
-              line: 978
+              offset: 58727
+              line: 987
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1596,16 +1617,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70021"
+    - unit_id: "normative_73406"
       family: "validation"
       span:
         start:
-          offset: 70021
-          line: 1037
+          offset: 73406
+          line: 1048
           column: 1
         end:
-          offset: 72408
-          line: 1050
+          offset: 75793
+          line: 1061
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow and metadata | Reject missing species or cultivar group, geography, crop year, processing route, moisture basis, grade, gate or mass property; verify the Coffee, green flow identity before final publication. | `fao-arabica-coffee-manual-lao`; `mass-balance-identity` |\n| `validation_02` | process map and route | Require managed production, harvest hand-off, selected wet/honey/dry route, drying or stabilization state, hulling/grading hand-off and explicit gate. | `fao-arabica-coffee-manual-lao`; `fao-green-coffee-processing-africa` |\n| `validation_03` | batch and mass balance | Reconcile every included lot from raw cherry or intermediate through green coffee, intended co-products, residues, wastewater, rejects and loss; reject mixed moisture bases or double counting. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n| `validation_04` | multi-output boundaries | Enumerate every intended output and hand-off; reject co-product or avoided-production credit without function, recipient, quantity, quality, destination and allocation decision. | `iso-14044-2006` |\n| `validation_05` | processing and drying | Check wet, honey or dry route consistency, drying records, moisture measurement, storage condition, re-wetting or mould event and route-specific water use. | `fao-ota-coffee-code`; `fao-green-coffee-processing-africa` |\n| `validation_06` | periods, storage and campaigns | Link establishment, replacement, termination, crop year, harvest lot, processing batch, changeover, storage duration and dispatch to one period or phase; prevent double attribution. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_07` | nutrient, water and elementary flows | Verify product versus nutrient basis, irrigation versus withdrawal, process water versus wastewater, receiving medium and one selected emissions method; prevent duplicate nitrogen or water pathways. | `ipcc-2019-refinement-afolu`; `fao-good-farming-practices` |\n| `validation_08` | rejects and residues | Require a declared fate for pulp, mucilage, parchment, husk, defects, broken beans, foreign matter, wastewater solids, storage loss and rejected lots; a destination label alone is insufficient. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n\n"
       headings:
@@ -1624,12 +1645,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70021
-              line: 1037
+              offset: 73406
+              line: 1048
               column: 1
             end:
-              offset: 70043
-              line: 1037
+              offset: 73428
+              line: 1048
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1739,184 +1760,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 56180
-          line: 982
+          offset: 58800
+          line: 991
           column: 1
         end:
-          offset: 56549
-          line: 982
+          offset: 59169
+          line: 991
           column: 370
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 56550
-          line: 983
+          offset: 59170
+          line: 992
           column: 1
         end:
-          offset: 56847
-          line: 983
+          offset: 59467
+          line: 992
           column: 298
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 56848
-          line: 984
+          offset: 59468
+          line: 993
           column: 1
         end:
-          offset: 57200
-          line: 984
+          offset: 59820
+          line: 993
           column: 353
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 57201
-          line: 985
+          offset: 59821
+          line: 994
           column: 1
         end:
-          offset: 57545
-          line: 985
+          offset: 60165
+          line: 994
           column: 345
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 57546
-          line: 986
+          offset: 60166
+          line: 995
           column: 1
         end:
-          offset: 57815
-          line: 986
+          offset: 60435
+          line: 995
           column: 270
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 57817
-          line: 988
+          offset: 60437
+          line: 997
           column: 1
         end:
-          offset: 58168
-          line: 988
+          offset: 60788
+          line: 997
           column: 352
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 70116
-          line: 1041
+          offset: 73501
+          line: 1052
           column: 1
         end:
-          offset: 70419
-          line: 1041
+          offset: 73804
+          line: 1052
           column: 304
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 70420
-          line: 1042
+          offset: 73805
+          line: 1053
           column: 1
         end:
-          offset: 70688
-          line: 1042
+          offset: 74073
+          line: 1053
           column: 269
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 70689
-          line: 1043
+          offset: 74074
+          line: 1054
           column: 1
         end:
-          offset: 70992
-          line: 1043
+          offset: 74377
+          line: 1054
           column: 304
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 70993
-          line: 1044
+          offset: 74378
+          line: 1055
           column: 1
         end:
-          offset: 71237
-          line: 1044
+          offset: 74622
+          line: 1055
           column: 245
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 71238
-          line: 1045
+          offset: 74623
+          line: 1056
           column: 1
         end:
-          offset: 71501
-          line: 1045
+          offset: 74886
+          line: 1056
           column: 264
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 71502
-          line: 1046
+          offset: 74887
+          line: 1057
           column: 1
         end:
-          offset: 71782
-          line: 1046
+          offset: 75167
+          line: 1057
           column: 281
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 71783
-          line: 1047
+          offset: 75168
+          line: 1058
           column: 1
         end:
-          offset: 72103
-          line: 1047
+          offset: 75488
+          line: 1058
           column: 321
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 72104
-          line: 1048
+          offset: 75489
+          line: 1059
           column: 1
         end:
-          offset: 72406
-          line: 1048
+          offset: 75791
+          line: 1059
           column: 303
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1945,27 +1966,27 @@ normative_context:
           column: 298
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56067"
+      unit_id: "normative_58687"
       source_span:
         start:
-          offset: 56067
-          line: 978
+          offset: 58687
+          line: 987
           column: 1
         end:
-          offset: 56107
-          line: 978
+          offset: 58727
+          line: 987
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70021"
+      unit_id: "normative_73406"
       source_span:
         start:
-          offset: 70021
-          line: 1037
+          offset: 73406
+          line: 1048
           column: 1
         end:
-          offset: 70043
-          line: 1037
+          offset: 73428
+          line: 1048
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1974,5 +1995,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a48a9fd8e602a40b52d67f6534050b98fdaf5d068ca4e9447ad91236ab3cb5d3"
-  generated_content_sha256: "sha256:80d74b88e71b7c3560ddfca5cbd0f5ab758b0d5b59a101abc4349793a6473b42"
+    sha256: "sha256:f1e37f727b40665e3a0d7952b0f8ee800d189c706222a59db4f5129132286cc4"
+  generated_content_sha256: "sha256:a145f0106b5cc044d6a2abd354c9fca0850d6c0d92fdae55b0ad4eb83b978811"

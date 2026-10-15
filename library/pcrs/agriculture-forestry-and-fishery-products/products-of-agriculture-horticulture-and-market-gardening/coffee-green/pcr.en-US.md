@@ -237,22 +237,7 @@ Raw activity or stage basis: per 1 kg green coffee at gate.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Crop-protection products (`coffee_crop_protection`)
-
-Record named products and active substances used for insects, disease, weeds or other declared crop-protection functions.
-
-- Selected flow: Named crop-protection product or active substance [unmapped]
-- Flow property / unit: Mass or volume / kg product or L product
-- Amount rule: measured application by product, active substance, date and block
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg green coffee at gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_coffee_crop_protection_records`
-- Sources: `fao-good-farming-practices`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Electricity, medium voltage input (`coffee_field_energy`)
 
@@ -417,29 +402,35 @@ Raw activity or stage basis: per 1 kg green coffee at gate.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Harvest fuel and services (`coffee_harvest_energy`)
+###### Electricity, medium voltage (`coffee_harvest_energy`)
 
-Record fuel, electricity, hired harvesting service and field-to-mill handling energy included in the foreground boundary.
-
-- Selected flow: Harvest energy or service [unmapped]
-- Flow property / unit: Energy, carrier or service / MJ, kWh, L, kg or service unit
-- Amount rule: measured or supplier-recorded quantity by harvest lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg green coffee at gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_coffee_energy_records`
-- Range: Provisional harvest-energy screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 2
-  - Unit: kWh-equivalent/kg green coffee
-  - Basis: broad first-pass harvest and field-handling interval
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`coffee_harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg green coffee at gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_coffee_energy_records`
 
 #### Outputs
 
@@ -544,29 +535,50 @@ Raw activity or stage basis: per 1 kg green coffee at gate.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Processing and drying energy (`coffee_processing_energy`)
+###### Electricity, medium voltage (`coffee_processing_energy`)
 
-Record electricity, fuel, mechanical energy and drying heat by batch, run, machine and processing stage.
-
-- Selected flow: Processing and drying energy [parameterized]
-- Flow property / unit: Energy or carrier mass / kWh, MJ, L or kg
-- Amount rule: meter, fuel receipt, equipment log or supplier service record allocated to the batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg green coffee at gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_coffee_energy_records`
-- Range: Provisional processing-energy screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kWh-equivalent/kg green coffee
-  - Basis: broad first-pass wet/dry processing and drying interval
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`coffee_processing_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg green coffee at gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_coffee_energy_records`
+
+###### Purchased steam (`coffee_processing_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg green coffee at gate.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_coffee_energy_records`
 
 #### Outputs
 
@@ -649,30 +661,21 @@ Raw activity or stage basis: per 1 kg green coffee at gate.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Processing wastewater and treatment outputs (`coffee_processing_wastewater`)
+###### Coffee-processing wastewater, for treatment (`coffee_processing_wastewater`)
 
-Record wastewater volume, pollutant or solids basis, treatment service, discharge medium and destination. A dry route records no process wastewater only when the batch route supports that conclusion.
-
-- Selected flow: Coffee-processing wastewater or treatment service [unmapped]
-- Flow property / unit: Volume, mass or treatment service / m3, kg or service unit
-- Amount rule: meter, treatment receipt, discharge record or calculated batch water balance
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
+Record Coffee-processing wastewater, for treatment only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per 1 kg green coffee at gate.
 
+- Selected flow: Coffee-processing wastewater, for treatment
+- Flow property / unit: Volume / m3
+- Amount rule: Measured net quantity of Coffee-processing wastewater, for treatment, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_coffee_wastewater_records`
 - Sources: `fao-green-coffee-processing-africa`; `mass-balance-identity`
-- Range: Provisional process-wastewater screening interval
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: m3/t green coffee at gate
-  - Basis: broad wet-to-dry route interval; replace with batch meter or treatment records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ### Process: Hulling, cleaning and grading (`coffee_hulling_and_grading`)
 
@@ -698,29 +701,35 @@ Raw activity or stage basis: per 1 kg green coffee at gate.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_coffee_processing_batch_records`
 
-###### Dry-mill energy and services (`coffee_dry_mill_energy`)
+###### Electricity, medium voltage (`coffee_dry_mill_energy`)
 
-Record hulling, cleaning, sorting and grading energy or service use by dry-mill batch.
-
-- Selected flow: Hulling, cleaning and grading energy or service [parameterized]
-- Flow property / unit: Energy or carrier mass / kWh, MJ, L or kg
-- Amount rule: meter, fuel receipt or machine service record allocated to the batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg green coffee at gate.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_coffee_energy_records`
-- Range: Provisional dry-mill energy screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: kWh-equivalent/kg green coffee at gate
-  - Basis: broad first-pass hulling, cleaning and grading interval; replace with meter or service records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`coffee_dry_mill_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg green coffee at gate.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_coffee_energy_records`
 
 #### Outputs
 
@@ -988,6 +997,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 The PCR does not force one universal allocation method. The dataset must select and justify one method for each genuine multi-output boundary and apply it consistently. Avoided-production credit is not allowed from a destination label alone; it requires a documented recipient, function, comparable product, quantity, quality and attribution decision.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

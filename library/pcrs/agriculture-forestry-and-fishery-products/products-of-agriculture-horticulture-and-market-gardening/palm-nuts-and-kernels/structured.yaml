@@ -358,13 +358,13 @@ process_inventory:
     inputs:
       product:
         - row_id: harvest_energy
-          role: "Harvest energy supply"
-          name: "harvest energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or mass / declared unit"
-          description: "Fuel or electricity used for cutting, collection and in-field handling is recorded by actual carrier. Raw activity or stage basis: per kg harvested FFB."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg harvested FFB."
           amount:
-            expression: "metered or purchased carrier use"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -374,15 +374,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "MJ/kg harvested FFB"
-                basis: "per kg harvested FFB"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: harvest_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg harvested FFB."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_records
+              source_ids: []
+            ranges: []
         - row_id: harvestable_ffb_input
           role: "Standing FFB from managed palms"
           name: "standing FFB ready for harvest"
@@ -682,13 +692,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: separation_energy
-          role: "Separation energy supply"
-          name: "separation energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or mass / declared unit"
-          description: "Electricity, steam or fuel used by depericarping and separation is recorded by actual carrier. Raw activity or stage basis: per kg separation feed."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg separation feed."
           amount:
-            expression: "metered carrier use"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -698,15 +708,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_separation_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "MJ/kg separation feed"
-                basis: "per kg separation feed"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: separation_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg separation feed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -828,15 +848,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: cracking_energy
-          role: "Cracking and separation energy supply"
-          name: "cracking energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or mass / declared unit"
-          description: "Electricity or fuel for cracking, winnowing and separation is recorded by actual carrier. Raw activity or stage basis: per kg nut feed."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg nut feed."
           amount:
-            expression: "metered carrier use"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -844,15 +864,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_cracking_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "MJ/kg nut feed"
-                basis: "per kg nut feed"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: cracking_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg nut feed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cracking_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -948,15 +978,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: drying_energy
-          role: "Drying energy supply"
-          name: "drying energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or mass / declared unit"
-          description: "Solar, thermal fuel, steam or electricity use is recorded by actual route and carrier. Raw activity or stage basis: per kg wet nut or kernel feed."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg wet nut or kernel feed."
           amount:
-            expression: "metered or route-recorded carrier use"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -964,15 +994,43 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_drying_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "20"
-                unit: "MJ/kg wet feed"
-                basis: "per kg wet nut or kernel feed"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: drying_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg wet nut or kernel feed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids: []
+            ranges: []
+        - row_id: drying_energy_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg wet nut or kernel feed."
+          amount:
+            expression: "Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1040,13 +1098,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: grading_energy
-          role: "Grading energy supply"
-          name: "grading energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or mass / declared unit"
-          description: "Electricity or fuel used by screens, aspiration and handling is recorded by actual carrier. Raw activity or stage basis: per kg grading feed."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg grading feed."
           amount:
-            expression: "metered carrier use"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -1056,15 +1114,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_grading_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
-                unit: "MJ/kg grading feed"
-                basis: "per kg grading feed"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: grading_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg grading feed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1379,7 +1447,7 @@ data_sources:
     used_for: "plantation starting conditions, land/peat context and period disclosure"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a8dd24f7de256aafafc776009b5e7692b1e129abdd334e89f8fc5a162d2db776"
+  source_sha256: "sha256:cabebce0e37a33db6874709b1b933d6e3459b488ff08905b0025db323bf6f22b"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4801"
@@ -1430,16 +1498,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46524"
+    - unit_id: "normative_52023"
       family: "allocation"
       span:
         start:
-          offset: 46524
-          line: 1069
+          offset: 52023
+          line: 1114
           column: 1
         end:
-          offset: 48044
-          line: 1079
+          offset: 53543
+          line: 1124
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | plantation and mill | First subdivide independently measured estate blocks, mill nodes, runs and product routes; do not allocate burdens already separable. | `iso-14044-2006` |\n| `allocation_multi_output` | crude palm oil, nut/kernel, fibre, shell and other intended outputs | Enumerate every intended output and hand-off. Where subdivision cannot avoid allocation, use a documented physical causal relation; use economic allocation only when no defensible physical relation exists, with prices, period and sensitivity disclosed. | `iso-14044-2006`; `fao-palm-oil-processing` |\n| `allocation_period` | perennial crop and shared assets | Attribute establishment, immature-phase and shared-infrastructure burdens once over the declared productive output or service basis; record period-specific decisions and prevent double attribution. | `rspo-ghg-procedure-v4` |\n| `allocation_rework` | downgraded and rejected material | Rework retains the producing-node burden and receives only incremental rework burdens; accepted output excludes unrecovered rejects. Recovered residues are classified consistently as intended output, residue or waste by actual fate. |  |\n| `allocation_shared_runs` | batch and continuous mill operation | Attribute cleaning, start-up, shutdown and shared utilities to the corresponding run or operating period once; document the driver and reconciliation. |  |\n\n"
       headings:
@@ -1458,12 +1526,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46524
-              line: 1069
+              offset: 52023
+              line: 1114
               column: 1
             end:
-              offset: 46564
-              line: 1069
+              offset: 52063
+              line: 1114
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1478,16 +1546,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55204"
+    - unit_id: "normative_61468"
       family: "validation"
       span:
         start:
-          offset: 55204
-          line: 1114
+          offset: 61468
+          line: 1161
           column: 1
         end:
-          offset: 56634
-          line: 1125
+          offset: 62898
+          line: 1172
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Reject a package whose reference is FFB, palm kernel shell, palm oil or kernel oil, or whose oil-palm nut/kernel qualifier, before-extraction state, moisture basis or hand-off is missing. | `unsd-cpc-3-01491` |\n| `validate_route` | process map | Require plantation, harvest, mill treatment, fibre-nut separation, drying and grading; require cracking only for the separated-kernel branch and prohibit kernel-oil extraction. | `fao-palm-oil-processing` |\n| `validate_mass_balance` | every treatment/conditioning run | Check inputs against intended outputs, intermediates, residues, rejects and moisture change; investigate values outside the card QA ranges. | `fao-palm-oil-processing` |\n| `validate_multi_output` | intended outputs | Require enumerated hand-offs and one explicit attribution decision for crude palm oil, accepted nut/kernel, fibre, shell and any other intended output. | `iso-14044-2006` |\n| `validate_period_and_assets` | plantation phases and shared infrastructure | Require phase/run links and verify that each shared burden is attributed once. | `rspo-ghg-procedure-v4` |\n| `validate_mode_rework` | batch/continuous runs and grading | Require run indexing, cleaning/changeover attribution, rework destinations, and exclusion of rejects from accepted output. |  |\n\n"
       headings:
@@ -1506,12 +1574,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55204
-              line: 1114
+              offset: 61468
+              line: 1161
               column: 1
             end:
-              offset: 55226
-              line: 1114
+              offset: 61490
+              line: 1161
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1595,145 +1663,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid"
       identity_kind: "explicit"
-      unit_id: "normative_46524"
+      unit_id: "normative_52023"
       source_span:
         start:
-          offset: 46637
-          line: 1073
+          offset: 52136
+          line: 1118
           column: 1
         end:
-          offset: 46836
-          line: 1073
+          offset: 52335
+          line: 1118
           column: 200
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_46524"
+      unit_id: "normative_52023"
       source_span:
         start:
-          offset: 46837
-          line: 1074
+          offset: 52336
+          line: 1119
           column: 1
         end:
-          offset: 47237
-          line: 1074
+          offset: 52736
+          line: 1119
           column: 401
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_46524"
+      unit_id: "normative_52023"
       source_span:
         start:
-          offset: 47238
-          line: 1075
+          offset: 52737
+          line: 1120
           column: 1
         end:
-          offset: 47522
-          line: 1075
+          offset: 53021
+          line: 1120
           column: 285
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_46524"
+      unit_id: "normative_52023"
       source_span:
         start:
-          offset: 47523
-          line: 1076
+          offset: 53022
+          line: 1121
           column: 1
         end:
-          offset: 47819
-          line: 1076
+          offset: 53318
+          line: 1121
           column: 297
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_shared_runs"
       identity_kind: "explicit"
-      unit_id: "normative_46524"
+      unit_id: "normative_52023"
       source_span:
         start:
-          offset: 47820
-          line: 1077
+          offset: 53319
+          line: 1122
           column: 1
         end:
-          offset: 48042
-          line: 1077
+          offset: 53541
+          line: 1122
           column: 223
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 55299
-          line: 1118
+          offset: 61563
+          line: 1165
           column: 1
         end:
-          offset: 55560
-          line: 1118
+          offset: 61824
+          line: 1165
           column: 262
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 55561
-          line: 1119
+          offset: 61825
+          line: 1166
           column: 1
         end:
-          offset: 55802
-          line: 1119
+          offset: 62066
+          line: 1166
           column: 242
     - pointer: "/validation_rules/2"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 55803
-          line: 1120
+          offset: 62067
+          line: 1167
           column: 1
         end:
-          offset: 56035
-          line: 1120
+          offset: 62299
+          line: 1167
           column: 233
     - pointer: "/validation_rules/3"
       rule_id: "validate_multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 56036
-          line: 1121
+          offset: 62300
+          line: 1168
           column: 1
         end:
-          offset: 56255
-          line: 1121
+          offset: 62519
+          line: 1168
           column: 220
     - pointer: "/validation_rules/4"
       rule_id: "validate_period_and_assets"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 56256
-          line: 1122
+          offset: 62520
+          line: 1169
           column: 1
         end:
-          offset: 56441
-          line: 1122
+          offset: 62705
+          line: 1169
           column: 186
     - pointer: "/validation_rules/5"
       rule_id: "validate_mode_rework"
       identity_kind: "explicit"
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 56442
-          line: 1123
+          offset: 62706
+          line: 1170
           column: 1
         end:
-          offset: 56632
-          line: 1123
+          offset: 62896
+          line: 1170
           column: 191
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1762,27 +1830,27 @@ normative_context:
           column: 184
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46524"
+      unit_id: "normative_52023"
       source_span:
         start:
-          offset: 46524
-          line: 1069
+          offset: 52023
+          line: 1114
           column: 1
         end:
-          offset: 46564
-          line: 1069
+          offset: 52063
+          line: 1114
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55204"
+      unit_id: "normative_61468"
       source_span:
         start:
-          offset: 55204
-          line: 1114
+          offset: 61468
+          line: 1161
           column: 1
         end:
-          offset: 55226
-          line: 1114
+          offset: 61490
+          line: 1161
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1791,5 +1859,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a8dd24f7de256aafafc776009b5e7692b1e129abdd334e89f8fc5a162d2db776"
-  generated_content_sha256: "sha256:59c8e63d554e3d82c2c5b7532b8287b5f37288ffe7621e3625d01aa506db8328"
+    sha256: "sha256:cabebce0e37a33db6874709b1b933d6e3459b488ff08905b0025db323bf6f22b"
+  generated_content_sha256: "sha256:a85bb3a9dae423e41a6a3ff91b79ce36251104ff484e478840a3f64d0ee99648"

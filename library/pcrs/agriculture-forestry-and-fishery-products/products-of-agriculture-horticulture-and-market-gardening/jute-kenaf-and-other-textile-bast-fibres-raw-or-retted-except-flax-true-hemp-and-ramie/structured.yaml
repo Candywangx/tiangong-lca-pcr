@@ -287,7 +287,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per cultivated hectare-cycle."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per cultivated hectare-cycle. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "calculated_value"
@@ -297,24 +297,6 @@ process_inventory:
               kind: "crop_cycle"
             evidence:
               kind: "calculated_from_collection"
-              collection_protocol_id: cp_crop_cycle
-              source_ids: []
-            ranges: []
-        - row_id: crop_protection
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record every formulated product actually applied; no default treatment is imposed. Raw activity or stage basis: per cultivated hectare-cycle."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
               collection_protocol_id: cp_crop_cycle
               source_ids: []
             ranges: []
@@ -412,13 +394,13 @@ process_inventory:
                   - mass-balance-identity
       elementary:
         - row_id: soil_n_emissions
-          role: "Managed-soil nitrogen emissions"
-          name: "Managed-soil nitrogen emission species"
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg species"
-          description: "Calculate actual nitrogen species and receiving compartments separately; this umbrella is not a final exchange. Raw activity or stage basis: per cultivated hectare-cycle."
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle."
           amount:
-            expression: "method calculation from recorded nitrogen inputs and crop residues"
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -429,26 +411,93 @@ process_inventory:
               collection_protocol_id: cp_crop_cycle
               source_ids:
                 - ipcc-2019-managed-soils
-            ranges:
-              - role: allowed_range
-                lower: "0"
-                upper: "1"
-                unit: "kg species/kg relevant N input"
-                basis: "per cultivated hectare-cycle"
-                basis_kind: "n_input"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - ipcc-2019-managed-soils
-        - row_id: direct_combustion_emissions
-          role: "Direct combustion emissions from foreground fuel use"
-          name: "Foreground fuel-combustion emission species"
+            ranges: []
+        - row_id: soil_n_emissions_nh3
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg species"
-          description: "Calculate emitted substances and receiving compartments separately whenever fuel is combusted in foreground machinery, pumps or dryers; this umbrella is not a final exchange. Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization."
+          property_unit: "Mass / kg NH3"
+          description: "Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle."
           amount:
-            expression: "calculate separate emitted substances from actual fuel use, equipment and declared inventory method"
+            expression: "Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: soil_n_emissions_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO"
+          description: "Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: soil_n_emissions_nitrate
+          role: "Nitrate, to water"
+          name: "Nitrate, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3-"
+          description: "Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: soil_n_emissions_co2_fossil
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: direct_combustion_emissions
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "fuel_inventory"
@@ -457,16 +506,83 @@ process_inventory:
               collection_protocol_id: cp_crop_cycle
               source_ids:
                 - ipcc-2006-mobile-combustion
-            ranges:
-              - role: allowed_range
-                lower: "0"
-                upper: "10"
-                unit: "kg species/kg fuel"
-                basis: "per kilogram of recorded foreground fuel"
-                basis_kind: "fuel_inventory"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - ipcc-2006-mobile-combustion
+            ranges: []
+        - row_id: direct_combustion_emissions_co2_biogenic
+          role: "Carbon dioxide, biogenic, to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2006-mobile-combustion
+            ranges: []
+        - row_id: direct_combustion_emissions_ch4
+          role: "Methane, to air"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CH4"
+          description: "Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2006-mobile-combustion
+            ranges: []
+        - row_id: direct_combustion_emissions_n2o
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2006-mobile-combustion
+            ranges: []
+        - row_id: direct_combustion_emissions_dust
+          role: "Particulate matter, particle size unspecified, to air"
+          name: "Particulate matter, particle size unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization."
+          amount:
+            expression: "Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_cycle
+              source_ids:
+                - ipcc-2006-mobile-combustion
+            ranges: []
   - id: retting_extraction
     label: "Optional retting and fibre extraction"
     inputs:
@@ -550,7 +666,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per retting or extraction batch."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per retting or extraction batch. Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "calculated_value"
@@ -563,34 +679,6 @@ process_inventory:
               collection_protocol_id: cp_retting_batch
               source_ids: []
             ranges: []
-        - row_id: retting_aids
-          role: "Retting inoculants or treatment aids"
-          name: "Retting inoculants or treatment aids as applied"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record each microbial culture, enzyme, alkali or bleaching aid actually used; zero is valid for unaided water retting. Raw activity or stage basis: per retting or extraction batch."
-          amount:
-            expression: "measured product mass by batch"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_retting_batch
-              source_ids:
-                - fao-ijo-jute-retting-1998
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg/t feed"
-                basis: "per retting or extraction batch"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids:
-                  - fao-ijo-jute-retting-1998
         - row_id: inter_node_transport
           role: "Inter-node freight transport"
           name: "Freight transport service"
@@ -1064,7 +1152,7 @@ data_sources:
     used_for: "land-occupation calculation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ff944e2d723c0753a07f8a423078a6301720d53dc9b05da00a5b1ee7805320d2"
+  source_sha256: "sha256:76189e5d1452d5e875ff76330414c524749d15c6fc2317024b847c56d4e67d1d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4356"
@@ -1115,16 +1203,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41687"
+    - unit_id: "normative_47574"
       family: "allocation"
       span:
         start:
-          offset: 41687
-          line: 859
+          offset: 47574
+          line: 921
           column: 1
         end:
-          offset: 42659
-          line: 867
+          offset: 48546
+          line: 929
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_mass_first` | fibre and intended co-products | First preserve physical mass and moisture balances by batch. Where fibre, sticks, seeds or other outputs are intended products, avoid allocation by subdivision when separately metered; otherwise report and justify the selected physical or economic relation. | `mass-balance-identity` |\n| `allocation_residue_destination` | sticks, bark, fines and crop residues | Do not assign avoided burdens without a declared substitution model. Returned biomass, sold co-product and waste treatment are distinct destinations. | `mass-balance-identity` |\n| `allocation_rework` | rework and rejected material | Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting. | `mass-balance-identity` |\n\n"
       headings:
@@ -1143,12 +1231,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41687
-              line: 859
+              offset: 47574
+              line: 921
               column: 1
             end:
-              offset: 41727
-              line: 859
+              offset: 47614
+              line: 921
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1163,16 +1251,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47493"
+    - unit_id: "normative_54145"
       family: "validation"
       span:
         start:
-          offset: 47493
-          line: 898
+          offset: 54145
+          line: 962
           column: 1
         end:
-          offset: 48536
-          line: 908
+          offset: 55188
+          line: 972
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | severity |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | UUID, Mass property, mass unit group, product state and required qualifiers shall match the declared accepted fibre. | error |\n| `validate_flow_bindings` | all cards | Resolve every parameterized card to a concrete compatible UUID from actual foreground identity, and retain unresolved or internal status exactly as audited. | error |\n| `validate_ranges` | all cards | Every English, Chinese and structured card shall contain exactly one complete range with matching role, bounds, unit, basis, basis kind and evidence kind. | error |\n| `validate_route_balance` | every route and batch | Input mass shall reconcile with accepted, downgraded, co-product, residue, reject and measured loss outputs after moisture conversion. | error |\n| `validate_rework` | rejects and rework | Rework shall remain linked to its producing node and shall not be counted both as new input and accepted output. | error |\n\n"
       headings:
@@ -1191,12 +1279,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47493
-              line: 898
+              offset: 54145
+              line: 962
               column: 1
             end:
-              offset: 47515
-              line: 898
+              offset: 54167
+              line: 962
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1267,106 +1355,106 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_mass_first"
       identity_kind: "explicit"
-      unit_id: "normative_41687"
+      unit_id: "normative_47574"
       source_span:
         start:
-          offset: 41800
-          line: 863
+          offset: 47687
+          line: 925
           column: 1
         end:
-          offset: 42146
-          line: 863
+          offset: 48033
+          line: 925
           column: 347
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_residue_destination"
       identity_kind: "explicit"
-      unit_id: "normative_41687"
+      unit_id: "normative_47574"
       source_span:
         start:
-          offset: 42147
-          line: 864
+          offset: 48034
+          line: 926
           column: 1
         end:
-          offset: 42401
-          line: 864
+          offset: 48288
+          line: 926
           column: 255
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_41687"
+      unit_id: "normative_47574"
       source_span:
         start:
-          offset: 42402
-          line: 865
+          offset: 48289
+          line: 927
           column: 1
         end:
-          offset: 42657
-          line: 865
+          offset: 48544
+          line: 927
           column: 256
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_47493"
+      unit_id: "normative_54145"
       source_span:
         start:
-          offset: 47586
-          line: 902
+          offset: 54238
+          line: 966
           column: 1
         end:
-          offset: 47763
-          line: 902
+          offset: 54415
+          line: 966
           column: 178
     - pointer: "/validation_rules/1"
       rule_id: "validate_flow_bindings"
       identity_kind: "explicit"
-      unit_id: "normative_47493"
+      unit_id: "normative_54145"
       source_span:
         start:
-          offset: 47764
-          line: 903
+          offset: 54416
+          line: 967
           column: 1
         end:
-          offset: 47971
-          line: 903
+          offset: 54623
+          line: 967
           column: 208
     - pointer: "/validation_rules/2"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_47493"
+      unit_id: "normative_54145"
       source_span:
         start:
-          offset: 47972
-          line: 904
+          offset: 54624
+          line: 968
           column: 1
         end:
-          offset: 48170
-          line: 904
+          offset: 54822
+          line: 968
           column: 199
     - pointer: "/validation_rules/3"
       rule_id: "validate_route_balance"
       identity_kind: "explicit"
-      unit_id: "normative_47493"
+      unit_id: "normative_54145"
       source_span:
         start:
-          offset: 48171
-          line: 905
+          offset: 54823
+          line: 969
           column: 1
         end:
-          offset: 48368
-          line: 905
+          offset: 55020
+          line: 969
           column: 198
     - pointer: "/validation_rules/4"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_47493"
+      unit_id: "normative_54145"
       source_span:
         start:
-          offset: 48369
-          line: 906
+          offset: 55021
+          line: 970
           column: 1
         end:
-          offset: 48534
-          line: 906
+          offset: 55186
+          line: 970
           column: 166
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1395,27 +1483,27 @@ normative_context:
           column: 246
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41687"
+      unit_id: "normative_47574"
       source_span:
         start:
-          offset: 41687
-          line: 859
+          offset: 47574
+          line: 921
           column: 1
         end:
-          offset: 41727
-          line: 859
+          offset: 47614
+          line: 921
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47493"
+      unit_id: "normative_54145"
       source_span:
         start:
-          offset: 47493
-          line: 898
+          offset: 54145
+          line: 962
           column: 1
         end:
-          offset: 47515
-          line: 898
+          offset: 54167
+          line: 962
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1424,5 +1512,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ff944e2d723c0753a07f8a423078a6301720d53dc9b05da00a5b1ee7805320d2"
-  generated_content_sha256: "sha256:45891ca34d20686646b7e72202752eaf627899bfa74641370065fe24831bcf58"
+    sha256: "sha256:76189e5d1452d5e875ff76330414c524749d15c6fc2317024b847c56d4e67d1d"
+  generated_content_sha256: "sha256:9a0b9901a593b2f39582448549b111a8421cf547bcc917334e90c68983543b84"

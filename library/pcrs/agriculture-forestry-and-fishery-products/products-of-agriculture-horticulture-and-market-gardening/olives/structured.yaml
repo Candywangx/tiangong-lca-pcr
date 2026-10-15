@@ -354,27 +354,9 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_manage
-              source_ids: []
-            ranges: []
-        - row_id: crop_protection
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record each pesticide or other crop-protection material by formulation and active ingredient when used. Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -412,13 +394,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: field_fuel
-          role: "Orchard management fuel"
-          name: "Orchard mobile machinery fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record fuel for pruning, mowing, spraying and on-site equipment, without double counting contracted service fuel. Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass."
           amount:
-            expression: "from block-year or lot records; never replace actual amount with the screening range"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -428,15 +410,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_manage
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "2000"
-                unit: "L"
-                basis: "per ha managed year"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: pump_electricity
           role: "Irrigation and orchard electricity"
           name: "Irrigation and orchard electricity"
@@ -607,13 +581,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: harvest_fuel
-          role: "Harvest machine fuel"
-          name: "Harvest mobile machinery fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Record fuel for mechanical picking and on-farm collection when used; hand harvest may be zero. Raw activity or stage basis: per harvested lot; normalize to net accepted farm-gate fruit mass."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per harvested lot; normalize to net accepted farm-gate fruit mass."
           amount:
-            expression: "from block-year or lot records; never replace actual amount with the screening range"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -623,15 +597,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "L"
-                basis: "per ha harvest year"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1096,7 +1062,7 @@ data_sources:
     used_for: "lot mass reconciliation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fc525edaa5a029c9c470d11e75de557c420242c769f842c0b0c028c2a3cc28a5"
+  source_sha256: "sha256:eef226fde7f6a8941445cf27a3996f7ffc340b8301ff134376c97208fcb3df54"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3183"
@@ -1147,16 +1113,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39276"
+    - unit_id: "normative_38408"
       family: "allocation"
       span:
         start:
-          offset: 39276
-          line: 730
+          offset: 38408
+          line: 702
           column: 1
         end:
-          offset: 40211
-          line: 737
+          offset: 39343
+          line: 709
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| period_attribution | orchard establishment | Attribute recorded establishment inputs over documented benefiting bearing years using saleable fresh-fruit mass; revise for actual retirement, replacement or material yield changes, without a universal lifetime. | ioc-olive-growing |\n| fruit_grade_attribution | table/oil grades | Allocate shared orchard inputs between table/oil fruit lots by saleable fresh-fruit mass; assign grade-specific harvest or sorting inputs directly, and never treat rejected fruit as a co-product. | uc-harvest-2013 |\n| double_count_prevention | all phases | Record each orchard event once; assign each physical mixed fertilizer product to one input card by N first, then P, then K-only, while tracking other nutrient contents analytically without duplicate exchanges. | mass-balance-identity |\n\n"
       headings:
@@ -1175,12 +1141,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39276
-              line: 730
+              offset: 38408
+              line: 702
               column: 1
             end:
-              offset: 39316
-              line: 730
+              offset: 38448
+              line: 702
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1195,16 +1161,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46296"
+    - unit_id: "normative_46193"
       family: "validation"
       span:
         start:
-          offset: 46296
-          line: 768
+          offset: 46193
+          line: 742
           column: 1
         end:
-          offset: 47287
-          line: 777
+          offset: 47184
+          line: 751
           column: 1
       markdown: "## 9. Validation Rules\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference product | Check whole-fruit UUID, 1 kg net mass and required qualifiers; oil or cured fruit cannot substitute for fresh fruit. | ioc-table-olives |\n| validate_periods | perennial cohorts | Check all establishment, non-bearing, bearing, replacement and retirement periods are allocated once and traceably. | ioc-olive-growing |\n| validate_route | harvest and grading | Record hand or mechanical harvest and table/oil grade; inactive grading has no exchanges. | uc-harvest-2013 |\n| validate_balance | fruit lot | Review fruit, separated olive vegetation and non-plant matter against gross lot mass, reject destinations and damage class without double-counting transfers. | mass-balance-identity |\n| validate_range | each flow card | Investigate out-of-screen observations without rejecting supported real measurements solely because of a provisional interval. |  |\n\n"
       headings:
@@ -1223,12 +1189,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46296
-              line: 768
+              offset: 46193
+              line: 742
               column: 1
             end:
-              offset: 46318
-              line: 768
+              offset: 46215
+              line: 742
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1299,106 +1265,106 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_39276"
+      unit_id: "normative_38408"
       source_span:
         start:
-          offset: 39388
-          line: 733
+          offset: 38520
+          line: 705
           column: 1
         end:
-          offset: 39669
-          line: 733
+          offset: 38801
+          line: 705
           column: 282
     - pointer: "/allocation_rules/1"
       rule_id: "fruit_grade_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_39276"
+      unit_id: "normative_38408"
       source_span:
         start:
-          offset: 39670
-          line: 734
+          offset: 38802
+          line: 706
           column: 1
         end:
-          offset: 39932
-          line: 734
+          offset: 39064
+          line: 706
           column: 263
     - pointer: "/allocation_rules/2"
       rule_id: "double_count_prevention"
       identity_kind: "explicit"
-      unit_id: "normative_39276"
+      unit_id: "normative_38408"
       source_span:
         start:
-          offset: 39933
-          line: 735
+          offset: 39065
+          line: 707
           column: 1
         end:
-          offset: 40209
-          line: 735
+          offset: 39341
+          line: 707
           column: 277
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_46296"
+      unit_id: "normative_46193"
       source_span:
         start:
-          offset: 46390
-          line: 771
+          offset: 46287
+          line: 745
           column: 1
         end:
-          offset: 46570
-          line: 771
+          offset: 46467
+          line: 745
           column: 181
     - pointer: "/validation_rules/1"
       rule_id: "validate_periods"
       identity_kind: "explicit"
-      unit_id: "normative_46296"
+      unit_id: "normative_46193"
       source_span:
         start:
-          offset: 46571
-          line: 772
+          offset: 46468
+          line: 746
           column: 1
         end:
-          offset: 46749
-          line: 772
+          offset: 46646
+          line: 746
           column: 179
     - pointer: "/validation_rules/2"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_46296"
+      unit_id: "normative_46193"
       source_span:
         start:
-          offset: 46750
-          line: 773
+          offset: 46647
+          line: 747
           column: 1
         end:
-          offset: 46900
-          line: 773
+          offset: 46797
+          line: 747
           column: 151
     - pointer: "/validation_rules/3"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_46296"
+      unit_id: "normative_46193"
       source_span:
         start:
-          offset: 46901
-          line: 774
+          offset: 46798
+          line: 748
           column: 1
         end:
-          offset: 47117
-          line: 774
+          offset: 47014
+          line: 748
           column: 217
     - pointer: "/validation_rules/4"
       rule_id: "validate_range"
       identity_kind: "explicit"
-      unit_id: "normative_46296"
+      unit_id: "normative_46193"
       source_span:
         start:
-          offset: 47118
-          line: 775
+          offset: 47015
+          line: 749
           column: 1
         end:
-          offset: 47285
-          line: 775
+          offset: 47182
+          line: 749
           column: 168
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1427,27 +1393,27 @@ normative_context:
           column: 130
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39276"
+      unit_id: "normative_38408"
       source_span:
         start:
-          offset: 39276
-          line: 730
+          offset: 38408
+          line: 702
           column: 1
         end:
-          offset: 39316
-          line: 730
+          offset: 38448
+          line: 702
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46296"
+      unit_id: "normative_46193"
       source_span:
         start:
-          offset: 46296
-          line: 768
+          offset: 46193
+          line: 742
           column: 1
         end:
-          offset: 46318
-          line: 768
+          offset: 46215
+          line: 742
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1456,5 +1422,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fc525edaa5a029c9c470d11e75de557c420242c769f842c0b0c028c2a3cc28a5"
-  generated_content_sha256: "sha256:e4b3a230919a4a577a0fc5fd912b7d9bb78c6638806c76234a7a640c49b7c4a2"
+    sha256: "sha256:eef226fde7f6a8941445cf27a3996f7ffc340b8301ff134376c97208fcb3df54"
+  generated_content_sha256: "sha256:294a630506662b16933dd633e1a78f0fa01da8cd5b475546a25764d73c359e01"

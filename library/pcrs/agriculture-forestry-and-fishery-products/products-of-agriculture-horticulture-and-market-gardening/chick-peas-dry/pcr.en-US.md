@@ -18,7 +18,7 @@ Green or succulent chickpeas, planting seed sold as seed, flour, split or dehull
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.chick-peas-dry` |
-| classification_refs | CPC 3.0 `01703` Chick peas, dry; mapping relation: exact |
+| classification_refs | CPC 3.0 `01703` Chick peas, dry; mapping relation: narrower |
 | covered_products | Mature dry desi and kabuli chickpea grain at farm gate, unprocessed beyond farm cleaning, grading and necessary stabilization |
 | excluded_products | Green chickpeas; planting seed sold as seed; sprouts; flour; splits; dehulled fractions; canned or cooked products; downstream industrial cleaning, sizing or processing |
 | representative_product | Mature dry chickpea grain, desi or kabuli, meeting a declared farm-gate moisture and grade or destination specification |
@@ -207,42 +207,9 @@ Raw activity or stage basis: per ha of planted chickpea in one crop cycle.
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_nutrient_inputs`
 
-###### Route-specific crop-protection formulation (`crop_protection_inputs`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record formulated pesticides, seed treatments, desiccants and rhizobial inoculants actually applied, preserving product identity, active ingredient and treated area.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-Raw activity or stage basis: per ha of treated chickpea in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: `crop_cycle`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_field_materials`
-- Sources: `ndsu-pulse-field-guide-2025`
-###### Route-specific non-nutrient inoculant (`crop_protection_inputs_inoculant`)
-
-Use this separate card only for one non-nutrient inoculant actually applied. Identify its formulation, application event and measured product mass; keep crop-protection formulations on separate cards. Do not infer use from this template.
-
-Record formulated pesticides, seed treatments, desiccants and rhizobial inoculants actually applied, preserving product identity, active ingredient and treated area.
-
-- Selected flow: One route-specific non-nutrient inoculant product; exact identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-Raw activity or stage basis: per ha of treated chickpea in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: `crop_cycle`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_field_materials`
-- Sources: `ndsu-pulse-field-guide-2025`
+Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing.
 
 ###### Irrigation water supplied (`irrigation_water`)
 
@@ -364,31 +331,85 @@ Raw activity or stage basis: per ha harvested chickpea in one crop cycle.
 
 ##### Elementary flows
 
-###### Direct field emissions by substance and receiving medium (`direct_field_emissions`)
+###### Dinitrogen monoxide, to air (`direct_field_emissions`)
 
-Report each measured or calculated emission as a separate concrete elementary exchange, including managed-soil nitrogen emissions and emissions from fuel use when they fall inside the foreground boundary.
-
-- Selected flow: Reported substance to air, water or soil
-- Flow property / unit: Substance-specific mass / kg
-- Amount rule: calculate from collected activity data using the declared method and factors
-- Value mode: `calculated_value`
-- Specificity: `site_specific`
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per ha of planted chickpea in one crop cycle.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `crop_cycle`
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_emissions`
 - Sources: `ipcc-2019-managed-soils`
-- Range: Provisional substance-mass screen
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg reported substance/ha crop cycle
-  - Basis: each substance and receiving medium is screened separately; the interval is provisional
-  - Basis kind: `crop_cycle`
-  - Evidence kind: `reasoned_estimate`
-  - Sources:
+
+###### Ammonia, to air (`direct_field_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per ha of planted chickpea in one crop cycle.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrogen monoxide, to air (`direct_field_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per ha of planted chickpea in one crop cycle.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrate, to water (`direct_field_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per ha of planted chickpea in one crop cycle.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Carbon dioxide, fossil, to air (`direct_field_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per ha of planted chickpea in one crop cycle.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`
 
 ### Process: Harvest, threshing and field capture (`harvest_threshing`)
 
@@ -936,6 +957,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_run_integrity` | batches, campaigns and rework loops | Assign shared cleaning, start-up and changeover burdens once across affected lots; a rework pass retains its burdens and material linkage, and rejected material is never counted as accepted output. This is single-period attribution and shared burdens do not cross the crop-cycle boundary. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

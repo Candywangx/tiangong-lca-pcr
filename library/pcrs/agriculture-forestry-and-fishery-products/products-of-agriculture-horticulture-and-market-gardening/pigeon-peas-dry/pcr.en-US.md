@@ -16,7 +16,7 @@ This PCR covers mature dry whole pigeonpea grain (*Cajanus cajan*) from managed 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pigeon-peas-dry |
-| classification_refs | CPC 3.0:01707 Pigeon peas, dry; mapping relation: exact |
+| classification_refs | CPC 3.0:01707 Pigeon peas, dry; mapping relation: narrower |
 | covered_products | Mature, cleaned and graded dry whole pigeonpea grain at farm gate |
 | excluded_products | Green vegetable pigeonpea; planting seed sold as seed; split dhal; flour; cooked or canned product; downstream milling |
 | representative_product | Mature dry whole grain of *Cajanus cajan* |
@@ -236,42 +236,9 @@ Raw activity or stage basis: per hectare and crop cycle.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Route-specific crop-protection formulation (`cultivation_supplies_services`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record each crop-protection product and non-nutrient inoculant by identity and field event. Do not combine these products with energy or field services.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare and crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cultivation`
-- Sources:
-###### Route-specific non-nutrient inoculant (`cultivation_supplies_services_inoculant`)
-
-Use this separate card only for one non-nutrient inoculant actually applied. Identify its formulation, application event and measured product mass; keep crop-protection formulations on separate cards. Do not infer use from this template.
-
-Record each crop-protection product and non-nutrient inoculant by identity and field event. Do not combine these products with energy or field services.
-
-- Selected flow: One route-specific non-nutrient inoculant product; exact identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare and crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cultivation`
-- Sources:
+Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -305,30 +272,7 @@ Raw activity or stage basis: per hectare and crop cycle.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_cultivation`
 
-###### Non-energy field services (`field_non_energy_services`)
-
-Record manual labour, animal traction or other non-energy field services separately when represented as Product inputs.
-
-- Selected flow: Non-energy field services
-- Flow property / unit: Service / service-hour
-- Amount rule: measured service quantity by operation
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare and crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cultivation`
-- Sources:
-- Range: Provisional non-energy service screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: service-hour/ha per crop cycle
-  - Basis: recorded non-energy field services for one hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required operating-service records: identify each actually purchased non-energy operation by its task, supplier, scope, native quantity and included burdens before completing the package. Do not create a generic services exchange. Keep any fuel, electricity or equipment already included in a supplier service inside that supplier boundary and count the activity once.
 
 ##### Waste flows
 
@@ -860,30 +804,53 @@ Raw activity or stage basis: per final-drying or rework batch.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Final-drying and rework energy (`final_drying_energy`)
+###### Electricity, medium voltage (`final_drying_energy`)
 
-Record purchased fuel, electricity and qualifying energy services used for final drying or rework; ambient solar drying has zero purchased energy.
-
-- Selected flow: Final-drying and rework energy supply
-- Flow property / unit: Energy / MJ
-- Amount rule: energy converted from measured carrier and qualifying service records by batch
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per final-drying or rework batch.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_final_drying`
 - Sources: `icrisat-pigeonpea-production-1992`
-- Range: Provisional final-drying energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: MJ/kg stabilized grain
-  - Basis: one final-drying or rework batch
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`final_drying_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per final-drying or rework batch.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_final_drying`
+- Sources: `icrisat-pigeonpea-production-1992`
+
+###### Purchased steam (`final_drying_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per final-drying or rework batch.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_final_drying`
+- Sources: `icrisat-pigeonpea-production-1992`
 
 ##### Waste flows
 
@@ -1045,6 +1012,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_reject_exit` | Downgrade and waste | Downgraded outputs follow the complete-output attribution rule; treatment of waste remains with the producing node unless a disclosed downstream waste convention applies. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

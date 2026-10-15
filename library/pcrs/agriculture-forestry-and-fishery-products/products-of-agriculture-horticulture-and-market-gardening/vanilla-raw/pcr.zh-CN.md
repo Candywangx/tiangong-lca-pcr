@@ -261,12 +261,12 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 
-###### 带有可采收成熟绿色荚果的在田藤本（`standing_vines_mature_pods`）
+###### 待采收的绿色香荚兰荚果（`standing_vines_mature_pods`）
 
 该流卡：依据各采收轮次和损失核算的内部中间状态，不赋予外部 UUID。
 
-- 选定流：内部在田藤本及可采荚果状态
-- 流属性/单位：质量 / kg 可采荚果
+- 选定流：待采收的绿色香荚兰荚果
+- 流属性/单位：质量 / kg harvest-ready pods
 - 数量规则：依据各采收轮次和损失核算的内部中间状态，不赋予外部 UUID。
 - 数值来源模式：`calculated_value`
 - 适用范围：`site_specific`
@@ -336,12 +336,12 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 进入采收的在田藤本及可采荚果（`harvest_ready_vines_input`）
+###### 待采收的绿色香荚兰荚果（`harvest_ready_vines_input`）
 
 该流卡：内部转移量等于所有轮次核算后的可采荚果质量，不赋予外部 UUID。
 
-- 选定流：内部在田藤本及可采荚果状态
-- 流属性/单位：质量 / kg 可采荚果
+- 选定流：待采收的绿色香荚兰荚果
+- 流属性/单位：质量 / kg harvest-ready pods
 - 数量规则：内部转移量等于所有轮次核算后的可采荚果质量，不赋予外部 UUID。
 - 数值来源模式：`calculated_value`
 - 适用范围：`site_specific`

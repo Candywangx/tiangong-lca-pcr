@@ -233,29 +233,7 @@ Raw activity or stage basis: per reporting period and converted to 1 kg dry tea.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_activity_records`
 
-###### Crop-protection formulation (`tea_crop_protection_input`)
-
-Record each named crop-protection product, active ingredient where available, application event, and treated area.
-
-- Selected flow: Named crop-protection formulation (route-specific UUID unresolved)
-- Flow property / unit: Mass of formulated product / kg
-- Amount rule: measured product mass by application event
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per treated area and converted to 1 kg dry tea.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_activity_records`
-- Range: Provisional crop-protection product screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.03
-  - Unit: kg formulated product/kg dry tea
-  - Basis: broad first-pass screen; preserve named product identity for background linking
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation and field water (`tea_field_water_input`)
 
@@ -424,29 +402,35 @@ Raw activity or stage basis: per 1 kg dry tea.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Plucking and collection energy (`tea_plucking_energy`)
+###### Electricity, medium voltage (`tea_plucking_energy`)
 
-Record hand-plucking services as foreground labour or equipment activity where material, and record machine fuel or electricity as supplied energy.
-
-- Selected flow: Plucking and collection energy (route-specific UUID unresolved)
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: measured fuel or electricity for plucking, bins, and collection equipment
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_activity_records`
-- Range: Provisional plucking-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.5
-  - Unit: MJ/kg dry tea
-  - Basis: plucking, loading, and field collection equipment
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`tea_plucking_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_activity_records`
 
 #### Outputs
 
@@ -828,29 +812,80 @@ Raw activity or stage basis: per 1 kg dry tea.
 
 ##### Elementary flows
 
-###### Direct air emissions from thermal drying (`tea_drying_direct_emissions`)
+###### Carbon dioxide, fossil, to air (`tea_drying_direct_emissions`)
 
-Record reported pollutants and receiving media from fuel combustion or process drying. Do not replace a named pollutant with a broad unqualified emission category.
-
-- Selected flow: Reported drying emissions by substance and receiving medium (UUID unresolved)
-- Flow property / unit: Mass / kg substance
-- Amount rule: measured stack or calculated emissions from fuel and process records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1 kg dry tea.
 
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_emission_records`
-- Range: Provisional direct-emission screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.20
-  - Unit: kg reported substance/kg dry tea
-  - Basis: substance-specific result or factor-based estimate; not a universal pollutant identity
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Carbon dioxide, biogenic, to air (`tea_drying_direct_emissions_co2_biogenic`)
+
+Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Carbon dioxide, biogenic, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Methane, to air (`tea_drying_direct_emissions_ch4`)
+
+Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg CH4
+- Amount rule: Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Dinitrogen monoxide, to air (`tea_drying_direct_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
+
+###### Particulate matter, particle size unspecified, to air (`tea_drying_direct_emissions_dust`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_emission_records`
 
 ### Process: Grading, storage, and primary-processing gate (`tea_grading_storage_gate`)
 
@@ -885,29 +920,35 @@ Raw activity or stage basis: per 1 kg dry tea.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Grading electricity and screening energy (`tea_grading_energy`)
+###### Electricity, medium voltage (`tea_grading_energy`)
 
-Record electricity or fuel used for screening, sorting, sieving, and quality classification.
-
-- Selected flow: Grading and screening energy (route-specific UUID unresolved)
-- Flow property / unit: Energy / MJ or kWh
-- Amount rule: meter or batch allocation to the graded tea lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg dry tea.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_activity_records`
-- Range: Provisional grading-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.5
-  - Unit: MJ/kg dry tea
-  - Basis: screening, sorting, and grading services
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`tea_grading_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg dry tea.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_field_activity_records`
 
 #### Outputs
 
@@ -1044,30 +1085,20 @@ Raw activity or stage basis: per 1 kg dry tea reference flow.
 
 ##### Elementary flows
 
-###### Storage dust and reported warehouse emissions (`tea_storage_emissions`)
+###### Particulate matter, particle size unspecified, to air (`tea_storage_emissions`)
 
-Record dust, ventilation, and any reported emissions caused by dry-tea storage. Use named substances and receiving media when a measurement or factor is available.
-
-- Selected flow: Reported storage dust or emission by substance and medium (UUID unresolved)
-- Flow property / unit: Mass / kg substance
-- Amount rule: measured or calculated emissions allocated to storage duration and lot
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1 kg dry tea reference flow.
 
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Storage duration (`storage_duration`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `storage_duration`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_emission_records`
-- Range: Provisional storage-emission screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.02
-  - Unit: kg reported substance/kg dry tea
-  - Basis: storage ventilation and dust records; substance-specific reporting required
-  - Basis kind: Storage duration (`storage_duration`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ### Process: Product Measurement at the Declared Handoff (`declared_reference_handoff`)
 This node records the actual product handoff at the existing system boundary for reconciliation and reference-quantity normalization. It adds no physical processing and does not presume drying, cooling, storage, packaging or transport. Each data package declares one actual route, one terminal product state, moisture or dry-matter basis, and gate. Feed only the accepted product delivered by that route at that gate into this node; do not add other routes as extra inputs. Record co-products separately and apply Section 7. Count preceding inputs, losses and emissions once. Normalize using the measured accepted net mass at the handoff; this measurement node changes neither mass, yield nor allocation.
@@ -1140,6 +1171,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -1157,14 +1190,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 ### Calculation rules
 
-| rule_id | Inputs | Calculation |
-| --- | --- | --- |
-| `calc_01` | fresh leaf mass, moisture, dry tea mass | Calculate route yield as dry tea mass divided by fresh leaf mass and retain both wet-basis and dry-basis moisture records. |
-| `calc_02` | area, period, plantation phase, output | Allocate area-time and phase burdens to the declared tea output for the reporting period without double attribution across establishment, replacement, and productive phases. |
-| `calc_03` | nutrient product records and nutrient content | Convert formulated fertilizer products to nutrient mass for N, P, and K records while preserving product identity for background datasets. |
-| `calc_04` | batch inputs, intermediates, outputs, residues, losses | Reconcile each batch by mass balance; unresolved difference is a validation finding and cannot be silently assigned to accepted tea. |
-| `calc_05` | grade outputs and destinations | Classify primary grade, secondary grade, recovered tea product, residue, reject, rework, and disposal according to the declared hand-off. |
-| `calc_06` | route, batch, energy, changeover, storage period | Allocate shared services to route and period records using the documented operational basis; prevent shared-run burdens from appearing in more than one product system. |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_01` | tea_route_processing | Calculate route yield as dry tea mass divided by fresh leaf mass and retain both wet-basis and dry-basis moisture records. | fresh leaf mass, moisture, dry tea mass | fresh-to-dry yield ratio with measured moisture basis |  |
+| `calc_02` | tea_plantation_management | Allocate area-time and phase burdens to the declared tea output for the reporting period without double attribution across establishment, replacement, and productive phases. | area, period, plantation phase, output | area-time and phase burdens attributed once to reporting-period output |  |
+| `calc_03` | tea_plantation_management | Convert formulated fertilizer products to nutrient mass for N, P, and K records while preserving product identity for background datasets. | nutrient product records and nutrient content | separate product quantities and declared nutrient-component masses |  |
+| `calc_04` | route-wide processes | Reconcile each batch by mass balance; unresolved difference is a validation finding and cannot be silently assigned to accepted tea. | batch inputs, intermediates, outputs, residues, losses | reconciled batch mass balance and unexplained differences |  |
+| `calc_05` | tea_grading_storage_gate | Classify primary grade, secondary grade, recovered tea product, residue, reject, rework, and disposal according to the declared hand-off. | grade outputs and destinations | intended output, residue, reject and rework classification by destination |  |
+| `calc_06` | route-wide shared operations | Allocate shared services to route and period records using the documented operational basis; prevent shared-run burdens from appearing in more than one product system. | route, batch, energy, changeover, storage period | shared-service burdens attributed once by route, batch and period |  |
 
 ### Data quality requirements
 

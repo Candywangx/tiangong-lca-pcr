@@ -288,23 +288,7 @@ Raw activity or stage basis: per ha orchard-year or establishment year; convert 
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_manage`
 
-###### Route-specific crop-protection formulation (`crop_protection`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record each pesticide or other crop-protection material by formulation and active ingredient when used.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_manage`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Orchard irrigation water (`irrigation_water`)
 Meter applied irrigation; declare rain-fed blocks as zero, not missing.
@@ -327,27 +311,21 @@ Raw activity or stage basis: per ha orchard-year or establishment year; convert 
   - Basis: per ha managed year
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Orchard management fuel (`field_fuel`)
-Record fuel for pruning, mowing, spraying and on-site equipment, without double counting contracted service fuel.
-- Selected flow: Orchard mobile machinery fuel
-- Flow property / unit: Volume / L
-- Amount rule: from block-year or lot records; never replace actual amount with the screening range
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+###### Diesel fuel (`field_fuel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per ha orchard-year or establishment year; convert to per kg reference fruit using linked bearing-year fruit mass.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_manage`
-- Range: Provisional screening interval only; actual foreground records determine the amount
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2000
-  - Unit: L
-  - Basis: per ha managed year
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Irrigation and orchard electricity (`pump_electricity`)
 Meter pumping and other orchard electricity only where supplied.
 - Selected flow: Irrigation and orchard electricity
@@ -487,27 +465,21 @@ Raw activity or stage basis: per harvested lot; normalize to net accepted farm-g
   - Basis: per ha harvest year
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Harvest machine fuel (`harvest_fuel`)
-Record fuel for mechanical picking and on-farm collection when used; hand harvest may be zero.
-- Selected flow: Harvest mobile machinery fuel
-- Flow property / unit: Volume / L
-- Amount rule: from block-year or lot records; never replace actual amount with the screening range
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+###### Diesel fuel (`harvest_fuel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per harvested lot; normalize to net accepted farm-gate fruit mass.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest`
-- Range: Provisional screening interval only; actual foreground records determine the amount
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: L
-  - Basis: per ha harvest year
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ##### Waste flows
 None.
 ##### Elementary flows
@@ -735,6 +707,8 @@ None.
 | double_count_prevention | all phases | Record each orchard event once; assign each physical mixed fertilizer product to one input card by N first, then P, then K-only, while tracking other nutrient contents analytically without duplicate exchanges. | mass-balance-identity |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

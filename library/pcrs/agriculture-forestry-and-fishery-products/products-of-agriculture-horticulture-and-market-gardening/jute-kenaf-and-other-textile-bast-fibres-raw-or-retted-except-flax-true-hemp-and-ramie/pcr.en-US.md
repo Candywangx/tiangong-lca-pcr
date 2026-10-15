@@ -255,25 +255,7 @@ Raw activity or stage basis: per cultivated hectare-cycle.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_crop_cycle`
 
-###### Route-specific crop-protection formulation (`crop_protection`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record every formulated product actually applied; no default treatment is imposed.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Identity resolution: Deferred conditional umbrella; actual formulated products are selected from foreground application records. The initial search returned only an incompatible rice-farm aggregate proxy.
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per cultivated hectare-cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_cycle`
-- Sources:
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -371,60 +353,165 @@ Raw activity or stage basis: per cultivated hectare-cycle.
 
 ##### Elementary flows
 
-###### Managed-soil nitrogen emissions (`soil_n_emissions`)
+###### Dinitrogen monoxide, to air (`soil_n_emissions`)
 
-Calculate actual nitrogen species and receiving compartments separately; this umbrella is not a final exchange.
-
-- Selected flow: Managed-soil nitrogen emission species
-- Flow property / unit: Mass / kg species
-- Identity resolution: Deferred multi-exchange umbrella; final exchanges shall resolve each reported nitrogen species and receiving compartment. The initial search returned individual species rows and cannot represent this card with one UUID.
-- Amount rule: method calculation from recorded nitrogen inputs and crop residues
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per cultivated hectare-cycle.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: N input (`n_input`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_crop_cycle`
 - Sources: `ipcc-2019-managed-soils`
-- Range: Method-domain nitrogen-emission guardrail
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg species/kg relevant N input
-  - Basis: per cultivated hectare-cycle
-  - Basis kind: N input (`n_input`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `ipcc-2019-managed-soils`
 
+###### Ammonia, to air (`soil_n_emissions_nh3`)
 
-###### Direct combustion emissions from foreground fuel use (`direct_combustion_emissions`)
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
 
-Calculate emitted substances and receiving compartments separately whenever fuel is combusted in foreground machinery, pumps or dryers; this umbrella is not a final exchange.
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
 
-- Selected flow: Foreground fuel-combustion emission species
-- Flow property / unit: Mass / kg species
-- Identity resolution: Deferred multi-exchange umbrella; final exchanges shall resolve each calculated substance and receiving compartment. The initial search returned individual combustion-emission rows and cannot represent this card with one UUID.
-- Amount rule: calculate separate emitted substances from actual fuel use, equipment and declared inventory method
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
+###### Nitrogen monoxide, to air (`soil_n_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrate, to water (`soil_n_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Carbon dioxide, fossil, to air (`soil_n_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Carbon dioxide, fossil, to air (`direct_combustion_emissions`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
 
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Fuel inventory (`fuel_inventory`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_crop_cycle`
 - Sources: `ipcc-2006-mobile-combustion`
-- Range: Fuel-carbon and pollutant method-domain guardrail
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg species/kg fuel
-  - Basis: per kilogram of recorded foreground fuel
-  - Basis kind: Fuel inventory (`fuel_inventory`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `ipcc-2006-mobile-combustion`
+
+###### Carbon dioxide, biogenic, to air (`direct_combustion_emissions_co2_biogenic`)
+
+Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Carbon dioxide, biogenic, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Methane, to air (`direct_combustion_emissions_ch4`)
+
+Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg CH4
+- Amount rule: Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Dinitrogen monoxide, to air (`direct_combustion_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Particulate matter, particle size unspecified, to air (`direct_combustion_emissions_dust`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
 
 ### Process: Optional retting and fibre extraction (`retting_extraction`)
 
@@ -517,32 +604,7 @@ Raw activity or stage basis: per retting or extraction batch.
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_retting_batch`
 
-###### Retting inoculants or treatment aids (`retting_aids`)
-
-Record each microbial culture, enzyme, alkali or bleaching aid actually used; zero is valid for unaided water retting.
-
-- Selected flow: Retting inoculants or treatment aids as applied
-- Flow property / unit: Mass / kg
-- Identity resolution: Deferred conditional umbrella; actual culture, enzyme, alkali or bleaching product is selected from batch records. The initial search returned harvested stems and unrelated enzymatic food-process rows.
-- Amount rule: measured product mass by batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per retting or extraction batch.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_retting_batch`
-- Sources: `fao-ijo-jute-retting-1998`
-- Range: Provisional treatment-aid screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/t feed
-  - Basis: per retting or extraction batch
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources: `fao-ijo-jute-retting-1998`
+Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing.
 
 ###### Inter-node freight transport (`inter_node_transport`)
 
@@ -865,6 +927,8 @@ Raw activity or stage basis: per conditioning lot.
 | `allocation_rework` | rework and rejected material | Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

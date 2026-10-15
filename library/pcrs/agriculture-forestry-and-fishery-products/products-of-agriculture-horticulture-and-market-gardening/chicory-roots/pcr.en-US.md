@@ -101,6 +101,7 @@ Index operations by lot and cycle. Assign shared machinery, cleaning and changeo
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Chicory seed or transplants
+- Flow property / unit: Mass / kg
 - Amount rule: Record actual seed or transplant mass and establishment route.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
@@ -200,46 +201,16 @@ Raw activity or stage basis: per hectare per crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 
-###### Route-specific crop-protection formulation (`crop_protection`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare per crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-###### Route-specific non-pesticide field-treatment product (`crop_protection_field_treatment`)
-
-Use this separate card only when a non-pesticide field-treatment product is actually applied. Identify one product and application event from records, and measure its product mass; keep crop-protection formulations on separate cards.
-
-Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
-
-- Selected flow: One route-specific non-pesticide field-treatment product; exact identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare per crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
+Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing.
 
 ###### Irrigation water (`irrigation_water`)
 
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
 - Amount rule: Meter or calculate gross delivery and identify source and system.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -304,6 +275,7 @@ Raw activity or stage basis: per hectare per crop cycle.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Harvest-ready chicory roots in soil
+- Flow property / unit: Mass / kg
 - Amount rule: Calculate from lifted roots, sampled field losses and residues on one wet-mass basis.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -331,6 +303,7 @@ Raw activity or stage basis: per hectare per crop cycle.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Tops, non-harvested biomass and roots left in field
+- Flow property / unit: Mass / kg
 - Amount rule: Estimate by representative sampling and declare retention, removal or treatment.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -351,29 +324,85 @@ Raw activity or stage basis: per kg harvest-ready roots.
 
 ##### Elementary flows
 
-###### Direct field emissions (`direct_field_emissions`)
+###### Dinitrogen monoxide, to air (`direct_field_emissions`)
 
-Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
-
-- Selected flow: Exact substances emitted to air, water or soil from field inputs
-- Amount rule: Calculate each substance and compartment separately with an identified method; never create an aggregate elementary exchange.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per hectare per crop cycle.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_emissions`
 - Sources: `ipcc-2019-refinement-volume4`
-- Range: Provisional completeness screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kg/ha
-  - Basis: summed reported mass used only for screening; exchanges remain substance- and compartment-specific
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Ammonia, to air (`direct_field_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per hectare per crop cycle.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-refinement-volume4`
+
+###### Nitrogen monoxide, to air (`direct_field_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per hectare per crop cycle.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-refinement-volume4`
+
+###### Nitrate, to water (`direct_field_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per hectare per crop cycle.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-refinement-volume4`
+
+###### Carbon dioxide, fossil, to air (`direct_field_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per hectare per crop cycle.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-refinement-volume4`
 
 ### Process: Root lifting and capture (`root_lifting`)
 
@@ -386,6 +415,7 @@ Raw activity or stage basis: per hectare per crop cycle.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Harvest-ready chicory roots in soil
+- Flow property / unit: Mass / kg
 - Amount rule: Use the reconciled `harvest_ready_roots` output for the same lot.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -450,6 +480,7 @@ Raw activity or stage basis: per kg roots entering lifting.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Lifted chicory roots with adhering soil and tops
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh the stream received by conditioning.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -476,6 +507,7 @@ Raw activity or stage basis: per kg roots entering lifting.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Unrecovered or damaged roots and incidental material
+- Flow property / unit: Mass / kg
 - Amount rule: Estimate from field sampling and declare field retention or removal.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
@@ -507,6 +539,7 @@ Raw activity or stage basis: per kg roots entering lifting.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Lifted chicory roots with adhering soil and tops
+- Flow property / unit: Mass / kg
 - Amount rule: Use measured `lifted_roots` from the same lot.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -531,6 +564,7 @@ Raw activity or stage basis: per kg lifted roots.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Process water used for soil removal and optional washing
+- Flow property / unit: Volume / m3
 - Amount rule: Meter gross water input and reuse; the amount is zero when no washing occurs.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
@@ -594,6 +628,7 @@ Raw activity or stage basis: per kg lifted roots.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Trimmed and soil-removed fresh chicory roots
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh at the grading hand-off.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -615,28 +650,50 @@ Raw activity or stage basis: per kg lifted roots.
 
 ##### Waste flows
 
-###### Conditioning residues and wastewater (`conditioning_residues`)
+###### Chicory trimming residues, solid, for treatment (`conditioning_residues`)
 
-Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
-
-- Selected flow: Tops, trimmings, soil, spoiled pieces and wastewater
-- Amount rule: Measure each material separately, including water discharge, and declare return, use, treatment or disposal destination.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Chicory trimming residues, solid, for treatment only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per kg lifted roots.
 
+- Selected flow: Chicory trimming residues, solid, for treatment
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Chicory trimming residues, solid, for treatment, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_conditioning`
-- Range: Provisional total residue mass screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 21
-  - Unit: kg/kg lifted roots
-  - Basis: all separated solids plus discharged water per kg lifted roots
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Soil removed from chicory roots, for disposal (`conditioning_residues_chicory_soil`)
+
+Record Soil removed from chicory roots, for disposal only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per kg lifted roots.
+
+- Selected flow: Soil removed from chicory roots, for disposal
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Soil removed from chicory roots, for disposal, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning`
+
+###### Chicory washing wastewater, for treatment (`conditioning_residues_chicory_wastewater`)
+
+Record Chicory washing wastewater, for treatment only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per kg lifted roots.
+
+- Selected flow: Chicory washing wastewater, for treatment
+- Flow property / unit: Volume / m3
+- Amount rule: Measured net quantity of Chicory washing wastewater, for treatment, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning`
 
 ##### Elementary flows
 
@@ -651,6 +708,7 @@ Raw activity or stage basis: per kg lifted roots.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Trimmed and soil-removed fresh chicory roots
+- Flow property / unit: Mass / kg
 - Amount rule: Use `prepared_roots` from the same lot and run.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -710,6 +768,7 @@ Raw activity or stage basis: per 1 kg reference product.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Fresh roots sent to a declared lower-grade or processing destination
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh roots that remain products but fail the reference grade; record destination and exclude from accepted output.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -736,6 +795,7 @@ Raw activity or stage basis: per kg prepared roots.
 Record this flow at the declared process boundary for the indexed lot or run; quantify it with the stated protocol and keep its physical state and destination explicit.
 
 - Selected flow: Off-spec, damaged or spoiled roots leaving product use
+- Flow property / unit: Mass / kg
 - Amount rule: Weigh and declare regrading, return to conditioning, recovery, feed, treatment or disposal; count each rework loop once.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -767,6 +827,8 @@ Raw activity or stage basis: per kg prepared roots.
 | `allocation_runs_rework` | shared runs and rework | Assign shared burdens once by measured use, time, area or mass; returned material retains prior burdens and receives only incremental rework burdens. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

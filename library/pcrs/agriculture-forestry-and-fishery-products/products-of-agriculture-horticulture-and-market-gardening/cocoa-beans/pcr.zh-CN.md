@@ -220,23 +220,7 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cocoa_nutrient_records`
 
-###### 作物保护产品（`cocoa_crop_protection`）
-
-按日期、区块、目标和施用方法记录具名产品或活性物质。
-
-- 选定流：Named crop-protection product or active substance [unmapped]
-- 流属性/单位：质量或体积 / kg product 或 L product
-- 数量规则：按产品和活性物质记录实际施用量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_cocoa_crop_protection_records`
-- 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- 数量范围：暂定作物保护筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：0.02；单位：kg product/kg wet reference；基准：首轮宽范围，应以具名产品记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 供给可可园的灌溉水（`cocoa_irrigation_water`）
 
@@ -333,23 +317,7 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 受管理可可生产背景（`cocoa_stand_output_context`）
-
-将批次关联至生产区块、年度和品种；这是背景链接，不增加第二份产品质量。
-
-- 选定流：Managed cacao production output context [unmapped]
-- 流属性/单位：质量 / kg 或批次身份
-- 数量规则：将采收荚批次链接至区块和年度，不增加第二份产品质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per harvested pod lot and per 1 kg wet reference.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_cocoa_harvest_lot_records`
-- 来源：`fao-cocoa-production-guide`
-- 数量范围：暂定荚产量筛选估计；范围角色：QA 校验（`qa_guardrail`）；下限：0.5；上限：4；单位：kg fresh pods/kg wet reference；基准：荚到湿豆首轮范围，应以批次平衡替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+采收来源必需记录：通过采集记录将每个采收可可荚批次关联到生产地块、品种和作物年度。该来源信息是元数据，不是额外产品投入，也不是第二份可可荚质量。
 
 #### 输出
 ##### 产品流
@@ -415,23 +383,37 @@ sync_with: pcr.en-US.md
 - 来源：`icco-cocoa-harvesting-post-harvest`; `fao-cocoa-production-guide`
 - 数量范围：荚投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.5；上限：4；单位：kg pods/kg wet reference；基准：同批次荚到湿豆平衡；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
-###### 开荚能源或服务（`cocoa_pod_opening_energy`）
+###### 中压电力（`cocoa_pod_opening_energy`）
 
-记录人工工具、机械或承包开荚服务，以及跨越边界的能源载体。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
 
-- 选定流：Pod-opening energy or service [parameterized]
-- 流属性/单位：能源或服务 / MJ、kWh、L 或 kg
-- 数量规则：按开荚运行记录实际能源或服务活动
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
 - 采集协议：`cp_cocoa_energy_records`
 - 来源：`icco-cocoa-harvesting-post-harvest`
-- 数量范围：开荚能源筛选；范围角色：默认估计（`default_estimate`）；下限：0；上限：1；单位：MJ/kg wet reference；基准：人工或机械开荚宽范围，应以运行记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+
+###### 柴油（`cocoa_pod_opening_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_cocoa_energy_records`
+- 来源：`icco-cocoa-harvesting-post-harvest`
 
 #### 输出
 ##### 产品流
@@ -517,23 +499,23 @@ sync_with: pcr.en-US.md
 - 来源：`icco-cocoa-harvesting-post-harvest`; `fao-cocoa-ota-code`
 - 数量范围：发酵投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.1；上限：1.1；单位：kg wet beans/kg wet reference；基准：批次归一化投入，应以批次记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
-###### 发酵覆盖物、翻动和服务投入（`cocoa_fermentation_services`）
+发酵清单必需记录：分别记录所选边界内实际使用的每项发酵容器材料、内衬、安装及采购作业服务，保留组成、服务寿命、重复使用及供应商范围；不得假定使用某一种材料。
 
-记录覆盖物、箱篮、翻动服务以及该批次的水、燃料和电力。可重复设备通过期间规则年度化，不按公斤重复。
+###### 中压电力（`cocoa_fermentation_services`）
 
-- 选定流：Fermentation service or material input [parameterized]
-- 流属性/单位：质量、能源或服务 / kg、MJ、kWh 或 service unit
-- 数量规则：按发酵批次记录实际服务活动
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
 
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
 - 采集协议：`cp_cocoa_fermentation_batch_records`
 - 来源：`fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`
-- 数量范围：发酵服务筛选；范围角色：默认估计（`default_estimate`）；下限：0；上限：0.5；单位：kg or MJ service input/kg wet reference；基准：首轮服务宽范围，应以批次和设备记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
 #### 输出
 ##### 产品流
@@ -595,23 +577,37 @@ sync_with: pcr.en-US.md
 - 数量范围：发酵拒收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.2；单位：kg reject/kg wet-bean input；基准：不合格宽范围，应以检查记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
 ##### 基本流
-###### 发酵相关排放（`cocoa_fermentation_emissions`）
+###### 生物源二氧化碳，排放至空气（`cocoa_fermentation_emissions`）
 
-仅记录由批次输入、排液和操作记录通过选定方法或测量得到的发酵排放，不把通用可可流作为物质代理。
+仅在实测或所选适用方法确认该排放路径时，将生物源二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
 
-- 选定流：Fermentation-related elementary emissions [unmapped]
-- 流属性/单位：质量 / kg substance
-- 数量规则：将选定方法或测量应用于批次活动记录
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
+- 选定流：生物源二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算生物源二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_cocoa_emission_records`
 - 来源：`fao-cocoa-ota-code`; `mass-balance-identity`
-- 数量范围：发酵排放筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.2；单位：kg substance/kg wet reference；基准：排放总量宽范围，应以物质特定计算替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+
+###### 甲烷，排放至空气（`cocoa_fermentation_emissions_ch4`）
+
+仅在实测或所选适用方法确认该排放路径时，将甲烷，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
+
+- 选定流：甲烷，排放至空气
+- 流属性/单位：质量 / kg CH4
+- 数量规则：实测或按方法计算甲烷，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_cocoa_emission_records`
+- 来源：`fao-cocoa-ota-code`; `mass-balance-identity`
 
 ### 过程：发酵豆干燥和稳定化（`cocoa_drying_stabilization`）
 
@@ -636,23 +632,53 @@ sync_with: pcr.en-US.md
 - 来源：`icco-cocoa-processing`; `fao-cocoa-ota-code`
 - 数量范围：干燥投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.7；上限：1；单位：kg fermented wet beans/kg wet reference；基准：同批次发酵到干燥交接，应以批次数据替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
 
-###### 干燥燃料和电力（`cocoa_drying_energy`）
+###### 中压电力（`cocoa_drying_energy`）
 
-按批次记录燃料、电力或干燥服务；晒干即使直接燃料为零，也要记录平台、天气和物理服务。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg dried fermented beans and per 1 kg wet reference。
 
-- 选定流：Drying fuel, electricity or dryer service [parameterized]
-- 流属性/单位：能源或载体质量 / MJ、kWh、L 或 kg
-- 数量规则：按干燥批次记录实际载体或服务
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg dried fermented beans and per 1 kg wet reference.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_cocoa_energy_records`
 - 来源：`fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`
-- 数量范围：干燥能源筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：8；单位：MJ/kg dried output；基准：晒干或人工干燥宽范围，应以干燥器和批次记录替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+
+###### 柴油（`cocoa_drying_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg dried fermented beans and per 1 kg wet reference。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_cocoa_energy_records`
+- 来源：`fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`
+
+###### 购入蒸汽（`cocoa_drying_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg dried fermented beans and per 1 kg wet reference。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_cocoa_energy_records`
+- 来源：`fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`
 
 #### 输出
 ##### 产品流
@@ -715,23 +741,85 @@ sync_with: pcr.en-US.md
 - 数量范围：干燥拒收筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.1；单位：kg reject/kg dried output；基准：质量损失宽范围，应以检查记录替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
 
 ##### 基本流
-###### 干燥器烟气或燃烧排放（`cocoa_drying_emissions`）
+###### 化石二氧化碳，排放至空气（`cocoa_drying_emissions`）
 
-仅对人工干燥器或纳入的燃料使用记录燃烧排放；烟气接触是质量事件，不是排放流代理。
+仅在实测或所选适用方法确认该排放路径时，将化石二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
 
-- 选定流：Dryer combustion elementary emissions [unmapped]
-- 流属性/单位：质量 / kg substance
-- 数量规则：将燃料排放方法应用于实际载体使用
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference.
-
+- 选定流：化石二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算化石二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_cocoa_emission_records`
 - 来源：`icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
-- 数量范围：干燥排放筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：0.5；单位：kg substance/kg wet reference；基准：燃料干燥器总量宽范围，应以载体特定计算替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+
+###### 生物源二氧化碳，排放至空气（`cocoa_drying_emissions_co2_biogenic`）
+
+仅在实测或所选适用方法确认该排放路径时，将生物源二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
+
+- 选定流：生物源二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算生物源二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_cocoa_emission_records`
+- 来源：`icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+###### 甲烷，排放至空气（`cocoa_drying_emissions_ch4`）
+
+仅在实测或所选适用方法确认该排放路径时，将甲烷，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
+
+- 选定流：甲烷，排放至空气
+- 流属性/单位：质量 / kg CH4
+- 数量规则：实测或按方法计算甲烷，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_cocoa_emission_records`
+- 来源：`icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+###### 氧化亚氮，排放至空气（`cocoa_drying_emissions_n2o`）
+
+仅在实测或所选适用方法确认该排放路径时，将氧化亚氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
+
+- 选定流：氧化亚氮，排放至空气
+- 流属性/单位：质量 / kg N2O
+- 数量规则：实测或按方法计算氧化亚氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以 N2O-N 报告时，按 44/28 换算为 N2O 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_cocoa_emission_records`
+- 来源：`icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+###### 颗粒物，粒径未指定，排放至空气（`cocoa_drying_emissions_dust`）
+
+仅在实测或所选适用方法确认该排放路径时，将颗粒物，粒径未指定，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per 1 kg wet cocoa beans at farm-gate reference。
+
+- 选定流：颗粒物，粒径未指定，排放至空气
+- 流属性/单位：质量 / kg
+- 数量规则：实测或按方法计算颗粒物，粒径未指定，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_cocoa_emission_records`
+- 来源：`icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
 
 ### 过程：清洁、分级和拒收路由（`cocoa_cleaning_grading`）
 
@@ -756,23 +844,37 @@ sync_with: pcr.en-US.md
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
 - 数量范围：清洁投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.35；上限：0.55；单位：kg dried beans/kg fermented wet input；基准：同批次湿干平衡，应以实测投入替代；基准类型：参考流（`reference_flow`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
 
-###### 清洁和分级能源或服务（`cocoa_cleaning_energy`）
+###### 中压电力（`cocoa_cleaning_energy`）
 
-按批次或运行记录筛网、风机、输送、检测和其他服务。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg dried cocoa bean output。
 
-- 选定流：Cleaning and grading energy or service [parameterized]
-- 流属性/单位：能源或服务 / kWh、MJ 或 service unit
-- 数量规则：按分级批次记录实际载体或服务活动
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg dried cocoa bean output.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_cocoa_energy_records`
 - 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- 数量范围：清洁能源筛选；范围角色：默认估计（`default_estimate`）；下限：0；上限：1；单位：MJ/kg dried input；基准：首轮宽范围，应以设备记录替代；基准类型：参考流（`reference_flow`）；证据类型：理由估计（`reasoned_estimate`）
+
+###### 柴油（`cocoa_cleaning_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg dried cocoa bean output。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_cocoa_energy_records`
+- 来源：`fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
 
 #### 输出
 ##### 产品流
@@ -893,23 +995,53 @@ sync_with: pcr.en-US.md
 - 来源：`icco-cocoa-processing`; `icco-cocoa-quality-requirements`
 - 数量范围：储存投入筛选；范围角色：QA 校验（`qa_guardrail`）；下限：0.3；上限：0.55；单位：kg dried beans/kg wet reference；基准：声明湿干换算，应以批次平衡替代；基准类型：参考流（`reference_flow`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
 
-###### 储存包装和处理服务（`cocoa_storage_services`）
+###### 中压电力（`cocoa_storage_services`）
 
-记录袋、内衬、托盘、仓库电力、熏蒸及其他纳入服务；包装不计入豆质量。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg dried cocoa bean output and storage day。
 
-- 选定流：Cocoa storage packaging or service [parameterized]
-- 流属性/单位：质量、能源或服务 / kg、kWh、MJ 或 service unit
-- 数量规则：按批次和储存期间记录包装和服务
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg dried cocoa bean output and storage day.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_cocoa_storage_records`
 - 来源：`icco-cocoa-quality-requirements`
-- 数量范围：储存服务筛选；范围角色：默认估计（`default_estimate`）；下限：0；上限：0.1；单位：kg packaging or MJ service/kg dried output；基准：包装和处理宽范围，应以批次记录替代；基准类型：过程输出（`process_output`）；证据类型：理由估计（`reasoned_estimate`）
+
+###### 纸板包装（`cocoa_storage_services_paper`）
+
+仅在纸板包装跨越声明的过程边界时记录；保留批次、物理状态、适用时的组成及实际去向。其他材料独立记录，不得将本卡用作选择器或材料集合。 本卡为条件性材料示例，不要求使用该包装；计量重复使用和更换，按有记录的使用次数分摊材料一次。
+原始活动或阶段基准：per 1 kg dried cocoa bean output and storage day。
+
+- 选定流：纸板包装
+- 流属性/单位：质量 / kg
+- 数量规则：实测纸板包装的净数量，与关联批次和过程平衡核对后，仅归一到声明参考输出一次；保留含水率及适用的密度换算证据。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_cocoa_storage_records`
+- 来源：`icco-cocoa-quality-requirements`
+
+###### 聚乙烯包装薄膜（`cocoa_storage_services_film`）
+
+仅在聚乙烯包装薄膜跨越声明的过程边界时记录；保留批次、物理状态、适用时的组成及实际去向。其他材料独立记录，不得将本卡用作选择器或材料集合。 本卡为条件性材料示例，不要求使用该包装；计量重复使用和更换，按有记录的使用次数分摊材料一次。
+原始活动或阶段基准：per 1 kg dried cocoa bean output and storage day。
+
+- 选定流：聚乙烯包装薄膜
+- 流属性/单位：质量 / kg
+- 数量规则：实测聚乙烯包装薄膜的净数量，与关联批次和过程平衡核对后，仅归一到声明参考输出一次；保留含水率及适用的密度换算证据。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_cocoa_storage_records`
+- 来源：`icco-cocoa-quality-requirements`
 
 #### 输出
 ##### 产品流
@@ -966,6 +1098,8 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算和质量规则
 
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -990,14 +1124,14 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 输入 | 计算 |
-| --- | --- | --- |
-| `calc_01` | 多年生阶段、面积、年度和参考输出 | 仅在所代表年度内年度化建植、替换和终止，并分配到同一区块湿参考输出。 |
-| `calc_02` | 荚、湿豆、发酵、干燥和分级质量 | 各节点单独平衡，所有换算保留含水率基准；有批次数据时不得使用通用可可产率。 |
-| `calc_03` | 过程总量和参考输出 | 归一化至 1 kg 湿农场门参考；扩展路线另报每 1 kg 干输出，并保留换算分母。 |
-| `calc_04` | 养分、残余、燃料和水记录 | 每条途径使用一个适用方法，保留因子、单位、活动基准和不确定性。 |
-| `calc_05` | 预期输出和分配分母 | 先细分，再按声明质量或经济方法一次性分配共享负荷；没有产品交接的残余和废物处理保持独立。 |
-| `calc_06` | 储存期初、接收、输出和期末 | 用平衡差计算储存损失，调查负数或无法解释的差额。 |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_01` | cocoa_stand_management | 仅在所代表年度内年度化建植、替换和终止，并分配到同一区块湿参考输出。 | 多年生阶段、面积、年度和参考输出 | 与同地块湿豆产出关联的年度化阶段负荷 |  |
+| `calc_02` | route-wide processes | 各节点单独平衡，所有换算保留含水率基准；有批次数据时不得使用通用可可产率。 | 荚、湿豆、发酵、干燥和分级质量 | 保留含水率基准的经核对节点质量平衡 |  |
+| `calc_03` | route-wide processes | 归一化至 1 kg 湿农场门参考；扩展路线另报每 1 kg 干输出，并保留换算分母。 | 过程总量和参考输出 | 每 1 kg 湿参考产品的清单及独立的扩展路线干产品结果 |  |
+| `calc_04` | cocoa_stand_management and included processing | 每条途径使用一个适用方法，保留因子、单位、活动基准和不确定性。 | 养分、残余、燃料和水记录 | 保留因子及不确定性的分路径方法计算结果 |  |
+| `calc_05` | route-wide intended outputs | 先细分，再按声明质量或经济方法一次性分配共享负荷；没有产品交接的残余和废物处理保持独立。 | 预期输出和分配分母 | 按声明分配分母归属一次的共享负荷 |  |
+| `calc_06` | cocoa_storage_gate | 用平衡差计算储存损失，调查负数或无法解释的差额。 | 储存期初、接收、输出和期末 | 经核对的储存损失及未解释平衡差额 |  |
 
 ### 数据质量规则
 

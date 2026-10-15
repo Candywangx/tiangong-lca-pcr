@@ -221,7 +221,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per cultivated area and crop cycle."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per cultivated area and crop cycle. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -233,25 +233,6 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_cultivation_inputs
               source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record each formulated herbicide, insecticide, fungicide or biological control product by trade identity, active substance and formulation; actual products are determined from field records. Raw activity or stage basis: per treated area and crop cycle."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_cultivation_inputs
-              source_ids:
-                - who-gacp-medicinal-plants
             ranges: []
         - row_id: irrigation_water
           role: "Irrigation water supply"
@@ -280,13 +261,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: cultivation_energy
-          role: "Cultivation machinery energy supply"
-          name: "Cultivation machinery fuel or energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or carrier-native property / MJ, kWh, kg or L"
-          description: "Record actual fuels, electricity or other carriers used for soil preparation, planting, maintenance, irrigation support and field operations. Raw activity or stage basis: per cultivated area and crop cycle."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per cultivated area and crop cycle."
           amount:
-            expression: "measured carrier consumption attributed to the cultivated lot"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -296,15 +277,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "30000"
-                unit: "MJ/ha crop cycle"
-                basis: "all cultivation energy carriers converted to MJ for the QA screen"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: cultivation_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per cultivated area and crop cycle."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -453,13 +444,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: phosphorus_to_water
-          role: "Phosphorus substance to receiving water"
-          name: "Reported phosphorus substance to reported water compartment"
+          role: "Phosphate, to water"
+          name: "Phosphate, to water"
           flow_type: "elementary"
-          property_unit: "Mass / kg reported substance"
-          description: "Record the measured or modelled phosphorus species and receiving-water compartment; total P and phosphate are not interchangeable without conversion. Raw activity or stage basis: per cultivated area and crop cycle."
+          property_unit: "Mass / kg PO4"
+          description: "Record Phosphate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per cultivated area and crop cycle. Required substance-release records: derive every applicable crop-protection release from the actually recorded formulation and the selected fate method. Create separate exchanges for each identified substance and receiving compartment, preserving chemical form and substance-mass basis. An unresolved substance or compartment remains a completeness gap, not a generic elementary exchange or an assumed zero."
           amount:
-            expression: "measured or modelled phosphorus loss by species and compartment"
+            expression: "Measured or method-calculated mass of Phosphate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as elemental P, convert to PO4 once using 95/31."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -470,42 +461,7 @@ process_inventory:
               collection_protocol_id: cp_field_emissions
               source_ids:
                 - who-gacp-medicinal-plants
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "200"
-                unit: "kg reported P substance/ha crop cycle"
-                basis: "reported phosphorus substance per cultivated hectare"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: crop_protection_releases
-          role: "Crop-protection active substances by compartment"
-          name: "Reported active substance to reported compartment"
-          flow_type: "elementary"
-          property_unit: "Mass / kg active substance"
-          description: "Expand this umbrella from application records into concrete active-substance and receiving-compartment exchanges; do not use an unspecified pesticide UUID as a substitute. Raw activity or stage basis: per treated area and crop cycle."
-          amount:
-            expression: "calculated release by active substance and compartment"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_field_emissions
-              source_ids:
-                - who-gacp-medicinal-plants
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg active substance/ha crop cycle"
-                basis: "sum of modelled releases without merging compartments"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
   - id: wild_collection
     label: "Wild collection and resource removal"
     inputs:
@@ -693,15 +649,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: conditioning_energy
-          role: "Conditioning and drying energy supply"
-          name: "Conditioning and drying energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or carrier-native property / MJ, kWh, kg or L"
-          description: "Record actual electricity, heat or fuels used for cleaning, cutting, sorting, ventilation, drying and stabilization, including run-linked cleaning and changeover energy. Raw activity or stage basis: per 1,000 kg accepted product."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted product."
           amount:
-            expression: "measured carrier use assigned to the run or period"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -710,15 +666,45 @@ process_inventory:
               collection_protocol_id: cp_energy_records
               source_ids:
                 - who-gacp-medicinal-plants
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "MJ/1000 kg accepted product"
-                basis: "all conditioning carriers converted to MJ"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: conditioning_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted product."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - who-gacp-medicinal-plants
+            ranges: []
+        - row_id: conditioning_energy_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted product."
+          amount:
+            expression: "Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - who-gacp-medicinal-plants
+            ranges: []
       waste:
         []
       elementary:
@@ -1146,7 +1132,7 @@ data_sources:
     used_for: "managed-soil nitrogen emissions and N2O conversion"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:906e2dc98756221d25795885f7dbadaee2a4d4807edb758bea1d3220f13dc208"
+  source_sha256: "sha256:816234c97bc578a9ae41ba75ed1a7cdc6bc2e57797c8faa2bbbc0ef31156a47f"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5200"
@@ -1197,16 +1183,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42995"
+    - unit_id: "normative_43868"
       family: "allocation"
       span:
         start:
-          offset: 42995
-          line: 825
+          offset: 43868
+          line: 804
           column: 1
         end:
-          offset: 44005
-          line: 833
+          offset: 44878
+          line: 812
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_route_exclusivity` | cultivated and wild origin | Do not assign the same material quantity to both origin routes; weight strata by actual accepted mass only after each stratum is complete. | `who-gacp-medicinal-plants`; `fairwild-standard` |\n| `allocation_mass_balance_first` | accepted, downgraded and waste outputs | Record every output and destination separately and apply mass balance first. Allocate only when multiple economically valuable products share inseparable burdens; report method, price period and sensitivity. | `who-quality-control-herbal-materials` |\n| `allocation_rework_and_runs` | batches, continuous periods, rework and changeover | Link inputs, outputs, cleaning and changeover events to one run or operating interval; rework retains producing-node burdens and adds only new operations, preventing shared-run double counting. | `who-gacp-medicinal-plants` |\n\n"
       headings:
@@ -1225,12 +1211,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42995
-              line: 825
+              offset: 43868
+              line: 804
               column: 1
             end:
-              offset: 43035
-              line: 825
+              offset: 43908
+              line: 804
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1245,16 +1231,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52777"
+    - unit_id: "normative_54415"
       family: "validation"
       span:
         start:
-          offset: 52777
-          line: 871
+          offset: 54415
+          line: 852
           column: 1
         end:
-          offset: 54703
-          line: 883
+          offset: 56341
+          line: 864
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity_gap` | reference flow | Reference UUID, property UUID and unit-group UUID remain blank until one Tiangong Product flow compatible with category, gate, state and mass property is verified; reject similar species, extracts, formulations and generic biomass substitutes. |  |\n| `validate_origin_exclusivity` | each material quantity | Declare exactly one cultivated or wild-collected origin route; the two routes must not double count. | `who-gacp-medicinal-plants`; `fairwild-standard` |\n| `validate_identity_qualifiers` | reference product | Fail when taxon, plant part, intended use, fresh/dry state, moisture basis, geography or lot is missing; do not merge states without conversion and stratification. | `who-quality-control-herbal-materials` |\n| `validate_nutrient_cardinality` | `managed_cultivation` | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_runs_and_rework` | conditioning runs | Link every input, output, cleaning, changeover, downgrade, rework and discard path to a run/period; exclude rejects from accepted output and prevent shared-burden duplication. | `who-gacp-medicinal-plants` |\n| `validate_mass_moisture_balance` | conditioning | Complete mass and moisture balance for each run; fresh routes have zero drying energy and water vapour, and wet routes balance supplied water and wastewater. | `who-quality-control-herbal-materials` |\n| `validate_deferred_elementary_identity` | nitrate, phosphorus, crop-protection releases, wild biomass and dust | Before final process exchange, expand each umbrella into verified concrete substance/species, property and receiving/source compartment UUIDs; never auto-bind a broad search candidate. |  |\n\n"
       headings:
@@ -1273,12 +1259,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52777
-              line: 871
+              offset: 54415
+              line: 852
               column: 1
             end:
-              offset: 52799
-              line: 871
+              offset: 54437
+              line: 852
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1349,132 +1335,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_route_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_42995"
+      unit_id: "normative_43868"
       source_span:
         start:
-          offset: 43108
-          line: 829
+          offset: 43981
+          line: 808
           column: 1
         end:
-          offset: 43363
-          line: 829
+          offset: 44236
+          line: 808
           column: 256
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_mass_balance_first"
       identity_kind: "explicit"
-      unit_id: "normative_42995"
+      unit_id: "normative_43868"
       source_span:
         start:
-          offset: 43364
-          line: 830
+          offset: 44237
+          line: 809
           column: 1
         end:
-          offset: 43691
-          line: 830
+          offset: 44564
+          line: 809
           column: 328
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rework_and_runs"
       identity_kind: "explicit"
-      unit_id: "normative_42995"
+      unit_id: "normative_43868"
       source_span:
         start:
-          offset: 43692
-          line: 831
+          offset: 44565
+          line: 810
           column: 1
         end:
-          offset: 44003
-          line: 831
+          offset: 44876
+          line: 810
           column: 312
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity_gap"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 52872
-          line: 875
+          offset: 54510
+          line: 856
           column: 1
         end:
-          offset: 53175
-          line: 875
+          offset: 54813
+          line: 856
           column: 304
     - pointer: "/validation_rules/1"
       rule_id: "validate_origin_exclusivity"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 53176
-          line: 876
+          offset: 54814
+          line: 857
           column: 1
         end:
-          offset: 53388
-          line: 876
+          offset: 55026
+          line: 857
           column: 213
     - pointer: "/validation_rules/2"
       rule_id: "validate_identity_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 53389
-          line: 877
+          offset: 55027
+          line: 858
           column: 1
         end:
-          offset: 53650
-          line: 877
+          offset: 55288
+          line: 858
           column: 262
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 53651
-          line: 878
+          offset: 55289
+          line: 859
           column: 1
         end:
-          offset: 53884
-          line: 878
+          offset: 55522
+          line: 859
           column: 234
     - pointer: "/validation_rules/4"
       rule_id: "validate_runs_and_rework"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 53885
-          line: 879
+          offset: 55523
+          line: 860
           column: 1
         end:
-          offset: 54143
-          line: 879
+          offset: 55781
+          line: 860
           column: 259
     - pointer: "/validation_rules/5"
       rule_id: "validate_mass_moisture_balance"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 54144
-          line: 880
+          offset: 55782
+          line: 861
           column: 1
         end:
-          offset: 54396
-          line: 880
+          offset: 56034
+          line: 861
           column: 253
     - pointer: "/validation_rules/6"
       rule_id: "validate_deferred_elementary_identity"
       identity_kind: "explicit"
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 54397
-          line: 881
+          offset: 56035
+          line: 862
           column: 1
         end:
-          offset: 54701
-          line: 881
+          offset: 56339
+          line: 862
           column: 305
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1503,27 +1489,27 @@ normative_context:
           column: 233
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42995"
+      unit_id: "normative_43868"
       source_span:
         start:
-          offset: 42995
-          line: 825
+          offset: 43868
+          line: 804
           column: 1
         end:
-          offset: 43035
-          line: 825
+          offset: 43908
+          line: 804
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52777"
+      unit_id: "normative_54415"
       source_span:
         start:
-          offset: 52777
-          line: 871
+          offset: 54415
+          line: 852
           column: 1
         end:
-          offset: 52799
-          line: 871
+          offset: 54437
+          line: 852
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1532,5 +1518,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:906e2dc98756221d25795885f7dbadaee2a4d4807edb758bea1d3220f13dc208"
-  generated_content_sha256: "sha256:046f48810426886415e13b55dd7afa5acea4186dd664233507534b32fd8ba710"
+    sha256: "sha256:816234c97bc578a9ae41ba75ed1a7cdc6bc2e57797c8faa2bbbc0ef31156a47f"
+  generated_content_sha256: "sha256:c078f28e099391dbd6b64888aa29adc62ce8d635d51a5f72a0bf563574841215"

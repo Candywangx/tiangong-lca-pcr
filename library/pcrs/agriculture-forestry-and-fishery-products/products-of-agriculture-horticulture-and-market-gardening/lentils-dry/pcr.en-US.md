@@ -16,7 +16,7 @@ This PCR covers mature dry whole Lens culinaris grain at the farm gate after man
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.lentils-dry |
-| classification_refs | CPC 3.0: 01704 Lentils, dry; mapping relation: exact |
+| classification_refs | CPC 3.0: 01704 Lentils, dry; mapping relation: narrower |
 | covered_products | Mature dry whole Lens culinaris grain at farm gate |
 | excluded_products | Green vegetable lentils; planting seed; sprouts; dehulled/split lentils; flour; cooked and downstream processed products |
 | representative_product | Whole mature dry lentil grain |
@@ -202,24 +202,7 @@ Raw activity or stage basis: per cultivated ha in one crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 
-###### Route-specific crop-protection formulation (`crop_protection_products`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record the stated flow for the linked field or lot and preserve its destination and hand-off.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per cultivated ha in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources: `manitoba-lentils-production-management`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water (`irrigation_water`)
 
@@ -793,31 +776,53 @@ Raw activity or stage basis: per 1,000 kg final dry lentils.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`; `manitoba-lentils-production-management`
 
-###### Stabilization energy (`stabilization_energy`)
+###### Electricity, medium voltage (`stabilization_energy`)
 
-Record the stated flow for the linked field or lot and preserve its destination and hand-off.
-
-- Selected flow: Aeration or drying energy
-- Flow property / unit: Energy / MJ
-- Amount rule: metered fan electricity and dryer fuel by lot
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg final dry lentils.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy_operations`
 - Sources: `ndsu-pulse-field-guide-2019`
-- Range: Complete quantitative QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5000
-  - Unit: MJ/1000 kg final
-  - Basis: fan and dryer energy per 1,000 kg final dry lentils
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `ndsu-pulse-field-guide-2019`
+
+###### Diesel fuel (`stabilization_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg final dry lentils.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_operations`
+- Sources: `ndsu-pulse-field-guide-2019`
+
+###### Purchased steam (`stabilization_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg final dry lentils.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_operations`
+- Sources: `ndsu-pulse-field-guide-2019`
 
 ##### Waste flows
 
@@ -980,6 +985,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_rework` | returned material | Retain prior burdens, add only incremental rework, and count material once at its final destination. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

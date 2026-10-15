@@ -227,30 +227,35 @@ sync_with: pcr.en-US.md
   - 基准类型：`process_output`
   - 证据类型：`reasoned_estimate`
 
-###### 田间能源载体和电力（`field_energy`）
+###### 中压电力（`field_energy`）
 
-田间作业、抽水和作物管理使用的能源按实际前景记录展开。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg harvestable seed crop。
 
-- 选定流：Energy supply
-- 流属性/单位：Mass / MJ
-- 数量规则：sum of carrier energy and metered electricity after unit conversion
-- 数值来源模式：`calculated_value`
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
-原始活动或阶段基准：per kg harvestable seed crop.
-
 - 归一化基准：每声明的参考流
 - 基准类型：`process_output`
-- 证据类型：`calculated_from_collection`
+- 证据类型：`collected_record`
 - 采集协议：`cp_energy`
 
-- 数量范围：田间能源载体和电力 QA 范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.1
-  - 上限：50
-  - 单位：MJ
-  - 基准：per kg harvestable seed crop
-  - 基准类型：`process_output`
-  - 证据类型：`reasoned_estimate`
+###### 柴油（`field_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg harvestable seed crop。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ##### 废物流
 
@@ -327,30 +332,35 @@ sync_with: pcr.en-US.md
   - 基准类型：`process_output`
   - 证据类型：`reasoned_estimate`
 
-###### 收获与脱粒能源（`harvest_energy`）
+###### 中压电力（`harvest_energy`）
 
-收获和脱粒设备使用的燃料或电力按实际路线解析。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg raw threshed seed。
 
-- 选定流：Energy supply
-- 流属性/单位：Mass / MJ
-- 数量规则：converted energy use from equipment logs and invoices
-- 数值来源模式：`calculated_value`
-- 适用范围：`technology_specific`
-原始活动或阶段基准：per kg raw threshed seed.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
 - 基准类型：`process_output`
-- 证据类型：`calculated_from_collection`
+- 证据类型：`collected_record`
 - 采集协议：`cp_energy`
 
-- 数量范围：收获与脱粒能源 QA 范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.05
-  - 上限：15
-  - 单位：MJ
-  - 基准：per kg raw threshed seed
-  - 基准类型：`process_output`
-  - 证据类型：`reasoned_estimate`
+###### 柴油（`harvest_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg raw threshed seed。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ##### 废物流
 
@@ -450,30 +460,35 @@ sync_with: pcr.en-US.md
   - 基准类型：`process_output`
   - 证据类型：`reasoned_estimate`
 
-###### 干燥与调理能源（`conditioning_energy`）
+###### 中压电力（`conditioning_energy`）
 
-干燥、通风、风选和初级清理使用的电力、热或燃料按记录展开。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg conditioned seed。
 
-- 选定流：Energy supply
-- 流属性/单位：Mass / MJ
-- 数量规则：converted energy use assigned to the batch
-- 数值来源模式：`calculated_value`
-- 适用范围：`technology_specific`
-原始活动或阶段基准：per kg conditioned seed.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
 - 基准类型：`process_output`
-- 证据类型：`calculated_from_collection`
+- 证据类型：`collected_record`
 - 采集协议：`cp_energy`
 
-- 数量范围：干燥与调理能源 QA 范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.02
-  - 上限：25
-  - 单位：MJ
-  - 基准：per kg conditioned seed
-  - 基准类型：`process_output`
-  - 证据类型：`reasoned_estimate`
+###### 柴油（`conditioning_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg conditioned seed。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ##### 废物流
 
@@ -550,30 +565,35 @@ sync_with: pcr.en-US.md
   - 基准类型：`process_output`
   - 证据类型：`reasoned_estimate`
 
-###### 清选、分级和储存能源（`grading_energy`）
+###### 中压电力（`grading_energy`）
 
-清选机、分级机、处理设备、包装和受控储存使用的能源按实际记录展开。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg accepted planting seed。
 
-- 选定流：Energy supply
-- 流属性/单位：Mass / MJ
-- 数量规则：converted batch energy assigned to accepted and rejected outputs
-- 数值来源模式：`calculated_value`
-- 适用范围：`technology_specific`
-原始活动或阶段基准：per kg accepted planting seed.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
 - 基准类型：`process_output`
-- 证据类型：`calculated_from_collection`
+- 证据类型：`collected_record`
 - 采集协议：`cp_energy`
 
-- 数量范围：清选、分级和储存能源 QA 范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.02
-  - 上限：20
-  - 单位：MJ
-  - 基准：per kg accepted planting seed
-  - 基准类型：`process_output`
-  - 证据类型：`reasoned_estimate`
+###### 柴油（`grading_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per kg accepted planting seed。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
 
 ###### 种子包装（`seed_packaging`）
 
@@ -680,6 +700,8 @@ sync_with: pcr.en-US.md
 | `allocation_batches` | shared runs and storage | 采用实测运行时间、质量吞吐量或其他有记录的因果驱动因素分配清洗、换批、检验和储存负担，且不得重复计算。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

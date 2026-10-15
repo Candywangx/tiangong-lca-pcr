@@ -94,52 +94,81 @@ Cultivation produces standing berries; harvest independently removes them and ha
 
 ##### Product flows
 
-###### One identified planting-material product (`cultivation_inputs`)
+###### Piper nigrum rooted cuttings (`cultivation_inputs`)
 
-Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
-
-- Selected flow: One identified planting-material product; exact route identity unresolved
-- Flow property / unit: Product quantity / kg or item, fixed per product
-- Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Piper nigrum rooted cuttings only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: Plot-year and accepted pepper output.
 
+- Selected flow: Piper nigrum rooted cuttings
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Piper nigrum rooted cuttings, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cultivation`
 
-###### One identified cultivation support material (`cultivation_inputs_support_material`)
+Required support-material records: identify each actual constructed support, tying material and replacement by its concrete material, measured quantity, installation date and service life. Keep live support vegetation and constructed assets distinct, and attribute each included asset once across all served crops, processes and periods. Missing material identity remains a completeness gap; do not substitute a generic support-material exchange.
 
-Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
+###### Fertilizer, urea (`cultivation_inputs_fertilizer`)
 
-- Selected flow: One identified cultivation support material; exact route identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Fertilizer, urea only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: Plot-year and accepted pepper output.
 
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Fertilizer, urea, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cultivation`
 
-###### One identified fertilizer or amendment product (`cultivation_inputs_fertilizer`)
+###### Fertilizer, monoammonium phosphate (`cultivation_inputs_fertilizer_map`)
 
-Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
-
-- Selected flow: One identified fertilizer or amendment product; exact route identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Fertilizer, monoammonium phosphate only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: Plot-year and accepted pepper output.
 
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Fertilizer, monoammonium phosphate, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cultivation`
+
+###### Fertilizer, potassium chloride (`cultivation_inputs_fertilizer_kcl`)
+
+Record Fertilizer, potassium chloride only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: Plot-year and accepted pepper output.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Fertilizer, potassium chloride, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cultivation`
+
+###### Cattle manure, as applied (`cultivation_inputs_fertilizer_manure`)
+
+Record Cattle manure, as applied only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: Plot-year and accepted pepper output.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Cattle manure, as applied, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cultivation`
 
 ###### One identified irrigation-water source (`cultivation_inputs_irrigation_water`)
@@ -158,20 +187,19 @@ Raw activity or stage basis: Plot-year and accepted pepper output.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cultivation`
 
-###### One identified cultivation fuel product (`cultivation_inputs_fuel`)
+###### Diesel fuel (`cultivation_inputs_fuel`)
 
-Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation.
-
-- Selected flow: One identified cultivation fuel product; exact route identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: Plot-year and accepted pepper output.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cultivation`
 
 ##### Waste flows
@@ -284,20 +312,67 @@ No elementary output is assumed without evidence.
 
 ##### Product flows
 
-###### Berry feed and conditioning supplies (`conditioning_inputs`)
+###### Fresh whole Piper berries (`conditioning_inputs`)
 
-Record fresh berry feed, drying energy and any soaking or washing water as separate actual exchanges. Sun drying does not imply purchased heat.
-
-- Selected flow: Whole berry feed and actual route-specific supplies; UUID unresolved per exchange
-- Flow property / unit: Mass / kg; energy / kWh; water / m3
-- Amount rule: Paired lot weights and meters
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Fresh whole Piper berries only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: Conditioned lot output.
 
+- Selected flow: Fresh whole Piper berries
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Fresh whole Piper berries, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning`
+- Sources: `kau-pepper-harvest`
+
+###### Electricity, medium voltage (`conditioning_inputs_electricity`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: Conditioned lot output.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning`
+- Sources: `kau-pepper-harvest`
+
+###### Diesel fuel (`conditioning_inputs_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: Conditioned lot output.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_conditioning`
+- Sources: `kau-pepper-harvest`
+
+###### Process water (`conditioning_inputs_water`)
+
+Record Process water only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: Conditioned lot output.
+
+- Selected flow: Process water
+- Flow property / unit: Volume / m3
+- Amount rule: Measured net quantity of Process water, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_conditioning`
 - Sources: `kau-pepper-harvest`
 
@@ -423,6 +498,8 @@ No elementary output is assumed for mechanical grading.
 | `allocate_rework` | Reworked or recovered berries | Keep prior lot burden and add incremental rework once; credit recovery only with evidenced destination and method. | `kau-pepper-harvest` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

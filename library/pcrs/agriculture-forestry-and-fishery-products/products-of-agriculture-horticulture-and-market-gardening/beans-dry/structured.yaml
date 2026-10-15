@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.beans-dry"
-  classification_refs: "CPC 3.0 01701, Beans, dry; mapping relation: exact"
+  classification_refs: "CPC 3.0 01701, Beans, dry; mapping relation: narrower"
   covered_products: "Mature, dry, edible bean grain sold as an unprocessed farm-gate commodity, with species and market class declared"
   excluded_products: "Green beans; soybean; broad and horse beans; chickpeas; lentils; peas; cowpeas; Bambara beans; pigeon peas; other separately classified pulses; certified planting seed; milled, cooked, canned, or retail-packed beans"
   representative_product: "Cleaned and graded mature dry edible bean grain"
@@ -246,45 +246,9 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted dry bean output. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero. Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_inputs
-              source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record each pesticide, seed treatment applied on farm, biological control, and rhizobial inoculant separately in the underlying foreground records, retaining active ingredient and formulation. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_inputs
-              source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs_inoculant
-          role: "Route-specific non-nutrient inoculant"
-          name: "One route-specific non-nutrient inoculant product; exact identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use this separate card only for one non-nutrient inoculant actually applied. Identify its formulation, application event and measured product mass; keep crop-protection formulations on separate cards. Do not infer use from this template. Record each pesticide, seed treatment applied on farm, biological control, and rhizobial inoculant separately in the underlying foreground records, retaining active ingredient and formulation. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -502,15 +466,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: harvest_energy
-          role: "Harvest and threshing energy carriers"
-          name: "Harvest and threshing energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Carrier-specific quantity and energy / L, kg, kWh, or MJ"
-          description: "Record energy for pulling, cutting, windrowing, combining, threshing, shelling, and transfers within the harvest node. Manual labor may be disclosed separately but shall not be converted to energy without a declared method. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
           amount:
-            expression: "Measured energy by harvest event or allocated from equipment logs using operating time, area, or throughput."
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -518,15 +482,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "3000"
-                unit: "MJ"
-                basis: "total final energy per 1,000 kg accepted dry bean output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: harvest_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -645,15 +619,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: conditioning_energy
-          role: "Cleaning and grading energy carriers"
-          name: "Cleaning and grading energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Carrier-specific quantity and energy / kWh, L, kg, or MJ"
-          description: "Record energy used for conveying, threshing completion, aspiration, screening, sorting, grading, and lot changeover cleaning. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
           amount:
-            expression: "Metered energy or allocated equipment energy by run time or throughput; changeover burdens are assigned once."
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -661,15 +635,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_energy_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "MJ"
-                basis: "total final energy per 1,000 kg accepted dry bean output"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: conditioning_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg accepted dry bean output."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -817,15 +801,15 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: drying_energy
-          role: "Drying energy carriers"
-          name: "Drying energy supply"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Carrier-specific quantity and energy / kWh, L, kg, or MJ"
-          description: "Record every fuel or electricity carrier used by the drying run. Natural field drying has zero equipment-drying energy and shall not receive a duplicate drying burden. Raw activity or stage basis: per 1,000 kg dried accepted bean output."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg dried accepted bean output."
           amount:
-            expression: "Metered carrier use assigned to the dryer run, including start-up and shutdown; shared energy is allocated once by metering or wet-grain throughput."
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -833,15 +817,43 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_drying_run
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5000"
-                unit: "MJ"
-                basis: "total final energy per 1,000 kg dried accepted bean output when drying is active"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: drying_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg dried accepted bean output."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_run
+              source_ids: []
+            ranges: []
+        - row_id: drying_energy_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg dried accepted bean output."
+          amount:
+            expression: "Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_run
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1303,18 +1315,18 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:85747b9a14e98a3701dddc26a679f48cbaea9516020ee4d45f35cb19699a3ada"
+  source_sha256: "sha256:08e495469aa950a9633676ccc4f4aa4d9b5121611ef18c4fa64d2321bd814122"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6391"
+    - unit_id: "normative_6394"
       family: "system_boundary"
       span:
         start:
-          offset: 6391
+          offset: 6394
           line: 64
           column: 1
         end:
-          offset: 9613
+          offset: 9616
           line: 89
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | seed and purchased inputs entering the declared managed field-production cycle |\n| starting_condition_role | foreground production starting condition |\n| product_classification_scope | mature dry edible beans in CPC 3.0 01701 only |\n| recursive_input_rule | Beans from the same category used as sowing seed are recorded as a same-category product input with mass, species, market class, source, treatment, and retained-seed or purchased route; do not recurse into the current output dataset. |\n| upstream_dataset_requirement | Link purchased seed, fertilizers, amendments, crop-protection products, energy carriers, water supply where relevant, and other purchased inputs to compatible upstream datasets; retained seed remains an explicitly measured internal or co-product flow. |\n| disclosure | Declare species, market class, geography, crop year, production regime, seed route, harvest technology, pre-drying, threshing, cleaning and grading arrangement, drying route, moisture basis, grade, co-product destinations, loss routes, and farm-gate hand-off. |\n\nThe field-production node hands off a mature standing crop to an independent harvest node. Harvest is independent because it removes the biological output from the field and has distinct energy, shattering, residue, and hand-off records. Harvest hands off uncleaned grain to primary conditioning. Cleaning and grading classify the incoming grain into accepted, downgraded, retained-seed, and rejected states. Drying is a separate preservation node only when a bounded intervention removes moisture after harvest; its usable input state, target moisture, energy, water removal, loss, and lot hand-off shall be recorded.\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_field_to_gate` | foreground system | Include managed field production, mature harvest, necessary field pre-drying, threshing or shelling, cleaning, grading, and farm-gate drying needed for the declared reference-product state. | `fao-bean-postharvest-compendium`; `fao-postharvest-system` |\n| `boundary_route_condition` | conditional operations | Include irrigation, mechanical drying, and other conditional operations only for lots or reporting strata in which they occur; zero activity is recorded when the route is inactive. |  |\n| `boundary_downstream_exclusion` | downstream activities | Exclude milling, splitting, cooking, canning, retail packing, off-farm storage, and transport after the farm-gate hand-off. | `usda-dry-edible-beans-2021` |\n| `boundary_state_separation` | output states | Keep accepted beans, downgraded or damaged beans, retained seed, valuable straw or pod residues, discarded screenings, field shattering, and other losses as distinct states with explicit hand-offs. | `fao-bean-postharvest-compendium` |\n| `boundary_route_delta` | alternative routes | Stratify rainfed and irrigated production, manual and mechanical harvest, and natural and equipment drying when they change topology, inventory categories, calculation, or validation; do not apply two routes to the same activity interval. |  |\n\n"
@@ -1334,11 +1346,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6391
+              offset: 6394
               line: 64
               column: 1
             end:
-              offset: 6412
+              offset: 6415
               line: 64
               column: 22
           text: "## 5. System Boundary"
@@ -1354,16 +1366,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49351"
+    - unit_id: "normative_50675"
       family: "allocation"
       span:
         start:
-          offset: 49351
-          line: 916
+          offset: 50675
+          line: 918
           column: 1
         end:
-          offset: 51232
-          line: 927
+          offset: 52556
+          line: 929
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision` | fields, harvest events, lots, and dryer runs | Prefer subdivision and direct assignment using field, event, lot, run, and destination records before applying allocation. |  |\n| `allocation_intended_outputs` | accepted beans, retained seed, downgraded beans, and valuable residues | Enumerate every intended output and hand-off. When two or more independently valuable outputs leave one node, declare and justify a PCR-specific physical or economic allocation; report a sensitivity to the alternative basis when the choice materially changes results. |  |\n| `allocation_residue_test` | bean straw, pods, screenings, and rejected grain | Treat material as a co-product only when deliberately collected and transferred for beneficial use or sale. Field-retained residues, unrecovered shattering, and discarded rejects remain residue, loss, or waste and receive no product allocation. |  |\n| `allocation_rework` | reworked, re-cleaned, re-dried, downgraded, or returned material | Link rework to the node that produced the off-spec state, retain its burdens, and add only incremental rework burdens. Never count reworked or downgraded mass simultaneously as accepted output. |  |\n| `allocation_shared_runs` | shared equipment, cleaning, start-up, shutdown, and changeover | Assign shared run burdens once by direct metering where possible, otherwise by documented time, wet-grain throughput, or another causal physical basis; prevent double counting across lots or routes. |  |\n| `allocation_internal_seed` | retained seed returned to a later crop cycle | Record retained seed as an explicit internal or co-product flow. Apply the chosen cross-cycle convention consistently and disclose it; do not erase the seed flow through recursion. |  |\n\n"
       headings:
@@ -1382,12 +1394,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49351
-              line: 916
+              offset: 50675
+              line: 918
               column: 1
             end:
-              offset: 49391
-              line: 916
+              offset: 50715
+              line: 918
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1402,16 +1414,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_62250"
+    - unit_id: "normative_64339"
       family: "validation"
       span:
         start:
-          offset: 62250
-          line: 969
+          offset: 64339
+          line: 973
           column: 1
         end:
-          offset: 64947
-          line: 985
+          offset: 67036
+          line: 989
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference product | Confirm the flow UUID, species, market class, unprocessed grain state, farm-gate hand-off, moisture basis, grade, and exclusion of green beans, soybean, and separately classified pulses. |  |\n| `validate_reference_mass` | reference amount | Confirm exactly 1,000 kg net accepted bean grain after the final included node and exclude packaging, foreign material, downgraded grain, retained seed, and rejects. | `mass-balance-identity` |\n| `validate_route_topology` | alternative routes | Confirm each lot has one declared production, harvest, pre-drying, conditioning, and drying topology; mutually exclusive route intervals shall not be double counted. |  |\n| `validate_process_handoffs` | all nodes | Confirm field output equals harvest input, harvest grain equals conditioning input, and any drying input links to the accepted conditioning lot, after moisture-basis conversion. | `mass-balance-identity` |\n| `validate_grade_states` | cleaning and grading | Confirm at least accepted and rejected states are declared, and every accepted, downgraded, retained-seed, valuable-residue, reject, and waste state has exactly one hand-off or destination. | `usda-dry-edible-beans-2021` |\n| `validate_drying` | conditional drying | When drying is active, confirm before and after moisture, dry-matter balance, energy, water removed, rejects, and run identity; when inactive, confirm no equipment-drying burden. | `fao-grain-drying` |\n| `validate_rework` | off-spec and returned material | Confirm re-cleaned or re-dried material is linked back to its producing node, receives only incremental rework burdens, and is counted once in its final state. |  |\n| `validate_outputs_allocation` | multi-output nodes | Confirm all intended outputs and hand-offs are complete, the attribution decision is declared, residue versus co-product tests are applied, and sensitivity is reported when material. |  |\n| `validate_runs` | batch and campaign records | Confirm inputs, outputs, cleaning, changeover, start-up, and shutdown records are indexed to fields, lots, runs, or periods and no shared burden is assigned twice. |  |\n| `validate_ranges` | every inventory flow card | Confirm each card has exactly one complete range; conditional ranges apply only when the route is active; actual foreground records determine reported amounts. |  |\n| `validate_nutrient_cardinality` | each process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1430,12 +1442,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 62250
-              line: 969
+              offset: 64339
+              line: 973
               column: 1
             end:
-              offset: 62272
-              line: 969
+              offset: 64361
+              line: 973
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1454,350 +1466,350 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 7563
+          offset: 7566
           line: 77
           column: 1
         end:
-          offset: 8181
+          offset: 8184
           line: 77
           column: 619
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_field_to_gate"
       identity_kind: "explicit"
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 8274
+          offset: 8277
           line: 83
           column: 1
         end:
-          offset: 8576
+          offset: 8579
           line: 83
           column: 303
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_route_condition"
       identity_kind: "explicit"
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 8577
+          offset: 8580
           line: 84
           column: 1
         end:
-          offset: 8818
+          offset: 8821
           line: 84
           column: 242
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_downstream_exclusion"
       identity_kind: "explicit"
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 8819
+          offset: 8822
           line: 85
           column: 1
         end:
-          offset: 9035
+          offset: 9038
           line: 85
           column: 217
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_state_separation"
       identity_kind: "explicit"
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 9036
+          offset: 9039
           line: 86
           column: 1
         end:
-          offset: 9319
+          offset: 9322
           line: 86
           column: 284
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 9320
+          offset: 9323
           line: 87
           column: 1
         end:
-          offset: 9611
+          offset: 9614
           line: 87
           column: 292
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 49464
-          line: 920
+          offset: 50788
+          line: 922
           column: 1
         end:
-          offset: 49667
-          line: 920
+          offset: 50991
+          line: 922
           column: 204
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_intended_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 49668
-          line: 921
+          offset: 50992
+          line: 923
           column: 1
         end:
-          offset: 50047
-          line: 921
+          offset: 51371
+          line: 923
           column: 380
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_test"
       identity_kind: "explicit"
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 50048
-          line: 922
+          offset: 51372
+          line: 924
           column: 1
         end:
-          offset: 50378
-          line: 922
+          offset: 51702
+          line: 924
           column: 331
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 50379
-          line: 923
+          offset: 51703
+          line: 925
           column: 1
         end:
-          offset: 50668
-          line: 923
+          offset: 51992
+          line: 925
           column: 290
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_shared_runs"
       identity_kind: "explicit"
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 50669
-          line: 924
+          offset: 51993
+          line: 926
           column: 1
         end:
-          offset: 50966
-          line: 924
+          offset: 52290
+          line: 926
           column: 298
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_internal_seed"
       identity_kind: "explicit"
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 50967
-          line: 925
+          offset: 52291
+          line: 927
           column: 1
         end:
-          offset: 51230
-          line: 925
+          offset: 52554
+          line: 927
           column: 264
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 62345
-          line: 973
+          offset: 64434
+          line: 977
           column: 1
         end:
-          offset: 62590
-          line: 973
+          offset: 64679
+          line: 977
           column: 246
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference_mass"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 62591
-          line: 974
+          offset: 64680
+          line: 978
           column: 1
         end:
-          offset: 62833
-          line: 974
+          offset: 64922
+          line: 978
           column: 243
     - pointer: "/validation_rules/2"
       rule_id: "validate_route_topology"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 62834
-          line: 975
+          offset: 64923
+          line: 979
           column: 1
         end:
-          offset: 63055
-          line: 975
+          offset: 65144
+          line: 979
           column: 222
     - pointer: "/validation_rules/3"
       rule_id: "validate_process_handoffs"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 63056
-          line: 976
+          offset: 65145
+          line: 980
           column: 1
         end:
-          offset: 63305
-          line: 976
+          offset: 65394
+          line: 980
           column: 250
     - pointer: "/validation_rules/4"
       rule_id: "validate_grade_states"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 63306
-          line: 977
+          offset: 65395
+          line: 981
           column: 1
         end:
-          offset: 63579
-          line: 977
+          offset: 65668
+          line: 981
           column: 274
     - pointer: "/validation_rules/5"
       rule_id: "validate_drying"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 63580
-          line: 978
+          offset: 65669
+          line: 982
           column: 1
         end:
-          offset: 63824
-          line: 978
+          offset: 65913
+          line: 982
           column: 245
     - pointer: "/validation_rules/6"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 63825
-          line: 979
+          offset: 65914
+          line: 983
           column: 1
         end:
-          offset: 64044
-          line: 979
+          offset: 66133
+          line: 983
           column: 220
     - pointer: "/validation_rules/7"
       rule_id: "validate_outputs_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 64045
-          line: 980
+          offset: 66134
+          line: 984
           column: 1
         end:
-          offset: 64287
-          line: 980
+          offset: 66376
+          line: 984
           column: 243
     - pointer: "/validation_rules/8"
       rule_id: "validate_runs"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 64288
-          line: 981
+          offset: 66377
+          line: 985
           column: 1
         end:
-          offset: 64505
-          line: 981
+          offset: 66594
+          line: 985
           column: 218
     - pointer: "/validation_rules/9"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 64506
-          line: 982
+          offset: 66595
+          line: 986
           column: 1
         end:
-          offset: 64720
-          line: 982
+          offset: 66809
+          line: 986
           column: 215
     - pointer: "/validation_rules/10"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 64721
-          line: 983
+          offset: 66810
+          line: 987
           column: 1
         end:
-          offset: 64945
-          line: 983
+          offset: 67034
+          line: 987
           column: 225
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 6391
+          offset: 6394
           line: 64
           column: 1
         end:
-          offset: 6412
+          offset: 6415
           line: 64
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6391"
+      unit_id: "normative_6394"
       source_span:
         start:
-          offset: 6440
+          offset: 6443
           line: 68
           column: 1
         end:
-          offset: 7561
+          offset: 7564
           line: 75
           column: 277
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49351"
+      unit_id: "normative_50675"
       source_span:
         start:
-          offset: 49351
-          line: 916
+          offset: 50675
+          line: 918
           column: 1
         end:
-          offset: 49391
-          line: 916
+          offset: 50715
+          line: 918
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_62250"
+      unit_id: "normative_64339"
       source_span:
         start:
-          offset: 62250
-          line: 969
+          offset: 64339
+          line: 973
           column: 1
         end:
-          offset: 62272
-          line: 969
+          offset: 64361
+          line: 973
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1806,5 +1818,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:85747b9a14e98a3701dddc26a679f48cbaea9516020ee4d45f35cb19699a3ada"
-  generated_content_sha256: "sha256:2e7c692ec93eb4a14de96548017d4b3586084224db71b4f3055dbd54601ff8a1"
+    sha256: "sha256:08e495469aa950a9633676ccc4f4aa4d9b5121611ef18c4fa64d2321bd814122"
+  generated_content_sha256: "sha256:738b82bffc3c768370ab96d8d5b7803a915c3ea5ac319555b0d28e8e3f9f4155"

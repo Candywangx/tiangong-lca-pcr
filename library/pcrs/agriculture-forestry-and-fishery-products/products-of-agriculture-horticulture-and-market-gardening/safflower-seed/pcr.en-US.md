@@ -205,30 +205,7 @@ Raw activity or stage basis: Per field crop cycle..
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field`
 
-###### Crop protection materials (`crop_protection`)
-
-Record each actual herbicide, fungicide or other protection product separately by formulation and application; omit categories not used on the field.
-
-- Selected flow: Applied crop protection product, identity unresolved until product-specific lookup
-- Flow property / unit: Mass / kg product
-- Amount rule: Product mass issued or applied by field and event.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: Per field crop cycle..
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field`
-- Sources: wisconsin-safflower
-- Range: Broad provisional QA screen; replace with foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 200
-  - Unit: kg product/ha
-  - Basis: one crop hectare, each applied protection or harvest-aid product separately; provisional screen only
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water (`irrigation_water`)
 
@@ -927,6 +904,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `reject_exclusion` | Rework | Accepted reference mass excludes rejected mass unless a linked rework pass restores accepted grade; the returning mass is not a new farm output. | uc-safflower-production; wisconsin-safflower |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

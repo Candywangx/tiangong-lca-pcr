@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.bambara-beans-dry"
-  classification_refs: "CPC 3.0: 01708 Bambara beans, dry; mapping relation: exact"
+  classification_refs: "CPC 3.0: 01708 Bambara beans, dry; mapping relation: narrower"
   covered_products: "Mature dry shelled *Vigna subterranea* seed at farm gate"
   excluded_products: "Fresh pods; planting seed sold as seed; roasted/boiled seed; flour; canned product; oil; downstream products"
   representative_product: "Food-grade mature dry Bambara bean seed"
@@ -309,7 +309,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted reference product."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1,000 kg accepted reference product. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "calculated_value"
@@ -321,25 +321,6 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_crop_cycle_records
               source_ids: []
-            ranges: []
-        - row_id: crop_protection_products
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record each crop-protection product separately by formulated-product identity and application event. Raw activity or stage basis: per 1,000 kg accepted reference product."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_cycle_records
-              source_ids:
-                - sa-daff-bambara-2016
             ranges: []
       waste:
         []
@@ -497,15 +478,15 @@ process_inventory:
               source_ids: []
             ranges: []
         - row_id: harvest_non_energy_service
-          role: "Non-energy harvest service"
-          name: "Manual or animal-traction harvest service"
+          role: "Manual crop harvesting service"
+          name: "Manual crop harvesting service"
           flow_type: "product"
-          property_unit: "Service / service-hour"
-          description: "Record manual labour or animal traction separately when represented as a Product-service input. Raw activity or stage basis: per kg lifted pod lot."
+          property_unit: "Service / worker-hour"
+          description: "Record Manual crop harvesting service only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Raw activity or stage basis: per kg lifted pod lot."
           amount:
-            expression: "measured service quantity by harvest lot"
+            expression: "Measured net quantity of Manual crop harvesting service, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -513,15 +494,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_lot_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "service-hour/kg lifted pod lot"
-                basis: "one lifted pod lot"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: harvest_non_energy_service_animal_harvest
+          role: "Animal-traction crop harvesting service"
+          name: "Animal-traction crop harvesting service"
+          flow_type: "product"
+          property_unit: "Service / operating hour"
+          description: "Record Animal-traction crop harvesting service only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Raw activity or stage basis: per kg lifted pod lot."
+          amount:
+            expression: "Measured net quantity of Animal-traction crop harvesting service, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_lot_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1375,18 +1366,18 @@ data_sources:
     used_for: "Allocation and inventory treatment"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c834636043e08dd3a80f14338a02aa2a3ad4639d4f87fadf644c8f543aaff5cb"
+  source_sha256: "sha256:b8db6f3651684635bae36c905c6be0f3aedcac84aec20f9d46bc9c2d627ca948"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_3933"
+    - unit_id: "normative_3936"
       family: "system_boundary"
       span:
         start:
-          offset: 3933
+          offset: 3936
           line: 56
           column: 1
         end:
-          offset: 6055
+          offset: 6058
           line: 79
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Prepared field with prior crop, soil condition, retained residues and carry-over inputs disclosed |\n| starting_condition_role | Start of managed production before sowing |\n| product_classification_scope | Mature dry *Vigna subterranea* seed corresponding to CPC 3.0 01708 |\n| recursive_input_rule | Purchased Bambara grain used as an input is upstream product input and is not recursively represented as output of this foreground system |\n| upstream_dataset_requirement | Link product, energy, water and service inputs to suitable upstream datasets; expand set-level nutrient records to concrete products and UUIDs in final processes |\n| disclosure | Geography, crop year, area, sole/intercrop mode, irrigation, nutrient products/composition, crop protection, lifting, drying, shell state, grade, residue/reject routes and allocation |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_crop_cycle` | Crop production | Include management inputs, direct managed-soil emissions, residues and losses through mature crop hand-off. | `sa-dard-bambara-2020`; `sa-daff-bambara-2016`; `ipcc-2019-managed-soils` |\n| `boundary_harvest` | Harvest | Model lifting/digging independently because it removes subterranean pods and creates collected pod, haulm, soil and field-loss states. | `sa-dard-bambara-2020`; `tanzania-naliendele-2001` |\n| `boundary_conditioning` | Conditioning | Include soil removal, pod detachment, drying, cleaning, grading and conditional final drying. | `fao-pulse-loss-2020`; `fao-grain-handling` |\n| `boundary_shell_state` | Shelling | Require shelling before the CPC 01708 reference-product hand-off. Keep dry pods as an intermediate and never combine pod and shelled-seed mass without a measured balance. | `feedipedia-bambara-byproducts-2016` |\n| `boundary_exclusions` | Downstream | Exclude cooking, roasting, milling, canning, oil extraction, post-farm storage/transport and planting-seed certification. | `fao-forgotten-foods-2023` |\n\n"
@@ -1406,11 +1397,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 3933
+              offset: 3936
               line: 56
               column: 1
             end:
-              offset: 3954
+              offset: 3957
               line: 56
               column: 22
           text: "## 5. System Boundary"
@@ -1426,16 +1417,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44333"
+    - unit_id: "normative_44873"
       family: "allocation"
       span:
         start:
-          offset: 44333
-          line: 1035
+          offset: 44873
+          line: 1023
           column: 1
         end:
-          offset: 45434
-          line: 1045
+          offset: 45974
+          line: 1033
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid` | All nodes | First avoid allocation by separately metering nodes and linking each crop cycle or lot once. | `iso-14044-2006` |\n| `allocation_intercrop` | Intercropped fields | Assign crop-specific inputs directly and shared operations by area, time or another causal driver; shares sum to one. | `iso-14044-2006` |\n| `allocation_residue_status` | Haulm and shells | Without evidenced beneficial hand-off a stream is residue/waste with no co-product credit; beneficial hand-off makes it an intended co-product. | `iso-14044-2006`; `feedipedia-bambara-byproducts-2016` |\n| `allocation_coproduct` | Intended co-products | Where subdivision cannot avoid allocation, use contemporaneous farm-gate economic allocation and report mass-allocation sensitivity. | `iso-14044-2006` |\n| `allocation_rework` | Rework/rejects | Retain rework burdens in the producing lot, count material only at final disposition, and never count rejects as accepted output. | `iso-14044-2006` |\n\n"
       headings:
@@ -1454,12 +1445,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44333
-              line: 1035
+              offset: 44873
+              line: 1023
               column: 1
             end:
-              offset: 44373
-              line: 1035
+              offset: 44913
+              line: 1023
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1474,16 +1465,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_50533"
+    - unit_id: "normative_51838"
       family: "validation"
       span:
         start:
-          offset: 50533
-          line: 1080
+          offset: 51838
+          line: 1070
           column: 1
         end:
-          offset: 52228
-          line: 1094
+          offset: 53533
+          line: 1084
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | Reference flow | Fail when UUID, mass property/group, species, dry/shell state, moisture basis or farm-gate hand-off is missing. |  |\n| `validate_route_topology` | Process map | Require production, independent harvest, pod conditioning, shelling and grading for the dry shelled reference product. | `sa-dard-bambara-2020`; `fao-pulse-loss-2020` |\n| `validate_nutrient_cardinality` | Crop inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_mass_balance` | Lots | Input equals accepted, co-product, downgrade, reject, debris, loss and moisture change within disclosed uncertainty. |  |\n| `validate_grade_handoffs` | Grading | Require accepted, downgraded and rejected destinations and exclude rejects from reference output. | `fao-pulse-loss-2020` |\n| `validate_rework` | Rework | Require producing-lot link, one final disposition and no duplicated output or burden. |  |\n| `validate_multioutput` | Haulm/shells | Require intended-product, residue or waste status, destination and attribution decision before credit. | `iso-14044-2006`; `feedipedia-bambara-byproducts-2016` |\n| `validate_run_attribution` | Cycles/lots | Require indexing and shares that reconcile to one; count shared burden once. |  |\n| `validate_range_condition` | Conditional cards | Shelling ranges always apply; final-drying ranges apply only when final drying is active and use zero when inactive. Provisional ranges are QA screens, not limits. |  |\n\n"
       headings:
@@ -1502,12 +1493,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 50533
-              line: 1080
+              offset: 51838
+              line: 1070
               column: 1
             end:
-              offset: 50555
-              line: 1080
+              offset: 51860
+              line: 1070
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1526,298 +1517,298 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_crop_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 4974
+          offset: 4977
           line: 73
           column: 1
         end:
-          offset: 5203
+          offset: 5206
           line: 73
           column: 230
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_harvest"
       identity_kind: "explicit"
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 5204
+          offset: 5207
           line: 74
           column: 1
         end:
-          offset: 5426
+          offset: 5429
           line: 74
           column: 223
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_conditioning"
       identity_kind: "explicit"
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 5427
+          offset: 5430
           line: 75
           column: 1
         end:
-          offset: 5611
+          offset: 5614
           line: 75
           column: 185
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_shell_state"
       identity_kind: "explicit"
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 5612
+          offset: 5615
           line: 76
           column: 1
         end:
-          offset: 5861
+          offset: 5864
           line: 76
           column: 250
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 5862
+          offset: 5865
           line: 77
           column: 1
         end:
-          offset: 6053
+          offset: 6056
           line: 77
           column: 192
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid"
       identity_kind: "explicit"
-      unit_id: "normative_44333"
+      unit_id: "normative_44873"
       source_span:
         start:
-          offset: 44446
-          line: 1039
+          offset: 44986
+          line: 1027
           column: 1
         end:
-          offset: 44594
-          line: 1039
+          offset: 45134
+          line: 1027
           column: 149
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_intercrop"
       identity_kind: "explicit"
-      unit_id: "normative_44333"
+      unit_id: "normative_44873"
       source_span:
         start:
-          offset: 44595
-          line: 1040
+          offset: 45135
+          line: 1028
           column: 1
         end:
-          offset: 44782
-          line: 1040
+          offset: 45322
+          line: 1028
           column: 188
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_status"
       identity_kind: "explicit"
-      unit_id: "normative_44333"
+      unit_id: "normative_44873"
       source_span:
         start:
-          offset: 44783
-          line: 1041
+          offset: 45323
+          line: 1029
           column: 1
         end:
-          offset: 45036
-          line: 1041
+          offset: 45576
+          line: 1029
           column: 254
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_44333"
+      unit_id: "normative_44873"
       source_span:
         start:
-          offset: 45037
-          line: 1042
+          offset: 45577
+          line: 1030
           column: 1
         end:
-          offset: 45240
-          line: 1042
+          offset: 45780
+          line: 1030
           column: 204
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_44333"
+      unit_id: "normative_44873"
       source_span:
         start:
-          offset: 45241
-          line: 1043
+          offset: 45781
+          line: 1031
           column: 1
         end:
-          offset: 45432
-          line: 1043
+          offset: 45972
+          line: 1031
           column: 192
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 50628
-          line: 1084
+          offset: 51933
+          line: 1074
           column: 1
         end:
-          offset: 50795
-          line: 1084
+          offset: 52100
+          line: 1074
           column: 168
     - pointer: "/validation_rules/1"
       rule_id: "validate_route_topology"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 50796
-          line: 1085
+          offset: 52101
+          line: 1075
           column: 1
         end:
-          offset: 51008
-          line: 1085
+          offset: 52313
+          line: 1075
           column: 213
     - pointer: "/validation_rules/2"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 51009
-          line: 1086
+          offset: 52314
+          line: 1076
           column: 1
         end:
-          offset: 51232
-          line: 1086
+          offset: 52537
+          line: 1076
           column: 224
     - pointer: "/validation_rules/3"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 51233
-          line: 1087
+          offset: 52538
+          line: 1077
           column: 1
         end:
-          offset: 51389
-          line: 1087
+          offset: 52694
+          line: 1077
           column: 157
     - pointer: "/validation_rules/4"
       rule_id: "validate_grade_handoffs"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 51390
-          line: 1088
+          offset: 52695
+          line: 1078
           column: 1
         end:
-          offset: 51553
-          line: 1088
+          offset: 52858
+          line: 1078
           column: 164
     - pointer: "/validation_rules/5"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 51554
-          line: 1089
+          offset: 52859
+          line: 1079
           column: 1
         end:
-          offset: 51675
-          line: 1089
+          offset: 52980
+          line: 1079
           column: 122
     - pointer: "/validation_rules/6"
       rule_id: "validate_multioutput"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 51676
-          line: 1090
+          offset: 52981
+          line: 1080
           column: 1
         end:
-          offset: 51879
-          line: 1090
+          offset: 53184
+          line: 1080
           column: 204
     - pointer: "/validation_rules/7"
       rule_id: "validate_run_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 51880
-          line: 1091
+          offset: 53185
+          line: 1081
           column: 1
         end:
-          offset: 52006
-          line: 1091
+          offset: 53311
+          line: 1081
           column: 127
     - pointer: "/validation_rules/8"
       rule_id: "validate_range_condition"
       identity_kind: "explicit"
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 52007
-          line: 1092
+          offset: 53312
+          line: 1082
           column: 1
         end:
-          offset: 52226
-          line: 1092
+          offset: 53531
+          line: 1082
           column: 220
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 3933
+          offset: 3936
           line: 56
           column: 1
         end:
-          offset: 3954
+          offset: 3957
           line: 56
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_3933"
+      unit_id: "normative_3936"
       source_span:
         start:
-          offset: 3982
+          offset: 3985
           line: 60
           column: 1
         end:
-          offset: 4881
+          offset: 4884
           line: 67
           column: 200
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44333"
+      unit_id: "normative_44873"
       source_span:
         start:
-          offset: 44333
-          line: 1035
+          offset: 44873
+          line: 1023
           column: 1
         end:
-          offset: 44373
-          line: 1035
+          offset: 44913
+          line: 1023
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_50533"
+      unit_id: "normative_51838"
       source_span:
         start:
-          offset: 50533
-          line: 1080
+          offset: 51838
+          line: 1070
           column: 1
         end:
-          offset: 50555
-          line: 1080
+          offset: 51860
+          line: 1070
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1826,5 +1817,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c834636043e08dd3a80f14338a02aa2a3ad4639d4f87fadf644c8f543aaff5cb"
-  generated_content_sha256: "sha256:2ba5b16af7393fb35f9bd37ccb1368976d51d1e456b611072c71b4c94c54a767"
+    sha256: "sha256:b8db6f3651684635bae36c905c6be0f3aedcac84aec20f9d46bc9c2d627ca948"
+  generated_content_sha256: "sha256:1568937d88a1e4c3c1933a8a6f0f5bd5f0d145a3b57b92ca4e9e58b95ea5e074"

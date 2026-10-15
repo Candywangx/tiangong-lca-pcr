@@ -230,29 +230,11 @@ process_inventory:
           name: "Irrigation water, groundwater"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Conditional one-material exchange: include Irrigation water, groundwater only when process records establish its use. Record every other actual carrier, water source or material as a separate exchange with its own quantity and verified or explicitly unresolved identity. This example does not assert use. Raw activity or stage basis: per crop cycle, normalized by accepted oilseed output."
+          description: "Conditional one-material exchange: include Irrigation water, groundwater only when process records establish its use. Record every other actual carrier, water source or material as a separate exchange with its own quantity and verified or explicitly unresolved identity. This example does not assert use. Raw activity or stage basis: per crop cycle, normalized by accepted oilseed output. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measure the quantity of Irrigation water, groundwater actually used in this process and period."
             value_mode: "foreground_record"
             specificity: "route_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field
-              source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs
-          role: "Route-specific crop-protection formulation"
-          name: "Route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg formulation"
-          description: "Instantiate this card once for each crop-protection formulation actually applied in the declared route. Identify the formulation from application records, measure its product quantity, and record active-ingredient content separately; do not infer a named chemical or combine distinct formulations. Raw activity or stage basis: per crop cycle, normalized by accepted oilseed output."
-          amount:
-            expression: "Measured applied quantity of one identified formulation in this process and period; a second formulation requires a separate exchange."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "crop_cycle"
@@ -304,10 +286,10 @@ process_inventory:
     outputs:
       product:
         - row_id: standing_crop
-          role: "Standing harvestable crop"
-          name: "Select species-specific intermediate product if separately modelled"
+          role: "Harvest-ready oilseed crop, declared species"
+          name: "Harvest-ready oilseed crop, declared species"
           flow_type: "product"
-          property_unit: "kg"
+          property_unit: "Mass / kg"
           description: "This card records the real physical flow for this process role; model it by the declared batch or crop cycle only when the route is active. Raw activity or stage basis: harvestable mass at field maturity."
           amount:
             expression: "Calculated harvestable crop mass transferred to harvest."
@@ -389,10 +371,10 @@ process_inventory:
     inputs:
       product:
         - row_id: standing_crop_input
-          role: "Standing harvestable crop input"
-          name: "Select species-specific intermediate product if separately modelled"
+          role: "Harvest-ready oilseed crop, declared species"
+          name: "Harvest-ready oilseed crop, declared species"
           flow_type: "product"
-          property_unit: "kg"
+          property_unit: "Mass / kg"
           description: "This card records the real physical flow for this process role; model it by the declared batch or crop cycle only when the route is active. Raw activity or stage basis: gross harvestable crop entering harvest."
           amount:
             expression: "Transfer the measured harvestable crop from managed production."
@@ -1083,7 +1065,7 @@ data_sources:
     used_for: "batch and moisture mass reconciliation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:d5e27bdb0039260b54212205d2b42848d9516dbd39c54c67ce87c38a9efc5bdd"
+  source_sha256: "sha256:8eaf783eaee8754eae5ae78c9a41d711f1c2043f4618f5fe1a3f151a48c4bfb5"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3422"
@@ -1134,16 +1116,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39837"
+    - unit_id: "normative_39379"
       family: "allocation"
       span:
         start:
-          offset: 39837
-          line: 827
+          offset: 39379
+          line: 813
           column: 1
         end:
-          offset: 40765
-          line: 836
+          offset: 40307
+          line: 822
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| direct_assignment | all nodes | Directly assign measurable species-, field-, batch-, grade- and use-specific inputs. | mass-balance-identity |\n| multi_output | saleable seed grades and species-specific co-products | Record every intended output separately; allocate shared burdens by mass at the declared moisture basis unless reviewed economic evidence supports another rule. | mass-balance-identity |\n| residue_fate | stalks, hulls, pods and rejects | Treat as a co-product only with an independent saleable destination and reference flow; otherwise record residue or waste and fate. | mass-balance-identity |\n| shared_assets | shared machinery, drying and storage | Attribute once by measured hours, energy or throughput and prevent duplication between field and conditioning nodes. | mass-balance-identity |\n\n"
       headings:
@@ -1162,12 +1144,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39837
-              line: 827
+              offset: 39379
+              line: 813
               column: 1
             end:
-              offset: 39877
-              line: 827
+              offset: 39419
+              line: 813
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1182,16 +1164,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46994"
+    - unit_id: "normative_47301"
       family: "validation"
       span:
         start:
-          offset: 46994
-          line: 873
+          offset: 47301
+          line: 861
           column: 1
         end:
-          offset: 47920
-          line: 883
+          offset: 48227
+          line: 871
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_other | product identity | Confirm the named species belongs in CPC 01449 and has no separate oilseed CPC leaf. | unsd-cpc-30 |\n| validate_reference | reference flow | Check 1 kg net mass and mandatory species, use, moisture, grade and gate qualifiers. | mass-balance-identity |\n| validate_balance | each lot | Reconcile inputs, outputs, losses, stock and moisture change without double-counting transfers. | mass-balance-identity |\n| validate_ranges | every card | Investigate observations outside screens, but do not reject supported real measurements solely for exceeding a provisional interval. |  |\n| validate_sets | parameterized inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1210,12 +1192,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46994
-              line: 873
+              offset: 47301
+              line: 861
               column: 1
             end:
-              offset: 47016
-              line: 873
+              offset: 47323
+              line: 861
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1247,119 +1229,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "direct_assignment"
       identity_kind: "explicit"
-      unit_id: "normative_39837"
+      unit_id: "normative_39379"
       source_span:
         start:
-          offset: 39950
-          line: 831
+          offset: 39492
+          line: 817
           column: 1
         end:
-          offset: 40094
-          line: 831
+          offset: 39636
+          line: 817
           column: 145
     - pointer: "/allocation_rules/1"
       rule_id: "multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_39837"
+      unit_id: "normative_39379"
       source_span:
         start:
-          offset: 40095
-          line: 832
+          offset: 39637
+          line: 818
           column: 1
         end:
-          offset: 40354
-          line: 832
+          offset: 39896
+          line: 818
           column: 260
     - pointer: "/allocation_rules/2"
       rule_id: "residue_fate"
       identity_kind: "explicit"
-      unit_id: "normative_39837"
+      unit_id: "normative_39379"
       source_span:
         start:
-          offset: 40355
-          line: 833
+          offset: 39897
+          line: 819
           column: 1
         end:
-          offset: 40563
-          line: 833
+          offset: 40105
+          line: 819
           column: 209
     - pointer: "/allocation_rules/3"
       rule_id: "shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_39837"
+      unit_id: "normative_39379"
       source_span:
         start:
-          offset: 40564
-          line: 834
+          offset: 40106
+          line: 820
           column: 1
         end:
-          offset: 40763
-          line: 834
+          offset: 40305
+          line: 820
           column: 200
     - pointer: "/validation_rules/0"
       rule_id: "validate_other"
       identity_kind: "explicit"
-      unit_id: "normative_46994"
+      unit_id: "normative_47301"
       source_span:
         start:
-          offset: 47089
-          line: 877
+          offset: 47396
+          line: 865
           column: 1
         end:
-          offset: 47227
-          line: 877
+          offset: 47534
+          line: 865
           column: 139
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_46994"
+      unit_id: "normative_47301"
       source_span:
         start:
-          offset: 47228
-          line: 878
+          offset: 47535
+          line: 866
           column: 1
         end:
-          offset: 47378
-          line: 878
+          offset: 47685
+          line: 866
           column: 151
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_46994"
+      unit_id: "normative_47301"
       source_span:
         start:
-          offset: 47379
-          line: 879
+          offset: 47686
+          line: 867
           column: 1
         end:
-          offset: 47532
-          line: 879
+          offset: 47839
+          line: 867
           column: 154
     - pointer: "/validation_rules/3"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_46994"
+      unit_id: "normative_47301"
       source_span:
         start:
-          offset: 47533
-          line: 880
+          offset: 47840
+          line: 868
           column: 1
         end:
-          offset: 47703
-          line: 880
+          offset: 48010
+          line: 868
           column: 171
     - pointer: "/validation_rules/4"
       rule_id: "validate_sets"
       identity_kind: "explicit"
-      unit_id: "normative_46994"
+      unit_id: "normative_47301"
       source_span:
         start:
-          offset: 47704
-          line: 881
+          offset: 48011
+          line: 869
           column: 1
         end:
-          offset: 47918
-          line: 881
+          offset: 48225
+          line: 869
           column: 215
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1388,27 +1370,27 @@ normative_context:
           column: 187
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39837"
+      unit_id: "normative_39379"
       source_span:
         start:
-          offset: 39837
-          line: 827
+          offset: 39379
+          line: 813
           column: 1
         end:
-          offset: 39877
-          line: 827
+          offset: 39419
+          line: 813
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46994"
+      unit_id: "normative_47301"
       source_span:
         start:
-          offset: 46994
-          line: 873
+          offset: 47301
+          line: 861
           column: 1
         end:
-          offset: 47016
-          line: 873
+          offset: 47323
+          line: 861
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1417,5 +1399,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:d5e27bdb0039260b54212205d2b42848d9516dbd39c54c67ce87c38a9efc5bdd"
-  generated_content_sha256: "sha256:3340c727d9602b6f66f347ede594cb8ea2f48a3baa867999c8348025c6bd5543"
+    sha256: "sha256:8eaf783eaee8754eae5ae78c9a41d711f1c2043f4618f5fe1a3f151a48c4bfb5"
+  generated_content_sha256: "sha256:33137a80e56e9143cc79ce53c9fa76b08e4d691886c16332d9b498a9d76bae4b"

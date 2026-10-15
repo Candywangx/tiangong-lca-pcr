@@ -224,29 +224,20 @@ Raw activity or stage basis: per ha managed field in one crop cycle; zero allowe
   - Evidence kind: External source (`external_source`)
   - Sources: `icar-water-2022`
 
-###### Field fuel (`field_fuel`)
+###### Diesel fuel (`field_fuel`)
 
-Fuel used by cultivation and water-management equipment crosses the field boundary.
-
-- Selected flow: Field machinery fuel
-- Flow property / unit: Volume / L
-- Amount rule: Fuel tickets or equipment hours multiplied by measured consumption
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per ha managed field in one crop cycle.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_cycle`
-- Range: Provisional field-fuel screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 300
-  - Unit: L/ha
-  - Basis: broad replaceable estimate per ha managed field in one crop cycle
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -582,6 +573,8 @@ Raw activity or stage basis: per 1,000 kg accepted farm-gate taro.
 | `reject_routing` | rejected or returned material | Keep prior burdens with rejects until declared boundary exit; if material is returned upstream to the managed field, link that loop explicitly, otherwise record recovery or disposal without unverified avoided-product credit. | `iso-14044` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

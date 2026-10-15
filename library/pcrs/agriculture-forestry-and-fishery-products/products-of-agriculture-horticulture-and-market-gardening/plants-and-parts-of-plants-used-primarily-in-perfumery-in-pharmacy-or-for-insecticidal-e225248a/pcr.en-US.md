@@ -193,24 +193,7 @@ Raw activity or stage basis: per cultivated area and crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cultivation_inputs`
 
-###### Route-specific crop-protection formulation (`crop_protection_inputs`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record each formulated herbicide, insecticide, fungicide or biological control product by trade identity, active substance and formulation; actual products are determined from field records.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per treated area and crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cultivation_inputs`
-- Sources: who-gacp-medicinal-plants
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water supply (`irrigation_water`)
 
@@ -237,31 +220,36 @@ Raw activity or stage basis: per irrigated area and crop cycle.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
-###### Cultivation machinery energy supply (`cultivation_energy`)
+###### Electricity, medium voltage (`cultivation_energy`)
 
-Record actual fuels, electricity or other carriers used for soil preparation, planting, maintenance, irrigation support and field operations.
-
-- Selected flow: Cultivation machinery fuel or energy supply
-- Flow property / unit: Energy or carrier-native property / MJ, kWh, kg or L
-- Amount rule: measured carrier consumption attributed to the cultivated lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per cultivated area and crop cycle.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy_records`
-- Sources:
-- Range: Provisional QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 30000
-  - Unit: MJ/ha crop cycle
-  - Basis: all cultivation energy carriers converted to MJ for the QA screen
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
+
+###### Diesel fuel (`cultivation_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per cultivated area and crop cycle.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_records`
+
 ##### Waste flows
 
 ##### Elementary flows
@@ -399,56 +387,24 @@ Raw activity or stage basis: per cultivated area and crop cycle.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
-###### Phosphorus substance to receiving water (`phosphorus_to_water`)
+###### Phosphate, to water (`phosphorus_to_water`)
 
-Record the measured or modelled phosphorus species and receiving-water compartment; total P and phosphate are not interchangeable without conversion.
-
-- Selected flow: Reported phosphorus substance to reported water compartment
-- Flow property / unit: Mass / kg reported substance
-- Amount rule: measured or modelled phosphorus loss by species and compartment
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Phosphate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per cultivated area and crop cycle.
 
+- Selected flow: Phosphate, to water
+- Flow property / unit: Mass / kg PO4
+- Amount rule: Measured or method-calculated mass of Phosphate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as elemental P, convert to PO4 once using 95/31.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_emissions`
-- Sources: who-gacp-medicinal-plants
-- Range: Provisional QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 200
-  - Unit: kg reported P substance/ha crop cycle
-  - Basis: reported phosphorus substance per cultivated hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
-###### Crop-protection active substances by compartment (`crop_protection_releases`)
+- Sources: `who-gacp-medicinal-plants`
 
-Expand this umbrella from application records into concrete active-substance and receiving-compartment exchanges; do not use an unspecified pesticide UUID as a substitute.
+Required substance-release records: derive every applicable crop-protection release from the actually recorded formulation and the selected fate method. Create separate exchanges for each identified substance and receiving compartment, preserving chemical form and substance-mass basis. An unresolved substance or compartment remains a completeness gap, not a generic elementary exchange or an assumed zero.
 
-- Selected flow: Reported active substance to reported compartment
-- Flow property / unit: Mass / kg active substance
-- Amount rule: calculated release by active substance and compartment
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per treated area and crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_field_emissions`
-- Sources: who-gacp-medicinal-plants
-- Range: Provisional QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg active substance/ha crop cycle
-  - Basis: sum of modelled releases without merging compartments
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
 ### Process: Wild collection and resource removal (`wild_collection`)
 
 #### Inputs
@@ -630,31 +586,54 @@ Raw activity or stage basis: per 1,000 kg accepted product.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
-###### Conditioning and drying energy supply (`conditioning_energy`)
+###### Electricity, medium voltage (`conditioning_energy`)
 
-Record actual electricity, heat or fuels used for cleaning, cutting, sorting, ventilation, drying and stabilization, including run-linked cleaning and changeover energy.
-
-- Selected flow: Conditioning and drying energy supply
-- Flow property / unit: Energy or carrier-native property / MJ, kWh, kg or L
-- Amount rule: measured carrier use assigned to the run or period
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted product.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy_records`
-- Sources: who-gacp-medicinal-plants
-- Range: Provisional QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: MJ/1000 kg accepted product
-  - Basis: all conditioning carriers converted to MJ
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
+- Sources: `who-gacp-medicinal-plants`
+
+###### Diesel fuel (`conditioning_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted product.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_records`
+- Sources: `who-gacp-medicinal-plants`
+
+###### Purchased steam (`conditioning_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted product.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_records`
+- Sources: `who-gacp-medicinal-plants`
+
 ##### Waste flows
 
 ##### Elementary flows
@@ -831,6 +810,8 @@ Raw activity or stage basis: per 1,000 kg accepted product.
 | `allocation_rework_and_runs` | batches, continuous periods, rework and changeover | Link inputs, outputs, cleaning and changeover events to one run or operating interval; rework retains producing-node burdens and adds only new operations, preventing shared-run double counting. | `who-gacp-medicinal-plants` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

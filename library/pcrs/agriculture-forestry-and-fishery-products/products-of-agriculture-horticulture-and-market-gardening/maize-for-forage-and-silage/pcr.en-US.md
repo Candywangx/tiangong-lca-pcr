@@ -193,24 +193,7 @@ Raw activity or stage basis: per ha planted in one crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 
-###### Route-specific crop-protection formulation (`crop_protection_inputs`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record actual herbicides, insecticides, fungicides and other crop-protection products applied to the field, retaining product identity, active ingredient and formulation.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per ha treated in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources:
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water supply (`irrigation_water`)
 
@@ -460,31 +443,7 @@ Raw activity or stage basis: per ha planted in one crop cycle.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources:
 
-###### Reported crop-protection substances to environmental compartments (`crop_protection_releases`)
-
-Record each identified active substance released to air, soil or water as a separate concrete exchange during dataset generation; do not bind a generic pesticide UUID.
-
-- Selected flow: Identified crop-protection substance to air, soil or water
-- Flow property / unit: Mass / kg active substance
-- Amount rule: measured or fate-modelled mass by active substance and compartment
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per ha treated in one crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_field_emissions`
-- Sources:
-- Range: Provisional active-substance release screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg active substance/ha crop cycle
-  - Basis: sum reported separately by substance and compartment per treated hectare
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
+Required substance-release records: derive every applicable crop-protection release from the actually recorded formulation and the selected fate method. Create separate exchanges for each identified substance and receiving compartment, preserving chemical form and substance-mass basis. An unresolved substance or compartment remains a completeness gap, not a generic elementary exchange or an assumed zero.
 
 ### Process: Harvest and farm-gate hand-off (`harvest_handoff`)
 
@@ -650,6 +609,8 @@ Raw activity or stage basis: per ha harvested in one crop cycle.
 | `allocation_rejects` | off-spec and rejected biomass | This fresh farm-gate route has no in-boundary rework loop. Route every off-spec mass to accepted after documented reassessment, downgraded alternate use, field retention or disposal; retain prior burdens and count mass only at its final destination. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

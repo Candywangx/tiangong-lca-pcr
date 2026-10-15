@@ -197,29 +197,7 @@ Raw activity or stage basis: per ha crop cycle.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_register`
 
-###### Crop-protection product (`crop_protection`)
-
-Record formulation and applied product mass by operation.
-
-- Selected flow: Crop protection product
-- Flow property / unit: kg
-- Amount rule: Record formulation and applied product mass by operation
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per ha crop cycle.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_register`
-- Range: Provisional QA screen for product mass, not active ingredient
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 200
-  - Unit: kg/ha
-  - Basis: per ha crop cycle; Provisional QA screen for product mass, not active ingredient
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Supplied irrigation water (`irrigation_water`)
 
@@ -245,29 +223,20 @@ Raw activity or stage basis: per ha crop cycle.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Field machinery liquid fuel (`field_fuel`)
+###### Diesel fuel (`field_fuel`)
 
-Record actual fuel volume for land preparation, planting and field management.
-
-- Selected flow: Mobile machinery fuel, actual liquid carrier
-- Flow property / unit: L
-- Amount rule: Record actual fuel volume for land preparation, planting and field management
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per ha crop cycle.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_register`
-- Range: Provisional QA screen for liquid fuels only
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1500
-  - Unit: L/ha
-  - Basis: per ha crop cycle; Provisional QA screen for liquid fuels only
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Field electricity (`field_electricity`)
 
@@ -384,29 +353,20 @@ Raw activity or stage basis: per ha harvested crop.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Root lifting fuel (`harvest_fuel`)
+###### Diesel fuel (`harvest_fuel`)
 
-Record actual liquid fuel used for mechanical lifting and loading when used.
-
-- Selected flow: Mobile machinery fuel, actual liquid carrier
-- Flow property / unit: L
-- Amount rule: Record actual liquid fuel used for mechanical lifting and loading when used
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per ha harvested crop.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_register`
-- Range: Provisional QA screen, conditional on mechanized route
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: L/ha
-  - Basis: per ha harvested crop; Provisional QA screen, conditional on mechanized route
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -690,6 +650,8 @@ Raw activity or stage basis: per tonne fresh roots received.
 | `period_attribution` | crop cycles crossing reporting years | Assign planting and management inputs to the identified harvest cycle once, track date and phase, and never allocate the same retained stem stock or asset burden to two cycles. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

@@ -264,11 +264,11 @@ Raw activity or stage basis: per 1 kg accepted green uncured pods.
 
 ##### Product flows
 
-###### Standing vines bearing harvest-ready mature green pods (`standing_vines_mature_pods`)
+###### Harvest-ready green vanilla pods (`standing_vines_mature_pods`)
 
 Identity and quantity rule: Internal intermediate calculated from round-level harvest and loss reconciliation; no external UUID.
 
-- Selected flow: Internal standing-vine and harvest-ready pod state
+- Selected flow: Harvest-ready green vanilla pods
 - Flow property / unit: Mass / kg harvest-ready pods
 - Amount rule: Internal intermediate calculated from round-level harvest and loss reconciliation; no external UUID.
 - Value mode: `calculated_value`
@@ -340,11 +340,11 @@ Mature pods are selectively removed from standing perennial vines in repeated ro
 
 ##### Product flows
 
-###### Standing vines and harvest-ready pods entering harvest (`harvest_ready_vines_input`)
+###### Harvest-ready green vanilla pods (`harvest_ready_vines_input`)
 
 Identity and quantity rule: Internal transfer equal to reconciled harvest-ready pod mass across all rounds; no external UUID.
 
-- Selected flow: Internal standing-vine and harvest-ready pod state
+- Selected flow: Harvest-ready green vanilla pods
 - Flow property / unit: Mass / kg harvest-ready pods
 - Amount rule: Internal transfer equal to reconciled harvest-ready pod mass across all rounds; no external UUID.
 - Value mode: `calculated_value`

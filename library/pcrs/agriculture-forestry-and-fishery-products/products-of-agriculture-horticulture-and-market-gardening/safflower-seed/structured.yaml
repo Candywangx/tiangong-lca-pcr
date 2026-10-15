@@ -239,7 +239,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: Per field crop cycle.."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: Per field crop cycle.. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -252,33 +252,6 @@ process_inventory:
               collection_protocol_id: cp_field
               source_ids: []
             ranges: []
-        - row_id: crop_protection
-          role: "Crop protection materials"
-          name: "Applied crop protection product, identity unresolved until product-specific lookup"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Record each actual herbicide, fungicide or other protection product separately by formulation and application; omit categories not used on the field. Raw activity or stage basis: Per field crop cycle.."
-          amount:
-            expression: "Product mass issued or applied by field and event."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field
-              source_ids:
-                - wisconsin-safflower
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "200"
-                unit: "kg product/ha"
-                basis: "one crop hectare, each applied protection or harvest-aid product separately; provisional screen only"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: irrigation_water
           role: "Irrigation water"
           name: "Irrigation water supply, identity unresolved pending source-specific lookup"
@@ -1218,7 +1191,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:6a7f6566dad4b890f77ed91f130b6129e8bc791d5cd107ba6251dcbe78bec1b6"
+  source_sha256: "sha256:505e12207de5632a6095be16b94f3df595668408453ac0d5f26767f884471566"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4762"
@@ -1269,16 +1242,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46631"
+    - unit_id: "normative_46035"
       family: "allocation"
       span:
         start:
-          offset: 46631
-          line: 920
+          offset: 46035
+          line: 897
           column: 1
         end:
-          offset: 47883
-          line: 929
+          offset: 47287
+          line: 906
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `single_seed_product` | Normal crop | Attribute crop and harvest burdens to accepted grain when straw stays in the field, uncaptured seed is lost, and screenings/rejects are discarded; these are not presumed saleable co-products. | uc-safflower-production; wisconsin-safflower |\n| `separate_sale` | Sold lower grade or residue | If lower-grade seed, screenings or straw actually sells, measure its mass/destination and document process subdivision or justified allocation before dataset use. No default economic split is supplied. | uc-safflower-production; wisconsin-safflower |\n| `run_attribution` | Shared runs | Link inputs to crop cycle and harvest, cleaning, drying and changeover energy to actual lots/runs. Assign a shared meter period once by measured throughput or documented time and include re-cleaning energy without double counting returned seed. | uc-safflower-production; wisconsin-safflower |\n| `reject_exclusion` | Rework | Accepted reference mass excludes rejected mass unless a linked rework pass restores accepted grade; the returning mass is not a new farm output. | uc-safflower-production; wisconsin-safflower |\n\n"
       headings:
@@ -1297,12 +1270,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46631
-              line: 920
+              offset: 46035
+              line: 897
               column: 1
             end:
-              offset: 46671
-              line: 920
+              offset: 46075
+              line: 897
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1317,16 +1290,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54116"
+    - unit_id: "normative_54285"
       family: "validation"
       span:
         start:
-          offset: 54116
-          line: 965
+          offset: 54285
+          line: 944
           column: 1
         end:
-          offset: 55608
-          line: 975
+          offset: 55777
+          line: 954
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `valid_identity` | Reference output | Require grain UUID `30eacea6-7a8a-457f-a766-c93480303927`, Mass property, mass unit group, kg, actual moisture, grade and farm gate; reject planting-seed use of this fixed grain identity. | uc-safflower-production; wisconsin-safflower |\n| `valid_routes` | Fields and harvest lots | Every field has dryland/irrigated status and every lot exactly one direct or windrow/pickup path; selected irrigation and windrow routes require their additional records. | uc-safflower-production; wisconsin-safflower |\n| `valid_nodes` | Conditional handling | Activated cleaning or drying/storage nodes need linked input/output mass, energy and reject disposition; absent nodes get no invented default burden or global moisture threshold. | uc-safflower-production; wisconsin-safflower |\n| `valid_balance` | Grade, rework, shared runs | Reconcile accepted, downgraded, rejected and drying water by linked lot within a disclosed tolerance; keep straw/chaff and uncaptured seed as separately observed fates, not an invented elementary exchange; rejected grain needs a disposition and linked rework before acceptance; count shared energy once. | uc-safflower-production; wisconsin-safflower |\n| `valid_scope` | Dataset use | Exclude pressing/meal and disclose any separately sold residue or screenings with attribution method. | uc-safflower-production; wisconsin-safflower |\n\n"
       headings:
@@ -1345,12 +1318,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54116
-              line: 965
+              offset: 54285
+              line: 944
               column: 1
             end:
-              offset: 54138
-              line: 965
+              offset: 54307
+              line: 944
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1421,119 +1394,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "single_seed_product"
       identity_kind: "explicit"
-      unit_id: "normative_46631"
+      unit_id: "normative_46035"
       source_span:
         start:
-          offset: 46744
-          line: 924
+          offset: 46148
+          line: 901
           column: 1
         end:
-          offset: 47024
-          line: 924
+          offset: 46428
+          line: 901
           column: 281
     - pointer: "/allocation_rules/1"
       rule_id: "separate_sale"
       identity_kind: "explicit"
-      unit_id: "normative_46631"
+      unit_id: "normative_46035"
       source_span:
         start:
-          offset: 47025
-          line: 925
+          offset: 46429
+          line: 902
           column: 1
         end:
-          offset: 47325
-          line: 925
+          offset: 46729
+          line: 902
           column: 301
     - pointer: "/allocation_rules/2"
       rule_id: "run_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_46631"
+      unit_id: "normative_46035"
       source_span:
         start:
-          offset: 47326
-          line: 926
+          offset: 46730
+          line: 903
           column: 1
         end:
-          offset: 47655
-          line: 926
+          offset: 47059
+          line: 903
           column: 330
     - pointer: "/allocation_rules/3"
       rule_id: "reject_exclusion"
       identity_kind: "explicit"
-      unit_id: "normative_46631"
+      unit_id: "normative_46035"
       source_span:
         start:
-          offset: 47656
-          line: 927
+          offset: 47060
+          line: 904
           column: 1
         end:
-          offset: 47881
-          line: 927
+          offset: 47285
+          line: 904
           column: 226
     - pointer: "/validation_rules/0"
       rule_id: "valid_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54116"
+      unit_id: "normative_54285"
       source_span:
         start:
-          offset: 54211
-          line: 969
+          offset: 54380
+          line: 948
           column: 1
         end:
-          offset: 54487
-          line: 969
+          offset: 54656
+          line: 948
           column: 277
     - pointer: "/validation_rules/1"
       rule_id: "valid_routes"
       identity_kind: "explicit"
-      unit_id: "normative_54116"
+      unit_id: "normative_54285"
       source_span:
         start:
-          offset: 54488
-          line: 970
+          offset: 54657
+          line: 949
           column: 1
         end:
-          offset: 54752
-          line: 970
+          offset: 54921
+          line: 949
           column: 265
     - pointer: "/validation_rules/2"
       rule_id: "valid_nodes"
       identity_kind: "explicit"
-      unit_id: "normative_54116"
+      unit_id: "normative_54285"
       source_span:
         start:
-          offset: 54753
-          line: 971
+          offset: 54922
+          line: 950
           column: 1
         end:
-          offset: 55021
-          line: 971
+          offset: 55190
+          line: 950
           column: 269
     - pointer: "/validation_rules/3"
       rule_id: "valid_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54116"
+      unit_id: "normative_54285"
       source_span:
         start:
-          offset: 55022
-          line: 972
+          offset: 55191
+          line: 951
           column: 1
         end:
-          offset: 55423
-          line: 972
+          offset: 55592
+          line: 951
           column: 402
     - pointer: "/validation_rules/4"
       rule_id: "valid_scope"
       identity_kind: "explicit"
-      unit_id: "normative_54116"
+      unit_id: "normative_54285"
       source_span:
         start:
-          offset: 55424
-          line: 973
+          offset: 55593
+          line: 952
           column: 1
         end:
-          offset: 55606
-          line: 973
+          offset: 55775
+          line: 952
           column: 183
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1562,27 +1535,27 @@ normative_context:
           column: 173
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46631"
+      unit_id: "normative_46035"
       source_span:
         start:
-          offset: 46631
-          line: 920
+          offset: 46035
+          line: 897
           column: 1
         end:
-          offset: 46671
-          line: 920
+          offset: 46075
+          line: 897
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54116"
+      unit_id: "normative_54285"
       source_span:
         start:
-          offset: 54116
-          line: 965
+          offset: 54285
+          line: 944
           column: 1
         end:
-          offset: 54138
-          line: 965
+          offset: 54307
+          line: 944
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1591,5 +1564,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:6a7f6566dad4b890f77ed91f130b6129e8bc791d5cd107ba6251dcbe78bec1b6"
-  generated_content_sha256: "sha256:764e34d62ed087e5808798ad4247eaec18baf136668e89acb361d80a3bd5810d"
+    sha256: "sha256:505e12207de5632a6095be16b94f3df595668408453ac0d5f26767f884471566"
+  generated_content_sha256: "sha256:65bd143a8591d8bff5243f83043292102183fc9a7b5da694039efc0ae5e92d2e"

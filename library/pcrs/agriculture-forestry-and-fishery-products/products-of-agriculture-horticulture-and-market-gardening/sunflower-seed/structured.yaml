@@ -238,7 +238,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: Per field and accepted seed kg.."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: Per field and accepted seed kg.. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -251,33 +251,6 @@ process_inventory:
               collection_protocol_id: cp_field
               source_ids: []
             ranges: []
-        - row_id: crop_protection
-          role: "Crop-protection products"
-          name: "Actual crop-protection product identity."
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Pest, disease and weed control products enter only when actually applied. Raw activity or stage basis: Per field and accepted seed kg.."
-          amount:
-            expression: "Sum applications by field and product."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field
-              source_ids:
-                - ndsu-sunflower-guide-2020
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "200"
-                unit: "kg product/ha"
-                basis: "one crop hectare, each applied protection or harvest-aid product separately; provisional screen only"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: irrigation_water
           role: "Irrigation water, groundwater input"
           name: "Irrigation water, groundwater"
@@ -1179,7 +1152,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e4575733dac1b222317685e30fffb3ef1c725c1b08e6d0e36351a094ba0d6caf"
+  source_sha256: "sha256:5098e72f9e1939a8937ab56260c017260cfea50b622595db92827aae867d6e8d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5288"
@@ -1230,16 +1203,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47140"
+    - unit_id: "normative_46649"
       family: "allocation"
       span:
         start:
-          offset: 47140
-          line: 928
+          offset: 46649
+          line: 905
           column: 1
         end:
-          offset: 48323
-          line: 937
+          offset: 47832
+          line: 914
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_field` | Cultivation and harvest | Attribute joint field/harvest burdens to collected seed when residues remain in the field. A physically removed and marketed stalk/head output needs measured mass and a disclosed allocation basis; do not automatically give it zero burden. | ndsu-sunflower-guide-2020 |\n| `a_grade` | Cleaning and grading | Reconcile accepted, downgraded, reworked and waste mass. Directly assign metered separable work to its output run; disclose a consistent measured driver for truly shared burdens when more than one saleable output exists. | ndsu-sunflower-guide-2020 |\n| `a_rework` | Reject return | Link reject/re-cleaning loops to their original and follow-on run; charge added work once and count the material as accepted only after successful recovery. | ndsu-sunflower-guide-2020 |\n| `a_mode` | Field, batch and continuous runs | Attribute shared machinery, cleaning and changeover to logged field/lot/period by recorded time, throughput or other causal driver; no duplicate charge across sequential runs. | ndsu-sunflower-guide-2020 |\n\n"
       headings:
@@ -1258,12 +1231,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47140
-              line: 928
+              offset: 46649
+              line: 905
               column: 1
             end:
-              offset: 47180
-              line: 928
+              offset: 46689
+              line: 905
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1278,16 +1251,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54620"
+    - unit_id: "normative_54894"
       family: "validation"
       span:
         start:
-          offset: 54620
-          line: 973
+          offset: 54894
+          line: 952
           column: 1
         end:
-          offset: 55994
-          line: 984
+          offset: 56268
+          line: 963
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_identity` | Reference output | Reject missing class, measured moisture, grade or actual hand-off, and reject sowing seed bound to `a62436d6-249c-4ac3-b5f4-653d0f277519`. | ndsu-sunflower-guide-2020 |\n| `v_boundary` | Inventory | Verify cultivation, harvest and each actual on-farm cleaning, grading, drying and storage step up to hand-off; do not infer farm-gate grade from the platform label. | ndsu-sunflower-guide-2020; ndsu-sunflower-drying-2022 |\n| `v_route` | Alternative routes | Require metered irrigation and pump records for irrigated fields and metered fan/fuel records for drying; link sequential technologies. | ndsu-sunflower-guide-2020; ndsu-sunflower-drying-2022 |\n| `v_balance` | Lots and rejects | Reconcile accepted, downgraded, rejected, returned and lost mass with moisture; a reject becomes accepted only after a linked successful run. | ndsu-sunflower-guide-2020 |\n| `v_emissions` | Field elementary flows | Do not accept an anonymous field-emission row or unverified generic factor; require each calculated exchange to name species, method and factor source. | ndsu-sunflower-guide-2020 |\n| `v_once` | Shared runs | Check field and period attribution, cleaning changeovers and returned lots to prevent double counting. | ndsu-sunflower-guide-2020 |\n\n"
       headings:
@@ -1306,12 +1279,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54620
-              line: 973
+              offset: 54894
+              line: 952
               column: 1
             end:
-              offset: 54642
-              line: 973
+              offset: 54916
+              line: 952
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1382,132 +1355,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_field"
       identity_kind: "explicit"
-      unit_id: "normative_47140"
+      unit_id: "normative_46649"
       source_span:
         start:
-          offset: 47253
-          line: 932
+          offset: 46762
+          line: 909
           column: 1
         end:
-          offset: 47561
-          line: 932
+          offset: 47070
+          line: 909
           column: 309
     - pointer: "/allocation_rules/1"
       rule_id: "a_grade"
       identity_kind: "explicit"
-      unit_id: "normative_47140"
+      unit_id: "normative_46649"
       source_span:
         start:
-          offset: 47562
-          line: 933
+          offset: 47071
+          line: 910
           column: 1
         end:
-          offset: 47849
-          line: 933
+          offset: 47358
+          line: 910
           column: 288
     - pointer: "/allocation_rules/2"
       rule_id: "a_rework"
       identity_kind: "explicit"
-      unit_id: "normative_47140"
+      unit_id: "normative_46649"
       source_span:
         start:
-          offset: 47850
-          line: 934
+          offset: 47359
+          line: 911
           column: 1
         end:
-          offset: 48067
-          line: 934
+          offset: 47576
+          line: 911
           column: 218
     - pointer: "/allocation_rules/3"
       rule_id: "a_mode"
       identity_kind: "explicit"
-      unit_id: "normative_47140"
+      unit_id: "normative_46649"
       source_span:
         start:
-          offset: 48068
-          line: 935
+          offset: 47577
+          line: 912
           column: 1
         end:
-          offset: 48321
-          line: 935
+          offset: 47830
+          line: 912
           column: 254
     - pointer: "/validation_rules/0"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 54715
-          line: 977
+          offset: 54989
+          line: 956
           column: 1
         end:
-          offset: 54919
-          line: 977
+          offset: 55193
+          line: 956
           column: 205
     - pointer: "/validation_rules/1"
       rule_id: "v_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 54920
-          line: 978
+          offset: 55194
+          line: 957
           column: 1
         end:
-          offset: 55171
-          line: 978
+          offset: 55445
+          line: 957
           column: 252
     - pointer: "/validation_rules/2"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 55172
-          line: 979
+          offset: 55446
+          line: 958
           column: 1
         end:
-          offset: 55400
-          line: 979
+          offset: 55674
+          line: 958
           column: 229
     - pointer: "/validation_rules/3"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 55401
-          line: 980
+          offset: 55675
+          line: 959
           column: 1
         end:
-          offset: 55607
-          line: 980
+          offset: 55881
+          line: 959
           column: 207
     - pointer: "/validation_rules/4"
       rule_id: "v_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 55608
-          line: 981
+          offset: 55882
+          line: 960
           column: 1
         end:
-          offset: 55832
-          line: 981
+          offset: 56106
+          line: 960
           column: 225
     - pointer: "/validation_rules/5"
       rule_id: "v_once"
       identity_kind: "explicit"
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 55833
-          line: 982
+          offset: 56107
+          line: 961
           column: 1
         end:
-          offset: 55992
-          line: 982
+          offset: 56266
+          line: 961
           column: 160
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1536,27 +1509,27 @@ normative_context:
           column: 135
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47140"
+      unit_id: "normative_46649"
       source_span:
         start:
-          offset: 47140
-          line: 928
+          offset: 46649
+          line: 905
           column: 1
         end:
-          offset: 47180
-          line: 928
+          offset: 46689
+          line: 905
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54620"
+      unit_id: "normative_54894"
       source_span:
         start:
-          offset: 54620
-          line: 973
+          offset: 54894
+          line: 952
           column: 1
         end:
-          offset: 54642
-          line: 973
+          offset: 54916
+          line: 952
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1565,5 +1538,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e4575733dac1b222317685e30fffb3ef1c725c1b08e6d0e36351a094ba0d6caf"
-  generated_content_sha256: "sha256:95c1880191566edb78757c5b4d17f2298c755b0aec805605b5056a7507c9fb57"
+    sha256: "sha256:5098e72f9e1939a8937ab56260c017260cfea50b622595db92827aae867d6e8d"
+  generated_content_sha256: "sha256:e459d42a798dac81809d33b3622021313243d83cd5331e067c585cf817f4dda8"

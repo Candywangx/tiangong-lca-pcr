@@ -228,20 +228,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_coffee_water_records`
 - 数量范围：暂定灌溉筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：20；单位：m3/t green coffee；基准：宽泛首轮供水区间，须以计量记录替换；基准类型：参考流（`reference_flow`）；证据类型：推理估算（`reasoned_estimate`）
 
-###### 作物保护产品（`coffee_crop_protection`）
-
-- 选定流：具名作物保护产品或活性物质 [unmapped]
-- 流属性/单位：质量或体积 / kg product 或 L product
-- 数量规则：按产品、活性物质、日期和区块记录实际施用量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_coffee_crop_protection_records`
-- 来源：`fao-good-farming-practices`
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 中压电力投入（`coffee_field_energy`）
 
@@ -379,20 +366,35 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：理由估计（`reasoned_estimate`）
 
-###### 采收燃料和服务（`coffee_harvest_energy`）
+###### 中压电力（`coffee_harvest_energy`）
 
-- 选定流：采收能源或服务 [unmapped]
-- 流属性/单位：能源、载体或服务 / MJ、kWh、L、kg 或 service unit
-- 数量规则：按采收批次记录实测或供应方记录数量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
 
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_coffee_energy_records`
-- 数量范围：暂定采收能源筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：2；单位：kWh-equivalent/kg green coffee；基准类型：参考流（`reference_flow`）；证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油（`coffee_harvest_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_coffee_energy_records`
 
 #### 输出
 ##### 产品流
@@ -472,20 +474,50 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_coffee_processing_batch_records`
 - 数量范围：暂定处理用水筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：20；单位：m3/t green coffee；基准类型：参考流（`reference_flow`）；证据类型：推理估算（`reasoned_estimate`）
 
-###### 处理和干燥能源（`coffee_processing_energy`）
+###### 中压电力（`coffee_processing_energy`）
 
-- 选定流：处理和干燥能源 [parameterized]
-- 流属性/单位：能源或载体质量 / kWh、MJ、L 或 kg
-- 数量规则：按批次分配水表、燃料收据、设备记录或服务记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
 
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_coffee_energy_records`
-- 数量范围：暂定处理能源筛选估计；范围角色：默认估计（`default_estimate`）；下限：0；上限：10；单位：kWh-equivalent/kg green coffee；基准类型：参考流（`reference_flow`）；证据类型：推理估算（`reasoned_estimate`）
+
+###### 柴油（`coffee_processing_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_coffee_energy_records`
+
+###### 购入蒸汽（`coffee_processing_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_coffee_energy_records`
 
 #### 输出
 ##### 产品流
@@ -557,28 +589,21 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_coffee_residue_destination_records`
 - 数量范围：残余质量平衡 QA 范围；范围角色：QA 校验（`qa_guardrail`）；下限：0；上限：1；单位：kg residue/kg raw coffee input；基准类型：过程输出（`process_output`）；证据类型：方法公式（`method_formula`）；来源：`mass-balance-identity`
 
-###### 处理废水和处理输出（`coffee_processing_wastewater`）
+###### 咖啡加工废水，送往处理（`coffee_processing_wastewater`）
 
-- 选定流：咖啡处理废水或处理服务 [unmapped]
-- 流属性/单位：体积、质量或处理服务 / m3、kg 或 service unit
-- 数量规则：按水表、处理收据、排放记录或批次水平衡计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
+仅在咖啡加工废水，送往处理跨越声明的过程边界时记录；保留批次、物理状态、适用时的组成及实际去向。其他材料独立记录，不得将本卡用作选择器或材料集合。
+原始活动或阶段基准：per 1 kg green coffee at gate。
 
+- 选定流：咖啡加工废水，送往处理
+- 流属性/单位：体积 / m3
+- 数量规则：实测咖啡加工废水，送往处理的净数量，与关联批次和过程平衡核对后，仅归一到声明参考输出一次；保留含水率及适用的密度换算证据。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_coffee_wastewater_records`
 - 来源：`fao-green-coffee-processing-africa`; `mass-balance-identity`
-- 数量范围：暂定处理废水筛选区间
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：20
-  - 单位：m3/t green coffee at gate
-  - 依据：湿法到干法路线的首轮宽范围；应以批次水表或处理记录替换
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：理由估计（`reasoned_estimate`）
 
 ### 过程：脱壳、清洁和分级（`coffee_hulling_and_grading`）
 
@@ -601,27 +626,35 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_processing_batch_records`
 
-###### 干磨能源和服务（`coffee_dry_mill_energy`）
+###### 中压电力（`coffee_dry_mill_energy`）
 
-- 选定流：脱壳、清洁和分级能源或服务 [parameterized]
-- 流属性/单位：能源或载体质量 / kWh、MJ、L 或 kg
-- 数量规则：按批次分配水表、燃料收据或设备服务记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：per 1 kg green coffee at gate.
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
 
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
 - 采集协议：`cp_coffee_energy_records`
-- 数量范围：暂定干磨能源筛选估计
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：5
-  - 单位：kWh-equivalent/kg green coffee at gate
-  - 依据：脱壳、清洁和分级的首轮宽范围；应以水表或服务记录替换
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：理由估计（`reasoned_estimate`）
+
+###### 柴油（`coffee_dry_mill_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg green coffee at gate。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_coffee_energy_records`
 
 #### 输出
 ##### 产品流
@@ -643,14 +676,6 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_grade_lot_records`
-- 数量范围：暂定降级输出筛选区间
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg downgraded coffee/kg green coffee at gate
-  - 依据：合格等级分选的首轮宽范围；应以等级批次质量平衡替换
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：理由估计（`reasoned_estimate`）
 - 数量范围：绿豆含水率 QA 区间；范围角色：QA 校验（`qa_guardrail`）；下限：8；上限：13；单位：percent wet basis；基准类型：参考流（`reference_flow`）；证据类型：外部来源（`external_source`）；来源：`fao-green-coffee-processing-africa`
 
 ###### 降级或单独销售的咖啡输出（`coffee_downgraded_coproduct`）
@@ -668,6 +693,15 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coffee_grade_lot_records`
+
+- 数量范围：暂定降级输出筛选区间
+  - 范围角色：默认估计（`default_estimate`）
+  - 下限：0
+  - 上限：1
+  - 单位：kg downgraded coffee/kg green coffee at gate
+  - 依据：合格等级分选的首轮宽范围；应以等级批次质量平衡替换
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：理由估计（`reasoned_estimate`）
 
 ##### 废物流
 
@@ -854,6 +888,8 @@ sync_with: pcr.en-US.md
 本 PCR 不强制一种普适分配方法。数据集必须为每个真实多输出边界选择并论证一种方法，并保持一致。仅凭目的地标签不得取得避免生产抵扣；必须有接收方、功能、可比产品、数量、质量和分配决定。
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

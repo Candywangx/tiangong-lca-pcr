@@ -262,7 +262,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per reporting period and converted to 1 kg dry tea."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per reporting period and converted to 1 kg dry tea. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -275,32 +275,6 @@ process_inventory:
               collection_protocol_id: cp_field_activity_records
               source_ids: []
             ranges: []
-        - row_id: tea_crop_protection_input
-          role: "Crop-protection formulation"
-          name: "Named crop-protection formulation (route-specific UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass of formulated product / kg"
-          description: "Record each named crop-protection product, active ingredient where available, application event, and treated area. Raw activity or stage basis: per treated area and converted to 1 kg dry tea."
-          amount:
-            expression: "measured product mass by application event"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_activity_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.03"
-                unit: "kg formulated product/kg dry tea"
-                basis: "broad first-pass screen; preserve named product identity for background linking"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: tea_field_water_input
           role: "Irrigation and field water"
           name: "Irrigation water (route-specific UUID unresolved)"
@@ -481,13 +455,13 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
         - row_id: tea_plucking_energy
-          role: "Plucking and collection energy"
-          name: "Plucking and collection energy (route-specific UUID unresolved)"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy / MJ or kWh"
-          description: "Record hand-plucking services as foreground labour or equipment activity where material, and record machine fuel or electricity as supplied energy. Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea."
           amount:
-            expression: "measured fuel or electricity for plucking, bins, and collection equipment"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -497,15 +471,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_activity_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1.5"
-                unit: "MJ/kg dry tea"
-                basis: "plucking, loading, and field collection equipment"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: tea_plucking_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg fresh leaf collected and converted to 1 kg dry tea."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_activity_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -915,15 +899,15 @@ process_inventory:
                   - mass-balance-identity
       elementary:
         - row_id: tea_drying_direct_emissions
-          role: "Direct air emissions from thermal drying"
-          name: "Reported drying emissions by substance and receiving medium (UUID unresolved)"
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg substance"
-          description: "Record reported pollutants and receiving media from fuel combustion or process drying. Do not replace a named pollutant with a broad unqualified emission category. Raw activity or stage basis: per 1 kg dry tea."
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg dry tea."
           amount:
-            expression: "measured stack or calculated emissions from fuel and process records"
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -931,15 +915,79 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_emission_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.20"
-                unit: "kg reported substance/kg dry tea"
-                basis: "substance-specific result or factor-based estimate; not a universal pollutant identity"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: tea_drying_direct_emissions_co2_biogenic
+          role: "Carbon dioxide, biogenic, to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg dry tea."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: tea_drying_direct_emissions_ch4
+          role: "Methane, to air"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CH4"
+          description: "Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg dry tea."
+          amount:
+            expression: "Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: tea_drying_direct_emissions_n2o
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg dry tea."
+          amount:
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: tea_drying_direct_emissions_dust
+          role: "Particulate matter, particle size unspecified, to air"
+          name: "Particulate matter, particle size unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg dry tea."
+          amount:
+            expression: "Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
   - id: tea_grading_storage_gate
     label: "Grading, storage, and primary-processing gate"
     inputs:
@@ -974,15 +1022,15 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
         - row_id: tea_grading_energy
-          role: "Grading electricity and screening energy"
-          name: "Grading and screening energy (route-specific UUID unresolved)"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy / MJ or kWh"
-          description: "Record electricity or fuel used for screening, sorting, sieving, and quality classification. Raw activity or stage basis: per 1 kg dry tea."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg dry tea."
           amount:
-            expression: "meter or batch allocation to the graded tea lot"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -990,15 +1038,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_activity_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1.5"
-                unit: "MJ/kg dry tea"
-                basis: "screening, sorting, and grading services"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: tea_grading_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg dry tea."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_activity_records
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -1149,13 +1207,13 @@ process_inventory:
                 source_ids: []
       elementary:
         - row_id: tea_storage_emissions
-          role: "Storage dust and reported warehouse emissions"
-          name: "Reported storage dust or emission by substance and medium (UUID unresolved)"
+          role: "Particulate matter, particle size unspecified, to air"
+          name: "Particulate matter, particle size unspecified, to air"
           flow_type: "elementary"
-          property_unit: "Mass / kg substance"
-          description: "Record dust, ventilation, and any reported emissions caused by dry-tea storage. Use named substances and receiving media when a measurement or factor is available. Raw activity or stage basis: per 1 kg dry tea reference flow."
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg dry tea reference flow."
           amount:
-            expression: "measured or calculated emissions allocated to storage duration and lot"
+            expression: "Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -1165,15 +1223,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_emission_records
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.02"
-                unit: "kg reported substance/kg dry tea"
-                basis: "storage ventilation and dust records; substance-specific reporting required"
-                basis_kind: "storage_duration"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
   - id: declared_reference_handoff
     label: "Product Measurement at Declared Handoff"
     inputs:
@@ -1370,59 +1420,59 @@ dataset_production:
       quality_evidence: "calibration or weighing tickets, acceptance and lot traceability"
   calculation_rules:
     - id: calc_01
-      applies_to: ""
-      rule: ""
+      applies_to: "tea_route_processing"
+      rule: "Calculate route yield as dry tea mass divided by fresh leaf mass and retain both wet-basis and dry-basis moisture records."
       inputs:
         - "fresh leaf mass"
         - moisture
         - "dry tea mass"
-      output: ""
+      output: "fresh-to-dry yield ratio with measured moisture basis"
       source_ids: []
     - id: calc_02
-      applies_to: ""
-      rule: ""
+      applies_to: "tea_plantation_management"
+      rule: "Allocate area-time and phase burdens to the declared tea output for the reporting period without double attribution across establishment, replacement, and productive phases."
       inputs:
         - area
         - period
         - "plantation phase"
         - output
-      output: ""
+      output: "area-time and phase burdens attributed once to reporting-period output"
       source_ids: []
     - id: calc_03
-      applies_to: ""
-      rule: ""
+      applies_to: "tea_plantation_management"
+      rule: "Convert formulated fertilizer products to nutrient mass for N, P, and K records while preserving product identity for background datasets."
       inputs:
         - "nutrient product records and nutrient content"
-      output: ""
+      output: "separate product quantities and declared nutrient-component masses"
       source_ids: []
     - id: calc_04
-      applies_to: ""
-      rule: ""
+      applies_to: "route-wide processes"
+      rule: "Reconcile each batch by mass balance; unresolved difference is a validation finding and cannot be silently assigned to accepted tea."
       inputs:
         - "batch inputs"
         - intermediates
         - outputs
         - residues
         - losses
-      output: ""
+      output: "reconciled batch mass balance and unexplained differences"
       source_ids: []
     - id: calc_05
-      applies_to: ""
-      rule: ""
+      applies_to: "tea_grading_storage_gate"
+      rule: "Classify primary grade, secondary grade, recovered tea product, residue, reject, rework, and disposal according to the declared hand-off."
       inputs:
         - "grade outputs and destinations"
-      output: ""
+      output: "intended output, residue, reject and rework classification by destination"
       source_ids: []
     - id: calc_06
-      applies_to: ""
-      rule: ""
+      applies_to: "route-wide shared operations"
+      rule: "Allocate shared services to route and period records using the documented operational basis; prevent shared-run burdens from appearing in more than one product system."
       inputs:
         - route
         - batch
         - energy
         - changeover
         - "storage period"
-      output: ""
+      output: "shared-service burdens attributed once by route, batch and period"
       source_ids: []
   data_quality_requirements:
     []
@@ -1530,7 +1580,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:4f84b105d7a5a187673adade36f96dcd8af07c0c5a942583a6a178c2fa727b45"
+  source_sha256: "sha256:86437dc3df9fa31042086e75a662b65437852498369c614db1d181f50333f205"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6484"
@@ -1581,16 +1631,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_60910"
+    - unit_id: "normative_65621"
       family: "allocation"
       span:
         start:
-          offset: 60910
-          line: 1129
+          offset: 65621
+          line: 1160
           column: 1
         end:
-          offset: 63232
-          line: 1141
+          offset: 67943
+          line: 1172
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | source_ids | rule |\n| --- | --- | --- | --- |\n| `allocation_01` | plantation_phase | `iso-14044-2006`; `ipcc-2019-refinement-afolu` | Attribute perennial establishment, replacement, land occupation, and plantation management to the reporting-period tea output using the declared period and output basis; do not allocate the same phase burden again at processing. |\n| `allocation_02` | route_batch | `iso-14044-2006`; `mass-balance-identity` | Index inputs, outputs, cleaning, drying, changeover, and rejects by route, batch, campaign, or reporting period so shared runs cannot be counted twice. |\n| `allocation_03` | marketable_tea_outputs | `iso-14044-2006` | Enumerate the accepted primary grade, marketable secondary grade, and recovered tea fraction when each is an intended tea output. Decision: use subdivision and direct measurement first; when outputs are physically inseparable, use allocation by measured dry tea mass as the default fallback, and disclose any economic allocation only as a documented sensitivity. Apply one method consistently to the affected process. |\n| `allocation_04` | residues_and_rejects | `iso-14044-2006`; `mass-balance-identity` | A residue is not a co-product merely because it has a possible use. Treat it as an intended output only when there is a declared hand-off, destination, and product-quality record; otherwise retain the producing process burden and route it as residue or waste. |\n| `allocation_05` | route_alternatives | `iso-20715-2023-tea-classification` | Green, black, oolong, white, yellow, and dark routes are mutually exclusive per lot. Do not combine route burdens or assign oxidation, rolling, withering, fixation, or piling to a lot without route evidence. |\n| `allocation_06` | multi_period_attribution | `iso-14044-2006`; `ipcc-2019-refinement-afolu` | Link establishment, replacement, pruning, termination, inputs, outputs, and storage events to a reporting period or phase and prevent double attribution across periods. |\n| `allocation_07` | rework_and_rejects | `mass-balance-identity` | Rework loops, downgrades, recovery, and boundary exits must link back to the producing node; accepted tea output excludes unresolved rejects and rejected material cannot be counted at two hand-offs. |\n\n"
       headings:
@@ -1609,12 +1659,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 60910
-              line: 1129
+              offset: 65621
+              line: 1160
               column: 1
             end:
-              offset: 60950
-              line: 1129
+              offset: 65661
+              line: 1160
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1629,16 +1679,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_72754"
+    - unit_id: "normative_78867"
       family: "validation"
       span:
         start:
-          offset: 72754
-          line: 1180
+          offset: 78867
+          line: 1213
           column: 1
         end:
-          offset: 75347
-          line: 1195
+          offset: 81460
+          line: 1228
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | source_ids | rule |\n| --- | --- | --- | --- |\n| `validation_01` | identity | `iso-20715-2023-tea-classification` | The dataset must identify *Camellia sinensis*, one named tea type, one route, the dry-tea state, and the declared primary-processing gate. |\n| `validation_02` | reference_flow | `mass-balance-identity` | The reference output must use `Tea` `d16090ca-ddbe-4fd4-a498-fe4cab8bb525`, Mass `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`, and 1 kg unless a reviewed identity correction is issued. |\n| `validation_03` | route_completeness | `iso-20715-2023-tea-classification`; `fao-tea-chain-processing` | Exactly one named route must be selected. Every included route state must have a preceding input, a following hand-off, and a recorded output or loss; inapplicable states must not be counted. |\n| `validation_04` | plantation_and_harvest | `ipcc-2019-refinement-afolu` | Plantation phase, management inputs, plucking source, fresh-leaf output, and harvest loss must be linked to the same reporting period and lot or an identified upstream dataset. |\n| `validation_05` | batch_and_changeover | `mass-balance-identity` | Batch, campaign, or continuous-run boundaries must link inputs, outputs, cleaning, changeover, yield, and shared services; no shared-run burden may be counted twice. |\n| `validation_06` | outputs_and_allocation | `iso-14044-2006` | Every intended output and hand-off must be enumerated. Marketable secondary tea is separated from residue; one output cannot be counted at two hand-offs. |\n| `validation_07` | rejects_and_rework | `mass-balance-identity` | Every rejected or off-spec state must have a rework, downgrade, recovery, disposal, or boundary-exit path. Accepted output excludes unresolved rejects. |\n| `validation_08` | mass_balance | `mass-balance-identity` | Fresh leaf, route intermediates, dry tea, grade outputs, residues, rejects, storage losses, and declared evaporation or moisture changes must reconcile within the documented tolerance. |\n| `validation_09` | data_quality | `iso-14044-2006` | Missing material records, unresolved route selection, missing gate qualifiers, unsupported range substitutions, and unexplained mass-balance differences are findings that block reviewed or published use. |\n| `validation_10` | period_attribution | `ipcc-2019-refinement-afolu`; `iso-14044-2006` | Establishment, replacement, productive phase, termination, inputs, outputs, and storage events must be linked to periods and must not be attributed twice. |\n\n"
       headings:
@@ -1657,12 +1707,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 72754
-              line: 1180
+              offset: 78867
+              line: 1213
               column: 1
             end:
-              offset: 72776
-              line: 1180
+              offset: 78889
+              line: 1213
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1772,223 +1822,223 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 61023
-          line: 1133
+          offset: 65734
+          line: 1164
           column: 1
         end:
-          offset: 61341
-          line: 1133
+          offset: 66052
+          line: 1164
           column: 319
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 61342
-          line: 1134
+          offset: 66053
+          line: 1165
           column: 1
         end:
-          offset: 61573
-          line: 1134
+          offset: 66284
+          line: 1165
           column: 232
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 61574
-          line: 1135
+          offset: 66285
+          line: 1166
           column: 1
         end:
-          offset: 62057
-          line: 1135
+          offset: 66768
+          line: 1166
           column: 484
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 62058
-          line: 1136
+          offset: 66769
+          line: 1167
           column: 1
         end:
-          offset: 62406
-          line: 1136
+          offset: 67117
+          line: 1167
           column: 349
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 62407
-          line: 1137
+          offset: 67118
+          line: 1168
           column: 1
         end:
-          offset: 62695
-          line: 1137
+          offset: 67406
+          line: 1168
           column: 289
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_06"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 62696
-          line: 1138
+          offset: 67407
+          line: 1169
           column: 1
         end:
-          offset: 62962
-          line: 1138
+          offset: 67673
+          line: 1169
           column: 267
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_07"
       identity_kind: "explicit"
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 62963
-          line: 1139
+          offset: 67674
+          line: 1170
           column: 1
         end:
-          offset: 63230
-          line: 1139
+          offset: 67941
+          line: 1170
           column: 268
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 72849
-          line: 1184
+          offset: 78962
+          line: 1217
           column: 1
         end:
-          offset: 73058
-          line: 1184
+          offset: 79171
+          line: 1217
           column: 210
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 73059
-          line: 1185
+          offset: 79172
+          line: 1218
           column: 1
         end:
-          offset: 73356
-          line: 1185
+          offset: 79469
+          line: 1218
           column: 298
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 73357
-          line: 1186
+          offset: 79470
+          line: 1219
           column: 1
         end:
-          offset: 73657
-          line: 1186
+          offset: 79770
+          line: 1219
           column: 301
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 73658
-          line: 1187
+          offset: 79771
+          line: 1220
           column: 1
         end:
-          offset: 73912
-          line: 1187
+          offset: 80025
+          line: 1220
           column: 255
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 73913
-          line: 1188
+          offset: 80026
+          line: 1221
           column: 1
         end:
-          offset: 74149
-          line: 1188
+          offset: 80262
+          line: 1221
           column: 237
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 74150
-          line: 1189
+          offset: 80263
+          line: 1222
           column: 1
         end:
-          offset: 74369
-          line: 1189
+          offset: 80482
+          line: 1222
           column: 220
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 74370
-          line: 1190
+          offset: 80483
+          line: 1223
           column: 1
         end:
-          offset: 74590
-          line: 1190
+          offset: 80703
+          line: 1223
           column: 221
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 74591
-          line: 1191
+          offset: 80704
+          line: 1224
           column: 1
         end:
-          offset: 74838
-          line: 1191
+          offset: 80951
+          line: 1224
           column: 248
     - pointer: "/validation_rules/8"
       rule_id: "validation_09"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 74839
-          line: 1192
+          offset: 80952
+          line: 1225
           column: 1
         end:
-          offset: 75098
-          line: 1192
+          offset: 81211
+          line: 1225
           column: 260
     - pointer: "/validation_rules/9"
       rule_id: "validation_10"
       identity_kind: "explicit"
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 75099
-          line: 1193
+          offset: 81212
+          line: 1226
           column: 1
         end:
-          offset: 75345
-          line: 1193
+          offset: 81458
+          line: 1226
           column: 247
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2017,27 +2067,27 @@ normative_context:
           column: 198
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_60910"
+      unit_id: "normative_65621"
       source_span:
         start:
-          offset: 60910
-          line: 1129
+          offset: 65621
+          line: 1160
           column: 1
         end:
-          offset: 60950
-          line: 1129
+          offset: 65661
+          line: 1160
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_72754"
+      unit_id: "normative_78867"
       source_span:
         start:
-          offset: 72754
-          line: 1180
+          offset: 78867
+          line: 1213
           column: 1
         end:
-          offset: 72776
-          line: 1180
+          offset: 78889
+          line: 1213
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2046,5 +2096,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:4f84b105d7a5a187673adade36f96dcd8af07c0c5a942583a6a178c2fa727b45"
-  generated_content_sha256: "sha256:dba3a08b8f6b67e66d69cef1f795d626ce9f617a98cfda90e00a80e13c301f37"
+    sha256: "sha256:86437dc3df9fa31042086e75a662b65437852498369c614db1d181f50333f205"
+  generated_content_sha256: "sha256:4b263cf4ce3227c994ceba883cdb96529ca3e16f6896fb0cfdff3fcdd5a494ec"

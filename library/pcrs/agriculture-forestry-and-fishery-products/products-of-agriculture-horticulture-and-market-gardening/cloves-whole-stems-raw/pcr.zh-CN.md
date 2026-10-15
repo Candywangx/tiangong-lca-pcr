@@ -98,30 +98,23 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 繁殖材料与共享建园资产 (`establishment_materials`)
+资产清单必需记录：按具体材质和实测材料清单分别记录实际使用的立柱、金属丝、锚固件、支撑件、灌溉资产、安装及更换；按有记录的服务寿命及所有受益作物和过程分摊每项资产一次。不得以种植材料代替基础设施。
 
-该流跨越所述过程边界，并按下述数量规则定量。
+###### 丁香苗木（`establishment_materials`）
 
-- 选定流： Clove planting material and establishment or shared-infrastructure materials and services
-- 流属性/单位： Mass / kg
-- 数量规则： Collect planting stock and asset bill of materials separately; attribute replacements and each asset once over service-period accepted output and across all consuming crops, nodes, and periods
-- 数值来源模式： 计算值（`calculated_value`）
-- 适用范围： 场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg accepted product over the serviced stand life.
+仅在丁香苗木跨越声明的过程边界时记录；保留批次、物理状态、适用时的组成及实际去向。其他材料独立记录，不得将本卡用作选择器或材料集合。 建植和补植仅归属于其服务的生产期间；没有相应事件的既有种植地不得虚构此投入。
+原始活动或阶段基准：per 1 kg accepted product over the serviced stand life。
 
+- 选定流：丁香苗木
+- 流属性/单位：质量 / kg
+- 数量规则：实测丁香苗木的净数量，与关联批次和过程平衡核对后，仅归一到声明参考输出一次；保留含水率及适用的密度换算证据。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 参考流（`reference_flow`）
-- 证据类型： 由采集数据计算（`calculated_from_collection`）
-- 采集协议： `cp_establishment_assets`
-- 来源： `kau-clove-practices-2016`
-- 数量范围： 暂定年化建园材料校验范围
-  - 范围角色： QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 5
-  - 单位： kg/kg accepted product
-  - 基准： attributed planting and asset material per 1 kg lifetime accepted product
-  - 基准类型： 参考流（`reference_flow`）
-  - 证据类型： 推理估算（`reasoned_estimate`）
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_establishment_assets`
+- 来源：`kau-clove-practices-2016`
 
 ###### 尿素肥料投入（`establishment_nutrient_supply`）
 
@@ -348,47 +341,37 @@ sync_with: pcr.en-US.md
   - 基准类型： 过程产出（`process_output`）
   - 证据类型： Reasoned estimate (`reasoned_estimate`)
 
-###### 路线特定植保制剂（`annual_crop_protection`）
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
+###### 中压电力（`annual_field_energy`）
 
-分别记录每一种实际配方，以便解析具体交换。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg harvested cluster output。
 
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式： 计算值（`calculated_value`）
-- 适用范围： 场地特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 收获花簇产出.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 过程产出（`process_output`）
-- 证据类型： 由收集数据计算（`calculated_from_collection`）
-- 采集协议： `cp_annual_management_inputs`
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
 
-###### 田间能源载体 (`annual_field_energy`)
+###### 柴油（`annual_field_energy_diesel`）
 
-该流跨越所述过程边界，并按下述数量规则定量。
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg harvested cluster output。
 
-- 选定流： Fuel, electricity, and contracted machine energy
-- 流属性/单位： Energy / MJ
-- 数量规则： Convert carrier records to delivered energy while preserving carrier identity, original quantity, operation, and period
-- 数值来源模式： 计算值（`calculated_value`）
-- 适用范围： 场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg harvested cluster output.
-
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 过程输出（`process_output`）
-- 证据类型： 由采集数据计算（`calculated_from_collection`）
-- 采集协议： `cp_energy_records`
-- 数量范围： 暂定田间能源校验范围
-  - 范围角色： QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 20
-  - 单位： MJ/kg harvested clusters
-  - 基准： delivered field energy per 1 kg harvested clusters
-  - 基准类型： 过程输出（`process_output`）
-  - 证据类型： 推理估算（`reasoned_estimate`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
 
 ##### 废物流
 
@@ -483,29 +466,35 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 采收能源与设备服务 (`harvest_energy`)
+###### 中压电力（`harvest_energy`）
 
-该流跨越所述过程边界，并按下述数量规则定量。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg harvested clusters。
 
-- 选定流： Fuel, electricity, and equipment services used to pick and move clusters
-- 流属性/单位： Energy / MJ
-- 数量规则： Attribute carrier-specific records to harvest batches by measured use or operating time, including cleaning/changeover where present
-- 数值来源模式： 计算值（`calculated_value`）
-- 适用范围： 场址特定（`site_specific`）
-原始活动或阶段基准：per 1 kg harvested clusters.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 过程输出（`process_output`）
-- 证据类型： 由采集数据计算（`calculated_from_collection`）
-- 采集协议： `cp_energy_records`
-- 数量范围： 暂定采收能源校验范围
-  - 范围角色： QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 10
-  - 单位： MJ/kg harvested clusters
-  - 基准： harvest energy per 1 kg harvested clusters
-  - 基准类型： 过程输出（`process_output`）
-  - 证据类型： 推理估算（`reasoned_estimate`）
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
+
+###### 柴油（`harvest_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1 kg harvested clusters。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
 
 ##### 废物流
 
@@ -838,6 +827,8 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -860,7 +851,7 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_lifetime_attribution` | perennial phases and assets | Sum cohort/asset burdens assigned by service period and causal share / accepted output over that period | events; service years; driver; annual output | burden per kg accepted product | `fao-ecocrop-clove`; `iso-14044-2006` |
-| `calc_nutrients` | 各项养分产品 | 组分养分质量＝实测产品湿质量×实测干物质分数×声明的养分分数。逐项计算后仅在分析层汇总养分，不合并物理产品交换。 | mass; moisture; composition | kg product and nutrient by form | `kau-clove-practices-2016` |
+| `calc_nutrients` | 各项养分产品 | 逐项声明养分分数基准。收到基养分分数：养分质量＝实测收到基产品质量×养分分数。干物质基养分分数：养分质量＝实测收到基产品质量×实测干物质分数×干物质基养分分数。不得重复进行干物质校正；分别保留元素与氧化物报告基准及适用换算。逐项计算后仅在分析层汇总养分，不合并物理产品交换。 | mass; moisture; composition | kg product and nutrient by form | `kau-clove-practices-2016` |
 | `calc_soil_n2o` | managed-soil N2O | Apply selected IPCC tier to synthetic/organic/residue N, volatilization, and leaching; convert N2O-N × 44/28 | nutrient ledger; residue N; selected factors | kg N2O per kg clusters | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest/grading/drying | Same-batch input = product outputs + wastes + elementary loss ± documented difference; accepted output excludes unresolved material | masses and moisture | reconciliation and normalized flows | `mass-balance-identity` |
 | `calc_route_weighting` | route strata | Sum(route amount × accepted route output) / total accepted output after calculating each route separately | route inventories and outputs | weighted inventory | `iso-14044-2006` |

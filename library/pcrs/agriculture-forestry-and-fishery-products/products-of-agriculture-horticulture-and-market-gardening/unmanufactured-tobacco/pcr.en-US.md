@@ -227,53 +227,37 @@ Raw activity or stage basis: per hectare and converted to terminal leaf.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Field machinery energy (`tobacco_field_energy_input`)
+###### Electricity, medium voltage (`tobacco_field_energy_input`)
 
-Record energy consumed by mobile machinery used for field preparation, transplanting, crop care, and harvest.
-
-- Selected flow: Energy supply for mobile field machinery
-- Flow property / unit: Carrier quantity or energy / kg, L, or MJ
-- Amount rule: measured fuel or contractor activity with carrier retained
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per hectare and converted to terminal leaf.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_records`
-- Range: Provisional field-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 250
-  - Unit: L diesel-equivalent/ha
-  - Basis: one crop cycle; actual carrier remains explicit
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Crop-protection formulations (`tobacco_crop_protection_input`)
+###### Diesel fuel (`tobacco_field_energy_input_diesel`)
 
-Record actual products separately. Search returned generic or route-specific aggregates only, so no fixed UUID is assigned.
-
-- Selected flow: Crop-protection formulation used in tobacco production
-- Flow property / unit: Mass of formulation / kg
-- Amount rule: measured formulation by product/event, preserving active ingredient and concentration
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per hectare and converted to terminal leaf.
 
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_field_records`
-- Range: Provisional formulation screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 50
-  - Unit: kg formulation/ha
-  - Basis: one crop cycle
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -442,29 +426,50 @@ Raw activity or stage basis: per batch and converted to 1,000 kg cured leaf.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Curing energy carriers and utilities (`curing_energy_input`)
+###### Electricity, medium voltage (`curing_energy_input`)
 
-Record actual electricity, purchased heat, or fuel. Air/sun curing may be zero-energy; fire/flue curing retain actual carrier. This parameterized set-level card has no fixed UUID.
-
-- Selected flow: Energy supply for tobacco curing
-- Flow property / unit: Carrier quantity or energy / kg, m3, kWh, or MJ
-- Amount rule: measured carrier/electricity by batch, expanded to verified exchanges in foreground generation
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1,000 kg accepted cured leaf.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_curing_records`
-- Range: Provisional curing-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 40,000
-  - Unit: MJ/1,000 kg accepted cured leaf
-  - Basis: zero may apply to passive routes; actual energy replaces screen
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`curing_energy_input_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted cured leaf.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_curing_records`
+
+###### Purchased steam (`curing_energy_input_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1,000 kg accepted cured leaf.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_curing_records`
 
 ##### Waste flows
 
@@ -666,29 +671,50 @@ Raw activity or stage basis: per 1,000 kg accepted packed leaf.
 
 ##### Waste flows
 
-###### Grading and packing rejects (`grading_reject_waste_output`)
+###### Rejected cured tobacco leaves (`grading_reject_waste_output`)
 
-Record non-useful leaf and packaging waste by material class and final destination.
-
-- Selected flow: Tobacco grading rejects and packaging waste
-- Flow property / unit: Mass / kg
-- Amount rule: measured non-useful leaf and packaging waste by class and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Rejected cured tobacco leaves only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per 1,000 kg accepted packed leaf.
 
+- Selected flow: Rejected cured tobacco leaves
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Rejected cured tobacco leaves, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_grading_records`
-- Range: Provisional grading-reject screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 300
-  - Unit: kg/1,000 kg incoming cured leaf
-  - Basis: matched grading batch
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Paperboard packaging waste (`grading_reject_waste_output_paper_waste`)
+
+Record Paperboard packaging waste only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per 1,000 kg accepted packed leaf.
+
+- Selected flow: Paperboard packaging waste
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Paperboard packaging waste, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_grading_records`
+
+###### Polyethylene packaging-film waste (`grading_reject_waste_output_film_waste`)
+
+Record Polyethylene packaging-film waste only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per 1,000 kg accepted packed leaf.
+
+- Selected flow: Polyethylene packaging-film waste
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Polyethylene packaging-film waste, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_grading_records`
 
 ##### Elementary flows
 
@@ -760,6 +786,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 | `allocation_shared_infrastructure` | shared barns/assets | Attribute each shared asset once across batches/periods with documented use; prevent cross-node double counting. | `iso-14044-2006` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

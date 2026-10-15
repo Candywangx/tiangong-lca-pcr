@@ -233,7 +233,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -245,25 +245,6 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_inputs
               source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record this flow for the linked field, crop period, harvest event or lot and retain its state and destination. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_inputs
-              source_ids:
-                - sra-weed-manual-2021
             ranges: []
         - row_id: field_energy_supply
           role: "Electricity, medium voltage input"
@@ -443,13 +424,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: nitrogen_leaching_runoff
-          role: "Nitrogen loss by leaching and runoff"
-          name: "Reported nitrogen substance to water or off-field compartment"
+          role: "Nitrate, to water"
+          name: "Nitrate, to water"
           flow_type: "elementary"
-          property_unit: "Mass / kg"
-          description: "Record this flow for the linked field, crop period, harvest event or lot and retain its state and destination. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
+          property_unit: "Mass / kg NO3-"
+          description: "Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
           amount:
-            expression: "calculate from measured nitrogen sources, site conditions and the declared method while preserving substance and compartment"
+            expression: "Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -460,15 +441,7 @@ process_inventory:
               collection_protocol_id: cp_field_emissions
               source_ids:
                 - ipcc-managed-soils-2019
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.01"
-                unit: "kg N"
-                basis: "nitrogen-loss screening range per kg accepted cane"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
   - id: harvest
     label: "Sugarcane harvest"
     inputs:
@@ -570,15 +543,34 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: intended_harvest_residue_output
-          role: "One identified intended harvest-residue product"
-          name: "One identified intended harvest-residue product; exact route identity unresolved"
+          role: "Sugarcane leaf trash, for beneficial use"
+          name: "Sugarcane leaf trash, for beneficial use"
           flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
+          property_unit: "Mass / kg dry matter"
+          description: "Record Sugarcane leaf trash, for beneficial use only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
           amount:
-            expression: "Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states."
+            expression: "Measured net quantity of Sugarcane leaf trash, for beneficial use, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
             value_mode: "foreground_record"
-            specificity: "route_specific"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_routes
+              source_ids:
+                - fao-cane-environment-1997
+            ranges: []
+        - row_id: intended_harvest_residue_output_cane_tops
+          role: "Sugarcane tops, for beneficial use"
+          name: "Sugarcane tops, for beneficial use"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "Record Sugarcane tops, for beneficial use only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
+          amount:
+            expression: "Measured net quantity of Sugarcane tops, for beneficial use, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
@@ -803,10 +795,10 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
         - row_id: conditioned_residue_coproduct
-          role: "One identified conditioning-residue co-product"
-          name: "One identified conditioning-residue co-product; exact route identity unresolved"
+          role: "Sugarcane trimming biomass, for beneficial use"
+          name: "Sugarcane trimming biomass, for beneficial use"
           flow_type: "product"
-          property_unit: "Mass / kg product"
+          property_unit: "Mass / kg"
           description: "Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation. Raw activity or stage basis: per 1 kg accepted mature sugarcane stalk at the agricultural-field hand-off."
           amount:
             expression: "Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states."
@@ -1152,7 +1144,7 @@ data_sources:
     used_for: "process linkage, closure, co-product, period and rework checks"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:8a57c4ff4b6a1f8022251e02257def931ead4744258557da29c649d7cc1bd1d0"
+  source_sha256: "sha256:2251fee7eb083af2559d55257dba94a733015068db74ce50b1c5bb409316176c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4702"
@@ -1203,16 +1195,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44135"
+    - unit_id: "normative_44308"
       family: "allocation"
       span:
         start:
-          offset: 44135
-          line: 863
+          offset: 44308
+          line: 850
           column: 1
         end:
-          offset: 45502
-          line: 872
+          offset: 45675
+          line: 859
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_period_series` | plant cane and ratoons | Assign period-specific inputs directly. Amortize establishment, long-lived field preparation and termination across actual accepted output of the declared crop series; do not apply a universal ratoon count and do not allocate shared burdens again within each period. | `fao-sugarcane-water-2012` |\n| `allocation_outputs` | stalks and intended residue outputs | Enumerate every independently intended output and its hand-off. Use a documented physical relation when causal; otherwise use disclosed economic allocation. Residues without intended product status remain residue or waste and receive no avoided-burden credit by default. | `mass-balance-identity` |\n| `allocation_routes` | field-lots and harvest events | Link inputs, outputs, cleaning, changeover and shared machine operation to one field-lot event and allocate shared burdens once by measured operating time, area or throughput. | `mass-balance-identity` |\n| `allocation_rework_reject` | off-spec cane and returned material | Retain prior burdens on reworked or downgraded cane, add only incremental operations, and count it once at its final exclusive destination; rejects cannot also be accepted output. | `mass-balance-identity` |\n\n"
       headings:
@@ -1231,12 +1223,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44135
-              line: 863
+              offset: 44308
+              line: 850
               column: 1
             end:
-              offset: 44175
-              line: 863
+              offset: 44348
+              line: 850
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1251,16 +1243,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_53078"
+    - unit_id: "normative_54016"
       family: "validation"
       span:
         start:
-          offset: 53078
-          line: 908
+          offset: 54016
+          line: 897
           column: 1
         end:
-          offset: 55282
-          line: 921
+          offset: 56220
+          line: 910
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Require the stated product, Mass-property and Mass-unit-group UUIDs, 1 kg amount and all required qualifiers; reject a sucrose or processed-sugar interpretation. |  |\n| `validate_period_series` | plant and ratoon periods | Require crop-series and period ids, establishment and termination boundaries, accepted output by period and one disclosed attribution of every shared burden; block missing or double-attributed periods. | `fao-sugarcane-water-2012` |\n| `validate_route_delta` | harvest alternatives | Require parent harvest activity, manual/mechanical state and exactly one green/pre-burn state for each event, plus current evidence for changed inputs, emissions, loss, residue and stubble requirements. | `sra-harvest-manual-2014`; `fao-cane-environment-1997` |\n| `validate_nutrient_cardinality` | each process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_output_routes` | stalks, residue, stubble, loss and rejects | Require one exclusive hand-off or destination for every state and an explicit allocation decision for every independently intended output; prevent the same residue or cane from occupying two states. | `ipcc-managed-soils-2019`; `mass-balance-identity` |\n| `validate_rework` | off-spec material | Link every rejected state to rework, downgrade, recovery or disposal; retain prior burdens, add incremental work once and exclude it from accepted output until resolved. | `mass-balance-identity` |\n| `validate_runs` | field-lots, events and passes | Link inputs, outputs, cleaning, changeover and shared operations to one period, event or pass and assign shared burdens once. | `mass-balance-identity` |\n| `validate_ranges` | cards with ranges | For each supplied quantitative Range, verify lower/upper bounds, unit, basis, basis kind, evidence kind and source field in English, Chinese and projection. Flag missing important-flow ranges as candidate evidence gaps. | `mass-balance-identity` |\n\n"
       headings:
@@ -1279,12 +1271,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 53078
-              line: 908
+              offset: 54016
+              line: 897
               column: 1
             end:
-              offset: 53100
-              line: 908
+              offset: 54038
+              line: 897
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1368,158 +1360,158 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_period_series"
       identity_kind: "explicit"
-      unit_id: "normative_44135"
+      unit_id: "normative_44308"
       source_span:
         start:
-          offset: 44248
-          line: 867
+          offset: 44421
+          line: 854
           column: 1
         end:
-          offset: 44601
-          line: 867
+          offset: 44774
+          line: 854
           column: 354
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_44135"
+      unit_id: "normative_44308"
       source_span:
         start:
-          offset: 44602
-          line: 868
+          offset: 44775
+          line: 855
           column: 1
         end:
-          offset: 44963
-          line: 868
+          offset: 45136
+          line: 855
           column: 362
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_routes"
       identity_kind: "explicit"
-      unit_id: "normative_44135"
+      unit_id: "normative_44308"
       source_span:
         start:
-          offset: 44964
-          line: 869
+          offset: 45137
+          line: 856
           column: 1
         end:
-          offset: 45223
-          line: 869
+          offset: 45396
+          line: 856
           column: 260
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework_reject"
       identity_kind: "explicit"
-      unit_id: "normative_44135"
+      unit_id: "normative_44308"
       source_span:
         start:
-          offset: 45224
-          line: 870
+          offset: 45397
+          line: 857
           column: 1
         end:
-          offset: 45500
-          line: 870
+          offset: 45673
+          line: 857
           column: 277
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 53173
-          line: 912
+          offset: 54111
+          line: 901
           column: 1
         end:
-          offset: 53390
-          line: 912
+          offset: 54328
+          line: 901
           column: 218
     - pointer: "/validation_rules/1"
       rule_id: "validate_period_series"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 53391
-          line: 913
+          offset: 54329
+          line: 902
           column: 1
         end:
-          offset: 53679
-          line: 913
+          offset: 54617
+          line: 902
           column: 289
     - pointer: "/validation_rules/2"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 53680
-          line: 914
+          offset: 54618
+          line: 903
           column: 1
         end:
-          offset: 53991
-          line: 914
+          offset: 54929
+          line: 903
           column: 312
     - pointer: "/validation_rules/3"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 53992
-          line: 915
+          offset: 54930
+          line: 904
           column: 1
         end:
-          offset: 54216
-          line: 915
+          offset: 55154
+          line: 904
           column: 225
     - pointer: "/validation_rules/4"
       rule_id: "validate_output_routes"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 54217
-          line: 916
+          offset: 55155
+          line: 905
           column: 1
         end:
-          offset: 54544
-          line: 916
+          offset: 55482
+          line: 905
           column: 328
     - pointer: "/validation_rules/5"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 54545
-          line: 917
+          offset: 55483
+          line: 906
           column: 1
         end:
-          offset: 54784
-          line: 917
+          offset: 55722
+          line: 906
           column: 240
     - pointer: "/validation_rules/6"
       rule_id: "validate_runs"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 54785
-          line: 918
+          offset: 55723
+          line: 907
           column: 1
         end:
-          offset: 54990
-          line: 918
+          offset: 55928
+          line: 907
           column: 206
     - pointer: "/validation_rules/7"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 54991
-          line: 919
+          offset: 55929
+          line: 908
           column: 1
         end:
-          offset: 55280
-          line: 919
+          offset: 56218
+          line: 908
           column: 290
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1548,27 +1540,27 @@ normative_context:
           column: 266
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44135"
+      unit_id: "normative_44308"
       source_span:
         start:
-          offset: 44135
-          line: 863
+          offset: 44308
+          line: 850
           column: 1
         end:
-          offset: 44175
-          line: 863
+          offset: 44348
+          line: 850
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_53078"
+      unit_id: "normative_54016"
       source_span:
         start:
-          offset: 53078
-          line: 908
+          offset: 54016
+          line: 897
           column: 1
         end:
-          offset: 53100
-          line: 908
+          offset: 54038
+          line: 897
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1577,5 +1569,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:8a57c4ff4b6a1f8022251e02257def931ead4744258557da29c649d7cc1bd1d0"
-  generated_content_sha256: "sha256:d65cf1d4eb0e87932ffb6e38dd57f8adeae621cea79ed7875b56e0cfa7658fb4"
+    sha256: "sha256:2251fee7eb083af2559d55257dba94a733015068db74ce50b1c5bb409316176c"
+  generated_content_sha256: "sha256:c3e010300c6c2b9fe9596e40d42a81d22a02ba79df114c10ffb19766f376203a"

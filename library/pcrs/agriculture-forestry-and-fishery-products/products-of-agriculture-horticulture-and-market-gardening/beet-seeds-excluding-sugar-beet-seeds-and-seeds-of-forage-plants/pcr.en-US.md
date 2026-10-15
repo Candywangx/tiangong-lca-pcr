@@ -224,30 +224,35 @@ Raw activity or stage basis: per kg harvestable seed crop.
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Field energy carriers and electricity (`field_energy`)
+###### Electricity, medium voltage (`field_energy`)
 
-Energy used for field operations, pumping and crop management is expanded from actual foreground records.
-
-- Selected flow: Energy supply
-- Flow property / unit: Mass / MJ
-- Amount rule: sum of carrier energy and metered electricity after unit conversion
-- Value mode: `calculated_value`
-- Specificity: `site_specific`
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per kg harvestable seed crop.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
-- Evidence kind: `calculated_from_collection`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy`
 
-- Range: Field energy carriers and electricity QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.1
-  - Upper: 50
-  - Unit: MJ
-  - Basis: per kg harvestable seed crop
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+###### Diesel fuel (`field_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg harvestable seed crop.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
 
 ##### Waste flows
 
@@ -326,30 +331,35 @@ Raw activity or stage basis: per kg raw threshed seed.
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Harvest and threshing energy (`harvest_energy`)
+###### Electricity, medium voltage (`harvest_energy`)
 
-Fuel or electricity used by harvest and threshing equipment is resolved from the actual route.
-
-- Selected flow: Energy supply
-- Flow property / unit: Mass / MJ
-- Amount rule: converted energy use from equipment logs and invoices
-- Value mode: `calculated_value`
-- Specificity: `technology_specific`
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per kg raw threshed seed.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
-- Evidence kind: `calculated_from_collection`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy`
 
-- Range: Harvest and threshing energy QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.05
-  - Upper: 15
-  - Unit: MJ
-  - Basis: per kg raw threshed seed
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+###### Diesel fuel (`harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg raw threshed seed.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
 
 ##### Waste flows
 
@@ -451,30 +461,35 @@ Raw activity or stage basis: per conditioning batch.
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Drying and conditioning energy (`conditioning_energy`)
+###### Electricity, medium voltage (`conditioning_energy`)
 
-Electricity, heat or fuel used for drying, aeration, winnowing and preliminary cleaning is expanded from records.
-
-- Selected flow: Energy supply
-- Flow property / unit: Mass / MJ
-- Amount rule: converted energy use assigned to the batch
-- Value mode: `calculated_value`
-- Specificity: `technology_specific`
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per kg conditioned seed.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
-- Evidence kind: `calculated_from_collection`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy`
 
-- Range: Drying and conditioning energy QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.02
-  - Upper: 25
-  - Unit: MJ
-  - Basis: per kg conditioned seed
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+###### Diesel fuel (`conditioning_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg conditioned seed.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
 
 ##### Waste flows
 
@@ -553,30 +568,35 @@ Raw activity or stage basis: per grading lot.
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Cleaning, grading and storage energy (`grading_energy`)
+###### Electricity, medium voltage (`grading_energy`)
 
-Energy used by cleaners, graders, treatment equipment, packaging and controlled storage is expanded from actual records.
-
-- Selected flow: Energy supply
-- Flow property / unit: Mass / MJ
-- Amount rule: converted batch energy assigned to accepted and rejected outputs
-- Value mode: `calculated_value`
-- Specificity: `technology_specific`
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per kg accepted planting seed.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
-- Evidence kind: `calculated_from_collection`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy`
 
-- Range: Cleaning, grading and storage energy QA range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.02
-  - Upper: 20
-  - Unit: MJ
-  - Basis: per kg accepted planting seed
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+###### Diesel fuel (`grading_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per kg accepted planting seed.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
 
 ###### Seed packaging (`seed_packaging`)
 
@@ -684,6 +704,8 @@ None declared as a separate mandatory card.
 | `allocation_batches` | shared runs and storage | Assign cleaning, changeover, testing and storage burdens using measured run time, mass throughput or another documented causal driver; do not count them twice. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

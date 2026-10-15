@@ -91,12 +91,12 @@ sync_with: pcr.en-US.md
 #### 输入
 ##### 产品流
 
-###### 一种经路线确认的种植材料产品（`planting_material_input`）
+###### 声明油料果实物种的苗木（`planting_material_input`）
 
 本条件卡仅代表声明过程中一种实际材料、产品或废物流。依据路线记录核实其身份、物理状态、期间和去向；其他不同物流须分别建卡。本模板不推定必然使用或产生。
 
-- 选定流：一种经路线确认的种植材料产品；具体路线身份待核实
-- 流属性 / 单位: 产品数量 / kg 或件，按已确认产品固定
+- 选定流：声明油料果实物种的苗木
+- 流属性 / 单位: 质量 / kg
 - 数量规则: 按本过程及期间单独计量或计算这一种已确认物流，记录其独立单位和去向；不得合并其他产品或废物状态。
 - 数值模式: 前景记录 (`foreground_record`)
 - 特异性: 场地特定 (`site_specific`)
@@ -106,14 +106,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 2500
-  - 单位: items/ha·year
-  - 基准: 建园年化及补植材料
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 尿素肥料投入（`agricultural_nutrient_inputs`）
 
@@ -130,14 +122,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 600
-  - 单位: kg nutrient/ha·year
-  - 基准: 分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 磷酸一铵肥料投入（`agricultural_nutrient_inputs_monoammonium_phosphate`）
 
@@ -154,14 +138,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 600
-  - 单位: kg nutrient/ha·year
-  - 基准: 分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 氯化钾肥料投入（`agricultural_nutrient_inputs_potassium_chloride`）
 
@@ -178,14 +154,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 600
-  - 单位: kg nutrient/ha·year
-  - 基准: 分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 施用的牛粪肥投入（`agricultural_nutrient_inputs_cattle_manure`）
 
@@ -202,14 +170,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 600
-  - 单位: kg nutrient/ha·year
-  - 基准: 分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 农业石灰石投入（`agricultural_nutrient_inputs_agricultural_limestone`）
 
@@ -226,14 +186,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 600
-  - 单位: kg nutrient/ha·year
-  - 基准: 分别保留的 N、P2O5 和 K2O 数量总和，不混合养分口径
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 灌溉水 (`irrigation_water_input`)
 
@@ -274,14 +226,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 2000
-  - 单位: MJ/ha·year
-  - 基准: 生产和采收作业的实际能源投入
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 柴油投入（`field_energy_input_diesel`）
 
@@ -298,39 +242,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 2000
-  - 单位: MJ/ha·year
-  - 基准: 生产和采收作业的实际能源投入
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
-
-###### 植保制剂 (`crop_protection_input`)
-
-记录该节点的植保制剂，保持物种、状态、批次和去向可追溯。
-
-- 所选流: 声明的植保制剂
-- 流属性 / 单位: 制剂质量 / kg
-- 数量规则: 记录制剂、有效成分、浓度和施用事件
-- 数值模式: 前景记录 (`foreground_record`)
-- 特异性: 场地特定 (`site_specific`)
-原始活动或阶段基准：所有制剂先按身份保留再汇总.
-
-- 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_production_inputs`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 150
-  - 单位: kg formulation/ha·year
-  - 基准: 所有制剂先按身份保留再汇总
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
-
 
 ##### 废物流
 
@@ -475,30 +386,35 @@ sync_with: pcr.en-US.md
   - 基准种类: 过程输出 (`process_output`)
   - 证据种类: 推理估计 (`reasoned_estimate`)
 
-###### 分选、冷却与暂存能源 (`conditioning_energy_input`)
+###### 中压电力（`conditioning_energy_input`）
 
-记录该节点的分选、冷却与暂存能源，保持物种、状态、批次和去向可追溯。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：农场交付前按路线发生的能源。
 
-- 所选流: 实际处理设备的能源供应
-- 流属性 / 单位: 载体数量或能量 / kWh、MJ、kg、L 或 m3
-- 数量规则: 按批次记录实际电力、燃料或外购冷量
-- 数值模式: 前景记录 (`foreground_record`)
-- 特异性: 场地特定 (`site_specific`)
-原始活动或阶段基准：农场交付前按路线发生的能源.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准种类: 过程输出 (`process_output`)
-- 证据种类: 收集记录 (`collected_record`)
-- 收集协议: `cp_conditioning_batch`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 5000
-  - 单位: MJ/1,000 kg accepted output
-  - 基准: 农场交付前按路线发生的能源
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_conditioning_batch`
 
+###### 柴油（`conditioning_energy_input_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：农场交付前按路线发生的能源。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_conditioning_batch`
 
 ##### 废物流
 
@@ -634,14 +550,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_packing_lot`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 200
-  - 单位: kg/1,000 kg packed product
-  - 基准: 全部一次性包装及归属的可复用包装损耗
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ###### 聚乙烯包装薄膜投入（`packaging_input_plastic_film`）
 
@@ -658,14 +566,6 @@ sync_with: pcr.en-US.md
 - 基准种类: 过程输出 (`process_output`)
 - 证据种类: 收集记录 (`collected_record`)
 - 收集协议: `cp_packing_lot`
-- 范围: 前景QA筛查范围
-  - 范围角色: QA护栏 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 200
-  - 单位: kg/1,000 kg packed product
-  - 基准: 全部一次性包装及归属的可复用包装损耗
-  - 基准种类: 过程输出 (`process_output`)
-  - 证据种类: 推理估计 (`reasoned_estimate`)
 
 ##### 废物流
 
@@ -743,6 +643,8 @@ sync_with: pcr.en-US.md
 | `allocation_rework` | 返工和退回 | 将返工回路归于产生节点，返回物料不得作为新的进入量重复计数。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

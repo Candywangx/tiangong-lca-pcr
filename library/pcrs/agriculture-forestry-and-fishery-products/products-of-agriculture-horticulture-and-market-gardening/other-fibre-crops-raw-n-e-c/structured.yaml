@@ -225,7 +225,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: Per 1 kg reference product with field and crop period retained."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: Per 1 kg reference product with field and crop period retained. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -236,24 +236,6 @@ process_inventory:
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_nutrients
-              source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record only formulated products or active ingredients actually applied, preserving representation, treated area, date and target. Raw activity or stage basis: Per 1 kg reference product."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_protection
               source_ids: []
             ranges: []
         - row_id: irrigation_water
@@ -1143,7 +1125,7 @@ data_sources:
     used_for: "allocation hierarchy and transparency"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a3c1730d72b38bac2722d8611be28a8a1603113c7fbb6549cfe5fb99c2cb5bce"
+  source_sha256: "sha256:9ae5aad625e5b40cfb4cfd8d7922b8d5712456934f3a3d18c29dce12a8cacf83"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3981"
@@ -1194,16 +1176,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40478"
+    - unit_id: "normative_39865"
       family: "allocation"
       span:
         start:
-          offset: 40478
-          line: 787
+          offset: 39865
+          line: 771
           column: 1
         end:
-          offset: 41601
-          line: 799
+          offset: 40988
+          line: 783
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `mass_balance_first` | all processes | First reconcile inputs, accepted product, co-products, residues, waste and measured moisture change by lot |  |\n| `coproduct_attribution` | intended co-products | Prefer subdivision. If allocation remains necessary, declare physical or economic method, data period and sensitivity for the study goal | `iso-14044-2006` |\n| `residue_classification` | residues and rejects | Only material with intended use and documented handoff is a co-product; waste, soil return and unowned loss receive no product output quantity |  |\n| `multi_period_attribution` | perennial establishment and shared assets | Attribute using evidenced productive years, service or lifetime output, recording replacement and termination; no burden may be counted in multiple periods |  |\n| `shared_asset_attribution` | assets serving multiple nodes | List consuming nodes and periods and attribute once using recorded machine hours, mass processed or other causal service |  |\n\n"
       headings:
@@ -1222,12 +1204,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40478
-              line: 787
+              offset: 39865
+              line: 771
               column: 1
             end:
-              offset: 40518
-              line: 787
+              offset: 39905
+              line: 771
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1242,16 +1224,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49965"
+    - unit_id: "normative_50117"
       family: "validation"
       span:
         start:
-          offset: 49965
-          line: 841
+          offset: 50117
+          line: 827
           column: 1
         end:
-          offset: 51471
-          line: 854
+          offset: 51623
+          line: 840
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | severity |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Fixed UUID, Mass property and kg unit must match the named raw fibre product and declared gate | error |\n| `validate_gate_once` | route | Farm and first-preparation handoffs cannot both be reference outputs | error |\n| `validate_ranges` | every flow card | Check nonnegative bounds, lower ≤ upper and process-consistent denominator; inactive conditional routes impose no positive amount | error |\n| `validate_flow_identitys` | parameterized inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | error |\n| `validate_balance` | harvest and preparation | Balance input, products, co-products, residues, waste and stock change on declared moisture basis | error |\n| `validate_outputs` | intended outputs and rejects | Every intended output has a handoff; downgraded, rejected, recovered or waste states have explicit non-duplicated destinations | error |\n| `validate_period_assets` | perennial and shared infrastructure | Periods and consuming nodes are complete; establishment and shared-asset burdens are attributed once | error |\n| `validate_route_delta` | alternative routes | Each alternative declares parent activity and real topology, inventory, calculation or validation delta; mutually exclusive routes are not averaged | error |\n\n"
       headings:
@@ -1270,12 +1252,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49965
-              line: 841
+              offset: 50117
+              line: 827
               column: 1
             end:
-              offset: 49987
-              line: 841
+              offset: 50139
+              line: 827
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1359,171 +1341,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "mass_balance_first"
       identity_kind: "explicit"
-      unit_id: "normative_40478"
+      unit_id: "normative_39865"
       source_span:
         start:
-          offset: 40613
-          line: 793
+          offset: 40000
+          line: 777
           column: 1
         end:
-          offset: 40765
-          line: 793
+          offset: 40152
+          line: 777
           column: 153
     - pointer: "/allocation_rules/1"
       rule_id: "coproduct_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_40478"
+      unit_id: "normative_39865"
       source_span:
         start:
-          offset: 40766
-          line: 794
+          offset: 40153
+          line: 778
           column: 1
         end:
-          offset: 40974
-          line: 794
+          offset: 40361
+          line: 778
           column: 209
     - pointer: "/allocation_rules/2"
       rule_id: "residue_classification"
       identity_kind: "explicit"
-      unit_id: "normative_40478"
+      unit_id: "normative_39865"
       source_span:
         start:
-          offset: 40975
-          line: 795
+          offset: 40362
+          line: 779
           column: 1
         end:
-          offset: 41174
-          line: 795
+          offset: 40561
+          line: 779
           column: 200
     - pointer: "/allocation_rules/3"
       rule_id: "multi_period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_40478"
+      unit_id: "normative_39865"
       source_span:
         start:
-          offset: 41175
-          line: 796
+          offset: 40562
+          line: 780
           column: 1
         end:
-          offset: 41410
-          line: 796
+          offset: 40797
+          line: 780
           column: 236
     - pointer: "/allocation_rules/4"
       rule_id: "shared_asset_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_40478"
+      unit_id: "normative_39865"
       source_span:
         start:
-          offset: 41411
-          line: 797
+          offset: 40798
+          line: 781
           column: 1
         end:
-          offset: 41599
-          line: 797
+          offset: 40986
+          line: 781
           column: 189
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 50058
-          line: 845
+          offset: 50210
+          line: 831
           column: 1
         end:
-          offset: 50213
-          line: 845
+          offset: 50365
+          line: 831
           column: 156
     - pointer: "/validation_rules/1"
       rule_id: "validate_gate_once"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 50214
-          line: 846
+          offset: 50366
+          line: 832
           column: 1
         end:
-          offset: 50325
-          line: 846
+          offset: 50477
+          line: 832
           column: 112
     - pointer: "/validation_rules/2"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 50326
-          line: 847
+          offset: 50478
+          line: 833
           column: 1
         end:
-          offset: 50505
-          line: 847
+          offset: 50657
+          line: 833
           column: 180
     - pointer: "/validation_rules/3"
       rule_id: "validate_flow_identitys"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 50506
-          line: 848
+          offset: 50658
+          line: 834
           column: 1
         end:
-          offset: 50737
-          line: 848
+          offset: 50889
+          line: 834
           column: 232
     - pointer: "/validation_rules/4"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 50738
-          line: 849
+          offset: 50890
+          line: 835
           column: 1
         end:
-          offset: 50894
-          line: 849
+          offset: 51046
+          line: 835
           column: 157
     - pointer: "/validation_rules/5"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 50895
-          line: 850
+          offset: 51047
+          line: 836
           column: 1
         end:
-          offset: 51085
-          line: 850
+          offset: 51237
+          line: 836
           column: 191
     - pointer: "/validation_rules/6"
       rule_id: "validate_period_assets"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 51086
-          line: 851
+          offset: 51238
+          line: 837
           column: 1
         end:
-          offset: 51263
-          line: 851
+          offset: 51415
+          line: 837
           column: 178
     - pointer: "/validation_rules/7"
       rule_id: "validate_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 51264
-          line: 852
+          offset: 51416
+          line: 838
           column: 1
         end:
-          offset: 51469
-          line: 852
+          offset: 51621
+          line: 838
           column: 206
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1552,27 +1534,27 @@ normative_context:
           column: 169
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40478"
+      unit_id: "normative_39865"
       source_span:
         start:
-          offset: 40478
-          line: 787
+          offset: 39865
+          line: 771
           column: 1
         end:
-          offset: 40518
-          line: 787
+          offset: 39905
+          line: 771
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49965"
+      unit_id: "normative_50117"
       source_span:
         start:
-          offset: 49965
-          line: 841
+          offset: 50117
+          line: 827
           column: 1
         end:
-          offset: 49987
-          line: 841
+          offset: 50139
+          line: 827
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1581,5 +1563,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a3c1730d72b38bac2722d8611be28a8a1603113c7fbb6549cfe5fb99c2cb5bce"
-  generated_content_sha256: "sha256:d2b04583b196960f38d6664c7dcb1ee9c5206109a03b57d49f6ab2250d0f28ad"
+    sha256: "sha256:9ae5aad625e5b40cfb4cfd8d7922b8d5712456934f3a3d18c29dce12a8cacf83"
+  generated_content_sha256: "sha256:b164ac83832f1cb42648a240e253b18575404d1591190efb9b45ea235f855225"

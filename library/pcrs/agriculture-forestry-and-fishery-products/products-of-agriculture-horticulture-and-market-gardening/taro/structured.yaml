@@ -287,15 +287,15 @@ process_inventory:
                 source_ids:
                   - icar-water-2022
         - row_id: field_fuel
-          role: "Field fuel"
-          name: "Field machinery fuel"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume / L"
-          description: "Fuel used by cultivation and water-management equipment crosses the field boundary. Raw activity or stage basis: per ha managed field in one crop cycle."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per ha managed field in one crop cycle."
           amount:
-            expression: "Fuel tickets or equipment hours multiplied by measured consumption"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "crop_cycle"
@@ -303,15 +303,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_field_cycle
               source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "300"
-                unit: "L/ha"
-                basis: "broad replaceable estimate per ha managed field in one crop cycle"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -859,7 +851,7 @@ data_sources:
     used_for: "Normalization and reconciliation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7b4bb56def7690c7bfd03d77835f82284c8541e4d0e617c41f75a99b1d06672b"
+  source_sha256: "sha256:a709b5bd6c65fd640a22d6ca0c5e28b9bb0875cd40119e0ade74baa12e3e9cb8"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3436"
@@ -910,16 +902,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26535"
+    - unit_id: "normative_26465"
       family: "allocation"
       span:
         start:
-          offset: 26535
-          line: 575
+          offset: 26465
+          line: 566
           column: 1
         end:
-          offset: 27614
-          line: 584
+          offset: 27544
+          line: 575
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `subdivide_routes` | upland and wetland production | Subdivide water-management routes before allocation; do not hide different flooding, irrigation or emission profiles. | `iso-14044` |\n| `intended_outputs` | marketed leaves, planting material or other intentional outputs | Record every intended output and hand-off. Prefer subdivision; otherwise use a documented causal physical relation or contemporaneous farm-gate economic shares with sensitivity analysis. | `iso-14044` |\n| `grade_outputs` | accepted and downgraded edible taro | Retain separate masses, grades, destinations and revenues; allocate shared burdens only after feasible subdivision. | `iso-14044` |\n| `reject_routing` | rejected or returned material | Keep prior burdens with rejects until declared boundary exit; if material is returned upstream to the managed field, link that loop explicitly, otherwise record recovery or disposal without unverified avoided-product credit. | `iso-14044` |\n\n"
       headings:
@@ -938,12 +930,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 26535
-              line: 575
+              offset: 26465
+              line: 566
               column: 1
             end:
-              offset: 26575
-              line: 575
+              offset: 26505
+              line: 566
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -958,16 +950,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_32595"
+    - unit_id: "normative_33290"
       family: "validation"
       span:
         start:
-          offset: 32595
-          line: 619
+          offset: 33290
+          line: 612
           column: 1
         end:
-          offset: 33913
-          line: 631
+          offset: 34608
+          line: 624
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `reference_identity` | reference flow | Require the verified generic Taro Product flow, Mass and kg at fresh farm gate; reject regional branded or processed substitutes. |  |\n| `route_validation` | field | Require upland or wetland route per field-cycle, or documented shares; validate water and emission treatment against it. | `fao-qdp-taro`; `icar-water-2022` |\n| `range_validation` | all flow cards | Check role, bounds, unit, denominator, basis kind, evidence and sources; provisional ranges are replaceable screens. |  |\n| `harvest_validation` | lifting | Reconcile standing crop, lifted corms, loss and residues and require every state hand-off. | `fao-edible-aroids` |\n| `grade_validation` | conditioning | Reconcile received, accepted, downgraded, rejects/debris and discrepancy; rejected material cannot be accepted output. | `mass-balance-identity` |\n| `coproduct_validation` | non-reference intended outputs | Require identity, amount, destination and allocation method for marketed leaves, planting material or other outputs. | `iso-14044` |\n| `reject_path_validation` | off-grade/rejected material | Link downgrade, return, recovery or disposal to its producing node without double credit. | `iso-14044` |\n\n"
       headings:
@@ -986,12 +978,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 32595
-              line: 619
+              offset: 33290
+              line: 612
               column: 1
             end:
-              offset: 32617
-              line: 619
+              offset: 33312
+              line: 612
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1088,145 +1080,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "subdivide_routes"
       identity_kind: "explicit"
-      unit_id: "normative_26535"
+      unit_id: "normative_26465"
       source_span:
         start:
-          offset: 26648
-          line: 579
+          offset: 26578
+          line: 570
           column: 1
         end:
-          offset: 26836
-          line: 579
+          offset: 26766
+          line: 570
           column: 189
     - pointer: "/allocation_rules/1"
       rule_id: "intended_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_26535"
+      unit_id: "normative_26465"
       source_span:
         start:
-          offset: 26837
-          line: 580
+          offset: 26767
+          line: 571
           column: 1
         end:
-          offset: 27128
-          line: 580
+          offset: 27058
+          line: 571
           column: 292
     - pointer: "/allocation_rules/2"
       rule_id: "grade_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_26535"
+      unit_id: "normative_26465"
       source_span:
         start:
-          offset: 27129
-          line: 581
+          offset: 27059
+          line: 572
           column: 1
         end:
-          offset: 27318
-          line: 581
+          offset: 27248
+          line: 572
           column: 190
     - pointer: "/allocation_rules/3"
       rule_id: "reject_routing"
       identity_kind: "explicit"
-      unit_id: "normative_26535"
+      unit_id: "normative_26465"
       source_span:
         start:
-          offset: 27319
-          line: 582
+          offset: 27249
+          line: 573
           column: 1
         end:
-          offset: 27612
-          line: 582
+          offset: 27542
+          line: 573
           column: 294
     - pointer: "/validation_rules/0"
       rule_id: "reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 32690
-          line: 623
+          offset: 33385
+          line: 616
           column: 1
         end:
-          offset: 32866
-          line: 623
+          offset: 33561
+          line: 616
           column: 177
     - pointer: "/validation_rules/1"
       rule_id: "route_validation"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 32867
-          line: 624
+          offset: 33562
+          line: 617
           column: 1
         end:
-          offset: 33056
-          line: 624
+          offset: 33751
+          line: 617
           column: 190
     - pointer: "/validation_rules/2"
       rule_id: "range_validation"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 33057
-          line: 625
+          offset: 33752
+          line: 618
           column: 1
         end:
-          offset: 33218
-          line: 625
+          offset: 33913
+          line: 618
           column: 162
     - pointer: "/validation_rules/3"
       rule_id: "harvest_validation"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 33219
-          line: 626
+          offset: 33914
+          line: 619
           column: 1
         end:
-          offset: 33368
-          line: 626
+          offset: 34063
+          line: 619
           column: 150
     - pointer: "/validation_rules/4"
       rule_id: "grade_validation"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 33369
-          line: 627
+          offset: 34064
+          line: 620
           column: 1
         end:
-          offset: 33553
-          line: 627
+          offset: 34248
+          line: 620
           column: 185
     - pointer: "/validation_rules/5"
       rule_id: "coproduct_validation"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 33554
-          line: 628
+          offset: 34249
+          line: 621
           column: 1
         end:
-          offset: 33746
-          line: 628
+          offset: 34441
+          line: 621
           column: 193
     - pointer: "/validation_rules/6"
       rule_id: "reject_path_validation"
       identity_kind: "explicit"
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 33747
-          line: 629
+          offset: 34442
+          line: 622
           column: 1
         end:
-          offset: 33911
-          line: 629
+          offset: 34606
+          line: 622
           column: 165
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1255,27 +1247,27 @@ normative_context:
           column: 190
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26535"
+      unit_id: "normative_26465"
       source_span:
         start:
-          offset: 26535
-          line: 575
+          offset: 26465
+          line: 566
           column: 1
         end:
-          offset: 26575
-          line: 575
+          offset: 26505
+          line: 566
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_32595"
+      unit_id: "normative_33290"
       source_span:
         start:
-          offset: 32595
-          line: 619
+          offset: 33290
+          line: 612
           column: 1
         end:
-          offset: 32617
-          line: 619
+          offset: 33312
+          line: 612
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1284,5 +1276,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7b4bb56def7690c7bfd03d77835f82284c8541e4d0e617c41f75a99b1d06672b"
-  generated_content_sha256: "sha256:d492b85ad7f7b70325946732f7162c02ce22b44742eb6f4ca1a677cf47c7c932"
+    sha256: "sha256:a709b5bd6c65fd640a22d6ca0c5e28b9bb0875cd40119e0ade74baa12e3e9cb8"
+  generated_content_sha256: "sha256:7c43036b28aea0f7f197aff7499437d2848530c8591e87e22d09d87308bd4e5a"

@@ -228,24 +228,7 @@ Raw activity or stage basis: per hectare in crop cycle.
   - Evidence kind: External source (`external_source`)
   - Sources: `fao-crop-yield-water-2012`
 
-###### Route-specific crop-protection formulation (`crop_protection_products`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-This flow is quantified at the declared process boundary and reconciled with adjacent states.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per hectare treated.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources:
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Electricity, medium voltage input (`field_energy`)
 
@@ -315,12 +298,12 @@ Raw activity or stage basis: per hectare.
 
 ##### Waste flows
 
-###### Unharvested or pre-lifting lost roots (`field_root_loss`)
+###### Unharvested sugar-beet roots (`field_root_loss`)
 
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
-- Selected flow: Unharvested or pre-lifting lost roots
-- Flow property / unit: Mass or energy as stated / declared unit
+- Selected flow: Unharvested sugar-beet roots
+- Flow property / unit: Mass / kg
 - Amount rule: Representative field sampling scaled to the field
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -493,12 +476,12 @@ Raw activity or stage basis: per hectare harvested.
 
 ##### Waste flows
 
-###### Roots lost or damaged during lifting (`harvest_root_reject`)
+###### Rejected sugar-beet roots from lifting (`harvest_root_reject`)
 
 This flow is quantified at the declared process boundary and reconciled with adjacent states.
 
-- Selected flow: Roots lost or damaged during lifting
-- Flow property / unit: Mass or energy as stated / declared unit
+- Selected flow: Rejected sugar-beet roots from lifting
+- Flow property / unit: Mass / kg
 - Amount rule: Field sample or load-balance difference with destination recorded
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -552,31 +535,35 @@ Raw activity or stage basis: per kg lifted roots.
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Farm conditioning energy (`conditioning_energy`)
+###### Electricity, medium voltage (`conditioning_energy`)
 
-This flow is quantified at the declared process boundary and reconciled with adjacent states.
-
-- Selected flow: Farm conditioning energy
-- Flow property / unit: Mass or energy as stated / declared unit
-- Amount rule: Metered or allocated energy for topping completion, dry soil/trash removal and conveying
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1000 kg lifted roots.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy`
-- Sources:
-- Range: Provisional conditioning-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: MJ/1000 kg lifted roots
-  - Basis: per 1000 kg lifted roots
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
+
+###### Diesel fuel (`conditioning_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1000 kg lifted roots.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
 
 ##### Waste flows
 
@@ -786,6 +773,8 @@ Raw activity or stage basis: per kg grading input.
 | AL-04 | rejects | Reworked material retains accumulated burden and is counted only at final hand-off. | `mass-balance-identity` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

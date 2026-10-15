@@ -100,30 +100,23 @@ Planting, immature-year operations, replacements, termination, and shared irriga
 
 ##### Product flows
 
-###### Propagation and shared establishment assets (`establishment_materials`)
+Required asset inventory: record every actual pole, wire, anchor, support, irrigation asset, installation and replacement separately by its concrete material and measured bill of materials. Allocate each asset once over its documented service life and all served crops and processes. Do not treat planting stock as a proxy for infrastructure.
 
-This flow crosses the stated process boundary and is quantified using the amount rule below.
+###### Clove nursery plants (`establishment_materials`)
 
-- Selected flow: Clove planting material and establishment or shared-infrastructure materials and services
-- Flow property / unit: Mass / kg
-- Amount rule: Collect planting stock and asset bill of materials separately; attribute replacements and each asset once over service-period accepted output and across all consuming crops, nodes, and periods
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Clove nursery plants only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Attribute establishment and replacement only across the serviced production periods; established stands without such an event do not receive an invented input.
 Raw activity or stage basis: per 1 kg accepted product over the serviced stand life.
 
+- Selected flow: Clove nursery plants
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Clove nursery plants, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_establishment_assets`
 - Sources: `kau-clove-practices-2016`
-- Range: Provisional annualized establishment-material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: kg/kg accepted product
-  - Basis: attributed planting and asset material per 1 kg lifetime accepted product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Fertilizer, urea input (`establishment_nutrient_supply`)
 
@@ -352,47 +345,37 @@ Raw activity or stage basis: per 1 kg harvested cluster output.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Route-specific crop-protection formulation (`annual_crop_protection`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
+###### Electricity, medium voltage (`annual_field_energy`)
 
-Record every actual formulation separately for concrete exchange resolution.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg harvested cluster output.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_annual_management_inputs`
-
-###### Field energy carriers (`annual_field_energy`)
-
-This flow crosses the stated process boundary and is quantified using the amount rule below.
-
-- Selected flow: Fuel, electricity, and contracted machine energy
-- Flow property / unit: Energy / MJ
-- Amount rule: Convert carrier records to delivered energy while preserving carrier identity, original quantity, operation, and period
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg harvested cluster output.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy_records`
-- Range: Provisional field-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: MJ/kg harvested clusters
-  - Basis: delivered field energy per 1 kg harvested clusters
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`annual_field_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg harvested cluster output.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_records`
 
 ##### Waste flows
 
@@ -489,29 +472,35 @@ Harvest batches link picking and equipment services to collected cluster mass. S
 
 ##### Product flows
 
-###### Harvest energy and equipment services (`harvest_energy`)
+###### Electricity, medium voltage (`harvest_energy`)
 
-This flow crosses the stated process boundary and is quantified using the amount rule below.
-
-- Selected flow: Fuel, electricity, and equipment services used to pick and move clusters
-- Flow property / unit: Energy / MJ
-- Amount rule: Attribute carrier-specific records to harvest batches by measured use or operating time, including cleaning/changeover where present
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg harvested clusters.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_energy_records`
-- Range: Provisional harvest-energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: MJ/kg harvested clusters
-  - Basis: harvest energy per 1 kg harvested clusters
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`harvest_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg harvested clusters.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy_records`
 
 ##### Waste flows
 
@@ -847,6 +836,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -869,7 +860,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_lifetime_attribution` | perennial phases and assets | Sum cohort/asset burdens assigned by service period and causal share / accepted output over that period | events; service years; driver; annual output | burden per kg accepted product | `fao-ecocrop-clove`; `iso-14044-2006` |
-| `calc_nutrients` | individual nutrient products | Component nutrient mass = measured wet product mass × measured dry-matter fraction × declared nutrient fraction. Calculate each product independently, then sum nutrients analytically without merging physical product exchanges. | mass; moisture; composition | kg product and nutrient by form | `kau-clove-practices-2016` |
+| `calc_nutrients` | individual nutrient products | Declare the nutrient-fraction basis for each product. For an as-received nutrient fraction, nutrient mass = measured as-received product mass × nutrient fraction. For a dry-matter nutrient fraction, nutrient mass = measured as-received product mass × measured dry-matter fraction × dry-matter nutrient fraction. Never apply the dry-matter correction twice; retain elemental versus oxide reporting and any conversion separately. Calculate each product independently, then sum nutrients analytically without merging physical product exchanges. | mass; moisture; composition | kg product and nutrient by form | `kau-clove-practices-2016` |
 | `calc_soil_n2o` | managed-soil N2O | Apply selected IPCC tier to synthetic/organic/residue N, volatilization, and leaching; convert N2O-N × 44/28 | nutrient ledger; residue N; selected factors | kg N2O per kg clusters | `ipcc-2019-managed-soils` |
 | `calc_mass_balance` | harvest/grading/drying | Same-batch input = product outputs + wastes + elementary loss ± documented difference; accepted output excludes unresolved material | masses and moisture | reconciliation and normalized flows | `mass-balance-identity` |
 | `calc_route_weighting` | route strata | Sum(route amount × accepted route output) / total accepted output after calculating each route separately | route inventories and outputs | weighted inventory | `iso-14044-2006` |

@@ -280,31 +280,85 @@ Raw activity or stage basis: per 1,000 kg accepted coconuts in shell.
 
 ##### Elementary flows
 
-###### Managed-soil and crop-protection emissions (`coconut_field_emissions`)
+###### Dinitrogen monoxide, to air (`coconut_field_emissions`)
 
-Record calculated emissions from nutrient application, residue handling, crop-protection use, and managed soil using the selected method and receiving medium.
-
-- Selected flow: reported substance and receiving medium from the foreground emission calculation
-- Flow property / unit: Mass / kg substance
-- Amount rule: calculated from documented inputs, residue fate, soil condition, and method factor
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1,000 kg accepted coconuts in shell.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_coconut_emission_records`
 - Sources: `ipcc-2019-afolu`
-- Range: Provisional field-emission screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg substance per 1,000 kg reference product
-  - Basis: broad first-pass managed-soil and crop-protection emission envelope
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+###### Ammonia, to air (`coconut_field_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted coconuts in shell.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_coconut_emission_records`
+- Sources: `ipcc-2019-afolu`
+
+###### Nitrogen monoxide, to air (`coconut_field_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted coconuts in shell.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_coconut_emission_records`
+- Sources: `ipcc-2019-afolu`
+
+###### Nitrate, to water (`coconut_field_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted coconuts in shell.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_coconut_emission_records`
+- Sources: `ipcc-2019-afolu`
+
+###### Carbon dioxide, fossil, to air (`coconut_field_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted coconuts in shell.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_coconut_emission_records`
+- Sources: `ipcc-2019-afolu`
 
 ##### Waste flows
 
@@ -625,31 +679,52 @@ Raw activity or stage basis: per 1,000 kg received conditioning lot.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-##### Elementary flows
+###### Coconut conditioning wastewater, for treatment (`coconut_conditioning_residuals_wastewater`)
 
-###### Conditioning wastewater, dust, and wash solids (`coconut_conditioning_residuals`)
-
-Record wastewater, dust, soil, fibers, and wash solids only when they cross the boundary or receive treatment; identify receiving medium and fate.
-
-- Selected flow: reported residual substance and receiving medium
-- Flow property / unit: Mass / kg substance or waste
-- Amount rule: measured residual mass or calculated from batch water and solids balance
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Coconut conditioning wastewater, for treatment only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
 
+- Selected flow: Coconut conditioning wastewater, for treatment
+- Flow property / unit: Volume / m3
+- Amount rule: Measured net quantity of Coconut conditioning wastewater, for treatment, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_coconut_dehusking_conditioning_records`
-- Range: Conditioning-residual screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg per 1,000 kg accepted conditioning-gate product
-  - Basis: wastewater solids, dust, soil, and other residuals crossing the boundary
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Coconut conditioning wash solids, for disposal (`coconut_conditioning_residuals_wash_solids`)
+
+Record Coconut conditioning wash solids, for disposal only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+- Selected flow: Coconut conditioning wash solids, for disposal
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Coconut conditioning wash solids, for disposal, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_coconut_dehusking_conditioning_records`
+
+##### Elementary flows
+
+###### Particulate matter, particle size unspecified, to air (`coconut_conditioning_residuals`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1,000 kg accepted conditioning-gate product.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_coconut_dehusking_conditioning_records`
 
 ### Process: Coconut Storage and Gate Hand-off (`coconut_storage_and_gate_handoff`)
 
@@ -879,6 +954,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 The hard shell remains part of the in-shell reference product and is not a separate co-product in this PCR. Kernel, coconut water, copra, oil, milk, coir, and shell-removal outputs belong to downstream coconut-product PCRs and must not be introduced into this inventory. No output may be counted both as a marketed husk co-product and as orchard or conditioning residue.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

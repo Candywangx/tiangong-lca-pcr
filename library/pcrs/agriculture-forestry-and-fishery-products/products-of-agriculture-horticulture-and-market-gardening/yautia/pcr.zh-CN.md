@@ -225,29 +225,20 @@ sync_with: pcr.en-US.md
   - 基准类型： 作物周期 (`crop_cycle`)
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
-###### 田间机械燃料（`field_fuel`）
+###### 柴油（`field_fuel`）
 
-按作业记录每种燃料，并避免与外包服务重复计算。
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per ha and crop cycle。
 
-- 选定流： 田间作业移动机械燃料
-- 流属性/单位： Volume or energy / L or MJ
-- 数量规则： Purchases or machine-use records allocated to the cycle
-- 数值来源模式： 前景记录 (`foreground_record`)
-- 适用范围： 场址特定 (`site_specific`)
-原始活动或阶段基准：per ha and crop cycle.
-
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 作物周期 (`crop_cycle`)
-- 证据类型： 采集记录 (`collected_record`)
-- 采集协议： `cp_water_energy`
-- 数量范围： Provisional field-fuel screen
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 400
-  - 单位： L diesel-equivalent/ha/cycle
-  - 基准： direct field fuel per occupied hectare; zero requires a manual or externally serviced route
-  - 基准类型： 作物周期 (`crop_cycle`)
-  - 证据类型： 推理估算 (`reasoned_estimate`)
+- 基准类型：`crop_cycle`
+- 证据类型：`collected_record`
+- 采集协议：`cp_water_energy`
 
 ##### 废物流
 
@@ -366,29 +357,20 @@ sync_with: pcr.en-US.md
   - 证据类型： 方法公式 (`method_formula`)
   - 来源： `mass-balance-identity`
 
-###### 收获燃料（`harvest_fuel`）
+###### 柴油（`harvest_fuel`）
 
-记录起收和收集作物所用的移动机械燃料；人工或纯电动路线记录为零。
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每 1,000 kg 起收原料输出。
 
-- 选定流： 收获移动机械燃料
-- 流属性/单位： 体积或能量 / L 或 MJ
-- 数量规则： 按计量、发票或机械工时推算燃料，并分配至起收原料输出
-- 数值来源模式： 前景记录 (`foreground_record`)
-- 适用范围： 技术特定 (`technology_specific`)
-原始活动或阶段基准：每 1,000 kg 起收原料输出.
-
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 过程输出 (`process_output`)
-- 证据类型： 采集记录 (`collected_record`)
-- 采集协议： `cp_harvest_mass`
-- 数量范围： 暂定收获燃料筛选范围
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 50
-  - 单位： L diesel-equivalent/1,000 kg raw lifted output
-  - 基准： 每 1,000 kg 起收原料输出的移动机械直接燃料；未使用燃料机械时为零
-  - 基准类型： 过程输出 (`process_output`)
-  - 证据类型： 推理估算 (`reasoned_estimate`)
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_harvest_mass`
 
 ###### 收获用电（`harvest_electricity`）
 
@@ -764,6 +746,8 @@ sync_with: pcr.en-US.md
 | `allocation_shared_operations` | shared operations | Assign separable inputs directly before allocating remaining shared burdens; disclose output quantities, prices where used, method and precedence. |  |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

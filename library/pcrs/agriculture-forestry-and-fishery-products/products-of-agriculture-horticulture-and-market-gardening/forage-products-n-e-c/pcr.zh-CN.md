@@ -201,30 +201,7 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_nutrients`
 
-###### 作物保护产品 (`crop_protection_inputs`)
-
-仅记录实际施用的产品，并保留商品名、有效成分、处理面积和日期。
-
-- 选定流: Actual crop-protection product; UUID unresolved until product identity is known
-- 流属性/单位: Product-specific property and native unit
-- 数量规则: Applied amount reconciled to purchase and application logs
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：每 1 kg 参考饲草.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_crop_protection`
-
-- 数量范围: 暂定路线筛选区间；在评审或 active 使用前用产品、地点和技术特定证据替换
-  - 范围角色: 默认估计 (`default_estimate`)
-  - 下限: 0
-  - 上限: 0.1
-  - 单位: kg product/kg reference forage
-  - 基准: 施用作物保护产品的宽泛筛选区间
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 灌溉用水 (`irrigation_water`)
 
@@ -942,6 +919,8 @@ sync_with: pcr.en-US.md
 | allocation_shared_assets | Shared fields, machinery and conditioning assets | Prefer metered use or operating time; otherwise use a documented physical driver. Enumerate consuming nodes and periods and prevent duplicate burdens. | iso-14044-allocation |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

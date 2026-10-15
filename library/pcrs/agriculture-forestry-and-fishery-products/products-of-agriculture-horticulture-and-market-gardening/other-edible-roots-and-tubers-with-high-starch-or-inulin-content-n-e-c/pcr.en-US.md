@@ -223,53 +223,37 @@ Raw activity or stage basis: applied irrigation excluding effective rainfall.
   - Basis kind: `crop_cycle`
   - Evidence kind: `reasoned_estimate`
 
-###### Field machinery energy (`field_energy_input`)
+###### Electricity, medium voltage (`field_energy_input`)
 
-Collect and reconcile field machinery energy, retaining the identity, state, origin and destination required by this card.
-
-- Selected flow: Energy supply for cultivation and lifting machinery
-- Flow property / unit: Carrier quantity or energy / kg, L, m3, kWh or MJ
-- Amount rule: record actual carrier and operation
-- Value mode: `calculated_value`
-- Specificity: `site_specific`
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: actual carrier remains explicit.
 
-- Normalization basis: per declared reference flow
-- Basis kind: `crop_cycle`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_crop_inputs`
-- Range: Broad QA screening range
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 800
-  - Unit: L diesel-equivalent/ha·crop
-  - Basis: actual carrier remains explicit
-  - Basis kind: `crop_cycle`
-  - Evidence kind: `reasoned_estimate`
-
-###### Crop-protection formulations (`crop_protection_input`)
-
-Collect and reconcile crop-protection formulations, retaining the identity, state, origin and destination required by this card.
-
-- Selected flow: Crop-protection formulation used for the declared species
-- Flow property / unit: Mass / kg formulation
-- Amount rule: measure by formulation, active ingredient and event
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
 - Value mode: `foreground_record`
-- Specificity: `product_specific`
-Raw activity or stage basis: all identities retained before summing.
-
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `crop_cycle`
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_crop_inputs`
-- Range: Broad QA screening range
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 150
-  - Unit: kg formulation/ha·crop
-  - Basis: all identities retained before summing
-  - Basis kind: `crop_cycle`
-  - Evidence kind: `reasoned_estimate`
+
+###### Diesel fuel (`field_energy_input_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: actual carrier remains explicit.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_crop_inputs`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -331,30 +315,85 @@ Raw activity or stage basis: all classes retained separately by fate.
 
 ##### Elementary flows
 
-###### Managed-soil nitrogen emissions (`soil_n_emissions_output`)
+###### Dinitrogen monoxide, to air (`soil_n_emissions_output`)
 
-Collect and reconcile managed-soil nitrogen emissions, retaining the identity, state, origin and destination required by this card.
-
-- Selected flow: Nitrogen emission species to applicable compartments
-- Flow property / unit: Mass / kg substance
-- Amount rule: calculate each substance separately from reconciled nutrient and field records
-- Value mode: `calculated_value`
-- Specificity: `site_specific`
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: each substance and compartment remains separate.
 
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `crop_cycle`
-- Evidence kind: `collected_record`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_field_emissions`
-- Sources: `ipcc-2019-managed-soils` `emep-eea-2023-guidebook`
-- Range: Broad QA screening range
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 2000
-  - Unit: kg reported substance/ha·crop
-  - Basis: each substance and compartment remains separate
-  - Basis kind: `crop_cycle`
-  - Evidence kind: `reasoned_estimate`
+- Sources: `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook`
+
+###### Ammonia, to air (`soil_n_emissions_output_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: each substance and compartment remains separate.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook`
+
+###### Nitrogen monoxide, to air (`soil_n_emissions_output_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: each substance and compartment remains separate.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook`
+
+###### Nitrate, to water (`soil_n_emissions_output_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: each substance and compartment remains separate.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook`
+
+###### Carbon dioxide, fossil, to air (`soil_n_emissions_output_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: each substance and compartment remains separate.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_emissions`
+- Sources: `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook`
 
 ### Process: Curing and storage (`curing_storage`)
 
@@ -386,29 +425,35 @@ Raw activity or stage basis: matched lot at recorded moisture states.
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Curing and storage energy (`storage_energy_input`)
+###### Electricity, medium voltage (`storage_energy_input`)
 
-Collect and reconcile curing and storage energy, retaining the identity, state, origin and destination required by this card.
-
-- Selected flow: Energy supply for ventilation, temperature control and handling
-- Flow property / unit: Carrier quantity or energy / kWh, MJ, kg, L or m3
-- Amount rule: meter by lot and interval; passive storage records zero
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: actual carrier and duration declared.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_storage_lots`
-- Range: Broad QA screening range
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 10000
-  - Unit: MJ/1,000 kg accepted output
-  - Basis: actual carrier and duration declared
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+
+###### Diesel fuel (`storage_energy_input_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: actual carrier and duration declared.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_storage_lots`
 
 ###### Curing or cleaning water (`storage_water_input`)
 
@@ -582,29 +627,35 @@ Raw activity or stage basis: actual energy carriers retained.
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_sorting_runs`
 
-###### Product packaging (`packaging_input`)
+###### Paperboard packaging (`packaging_input`)
 
-Collect and reconcile product packaging, retaining the identity, state, origin and destination required by this card.
-
-- Selected flow: Packaging required for the declared hand-off
-- Flow property / unit: Mass or item / kg or item
-- Amount rule: measure packaging by material, function and return rate
-- Value mode: `foreground_record`
-- Specificity: `product_specific`
+Record Paperboard packaging only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses.
 Raw activity or stage basis: net attributable packaging after reuse.
 
+- Selected flow: Paperboard packaging
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Paperboard packaging, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_sorting_runs`
-- Range: Broad QA screening range
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg packaging/1,000 kg accepted product
-  - Basis: net attributable packaging after reuse
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+
+###### Polyethylene packaging film (`packaging_input_film`)
+
+Record Polyethylene packaging film only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses.
+Raw activity or stage basis: net attributable packaging after reuse.
+
+- Selected flow: Polyethylene packaging film
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Polyethylene packaging film, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_sorting_runs`
 
 ##### Waste flows
 
@@ -680,6 +731,8 @@ Raw activity or stage basis: rejects only; useful downgrade remains product.
 | `allocation_rework` | rework | Return rework to its originating lot, count added burdens/losses once, and count output only after acceptance. |  |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

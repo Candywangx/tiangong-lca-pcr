@@ -284,25 +284,7 @@ sync_with: pcr.en-US.md
 - 证据类型： Calculated from collection (`calculated_from_collection`)
 - 采集协议： `cp_establishment_records`
 
-###### 路线特定植保制剂（`establishment_crop_protection`）
-
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-记录建植期实际施用的每种制剂型除草剂、杀菌剂或虫害防治产品；本 PCR 不规定默认处理。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 身份解析：条件伞形卡延迟解析；前景记录决定制剂产品，搜索返回了多个不兼容或范围不同的农药产品。
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式： Foreground record (`foreground_record`)
-- 适用范围： Site-specific (`site_specific`)
-原始活动或阶段基准：per hectare newly established stand before stand-life annualization.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Crop cycle (`crop_cycle`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_establishment_records`
-- 来源： `uc-alfalfa-establishment`
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ##### 废物流
 
@@ -538,25 +520,7 @@ sync_with: pcr.en-US.md
 - 证据类型： Calculated from collection (`calculated_from_collection`)
 - 采集协议： `cp_stand_year_records`
 
-###### 路线特定植保制剂（`annual_crop_protection`）
-
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-按日期、有效成分、处理面积和再生期记录每种实际施用的制剂产品。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 身份解析：条件伞形卡延迟解析；前景记录决定制剂产品，搜索返回了多个不兼容或范围不同的农药产品。
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式： Foreground record (`foreground_record`)
-- 适用范围： Site-specific (`site_specific`)
-原始活动或阶段基准：per productive hectare-year before yield normalization.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Crop cycle (`crop_cycle`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_stand_year_records`
-- 来源： `uc-alfalfa-established-ipm`
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ##### 废物流
 
@@ -621,32 +585,85 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 田间直接与间接氮排放（`managed_soil_n_emissions`）
+###### 氧化亚氮，排放至空气（`managed_soil_n_emissions`）
 
-根据实际氮投入、固氮相关残体更新及其他适用受控土壤来源，按物种和接收环境计算氮排放；不得将此总括卡直接作为最终未分物种交换。
+仅在实测或所选适用方法确认该排放路径时，将氧化亚氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per productive hectare-year before yield normalization。
 
-- 选定流： Nitrogen emission species from managed soils
-- 流属性/单位： Mass / kg species
-- 身份解析：条件伞形卡延迟解析；最终交换必须按接收环境分别解析实际报告的 N2O、NO、NH3 和硝酸根。搜索仅为部分物种找到环境特定候选，没有兼容的一氧化氮候选，也不存在可代表整张卡的单一 UUID。
-- 数量规则： calculate separate N2O, NO, NH3 and nitrate-related exchanges using the selected inventory method and recorded activity data
-- 数值来源模式： Calculated value (`calculated_value`)
-- 适用范围： Site-specific (`site_specific`)
-原始活动或阶段基准：per productive hectare-year before yield normalization.
-
+- 选定流：氧化亚氮，排放至空气
+- 流属性/单位：质量 / kg N2O
+- 数量规则：实测或按方法计算氧化亚氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以 N2O-N 报告时，按 44/28 换算为 N2O 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： N input (`n_input`)
-- 证据类型： Method formula (`method_formula`)
-- 采集协议： `cp_stand_year_records`
-- 来源： `ipcc-2019-managed-soils`
-- 数量范围： Nonnegative method-result screen
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 1
-  - 单位： kg emitted species/kg relevant N input
-  - 基准： species-specific result per kilogram relevant nitrogen input before yield normalization
-  - 基准类型： N input (`n_input`)
-  - 证据类型： Method formula (`method_formula`)
-  - 来源： `ipcc-2019-managed-soils`
+- 基准类型：`n_input`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_stand_year_records`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 氨，排放至空气（`managed_soil_n_emissions_nh3`）
+
+仅在实测或所选适用方法确认该排放路径时，将氨，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per productive hectare-year before yield normalization。
+
+- 选定流：氨，排放至空气
+- 流属性/单位：质量 / kg NH3
+- 数量规则：实测或按方法计算氨，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`n_input`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_stand_year_records`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 一氧化氮，排放至空气（`managed_soil_n_emissions_no`）
+
+仅在实测或所选适用方法确认该排放路径时，将一氧化氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per productive hectare-year before yield normalization。
+
+- 选定流：一氧化氮，排放至空气
+- 流属性/单位：质量 / kg NO
+- 数量规则：实测或按方法计算一氧化氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`n_input`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_stand_year_records`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 硝酸根，排放至水体（`managed_soil_n_emissions_nitrate`）
+
+仅在实测或所选适用方法确认该排放路径时，将硝酸根，排放至水体作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per productive hectare-year before yield normalization。
+
+- 选定流：硝酸根，排放至水体
+- 流属性/单位：质量 / kg NO3-
+- 数量规则：实测或按方法计算硝酸根，排放至水体的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以硝酸盐氮报告时，按 62/14 换算为 NO3- 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`n_input`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_stand_year_records`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 化石二氧化碳，排放至空气（`managed_soil_n_emissions_co2_fossil`）
+
+仅在实测或所选适用方法确认该排放路径时，将化石二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per productive hectare-year before yield normalization。
+
+- 选定流：化石二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算化石二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`n_input`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_stand_year_records`
+- 来源：`ipcc-2019-managed-soils`
 
 ###### 改良剂相关二氧化碳（`amendment_co2`）
 
@@ -812,6 +829,8 @@ sync_with: pcr.en-US.md
 | `allocation_no_double_count` | all periods | Establishment, stand-year and cut records carry unique phase and period identifiers; each input, output, loss and field event may enter the normalized result once only. |  |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

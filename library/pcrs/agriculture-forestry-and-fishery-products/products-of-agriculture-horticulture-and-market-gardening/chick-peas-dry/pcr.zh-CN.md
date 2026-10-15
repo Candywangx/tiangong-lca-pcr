@@ -18,7 +18,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.chick-peas-dry` |
-| classification_refs | CPC 3.0 `01703` Chick peas, dry; mapping relation: exact |
+| classification_refs | CPC 3.0 `01703` Chick peas, dry; mapping relation: narrower |
 | covered_products | 农场门成熟干 desi 与 kabuli 鹰嘴豆籽粒；除农场清理、分级与必要稳定处理外未作加工 |
 | excluded_products | 青鲜鹰嘴豆；作为种子销售的播种用种；芽苗；面粉；分瓣；脱皮组分；罐藏或熟制产品；下游工业清理、粒径分级或加工 |
 | representative_product | 满足所声明农场门水分与等级或去向规格的成熟干鹰嘴豆籽粒（desi 或 kabuli） |
@@ -205,42 +205,9 @@ sync_with: pcr.en-US.md
 - 证据类型：`collected_record`
 - 采集协议：`cp_nutrient_inputs`
 
-###### 路线特定植保制剂（`crop_protection_inputs`）
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-记录实际施用的制剂农药、种子处理剂、干燥剂和根瘤菌接种剂，并保留产品身份、有效成分与处理面积。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
-原始活动或阶段基准：per ha of treated chickpea in one crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型：`crop_cycle`
-- 证据类型：`collected_record`
-- 采集协议：`cp_field_materials`
-- 来源：`ndsu-pulse-field-guide-2025`
-###### 路线特定非营养接种剂（`crop_protection_inputs_inoculant`）
-
-仅对实际施用的一种非营养接种剂使用这张独立卡。核实其制剂、施用事件和产品质量；植保制剂须另列。不得由本模板推定必然使用。
-
-记录实际施用的制剂农药、种子处理剂、干燥剂和根瘤菌接种剂，并保留产品身份、有效成分与处理面积。
-
-- 选定流：一种路线特定非营养接种剂；具体身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
-原始活动或阶段基准：per ha of treated chickpea in one crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型：`crop_cycle`
-- 证据类型：`collected_record`
-- 采集协议：`cp_field_materials`
-- 来源：`ndsu-pulse-field-guide-2025`
+处理材料必需记录：数据包完成前，按具体组成、产品身份、数量和使用事件逐项列出实际使用的田间处理产品或沤制助剂；不得发布通用处理材料交换，身份缺失时不得假定为零。
 
 ###### 灌溉供水（`irrigation_water`）
 
@@ -361,31 +328,85 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 按物质与接收环境划分的田间直接排放（`direct_field_emissions`）
+###### 氧化亚氮，排放至空气（`direct_field_emissions`）
 
-将每种实测或计算排放作为单独的具体基本流交换报告，包括前景边界内的管理土壤氮排放与燃料使用排放。
+仅在实测或所选适用方法确认该排放路径时，将氧化亚氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per ha of planted chickpea in one crop cycle。
 
-- 选定流：排放至空气、水体或土壤的已报告物质
-- 流属性/单位：Substance-specific mass / kg
-- 数量规则：使用声明的方法与因子根据采集的活动数据计算
+- 选定流：氧化亚氮，排放至空气
+- 流属性/单位：质量 / kg N2O
+- 数量规则：实测或按方法计算氧化亚氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以 N2O-N 报告时，按 44/28 换算为 N2O 一次。
 - 数值来源模式：`calculated_value`
 - 适用范围：`site_specific`
-原始活动或阶段基准：per ha of planted chickpea in one crop cycle.
-
 - 归一化基准：每声明的参考流
 - 基准类型：`crop_cycle`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_emissions`
 - 来源：`ipcc-2019-managed-soils`
-- 数量范围：暂定物质质量筛查
-  - 范围角色：`qa_guardrail`
-  - 下限：0
-  - 上限：1000
-  - 单位：kg reported substance/ha crop cycle
-  - 基准：each substance and receiving medium is screened separately; the interval is provisional
-  - 基准类型：`crop_cycle`
-  - 证据类型：`reasoned_estimate`
-  - 来源：
+
+###### 氨，排放至空气（`direct_field_emissions_nh3`）
+
+仅在实测或所选适用方法确认该排放路径时，将氨，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per ha of planted chickpea in one crop cycle。
+
+- 选定流：氨，排放至空气
+- 流属性/单位：质量 / kg NH3
+- 数量规则：实测或按方法计算氨，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`crop_cycle`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_emissions`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 一氧化氮，排放至空气（`direct_field_emissions_no`）
+
+仅在实测或所选适用方法确认该排放路径时，将一氧化氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per ha of planted chickpea in one crop cycle。
+
+- 选定流：一氧化氮，排放至空气
+- 流属性/单位：质量 / kg NO
+- 数量规则：实测或按方法计算一氧化氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`crop_cycle`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_emissions`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 硝酸根，排放至水体（`direct_field_emissions_nitrate`）
+
+仅在实测或所选适用方法确认该排放路径时，将硝酸根，排放至水体作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per ha of planted chickpea in one crop cycle。
+
+- 选定流：硝酸根，排放至水体
+- 流属性/单位：质量 / kg NO3-
+- 数量规则：实测或按方法计算硝酸根，排放至水体的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以硝酸盐氮报告时，按 62/14 换算为 NO3- 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`crop_cycle`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_emissions`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 化石二氧化碳，排放至空气（`direct_field_emissions_co2_fossil`）
+
+仅在实测或所选适用方法确认该排放路径时，将化石二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per ha of planted chickpea in one crop cycle。
+
+- 选定流：化石二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算化石二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`crop_cycle`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_emissions`
+- 来源：`ipcc-2019-managed-soils`
 
 ### 过程：收获、脱粒与田间捕集 (`harvest_threshing`)
 
@@ -927,6 +948,8 @@ sync_with: pcr.en-US.md
 | `allocation_run_integrity` | 批次、作业期与返工循环 | 在受影响批次之间仅分配一次共享清洁、启动与切换负荷；返工作业保留其负荷和物料关联，废料不得计为合格产出。本方法采用单一期间归属，共享负荷不跨越作物周期边界。 | `mass-balance-identity` |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

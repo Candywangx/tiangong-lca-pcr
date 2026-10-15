@@ -187,30 +187,7 @@ Raw activity or stage basis: per 1 kg accepted raw dried fruit.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_crop_records`
 
-###### Crop-protection products (`field_crop_protection_products`)
-
-Record every crop-protection product separately with its formulation, active-substance content, operation, and application lot.
-
-- Selected flow: Named crop-protection product
-- Flow property / unit: Mass / kg product and kg active substance as applicable
-- Amount rule: Measure each named product by operation and lot, retain its active-substance composition, and normalize to 1 kg net accepted raw dried fruit.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted raw dried fruit.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_records`
-- Sources: `ipcc-2019-managed-soils`
-- Range: Provisional crop-protection-product screening interval
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 3
-  - Unit: kg/kg
-  - Basis: crop-protection product mass per 1 kg accepted fruit; replace with route data
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water input (`field_water_energy`)
 
@@ -301,28 +278,37 @@ Direct crop emissions are calculated only from documented inputs and methods.
 #### Inputs
 ##### Product flows
 
-###### Harvest labour, machinery and collection service (`harvest_services`)
-Allocate measured fuel, electricity and service activities to the harvested lot.
-- Selected flow: harvest fuel, electricity and service
-- Flow property / unit: Energy / kWh or MJ
-- Amount rule: measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+###### Electricity, medium voltage (`harvest_services`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg accepted raw dried fruit.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_records`
 - Sources: `mass-balance-identity`
-- Range: Provisional non-negative screening interval
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kWh/kg
-  - Basis: broad first-pass screen per 1 kg accepted fruit; replace with route data
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`harvest_services_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg accepted raw dried fruit.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_harvest_records`
+- Sources: `mass-balance-identity`
 
 ##### Waste flows
 No generic waste input is presumed.
@@ -386,28 +372,53 @@ Raw activity or stage basis: per 1 kg accepted raw dried fruit.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Drying energy and service inputs (`drying_energy`)
-Separate sun/solar exposure, fan electricity, heater fuel, contracted drying and batch cleaning or changeover inputs.
-- Selected flow: electricity, fuel and drying service
-- Flow property / unit: Energy / kWh or MJ
-- Amount rule: measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+###### Electricity, medium voltage (`drying_energy`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg accepted raw dried fruit.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_drying_lot`
 - Sources: `unece-ddp-24-2013`
-- Range: Provisional non-negative screening interval
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kWh/kg
-  - Basis: broad first-pass screen per 1 kg accepted fruit; replace with route data
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`drying_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg accepted raw dried fruit.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_drying_lot`
+- Sources: `unece-ddp-24-2013`
+
+###### Purchased steam (`drying_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg accepted raw dried fruit.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_drying_lot`
+- Sources: `unece-ddp-24-2013`
 
 ##### Waste flows
 If a recovered heat or waste-derived fuel enters drying, record source and burden treatment; none is presumed.
@@ -472,28 +483,53 @@ Raw activity or stage basis: per 1 kg accepted raw dried fruit.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Sorting energy and materials (`sorting_inputs`)
-Record electricity, cleaning air, sacks or first transport containers when inside the gate.
-- Selected flow: sorting energy and first containers
-- Flow property / unit: Energy or Mass / kWh or kg
-- Amount rule: measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+###### Electricity, medium voltage (`sorting_inputs`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg accepted raw dried fruit.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_grade_records`
 - Sources: `mass-balance-identity`
-- Range: Provisional non-negative screening interval
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: kWh/kg
-  - Basis: broad first-pass screen per 1 kg accepted fruit; replace with route data
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Paperboard packaging (`sorting_inputs_paper`)
+
+Record Paperboard packaging only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses.
+Raw activity or stage basis: per 1 kg accepted raw dried fruit.
+
+- Selected flow: Paperboard packaging
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Paperboard packaging, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_grade_records`
+- Sources: `mass-balance-identity`
+
+###### Polyethylene packaging film (`sorting_inputs_film`)
+
+Record Polyethylene packaging film only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses.
+Raw activity or stage basis: per 1 kg accepted raw dried fruit.
+
+- Selected flow: Polyethylene packaging film
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Polyethylene packaging film, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_grade_records`
+- Sources: `mass-balance-identity`
 
 ##### Waste flows
 No waste input is presumed.
@@ -542,6 +578,8 @@ No generic elementary flow is presumed.
 Annual Capsicum and perennial Pimenta output years cannot share an undeclared denominator. For Pimenta, document bearing years and any establishment or shared orchard burden attribution. A batch dryer must record run-level input, output, cleaning and changeover; continuous drying must record period mass balance and stable operating window.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

@@ -107,6 +107,7 @@ Harvest, conditioning and grading are lot/batch processes. Link inputs, cleaning
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Crop-specific planting material
+- Flow property / unit: Mass / kg
 - Amount rule: measured type, count and mass; separate replants
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -214,6 +215,7 @@ Raw activity or stage basis: per established hectare over establishment.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Established nutmeg or cardamom stand capacity
+- Flow property / unit: Area / ha
 - Amount rule: successfully established area after mortality/replant reconciliation
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -343,23 +345,7 @@ Raw activity or stage basis: per productive hectare-year.
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Route-specific crop-protection formulation (`management_crop_protection`)
-
-Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template.
-
-Record each actual formulated crop-protection product separately for later UUID resolution.
-
-- Selected flow: One route-specific crop-protection formulation; exact product identity unresolved
-- Flow property / unit: Mass / kg product
-- Amount rule: Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per productive hectare-year.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_management`
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Electricity, medium voltage input (`management_energy`)
 
@@ -402,6 +388,7 @@ Raw activity or stage basis: per productive hectare-year.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Harvestable nutmeg fruit or cardamom capsules
+- Flow property / unit: Mass / kg
 - Amount rule: measured by crop and picking round; only the selected route is active
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -427,6 +414,7 @@ Raw activity or stage basis: per productive hectare-year.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Nitrous oxide to air
+- Flow property / unit: Mass / kg N2O
 - Amount rule: apply selected IPCC tier to collected synthetic, organic and residue N; convert N2O-N to N2O once using 44/28
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
@@ -459,6 +447,7 @@ Calculation method corresponds to Section 8 rules: `calc_soil_n2o`.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Harvestable nutmeg fruit or cardamom capsules
+- Flow property / unit: Mass / kg
 - Amount rule: measured mass entering the lot
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -486,6 +475,7 @@ Raw activity or stage basis: per harvest lot.
 This card records one intended output and its distinct hand-off.
 
 - Selected flow: Raw nutmeg seed with shell
+- Flow property / unit: Mass / kg
 - Amount rule: measured separately; inactive route output is zero
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -511,6 +501,7 @@ Raw activity or stage basis: per 1,000 kg harvest input.
 This card records one intended output and its distinct hand-off.
 
 - Selected flow: Raw mace aril
+- Flow property / unit: Mass / kg
 - Amount rule: measured separately; inactive route output is zero
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -536,6 +527,7 @@ Raw activity or stage basis: per 1,000 kg harvest input.
 This card records one intended output and its distinct hand-off.
 
 - Selected flow: Raw cardamom capsules
+- Flow property / unit: Mass / kg
 - Amount rule: measured separately; inactive route output is zero
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -563,6 +555,7 @@ Raw activity or stage basis: per 1,000 kg harvest input.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Route-specific harvest residues
+- Flow property / unit: Mass / kg
 - Amount rule: input minus intended outputs and measured losses; reclassify deliberately sold/used material as product
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
@@ -677,6 +670,7 @@ Raw activity or stage basis: per 1,000 kg raw spice entering conditioning.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Conditioned nutmeg seed, mace aril or cardamom capsules
+- Flow property / unit: Mass / kg
 - Amount rule: measured final mass with moisture, time/temperature, method and rejected fraction
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -704,6 +698,7 @@ Raw activity or stage basis: per 1,000 kg raw spice entering conditioning.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Water to air
+- Flow property / unit: Mass / kg
 - Amount rule: wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
@@ -736,6 +731,7 @@ Calculation method corresponds to Section 8 rules: `calc_conditioning_balance`.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Route-specific fresh or conditioned raw spice
+- Flow property / unit: Mass / kg
 - Amount rule: measured lot mass with crop, organ and moisture identity
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -789,6 +785,7 @@ Raw activity or stage basis: per reference flow.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Downgraded route-specific raw spice
+- Flow property / unit: Mass / kg
 - Amount rule: measured lower-grade mass with destination and revenue; never count as accepted mass
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -814,6 +811,7 @@ Raw activity or stage basis: per 1,000 kg grading input.
 This card records the declared flow and its quantity at this process boundary.
 
 - Selected flow: Route-specific spice rejects
+- Flow property / unit: Mass / kg
 - Amount rule: measured final reject mass; retain re-drying loops under the producing lot until disposition
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
@@ -844,6 +842,8 @@ Raw activity or stage basis: per 1,000 kg grading input.
 | `allocation_rejects` | downgrade/rework/waste | Return rework to its producing lot; keep burden with downgraded saleable product under the chosen co-product rule; give waste no avoided credit in an attributional dataset. | `iso-14044-2006` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

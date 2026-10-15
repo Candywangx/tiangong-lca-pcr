@@ -535,7 +535,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvested stalk."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvested stalk. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -548,32 +548,6 @@ process_inventory:
               collection_protocol_id: cp_sorghum_field_records
               source_ids: []
             ranges: []
-        - row_id: sorghum_crop_protection
-          role: "Crop-protection products"
-          name: "Crop-protection product applied to sweet sorghum (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "If applied, record each actual formulation and application separately in the data package; this umbrella card does not authorize UUID selection. Identity UUID unresolved. Raw activity or stage basis: per kg harvested stalk."
-          amount:
-            expression: "Record product mass applied by active ingredient, formulation, target, and date; record zero when none is used."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_sorghum_field_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.01"
-                unit: "kg formulated product/kg harvested stalk"
-                basis: "broad conditional screen, not a recommended application rate"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -784,7 +758,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity. Raw activity or stage basis: per kg dried leaves."
+          description: "Include this one exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier, water source or material in a separate atomic row with its own verified or explicitly unresolved identity. Raw activity or stage basis: per kg dried leaves. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and declared period; record not applicable only when the actual route excludes it."
             value_mode: "foreground_record"
@@ -797,32 +771,6 @@ process_inventory:
               collection_protocol_id: cp_stevia_field_records
               source_ids: []
             ranges: []
-        - row_id: stevia_crop_protection
-          role: "Crop-protection products"
-          name: "Crop-protection product applied to stevia (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "If used, record the actual crop-protection formulation and application; no generic UUID is assigned. Raw activity or stage basis: per kg dried leaves."
-          amount:
-            expression: "Record product mass, formulation, active ingredient, target, date, and treated area; report zero when unused."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_stevia_field_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.01"
-                unit: "kg formulated product/kg dried leaves"
-                basis: "broad conditional screen, not a recommended application rate"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -1148,7 +1096,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:37643ee0d240bab1dea598c163465c6eabcb8600fbde79499add973a79d08b1b"
+  source_sha256: "sha256:94fd02924af43648b32ad42bc4483529be9796b47d293b1afa2e6d1f2e90e8d1"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5444"
@@ -1199,16 +1147,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47366"
+    - unit_id: "normative_46207"
       family: "allocation"
       span:
         start:
-          offset: 47366
-          line: 790
+          offset: 46207
+          line: 750
           column: 1
         end:
-          offset: 48259
-          line: 794
+          offset: 47100
+          line: 754
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nInventory one crop branch only. If one stand or field produces multiple intended products in the declared period, first test subdivision by field, operation, harvest, or lot. If subdivision is not feasible, choose and justify a physical or economic allocation driver consistent with the question, document all products and hand-offs, and test a material alternative. Maple timber, sorghum grain, and stevia stems are co-products only when they are intentionally harvested and leave the process as useful products. Leaves, tops, roots, weeds, rejected material, sap leakage, and field losses are residues or waste unless a real use and hand-off are documented. Record multi-year assets and shared equipment once, allocate them by measured productive area, use, tap-season, or machine time, and prevent duplicate attribution across periods or outputs.\n\n"
       headings:
@@ -1227,12 +1175,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47366
-              line: 790
+              offset: 46207
+              line: 750
               column: 1
             end:
-              offset: 47406
-              line: 790
+              offset: 46247
+              line: 750
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1247,16 +1195,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_55476"
+    - unit_id: "normative_55082"
       family: "validation"
       span:
         start:
-          offset: 55476
-          line: 828
+          offset: 55082
+          line: 790
           column: 1
         end:
-          offset: 57225
-          line: 840
+          offset: 56831
+          line: 802
           column: 1
       markdown: "## 9. Validation Rules\n\n- `validate_single_branch`: Exactly one route, species, plant part, intended purpose, product state, and hand-off are present for each dataset.\n- `validate_reference_identity`: Keep the reference product UUID blank until an exact raw product identity and mass property/unit group are confirmed; never use grain, syrup, sugar, or extracted sweetener as a proxy.\n- `validate_process_chain`: Match the selected route to its establishment/management, harvest or tapping, and declared primary-conditioning records; omit downstream extraction and manufacture.\n- `validate_mass_and_moisture`: Reconcile harvested or collected mass, fresh/dry mass, moisture, losses, rejects, and coproducts; no double counting.\n- `validate_uuid_resolution`: Before a final generated exchange, expand each parameterized card from actual records and verify a concrete compatible UUID, property, and unit. Resolve uncovered inputs and outputs independently; retain unresolved identities in this candidate.\n- `validate_period_allocation`: Reconcile establishment, production, replacements, repeated cuts/tapping, and termination; prevent an asset or field burden from being attributed twice.\n- `validate_coproduct_and_reject`: Trace each intended coproduct, downgraded product, rework, residue, and waste to one destination; rejected material is not accepted reference output.\n- `validate_extraction_exclusion`: Reject syrup concentration, sorghum juice/sweetener extraction or fermentation, and steviol-glycoside extraction/refinement from the declared boundary.\n- `validate_range_and_quality`: Check every card range, unit, basis, source scope, and foreground value; investigate exceedances without treating provisional ranges as conformance limits.\n\n"
       headings:
@@ -1275,12 +1223,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 55476
-              line: 828
+              offset: 55082
+              line: 790
               column: 1
             end:
-              offset: 55498
-              line: 828
+              offset: 55104
+              line: 790
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1377,132 +1325,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_47366"
+      unit_id: "normative_46207"
       source_span:
         start:
-          offset: 47408
-          line: 792
+          offset: 46249
+          line: 752
           column: 1
         end:
-          offset: 48257
-          line: 792
+          offset: 47098
+          line: 752
           column: 850
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 55500
-          line: 830
+          offset: 55106
+          line: 792
           column: 1
         end:
-          offset: 55643
-          line: 830
+          offset: 55249
+          line: 792
           column: 144
     - pointer: "/validation_rules/1"
       rule_id: "validation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 55644
-          line: 831
+          offset: 55250
+          line: 793
           column: 1
         end:
-          offset: 55860
-          line: 831
+          offset: 55466
+          line: 793
           column: 217
     - pointer: "/validation_rules/2"
       rule_id: "validation_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 55861
-          line: 832
+          offset: 55467
+          line: 794
           column: 1
         end:
-          offset: 56053
-          line: 832
+          offset: 55659
+          line: 794
           column: 193
     - pointer: "/validation_rules/3"
       rule_id: "validation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 56054
-          line: 833
+          offset: 55660
+          line: 795
           column: 1
         end:
-          offset: 56203
-          line: 833
+          offset: 55809
+          line: 795
           column: 150
     - pointer: "/validation_rules/4"
       rule_id: "validation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 56204
-          line: 834
+          offset: 55810
+          line: 796
           column: 1
         end:
-          offset: 56478
-          line: 834
+          offset: 56084
+          line: 796
           column: 275
     - pointer: "/validation_rules/5"
       rule_id: "validation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 56479
-          line: 835
+          offset: 56085
+          line: 797
           column: 1
         end:
-          offset: 56663
-          line: 835
+          offset: 56269
+          line: 797
           column: 185
     - pointer: "/validation_rules/6"
       rule_id: "validation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 56664
-          line: 836
+          offset: 56270
+          line: 798
           column: 1
         end:
-          offset: 56848
-          line: 836
+          offset: 56454
+          line: 798
           column: 185
     - pointer: "/validation_rules/7"
       rule_id: "validation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 56849
-          line: 837
+          offset: 56455
+          line: 799
           column: 1
         end:
-          offset: 57035
-          line: 837
+          offset: 56641
+          line: 799
           column: 187
     - pointer: "/validation_rules/8"
       rule_id: "validation_rule_9"
       identity_kind: "snapshot_local"
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 57036
-          line: 838
+          offset: 56642
+          line: 800
           column: 1
         end:
-          offset: 57223
-          line: 838
+          offset: 56829
+          line: 800
           column: 188
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1531,27 +1479,27 @@ normative_context:
           column: 159
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47366"
+      unit_id: "normative_46207"
       source_span:
         start:
-          offset: 47366
-          line: 790
+          offset: 46207
+          line: 750
           column: 1
         end:
-          offset: 47406
-          line: 790
+          offset: 46247
+          line: 750
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_55476"
+      unit_id: "normative_55082"
       source_span:
         start:
-          offset: 55476
-          line: 828
+          offset: 55082
+          line: 790
           column: 1
         end:
-          offset: 55498
-          line: 828
+          offset: 55104
+          line: 790
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1560,5 +1508,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:37643ee0d240bab1dea598c163465c6eabcb8600fbde79499add973a79d08b1b"
-  generated_content_sha256: "sha256:7811b9a57539a269ab1d0cb48eefb706f91fe2822afe1ef61d57d9942b8499fc"
+    sha256: "sha256:94fd02924af43648b32ad42bc4483529be9796b47d293b1afa2e6d1f2e90e8d1"
+  generated_content_sha256: "sha256:273e18b5db7f3595b409ca8b5eee895265411bfb4618183829ab012b89f69c10"

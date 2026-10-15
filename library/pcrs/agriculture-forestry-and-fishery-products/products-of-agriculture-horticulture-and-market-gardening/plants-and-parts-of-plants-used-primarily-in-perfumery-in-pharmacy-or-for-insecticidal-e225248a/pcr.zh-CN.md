@@ -191,24 +191,7 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_cultivation_inputs`
 
-###### 路线特定植保制剂（`crop_protection_inputs`）
-
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-按商品身份、活性成分和剂型记录各除草剂、杀虫剂、杀菌剂或生物防治产品；实际产品由田间记录确定。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：per treated area and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 作物周期 (`crop_cycle`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_cultivation_inputs`
-- 来源: who-gacp-medicinal-plants
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 灌溉水供应 (`irrigation_water`)
 
@@ -235,31 +218,36 @@ sync_with: pcr.en-US.md
   - 基准类型: 作物周期 (`crop_cycle`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
   - 来源:
-###### 栽培机械能源供应 (`cultivation_energy`)
+###### 中压电力（`cultivation_energy`）
 
-记录整地、种植、田间管理、灌溉辅助和其他田间作业实际使用的燃料、电力或其他能源载体。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per cultivated area and crop cycle。
 
-- 选定流: Cultivation machinery fuel or energy supply
-- 流属性/单位: Energy or carrier-native property / MJ, kWh, kg or L
-- 数量规则: measured carrier consumption attributed to the cultivated lot
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：per cultivated area and crop cycle.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: 作物周期 (`crop_cycle`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_energy_records`
-- 来源:
-- 数量范围: 暂定 QA 校验范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 30000
-  - 单位: MJ/ha crop cycle
-  - 基准: all cultivation energy carriers converted to MJ for the QA screen
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-  - 来源:
+- 基准类型：`crop_cycle`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
+
+###### 柴油（`cultivation_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per cultivated area and crop cycle。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`crop_cycle`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
+
 ##### 废物流
 
 ##### 基本流
@@ -396,56 +384,24 @@ sync_with: pcr.en-US.md
   - 基准类型: 作物周期 (`crop_cycle`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
   - 来源:
-###### 磷物质排放至受纳水体 (`phosphorus_to_water`)
+###### 磷酸根，排放至水体（`phosphorus_to_water`）
 
-记录测量或模型化的磷形态和受纳水体子环境；总磷与磷酸盐不得在无换算时互换。
+仅在实测或所选适用方法确认该排放路径时，将磷酸根，排放至水体作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：per cultivated area and crop cycle。
 
-- 选定流: Reported phosphorus substance to reported water compartment
-- 流属性/单位: Mass / kg reported substance
-- 数量规则: measured or modelled phosphorus loss by species and compartment
-- 数值来源模式: 计算值 (`calculated_value`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：per cultivated area and crop cycle.
-
+- 选定流：磷酸根，排放至水体
+- 流属性/单位：质量 / kg PO4
+- 数量规则：实测或按方法计算磷酸根，排放至水体的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以元素磷报告时，按 95/31 换算为 PO4 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: 作物周期 (`crop_cycle`)
-- 证据类型: 由采集数据计算 (`calculated_from_collection`)
-- 采集协议: `cp_field_emissions`
-- 来源: who-gacp-medicinal-plants
-- 数量范围: 暂定 QA 校验范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 200
-  - 单位: kg reported P substance/ha crop cycle
-  - 基准: reported phosphorus substance per cultivated hectare
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-  - 来源:
-###### 按子环境记录的植保活性物质 (`crop_protection_releases`)
+- 基准类型：`crop_cycle`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_emissions`
+- 来源：`who-gacp-medicinal-plants`
 
-根据施用记录将此总括卡展开为具体活性物质和受纳子环境交换；不得以未指定农药 UUID 替代。
+物质释放必需记录：依据实际记录的制剂及所选归趋方法推导每项适用的作物保护物质释放。每一种已识别物质和接收区室分别建立交换，保留化学形态及物质质量基准。物质或区室未解析属于完整性缺口，不得用通用基本流或假定为零替代。
 
-- 选定流: Reported active substance to reported compartment
-- 流属性/单位: Mass / kg active substance
-- 数量规则: calculated release by active substance and compartment
-- 数值来源模式: 计算值 (`calculated_value`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：per treated area and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 作物周期 (`crop_cycle`)
-- 证据类型: 由采集数据计算 (`calculated_from_collection`)
-- 采集协议: `cp_field_emissions`
-- 来源: who-gacp-medicinal-plants
-- 数量范围: 暂定 QA 校验范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100
-  - 单位: kg active substance/ha crop cycle
-  - 基准: sum of modelled releases without merging compartments
-  - 基准类型: 作物周期 (`crop_cycle`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-  - 来源:
 ### 过程：野生采集与资源移除 (`wild_collection`)
 
 #### 输入
@@ -624,31 +580,54 @@ sync_with: pcr.en-US.md
   - 基准类型: 参考流 (`reference_flow`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
   - 来源:
-###### 调制与干燥能源供应 (`conditioning_energy`)
+###### 中压电力（`conditioning_energy`）
 
-记录清洁、切割、分选、通风、干燥和稳定化实际使用的电力、热或燃料，包括与批次相关的清洁和换批能源。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1,000 kg accepted product。
 
-- 选定流: Conditioning and drying energy supply
-- 流属性/单位: Energy or carrier-native property / MJ, kWh, kg or L
-- 数量规则: measured carrier use assigned to the run or period
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 技术特定 (`technology_specific`)
-原始活动或阶段基准：per 1,000 kg accepted product.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: 参考流 (`reference_flow`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_energy_records`
-- 来源: who-gacp-medicinal-plants
-- 数量范围: 暂定 QA 校验范围
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100000
-  - 单位: MJ/1000 kg accepted product
-  - 基准: all conditioning carriers converted to MJ
-  - 基准类型: 参考流 (`reference_flow`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-  - 来源:
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
+- 来源：`who-gacp-medicinal-plants`
+
+###### 柴油（`conditioning_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1,000 kg accepted product。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
+- 来源：`who-gacp-medicinal-plants`
+
+###### 购入蒸汽（`conditioning_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per 1,000 kg accepted product。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_records`
+- 来源：`who-gacp-medicinal-plants`
+
 ##### 废物流
 
 ##### 基本流
@@ -824,6 +803,8 @@ sync_with: pcr.en-US.md
 | `allocation_rework_and_runs` | 批次、连续期、返工与换批 | 将投入、产出、清洁和换批事件关联到一次运行或报告期；返工保留原产生节点负担并只计新增操作，防止共享运行负担重复计算。 | `who-gacp-medicinal-plants` |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

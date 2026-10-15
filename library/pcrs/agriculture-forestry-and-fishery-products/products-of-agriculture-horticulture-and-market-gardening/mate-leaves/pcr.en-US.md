@@ -106,20 +106,126 @@ Biological production creates harvestable foliage; cutting is an independent har
 
 ##### Product flows
 
-###### Stand management materials (`mate_management_inputs`)
+Required management inventory: record actual planting stock, each nutrient product, each crop-protection formulation, water and each carrier separately by stand, phase and period. The following conditional cards do not presume use; add every other actual material with its specific identity before completing the package.
 
-Record actual planting stock, nutrient and crop-protection products, irrigation supply, fuel and electricity by stand and phase; classify each actual exchange separately at dataset construction.
+###### Yerba mate nursery plants (`mate_management_inputs`)
 
-- Selected flow: site-specific management products; UUID unresolved
-- Flow property / unit: Mass, Volume or Energy / kg, m3, L or kWh
-- Amount rule: dated purchase, application and meter records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+Record Yerba mate nursery plants only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. Attribute establishment and replacement only across the serviced production periods; established stands without such an event do not receive an invented input.
 Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
 
+- Selected flow: Yerba mate nursery plants
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Yerba mate nursery plants, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Fertilizer, urea (`mate_management_inputs_urea`)
+
+Record Fertilizer, urea only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Fertilizer, urea, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Fertilizer, monoammonium phosphate (`mate_management_inputs_map`)
+
+Record Fertilizer, monoammonium phosphate only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Fertilizer, monoammonium phosphate, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Fertilizer, potassium chloride (`mate_management_inputs_kcl`)
+
+Record Fertilizer, potassium chloride only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Fertilizer, potassium chloride, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Cattle manure, as applied (`mate_management_inputs_manure`)
+
+Record Cattle manure, as applied only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured net quantity of Cattle manure, as applied, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Irrigation water (`mate_management_inputs_irrigation`)
+
+Record Irrigation water only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: Measured net quantity of Irrigation water, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Electricity, medium voltage (`mate_management_inputs_electricity`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_site_year`
+
+###### Diesel fuel (`mate_management_inputs_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per site-year and 1 kg accepted dry maté.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_mate_site_year`
 
 ##### Waste flows
@@ -164,20 +270,49 @@ Calculate named field emissions by substance and receiving medium only with docu
 
 ##### Product flows
 
-###### Harvest context and service (`mate_harvest_service`)
+###### Harvest-ready fresh yerba mate foliage (`mate_harvest_service`)
 
-Link the identified stand; record cutting fuel and contracted harvest service where used.
-
-- Selected flow: harvestable foliage and identified energy or service; UUID unresolved
-- Flow property / unit: Mass or Energy / kg, L or kWh
-- Amount rule: event mass, fuel and service record
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Harvest-ready fresh yerba mate foliage only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per harvest lot.
 
+- Selected flow: Harvest-ready fresh yerba mate foliage
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Harvest-ready fresh yerba mate foliage, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_harvest_lot`
+
+###### Electricity, medium voltage (`mate_harvest_service_electricity`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per harvest lot.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_harvest_lot`
+
+###### Diesel fuel (`mate_harvest_service_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per harvest lot.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `crop_cycle`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_mate_harvest_lot`
 
 ##### Waste flows
@@ -370,20 +505,64 @@ Record named direct combustion emissions to air and any ash or wastewater with a
 
 ##### Product flows
 
-###### Treated foliage and dryer services (`mate_drying_inputs`)
+###### Sapeco-treated yerba mate foliage (`mate_drying_inputs`)
 
-Record the usable heat-treated input and all actual heat, fuel, electricity and shared dryer services.
-
-- Selected flow: sapeco-treated foliage and specified dryer energy; UUID unresolved
-- Flow property / unit: Mass or Energy / kg, MJ, L or kWh
-- Amount rule: paired input mass and dryer energy meter
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Sapeco-treated yerba mate foliage only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per dryer lot.
 
+- Selected flow: Sapeco-treated yerba mate foliage
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Sapeco-treated yerba mate foliage, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process input (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_processing_lot`
+
+###### Electricity, medium voltage (`mate_drying_inputs_electricity`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per dryer lot.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_processing_lot`
+
+###### Diesel fuel (`mate_drying_inputs_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per dryer lot.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_processing_lot`
+
+###### Purchased steam (`mate_drying_inputs_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per dryer lot.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_mate_processing_lot`
 
 ##### Waste flows
@@ -428,20 +607,49 @@ Record water vapour and named direct dryer emissions only where relevant to the 
 
 ##### Product flows
 
-###### Dry foliage and grading service (`mate_grading_inputs`)
+###### Dried yerba mate foliage (`mate_grading_inputs`)
 
-Receive the dry lot once, and record optional coarse breaking and actual shared grader or store energy.
-
-- Selected flow: dry maté foliage and documented service; UUID unresolved
-- Flow property / unit: Mass or Energy / kg or kWh
-- Amount rule: input weight, operating time and meter record
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Record Dried yerba mate foliage only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle.
 Raw activity or stage basis: per graded lot.
 
+- Selected flow: Dried yerba mate foliage
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Dried yerba mate foliage, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process input (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_processing_lot`
+
+###### Electricity, medium voltage (`mate_grading_inputs_electricity`)
+
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per graded lot.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_mate_processing_lot`
+
+###### Diesel fuel (`mate_grading_inputs_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per graded lot.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_mate_processing_lot`
 
 ##### Waste flows
@@ -523,6 +731,8 @@ Record dust emissions only when their substance and receiving medium are specifi
 | `allocation_05` | rejects and rework | Keep burdens with the producing lot until documented sale, recovery, treatment or disposal; rework cannot create a second accepted output or duplicate energy input. | `iso-14044-2006` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

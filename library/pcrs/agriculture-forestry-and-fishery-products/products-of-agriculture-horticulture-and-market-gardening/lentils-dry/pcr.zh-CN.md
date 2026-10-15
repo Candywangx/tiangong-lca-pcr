@@ -16,7 +16,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.lentils-dry |
-| classification_refs | CPC 3.0: 01704 Lentils, dry; mapping relation: exact |
+| classification_refs | CPC 3.0: 01704 Lentils, dry; mapping relation: narrower |
 | covered_products | 农场门成熟干燥完整Lens culinaris粮粒 |
 | excluded_products | 青鲜蔬菜扁豆；种用商品；芽菜；脱皮/分瓣扁豆；面粉；熟制及下游加工产品 |
 | representative_product | 成熟干燥完整扁豆粮粒 |
@@ -199,24 +199,7 @@ sync_with: pcr.en-US.md
 - 证据类型: 采集记录 (`collected_record`)
 - 采集协议: `cp_field_inputs`
 
-###### 路线特定植保制剂（`crop_protection_products`）
-
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-按关联田块或批次记录该流，并保留其去向和交接。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 场址特定 (`site_specific`)
-原始活动或阶段基准：每作物周期每种植公顷.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 作物周期 (`crop_cycle`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_field_inputs`
-- 来源: `manitoba-lentils-production-management`
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 灌溉水 (`irrigation_water`)
 
@@ -782,31 +765,53 @@ sync_with: pcr.en-US.md
   - 证据类型: 方法公式 (`method_formula`)
   - 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
 
-###### 稳定化能源 (`stabilization_energy`)
+###### 中压电力（`stabilization_energy`）
 
-按关联田块或批次记录该流，并保留其去向和交接。
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每1,000 kg最终干扁豆。
 
-- 选定流: 通风或干燥能源
-- 流属性/单位: Energy / MJ
-- 数量规则: 按批次计量风机电力和干燥燃料
-- 数值来源模式: 计算值 (`calculated_value`)
-- 适用范围: 技术特定 (`technology_specific`)
-原始活动或阶段基准：每1,000 kg最终干扁豆.
-
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: 基准流 (`reference_flow`)
-- 证据类型: 依据采集计算 (`calculated_from_collection`)
-- 采集协议: `cp_energy_operations`
-- 来源: `ndsu-pulse-field-guide-2019`
-- 数量范围: 完整定量QA范围
-  - 范围角色: QA校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 5000
-  - 单位: MJ/1000 kg final
-  - 基准: 每1,000 kg最终干扁豆的风机和干燥能源
-  - 基准类型: 基准流 (`reference_flow`)
-  - 证据类型: 外部来源 (`external_source`)
-  - 来源: `ndsu-pulse-field-guide-2019`
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_operations`
+- 来源：`ndsu-pulse-field-guide-2019`
+
+###### 柴油（`stabilization_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每1,000 kg最终干扁豆。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_operations`
+- 来源：`ndsu-pulse-field-guide-2019`
+
+###### 购入蒸汽（`stabilization_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每1,000 kg最终干扁豆。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_operations`
+- 来源：`ndsu-pulse-field-guide-2019`
 
 ##### 废物流
 
@@ -968,6 +973,8 @@ sync_with: pcr.en-US.md
 | `allocation_rework` | returned material | 保留既有负荷，仅增加返工增量，并在最终去向仅计量一次。 | `mass-balance-identity` |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

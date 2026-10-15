@@ -252,7 +252,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per 1 kg accepted raw dried fruit. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -265,33 +265,6 @@ process_inventory:
               collection_protocol_id: cp_crop_records
               source_ids: []
             ranges: []
-        - row_id: field_crop_protection_products
-          role: "Crop-protection products"
-          name: "Named crop-protection product"
-          flow_type: "product"
-          property_unit: "Mass / kg product and kg active substance as applicable"
-          description: "Record every crop-protection product separately with its formulation, active-substance content, operation, and application lot. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
-          amount:
-            expression: "Measure each named product by operation and lot, retain its active-substance composition, and normalize to 1 kg net accepted raw dried fruit."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_records
-              source_ids:
-                - ipcc-2019-managed-soils
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "3"
-                unit: "kg/kg"
-                basis: "crop-protection product mass per 1 kg accepted fruit; replace with route data"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: field_water_energy
           role: "Irrigation water input"
           name: "Irrigation water"
@@ -388,13 +361,13 @@ process_inventory:
     inputs:
       product:
         - row_id: harvest_services
-          role: "Harvest labour, machinery and collection service"
-          name: "harvest fuel, electricity and service"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy / kWh or MJ"
-          description: "Allocate measured fuel, electricity and service activities to the harvested lot. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
           amount:
-            expression: "measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -405,15 +378,26 @@ process_inventory:
               collection_protocol_id: cp_harvest_records
               source_ids:
                 - mass-balance-identity
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "10"
-                unit: "kWh/kg"
-                basis: "broad first-pass screen per 1 kg accepted fruit; replace with route data"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: harvest_services_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
       waste:
         []
       elementary:
@@ -483,13 +467,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: drying_energy
-          role: "Drying energy and service inputs"
-          name: "electricity, fuel and drying service"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy / kWh or MJ"
-          description: "Separate sun/solar exposure, fan electricity, heater fuel, contracted drying and batch cleaning or changeover inputs. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
           amount:
-            expression: "measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -500,15 +484,45 @@ process_inventory:
               collection_protocol_id: cp_drying_lot
               source_ids:
                 - unece-ddp-24-2013
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "20"
-                unit: "kWh/kg"
-                basis: "broad first-pass screen per 1 kg accepted fruit; replace with route data"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: drying_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_lot
+              source_ids:
+                - unece-ddp-24-2013
+            ranges: []
+        - row_id: drying_energy_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          amount:
+            expression: "Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_lot
+              source_ids:
+                - unece-ddp-24-2013
+            ranges: []
       waste:
         []
       elementary:
@@ -578,13 +592,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: sorting_inputs
-          role: "Sorting energy and materials"
-          name: "sorting energy and first containers"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Energy or Mass / kWh or kg"
-          description: "Record electricity, cleaning air, sacks or first transport containers when inside the gate. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
           amount:
-            expression: "measure by named operation and lot, then normalize to 1 kg net accepted raw dried fruit"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -595,15 +609,45 @@ process_inventory:
               collection_protocol_id: cp_grade_records
               source_ids:
                 - mass-balance-identity
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "5"
-                unit: "kWh/kg"
-                basis: "broad first-pass screen per 1 kg accepted fruit; replace with route data"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: sorting_inputs_paper
+          role: "Paperboard packaging"
+          name: "Paperboard packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Paperboard packaging only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          amount:
+            expression: "Measured net quantity of Paperboard packaging, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grade_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: sorting_inputs_film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyethylene packaging film only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses. Raw activity or stage basis: per 1 kg accepted raw dried fruit."
+          amount:
+            expression: "Measured net quantity of Polyethylene packaging film, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grade_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
       waste:
         []
       elementary:
@@ -813,7 +857,7 @@ data_sources:
     used_for: "Drying mass balance and reconciliation"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f745fa3eb9c1cc62cc712ca718518881b6557959c622ad414e6fb4661dc02552"
+  source_sha256: "sha256:873171fad1f5105ce82e16d3747a202d374af47dd0ff51ecc97c177306dac42a"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5585"
@@ -864,16 +908,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_31707"
+    - unit_id: "normative_35748"
       family: "allocation"
       span:
         start:
-          offset: 31707
-          line: 535
+          offset: 35748
+          line: 571
           column: 1
         end:
-          offset: 33066
-          line: 544
+          offset: 37107
+          line: 580
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_primary` | crop and drying lots | Attribute measured operations to botanical route, site, season and batch first; normalize all burdens to net accepted whole dried output. | `mass-balance-identity` |\n| `allocation_offgrade` | downgraded fruit | Keep off-grade but marketable fruit distinct. Prefer subdivision by grade; if a genuine co-product cannot be subdivided, document the chosen physical or economic allocation and prices/quantities. | `mass-balance-identity` |\n| `allocation_rework` | re-dried or resorted fruit | Link rework energy and losses to the original batch; count the accepted mass only at final exit and never double count shared-run or changeover burdens. | `mass-balance-identity` |\n| `allocation_residue` | stems, rejects, residues | Record fate and any recovery credit explicitly; do not assign product burden or avoided burden by default. | `mass-balance-identity` |\nAnnual Capsicum and perennial Pimenta output years cannot share an undeclared denominator. For Pimenta, document bearing years and any establishment or shared orchard burden attribution. A batch dryer must record run-level input, output, cleaning and changeover; continuous drying must record period mass balance and stable operating window.\n\n"
       headings:
@@ -892,12 +936,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 31707
-              line: 535
+              offset: 35748
+              line: 571
               column: 1
             end:
-              offset: 31747
-              line: 535
+              offset: 35788
+              line: 571
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -912,16 +956,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_37132"
+    - unit_id: "normative_41938"
       family: "validation"
       span:
         start:
-          offset: 37132
-          line: 568
+          offset: 41938
+          line: 606
           column: 1
         end:
-          offset: 38241
-          line: 577
+          offset: 43047
+          line: 615
           column: 1
       markdown: "## 9. Validation Rules\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_scope` | product identity | Reject green fresh fruit, Piper pepper, and crushed/ground or otherwise processed dried spice as this reference product. | `un-cpc-3-exp-2025` |\n| `validation_route` | process map | Verify Capsicum/Pimenta route, cultivation inclusion, sun/solar or mechanical stages, and batch or continuous attribution against current records. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `validation_moisture` | drying | Check measured incoming/outgoing moisture and applicable product specification separately by species and market; do not apply one generic threshold. | `codex-cxs-353-2022`; `codex-cxs-358-2024` |\n| `validation_balance` | drying and sorting | Reconcile dry matter and water; accepted output must exclude rejected, downgraded and reworked-in-process mass until final exit. | `mass-balance-identity` |\n| `validation_identity_gap` | reference flow | A dataset may not claim a fixed Tiangong reference flow while its UUID remains unresolved. | `un-cpc-3-exp-2025` |\n\n"
       headings:
@@ -940,12 +984,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 37132
-              line: 568
+              offset: 41938
+              line: 606
               column: 1
             end:
-              offset: 37154
-              line: 568
+              offset: 41960
+              line: 606
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1029,119 +1073,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_primary"
       identity_kind: "explicit"
-      unit_id: "normative_31707"
+      unit_id: "normative_35748"
       source_span:
         start:
-          offset: 31819
-          line: 538
+          offset: 35860
+          line: 574
           column: 1
         end:
-          offset: 32032
-          line: 538
+          offset: 36073
+          line: 574
           column: 214
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_offgrade"
       identity_kind: "explicit"
-      unit_id: "normative_31707"
+      unit_id: "normative_35748"
       source_span:
         start:
-          offset: 32033
-          line: 539
+          offset: 36074
+          line: 575
           column: 1
         end:
-          offset: 32301
-          line: 539
+          offset: 36342
+          line: 575
           column: 269
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_31707"
+      unit_id: "normative_35748"
       source_span:
         start:
-          offset: 32302
-          line: 540
+          offset: 36343
+          line: 576
           column: 1
         end:
-          offset: 32535
-          line: 540
+          offset: 36576
+          line: 576
           column: 234
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_residue"
       identity_kind: "explicit"
-      unit_id: "normative_31707"
+      unit_id: "normative_35748"
       source_span:
         start:
-          offset: 32536
-          line: 541
+          offset: 36577
+          line: 577
           column: 1
         end:
-          offset: 32722
-          line: 541
+          offset: 36763
+          line: 577
           column: 187
     - pointer: "/validation_rules/0"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_37132"
+      unit_id: "normative_41938"
       source_span:
         start:
-          offset: 37226
-          line: 571
+          offset: 42032
+          line: 609
           column: 1
         end:
-          offset: 37412
-          line: 571
+          offset: 42218
+          line: 609
           column: 187
     - pointer: "/validation_rules/1"
       rule_id: "validation_route"
       identity_kind: "explicit"
-      unit_id: "normative_37132"
+      unit_id: "normative_41938"
       source_span:
         start:
-          offset: 37413
-          line: 572
+          offset: 42219
+          line: 610
           column: 1
         end:
-          offset: 37643
-          line: 572
+          offset: 42449
+          line: 610
           column: 231
     - pointer: "/validation_rules/2"
       rule_id: "validation_moisture"
       identity_kind: "explicit"
-      unit_id: "normative_37132"
+      unit_id: "normative_41938"
       source_span:
         start:
-          offset: 37644
-          line: 573
+          offset: 42450
+          line: 611
           column: 1
         end:
-          offset: 37874
-          line: 573
+          offset: 42680
+          line: 611
           column: 231
     - pointer: "/validation_rules/3"
       rule_id: "validation_balance"
       identity_kind: "explicit"
-      unit_id: "normative_37132"
+      unit_id: "normative_41938"
       source_span:
         start:
-          offset: 37875
-          line: 574
+          offset: 42681
+          line: 612
           column: 1
         end:
-          offset: 38077
-          line: 574
+          offset: 42883
+          line: 612
           column: 203
     - pointer: "/validation_rules/4"
       rule_id: "validation_identity_gap"
       identity_kind: "explicit"
-      unit_id: "normative_37132"
+      unit_id: "normative_41938"
       source_span:
         start:
-          offset: 38078
-          line: 575
+          offset: 42884
+          line: 613
           column: 1
         end:
-          offset: 38239
-          line: 575
+          offset: 43045
+          line: 613
           column: 162
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1170,39 +1214,39 @@ normative_context:
           column: 189
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_31707"
+      unit_id: "normative_35748"
       source_span:
         start:
-          offset: 31707
-          line: 535
+          offset: 35748
+          line: 571
           column: 1
         end:
-          offset: 31747
-          line: 535
+          offset: 35788
+          line: 571
           column: 41
     - code: "UNSUPPORTED_NORMATIVE_BLOCK"
       message: "Empty normative rule cell is retained in complete H2 source without creating a flat rule."
-      unit_id: "normative_31707"
+      unit_id: "normative_35748"
       source_span:
         start:
-          offset: 32723
-          line: 542
+          offset: 36764
+          line: 578
           column: 1
         end:
-          offset: 33064
-          line: 542
+          offset: 37105
+          line: 578
           column: 342
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_37132"
+      unit_id: "normative_41938"
       source_span:
         start:
-          offset: 37132
-          line: 568
+          offset: 41938
+          line: 606
           column: 1
         end:
-          offset: 37154
-          line: 568
+          offset: 41960
+          line: 606
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1211,5 +1255,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f745fa3eb9c1cc62cc712ca718518881b6557959c622ad414e6fb4661dc02552"
-  generated_content_sha256: "sha256:2f920745dd1a65270a214ec13caced50d8d810de2a426494855f451d74d8cdce"
+    sha256: "sha256:873171fad1f5105ce82e16d3747a202d374af47dd0ff51ecc97c177306dac42a"
+  generated_content_sha256: "sha256:ea0842132258a16a689f0e22cda536f1b71c5a783003a34084169800fa31a3f9"

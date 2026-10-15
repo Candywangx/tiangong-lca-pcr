@@ -229,30 +229,7 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cocoa_nutrient_records`
 
-###### Crop-protection products (`cocoa_crop_protection`)
-
-Record named products or active substances by date, block, target and application method.
-
-- Selected flow: Named crop-protection product or active substance [unmapped]
-- Flow property / unit: Mass or volume / kg product or L product
-- Amount rule: measured application by product and active substance
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cocoa_crop_protection_records`
-- Sources: `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- Range: Provisional crop-protection screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.02
-  - Unit: kg product/kg wet reference
-  - Basis: broad first-pass interval; replace with named-product records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ###### Irrigation water supplied (`cocoa_irrigation_water`)
 
@@ -373,30 +350,7 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
 ##### Product flows
 
-###### Managed cacao production context (`cocoa_stand_output_context`)
-
-Link the lot to its producing block, crop year and cultivar; this is a context link, not an additional product mass.
-
-- Selected flow: Managed cacao production output context [unmapped]
-- Flow property / unit: Mass / kg or lot identity
-- Amount rule: link harvested pod lot to block and crop year; do not add a second product mass
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per harvested pod lot and per 1 kg wet reference.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cocoa_harvest_lot_records`
-- Sources: `fao-cocoa-production-guide`
-- Range: Provisional pod-yield screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.5
-  - Upper: 4
-  - Unit: kg fresh pods/kg wet reference
-  - Basis: broad pod-to-wet-bean screen; replace with lot mass balance
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required harvest provenance: link each harvested cocoa pod lot to its producing block, cultivar and crop year through collection records. This provenance is metadata, not an additional product input or a second pod mass.
 
 #### Outputs
 
@@ -485,30 +439,37 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Pod-opening energy or service (`cocoa_pod_opening_energy`)
+###### Electricity, medium voltage (`cocoa_pod_opening_energy`)
 
-Record manual-tool, motorized or contracted pod-opening service and energy carrier where it crosses the boundary.
-
-- Selected flow: Pod-opening energy or service [parameterized]
-- Flow property / unit: Energy or service / MJ, kWh, L or kg
-- Amount rule: measured energy or documented service activity by run
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cocoa_energy_records`
 - Sources: `icco-cocoa-harvesting-post-harvest`
-- Range: Pod-opening energy screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: MJ/kg wet reference
-  - Basis: broad manual or mechanized interval; replace with run records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`cocoa_pod_opening_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cocoa_energy_records`
+- Sources: `icco-cocoa-harvesting-post-harvest`
 
 #### Outputs
 
@@ -624,30 +585,23 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Fermentation covers, turning and service inputs (`cocoa_fermentation_services`)
+Required fermentation inventory: separately record every actual fermentation-container material, liner, installation and purchased operating service included by the selected boundary, retaining composition, service life, reuse and supplier scope; do not assume that any particular material is used.
 
-Record covers, boxes, turning service and water, fuel or electricity used for the batch. Reusable equipment is annualized through period rules rather than duplicated per kg.
+###### Electricity, medium voltage (`cocoa_fermentation_services`)
 
-- Selected flow: Fermentation service or material input [parameterized]
-- Flow property / unit: Mass, energy or service / kg, MJ, kWh or service unit
-- Amount rule: measured or documented service by fermentation batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cocoa_fermentation_batch_records`
 - Sources: `fao-cocoa-ota-code`; `icco-cocoa-quality-requirements`
-- Range: Fermentation-service screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.5
-  - Unit: kg or MJ service input/kg wet reference
-  - Basis: broad first-pass service interval; replace with batch and asset records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 #### Outputs
 
@@ -732,30 +686,37 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
 ##### Elementary flows
 
-###### Fermentation-related emissions (`cocoa_fermentation_emissions`)
+###### Carbon dioxide, biogenic, to air (`cocoa_fermentation_emissions`)
 
-Record only measured or selected-method emissions attributable to the fermentation boundary; do not use a generic cocoa flow as a substance proxy.
-
-- Selected flow: Fermentation-related elementary emissions [unmapped]
-- Flow property / unit: Mass / kg substance
-- Amount rule: selected method or measurement from batch inputs, drainage and operation records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Route-specific (`route_specific`)
+Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
+- Selected flow: Carbon dioxide, biogenic, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_cocoa_emission_records`
 - Sources: `fao-cocoa-ota-code`; `mass-balance-identity`
-- Range: Fermentation-emission screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.2
-  - Unit: kg substance/kg wet reference
-  - Basis: broad aggregate interval; replace with substance-specific calculation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Methane, to air (`cocoa_fermentation_emissions_ch4`)
+
+Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg CH4
+- Amount rule: Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_cocoa_emission_records`
+- Sources: `fao-cocoa-ota-code`; `mass-balance-identity`
 
 ### Process: Fermented-bean drying and stabilization (`cocoa_drying_stabilization`)
 
@@ -788,30 +749,53 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Drying fuel and electricity (`cocoa_drying_energy`)
+###### Electricity, medium voltage (`cocoa_drying_energy`)
 
-Record fuel, electricity or dryer service by batch. Sun drying still records platform, weather and physical service even when direct fuel is zero.
-
-- Selected flow: Drying fuel, electricity or dryer service [parameterized]
-- Flow property / unit: Energy or carrier mass / MJ, kWh, L or kg
-- Amount rule: measured carrier use or documented service by drying batch
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg dried fermented beans and per 1 kg wet reference.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cocoa_energy_records`
 - Sources: `fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`
-- Range: Drying-energy screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 8
-  - Unit: MJ/kg dried output
-  - Basis: broad sun or artificial drying interval; replace with dryer and batch records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`cocoa_drying_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg dried fermented beans and per 1 kg wet reference.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cocoa_energy_records`
+- Sources: `fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`
+
+###### Purchased steam (`cocoa_drying_energy_steam`)
+
+Include this exchange only when Purchased steam is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg dried fermented beans and per 1 kg wet reference.
+
+- Selected flow: Purchased steam
+- Flow property / unit: Energy / MJ
+- Amount rule: Measured Purchased steam supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cocoa_energy_records`
+- Sources: `fao-cocoa-production-guide`; `icco-global-cocoa-farming-systems`
 
 #### Outputs
 
@@ -907,30 +891,85 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
 ##### Elementary flows
 
-###### Dryer smoke or combustion emissions (`cocoa_drying_emissions`)
+###### Carbon dioxide, fossil, to air (`cocoa_drying_emissions`)
 
-Record combustion emissions only for artificial dryers or included fuel use. Smoke contact is a quality event, not an emission-flow substitute.
-
-- Selected flow: Dryer combustion elementary emissions [unmapped]
-- Flow property / unit: Mass / kg substance
-- Amount rule: selected fuel-emission method applied to measured carrier use
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Route-specific (`route_specific`)
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
 Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
 
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_cocoa_emission_records`
 - Sources: `icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
-- Range: Dryer-emission screening estimate
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.5
-  - Unit: kg substance/kg wet reference
-  - Basis: broad fuel-dryer aggregate interval; replace with carrier-specific calculation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Carbon dioxide, biogenic, to air (`cocoa_drying_emissions_co2_biogenic`)
+
+Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Selected flow: Carbon dioxide, biogenic, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_cocoa_emission_records`
+- Sources: `icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+###### Methane, to air (`cocoa_drying_emissions_ch4`)
+
+Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg CH4
+- Amount rule: Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_cocoa_emission_records`
+- Sources: `icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+###### Dinitrogen monoxide, to air (`cocoa_drying_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_cocoa_emission_records`
+- Sources: `icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
+
+###### Particulate matter, particle size unspecified, to air (`cocoa_drying_emissions_dust`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_cocoa_emission_records`
+- Sources: `icco-cocoa-quality-requirements`; `ipcc-2019-refinement-afolu`
 
 ### Process: Cleaning, grading and reject routing (`cocoa_cleaning_grading`)
 
@@ -964,30 +1003,37 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Cleaning and grading energy or service (`cocoa_cleaning_energy`)
+###### Electricity, medium voltage (`cocoa_cleaning_energy`)
 
-Record screens, fans, conveyors, inspection and other services by lot or campaign.
-
-- Selected flow: Cleaning and grading energy or service [parameterized]
-- Flow property / unit: Energy or service / kWh, MJ or service unit
-- Amount rule: measured carrier use or documented service by grading lot
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg dried cocoa bean output.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cocoa_energy_records`
 - Sources: `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
-- Range: Cleaning-energy screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: MJ/kg dried input
-  - Basis: broad first-pass interval; replace with equipment records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`cocoa_cleaning_energy_diesel`)
+
+Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
+Raw activity or stage basis: per 1 kg dried cocoa bean output.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cocoa_energy_records`
+- Sources: `fao-cocoa-production-guide`; `icco-cocoa-quality-requirements`
 
 #### Outputs
 
@@ -1154,30 +1200,53 @@ Raw activity or stage basis: per 1 kg wet cocoa beans at farm-gate reference and
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Storage packaging and handling service (`cocoa_storage_services`)
+###### Electricity, medium voltage (`cocoa_storage_services`)
 
-Record sacks, liners, pallets, warehouse electricity, fumigation or other included services. Packaging remains separate from bean mass.
-
-- Selected flow: Cocoa storage packaging or service [parameterized]
-- Flow property / unit: Mass, energy or service / kg, kWh, MJ or service unit
-- Amount rule: measured packaging and storage service by lot and period
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
+Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service.
 Raw activity or stage basis: per 1 kg dried cocoa bean output and storage day.
 
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_cocoa_storage_records`
 - Sources: `icco-cocoa-quality-requirements`
-- Range: Storage-service screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg packaging or MJ service/kg dried output
-  - Basis: broad first-pass packaging and handling interval; replace with lot records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Paperboard packaging (`cocoa_storage_services_paper`)
+
+Record Paperboard packaging only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses.
+Raw activity or stage basis: per 1 kg dried cocoa bean output and storage day.
+
+- Selected flow: Paperboard packaging
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Paperboard packaging, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cocoa_storage_records`
+- Sources: `icco-cocoa-quality-requirements`
+
+###### Polyethylene packaging film (`cocoa_storage_services_film`)
+
+Record Polyethylene packaging film only when this material crosses the declared process boundary. Retain lot, physical state, composition where relevant, and actual destination. Record other materials independently rather than treating this card as a selector or material bundle. This is a conditional material example, not a packaging requirement. Measure reuse and replacement and allocate the material once across its documented uses.
+Raw activity or stage basis: per 1 kg dried cocoa bean output and storage day.
+
+- Selected flow: Polyethylene packaging film
+- Flow property / unit: Mass / kg
+- Amount rule: Measured net quantity of Polyethylene packaging film, reconciled to the linked lot and process balance, then normalized once to the declared reference output; retain moisture and any density conversion evidence.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_cocoa_storage_records`
+- Sources: `icco-cocoa-quality-requirements`
 
 #### Outputs
 
@@ -1250,6 +1319,8 @@ Sequential wet, fermented, dried and graded bean states are not co-products and 
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -1274,14 +1345,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 ### Calculation rules
 
-| rule_id | Inputs | Calculation |
-| --- | --- | --- |
-| `calc_01` | perennial phase, area, crop years and reference output | Annualize establishment, replacement and termination only across represented years and allocate to same-block wet reference output. |
-| `calc_02` | pod, wet, fermented, dried and graded masses | Reconcile each node independently and retain moisture basis for every conversion. Do not use generic cocoa yield when lot data exist. |
-| `calc_03` | process totals and reference output | Normalize to 1 kg wet farm-gate reference. For the extended route also report per 1 kg dried output and retain the conversion denominator. |
-| `calc_04` | nutrient, residue, fuel and water records | Apply one declared geographically and temporally appropriate method per pathway; retain factor, unit, activity basis and uncertainty. |
-| `calc_05` | intended outputs and allocation denominator | Subdivide first, then allocate shared burdens once by the declared mass or economic method; residue and waste treatment remain separate unless product hand-off exists. |
-| `calc_06` | storage opening, receipts, outputs and closing | Calculate storage loss as the reconciled difference and investigate negative or unexplained balances. |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_01` | cocoa_stand_management | Annualize establishment, replacement and termination only across represented years and allocate to same-block wet reference output. | perennial phase, area, crop years and reference output | annualized phase burdens linked to same-block wet output |  |
+| `calc_02` | route-wide processes | Reconcile each node independently and retain moisture basis for every conversion. Do not use generic cocoa yield when lot data exist. | pod, wet, fermented, dried and graded masses | reconciled node mass balances with moisture basis |  |
+| `calc_03` | route-wide processes | Normalize to 1 kg wet farm-gate reference. For the extended route also report per 1 kg dried output and retain the conversion denominator. | process totals and reference output | inventory per 1 kg wet reference and separate extended-route dry-output result |  |
+| `calc_04` | cocoa_stand_management and included processing | Apply one declared geographically and temporally appropriate method per pathway; retain factor, unit, activity basis and uncertainty. | nutrient, residue, fuel and water records | pathway-specific method results with factors and uncertainty |  |
+| `calc_05` | route-wide intended outputs | Subdivide first, then allocate shared burdens once by the declared mass or economic method; residue and waste treatment remain separate unless product hand-off exists. | intended outputs and allocation denominator | shared burdens attributed once with declared allocation denominator |  |
+| `calc_06` | cocoa_storage_gate | Calculate storage loss as the reconciled difference and investigate negative or unexplained balances. | storage opening, receipts, outputs and closing | reconciled storage loss and unexplained balance differences |  |
 
 ### Data quality rules
 

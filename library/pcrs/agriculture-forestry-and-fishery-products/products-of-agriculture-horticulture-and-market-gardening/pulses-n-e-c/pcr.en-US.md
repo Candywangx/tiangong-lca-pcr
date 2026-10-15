@@ -20,7 +20,7 @@ Exclude fresh green pulses harvested immature for vegetable use; pulses covered 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pulses-n-e-c |
-| classification_refs | CPC 3.0:01709, exact; CPC 2.1 correspondence: 01709; HS 2012/2017 correspondence: 071390; mapping relation: exact |
+| classification_refs | CPC 3.0:01709, narrower; CPC 2.1 correspondence: 01709; HS 2012/2017 correspondence: 071390; mapping relation: narrower |
 | covered_products | Dried seeds of annual leguminous pulse crops assigned to CPC 01709 and not covered by a more specific pulse subclass; one declared species/crop type per dataset |
 | excluded_products | Specifically classified pulses; fresh green or immature leguminous vegetables; planting seed sold as seed; pulse flour, split or otherwise processed pulses, cooked foods, and retail-packed products |
 | representative_product | One species-identified, mature, dry, threshed or shelled, cleaned and graded pulse seed lot at its declared farm or primary-conditioning handoff |
@@ -281,32 +281,7 @@ Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared ha
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_crop_establishment`
 
-###### Crop-protection and seed-treatment products (`crop_protection_products`)
-
-Use this conditional card for seed treatment, inoculant, pesticide, or other crop-protection products actually applied. At data production, create a separate concrete exchange for each recorded product and disclose active ingredient, formulation, amount, target, application event, and use. Do not treat unrecorded or unused products as inputs.
-
-- Selected flow: Crop-protection or seed-treatment product, actual identity to be resolved from use records
-- Flow property / unit: Product-specific property / kg or L as supported by the product identity
-- Amount rule: measured amount applied to the field-season, itemized by product and active ingredient
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared handoff.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_crop_establishment`
-- Sources:
-
-
-- Range: Provisional broad QA screen; replace with crop-, site-, and route-specific records and do not treat as an allowed limit
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg product/kg reference product
-  - Basis: per kg dry cleaned pulse seed; retain each formulation and active ingredient
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 ##### Waste flows
 
@@ -1050,32 +1025,7 @@ Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared po
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_storage_balance`
 
-###### Storage protection products (`storage_protection_products`)
-
-Record any pesticide, insecticide, fumigant, or other protection product actually applied to the pulse lot or storage facility. Report product, active ingredient, use location, dose, and safety or residue status. Do not presume chemical treatment; record zero when none was applied.
-
-- Selected flow: Storage protection product, actual identity to be resolved from use records
-- Flow property / unit: Product-specific property / kg or L as supported by the product identity
-- Amount rule: measure product used for the included storage interval and allocate shared-facility treatment by recorded service
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted pulse seed at the declared post-storage handoff.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_storage_balance`
-- Sources: `fao-pulse-postharvest-2020`; `fao-onfarm-grain-manual-2009`
-
-
-- Range: Provisional broad QA screen; replace with crop-, site-, and route-specific records and do not treat as an allowed limit
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.05
-  - Unit: kg product/kg reference product
-  - Basis: per kg accepted post-storage reference output; conditional on actual treatment
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
 
 #### Outputs
 
@@ -1210,6 +1160,8 @@ Record actual emissions at the operation where they occur; do not duplicate them
 Where several grades from one sorting batch are sold, report all grades as intended outputs and designate the reference grade. Do not treat cleaning rejects, spoiled seed, chaff or other discarded material as a co-product. If residue is actually sold or deliberately used as feed, report its identity, quality, amount and destination as a separate intended output and resolve attribution explicitly. For a single intended product with no other product handoff, no co-product allocation is applied.
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
 
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 

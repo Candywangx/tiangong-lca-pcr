@@ -16,7 +16,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.bambara-beans-dry |
-| classification_refs | CPC 3.0：01708 干班巴拉豆; mapping relation: exact |
+| classification_refs | CPC 3.0：01708 干班巴拉豆; mapping relation: narrower |
 | covered_products | 农场门交付的成熟干脱壳 *Vigna subterranea* 籽粒 |
 | excluded_products | 鲜荚；作为种子销售的播种材料；烤/煮籽粒；面粉；罐藏品；油；下游产品 |
 | representative_product | 食用级成熟干班巴拉豆籽粒 |
@@ -256,24 +256,7 @@ sync_with: pcr.en-US.md
 - 证据类型: `calculated_from_collection`
 - 采集协议: `cp_crop_cycle_records`
 
-###### 路线特定植保制剂（`crop_protection_products`）
-
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-按制剂产品身份和施用事件分别记录每种植保产品。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式: `foreground_record`
-- 适用范围: `site_specific`
-原始活动或阶段基准：每 1,000 kg 合格参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型: `reference_flow`
-- 证据类型: `collected_record`
-- 采集协议: `cp_crop_cycle_records`
-- 来源: `sa-daff-bambara-2016`
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ##### 废物流
 
@@ -422,30 +405,35 @@ sync_with: pcr.en-US.md
 - 证据类型: `calculated_from_collection`
 - 采集协议: `cp_harvest_lot_records`
 
-###### 非能源收获服务 (`harvest_non_energy_service`)
+###### 人工作物采收服务（`harvest_non_energy_service`）
 
-当人工或畜力作为产品服务投入时分别记录。
+仅在人工作物采收服务跨越声明的过程边界时记录；保留批次、物理状态、适用时的组成及实际去向。其他材料独立记录，不得将本卡用作选择器或材料集合。
+原始活动或阶段基准：每 kg 起收豆荚批次。
 
-- 选定流: 人工或畜力收获服务
-- 流属性/单位: Service / service-hour
-- 数量规则: 按收获批次实测服务量
-- 数值来源模式: `foreground_record`
-- 适用范围: `technology_specific`
-原始活动或阶段基准：每 kg 起收豆荚批次.
-
+- 选定流：人工作物采收服务
+- 流属性/单位：服务 / 工时
+- 数量规则：实测人工作物采收服务的净数量，与关联批次和过程平衡核对后，仅归一到声明参考输出一次；保留含水率及适用的密度换算证据。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: `process_output`
-- 证据类型: `collected_record`
-- 采集协议: `cp_harvest_lot_records`
-- 来源:
-- 数量范围: 暂定非能源收获服务筛查范围
-  - 范围角色: `qa_guardrail`
-  - 下限: 0
-  - 上限: 10
-  - 单位: service-hour/kg lifted pod lot
-  - 基准: 一个起收豆荚批次
-  - 基准类型: `process_output`
-  - 证据类型: `reasoned_estimate`
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_harvest_lot_records`
+
+###### 畜力作物采收服务（`harvest_non_energy_service_animal_harvest`）
+
+仅在畜力作物采收服务跨越声明的过程边界时记录；保留批次、物理状态、适用时的组成及实际去向。其他材料独立记录，不得将本卡用作选择器或材料集合。
+原始活动或阶段基准：每 kg 起收豆荚批次。
+
+- 选定流：畜力作物采收服务
+- 流属性/单位：服务 / 作业小时
+- 数量规则：实测畜力作物采收服务的净数量，与关联批次和过程平衡核对后，仅归一到声明参考输出一次；保留含水率及适用的密度换算证据。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_harvest_lot_records`
 
 ##### 废物流
 
@@ -1033,6 +1021,8 @@ sync_with: pcr.en-US.md
 | `allocation_rework` | 返工/拒收物 | 返工负荷保留在产出批次中，材料只在最终处置时计量，拒收物不得计为合格产出。 | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

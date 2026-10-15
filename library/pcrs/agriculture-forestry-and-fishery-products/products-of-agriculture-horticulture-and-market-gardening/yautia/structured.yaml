@@ -274,13 +274,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: field_fuel
-          role: "Field machinery fuel"
-          name: "Mobile-machinery fuel for field operations"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume or energy / L or MJ"
-          description: "Record each fuel by operation and avoid double counting contracted services. Raw activity or stage basis: per ha and crop cycle."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per ha and crop cycle."
           amount:
-            expression: "Purchases or machine-use records allocated to the cycle"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -290,15 +290,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_water_energy
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "400"
-                unit: "L diesel-equivalent/ha/cycle"
-                basis: "direct field fuel per occupied hectare; zero requires a manual or externally serviced route"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -421,15 +413,15 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
         - row_id: harvest_fuel
-          role: "Harvest fuel"
-          name: "Mobile-machinery fuel for harvest"
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Volume or energy / L or MJ"
-          description: "Record direct mobile-machinery fuel used to lift and collect the crop; a manual or electric route records zero. Raw activity or stage basis: per 1,000 kg raw lifted output."
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per 1,000 kg raw lifted output."
           amount:
-            expression: "Metered, invoiced or machine-hour-derived fuel allocated to raw lifted output"
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "process_output"
@@ -437,15 +429,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_harvest_mass
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "50"
-                unit: "L diesel-equivalent/1,000 kg raw lifted output"
-                basis: "direct mobile-machinery fuel per 1,000 kg raw lifted output; zero applies when no fuel-powered harvest equipment is used"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: harvest_electricity
           role: "Harvest electricity"
           name: "Electricity for harvest equipment"
@@ -1093,7 +1077,7 @@ data_sources:
     used_for: "transfer, conditioning and grading balances"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f2fca3824e710739820e80cb96503f08b9e33df641d05b12e0bf3d9f418a99b0"
+  source_sha256: "sha256:44d20a176809aaa6c4dc959f10283de927f540469db67fa1cee35122ab504578"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3672"
@@ -1144,16 +1128,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36209"
+    - unit_id: "normative_35837"
       family: "allocation"
       span:
         start:
-          offset: 36209
-          line: 793
+          offset: 35837
+          line: 775
           column: 1
         end:
-          offset: 37279
-          line: 802
+          offset: 36907
+          line: 784
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_output_classification` | all outputs | Classify each output once as reference product, downgraded product, propagation material, residue, waste, or loss; record one hand-off and prohibit double counting. | `mass-balance-identity` |\n| `allocation_planting_material` | propagation output | Treat internally retained material as an internal transfer. For independently sold intended products, prefer subdivision; otherwise allocate remaining shared burdens by fresh mass and disclose an economic sensitivity when values differ materially. |  |\n| `allocation_residue` | residues and rejects | Give no co-product allocation to material returned to soil or discarded without a documented product function; include its treatment burden. |  |\n| `allocation_shared_operations` | shared operations | Assign separable inputs directly before allocating remaining shared burdens; disclose output quantities, prices where used, method and precedence. |  |\n\n"
       headings:
@@ -1172,12 +1156,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36209
-              line: 793
+              offset: 35837
+              line: 775
               column: 1
             end:
-              offset: 36249
-              line: 793
+              offset: 35877
+              line: 775
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1192,16 +1176,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43011"
+    - unit_id: "normative_43404"
       family: "validation"
       span:
         start:
-          offset: 43011
-          line: 839
+          offset: 43404
+          line: 823
           column: 1
         end:
-          offset: 44914
-          line: 853
+          offset: 45307
+          line: 837
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Exactly one 1,000 kg output uses Yautia flow `72013e1f-538d-4031-b97a-03bfaa42b37d`, Mass property `93a60a56-a3c8-11da-a746-0800200b9a66` and all qualifiers. |  |\n| `validate_species_boundary` | identity | Reject an ambiguous “cocoyam” identity or *Colocasia* substitution without reviewed proxy disclosure. | `fao-aroids-postharvest`; `codex-tannia-224-2001` |\n| `validate_node_handoffs` | process map | Require exact cultivation→lifting, lifting→conditioning and conditioning→grading lot links. | `mass-balance-identity` |\n| `validate_destinations` | grading | Require explicit zero or measured accepted, downgraded, propagation and reject states, each with one hand-off. | `codex-tannia-224-2001` |\n| `validate_conditional_routes` | conditioning | Unused washing/powered routes have zero flows; used routes report utilities and wastes. Storage/packaging requires a boundary extension. |  |\n| `validate_ranges` | all cards | Require ordered nonnegative bounds, unit, denominator, basis kind and evidence kind; external ranges require source ids and regional examples are not limits. |  |\n| `validate_multi_output` | intended outputs | Require a complete output set and explicit attribution; prohibit crediting internally transferred planting material as a sale. |  |\n| `validate_flow_identity_bindings` | product inputs with parameterized identity | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_direct_emissions` | field emissions | Require selected soil-emission method, N inputs, factors, conversions and flow assignments; never infer emissions from fertilizer product mass alone. | `ipcc-2019-managed-soils` |\n\n"
       headings:
@@ -1220,12 +1204,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43011
-              line: 839
+              offset: 43404
+              line: 823
               column: 1
             end:
-              offset: 43033
-              line: 839
+              offset: 43426
+              line: 823
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1296,171 +1280,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_output_classification"
       identity_kind: "explicit"
-      unit_id: "normative_36209"
+      unit_id: "normative_35837"
       source_span:
         start:
-          offset: 36322
-          line: 797
+          offset: 35950
+          line: 779
           column: 1
         end:
-          offset: 36567
-          line: 797
+          offset: 36195
+          line: 779
           column: 246
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_planting_material"
       identity_kind: "explicit"
-      unit_id: "normative_36209"
+      unit_id: "normative_35837"
       source_span:
         start:
-          offset: 36568
-          line: 798
+          offset: 36196
+          line: 780
           column: 1
         end:
-          offset: 36876
-          line: 798
+          offset: 36504
+          line: 780
           column: 309
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue"
       identity_kind: "explicit"
-      unit_id: "normative_36209"
+      unit_id: "normative_35837"
       source_span:
         start:
-          offset: 36877
-          line: 799
+          offset: 36505
+          line: 781
           column: 1
         end:
-          offset: 37070
-          line: 799
+          offset: 36698
+          line: 781
           column: 194
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared_operations"
       identity_kind: "explicit"
-      unit_id: "normative_36209"
+      unit_id: "normative_35837"
       source_span:
         start:
-          offset: 37071
-          line: 800
+          offset: 36699
+          line: 782
           column: 1
         end:
-          offset: 37277
-          line: 800
+          offset: 36905
+          line: 782
           column: 207
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 43106
-          line: 843
+          offset: 43499
+          line: 827
           column: 1
         end:
-          offset: 43319
-          line: 843
+          offset: 43712
+          line: 827
           column: 214
     - pointer: "/validation_rules/1"
       rule_id: "validate_species_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 43320
-          line: 844
+          offset: 43713
+          line: 828
           column: 1
         end:
-          offset: 43518
-          line: 844
+          offset: 43911
+          line: 828
           column: 199
     - pointer: "/validation_rules/2"
       rule_id: "validate_node_handoffs"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 43519
-          line: 845
+          offset: 43912
+          line: 829
           column: 1
         end:
-          offset: 43681
-          line: 845
+          offset: 44074
+          line: 829
           column: 163
     - pointer: "/validation_rules/3"
       rule_id: "validate_destinations"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 43682
-          line: 846
+          offset: 44075
+          line: 830
           column: 1
         end:
-          offset: 43858
-          line: 846
+          offset: 44251
+          line: 830
           column: 177
     - pointer: "/validation_rules/4"
       rule_id: "validate_conditional_routes"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 43859
-          line: 847
+          offset: 44252
+          line: 831
           column: 1
         end:
-          offset: 44049
-          line: 847
+          offset: 44442
+          line: 831
           column: 191
     - pointer: "/validation_rules/5"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 44050
-          line: 848
+          offset: 44443
+          line: 832
           column: 1
         end:
-          offset: 44246
-          line: 848
+          offset: 44639
+          line: 832
           column: 197
     - pointer: "/validation_rules/6"
       rule_id: "validate_multi_output"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 44247
-          line: 849
+          offset: 44640
+          line: 833
           column: 1
         end:
-          offset: 44425
-          line: 849
+          offset: 44818
+          line: 833
           column: 179
     - pointer: "/validation_rules/7"
       rule_id: "validate_flow_identity_bindings"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 44426
-          line: 850
+          offset: 44819
+          line: 834
           column: 1
         end:
-          offset: 44682
-          line: 850
+          offset: 45075
+          line: 834
           column: 257
     - pointer: "/validation_rules/8"
       rule_id: "validate_direct_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 44683
-          line: 851
+          offset: 45076
+          line: 835
           column: 1
         end:
-          offset: 44912
-          line: 851
+          offset: 45305
+          line: 835
           column: 230
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1489,27 +1473,27 @@ normative_context:
           column: 190
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36209"
+      unit_id: "normative_35837"
       source_span:
         start:
-          offset: 36209
-          line: 793
+          offset: 35837
+          line: 775
           column: 1
         end:
-          offset: 36249
-          line: 793
+          offset: 35877
+          line: 775
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43011"
+      unit_id: "normative_43404"
       source_span:
         start:
-          offset: 43011
-          line: 839
+          offset: 43404
+          line: 823
           column: 1
         end:
-          offset: 43033
-          line: 839
+          offset: 43426
+          line: 823
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1518,5 +1502,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f2fca3824e710739820e80cb96503f08b9e33df641d05b12e0bf3d9f418a99b0"
-  generated_content_sha256: "sha256:961afa0e8d44052afabdff5de7a8ef269a2ef86110e7fc0c416f292e6f09f265"
+    sha256: "sha256:44d20a176809aaa6c4dc959f10283de927f540469db67fa1cee35122ab504578"
+  generated_content_sha256: "sha256:6a1c7156a3a39557ea833697bb0d9564df214899d6145eb6e5d31c316a405b15"

@@ -132,10 +132,10 @@ process_inventory:
     inputs:
       product:
         - row_id: planting_material_input
-          role: "One route-identified planting-stock product"
-          name: "One route-identified planting-stock product; exact route identity unresolved"
+          role: "Nursery plants for the declared oil-fruit species"
+          name: "Nursery plants for the declared oil-fruit species"
           flow_type: "product"
-          property_unit: "Product quantity / kg or item, fixed per identified product"
+          property_unit: "Mass / kg"
           description: "Use this conditional card for exactly one actual material, product or waste stream in the declared process. Confirm its identity, physical state, period and destination from route records; instantiate a separate card for every other distinct stream. The template does not assert use or generation. Raw activity or stage basis: annualized establishment and replacement material."
           amount:
             expression: "Measure or calculate only this one identified stream for the declared process and period, with its own unit and destination; do not combine other products or waste states."
@@ -288,7 +288,7 @@ process_inventory:
           name: "Diesel fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: actual energy supplied to productive and harvest operations."
+          description: "Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: actual energy supplied to productive and harvest operations. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero."
           amount:
             expression: "Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -301,32 +301,6 @@ process_inventory:
               collection_protocol_id: cp_production_inputs
               source_ids: []
             ranges: []
-        - row_id: crop_protection_input
-          role: "Crop-protection formulations"
-          name: "Declared crop-protection formulations"
-          flow_type: "product"
-          property_unit: "Mass of formulation / kg"
-          description: "Record crop-protection formulations at this node while preserving traceable species, state, batch, and destination evidence. Raw activity or stage basis: all formulations retained by identity before any total."
-          amount:
-            expression: "record formulation, active ingredient, concentration and application event"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_production_inputs
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "150"
-                unit: "kg formulation/ha·year"
-                basis: "all formulations retained by identity before any total"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -470,13 +444,13 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: conditioning_energy_input
-          role: "Sorting, cooling and holding energy"
-          name: "Energy supply for actual conditioning equipment"
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          property_unit: "Carrier quantity or energy / kWh, MJ, kg, L or m3"
-          description: "Record sorting, cooling and holding energy at this node while preserving traceable species, state, batch, and destination evidence. Raw activity or stage basis: route-conditional energy before farm-gate hand-off."
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: route-conditional energy before farm-gate hand-off."
           amount:
-            expression: "record actual electricity, fuel or purchased cooling by batch"
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -486,15 +460,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning_batch
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5000"
-                unit: "MJ/1,000 kg accepted output"
-                basis: "route-conditional energy before farm-gate hand-off"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: conditioning_energy_input_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: route-conditional energy before farm-gate hand-off."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_batch
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -900,7 +884,7 @@ data_sources:
     used_for: "managed-soil nitrogen-emission method"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:dbacc25f6f8c6c06f54eb0e37c66233ad56ed02cce098d27784462014dd9c61d"
+  source_sha256: "sha256:95af6ce4605e0e45aeaa4128deddc52eb4f4aa53c841e8229a82e8ed1a3cdefd"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4020"
@@ -951,16 +935,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_32779"
+    - unit_id: "normative_33013"
       family: "allocation"
       span:
         start:
-          offset: 32779
-          line: 662
+          offset: 33013
+          line: 644
           column: 1
         end:
-          offset: 34072
-          line: 672
+          offset: 34306
+          line: 654
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_period` | perennial production | Attribute establishment, immature years, and replacement burdens across an evidenced productive life to the declared harvest period; do not repeat them in annual records. |  |\n| `allocation_grade` | sorted outputs | Only the accepted declared grade enters the reference quantity. Downgraded material sold for an independently intended use is a separate product output with measured mass, destination and its share of inseparable upstream burdens after subdivision. Rejected material without a product function is waste; keep its physical mass, fate and management burdens. |  |\n| `allocation_residue` | residues and rejects | Waste receives no upstream burden; an output with revenue or substitution function requires declared product identity, destination, and allocation choice. |  |\n| `allocation_shared_assets` | shared infrastructure | Attribute irrigation, equipment, cooling, and packing assets once using recorded area, machine time, mass, or another causal driver. |  |\n| `allocation_rework` | rework and returns | Attribute the rework loop to its producing node and do not count returned material again as new input. |  |\n\n"
       headings:
@@ -979,12 +963,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 32779
-              line: 662
+              offset: 33013
+              line: 644
               column: 1
             end:
-              offset: 32819
-              line: 662
+              offset: 33053
+              line: 644
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -999,16 +983,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39607"
+    - unit_id: "normative_40606"
       family: "validation"
       span:
         start:
-          offset: 39607
-          line: 705
+          offset: 40606
+          line: 689
           column: 1
         end:
-          offset: 40964
-          line: 718
+          offset: 41963
+          line: 702
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_identity` | dataset | Declare one named residual species, one production system, one fresh state, grade, and farm/harvest gate. |  |\n| `validate_reference` | reference product | Reference output equals exactly 1,000 kg accepted fresh product with all required qualifiers. |  |\n| `validate_boundary` | all routes | Fail when oil extraction, refining, manufacture, distribution, or retail is included. |  |\n| `validate_period` | perennial route | Establishment, immature period, replacement, and shared assets have one auditable cross-period attribution. |  |\n| `validate_balance` | sorting and packing | Fail when matched-batch mass balance exceeds declared measurement uncertainty. |  |\n| `validate_rework` | rejects and rework | Downgrade, rework, recovery, and disposal destinations are mutually exclusive and not duplicated as accepted output. |  |\n| `validate_flow_binding` | all cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_ranges` | all cards | Every lower bound is no greater than its upper bound; inactive conditional routes equal zero; foreground records supersede provisional screens. |  |\n\n"
       headings:
@@ -1027,12 +1011,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39607
-              line: 705
+              offset: 40606
+              line: 689
               column: 1
             end:
-              offset: 39629
-              line: 705
+              offset: 40628
+              line: 689
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1116,171 +1100,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_32779"
+      unit_id: "normative_33013"
       source_span:
         start:
-          offset: 32892
-          line: 666
+          offset: 33126
+          line: 648
           column: 1
         end:
-          offset: 33114
-          line: 666
+          offset: 33348
+          line: 648
           column: 223
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_grade"
       identity_kind: "explicit"
-      unit_id: "normative_32779"
+      unit_id: "normative_33013"
       source_span:
         start:
-          offset: 33115
-          line: 667
+          offset: 33349
+          line: 649
           column: 1
         end:
-          offset: 33516
-          line: 667
+          offset: 33750
+          line: 649
           column: 402
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue"
       identity_kind: "explicit"
-      unit_id: "normative_32779"
+      unit_id: "normative_33013"
       source_span:
         start:
-          offset: 33517
-          line: 668
+          offset: 33751
+          line: 650
           column: 1
         end:
-          offset: 33724
-          line: 668
+          offset: 33958
+          line: 650
           column: 208
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_32779"
+      unit_id: "normative_33013"
       source_span:
         start:
-          offset: 33725
-          line: 669
+          offset: 33959
+          line: 651
           column: 1
         end:
-          offset: 33917
-          line: 669
+          offset: 34151
+          line: 651
           column: 193
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_32779"
+      unit_id: "normative_33013"
       source_span:
         start:
-          offset: 33918
-          line: 670
+          offset: 34152
+          line: 652
           column: 1
         end:
-          offset: 34070
-          line: 670
+          offset: 34304
+          line: 652
           column: 153
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 39702
-          line: 709
+          offset: 40701
+          line: 693
           column: 1
         end:
-          offset: 39846
-          line: 709
+          offset: 40845
+          line: 693
           column: 145
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 39847
-          line: 710
+          offset: 40846
+          line: 694
           column: 1
         end:
-          offset: 39990
-          line: 710
+          offset: 40989
+          line: 694
           column: 144
     - pointer: "/validation_rules/2"
       rule_id: "validate_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 39991
-          line: 711
+          offset: 40990
+          line: 695
           column: 1
         end:
-          offset: 40118
-          line: 711
+          offset: 41117
+          line: 695
           column: 128
     - pointer: "/validation_rules/3"
       rule_id: "validate_period"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 40119
-          line: 712
+          offset: 41118
+          line: 696
           column: 1
         end:
-          offset: 40271
-          line: 712
+          offset: 41270
+          line: 696
           column: 153
     - pointer: "/validation_rules/4"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 40272
-          line: 713
+          offset: 41271
+          line: 697
           column: 1
         end:
-          offset: 40400
-          line: 713
+          offset: 41399
+          line: 697
           column: 129
     - pointer: "/validation_rules/5"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 40401
-          line: 714
+          offset: 41400
+          line: 698
           column: 1
         end:
-          offset: 40565
-          line: 714
+          offset: 41564
+          line: 698
           column: 165
     - pointer: "/validation_rules/6"
       rule_id: "validate_flow_binding"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 40566
-          line: 715
+          offset: 41565
+          line: 699
           column: 1
         end:
-          offset: 40779
-          line: 715
+          offset: 41778
+          line: 699
           column: 214
     - pointer: "/validation_rules/7"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 40780
-          line: 716
+          offset: 41779
+          line: 700
           column: 1
         end:
-          offset: 40962
-          line: 716
+          offset: 41961
+          line: 700
           column: 183
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1309,27 +1293,27 @@ normative_context:
           column: 191
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_32779"
+      unit_id: "normative_33013"
       source_span:
         start:
-          offset: 32779
-          line: 662
+          offset: 33013
+          line: 644
           column: 1
         end:
-          offset: 32819
-          line: 662
+          offset: 33053
+          line: 644
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39607"
+      unit_id: "normative_40606"
       source_span:
         start:
-          offset: 39607
-          line: 705
+          offset: 40606
+          line: 689
           column: 1
         end:
-          offset: 39629
-          line: 705
+          offset: 40628
+          line: 689
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1338,5 +1322,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:dbacc25f6f8c6c06f54eb0e37c66233ad56ed02cce098d27784462014dd9c61d"
-  generated_content_sha256: "sha256:f9fa864b4db7161f9911b7f421aa1653b857891e9a5292d3c89565a7477f62ca"
+    sha256: "sha256:95af6ce4605e0e45aeaa4128deddc52eb4f4aa53c841e8229a82e8ed1a3cdefd"
+  generated_content_sha256: "sha256:35c284a2060274302d50a7793798ccaae7d598f9c1bc99639f3ec9dcdf702285"

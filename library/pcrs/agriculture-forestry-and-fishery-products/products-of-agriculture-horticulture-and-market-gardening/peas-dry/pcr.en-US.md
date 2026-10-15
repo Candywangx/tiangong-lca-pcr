@@ -20,7 +20,7 @@ Managed biological production is the parent activity. Rainfed/irrigated producti
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.peas-dry |
-| classification_refs | CPC 3.0: 01705 Peas, dry; mapping relation: exact |
+| classification_refs | CPC 3.0: 01705 Peas, dry; mapping relation: narrower |
 | covered_products | Mature dry whole field pea grain of *Pisum sativum*, including yellow, green and other food or feed market classes, at farm gate |
 | excluded_products | Green peas; forage or silage; planting seed products; split, milled, dehulled, fractionated, concentrated, canned or cooked peas |
 | representative_product | Cleaned and graded mature dry whole field pea grain |

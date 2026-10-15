@@ -18,7 +18,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.broad-beans-and-horse-beans-dry |
-| classification_refs | CPC 3.0 `01702` Broad beans and horse beans, dry; mapping relation: exact |
+| classification_refs | CPC 3.0 `01702` Broad beans and horse beans, dry; mapping relation: narrower |
 | covered_products | mature dry *Vicia faba* grain sold as broad, faba, field, or horse bean |
 | excluded_products | green/fresh beans; planting seed sold as seed; other dry pulses; forage, silage, cover crop or green manure; processed bean fractions |
 | representative_product | cleaned and graded mature dry *Vicia faba* grain |
@@ -224,40 +224,9 @@ sync_with: pcr.en-US.md
   - 基准类型： 参考流 (`reference_flow`)
   - 证据类型： 推理估算 (`reasoned_estimate`)
 
-###### 路线特定植保制剂（`field_treatment_products`）
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-按产品和浓度记录制剂型植保产品及非养分功能接种剂。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式： 前景记录 (`foreground_record`)
-- 适用范围： 场址特定 (`site_specific`)
-原始活动或阶段基准：每 1,000 kg 合格干籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 参考流 (`reference_flow`)
-- 证据类型： 采集记录 (`collected_record`)
-- 采集协议： `cp_field_cycle`
-###### 路线特定非营养接种剂（`field_treatment_products_inoculant`）
-
-仅对实际施用的一种非营养接种剂使用这张独立卡。核实其制剂、施用事件和产品质量；植保制剂须另列。不得由本模板推定必然使用。
-
-按产品和浓度记录制剂型植保产品及非养分功能接种剂。
-
-- 选定流：一种路线特定非营养接种剂；具体身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式： 前景记录 (`foreground_record`)
-- 适用范围： 场址特定 (`site_specific`)
-原始活动或阶段基准：每 1,000 kg 合格干籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 参考流 (`reference_flow`)
-- 证据类型： 采集记录 (`collected_record`)
-- 采集协议： `cp_field_cycle`
+处理材料必需记录：数据包完成前，按具体组成、产品身份、数量和使用事件逐项列出实际使用的田间处理产品或沤制助剂；不得发布通用处理材料交换，身份缺失时不得假定为零。
 
 ###### 中压电力投入（`field_energy`）
 
@@ -327,30 +296,85 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 管理土壤排放 (`managed_soil_emissions`)
+###### 氧化亚氮，排放至空气（`managed_soil_emissions`）
 
-采用声明的国家方法或 IPCC 方法，依据养分投入、残余物氮、沉降、淋失、石灰和尿素计算物质与环境介质特定排放。
+仅在实测或所选适用方法确认该排放路径时，将氧化亚氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1,000 kg 合格干籽粒。
 
-- 选定流： managed-soil emissions by substance and compartment
-- 流属性/单位： Mass / kg substance
-- 数量规则： method calculation from collected field and residue records
-- 数值来源模式： 计算值 (`calculated_value`)
-- 适用范围： 场址特定 (`site_specific`)
-原始活动或阶段基准：每 1,000 kg 合格干籽粒.
-
+- 选定流：氧化亚氮，排放至空气
+- 流属性/单位：质量 / kg N2O
+- 数量规则：实测或按方法计算氧化亚氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以 N2O-N 报告时，按 44/28 换算为 N2O 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每声明的参考流
-- 基准类型： 参考流 (`reference_flow`)
-- 证据类型： 方法公式 (`method_formula`)
-- 采集协议： `cp_field_cycle`
-- 来源： `ipcc-2019-managed-soils`
-- 数量范围： 暂定 aggregate soil-emission screen
-  - 范围角色： QA 校验 (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 100
-  - 单位： kg reported substances
-  - 基准： 每 1,000 kg 合格干籽粒; substances remain separate before screening
-  - 基准类型： 参考流 (`reference_flow`)
-  - 证据类型： 推理估算 (`reasoned_estimate`)
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_cycle`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 氨，排放至空气（`managed_soil_emissions_nh3`）
+
+仅在实测或所选适用方法确认该排放路径时，将氨，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1,000 kg 合格干籽粒。
+
+- 选定流：氨，排放至空气
+- 流属性/单位：质量 / kg NH3
+- 数量规则：实测或按方法计算氨，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_cycle`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 一氧化氮，排放至空气（`managed_soil_emissions_no`）
+
+仅在实测或所选适用方法确认该排放路径时，将一氧化氮，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1,000 kg 合格干籽粒。
+
+- 选定流：一氧化氮，排放至空气
+- 流属性/单位：质量 / kg NO
+- 数量规则：实测或按方法计算一氧化氮，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_cycle`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 硝酸根，排放至水体（`managed_soil_emissions_nitrate`）
+
+仅在实测或所选适用方法确认该排放路径时，将硝酸根，排放至水体作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1,000 kg 合格干籽粒。
+
+- 选定流：硝酸根，排放至水体
+- 流属性/单位：质量 / kg NO3-
+- 数量规则：实测或按方法计算硝酸根，排放至水体的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。 以硝酸盐氮报告时，按 62/14 换算为 NO3- 一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_cycle`
+- 来源：`ipcc-2019-managed-soils`
+
+###### 化石二氧化碳，排放至空气（`managed_soil_emissions_co2_fossil`）
+
+仅在实测或所选适用方法确认该排放路径时，将化石二氧化碳，排放至空气作为单一物质和接收介质交换记录。保留实际接收区室并核实具体流身份；其他物质单独建卡，本卡不预设必有排放。
+原始活动或阶段基准：每 1,000 kg 合格干籽粒。
+
+- 选定流：化石二氧化碳，排放至空气
+- 流属性/单位：质量 / kg CO2
+- 数量规则：实测或按方法计算化石二氧化碳，排放至空气的质量，保留活动数据、因子、物质基准和接收区室；仅归一到声明参考输出一次。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_cycle`
+- 来源：`ipcc-2019-managed-soils`
 
 ### 过程：成熟收获与预干 (`mature_crop_harvest`)
 
@@ -851,6 +875,8 @@ sync_with: pcr.en-US.md
 | `allocation_route_period` | mixed routes/shared runs | Attribute field burdens by crop cycle and post-harvest burdens by metered lot or throughput share; assign shared cleaning/changeover once. |  |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

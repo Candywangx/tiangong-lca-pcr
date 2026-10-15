@@ -105,6 +105,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Crop-specific planting material
+- 流属性/单位：质量 / kg
 - 数量规则： measured type, count and mass; separate replants
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
@@ -211,6 +212,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Established nutmeg or cardamom stand capacity
+- 流属性/单位：面积 / ha
 - 数量规则： successfully established area after mortality/replant reconciliation
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -339,23 +341,7 @@ sync_with: pcr.en-US.md
   - 基准类型： 作物周期（`crop_cycle`）
   - 证据类型： Reasoned estimate (`reasoned_estimate`)
 
-###### 路线特定植保制剂（`management_crop_protection`）
-
-本过程实际施用的每种植保制剂分别使用一张卡。依据记录核实产品身份和施用事件，另行保留有效成分信息；不得合并不同产品，也不得由本模板推定必然使用。
-
-分别记录各实际配方植保产品，以便后续解析 UUID。
-
-- 选定流：一种路线特定植保制剂；具体产品身份待核实
-- 流属性 / 单位: 质量 / kg 产品
-- 数量规则: 计量本过程和期间实际施用的一种制剂产品质量；如原记录为体积，须用有据可查的密度换算；其他产品另建交换。
-- 数值来源模式： Foreground record (`foreground_record`)
-- 适用范围： 场地特定（`site_specific`）
-原始活动或阶段基准：每生产公顷年.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 作物周期（`crop_cycle`）
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_management`
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
 
 ###### 中压电力投入（`management_energy`）
 
@@ -397,6 +383,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Harvestable nutmeg fruit or cardamom capsules
+- 流属性/单位：质量 / kg
 - 数量规则： measured by crop and picking round; only the selected route is active
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -422,6 +409,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Nitrous oxide to air
+- 流属性/单位：质量 / kg N2O
 - 数量规则：apply selected IPCC tier to collected synthetic, organic and residue N; convert N2O-N to N2O once using 44/28
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
@@ -453,6 +441,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Harvestable nutmeg fruit or cardamom capsules
+- 流属性/单位：质量 / kg
 - 数量规则： measured mass entering the lot
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -479,6 +468,7 @@ sync_with: pcr.en-US.md
 本卡记录一种预期产出及其独立交接点。
 
 - 选定流：未加工带壳肉豆蔻种子
+- 流属性/单位：质量 / kg
 - 数量规则：单独计量；非活动路线产出为零
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -504,6 +494,7 @@ sync_with: pcr.en-US.md
 本卡记录一种预期产出及其独立交接点。
 
 - 选定流：未加工肉豆蔻衣假种皮
+- 流属性/单位：质量 / kg
 - 数量规则：单独计量；非活动路线产出为零
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -529,6 +520,7 @@ sync_with: pcr.en-US.md
 本卡记录一种预期产出及其独立交接点。
 
 - 选定流：未加工豆蔻蒴果
+- 流属性/单位：质量 / kg
 - 数量规则：单独计量；非活动路线产出为零
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -556,6 +548,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Route-specific harvest residues
+- 流属性/单位：质量 / kg
 - 数量规则： input minus intended outputs and measured losses; reclassify deliberately sold/used material as product
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
@@ -668,6 +661,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Conditioned nutmeg seed, mace aril or cardamom capsules
+- 流属性/单位：质量 / kg
 - 数量规则： measured final mass with moisture, time/temperature, method and rejected fraction
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -695,6 +689,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Water to air
+- 流属性/单位：质量 / kg
 - 数量规则：wet input = conditioned output + rejects + samples + moisture loss, all on consistent basis
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
@@ -726,6 +721,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Route-specific fresh or conditioned raw spice
+- 流属性/单位：质量 / kg
 - 数量规则： measured lot mass with crop, organ and moisture identity
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -778,6 +774,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Downgraded route-specific raw spice
+- 流属性/单位：质量 / kg
 - 数量规则： measured lower-grade mass with destination and revenue; never count as accepted mass
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -803,6 +800,7 @@ sync_with: pcr.en-US.md
 本卡记录该过程边界上的声明流及其数量。
 
 - 选定流： Route-specific spice rejects
+- 流属性/单位：质量 / kg
 - 数量规则： measured final reject mass; retain re-drying loops under the producing lot until disposition
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
@@ -833,6 +831,8 @@ sync_with: pcr.en-US.md
 | `allocation_rejects` | downgrade/rework/waste | Return rework to its producing lot; keep burden with downgraded saleable product under the chosen co-product rule; give waste no avoided credit in an attributional dataset. | `iso-14044-2006` |
 
 ## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
 
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 

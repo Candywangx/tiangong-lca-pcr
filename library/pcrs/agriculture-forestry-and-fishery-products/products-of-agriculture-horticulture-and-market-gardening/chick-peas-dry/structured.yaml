@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.chick-peas-dry"
-  classification_refs: "CPC 3.0 01703 Chick peas, dry; mapping relation: exact"
+  classification_refs: "CPC 3.0 01703 Chick peas, dry; mapping relation: narrower"
   covered_products: "Mature dry desi and kabuli chickpea grain at farm gate, unprocessed beyond farm cleaning, grading and necessary stabilization"
   excluded_products: "Green chickpeas; planting seed sold as seed; sprouts; flour; splits; dehulled fractions; canned or cooked products; downstream industrial cleaning, sizing or processing"
   representative_product: "Mature dry chickpea grain, desi or kabuli, meeting a declared farm-gate moisture and grade or destination specification"
@@ -240,7 +240,7 @@ process_inventory:
           name: "Agricultural limestone"
           flow_type: "product"
           property_unit: "Mass / kg product"
-          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per ha of planted chickpea in one crop cycle. Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero. Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing."
           amount:
             expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
             value_mode: "foreground_record"
@@ -252,44 +252,6 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_nutrient_inputs
               source_ids: []
-            ranges: []
-        - row_id: crop_protection_inputs
-          role: "Route-specific crop-protection formulation"
-          name: "One route-specific crop-protection formulation; exact product identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use one card for each formulated crop-protection product actually applied in this process. Identify the product and application event from records; retain active-ingredient content separately. Do not combine distinct products or infer use from this template. Record formulated pesticides, seed treatments, desiccants and rhizobial inoculants actually applied, preserving product identity, active ingredient and treated area. Raw activity or stage basis: per ha of treated chickpea in one crop cycle."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_materials
-              source_ids:
-                - ndsu-pulse-field-guide-2025
-            ranges: []
-        - row_id: crop_protection_inputs_inoculant
-          role: "Route-specific non-nutrient inoculant"
-          name: "One route-specific non-nutrient inoculant product; exact identity unresolved"
-          flow_type: "product"
-          property_unit: "Mass / kg product"
-          description: "Use this separate card only for one non-nutrient inoculant actually applied. Identify its formulation, application event and measured product mass; keep crop-protection formulations on separate cards. Do not infer use from this template. Record formulated pesticides, seed treatments, desiccants and rhizobial inoculants actually applied, preserving product identity, active ingredient and treated area. Raw activity or stage basis: per ha of treated chickpea in one crop cycle."
-          amount:
-            expression: "Measured mass of exactly one actual formulated product applied in this process and period; convert recorded volume using documented density, and record each additional product separately."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_field_materials
-              source_ids:
-                - ndsu-pulse-field-guide-2025
             ranges: []
         - row_id: irrigation_water
           role: "Irrigation water supplied"
@@ -419,13 +381,13 @@ process_inventory:
         []
       elementary:
         - row_id: direct_field_emissions
-          role: "Direct field emissions by substance and receiving medium"
-          name: "Reported substance to air, water or soil"
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
           flow_type: "elementary"
-          property_unit: "Substance-specific mass / kg"
-          description: "Report each measured or calculated emission as a separate concrete elementary exchange, including managed-soil nitrogen emissions and emissions from fuel use when they fall inside the foreground boundary. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
+          property_unit: "Mass / kg N2O"
+          description: "Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
           amount:
-            expression: "calculate from collected activity data using the declared method and factors"
+            expression: "Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -436,15 +398,83 @@ process_inventory:
               collection_protocol_id: cp_field_emissions
               source_ids:
                 - ipcc-2019-managed-soils
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "kg reported substance/ha crop cycle"
-                basis: "each substance and receiving medium is screened separately; the interval is provisional"
-                basis_kind: "crop_cycle"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: direct_field_emissions_nh3
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_field_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: direct_field_emissions_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO"
+          description: "Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_field_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: direct_field_emissions_nitrate
+          role: "Nitrate, to water"
+          name: "Nitrate, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO3-"
+          description: "Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_field_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: direct_field_emissions_co2_fossil
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release. Raw activity or stage basis: per ha of planted chickpea in one crop cycle."
+          amount:
+            expression: "Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_field_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
   - id: harvest_threshing
     label: "Harvest, threshing and field capture"
     inputs:
@@ -1392,18 +1422,18 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:415393b2d301777661afab709b1eed4f094fc10119d76d19474f6767a32f4e5e"
+  source_sha256: "sha256:75ddf2d40ddea1b3c19fbfddad32d67310544e2589b0c7c5f9ea677cd1670390"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5656"
+    - unit_id: "normative_5659"
       family: "system_boundary"
       span:
         start:
-          offset: 5656
+          offset: 5659
           line: 62
           column: 1
         end:
-          offset: 8287
+          offset: 8290
           line: 84
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | A declared field prepared for the chickpea crop cycle, with prior land use, soil condition, preceding crop and seed origin identified |\n| starting_condition_role | Starting condition for managed biological production; burdens of purchased seed, products, energy and services enter through upstream datasets |\n| product_classification_scope | Mature dry chickpea grain represented by CPC 3.0 `01703`; green chickpeas, seed commodities and processed fractions remain outside this product category |\n| recursive_input_rule | Chickpea grain retained as planting seed is recorded as a seed input from a preceding crop or external supplier and is not recursively modelled as the current crop's reference output |\n| upstream_dataset_requirement | Use geographically and technologically appropriate upstream datasets for concrete seed, nutrient products, crop-protection products, water supply, energy carriers and contracted services |\n| disclosure | Declare prior crop and land-use context, field and crop year, market class, rainfed or irrigated route, establishment and management operations, harvest route, conditioning sequence, stabilization route, lot hand-offs and all output destinations |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_field_to_gate` | all foreground nodes | Include crop establishment and management, independent harvest/threshing, farm cleaning and grading, and conditional stabilization through the accepted farm-gate hand-off. | `ndsu-pulse-field-guide-2025`; `saskatchewan-chickpea-harvest`; `fao-postharvest-system` |\n| `boundary_output_states` | harvest, conditioning and stabilization | Distinguish accepted grain, downgraded grain, rework, collected straw or pods, field-returned residue, shatter or dropped loss, foreign-material rejects and discarded material; record one hand-off and destination for each state. | `saskatchewan-chickpea-harvest`; `cgc-chickpea-grading` |\n| `boundary_route_delta` | alternative routes | Rainfed and irrigated fields, straight cutting and swathing, and ambient aeration and heated drying must carry the route-specific records described in section 2; resolve mutually exclusive choices per field, harvest event or lot. | `saskatchewan-chickpea-harvest`; `ndsu-pulse-field-guide-2025` |\n| `boundary_exclusions` | downstream activities | Exclude transport beyond the farm gate and industrial sizing, dehulling, splitting, milling, canning, cooking and food manufacture. | `fao-postharvest-system` |\n\n"
@@ -1423,11 +1453,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5656
+              offset: 5659
               line: 62
               column: 1
             end:
-              offset: 5677
+              offset: 5680
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -1443,16 +1473,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47947"
+    - unit_id: "normative_50498"
       family: "allocation"
       span:
         start:
-          offset: 47947
-          line: 929
+          offset: 50498
+          line: 950
           column: 1
         end:
-          offset: 49479
-          line: 938
+          offset: 52030
+          line: 959
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivision_first` | all multi-output nodes | Subdivide directly measured field, harvest, conditioning and stabilization operations before allocation. Assign lot-specific rework and reject burdens to the producing lot. | `iso-14044-allocation` |\n| `allocation_residue_status` | straw, pods and downgraded grain | Classify a flow as an intended co-product only when deliberate collection, a documented destination and an economic or physical function are demonstrated. Field-returned biomass, shatter and discarded rejects are residues or losses and receive no product credit. | `iso-14044-allocation`; `saskatchewan-chickpea-harvest` |\n| `allocation_remaining_burdens` | chickpea grain and intended co-products | When subdivision cannot resolve shared burdens, apply one declared allocation method consistently to all intended outputs. Prefer documented economic allocation at the first independent hand-off; report quantities, prices, reference period and sensitivity to a mass allocation. | `iso-14044-allocation` |\n| `allocation_run_integrity` | batches, campaigns and rework loops | Assign shared cleaning, start-up and changeover burdens once across affected lots; a rework pass retains its burdens and material linkage, and rejected material is never counted as accepted output. This is single-period attribution and shared burdens do not cross the crop-cycle boundary. | `mass-balance-identity` |\n\n"
       headings:
@@ -1471,12 +1501,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47947
-              line: 929
+              offset: 50498
+              line: 950
               column: 1
             end:
-              offset: 47987
-              line: 929
+              offset: 50538
+              line: 950
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1491,16 +1521,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_60105"
+    - unit_id: "normative_63421"
       family: "validation"
       span:
         start:
-          offset: 60105
-          line: 981
+          offset: 63421
+          line: 1004
           column: 1
         end:
-          offset: 62559
-          line: 995
+          offset: 65875
+          line: 1018
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference_identity` | reference flow | Require the verified product, Mass property and Mass unit-group UUIDs, plus every required qualifier. | `cgc-chickpea-grading`; `cgc-chickpea-moisture` |\n| `validate_nutrient_cardinality` | each process | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_route_resolution` | field, harvest and stabilization routes | Resolve rainfed versus irrigated per field, straight-cut versus swathed per harvest event, and inactive versus aerated or heated-dried per lot; collect every claimed route delta. | `saskatchewan-chickpea-harvest`; `ndsu-pulse-field-guide-2025` |\n| `validate_output_handoffs` | all product and reject states | Require one physical state, classification and destination for accepted, downgraded, rework, collected residue, field loss and waste outputs; no output may be counted at two hand-offs. | `cgc-chickpea-grading`; `mass-balance-identity` |\n| `validate_rework` | conditioning and stabilization | Link every rework pass to its source lot, retain its added burdens, and exclude unresolved rework or rejects from accepted output. | `mass-balance-identity` |\n| `validate_batch_attribution` | conditioning and stabilization | Index inputs, outputs, cleaning and changeover by lot or operating period and assign shared-run burdens once. | `mass-balance-identity` |\n| `validate_mass_balance` | harvest, conditioning and drying | Reconcile measured inputs to accepted, downgraded, residue, reject, water-removal and loss outputs; investigate and disclose any difference above 5% of the node input. | `mass-balance-identity` |\n| `validate_moisture_temperature` | accepted and stabilized grain | Declare moisture; flag lots above the declared safe hand-off specification; for supplemental heated drying, require recorded grain temperature and flag values at or above 45 °C for review. | `saskatchewan-chickpea-harvest`; `cgc-chickpea-moisture` |\n| `validate_range_completeness` | cards with ranges | Every supplied range must include role, bounds, unit, basis, basis kind and evidence kind, with source ids when externally supported. Report missing important-flow ranges as candidate evidence gaps; provisional screens do not replace foreground records. |  |\n\n"
       headings:
@@ -1519,12 +1549,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 60105
-              line: 981
+              offset: 63421
+              line: 1004
               column: 1
             end:
-              offset: 60127
-              line: 981
+              offset: 63443
+              line: 1004
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1543,272 +1573,272 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_field_to_gate"
       identity_kind: "explicit"
-      unit_id: "normative_5656"
+      unit_id: "normative_5659"
       source_span:
         start:
-          offset: 7053
+          offset: 7056
           line: 79
           column: 1
         end:
-          offset: 7369
+          offset: 7372
           line: 79
           column: 317
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_output_states"
       identity_kind: "explicit"
-      unit_id: "normative_5656"
+      unit_id: "normative_5659"
       source_span:
         start:
-          offset: 7370
+          offset: 7373
           line: 80
           column: 1
         end:
-          offset: 7729
+          offset: 7732
           line: 80
           column: 360
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_5656"
+      unit_id: "normative_5659"
       source_span:
         start:
-          offset: 7730
+          offset: 7733
           line: 81
           column: 1
         end:
-          offset: 8074
+          offset: 8077
           line: 81
           column: 345
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_5656"
+      unit_id: "normative_5659"
       source_span:
         start:
-          offset: 8075
+          offset: 8078
           line: 82
           column: 1
         end:
-          offset: 8285
+          offset: 8288
           line: 82
           column: 211
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_47947"
+      unit_id: "normative_50498"
       source_span:
         start:
-          offset: 48060
-          line: 933
+          offset: 50611
+          line: 954
           column: 1
         end:
-          offset: 48319
-          line: 933
+          offset: 50870
+          line: 954
           column: 260
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_residue_status"
       identity_kind: "explicit"
-      unit_id: "normative_47947"
+      unit_id: "normative_50498"
       source_span:
         start:
-          offset: 48320
-          line: 934
+          offset: 50871
+          line: 955
           column: 1
         end:
-          offset: 48709
-          line: 934
+          offset: 51260
+          line: 955
           column: 390
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_remaining_burdens"
       identity_kind: "explicit"
-      unit_id: "normative_47947"
+      unit_id: "normative_50498"
       source_span:
         start:
-          offset: 48710
-          line: 935
+          offset: 51261
+          line: 956
           column: 1
         end:
-          offset: 49091
-          line: 935
+          offset: 51642
+          line: 956
           column: 382
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_run_integrity"
       identity_kind: "explicit"
-      unit_id: "normative_47947"
+      unit_id: "normative_50498"
       source_span:
         start:
-          offset: 49092
-          line: 936
+          offset: 51643
+          line: 957
           column: 1
         end:
-          offset: 49477
-          line: 936
+          offset: 52028
+          line: 957
           column: 386
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 60200
-          line: 985
+          offset: 63516
+          line: 1008
           column: 1
         end:
-          offset: 60404
-          line: 985
+          offset: 63720
+          line: 1008
           column: 205
     - pointer: "/validation_rules/1"
       rule_id: "validate_nutrient_cardinality"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 60405
-          line: 986
+          offset: 63721
+          line: 1009
           column: 1
         end:
-          offset: 60629
-          line: 986
+          offset: 63945
+          line: 1009
           column: 225
     - pointer: "/validation_rules/2"
       rule_id: "validate_route_resolution"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 60630
-          line: 987
+          offset: 63946
+          line: 1010
           column: 1
         end:
-          offset: 60949
-          line: 987
+          offset: 64265
+          line: 1010
           column: 320
     - pointer: "/validation_rules/3"
       rule_id: "validate_output_handoffs"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 60950
-          line: 988
+          offset: 64266
+          line: 1011
           column: 1
         end:
-          offset: 61249
-          line: 988
+          offset: 64565
+          line: 1011
           column: 300
     - pointer: "/validation_rules/4"
       rule_id: "validate_rework"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 61250
-          line: 989
+          offset: 64566
+          line: 1012
           column: 1
         end:
-          offset: 61463
-          line: 989
+          offset: 64779
+          line: 1012
           column: 214
     - pointer: "/validation_rules/5"
       rule_id: "validate_batch_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 61464
-          line: 990
+          offset: 64780
+          line: 1013
           column: 1
         end:
-          offset: 61667
-          line: 990
+          offset: 64983
+          line: 1013
           column: 204
     - pointer: "/validation_rules/6"
       rule_id: "validate_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 61668
-          line: 991
+          offset: 64984
+          line: 1014
           column: 1
         end:
-          offset: 61926
-          line: 991
+          offset: 65242
+          line: 1014
           column: 259
     - pointer: "/validation_rules/7"
       rule_id: "validate_moisture_temperature"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 61927
-          line: 992
+          offset: 65243
+          line: 1015
           column: 1
         end:
-          offset: 62244
-          line: 992
+          offset: 65560
+          line: 1015
           column: 318
     - pointer: "/validation_rules/8"
       rule_id: "validate_range_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 62245
-          line: 993
+          offset: 65561
+          line: 1016
           column: 1
         end:
-          offset: 62557
-          line: 993
+          offset: 65873
+          line: 1016
           column: 313
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5656"
+      unit_id: "normative_5659"
       source_span:
         start:
-          offset: 5656
+          offset: 5659
           line: 62
           column: 1
         end:
-          offset: 5677
+          offset: 5680
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5656"
+      unit_id: "normative_5659"
       source_span:
         start:
-          offset: 5705
+          offset: 5708
           line: 66
           column: 1
         end:
-          offset: 6960
+          offset: 6963
           line: 73
           column: 263
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47947"
+      unit_id: "normative_50498"
       source_span:
         start:
-          offset: 47947
-          line: 929
+          offset: 50498
+          line: 950
           column: 1
         end:
-          offset: 47987
-          line: 929
+          offset: 50538
+          line: 950
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_60105"
+      unit_id: "normative_63421"
       source_span:
         start:
-          offset: 60105
-          line: 981
+          offset: 63421
+          line: 1004
           column: 1
         end:
-          offset: 60127
-          line: 981
+          offset: 63443
+          line: 1004
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1817,5 +1847,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:415393b2d301777661afab709b1eed4f094fc10119d76d19474f6767a32f4e5e"
-  generated_content_sha256: "sha256:24bbba9038908b26337be0f0e8808a31d83e0990cb604aa46be5b29cfca10ef4"
+    sha256: "sha256:75ddf2d40ddea1b3c19fbfddad32d67310544e2589b0c7c5f9ea677cd1670390"
+  generated_content_sha256: "sha256:3db10d127c5192e9c758dc83f7cb3fc84e80831f71e58af7db18b18b87f87a96"
