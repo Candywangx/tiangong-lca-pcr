@@ -117,7 +117,7 @@ Record green-bean seed or other planting material entering each declared field b
 
 Record water applied for bed preparation, seed emergence, or establishment by source and production unit, excluding rainfall unless a water-balance method explicitly includes it.
 
-- 选定流： Irrigation water supplied to the crop
+- 选定流：供应作物的灌溉用水
 - Flow property / unit: Volume / m3
 - 流集分组： `irrigation-water`
 - 数量规则： Sum metered or documented water-balance deliveries during establishment and retain the source and application method.
@@ -147,7 +147,7 @@ Record water applied for bed preparation, seed emergence, or establishment by so
 
 Record the production area and time occupied by the field bed or 设施栽培 unit for the declared planting campaign.
 
-- 选定流： Agricultural land occupation
+- 选定流：农业用地占用
 - Flow property / unit: Area-time / ha*a
 - 数量规则： Multiply declared production area by crop occupation time and state whether protected structures are excluded or separately attributed.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -184,7 +184,7 @@ Record the production area and time occupied by the field bed or 设施栽培 un
 
 Record irrigation and fertigation water delivered to the green-bean crop after establishment, separating source, application method, and any recirculated carrier water.
 
-- 选定流： Irrigation water supplied to the crop
+- 选定流：供应作物的灌溉用水
 - Flow property / unit: Volume / m3
 - 流集分组： `irrigation-water`
 - 数量规则： Sum field, bed, or protected-unit meter readings and documented water-balance estimates from establishment through final picking.
@@ -215,7 +215,7 @@ Record irrigation and fertigation water delivered to the green-bean crop after e
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -225,12 +225,14 @@ Record irrigation and fertigation water delivered to the green-bean crop after e
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-good-agricultural-practices`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`crop_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -240,6 +242,8 @@ Record irrigation and fertigation water delivered to the green-bean crop after e
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-good-agricultural-practices`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`crop_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -301,62 +305,26 @@ Record irrigation and fertigation water delivered to the green-bean crop after e
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-good-agricultural-practices`；`fao-organic-nutrients`
 
-###### Crop-protection products (`crop_protection_input`)
+###### 柴油 (`mobile_machinery_fuel_diesel`)
 
-Record each crop-protection product applied to the represented green-bean crop, retaining product name, active ingredient, formulation, rate, application method, date, and treated area. Use integrated pest management records to show when a treatment was unnecessary or omitted.
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`mobile_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流： Crop-protection product as applied
-- Flow property / unit: Product or active-ingredient mass / kg
-- 数量规则： Reconcile application logs, product labels, stock movement, and treated area for the complete 作物周期.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Product-specific (`product_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Process output (`process_output`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_crop_protection_records`
-- 来源： `fao-good-agricultural-practices`; `fao-fresh-produce-handling`
-- 数量范围： Crop-protection product screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 300
-  - 单位： kg product/ha
-  - 基准： complete green-bean 作物周期
-  - 基准类型： crop_cycle (`crop_cycle`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
-
-###### Mobile machinery fuel (`mobile_machinery_fuel`)
-
-Record diesel, gasoline, or another fuel used by tractors and mobile machinery for bed preparation, cultivation, spraying, irrigation support, and harvest operations.
-
-- 选定流： Mobile machinery fuel
-- Flow property / unit: Energy or fuel mass / MJ or kg
-- 流集分组： `mobile-machinery-fuel`
-- 数量规则： Sum fuel receipts, tank records, or machine-hour calculations assigned to the represented 作物周期.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Process output (`process_output`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_energy_records`
-- 来源： `fao-good-agricultural-practices`
-- 数量范围： Mobile-fuel screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 1,500
-  - 单位： MJ/ha
-  - 基准： field machinery operations for the 作物周期
-  - 基准类型： crop_cycle (`crop_cycle`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_energy_records`
+- 来源：`route-energy-fao`
 
 ###### Electricity for irrigation and crop management (`management_electricity_input`)
 
 Record electricity used for pumping, fertigation, protected-unit operation, lighting, and other crop-management equipment when it occurs before the declared gate.
 
-- 选定流： Electricity supply
+- 选定流：电力供应
 - Flow property / unit: Energy / kWh
 - 流集分组： `electricity-supply`
 - 数量规则： Sum equipment meter or invoice records and allocate shared services by area-time, operating time, water delivered, or another declared physical basis.
@@ -386,7 +354,7 @@ Record electricity used for pumping, fertigation, protected-unit operation, ligh
 
 Record natural-resource water withdrawn for irrigation or fertigation separately from supplied irrigation water and report the source and return or consumption basis.
 
-- 选定流： Water resource withdrawal
+- 选定流：自然水资源取用
 - Flow property / unit: Volume / m3
 - 数量规则： Reconcile source-meter or permit records to water delivered to the crop and disclose any return flow or consumption calculation.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -445,7 +413,7 @@ Record leaves, stems, roots, pods left after final picking, and other crop resid
 
 Record or calculate direct and indirect nitrous oxide emissions attributable to managed nitrogen input and relevant crop residues; retain the declared calculation method and receiving medium.
 
-- 选定流： Nitrous oxide emission to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - Flow property / unit: Mass / kg N2O
 - 数量规则： Apply one declared emissions method to documented nitrogen input, residue fate, and relevant environmental factors without double counting.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -470,7 +438,7 @@ Record or calculate direct and indirect nitrous oxide emissions attributable to 
 
 Record or calculate ammonia emissions from nitrogen applications when the declared method and application records support the pathway.
 
-- 选定流： Ammonia emission to ambient air
+- 选定流：氨向环境空气排放
 - Flow property / unit: Mass / kg NH3
 - 数量规则： Apply the declared nitrogen-emission method to documented nitrogen forms, application timing, and environmental conditions.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -495,7 +463,7 @@ Record or calculate ammonia emissions from nitrogen applications when the declar
 
 Record or calculate nitrate loss to water when nutrient, soil, drainage, and receiving-medium information supports the pathway.
 
-- 选定流： Nitrate emission to water
+- 选定流：硝酸根向水体排放
 - Flow property / unit: Mass / kg nitrate
 - 数量规则： Apply the declared nitrogen-loss method to recorded nutrient input, drainage or leaching evidence, and the receiving medium.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -520,7 +488,7 @@ Record or calculate nitrate loss to water when nutrient, soil, drainage, and rec
 
 Record or calculate phosphate loss to water when nutrient application, runoff or drainage, soil conditions, and receiving-medium information support the pathway.
 
-- 选定流： Phosphate emission to water
+- 选定流：磷酸根向水体排放
 - Flow property / unit: Mass / kg phosphate
 - 数量规则： Apply the declared phosphorus-loss method to recorded nutrient input and documented runoff, drainage, or erosion pathway without assigning an unsupported default emission.
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -550,7 +518,7 @@ Record or calculate phosphate loss to water when nutrient application, runoff or
 
 Record water used to remove soil and foreign material when washing occurs before the declared gate; keep it separate from irrigation and source withdrawal.
 
-- 选定流： Process water for washing
+- 选定流：清洗生产用水
 - Flow property / unit: Volume / m3
 - 流集分组： `process-water`
 - 数量规则： Sum wash-water meter or batch records and disclose recirculation, treatment, and discharge handling.
@@ -576,7 +544,7 @@ Record water used to remove soil and foreign material when washing occurs before
 
 Record electricity for forced-air cooling, cold rooms, sorting lines, lighting, and packing equipment when those activities occur before the declared gate.
 
-- 选定流： Electricity supply
+- 选定流：电力供应
 - Flow property / unit: Energy / kWh
 - 流集分组： `electricity-supply`
 - 数量规则： Sum equipment meter or invoice records and allocate shared services by mass, operating time, or another declared basis.
@@ -598,89 +566,11 @@ Record electricity for forced-air cooling, cold rooms, sorting lines, lighting, 
   - 基准类型： reference_flow (`reference_flow`)
   - 证据类型： Reasoned estimate (`reasoned_estimate`)
 
-###### Flexible primary packaging (`flexible_packaging_input`)
-
-Record flexible bags, films, liners, or other flexible primary packaging that crosses the foreground boundary before the declared gate, including material, tare, reuse, and loss information.
-
-- 选定流： Flexible packaging function
-- Flow property / unit: Mass or packaging service / kg or item
-- 流集分组： `flexible-packaging`
-- 数量规则： Record package mass or item count, capacity, tare, reuse cycles, and loss rate for the represented harvest campaign.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Product-specific (`product_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Process output (`process_output`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_packaging_transport_records`
-- 来源： `codex-fresh-produce-hygiene`
-- 数量范围： Flexible-packaging screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 40
-  - 单位： kg packaging per 1,000 kg output
-  - 基准： declared primary packaging at the gate
-  - 基准类型： reference_flow (`reference_flow`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
-
-###### Carton or box packaging (`carton_packaging_input`)
-
-Record carton, box, tray, or other paper-based primary packaging that crosses the foreground boundary before the declared gate, including material grade, tare, reuse, and loss information.
-
-- 选定流： Carton and box packaging function
-- Flow property / unit: Mass or packaging service / kg or item
-- 流集分组： `carton-and-box-packaging`
-- 数量规则： Record package mass or item count, capacity, tare, reuse cycles, and loss rate for the represented harvest campaign.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Product-specific (`product_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Process output (`process_output`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_packaging_transport_records`
-- 来源： `codex-fresh-produce-hygiene`
-- 数量范围： Carton-and-box screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 100
-  - 单位： kg packaging per 1,000 kg output
-  - 基准： declared primary packaging at the gate
-  - 基准类型： reference_flow (`reference_flow`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
-
-###### Reusable crate or pallet packaging (`crate_pallet_packaging_input`)
-
-Record reusable crates, pallets, bins, or other rigid handling packaging used before the declared gate, including material, tare, number of uses, return route, and loss rate.
-
-- 选定流： Pallet and crate packaging function
-- Flow property / unit: Mass or packaging service / kg or item
-- 流集分组： `pallet-and-crate-packaging`
-- 数量规则： Record package mass or item count, capacity, tare, reuse cycles, return route, and loss rate for the represented campaign.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Product-specific (`product_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
-
-- 归一化基准：每声明的参考流
-- 基准类型： Process output (`process_output`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_packaging_transport_records`
-- 来源： `codex-fresh-produce-hygiene`
-- 数量范围： Crate-and-pallet screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 80
-  - 单位： kg packaging per 1,000 kg output
-  - 基准： declared primary handling packaging at the gate
-  - 基准类型： reference_flow (`reference_flow`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
-
 ###### Pre-gate road freight (`pre_gate_road_transport`)
 
 Record purchased transport from field to pack-house or another declared pre-gate hand-off when it occurs within the foreground boundary.
 
-- 选定流： Road freight transport service
+- 选定流：公路货运服务
 - Flow property / unit: Transport service / t*km
 - 流集分组： `road-freight-transport`
 - 数量规则： Calculate transported mass times documented distance and state whether return or empty-leg burden is included.
@@ -740,7 +630,7 @@ Record the accepted 新鲜整果 green-bean pods delivered at the declared 农�
 
 Record edible or potentially usable pods that fail the declared primary grade but leave the process for a documented secondary use. Keep the recipient, quality, intended use, and hand-off distinct from waste or field loss.
 
-- 选定流： Downgraded green-bean pods for documented secondary use
+- 选定流：用于有记录的次级用途的降级青豆荚
 - Flow property / unit: Mass / kg
 - 数量规则： Weigh downgraded pods by picking or grading batch and record the recipient and intended use before assigning any co-product treatment.
 - 数值来源模式： Foreground record (`foreground_record`)
@@ -788,55 +678,35 @@ Record pods rejected during sorting, trimming, or quality inspection when they d
   - 基准类型： reference_flow (`reference_flow`)
   - 证据类型： Reasoned estimate (`reasoned_estimate`)
 
-###### Packaging waste (`packaging_waste_output`)
+###### 青豆清洗废水（`wash_water_wastewater_output`）
 
-Record damaged, discarded, or unrecovered packaging generated before the declared gate, separating reusable packaging returned to service from packaging that becomes waste.
+仅记录实际清洗水相排放或处理交接，保留组成和去向。留在该水相中的悬浮固体属于本废水，不另计固体交换。核验兼容的废物流身份及接收路线前，明确保留UUID未解析状态。
 
-- 选定流： Packaging waste from pre-gate handling
-- Flow property / unit: Mass / kg
-- 数量规则： Reconcile packaging issued, returned, reused, and discarded for the represented campaign.
-- 数值来源模式： Foreground record (`foreground_record`)
-- 具体性： Site-specific (`site_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
+- 选定流：青豆清洗废水
+- 流属性 / 单位：体积 / m3
+- 数量规则：按`cp_postharvest_records`计量此独立物流。协调供水、循环水、蒸发、产品和移出固体保留水及实际排放，质量与体积平衡须分别保持量纲一致；仅凭本物流有依据的密度进行体积质量换算。归属物流量除以匹配的最终合格产出量，再乘相同产品单位下的声明参考数量，保留实测阶段与最终产出的比例，不重复归一化，不编造固体分流比例。单独保留处理责任且避免重复计入。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_postharvest_records`
+- 来源：`codex-fresh-produce-hygiene`; `mass-balance-identity`
 
-- 归一化基准：每声明的参考流
-- 基准类型： reference_flow (`reference_flow`)
-- 证据类型： Collected record (`collected_record`)
-- 采集协议： `cp_packaging_transport_records`
-- 来源： `mass-balance-identity`; `codex-fresh-produce-hygiene`
-- 数量范围： Packaging-waste screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 20
-  - 单位： kg packaging waste per 1,000 kg output
-  - 基准： pre-gate packing-material reconciliation
-  - 基准类型： reference_flow (`reference_flow`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
+###### 青豆清洗分离固体（`wash_water_wastewater_output_separated_solids`）
 
-###### Wash-water and wash-solids wastewater (`wash_water_wastewater_output`)
+仅在实际移出并交付独立固体流时适用，记录湿质量及含水率。仍悬浮于废水中的固体不得再次计入。核验兼容的废物流身份及接收路线前，明确保留UUID未解析状态。
 
-Record wastewater or wash solids discharged or sent to treatment when washing occurs before the declared gate, retaining the water volume, solids mass, treatment route, and receiving hand-off.
-
-- 选定流： Wastewater and wash solids from green-bean washing
-- Flow property / unit: Volume and mass / m3 and kg
-- 数量规则： Reconcile wash-water input, recirculation, evaporation, retained solids, and discharged or treated output; record treatment separately when it crosses the boundary.
-- 数值来源模式： Calculated value (`calculated_value`)
-- 具体性： Site-specific (`site_specific`)
-原始活动或阶段基准：per 1,000 kg 商品 fresh green-bean output.
-
-- 归一化基准：每声明的参考流
-- 基准类型： reference_flow (`reference_flow`)
-- 证据类型： Calculated from collection (`calculated_from_collection`)
-- 采集协议： `cp_postharvest_records`
-- 来源： `codex-fresh-produce-hygiene`; `mass-balance-identity`
-- 数量范围： Wash-wastewater screening interval
-  - 范围角色： QA guardrail (`qa_guardrail`)
-  - 下限： 0
-  - 上限： 8
-  - 单位： m3 wastewater per 1,000 kg output
-  - 基准： pre-gate washing water balance
-  - 基准类型： reference_flow (`reference_flow`)
-  - 证据类型： Reasoned estimate (`reasoned_estimate`)
+- 选定流：青豆清洗分离固体
+- 流属性 / 单位：质量 / kg
+- 数量规则：按`cp_postharvest_records`计量此独立物流。协调供水、循环水、蒸发、产品和移出固体保留水及实际排放，质量与体积平衡须分别保持量纲一致；仅凭本物流有依据的密度进行体积质量换算。归属物流量除以匹配的最终合格产出量，再乘相同产品单位下的声明参考数量，保留实测阶段与最终产出的比例，不重复归一化，不编造固体分流比例。单独保留处理责任且避免重复计入。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_postharvest_records`
+- 来源：`codex-fresh-produce-hygiene`; `mass-balance-identity`
 
 ##### 基本流
 
@@ -851,6 +721,19 @@ Record wastewater or wash solids discharged or sent to treatment when washing oc
 
 ## 8. 前景数据采集、计算和质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_crop_protection_records` | 作业 crop_management：Record each crop-protection product applied to the represented green-bean crop, retaining product name, active ingredient, formulation, rate, application method, date, and treated area. Use integrated pest management records to show when a treatment was unnecessary or omitted. 原数量方法：Reconcile application logs, product labels, stock movement, and treated area for the complete 作物周期. |
+| `mobile_machinery_fuel_specific_input` | `cp_energy_records` | 作业 crop_management：Record diesel, gasoline, or another fuel used by tractors and mobile machinery for bed preparation, cultivation, spraying, irrigation support, and harvest operations. 原数量方法：Sum fuel receipts, tank records, or machine-hour calculations assigned to the represented 作物周期. |
+| `flexible_packaging_input_specific_input` | `cp_packaging_transport_records` | 作业 harvest_and_gate_preparation：Record flexible bags, films, liners, or other flexible primary packaging that crosses the foreground boundary before the declared gate, including material, tare, reuse, and loss information. 原数量方法：Record package mass or item count, capacity, tare, reuse cycles, and loss rate for the represented harvest campaign. |
+| `carton_packaging_input_specific_input` | `cp_packaging_transport_records` | 作业 harvest_and_gate_preparation：Record carton, box, tray, or other paper-based primary packaging that crosses the foreground boundary before the declared gate, including material grade, tare, reuse, and loss information. 原数量方法：Record package mass or item count, capacity, tare, reuse cycles, and loss rate for the represented harvest campaign. |
+| `crate_pallet_packaging_input_specific_input` | `cp_packaging_transport_records` | 作业 harvest_and_gate_preparation：Record reusable crates, pallets, bins, or other rigid handling packaging used before the declared gate, including material, tare, number of uses, return route, and loss rate. 原数量方法：Record package mass or item count, capacity, tare, reuse cycles, return route, and loss rate for the represented campaign. |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -862,12 +745,12 @@ Record wastewater or wash solids discharged or sent to treatment when washing oc
 | `cp_area_cycle_records` | `crop_establishment` | land occupation | field or facility register | area, unit, crop dates, protected status, prior use | map or register production unit and verify start and end dates；原始汇总与分配：multiply area by declared occupation period | ha and date | each 作物周期 | full crop occupation period | each field, bed, or protected unit | 每声明的参考流 | field map, lease or facility record, date record |
 | `cp_irrigation_records` | `crop_management` | irrigation and withdrawal | meter, permit, or water-balance record | source, meter, application, date, volume, return flow | read meter or reconstruct documented water balance；原始汇总与分配：sum by 作物周期 and separate source withdrawal from delivery | m3 | each application or daily total | establishment to final picking | each water source and crop unit | 每声明的参考流 | meter calibration, permit, or water-balance check |
 | `cp_nutrient_records` | `crop_management` | nutrient inputs and soil emissions | invoice, label, nutrient plan, and application log | product, mass, nutrient fraction, date, method, area, residue fate | reconcile purchases to application records and calculate nutrient equivalents；原始汇总与分配：sum applications assigned to the 作物周期 | kg product and kg nutrient | each application | full 作物周期 | each crop unit | 每声明的参考流 | supplier label, nutrient plan, laboratory, or log review |
-| `cp_crop_protection_records` | `crop_management` | crop-protection products | spray and stock record | product, active ingredient, dose, date, area, method | reconcile spray logs with invoices and stock movement；原始汇总与分配：sum by product and active ingredient | kg product or active ingredient | each application | full 作物周期 | each crop unit | 每声明的参考流 | product label, application log, trained-operator check |
-| `cp_energy_records` | `crop_management` | field and post-harvest energy | meter, fuel, or invoice record | carrier, quantity, operation, equipment, date, crop or batch assignment | read meter or reconcile fuel receipts and operating records；原始汇总与分配：allocate shared use by declared physical basis | kWh, MJ, L, or kg | each operation or billing period | full 作物周期 and pre-gate handling | field, facility, and shared equipment | 每声明的参考流 | meter, receipt, machine-hour, or allocation record |
+| `cp_crop_protection_records` | `crop_management` | crop-protection products | spray and stock record | product, active ingredient, dose, date, area, method | reconcile spray logs with invoices and stock movement；原始汇总与分配：sum by product and active ingredient `crop_protection_input_specific_input`: 作业 crop_management：Record each crop-protection product applied to the represented green-bean crop, retaining product name, active ingredient, formulation, rate, application method, date, and treated area. Use integrated pest management records to show when a treatment was unnecessary or omitted. 原数量方法：Reconcile application logs, product labels, stock movement, and treated area for the complete 作物周期. 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product or active ingredient | each application | full 作物周期 | each crop unit | 每声明的参考流 | product label, application log, trained-operator check |
+| `cp_energy_records` | `crop_management` | field and post-harvest energy | meter, fuel, or invoice record | carrier, quantity, operation, equipment, date, crop or batch assignment | read meter or reconcile fuel receipts and operating records；原始汇总与分配：allocate shared use by declared physical basis `mobile_machinery_fuel_specific_input`: 作业 crop_management：Record diesel, gasoline, or another fuel used by tractors and mobile machinery for bed preparation, cultivation, spraying, irrigation support, and harvest operations. 原数量方法：Sum fuel receipts, tank records, or machine-hour calculations assigned to the represented 作物周期. 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kWh, MJ, L, or kg | each operation or billing period | full 作物周期 and pre-gate handling | field, facility, and shared equipment | 每声明的参考流 | meter, receipt, machine-hour, or allocation record |
 | `cp_residue_fate_records` | `crop_management` | crop residues | residue and recipient record | stream, wet mass, fate, recipient, date, field | weigh or estimate residue and retain fate evidence；原始汇总与分配：sum by residue stream and fate | kg wet residue | each removal or crop-cycle close | crop-cycle close and post-harvest cleanup | each crop unit | 每声明的参考流 | weigh ticket, recipient record, or treatment receipt |
 | `cp_harvest_grade_records` | `harvest_and_gate_preparation` | 商品 output, downgraded pods, and rejects | harvest and grading record | date, picking round, gross harvest, accepted mass, downgraded mass, rejects, grade, gate | weigh each picking round and reconcile grade outcomes；原始汇总与分配：sum by 作物周期 and declared gate | kg | each picking round | entire harvest campaign | each field, bed, or campaign | 每声明的参考流 | scale record, grade sheet, and mass-balance check |
 | `cp_postharvest_records` | `harvest_and_gate_preparation` | washing, cooling, and wastewater | batch, meter, or equipment record | batch, water, recirculation, cooling time, loss, solids, discharge | read batch or meter record and link to harvest lot；原始汇总与分配：aggregate by accepted output batch | m3, kWh, kg, and h | each batch | all pre-gate handling | pack-house or declared handling site | 每声明的参考流 | batch sheet, meter, sanitation, and treatment record |
-| `cp_packaging_transport_records` | `harvest_and_gate_preparation` | packaging, packaging waste, and pre-gate transport | packaging issue and dispatch record | material, tare, reuse, item count, mass, distance, vehicle, load | reconcile packaging and dispatch records to accepted harvest lots；原始汇总与分配：sum packaging and transport by declared gate output | kg, item, km, or t*km | each campaign or dispatch | all in-scope pre-gate movements | field, pack-house, and route | 每声明的参考流 | package specification, dispatch note, route record |
+| `cp_packaging_transport_records` | `harvest_and_gate_preparation` | packaging, packaging waste, and pre-gate transport | packaging issue and dispatch record | material, tare, reuse, item count, mass, distance, vehicle, load | reconcile packaging and dispatch records to accepted harvest lots；原始汇总与分配：sum packaging and transport by declared gate output `flexible_packaging_input_specific_input`: 作业 harvest_and_gate_preparation：Record flexible bags, films, liners, or other flexible primary packaging that crosses the foreground boundary before the declared gate, including material, tare, reuse, and loss information. 原数量方法：Record package mass or item count, capacity, tare, reuse cycles, and loss rate for the represented harvest campaign. 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `carton_packaging_input_specific_input`: 作业 harvest_and_gate_preparation：Record carton, box, tray, or other paper-based primary packaging that crosses the foreground boundary before the declared gate, including material grade, tare, reuse, and loss information. 原数量方法：Record package mass or item count, capacity, tare, reuse cycles, and loss rate for the represented harvest campaign. 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `crate_pallet_packaging_input_specific_input`: 作业 harvest_and_gate_preparation：Record reusable crates, pallets, bins, or other rigid handling packaging used before the declared gate, including material, tare, number of uses, return route, and loss rate. 原数量方法：Record package mass or item count, capacity, tare, reuse cycles, return route, and loss rate for the represented campaign. 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `packaging_waste_output_specific_output`: Record damaged, discarded, or unrecovered packaging generated before the declared gate, separating reusable packaging returned to service from packaging that becomes waste. Reconcile packaging issued, returned, reused, and discarded for the represented campaign. 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。 `mass-balance-identity`; `codex-fresh-produce-hygiene` | kg, item, km, or t*km | each campaign or dispatch | all in-scope pre-gate movements | field, pack-house, and route | 每声明的参考流 | package specification, dispatch note, route record |
 
 ### 计算规则
 
@@ -929,3 +812,4 @@ Record wastewater or wash solids discharged or sent to treatment when washing oc
 | `mass-balance-identity` | method_factor | Declared crop-cycle, grade, water, residue, and packaging mass-balance reconciliation method | normalization, loss, cull, reject, residue, wastewater, and packaging checks |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

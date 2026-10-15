@@ -111,72 +111,6 @@ Every non-reference Range is a provisional QA screen (`reasoned_estimate`), not 
 
 ##### Product flows
 
-###### Stand establishment and maintenance materials (`stand_materials`)
-
-Actual seedlings, amendments, protection materials and maintenance supplies attributed to the declared cork stand phases; resolve each actual material, not an assumed fertilizer recipe.
-
-- Selected flow: Stand establishment and maintenance materials
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` (unit group `93a60a57-a4c8-11da-a746-0800200c9a66`) / kg
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stand`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Stand management energy (`stand_energy`)
-
-One conditional umbrella for recorded fuels, electricity or heat. Preserve carriers and original units before documented conversion to MJ; no labour or asset-service hours in this card.
-
-- Selected flow: Stand management energy
-- Flow property / unit: Energy / MJ
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stand`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: MJ
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Stand management and shared asset services (`stand_services`)
-
-Actual attributable nursery, maintenance, access-road or equipment service hours; enumerate asset consumers and periods. An inclusive purchased service excludes duplicate included fuel, materials and exhaust.
-
-- Selected flow: Stand management and shared asset services
-- Flow property / unit: Time / h
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stand`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ##### Waste flows
 
 No actual exchange is presumed for this role; disclose any evidenced boundary crossing with its proper concrete type.
@@ -259,28 +193,6 @@ No actual exchange is presumed for this role; disclose any evidenced boundary cr
 
 ##### Elementary flows
 
-###### Direct stand-management substance emissions (`stand_direct_emissions`)
-
-Conditional reported substance-specific emissions to actual media from included interventions. Require substance, compartment and calculation evidence; no automatic biological carbon uptake, avoided-emission or whole-tree sequestration credit.
-
-- Selected flow: Direct stand-management substance emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` (unit group `93a60a57-a4c8-11da-a746-0800200c9a66`) / kg
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stand`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ### Process: Bark harvest and resource removal (`bark_stripping`)
 
 #### Inputs
@@ -327,50 +239,6 @@ Only an actual coppice harvested-wood/bark interface, with wood quantity, source
   - Lower: 0
   - Upper: 100
   - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Bark stripping and extraction energy (`stripping_energy`)
-
-One actual fuel/electricity/heat umbrella for stripping and the declared extraction interface; manual peeling does not imply powered felling or metabolic inventory.
-
-- Selected flow: Bark stripping and extraction energy
-- Flow property / unit: Energy / MJ
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stripping`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: MJ
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Stripping equipment and extraction services (`stripping_services`)
-
-Actual allocated equipment or extraction service hours at the source interface; disclose whether any felling is owned or already embedded in purchased wood.
-
-- Selected flow: Stripping equipment and extraction services
-- Flow property / unit: Time / h
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stripping`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: h
   - Basis: per 1 kg reference flow
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
@@ -477,28 +345,6 @@ Actual discarded bark fragments or incidental material crossing the waste bounda
 
 ##### Elementary flows
 
-###### Direct extraction substance emissions (`stripping_emissions`)
-
-Conditional actual on-site exhaust or other measured substance emissions with named pollutant and receiving compartment; no generic exhaust UUID or duplicate emissions of an inclusive service.
-
-- Selected flow: Direct extraction substance emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` (unit group `93a60a57-a4c8-11da-a746-0800200c9a66`) / kg
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_stripping`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ### Process: Primary open-air rest and pre-gate transfer (`rest_and_transfer`)
 
 #### Inputs
@@ -523,50 +369,6 @@ Measured raw bark from raw_bark or a purchased already-harvested lot; declare in
   - Lower: 0
   - Upper: 20
   - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Rest-yard and pre-gate transfer energy (`rest_energy`)
-
-One conditional recorded fuel/electricity/heat umbrella for actual owned handling and yard operations; no default powered drying or later distribution.
-
-- Selected flow: Rest-yard and pre-gate transfer energy
-- Flow property / unit: Energy / MJ
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_rest`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: MJ
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Rest-yard storage and transfer services (`rest_services`)
-
-Actual equipment/yard service hours; transport-service records retain their native service unit and require a separate concrete exchange rather than conversion of tonne-km to hours or MJ.
-
-- Selected flow: Rest-yard storage and transfer services
-- Flow property / unit: Time / h
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_rest`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: h
   - Basis: per 1 kg reference flow
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
@@ -653,30 +455,6 @@ Only measured or balance-derived water released as water vapour to air unspecifi
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
 
-###### Actual direct substance emissions from rest and transfer (`rest_direct_emissions`)
-
-Conditional actual on-site substance emissions from owned fuel or equipment operation, with named substance, particle size/composition when relevant, actual receiving compartment and measured amount or an evidenced activity-factor calculation. Exclude water vapour recorded by rest_water_air and emissions already included in a supplier service. Missing substance or activity evidence is a disclosed gap, not zero or a generic pollutant UUID.
-
-- Selected flow: Actual direct substance emissions from rest and transfer
-- Flow property / unit: Mass / kg
-- Flow property UUID: 93a60a56-a3c8-11da-a746-0800200b9a66
-- Unit group UUID: 93a60a57-a4c8-11da-a746-0800200c9a66
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_rest`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ### Process: Simple boiling and stabilization (`simple_boiling`)
 
 #### Inputs
@@ -723,50 +501,6 @@ Metered product water crossing the technosphere supply boundary; document supply
   - Lower: 0
   - Upper: 100
   - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Simple boiling and stabilization energy (`boiling_energy`)
-
-One actual fuel/electricity/heat umbrella; collect heat and bath records by boiling run including startup/changeover. Do not prescribe a boiling time, temperature, expansion or moisture factor.
-
-- Selected flow: Simple boiling and stabilization energy
-- Flow property / unit: Energy / MJ
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_boiling`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: MJ
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Boiler and stabilization services (`boiling_services`)
-
-Attributable boiler/yard service hours if separately supplied. Record shared consumers and run boundaries; inclusive service and separately metered energy cannot own the same burden.
-
-- Selected flow: Boiler and stabilization services
-- Flow property / unit: Time / h
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_boiling`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: h
   - Basis: per 1 kg reference flow
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
@@ -895,28 +629,6 @@ Actual water vapour only, separated from liquid blowdown, dissolved extractive r
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
 
-###### Direct simple-boiling substance emissions (`boiling_direct_emissions`)
-
-Conditional named on-site combustion or other pollutant emissions with actual compartment and fuel/control evidence. Bath extractives are not a broad air VOC exchange.
-
-- Selected flow: Direct simple-boiling substance emissions
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` (unit group `93a60a57-a4c8-11da-a746-0800200c9a66`) / kg
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_boiling`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ### Process: Grading, presentation and producer handover (`qualification_handover`)
 
 #### Inputs
@@ -941,72 +653,6 @@ Measured raw, rested or simply boiled lot from its actual last interface or alre
   - Lower: 0
   - Upper: 20
   - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Handover packaging and presentation materials (`handover_packaging`)
-
-One conditional actual packaging-material umbrella for protection, identification and loading presentation; disclose returnable assets, reuse cycles, package losses and recipients. Net cork excludes these materials.
-
-- Selected flow: Handover packaging and presentation materials
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` (unit group `93a60a57-a4c8-11da-a746-0800200c9a66`) / kg
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_handover`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Qualification and packaging energy (`handover_energy`)
-
-One actual fuel/electricity/heat umbrella for grading, weighing and conditional packing before the gate; downstream stopper making or transport is not owned here.
-
-- Selected flow: Qualification and packaging energy
-- Flow property / unit: Energy / MJ
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_handover`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: MJ
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Qualification and presentation services (`handover_services`)
-
-Recorded grading, weighing and shared equipment service hours with handover boundary; list included utilities and forbid duplicate inputs for an inclusive service.
-
-- Selected flow: Qualification and presentation services
-- Flow property / unit: Time / h
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_handover`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 1000
-  - Unit: h
   - Basis: per 1 kg reference flow
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
@@ -1069,54 +715,7 @@ Enumerate actual independently accepted co-product grades or downgraded saleable
 
 ##### Waste flows
 
-###### Qualification and packaging rejects sent as waste (`handover_waste`)
-
-Actual rejected cork, foreign matter or packaging wastes with producing-node and recipient identity; returned cork follows its actual upstream node and retains incurred burden without a second final acceptance.
-
-- Selected flow: Qualification and packaging rejects sent as waste
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` (unit group `93a60a57-a4c8-11da-a746-0800200c9a66`) / kg
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_handover`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ##### Elementary flows
-
-###### Actual direct substance emissions from qualification handover (`handover_direct_emissions`)
-
-Conditional actual on-site substance emissions from owned fuel or equipment operation, with named substance, particle size/composition when relevant, actual receiving compartment and measured amount or an evidenced activity-factor calculation. Exclude upstream-node-owned emissions and emissions already included in a supplier service. Missing substance or activity evidence is a disclosed gap, not zero or a generic pollutant UUID.
-
-- Selected flow: Actual direct substance emissions from qualification handover
-- Flow property / unit: Mass / kg
-- Flow property UUID: 93a60a56-a3c8-11da-a746-0800200b9a66
-- Unit group UUID: 93a60a57-a4c8-11da-a746-0800200c9a66
-- Amount rule: measured actual attributable exchange
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_handover`
-- Range: Provisional broad QA screen, not a default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 
 ## 7. Allocation and Co-product Handling
 
@@ -1131,17 +730,41 @@ Conditional actual on-site substance emissions from owned fuel or equipment oper
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `stand_energy_specific_input` | `cp_stand` | Operation stand_management: One conditional umbrella for recorded fuels, electricity or heat. Preserve carriers and original units before documented conversion to MJ; no labour or asset-service hours in this card. Original quantity method: measured actual attributable exchange |
+| `stand_services_specific_input` | `cp_stand` | Operation stand_management: Actual attributable nursery, maintenance, access-road or equipment service hours; enumerate asset consumers and periods. An inclusive purchased service excludes duplicate included fuel, materials and exhaust. Original quantity method: measured actual attributable exchange |
+| `stripping_energy_specific_input` | `cp_stripping` | Operation bark_stripping: One actual fuel/electricity/heat umbrella for stripping and the declared extraction interface; manual peeling does not imply powered felling or metabolic inventory. Original quantity method: measured actual attributable exchange |
+| `rest_energy_specific_input` | `cp_rest` | Operation rest_and_transfer: One conditional recorded fuel/electricity/heat umbrella for actual owned handling and yard operations; no default powered drying or later distribution. Original quantity method: measured actual attributable exchange |
+| `boiling_energy_specific_input` | `cp_boiling` | Operation simple_boiling: One actual fuel/electricity/heat umbrella; collect heat and bath records by boiling run including startup/changeover. Do not prescribe a boiling time, temperature, expansion or moisture factor. Original quantity method: measured actual attributable exchange |
+| `handover_packaging_specific_input` | `cp_handover` | Operation qualification_handover: One conditional actual packaging-material umbrella for protection, identification and loading presentation; disclose returnable assets, reuse cycles, package losses and recipients. Net cork excludes these materials. Original quantity method: measured actual attributable exchange |
+| `handover_energy_specific_input` | `cp_handover` | Operation qualification_handover: One actual fuel/electricity/heat umbrella for grading, weighing and conditional packing before the gate; downstream stopper making or transport is not owned here. Original quantity method: measured actual attributable exchange |
+
+
+### Material and service identification requirements
+
+Identify each actual material or independently supplied service from supplier and activity records; record composition/specification, quantity, unit, node and period separately. Add one concrete exchange per identity before dataset completion; these requirements are not a single exchange. Reconcile with existing cards and inclusive services to avoid duplication. Allocate reusable assets over evidenced use and preserve physical quantities; normalize once to the matched final reference output. Missing identity or use evidence is a completeness gap, not zero use. Conditional examples below are not an exhaustive bill of materials and do not prescribe use or amounts.
+
+| requirement_id | collection_protocol_id | Required scope |
+| --- | --- | --- |
+| `stand_materials_identification` | `cp_stand` | seedlings, amendments, protection and maintenance materials by actual cork-stand phase |
+
+
 Every protocol aggregation uses the same accepted cork lot net kg in cp_handover. Keep land area-time, residual output shares, native transport quantities and fresh water versus bath circulation independently documented; no secondary denominator or duplicate transfer is introduced by the common reference basis.
 
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_stand` | stand_management | stand inputs, attributable bark, land and other goods | stand/cohort/service records | species; stand/source id; establishment and maintenance phase; area and dates; harvest history; attributable bark quantity; materials; energy carrier; service asset/consumer; independent output; emissions substance/medium | Collect source-owner records, weigh bark at handoff and match phase/event inventories; explicitly classify materials, services, products and retained stock | actual kg, MJ, h and m2a separately | each phase/event and reporting period | actual establishment through covered harvest and relevant replacement/termination | each contributing stand | per 1 kg reference flow | traceable owners, calibrated quantities, area/time maps and reconciled phase shares |
-| `cp_stripping` | bark_stripping | source feed, raw bark, services, wood, waste and emissions | extraction campaign records | route recurrent/coppice; source portion; incoming bark/wood quantity; felling owner; virgin/secondary/reproduction; bark/back inclusion; raw wet mass; moisture basis; independent wood handoff; retained material; fuel/service; waste recipient; pollutant/compartment | Weigh the extraction handoffs; record actual tree/wood interfaces, source ownership, incidental and retained materials; independently document direct substances | actual kg, MJ and h separately | each extraction source lot/campaign | actual harvest and covered reporting period | each source/removal site | per 1 kg reference flow | source permissions/owners, calibration, stock/output reconciliation and recipient records |
-| `cp_rest` | rest_and_transfer |cork transfer, energy, services, rejects and water and direct emissions | yard/transfer/stock records |lot; incoming/closing mass; preparation state; moisture method; opening/closing stock; dates; actual rain uptake/drainage; service and route; energy; water vapour basis; rejects/recipient; named emission substance/particle size or composition; compartment; actual fuel/equipment activity; measurement or activity-factor evidence |Weigh matched cork lots before/after rest, document stock and actual water changes; measure service use and water-specific balances without equating all mass loss with evaporation; measure or calculate each direct substance from actual activity evidence, excluding inclusive service and water-vapour duplication | actual kg, MJ and h separately; transport native units retained | each lot/transfer and stock period | actual rest and dispatch periods | each yard and transfer owner | per 1 kg reference flow | paired-lot records, moisture tests, actual route and complete opening/closing stock |
-| `cp_boiling` | simple_boiling | cork, supply/abstraction water, heat, services and exits | run/bath/stabilization records | lot; incoming/output wet mass; moisture; batch/continuous mode; run/date; temperature/time actually used; fresh-water source; circulation; water retained/vapour/liquid; dissolved/suspended matter; energy; shared service; cleaning/changeover; recipients; pollutants | Meter actual incoming/fresh and outgoing water, weigh cork and sample moisture/extractives; trace circulating bath independently, meter energy and record actual run cleaning/changes | actual kg, MJ and h separately | every actual run/bath and stabilization lot | actual treatment/stabilization periods | each boiler and stabilization owner | per 1 kg reference flow | meter calibration, matched wet/dry/water balances, run totals and actual treatment recipients |
-| `cp_handover` | qualification_handover |final cork, other grades, packaging, energy, services and rejects and direct emissions | acceptance/package/dispatch records |source lot; actual state; species; harvest type; form/back inclusion; gross/tare/net mass; moisture method/basis; grade; all grade recipients; gate/date; packaging material/reuse; services; rejection/return path; named emission substance/particle size or composition; compartment; actual fuel/equipment activity; measurement or activity-factor evidence |Weigh accepted cork on a calibrated scale excluding packaging; identify actual state and grade; reconcile all other outputs and stocks and document actual presentation/reuse; measure or calculate each direct substance from actual activity evidence, excluding inclusive service and water-vapour duplication | actual kg, MJ and h separately | every accepted lot and associated grading/packaging run | actual qualification and dispatch reporting period | every contributing handover site | per 1 kg reference flow | calibrated weighing, matched acceptance/dispatch notes, grade thresholds, recipient and return evidence |
+| `cp_stand` | stand_management | stand inputs, attributable bark, land and other goods | stand/cohort/service records | species; stand/source id; establishment and maintenance phase; area and dates; harvest history; attributable bark quantity; materials; energy carrier; service asset/consumer; independent output; emissions substance/medium | Collect source-owner records, weigh bark at handoff and match phase/event inventories; explicitly classify materials, services, products and retained stock `stand_energy_specific_input`: Operation stand_management: One conditional umbrella for recorded fuels, electricity or heat. Preserve carriers and original units before documented conversion to MJ; no labour or asset-service hours in this card. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `stand_services_specific_input`: Operation stand_management: Actual attributable nursery, maintenance, access-road or equipment service hours; enumerate asset consumers and periods. An inclusive purchased service excludes duplicate included fuel, materials and exhaust. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `stand_direct_emissions_specific_emission`: Conditional reported substance-specific emissions to actual media from included interventions. Require substance, compartment and calculation evidence; no automatic biological carbon uptake, avoided-emission or whole-tree sequestration credit. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | actual kg, MJ, h and m2a separately | each phase/event and reporting period | actual establishment through covered harvest and relevant replacement/termination | each contributing stand | per 1 kg reference flow | traceable owners, calibrated quantities, area/time maps and reconciled phase shares |
+| `cp_stripping` | bark_stripping | source feed, raw bark, services, wood, waste and emissions | extraction campaign records | route recurrent/coppice; source portion; incoming bark/wood quantity; felling owner; virgin/secondary/reproduction; bark/back inclusion; raw wet mass; moisture basis; independent wood handoff; retained material; fuel/service; waste recipient; pollutant/compartment | Weigh the extraction handoffs; record actual tree/wood interfaces, source ownership, incidental and retained materials; independently document direct substances `stripping_energy_specific_input`: Operation bark_stripping: One actual fuel/electricity/heat umbrella for stripping and the declared extraction interface; manual peeling does not imply powered felling or metabolic inventory. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `stripping_services_specific_input`: Actual allocated equipment or extraction service hours at the source interface; disclose whether any felling is owned or already embedded in purchased wood. measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `stripping_emissions_specific_emission`: Conditional actual on-site exhaust or other measured substance emissions with named pollutant and receiving compartment; no generic exhaust UUID or duplicate emissions of an inclusive service. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | actual kg, MJ and h separately | each extraction source lot/campaign | actual harvest and covered reporting period | each source/removal site | per 1 kg reference flow | source permissions/owners, calibration, stock/output reconciliation and recipient records |
+| `cp_rest` | rest_and_transfer | cork transfer, energy, services, rejects and water and direct emissions | yard/transfer/stock records | lot; incoming/closing mass; preparation state; moisture method; opening/closing stock; dates; actual rain uptake/drainage; service and route; energy; water vapour basis; rejects/recipient; named emission substance/particle size or composition; compartment; actual fuel/equipment activity; measurement or activity-factor evidence | Weigh matched cork lots before/after rest, document stock and actual water changes; measure service use and water-specific balances without equating all mass loss with evaporation; measure or calculate each direct substance from actual activity evidence, excluding inclusive service and water-vapour duplication `rest_energy_specific_input`: Operation rest_and_transfer: One conditional recorded fuel/electricity/heat umbrella for actual owned handling and yard operations; no default powered drying or later distribution. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `rest_services_specific_input`: Actual equipment/yard service hours; transport-service records retain their native service unit and require a separate concrete exchange rather than conversion of tonne-km to hours or MJ. measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `rest_direct_emissions_specific_emission`: Conditional actual on-site substance emissions from owned fuel or equipment operation, with named substance, particle size/composition when relevant, actual receiving compartment and measured amount or an evidenced activity-factor calculation. Exclude water vapour recorded by rest_water_air and emissions already included in a supplier service. Missing substance or activity evidence is a disclosed gap, not zero or a generic pollutant UUID. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | actual kg, MJ and h separately; transport native units retained | each lot/transfer and stock period | actual rest and dispatch periods | each yard and transfer owner | per 1 kg reference flow | paired-lot records, moisture tests, actual route and complete opening/closing stock |
+| `cp_boiling` | simple_boiling | cork, supply/abstraction water, heat, services and exits | run/bath/stabilization records | lot; incoming/output wet mass; moisture; batch/continuous mode; run/date; temperature/time actually used; fresh-water source; circulation; water retained/vapour/liquid; dissolved/suspended matter; energy; shared service; cleaning/changeover; recipients; pollutants | Meter actual incoming/fresh and outgoing water, weigh cork and sample moisture/extractives; trace circulating bath independently, meter energy and record actual run cleaning/changes `boiling_energy_specific_input`: Operation simple_boiling: One actual fuel/electricity/heat umbrella; collect heat and bath records by boiling run including startup/changeover. Do not prescribe a boiling time, temperature, expansion or moisture factor. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `boiling_services_specific_input`: Attributable boiler/yard service hours if separately supplied. Record shared consumers and run boundaries; inclusive service and separately metered energy cannot own the same burden. measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `boiling_direct_emissions_specific_emission`: Conditional named on-site combustion or other pollutant emissions with actual compartment and fuel/control evidence. Bath extractives are not a broad air VOC exchange. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability.  | actual kg, MJ and h separately | every actual run/bath and stabilization lot | actual treatment/stabilization periods | each boiler and stabilization owner | per 1 kg reference flow | meter calibration, matched wet/dry/water balances, run totals and actual treatment recipients |
+| `cp_handover` | qualification_handover | final cork, other grades, packaging, energy, services and rejects and direct emissions | acceptance/package/dispatch records | source lot; actual state; species; harvest type; form/back inclusion; gross/tare/net mass; moisture method/basis; grade; all grade recipients; gate/date; packaging material/reuse; services; rejection/return path; named emission substance/particle size or composition; compartment; actual fuel/equipment activity; measurement or activity-factor evidence | Weigh accepted cork on a calibrated scale excluding packaging; identify actual state and grade; reconcile all other outputs and stocks and document actual presentation/reuse; measure or calculate each direct substance from actual activity evidence, excluding inclusive service and water-vapour duplication `handover_packaging_specific_input`: Operation qualification_handover: One conditional actual packaging-material umbrella for protection, identification and loading presentation; disclose returnable assets, reuse cycles, package losses and recipients. Net cork excludes these materials. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `handover_energy_specific_input`: Operation qualification_handover: One actual fuel/electricity/heat umbrella for grading, weighing and conditional packing before the gate; downstream stopper making or transport is not owned here. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `handover_services_specific_input`: Recorded grading, weighing and shared equipment service hours with handover boundary; list included utilities and forbid duplicate inputs for an inclusive service. measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `handover_direct_emissions_specific_emission`: Conditional actual on-site substance emissions from owned fuel or equipment operation, with named substance, particle size/composition when relevant, actual receiving compartment and measured amount or an evidenced activity-factor calculation. Exclude upstream-node-owned emissions and emissions already included in a supplier service. Missing substance or activity evidence is a disclosed gap, not zero or a generic pollutant UUID. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `handover_waste_specific_output`: Actual rejected cork, foreign matter or packaging wastes with producing-node and recipient identity; returned cork follows its actual upstream node and retains incurred burden without a second final acceptance. measured actual attributable exchange This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion.  | actual kg, MJ and h separately | every accepted lot and associated grading/packaging run | actual qualification and dispatch reporting period | every contributing handover site | per 1 kg reference flow | calibrated weighing, matched acceptance/dispatch notes, grade thresholds, recipient and return evidence |
 
 ### Calculation Rules
 

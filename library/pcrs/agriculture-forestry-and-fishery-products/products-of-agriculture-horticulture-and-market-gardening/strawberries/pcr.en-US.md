@@ -108,9 +108,9 @@ Raw activity or stage basis: per 1 kg marketable strawberries.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1 kg marketable strawberries.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_cultivation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -120,12 +120,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cultivation`
 - Sources: `source-01`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`process_01_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_cultivation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -135,6 +137,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cultivation`
 - Sources: `source-01`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`process_01_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -196,28 +200,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_cultivation`
 - Sources: `source-01`; `fao-organic-nutrients`
 
-###### Crop-protection product (`row-03`)
-Record actual crop-protection products, active ingredient or formulation, application event and destination.
-- Selected flow: Crop-protection product (UUID unresolved; intentionally blank)
-- Flow property / unit: Mass / kg product
-- Amount rule: application log, supplier record and invoice
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg marketable strawberries.
-
-- Normalization basis: per declared reference flow
-- Range: Broad provisional QA guardrail; replace with site-specific records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit per kg product
-  - Basis: one declared crop cycle; values outside require documented explanation
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp-cultivation`
-- Sources: `source-01`
 ###### Irrigation water (`row-04`)
 Record irrigation water source, volume and the field or production-unit application basis.
 - Selected flow: Irrigation water supply (UUID unresolved; intentionally blank)
@@ -247,9 +229,9 @@ Raw activity or stage basis: per 1 kg marketable strawberries.
 Record electricity, fuel and other energy carriers used by the cultivation operation.
 Raw activity or stage basis: per 1 kg marketable strawberries.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_cultivation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -260,11 +242,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_cultivation`
 - Sources: `source-01`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`row_18_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_cultivation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -274,6 +258,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_cultivation`
 - Sources: `source-01`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 #### Outputs
 ##### Product flows
@@ -590,28 +576,25 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_conditioning`
 - Sources: `source-01`; `fao-package-identities`
 
-###### Conditioning energy (`row-20`)
-Record electricity, fuel or other energy used by washing, cooling, stabilization or packing equipment.
-- Selected flow: Conditioning energy supply (UUID unresolved; intentionally blank)
-- Flow property / unit: Energy or mass / kWh, MJ or kg
-- Amount rule: meter, invoice and run log
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg delivered strawberries.
+###### Alternating current (`row-20_electricity`)
 
+Actual electric washing, cooling, stabilization and packing equipment for the strawberry lot; identify any separate thermal treatment from its real equipment.
+
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp-conditioning`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Range: Broad provisional QA guardrail; replace with site-specific records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit per kg product
-  - Basis: one declared crop cycle; values outside require documented explanation
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp-conditioning`
-- Sources: `source-01`
+- Sources: `route-energy-fao`
+
+Apply `row-20_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
+
 #### Outputs
 ##### Product flows
 ###### Prepared strawberries at hand-off (`row-16`)
@@ -733,16 +716,36 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `row_03_specific_input` | `cp-cultivation` | Operation process_01: Record actual crop-protection products, active ingredient or formulation, application event and destination. Original quantity method: application log, supplier record and invoice |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `row-20_identification` | `cp-conditioning` | Actual electric washing, cooling, stabilization and packing equipment for the strawberry lot; identify any separate thermal treatment from its real equipment. Raw activity or stage basis: per 1 kg delivered strawberries. (`route-energy-fao`) |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
 ### Data Collection Protocols
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp-cultivation` | `process-01` | inputs and outputs | invoices, logs, meters, field book | product, nutrient, amount, water, energy, crop output | reconcile supplier and field records; Raw aggregation and attribution: sum by site and cycle | kg, kg nutrient, m3, kWh | operation/monthly | full crop cycle | each site/plot | per declared reference flow | invoices, meters and review |
+| `cp-cultivation` | `process-01` | inputs and outputs | invoices, logs, meters, field book | product, nutrient, amount, water, energy, crop output | reconcile supplier and field records; Raw aggregation and attribution: sum by site and cycle `row_03_specific_input`: Operation process_01: Record actual crop-protection products, active ingredient or formulation, application event and destination. Original quantity method: application log, supplier record and invoice Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, kg nutrient, m3, kWh | operation/monthly | full crop cycle | each site/plot | per declared reference flow | invoices, meters and review |
 | `cp-harvest` | `process-02` | harvested fruit and loss | weigh tickets and harvest logs | lot, date, mass, block, destination | weigh each lot and reconcile; Raw aggregation and attribution: sum lots | kg | each lot | harvest season | each block | per declared reference flow | calibrated scale and logs |
 | `cp-grading` | `process-03` | incoming, accepted and rejected fruit | grading and dispatch records | incoming, grade, mass, destination | lot mass balance; Raw aggregation and attribution: reconcile all states | kg | each lot | grading period | each line/site | per declared reference flow | dispatch and destination records |
-| `cp-conditioning` | `process-04` | conditioning input, output and waste | run log, meter, invoice | lot, input, utility, output, waste | lot-linked reconciliation; Raw aggregation and attribution: allocate by lot mass | kg, m3, kWh | each run | conditioning period | conditioning unit | per declared reference flow | meters and run records |
+| `cp-conditioning` | `process-04` | conditioning input, output and waste | run log, meter, invoice | lot, input, utility, output, waste | lot-linked reconciliation; Raw aggregation and attribution: allocate by lot mass Route-specific requirements: `row-20_identification`: Actual electric washing, cooling, stabilization and packing equipment for the strawberry lot; identify any separate thermal treatment from its real equipment. Raw activity or stage basis: per 1 kg delivered strawberries. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg, m3, kWh | each run | conditioning period | conditioning unit | per declared reference flow | meters and run records |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
 
 ### Calculation Rules
@@ -797,3 +800,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

@@ -97,34 +97,6 @@ This PCR covers usable breeding semen from animals other than bovines, including
 
 ##### Product flows
 
-###### Species-specific feed (`feed`)
-
-Record feed supply, measured intake and losses for eligible donor maintenance over the recorded period; intake is not the upstream feed inventory.
-
-Denominator and scope requirements：per linked accepted dose
-
-Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow.
-
-- Selected flow: Feed and forage for identified non-bovine donor (UUID unresolved)
-- Flow property / unit: Dry matter mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_donor`
-QA scope for this card: the intake range below screens only separately recorded biological intake on its stated unit and denominator, reconstructed under calc_feed_supply_and_intake. It does not bound or substitute for the supplied-feed exchange, which retains in-boundary uneaten losses and their production burden. Do not compare feed supply with intake bounds or subtract losses merely to fit a range. A supply-specific range requires separate evidence; missing intake/loss records leave this intake QA unassessed, not passing.
-
-- Range: Provisional feed completeness screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg dry matter/dose
-  - Basis: recorded donor-period intake over linked accepted doses; QA variable is recorded biological intake only, not the supplied-feed inventory amount
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Donor water (`donor_water`)
 
 Meter drinking and hygiene water rather than assuming one species-independent rate.
@@ -270,31 +242,22 @@ Use actual species, housing/storage conditions and a justified nitrogen-flow met
 
 ##### Product flows
 
-###### Collection consumables (`collection_supplies`)
+###### Disposable polyethylene protective glove (`collection_supplies_glove`)
 
-Disposable apparatus is charged to collection; reusable apparatus belongs to shared service attribution.
+Only when compatible polyethylene gloves are actually consumed for operator protection during collection. Record mass per item, item count and returns. This non-sterile example does not establish suitability for semen contact; retain actual hygiene requirements.
 
-Denominator and scope requirements：per collection event
-
-Raw quantity and calculation requirements: Count or weigh items issued to each collection event. Original collection denominator kind: process_output.
-
-- Selected flow: Species-compatible semen collection consumables (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Disposable polyethylene protective glove
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the number of accepted released doses for the matched batch and period (kg glove per dose); retain measured glove mass per item and do not divide by semen mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_collect`
-- Range: Provisional supplies screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/event
-  - Basis: disposable supplies issued to one event
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `collection-pe-gloves`
+
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
 
 ##### Waste flows
 
@@ -488,32 +451,6 @@ Raw quantity and calculation requirements: Reconcile rejected, accepted and down
 
 ##### Product flows
 
-###### Preparation medium (`medium`)
-
-Use actual species-compatible diluent or extender recipe; do not assume a universal formulation.
-
-Denominator and scope requirements：per preparation lot
-
-Raw quantity and calculation requirements: Record prepared and issued liquid by batch. Original collection denominator kind: process_output.
-
-- Selected flow: Semen preparation medium (UUID unresolved)
-- Flow property / unit: Volume / mL
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_prepare`
-- Range: Provisional medium screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: mL/lot
-  - Basis: issued preparation liquid
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -583,32 +520,6 @@ Raw quantity and calculation requirements: Measure and assign actual disposal pa
 #### Inputs
 
 ##### Product flows
-
-###### Dose straws or vials (`dose_container`)
-
-Issued containers are reconciled with correctly filled and rejected units.
-
-Denominator and scope requirements：per filling batch
-
-Raw quantity and calculation requirements: Count straws or vials and seals issued. Original collection denominator kind: process_output.
-
-- Selected flow: Species/route-compatible dose container (UUID unresolved)
-- Flow property / unit: Count / item
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_fill`
-- Range: Container issue screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000000
-  - Unit: items/batch
-  - Basis: issued containers
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -706,32 +617,6 @@ Raw quantity and calculation requirements: Meter power over batch and hold durat
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Cryogenic medium (`cryogen`)
-
-Frozen lots record actual cryogen replenishment; chilled and fresh lots do not inherit this input.
-
-Denominator and scope requirements：per frozen dose
-
-Raw quantity and calculation requirements: Record issued and recovered quantity with storage-service attribution. Original collection denominator kind: reference_flow.
-
-- Selected flow: Route-specific cryogenic medium (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_preserve`
-- Range: Provisional cryogen screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/frozen dose
-  - Basis: issued cryogen over accepted frozen doses
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -801,32 +686,6 @@ Raw quantity and calculation requirements: Reconcile entered, accepted and rejec
 #### Inputs
 
 ##### Product flows
-
-###### Protective packaging (`packaging`)
-
-Only centre-issued protective packaging is included; reusable containers are apportioned over actual reuse cycles.
-
-Denominator and scope requirements：per released dose
-
-Raw quantity and calculation requirements: Weigh issued packaging and attribute reusable service once. Original collection denominator kind: reference_flow.
-
-- Selected flow: Protective packaging for non-bovine semen doses (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_release`
-- Range: Provisional packaging screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg/dose
-  - Basis: packaging mass over accepted released doses
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -906,17 +765,36 @@ Raw quantity and calculation requirements: Count or weigh rejected centre packag
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `feed_specific_input` | `cp_donor` | Operation donor: Record feed supply, measured intake and losses for eligible donor maintenance over the recorded period; intake is not the upstream feed inventory. Denominator and scope requirements：per linked accepted dose Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `packaging_specific_input` | `cp_release` | Operation release: Only centre-issued protective packaging is included; reusable containers are apportioned over actual reuse cycles. Denominator and scope requirements：per released dose Raw quantity and calculation requirements: Weigh issued packaging and attribute reusable service once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
+### Material and service identification requirements
+
+Identify each actual material or independently supplied service from supplier and activity records; record composition/specification, quantity, unit, node and period separately. Add one concrete exchange per identity before dataset completion; these requirements are not a single exchange. Reconcile with existing cards and inclusive services to avoid duplication. Allocate reusable assets over evidenced use and preserve physical quantities; normalize once to the matched final reference output. Missing identity or use evidence is a completeness gap, not zero use. Conditional examples below are not an exhaustive bill of materials and do not prescribe use or amounts.
+
+| requirement_id | collection_protocol_id | Required scope |
+| --- | --- | --- |
+| `collection_supplies_identification` | `cp_collect` | species-compatible semen collection apparatus and supplies |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_donor` | `donor` | donor inputs and outputs | donor register and meters | donor_id, species, period, feed_mass, water_mass, health_event, eligible_days, manure_mass | dated record and calibrated meter; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | day; kg | each event and monthly reconciliation | full donor period | centre and donor | per reference flow | register and receipts; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_donor` | `donor` | donor inputs and outputs | donor register and meters | donor_id, species, period, feed_mass, water_mass, health_event, eligible_days, manure_mass | dated record and calibrated meter; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `feed_specific_input`: Operation donor: Record feed supply, measured intake and losses for eligible donor maintenance over the recorded period; intake is not the upstream feed inventory. Denominator and scope requirements：per linked accepted dose Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | day; kg | each event and monthly reconciliation | full donor period | centre and donor | per reference flow | register and receipts; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_collect` | `collect` | consumables, ejaculate, failed material | collection event | donor_id, event_id, issued_mass, raw_mL, concentration, rejected_mass | calibrated vessel and issue log; Raw aggregation requirements: sum by donor and lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | mL; kg | each event | all collection events | centre | per reference flow | calibration and chain of custody; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_grade` | `grade` | quality states | laboratory assessment | lot_id, raw_mL, accepted_mL, downgraded_mL, rejected_mL, grade, destination | species-specific test and disposition log; Raw aggregation requirements: reconcile all grades to intake. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | mL; fraction | each lot | all assessed lots | lab | per reference flow | assay and approval; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_prepare` | `prepare` | medium, bulk and loss | batch sheet | lot_id, accepted_mL, medium_mL, bulk_mL, loss_mL | calibrated dispense and volume balance; Raw aggregation requirements: balance per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | mL | each batch | all prepared batches | lab | per reference flow | recipe and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_fill` | `fill` | containers and filled/rejected units | filling sheet | lot_id, issued_items, filled_doses, rejected_items, dose_mL, sperm_count | counter and seal check; Raw aggregation requirements: reconcile issued and filled units. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | item; dose; mL | each batch | all filled batches | filling line | per reference flow | batch sheet and QA; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_preserve` | `preserve` | power, cryogen, preserved/rejected units | preservation log | batch_id, state, kWh, cryogen_kg, start, end, accepted_doses, rejected_items | meter, supply ledger and temperature log; Raw aggregation requirements: allocate by batch and service time. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kWh; kg; dose | each batch | full intervention and hold | centre | per reference flow | meter and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_release` | `release` | packaging, product, rejects | release ledger | lot_id, species, state, packaging_kg, reuse_cycles, accepted_doses, rejected_kg | count, weigh and release certificate; Raw aggregation requirements: group accepted units by species and state. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; dose | each release | all released lots | centre gate | per reference flow | signed release; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_prepare` | `prepare` | medium, bulk and loss | batch sheet | lot_id, accepted_mL, medium_mL, bulk_mL, loss_mL | calibrated dispense and volume balance; Raw aggregation requirements: balance per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `medium_specific_input`: Use actual species-compatible diluent or extender recipe; do not assume a universal formulation. Denominator and scope requirements：per preparation lot Raw quantity and calculation requirements: Record prepared and issued liquid by batch. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | mL | each batch | all prepared batches | lab | per reference flow | recipe and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_fill` | `fill` | containers and filled/rejected units | filling sheet | lot_id, issued_items, filled_doses, rejected_items, dose_mL, sperm_count | counter and seal check; Raw aggregation requirements: reconcile issued and filled units. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `dose_container_specific_input`: Issued containers are reconciled with correctly filled and rejected units. Denominator and scope requirements：per filling batch Raw quantity and calculation requirements: Count straws or vials and seals issued. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | item; dose; mL | each batch | all filled batches | filling line | per reference flow | batch sheet and QA; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_preserve` | `preserve` | power, cryogen, preserved/rejected units | preservation log | batch_id, state, kWh, cryogen_kg, start, end, accepted_doses, rejected_items | meter, supply ledger and temperature log; Raw aggregation requirements: allocate by batch and service time. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `cryogen_specific_input`: Frozen lots record actual cryogen replenishment; chilled and fresh lots do not inherit this input. Denominator and scope requirements：per frozen dose Raw quantity and calculation requirements: Record issued and recovered quantity with storage-service attribution. Original collection denominator kind: reference_flow. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kWh; kg; dose | each batch | full intervention and hold | centre | per reference flow | meter and calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_release` | `release` | packaging, product, rejects | release ledger | lot_id, species, state, packaging_kg, reuse_cycles, accepted_doses, rejected_kg | count, weigh and release certificate; Raw aggregation requirements: group accepted units by species and state. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `packaging_specific_input`: Operation release: Only centre-issued protective packaging is included; reusable containers are apportioned over actual reuse cycles. Denominator and scope requirements：per released dose Raw quantity and calculation requirements: Weigh issued packaging and attribute reusable service once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; dose | each release | all released lots | centre gate | per reference flow | signed release; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_pathway_emissions` | `donor` | pathway-specific gases and manure N/C | herd, feed, manure, field and method ledger | species/class; animal-days; intake/DM/digestibility; volatile solids; manure N/TAN; system shares; climate; storage time; fertiliser N; grazing; volatilisation/leaching; methane recovery; factor source/unit; final accepted output ; collected manure wet mass; dry matter; destination| collect primary activity by node and period, document parameter applicability, retain each pathway worksheet and any linked treatment/pasture dataset  Retain raw totals and normalize attributed quantities once to the measured accepted final reference output.| animal-day; kg DM; kg VS; kg N; kg CH4; kg N2O; kg NH3 | each operating period and management change | complete represented cohort and service period | actual operated nodes only | per reference flow | meter/analysis records, nitrogen cascade, method and factor evidence, no-duplication ledger |
 | `cp_feed_supply_and_intake` | `donor` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 | `cp_manure_n2o_coverage` | `donor` | Direct and indirect manure/soil N2O coverage | pathway N ledger and method worksheet | species/class; period; excreted N; stage stocks/transfers; system shares; volatilised NH3-N/NOx-N; leached/runoff N; application/grazing N; factor source, unit and applicability; direct/indirect components; receiving medium; linked process and assigned card; accepted final output | Retain raw stage N and component calculations under calc_manure_n2o_coverage, matched to actual operation and existing manure protocols. Document unsupported or inapplicable paths and coverage boundaries; normalize attributable N2O once. | kg N; kg N2O | each reporting period and management change | complete represented management period | actual operated and explicitly linked nodes | per reference flow | N balance, factor unit/applicability, component-to-card and no-duplication worksheet |
@@ -978,3 +856,4 @@ Raw quantity and calculation requirements: Count or weigh rejected centre packag
 | `review-ipcc-livestock-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf) | Species and pathway applicability; CH4 and N2O method selection, not universal emission factors |
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 nitrogen-flow method; verify actual species, management and geographical applicability before adopting parameters |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Managed-soil direct and indirect nitrogen pathways and boundary reconciliation |
+| `collection-pe-gloves` | handbook | IMV Technologies, Polyethylene protective gloves. https://www.imv-technologies.us/product/polyethylene-protective-gloves | Polyethylene glove identity for a documented compatible operator-protection use; non-sterile product evidence does not authorize semen-contact or sterile use. |

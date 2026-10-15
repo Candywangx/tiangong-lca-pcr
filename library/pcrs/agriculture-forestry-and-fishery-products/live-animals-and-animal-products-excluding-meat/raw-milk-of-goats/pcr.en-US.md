@@ -103,32 +103,6 @@ The herd node's intended milk potential transfers once to milking; measured gros
 
 ##### Product flows
 
-###### Feed, forage and grazed biomass (`feed`)
-
-Record purchased feed and actual grazed biomass by dry matter and origin; distinguish purchased input from farm-grown feed already inside this foreground boundary.
-
-Denominator and scope requirements：per kg accepted milk
-
-Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow.
-
-- Selected flow: Goat feed and forage
-- Flow property / unit: Mass / kg dry matter
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_herd`
-- Range: Provisional feed completeness screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg dry matter
-  - Basis: per kg accepted milk; replace with herd records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Supplied herd water (`herd_water`)
 
 Record drinking and managed cleaning water crossing the herd boundary; direct rainfall is not this Product input.
@@ -387,31 +361,20 @@ Raw quantity and calculation requirements: Calculate from collected manure nitro
 
 ##### Product flows
 
-###### Milking energy (`milking_energy`)
+###### Alternating current (`milking_energy_electricity`)
 
-Include measured electricity or fuel used by milking equipment, not cooling energy.
+Only for documented alternating-current equipment within this operation. Record voltage and supply technology; convert metered kWh with 1 kWh = 3.6 MJ. Other power sources require their actual carrier. Apply `milking_energy_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
 
-Denominator and scope requirements：per kg gross captured milk
-
-Raw quantity and calculation requirements: Meter or fuel log assigned to milking shift. Original collection denominator kind: process_output.
-
-- Selected flow: Milking equipment energy
-- Flow property / unit: Energy / kWh equivalent
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect this carrier under `cp_milking` for `milking`. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_milking`
-- Range: Provisional milking energy screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh equivalent
-  - Basis: per kg gross captured milk; replace with meter data
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
 
 ##### Waste flows
 
@@ -521,32 +484,6 @@ Producer-handover linkage: Only when selected as the actual terminal source for 
 
 ##### Waste flows
 
-###### First-conditioning rejected milk and residues (`conditioning_reject`)
-
-Record rejected or spilled milk and retained straining residues with documented treatment; do not assign them accepted milk status.
-
-Denominator and scope requirements：per kg accepted milk
-
-Raw quantity and calculation requirements: Measure rejected milk mass and separately describe residue destination. Original collection denominator kind: reference_flow.
-
-- Selected flow: Rejected raw goat milk and straining residues
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_conditioning`
-- Range: Provisional conditioning reject screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg
-  - Basis: per kg accepted milk; replace with reject log
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 ### Process: Farm milk cooling (`cooling`)
@@ -555,31 +492,20 @@ Raw quantity and calculation requirements: Measure rejected milk mass and separa
 
 ##### Product flows
 
-###### Farm cooling energy (`cooling_energy`)
+###### Alternating current (`cooling_energy_electricity`)
 
-Include only energy used by cooling equipment controlled by the producing farm before gate.
+Only for documented alternating-current equipment within this operation. Record voltage and supply technology; convert metered kWh with 1 kWh = 3.6 MJ. Other power sources require their actual carrier. Apply `cooling_energy_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
 
-Denominator and scope requirements：per kg farm-chilled accepted milk
-
-Raw quantity and calculation requirements: Cooling meter or assigned equipment log, with shared tank service allocated once. Original collection denominator kind: process_output.
-
-- Selected flow: Farm cooling energy
-- Flow property / unit: Energy / kWh equivalent
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect this carrier under `cp_cooling` for `cooling`. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_cooling`
-- Range: Provisional farm cooling energy screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh equivalent
-  - Basis: per kg farm-chilled milk; replace with meter data
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
 
 ##### Waste flows
 
@@ -736,16 +662,27 @@ Required product-instance qualifiers: goat species; farm identifier; lactation a
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `feed_specific_input` | `cp_herd` | Operation herd: Record purchased feed and actual grazed biomass by dry matter and origin; distinguish purchased input from farm-grown feed already inside this foreground boundary. Denominator and scope requirements：per kg accepted milk Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `milking_energy_specific_input` | `cp_milking` | Operation milking: Include measured electricity or fuel used by milking equipment, not cooling energy. Denominator and scope requirements：per kg gross captured milk Raw quantity and calculation requirements: Meter or fuel log assigned to milking shift. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+| `cooling_energy_specific_input` | `cp_cooling` | Operation cooling: Include only energy used by cooling equipment controlled by the producing farm before gate. Denominator and scope requirements：per kg farm-chilled accepted milk Raw quantity and calculation requirements: Cooling meter or assigned equipment log, with shared tank service allocated once. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_herd` | `herd` | feed, water, replacement and animal outputs | herd and purchase ledger | goat class; head; animal-days; lactation phase; feed dry matter; grazing estimate; water; purchase and transfer live mass | farm logs, scale, invoices and meter; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg, head, days | daily and event | full milk reporting period and replacement phase | producing herd | per reference flow | signed ledger, scale and invoices; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_herd` | `herd` | feed, water, replacement and animal outputs | herd and purchase ledger | goat class; head; animal-days; lactation phase; feed dry matter; grazing estimate; water; purchase and transfer live mass | farm logs, scale, invoices and meter; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `feed_specific_input`: Operation herd: Record purchased feed and actual grazed biomass by dry matter and origin; distinguish purchased input from farm-grown feed already inside this foreground boundary. Denominator and scope requirements：per kg accepted milk Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, head, days | daily and event | full milk reporting period and replacement phase | producing herd | per reference flow | signed ledger, scale and invoices; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_manure` | `herd` | exported and residual manure | manure pathway ledger | housing/pasture shares; collection; storage; export mass; moisture; recipient | weighbridge, farm log and pathway inspection; Raw aggregation requirements: Reconcile total manure by mutually exclusive destination. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, days | daily and event | full reporting period | herd pasture and housing | per reference flow | transfer receipts and pathway record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_emissions` | `herd` | air emissions | method worksheet | animal-days; feed energy; nitrogen; manure pathway; factor; climate | calculate from `cp_herd` and `cp_manure` under declared IPCC method; Raw aggregation requirements: Sum distinct enteric and manure terms once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | reporting period | same herd period | emitting farm | per reference flow | factor citation and calculation worksheet; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_milking` | `milking` | gross milk and energy | batch meter log | goat herd; milk kg; milking time; meter; rejected later | calibrated milk scale and energy meter; Raw aggregation requirements: Sum gross lot mass and assigned milking energy. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, kWh | each milking | full reporting period | producing farm | per reference flow | calibration, shift log; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_conditioning` | `conditioning` | accepted warm milk, rejects and water | lot quality and cleaning log | gross kg; straining loss; rejected kg; temperature; fat/protein or solids; water | scale, sample and water meter; Raw aggregation requirements: Gross = accepted warm + reject/loss; transfer warm to gate or cooling once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, concentration | each lot | full reporting period | producing farm | per reference flow | test sheet and reject disposition; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_cooling` | `cooling` | chilled milk and energy | farm cooling log | incoming warm kg; outgoing chilled kg; temperature; energy; time; losses | calibrated tank and energy meter; Raw aggregation requirements: Incoming warm = chilled accepted + cooling loss; never duplicate warm sale. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, kWh, temperature | each chilled lot | only farm-controlled cooling periods | producing farm | per reference flow | tank log and transfer receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_milking` | `milking` | gross milk and energy | batch meter log | goat herd; milk kg; milking time; meter; rejected later | calibrated milk scale and energy meter; Raw aggregation requirements: Sum gross lot mass and assigned milking energy. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `milking_energy_specific_input`: Operation milking: Include measured electricity or fuel used by milking equipment, not cooling energy. Denominator and scope requirements：per kg gross captured milk Raw quantity and calculation requirements: Meter or fuel log assigned to milking shift. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, kWh | each milking | full reporting period | producing farm | per reference flow | calibration, shift log; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_conditioning` | `conditioning` | accepted warm milk, rejects and water | lot quality and cleaning log | gross kg; straining loss; rejected kg; temperature; fat/protein or solids; water | scale, sample and water meter; Raw aggregation requirements: Gross = accepted warm + reject/loss; transfer warm to gate or cooling once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `conditioning_reject_specific_output`: Record rejected or spilled milk and retained straining residues with documented treatment; do not assign them accepted milk status. Denominator and scope requirements：per kg accepted milk Raw quantity and calculation requirements: Measure rejected milk mass and separately describe residue destination. Original collection denominator kind: reference_flow. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion.  | kg, concentration | each lot | full reporting period | producing farm | per reference flow | test sheet and reject disposition; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_cooling` | `cooling` | chilled milk and energy | farm cooling log | incoming warm kg; outgoing chilled kg; temperature; energy; time; losses | calibrated tank and energy meter; Raw aggregation requirements: Incoming warm = chilled accepted + cooling loss; never duplicate warm sale. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `cooling_energy_specific_input`: Operation cooling: Include only energy used by cooling equipment controlled by the producing farm before gate. Denominator and scope requirements：per kg farm-chilled accepted milk Raw quantity and calculation requirements: Cooling meter or assigned equipment log, with shared tank service allocated once. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, kWh, temperature | each chilled lot | only farm-controlled cooling periods | producing farm | per reference flow | tank log and transfer receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_reference_handover` | `reference_handover` | accepted product and matched internal source transfer | producer handover ledger | lot_id, species, state, grade, route_id, gate, period, accepted_quantity, native_unit, source_row_id, source_lot_id, allocation_link | Measure accepted net product at the same actual gate; reconcile the listed state/gate-specific source rows and the linked input with this single physical output. Keep rejects, stock changes and other sales separate. No additional handling or transport is imputed. | kg; native source quantities | each actual handover | matched source and handover periods | declared producer gate only | per reference flow | traceable acceptance record, same-lot source-to-output ledger, calibrated quantity method and normalization worksheet |
 | `cp_feed_supply_and_intake` | `herd` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 | `cp_manure_n2o_coverage` | `herd` | Direct and indirect manure/soil N2O coverage | pathway N ledger and method worksheet | species/class; period; excreted N; stage stocks/transfers; system shares; volatilised NH3-N/NOx-N; leached/runoff N; application/grazing N; factor source, unit and applicability; direct/indirect components; receiving medium; linked process and assigned card; accepted final output | Retain raw stage N and component calculations under calc_manure_n2o_coverage, matched to actual operation and existing manure protocols. Document unsupported or inapplicable paths and coverage boundaries; normalize attributable N2O once. | kg N; kg N2O | each reporting period and management change | complete represented management period | actual operated and explicitly linked nodes | per reference flow | N balance, factor unit/applicability, component-to-card and no-duplication worksheet |
@@ -806,3 +743,4 @@ Required product-instance qualifiers: goat species; farm identifier; lactation a
 | `ipcc-livestock-2019` | `method_factor` | IPCC, 2019 Refinement, Volume 4 Chapter 10, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf | Enteric and manure emission calculation methods |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | Direct/indirect nitrogen pathways and coordination of manure storage with managed-soil emissions; select applicable species and management evidence. |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

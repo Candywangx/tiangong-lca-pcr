@@ -101,32 +101,6 @@ translation_status: aligned
 #### 输入
 ##### 产品流
 
-###### 年化建园投入（`annualized_establishment_inputs`）
-
-年化建园投入表示可归属于参考产品的苗木、支撑系统、灌溉设施、补植和清园投入。
-
-- 选定流：场址特定的苗木、支撑物和灌溉系统材料
-- 流属性/单位：声明属性 / 声明单位
-- 数量规则：按终生产可销售产量年化的实测安装、补植和清园数量
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：根据采集记录计算（`calculated_from_collection`）
-- 采集协议：`cp_orchard_lifecycle_records`
-- 来源：`baima-apple-orchard-lca-2024`
-- 数量范围：年化核对
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1
-  - 单位：kg 可归属材料/kg 参考产品
-  - 基准：可归属质量除以终生产可销售产量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：方法公式（`method_formula`）
-  - 来源：`mass-balance-identity`
-
 ###### 尿素肥料（`orchard_lifecycle_and_production_agricultural_nutrient_inputs_urea`）
 
 **orchard_lifecycle_and_production_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -136,7 +110,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -146,12 +120,14 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`；`baima-apple-orchard-lca-2024`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`orchard_lifecycle_and_production_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -161,6 +137,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`；`baima-apple-orchard-lca-2024`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`orchard_lifecycle_and_production_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -222,37 +200,11 @@ translation_status: aligned
 - 采集协议：`cp_orchard_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`；`baima-apple-orchard-lca-2024`；`fao-organic-nutrients`
 
-###### 植保投入（`crop_protection_inputs`）
-
-植保投入记录果园施用的每种命名配方产品及活性成分。
-
-- 选定流：Herbicide `c1370404-9e2b-4ed6-ba96-c094f74e0f2d`; Insecticide `ba2ec0c8-d5da-4ca8-bf9f-317478a1ce1b`; 适用时采用产品特定杀菌剂
-- 流属性/单位：Mass / kg 活性成分及 kg 产品
-- 数量规则：按命名产品和活性成分实测施用量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_orchard_input_records`
-- 来源：`baima-apple-orchard-lca-2024`
-- 数量范围：前景合理性校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.1
-  - 单位：kg 活性成分/kg 参考产品
-  - 基准：宽泛非负筛选区间，不是默认值
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：来源规则（`source_rule`）
-  - 来源：`baima-apple-orchard-lca-2024`
-
 ###### 灌溉水（`irrigation_water`）
 
 灌溉水记录从各声明水源进入果园生产系统的输送水。
 
-- 选定流：Irrigation water `4ad684b1-8e85-4dee-8d9c-55d1fa2d4432`
+- 选定流：灌溉用水 `4ad684b1-8e85-4dee-8d9c-55d1fa2d4432`
 - 流属性/单位：Mass / kg，同时保留 m3
 - 数量规则：计量输送水；仅经核实的雨养生产为零
 - 数值来源模式：前景记录（`foreground_record`）
@@ -266,31 +218,35 @@ translation_status: aligned
 - 来源：`dzikiti-apple-water-footprint-2019`
 范围证据需求：分别采集实际灌溉供水和水源取用量。引用的总水足迹观测值（187–237 m3/t，包含绿水和蓝水成分）仅为背景指标，不是这两种交换的数量范围。
 
-###### 果园能源（`orchard_energy`）
+###### 柴油（`orchard_energy_diesel`）
 
-果园能源记录田间作业和灌溉抽水消耗的燃料及电力。
+仅用于有记录的柴油动力作业。保留牌号和实际使用证据；油量L按供应商支持或实测的密度(kg/L)换算。燃料供应仅链接一次，实际燃烧排放另行核算，但供应服务已包含的不得重复计入。其他载能体及包含用能的机械服务须各用实际身份单独记录；条件卡不规定场址必用设备。
 
-- 选定流：Diesel, burned in agricultural machinery `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`; Electricity, medium voltage `01bf1ecc-b94c-4a03-ab88-ee79081aae24`
-- 流属性/单位：质量或能量 / kg、L、MJ 或 kWh
-- 数量规则：按作业实测燃料和电力，包括抽水
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 参考产品.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_energy_records`分别记录各作业包括抽水的该载能体。共用量仅归属一次，归属原始量除以实测且匹配的最终合格水果产出kg，再乘1 kg参考数量；保留阶段与最终产出比例，不对已归一化数量重复归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_energy_records`
 - 来源：`baima-apple-orchard-lca-2024`; `ucdavis-orchard-lca-findings-2020`
-- 数量范围：前景能源合理性校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10
-  - 单位：kWh 当量/kg 参考产品
-  - 基准：宽泛非负筛选区间，不是默认值
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：来源规则（`source_rule`）
-  - 来源：`baima-apple-orchard-lca-2024`; `ucdavis-orchard-lca-findings-2020`
+
+###### 交流电（`orchard_energy_electricity`）
+
+仅用于实际交流供电。记录电压、供应方及供电技术；电表kWh按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不另计外购电力负荷。其他载能体及包含用能的机械服务须各用实际身份单独记录；条件卡不规定场址必用设备。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量 `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_energy_records`分别记录各作业包括抽水的该载能体。共用量仅归属一次，归属原始量除以实测且匹配的最终合格水果产出kg，再乘1 kg参考数量；保留阶段与最终产出比例，不对已归一化数量重复归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_energy_records`
+- 来源：`baima-apple-orchard-lca-2024`; `ucdavis-orchard-lca-findings-2020`
 
 ##### 废物流
 
@@ -327,7 +283,7 @@ translation_status: aligned
 
 取水表示为果园灌溉从环境中按水源取用的水量。
 
-- 选定流：water `419682fe-60fb-4b43-be89-bf2824b51104`
+- 选定流：水 `419682fe-60fb-4b43-be89-bf2824b51104`
 - 流属性/单位：Mass / kg
 - 数量规则：按水源由计量灌溉水计算，不与输送水重复
 - 数值来源模式：计算值（`calculated_value`）
@@ -348,7 +304,7 @@ translation_status: aligned
 
 验收鲜苹果是在声明果园门计量的可销售参考产品。
 
-- 选定流：Apple, natural mix, at orchard `dae75a0f-16b9-47ff-9ee7-63058aebcfe2`
+- 选定流：苹果 `dae75a0f-16b9-47ff-9ee7-63058aebcfe2`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：果园门实测验收净质量
 
@@ -376,7 +332,7 @@ translation_status: aligned
 
 工业级苹果是作为产品出售或转移用于加工的非参考果实。
 
-- 选定流：Apple, natural mix, at orchard `dae75a0f-16b9-47ff-9ee7-63058aebcfe2`
+- 选定流：苹果 `dae75a0f-16b9-47ff-9ee7-63058aebcfe2`
 - 流属性/单位：Mass / kg
 - 数量规则：实测出售或转移用于加工的果实
 - 数值来源模式：前景记录（`foreground_record`）
@@ -432,7 +388,7 @@ translation_status: aligned
 
 根据果园氮投入和选定的 IPCC 层级计算直接与间接氧化亚氮，并与氨和硝酸盐分开记录。
 
-- 选定流：nitrous oxide, emissions to air unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：质量 / kg N2O
 - 数量规则：应用所选 IPCC 层级并以 44/28 将 N2O-N 换算为 N2O
 - 数值来源模式：计算值（`calculated_value`）
@@ -451,7 +407,7 @@ translation_status: aligned
 
 仅在果园施氮记录和声明的适用氨排放方法支持单独估计时纳入；不得用 N2O 因子代替。
 
-- 选定流：ammonia, emissions to air unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：质量 / kg NH3
 - 数量规则：按声明方法计算氨；若结果以 NH3-N 表示，则以 17/14 换算为 NH3
 - 数值来源模式：计算值（`calculated_value`）
@@ -468,7 +424,7 @@ translation_status: aligned
 
 仅在监测或声明的氮损失方法支持硝酸盐进入淡水时纳入，并保留受纳水体证据。
 
-- 选定流：nitrate, emissions to fresh water `4d9a8790-3ddd-11dd-8d68-0050c2490048`
+- 选定流：硝酸根 `4d9a8790-3ddd-11dd-8d68-0050c2490048`
 - 流属性/单位：质量 / kg nitrate
 - 数量规则：计算或测量进入淡水的硝酸盐；若结果以 nitrate-N 表示，则以 62/14 换算为硝酸盐
 - 数值来源模式：计算值（`calculated_value`）
@@ -485,7 +441,7 @@ translation_status: aligned
 
 燃料化石二氧化碳表示由燃料记录计算的场内直接燃烧排放。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：燃料记录乘以声明燃烧因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -528,7 +484,7 @@ translation_status: aligned
 
 果园门处理后苹果是经过纳入范围的果园内处理后的验收参考产品。
 
-- 选定流：Apple, natural mix, at orchard `dae75a0f-16b9-47ff-9ee7-63058aebcfe2`
+- 选定流：苹果 `dae75a0f-16b9-47ff-9ee7-63058aebcfe2`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：果园内处理后的实测验收产出
 
@@ -567,7 +523,7 @@ translation_status: aligned
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Apple, natural mix, at orchard
+- 选定流：果园苹果，自然混合
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -593,7 +549,7 @@ translation_status: aligned
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Apple, natural mix, at orchard
+- 选定流：果园苹果，自然混合
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -633,6 +589,15 @@ translation_status: aligned
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `annualized_establishment_inputs_specific_input` | `cp_orchard_lifecycle_records` | 作业 orchard_lifecycle_and_production：年化建园投入表示可归属于参考产品的苗木、支撑系统、灌溉设施、补植和清园投入。 原数量方法：按终生产可销售产量年化的实测安装、补植和清园数量 使用实测寿命期产出；投入与产出质量比不以1为上限。 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -640,8 +605,8 @@ translation_status: aligned
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_orchard_lifecycle_records | orchard_lifecycle_and_production | 建园与清园 | 果园资产记录 | 地块；定植年；生产寿命；树木；补植；支撑；灌溉材料；清园；去向 | 发票、田间日志、资产台账；原始汇总与分配：按终生产可销售产出年化 | item, kg, L, kWh, year | 每次事件 | 完整果园模型 | 果园地块 | 每声明的参考流 | 发票、资产台账、计算工作簿 |
-| cp_orchard_input_records | orchard_lifecycle_and_production | 肥料与植保 | 采购及施用记录 | 产品；活性成分或养分；质量；日期；面积；地块 | 发票、标签、施用日志；原始汇总与分配：按物质求和并按验收质量归一化 | kg 产品、kg 养分、kg 活性成分 | 每次施用 | 采收年 | 果园地块 | 每声明的参考流 | 发票、标签、施用日志 |
+| cp_orchard_lifecycle_records | orchard_lifecycle_and_production | 建园与清园 | 果园资产记录 | 地块；定植年；生产寿命；树木；补植；支撑；灌溉材料；清园；去向 | 发票、田间日志、资产台账；原始汇总与分配：按终生产可销售产出年化 `annualized_establishment_inputs_specific_input`: 作业 orchard_lifecycle_and_production：年化建园投入表示可归属于参考产品的苗木、支撑系统、灌溉设施、补植和清园投入。 原数量方法：按终生产可销售产量年化的实测安装、补植和清园数量 使用实测寿命期产出；投入与产出质量比不以1为上限。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | item, kg, L, kWh, year | 每次事件 | 完整果园模型 | 果园地块 | 每声明的参考流 | 发票、资产台账、计算工作簿 |
+| cp_orchard_input_records | orchard_lifecycle_and_production | 肥料与植保 | 采购及施用记录 | 产品；活性成分或养分；质量；日期；面积；地块 | 发票、标签、施用日志；原始汇总与分配：按物质求和并按验收质量归一化 `crop_protection_inputs_specific_input`: 植保投入记录果园施用的每种命名配方产品及活性成分。 按命名产品和活性成分实测施用量 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `baima-apple-orchard-lca-2024` | kg 产品、kg 养分、kg 活性成分 | 每次施用 | 采收年 | 果园地块 | 每声明的参考流 | 发票、标签、施用日志 |
 | cp_irrigation_records | orchard_lifecycle_and_production | 灌溉与取水 | 计量及抽水记录 | 水源；表计；读数；体积；抽水能源；日期；地块 | 校准水表、抽水日志、发票；原始汇总与分配：按水源求和并按验收质量归一化 | m3 和能源单位 | 每次或每月 | 灌溉季 | 地块及水源 | 每声明的参考流 | 校准、读数、发票 |
 | cp_energy_records | orchard_lifecycle_and_production | 燃料与电力 | 能源记录 | 作业；机械；能源类型；数量；期间；地块 | 燃料日志、遥测、表计、发票；原始汇总与分配：按作业分配并按验收质量归一化 | L, kg, MJ, kWh | 每次作业或计费期 | 采收年 | 果园地块 | 每声明的参考流 | 发票、表计、设备日志 |
 | cp_land_and_output_records | orchard_lifecycle_and_production | 土地及苹果产出 | 地块与采收记录 | 面积；年龄；品种；采收日；毛重；皮重；验收；工业级；次果；生物质；等级；去向 | GIS、校准秤、发运及去向记录；原始汇总与分配：核对产出并按验收质量归一化 | ha, year, kg | 每次采收及年度核对 | 完整采收年 | 地块及门点 | 每声明的参考流 | 地图、校准、票据、等级和去向记录 |

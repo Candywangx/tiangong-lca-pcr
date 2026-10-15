@@ -95,39 +95,15 @@ All cards use actual recorded amounts. Every nonreference Range is a deliberatel
 
 ##### Product flows
 
-###### Actual materials and consumables for collection (`collection_materials`)
-
-One conditional collection-material ledger records actual supplied water, tool consumables and containers used in targeted search/extraction, plus attributable animal feed/care materials only when animal assistance occurred. Identify reuse and inclusive provider coverage; never add embedded feed/materials twice.
-
-- Selected flow: Actual materials and consumables for collection
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Electricity at the equipment supply point (`collection_energy_electricity`)
 
 **Collection scope and applicability for collection_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 One energy umbrella for actual fuels, electricity or supplied heat; keep original carrier/provider/state, unit and conversion evidence. Purchased service energy must not be added a second time. Unknown carrier use cannot be set to zero.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_collection` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -138,11 +114,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_collection`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`collection_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_collection` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -152,6 +130,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_collection`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`collection_energy_heat`)
 
@@ -167,30 +147,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_collection`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
-
-###### Actual services and allocated shared assets for collection (`collection_services`)
-
-One collection-service umbrella records actual access/search/extraction, attributable approach and collected-load transfer, tools/vehicles and reusable collection assets. Actual trained-animal assistance includes attributable training, care and travel only when used, with observed service periods, replacement/termination and feed/provider-inclusion linkage. Record service-native units; h is only a service-time screen, not a tonne-kilometre conversion.
-
-- Selected flow: Actual services and allocated shared assets for collection
-- Flow property / unit: Service time / h
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -272,81 +228,9 @@ Species-qualified fresh collected load handed to conditioning, holding or primar
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual independently intended other truffle goods at collection exit (`collection_other_goods`)
-
-Only actual intended nonreference truffle grades or species sharing the declared trip leave with their state, use, recipient and measured amount. Record the joint-search burden decision; unrelated shared-trip products have their own non-overlapping system and service share. Do not invent other goods, classify disposed incidental matter as saleable output, or count collected_truffles again as an independent sale.
-
-- Selected flow: Actual independently intended other truffle goods at collection exit
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
-###### Actual rejected truffles, incidental matter and service waste from collection (`collection_waste`)
-
-Actual rejected/damaged fruiting bodies, incidental matter sent to treatment and spent collection/animal-service materials leave to named external recipients. State identity, wet mass and event. Soil actually returned to nature belongs to collection_soil_return, not this waste exit; intended other truffle goods and retained stock are separate.
-
-- Selected flow: Actual rejected truffles, incidental matter and service waste from collection
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
-
-###### Actual named direct emissions from collection (`collection_emissions`)
-
-Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services.
-
-- Selected flow: Actual named direct emissions from collection
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual collected soil returned to the source environment (`collection_soil_return`)
 
@@ -378,29 +262,39 @@ Record only a documented physical return of previously measured incidental soil,
 
 ##### Product flows
 
-###### Actual materials and consumables for conditioning (`conditioning_materials`)
+###### Tap water (`conditioning_materials_water`)
 
-One conditional conditioning-material ledger records actual supplied cleaning water, cleaning agents and grading/handling consumables. Record composition, wet state, dry cleaning versus actual washing and provider inclusions; no universal water-washing or chemical requirement.
+Only for actual supplied tap water used in pre-gate truffle cleaning; dry cleaning does not require this input. Record delivered water mass; convert metered volume using documented density. Do not count direct natural-water withdrawal or supplier-included water again.
 
-- Selected flow: Actual materials and consumables for conditioning
+- Selected flow: Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_conditioning`
-- Sources: `fao-truffle-harvesting`
+- Sources: `truffle-cleaning-wrapping`
 
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
+
+###### Cellulose paper towel (`conditioning_materials_paper_towel`)
+
+Only for actual pre-gate drying or fresh wrapping at this node. Record paper grade, contact suitability and replacement use; do not introduce a prescribed replacement interval or count the same sheet at successive nodes.
+
+- Selected flow: Cellulose paper towel
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_conditioning`
+- Sources: `truffle-cleaning-wrapping`
+
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
 
 ###### Electricity at the equipment supply point (`conditioning_energy_electricity`)
 
@@ -408,9 +302,9 @@ One conditional conditioning-material ledger records actual supplied cleaning wa
 
 One energy umbrella for actual fuels, electricity or supplied heat; keep original carrier/provider/state, unit and conversion evidence. Purchased service energy must not be added a second time. Unknown carrier use cannot be set to zero.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_conditioning` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -421,11 +315,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_conditioning`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`conditioning_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_conditioning` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -435,6 +331,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`conditioning_energy_heat`)
 
@@ -450,30 +348,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
-
-###### Actual services and allocated shared assets for conditioning (`conditioning_services`)
-
-One conditioning-service umbrella records actual cleaning/grading, relevant lot transfer and allocated brushes, sorting space, scales or reusable assets. Preserve native service units and provider inclusions; internal cleaning returns incur only incremental work and retain original lot burdens. h is only a service-time exchange screen.
-
-- Selected flow: Actual services and allocated shared assets for conditioning
-- Flow property / unit: Service time / h
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Raw collected fresh wild truffle feed (`conditioning_feed`)
 
@@ -557,55 +431,7 @@ Declare every actual independent intended grade, buyer/use and handover, includi
 
 ##### Waste flows
 
-###### Actual rejected truffles, incidental matter and service waste from conditioning (`conditioning_waste`)
-
-Record actual cleaning effluent, removed soil sent for treatment, rejected/spoiled truffles and cleaning/grading consumables at external exits. Declare liquid composition/wet state and recipient. Intended lower grades are other goods, soil returned to nature is a separate physical return, and recleaning is an internal loop.
-
-- Selected flow: Actual rejected truffles, incidental matter and service waste from conditioning
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
-
-###### Actual named direct emissions from conditioning (`conditioning_emissions`)
-
-Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services.
-
-- Selected flow: Actual named direct emissions from conditioning
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_conditioning`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual removed soil returned to a declared environment (`conditioning_soil_return`)
 
@@ -637,29 +463,22 @@ Weigh identified incoming foreign matter removed in cleaning and actually return
 
 ##### Product flows
 
-###### Actual materials and consumables for holding (`holding_materials`)
+###### Cellulose paper towel (`holding_materials_paper_towel`)
 
-One fresh-holding-material ledger records actual hygiene supplies, cooling media and storage consumables while retaining whole fresh fruiting bodies. Identify supplied state, reusable containers and provider inclusions; do not introduce drying, freezing or chemical-preservation materials.
+Only for actual pre-gate drying or fresh wrapping at this node. Record paper grade, contact suitability and replacement use; do not introduce a prescribed replacement interval or count the same sheet at successive nodes.
 
-- Selected flow: Actual materials and consumables for holding
+- Selected flow: Cellulose paper towel
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_holding`
-- Sources: `fao-truffle-harvesting`
+- Sources: `truffle-cleaning-wrapping`
 
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
 
 ###### Electricity at the equipment supply point (`holding_energy_electricity`)
 
@@ -667,9 +486,9 @@ One fresh-holding-material ledger records actual hygiene supplies, cooling media
 
 One energy umbrella for actual fuels, electricity or supplied heat; keep original carrier/provider/state, unit and conversion evidence. Purchased service energy must not be added a second time. Unknown carrier use cannot be set to zero.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_holding` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -680,11 +499,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_holding`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`holding_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_holding` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -694,6 +515,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_holding`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`holding_energy_heat`)
 
@@ -709,30 +532,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_holding`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
-
-###### Actual services and allocated shared assets for holding (`holding_services`)
-
-One fresh-holding-service umbrella records actual ambient/cold-room occupancy, cooling/hygiene operations and allocated storage assets. Retain residence, actual conditions and shared-room consumers/service periods; no duplicate inclusive cooling energy/materials. h is only a service-time screen; capacity-time services retain real native units.
-
-- Selected flow: Actual services and allocated shared assets for holding
-- Flow property / unit: Service time / h
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_holding`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Fresh wild truffles received for holding (`holding_feed`)
 
@@ -816,55 +615,7 @@ Use actual quality/destination records for intended other goods that leave holdi
 
 ##### Waste flows
 
-###### Actual rejected truffles, incidental matter and service waste from holding (`holding_waste`)
-
-Actual spoiled/rejected fruiting bodies and discarded hygiene/cooling/storage materials leave to documented recipients. Distinguish retained stocks, independently intended other-grade goods and linked return to conditioning. Do not infer waste quantity from unmeasured moisture or respiration by subtraction.
-
-- Selected flow: Actual rejected truffles, incidental matter and service waste from holding
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_holding`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
-
-###### Actual named direct emissions from holding (`holding_emissions`)
-
-Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services.
-
-- Selected flow: Actual named direct emissions from holding
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_holding`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ### Process: Primary packaging and net acceptance (`handover`)
 
@@ -872,29 +623,22 @@ Conditional direct-emission umbrella: require actual substance or particle size,
 
 ##### Product flows
 
-###### Actual materials and consumables for handover (`handover_materials`)
+###### corrugated board boxes (`handover_materials_box`)
 
-One primary-handover-material ledger records actual protective containers, wrapping, labels and acceptance hygiene supplies. Separate package tare from edible net mass; identify one-way versus reusable packaging and actual reuse cycles. Exclude supplier-embedded packaging.
+Only for actual corrugated boxes at this node. This selected identity specifies 16.6% primary and 83.4% recycled fibre: use it only with compatible supplier evidence; otherwise resolve a different box identity without assuming this composition. Exclude package tare from edible product mass and count supplier-included or reused boxes only once.
 
-- Selected flow: Actual materials and consumables for handover
+- Selected flow: corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_handover`
-- Sources: `fao-truffle-harvesting`
+- Sources: `produce-cardboard-containers`
 
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
 
 ###### Electricity at the equipment supply point (`handover_energy_electricity`)
 
@@ -902,9 +646,9 @@ One primary-handover-material ledger records actual protective containers, wrapp
 
 One energy umbrella for actual fuels, electricity or supplied heat; keep original carrier/provider/state, unit and conversion evidence. Purchased service energy must not be added a second time. Unknown carrier use cannot be set to zero.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_handover` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -915,11 +659,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_handover`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`handover_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_handover` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -929,6 +675,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_handover`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`handover_energy_heat`)
 
@@ -944,30 +692,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_handover`
 - Sources: `fao-truffle-harvesting`; `fao-agricultural-energy`
-
-###### Actual services and allocated shared assets for handover (`handover_services`)
-
-One primary-handover-service umbrella records actual packaging, net weighing/acceptance, bounded gate transfer and reusable packing/weighing assets. Record package reuse and actual consumers/service periods. Distribution after the primary gate is excluded. Preserve native units and provider scope; h is only a service-time screen.
-
-- Selected flow: Actual services and allocated shared assets for handover
-- Flow property / unit: Service time / h
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_handover`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10000
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Fresh wild truffle lot presented for primary acceptance (`handover_feed`)
 
@@ -1025,82 +749,9 @@ Net accepted species-qualified fresh whole hypogeal truffle fruiting bodies deli
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Collected record (`collected_record`)
 
-###### Actual independent other truffle goods at primary handover (`handover_other_goods`)
-
-Independently intended nonreference accepted grade or downstream-use feed leaves the primary gate with its own buyer/use and burden share. Internal grade transfers represented by earlier cards are not additional final goods.
-
-- Selected flow: Actual independent other truffle goods at primary handover
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_handover`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
-###### Actual rejected truffles, incidental matter and service waste from handover (`handover_waste`)
-
-Actual acceptance rejects, damaged packaging and hygiene wastes exit the primary boundary to named recipients. Reusable packages remain stock/service assets until actual retirement. Intended other goods and actual return to conditioning have distinct routes and retain preceding burdens.
-
-- Selected flow: Actual rejected truffles, incidental matter and service waste from handover
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_handover`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
-
-###### Actual named direct emissions from handover (`handover_emissions`)
-
-Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services.
-
-- Selected flow: Actual named direct emissions from handover
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_handover`
-- Sources: `fao-truffle-harvesting`
-
-- Range: Provisional reasoned screen, not a default or enforcing ceiling
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ## 7. Allocation and Co-product Handling
 
@@ -1115,14 +766,26 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Material and service identification requirements
+
+Identify each actual material or independently supplied service from supplier and activity records; record composition/specification, quantity, unit, node and period separately. Add one concrete exchange per identity before dataset completion; these requirements are not a single exchange. Reconcile with existing cards and inclusive services to avoid duplication. Allocate reusable assets over evidenced use and preserve physical quantities; normalize once to the matched final reference output. Missing identity or use evidence is a completeness gap, not zero use. Conditional examples below are not an exhaustive bill of materials and do not prescribe use or amounts.
+
+| requirement_id | collection_protocol_id | Required scope |
+| --- | --- | --- |
+| `collection_materials_identification` | `cp_collection` | actual collection tools, carrying containers and supplies; for truffles include animal feed/care only when animal assistance occurred |
+| `conditioning_materials_identification` | `cp_conditioning` | actual cleaning water, named cleaning formulations and handling supplies; no universal washing or chemical use is assumed |
+| `holding_materials_identification` | `cp_holding` | actual fresh-holding hygiene supplies, cooling media and storage materials, excluding drying, freezing and chemical-preservation routes |
+| `handover_materials_identification` | `cp_handover` | actual protective containers, wrapping, labels and acceptance hygiene supplies; keep package tare separate from edible net mass |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_collection` | collection | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
-| `cp_conditioning` | conditioning | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
-| `cp_holding` | holding | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
-| `cp_handover` | handover | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
+| `cp_collection` | collection | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. `collection_services_specific_input`: One collection-service umbrella records actual access/search/extraction, attributable approach and collected-load transfer, tools/vehicles and reusable collection assets. Actual trained-animal assistance includes attributable training, care and travel only when used, with observed service periods, replacement/termination and feed/provider-inclusion linkage. Record service-native units; h is only a service-time screen, not a tonne-kilometre conversion. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `collection_emissions_specific_emission`: Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-truffle-harvesting` `collection_other_goods_specific_output`: Only actual intended nonreference truffle grades or species sharing the declared trip leave with their state, use, recipient and measured amount. Record the joint-search burden decision; unrelated shared-trip products have their own non-overlapping system and service share. Do not invent other goods, classify disposed incidental matter as saleable output, or count collected_truffles again as an independent sale. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `fao-truffle-harvesting` `collection_waste_specific_output`: Actual rejected/damaged fruiting bodies, incidental matter sent to treatment and spent collection/animal-service materials leave to named external recipients. State identity, wet mass and event. Soil actually returned to nature belongs to collection_soil_return, not this waste exit; intended other truffle goods and retained stock are separate. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_collection. Unknown is a data gap, not zero. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `fao-truffle-harvesting` | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
+| `cp_conditioning` | conditioning | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. `conditioning_services_specific_input`: One conditioning-service umbrella records actual cleaning/grading, relevant lot transfer and allocated brushes, sorting space, scales or reusable assets. Preserve native service units and provider inclusions; internal cleaning returns incur only incremental work and retain original lot burdens. h is only a service-time exchange screen. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `conditioning_emissions_specific_emission`: Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-truffle-harvesting` `conditioning_waste_specific_output`: Record actual cleaning effluent, removed soil sent for treatment, rejected/spoiled truffles and cleaning/grading consumables at external exits. Declare liquid composition/wet state and recipient. Intended lower grades are other goods, soil returned to nature is a separate physical return, and recleaning is an internal loop. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_conditioning. Unknown is a data gap, not zero. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `fao-truffle-harvesting` | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
+| `cp_holding` | holding | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. `holding_services_specific_input`: One fresh-holding-service umbrella records actual ambient/cold-room occupancy, cooling/hygiene operations and allocated storage assets. Retain residence, actual conditions and shared-room consumers/service periods; no duplicate inclusive cooling energy/materials. h is only a service-time screen; capacity-time services retain real native units. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `holding_emissions_specific_emission`: Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-truffle-harvesting` `holding_waste_specific_output`: Actual spoiled/rejected fruiting bodies and discarded hygiene/cooling/storage materials leave to documented recipients. Distinguish retained stocks, independently intended other-grade goods and linked return to conditioning. Do not infer waste quantity from unmeasured moisture or respiration by subtraction. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_holding. Unknown is a data gap, not zero. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `fao-truffle-harvesting` | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
+| `cp_handover` | handover | Every actual card and net reference mass | Paired mass/activity ledger | event_id; node; collector; site; species; wild-origin evidence; trip including failed; lot; grade; gross; tare; soil; accepted_net_mass; opening/closing stocks; returns; recipient/use; actual energy/material/service/provider/native_unit; inclusive supplier scope; animal assistance/feed/training/care/travel; asset/service period/replacement/termination; named emission substance/particle/compartment; measured quantity or activity and factor source | Weigh accepted net fresh whole fruiting bodies on calibrated scales after separate soil/tare determination. Pair dispatch and receipt records for every node; record unsuccessful searches, residence times and actual cooling, service invoices/meters/feed records, unique asset events and named emissions via measurement or documented activity-factor method. Reconcile species/source proof with acceptance. `handover_services_specific_input`: One primary-handover-service umbrella records actual packaging, net weighing/acceptance, bounded gate transfer and reusable packing/weighing assets. Record package reuse and actual consumers/service periods. Distribution after the primary gate is excluded. Preserve native units and provider scope; h is only a service-time screen. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `handover_emissions_specific_emission`: Conditional direct-emission umbrella: require actual substance or particle size, receiving compartment, activity and measurement or factor method. Report combustion, service leaks or identified product moisture/respiration only when attributable and established; an unexplained mass deficit is not a pollutant or automatically water vapour. Do not duplicate emissions embedded in inclusive supplier services. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-truffle-harvesting` `handover_other_goods_specific_output`: Independently intended nonreference accepted grade or downstream-use feed leaves the primary gate with its own buyer/use and burden share. Internal grade transfers represented by earlier cards are not additional final goods. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `fao-truffle-harvesting` `handover_waste_specific_output`: Actual acceptance rejects, damaged packaging and hygiene wastes exit the primary boundary to named recipients. Reusable packages remain stock/service assets until actual retirement. Intended other goods and actual return to conditioning have distinct routes and retain preceding burdens. Measure the attributable amount, retaining actual identity and destination; divide by the accepted net reference mass using cp_handover. Unknown is a data gap, not zero. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `fao-truffle-harvesting` | kg; MJ; h; actual native unit | Every trip/lot/event, including bypass evidence | Declared site-season plus actual storage and asset periods | Every source, preparing site and shared consumer | per 1 kg reference flow | Scale calibration; paired tickets; origin/species acceptance; site/trip register; meter/invoice/service-factor records; stock reconciliation |
 
 ### Calculation Rules
 
@@ -1170,3 +833,5 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 | `fao-truffle-harvesting` | official_guidance | https://www.fao.org/4/y5489e/y5489e07.htm | Targeted underground extraction, conditional trained assistance, source distinction; not current legal advice or universal practice |
 | `fao-fresh-fungi-handling` | official_guidance | https://www.fao.org/4/y5489e/y5489e09.htm | Fresh handling and state distinction; no universal temperature/yield/shelf-life transferred |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `produce-cardboard-containers` | official_guidance | FAO, Prevention of post-harvest food losses, section 6.5.3. https://www.fao.org/4/t0073e/T0073E03.HTM | Conditional cardboard container identity; actual food-contact suitability, grade, fibre composition, use and reuse require records. |
+| `truffle-cleaning-wrapping` | handbook | TruffleHunter, Truffle Care Guide and FAQ. https://www.trufflehunter.co.uk/pages/truffle-care-guide ; https://www.trufflehunter.co.uk/pages/faq | Supplier example of water cleaning and paper wrapping only when performed before this PCR gate; no storage temperature, duration or downstream consumer activity is prescribed. |

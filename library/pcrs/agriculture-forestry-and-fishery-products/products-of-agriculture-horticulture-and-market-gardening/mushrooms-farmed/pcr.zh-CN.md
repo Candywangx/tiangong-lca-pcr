@@ -181,31 +181,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估计（`reasoned_estimate`）
 
-###### 流：基质调理燃料或热量（`substrate_conditioning_fuel`）
-
-记录巴氏处理、灭菌或调理基质使用的燃料或外供热。
-
-- 选定流：基质调理燃料或工艺热
-- 流属性/单位：能量或质量 / MJ、L 或 kg
-- 数量规则：按批次和设备记录每种燃料或热载体的实测消耗，并保留载体和换算基准。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：技术特定（`technology_specific`）
-原始活动或阶段基准：同一周期每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：燃料清单（`fuel_inventory`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_substrate_energy_records`
-- 来源：`robinson-2018-mushroom-lca`
-- 数量范围：QA 校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：3,000
-  - 单位：MJ /1,000 kg 合格新鲜蘑菇
-  - 基准：蒸汽、热水或直接加热调理，须以记录确认
-  - 基准类型：fuel_inventory（`fuel_inventory`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ###### 尿素肥料（`substrate_preparation_and_conditioning_agricultural_nutrient_inputs_urea`）
 
 **substrate_preparation_and_conditioning_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -215,7 +190,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -225,12 +200,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_amendment_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`substrate_preparation_and_conditioning_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -240,6 +217,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_amendment_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`substrate_preparation_and_conditioning_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -300,30 +279,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_amendment_records`
 - 来源：`fao-organic-nutrients`
-
-###### 流：基质袋、块、盘或支撑材料（`substrate_container_material_input`）
-
-记录基质承载材料及其质量或件数、容量、周转、返还和损失。材料身份保持证据缺口。
-
-- 选定流：基质承载材料＼
-- 流属性/单位：质量或件数 / kg 或 item
-- 数量规则：以采购、领用、返还和损失记录分配到批次。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_container_material_records`
-- 数量范围：QA 校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg 材料 /1,000 kg 合格新鲜蘑菇
-  - 基准：一次性或可重复使用支撑物，须以质量与使用周期记录确认
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估计（`reasoned_estimate`）
 
 ##### 废物流
 
@@ -488,24 +443,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估计（`reasoned_estimate`）
 
-###### 流：培养用燃料或热量（`incubation_fuel`）
-
-记录培养期锅炉、热水或直接供热燃料，保留载体和换算基准。
-
-- 选定流：培养燃料或热量
-- 流属性/单位：能量或质量 / MJ、L 或 kg
-- 数量规则：按房间、设备和周期记录实测使用量，不以产量推定。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：技术特定（`technology_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：燃料清单（`fuel_inventory`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_incubation_climate_records`
-- 数量范围：下限：0；上限：2,000；单位：每 1,000 kg 合格新鲜蘑菇 MJ；范围角色：QA guardrail（`qa_guardrail`）；依据：待房间燃料记录确认；证据类型：推理估计（`reasoned_estimate`）
-- 来源：`robinson-2018-mushroom-lca`
-
 ##### 废物流
 
 #### 输出
@@ -594,31 +531,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fruiting_climate_records`
 
-###### 流：覆土或覆盖材料（`casing_or_covering_material_input`）
-
-记录实际使用的覆土、覆盖层或支撑材料，区分湿基和干基并记录来源。
-
-- 选定流：覆土或覆盖材料＼
-- 流属性/单位：质量 / kg 湿基和干物质
-- 数量规则：按房间、批次和配方记录施用量，保留批次和供应方。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_fruiting_climate_records`
-- 来源：`fao-make-money-growing-mushrooms-2010`；`robinson-2018-mushroom-lca`
-- 数量范围：默认估计
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0
-  - 上限：5,000
-  - 单位：kg 湿覆土或覆盖物 /1,000 kg 合格新鲜蘑菇
-  - 基准：路线特定的覆土，须以配方和施用记录确认
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ###### 流：出菇用水和加湿供水（`fruiting_water_input`）
 
 记录出菇浇水、加湿和生产清洁的供水，分别记录循环和排放。
@@ -668,24 +580,6 @@ sync_with: pcr.en-US.md
   - 基准：室内环境控制，须以计量记录确认
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估计（`reasoned_estimate`）
-
-###### 流：出菇气候控制燃料或热量（`fruiting_fuel`）
-
-记录出菇房间供热或其他燃料使用，并保留载体和换算基准。
-
-- 选定流：出菇气候控制燃料或热量
-- 流属性/单位：能量或质量 / MJ、L 或 kg
-- 数量规则：按设备、房间和周期记录实测使用量；共享供热按物理基准分配。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：技术特定（`technology_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：燃料清单（`fuel_inventory`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_fruiting_climate_records`
-- 数量范围：下限：0；上限：4,000；单位：每 1,000 kg 合格新鲜蘑菇 MJ；范围角色：QA guardrail（`qa_guardrail`）；依据：待燃料和供热记录确认；证据类型：推理估计（`reasoned_estimate`）
-- 来源：`robinson-2018-mushroom-lca`
 
 ###### 流：清洁或卫生产品（`cleaning_sanitation_product_input`）
 
@@ -840,56 +734,6 @@ sync_with: pcr.en-US.md
 
 #### 输入
 ##### 产品流
-
-###### 流：可重复使用的采收箱或托盘服务（`harvest_crate_or_pallet_input`）
-
-记录周转箱或托盘的质量、容量、周转次数、返还和损坏，按服务周期分配。
-
-- 选定流：采收箱或托盘包装功能
-- 流属性/单位：包装服务质量 / kg 或 item
-- 数量规则：按实际装载服务和记录周转次数分摊箱或托盘质量，考虑返还和损失。
-- 数值来源模式：计算值（`calculated_value`）
-- 特异性：路线特定（`route_specific`）
-原始活动或阶段基准：每 1,000 kg 声明门合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：从采集计算（`calculated_from_collection`）
-- 采集协议：`cp_packaging_records`
-- 数量范围：下限：0；上限：150；单位：每 1,000 kg 合格新鲜蘑菇包装 kg；范围角色：QA guardrail（`qa_guardrail`）；依据：待包装清单和周转记录确认；证据类型：推理估计（`reasoned_estimate`）
-- 来源：`iso-14044-2006`
-
-###### 流：硬质初级包装（`rigid_primary_packaging_input`）
-
-记录硬质盒、托盘、罐或其他初级容器的产品身份、质量、件数和装填量。
-
-- 选定流：硬质初级包装＼
-- 流属性/单位：质量 / kg
-- 数量规则：按包装运行领用量和装填单位分配到合格产出。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
-
-###### 流：柔性初级包装或盖膜（`flexible_primary_packaging_input`）
-
-记录薄膜、袋和盖膜的质量、规格、装填和损失，身份待绑定。
-
-- 选定流：柔性初级包装＼
-- 流属性/单位：质量 / kg
-- 数量规则：按采购、领用、装填和损失记录分配。
-- 数值来源模式：前景记录（`foreground_record`）
-- 特异性：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
 
 ###### 流：采收清洗用水（`harvest_washing_water`）
 
@@ -1199,6 +1043,30 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算和质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `harvest_crate_or_pallet_input_specific_input` | `cp_packaging_records` | 作业 harvest_grading_and_primary_packaging：记录周转箱或托盘的质量、容量、周转次数、返还和损坏，按服务周期分配。 原数量方法：按实际装载服务和记录周转次数分摊箱或托盘质量，考虑返还和损失。 |
+| `rigid_primary_packaging_input_specific_input` | `cp_packaging_records` | 作业 harvest_grading_and_primary_packaging：记录硬质盒、托盘、罐或其他初级容器的产品身份、质量、件数和装填量。 原数量方法：按包装运行领用量和装填单位分配到合格产出。 |
+| `flexible_primary_packaging_input_specific_input` | `cp_packaging_records` | 作业 harvest_grading_and_primary_packaging：记录薄膜、袋和盖膜的质量、规格、装填和损失，身份待绑定。 原数量方法：按采购、领用、装填和损失记录分配。 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `substrate_conditioning_fuel_identification` | `cp_substrate_energy_records` | 基质巴氏处理、灭菌或调理：保留热需求调查，确认实际加热器、燃烧燃料或外购热规格。现有电力卡已覆盖用电，不另建重复的笼统能源投入。 原始活动或阶段基准：同一周期每 1,000 kg 合格新鲜蘑菇. (`route-energy-fao`) |
+| `incubation_fuel_identification` | `cp_incubation_climate_records` | 培养温度维持：保留热需求调查，确认实际加热器、燃烧燃料或外购热规格。现有电力卡已覆盖用电，不另建重复的笼统能源投入。 原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇. (`route-energy-fao`) |
+| `fruiting_fuel_identification` | `cp_fruiting_climate_records` | 出菇室温度维持：保留热需求调查，确认实际加热器、燃烧燃料或外购热规格。现有电力卡已覆盖用电，不另建重复的笼统能源投入。 原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -1208,14 +1076,14 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_substrate_batch_records` | `substrate_preparation_and_conditioning` | 原料、水、残余物、已调理基质、氨 | 批次日志和供应方记录 | batch_id; species; feedstock; supplier; wet_mass; dry_matter; moisture; water_added; conditioning_method; time; temperature; residual_mass; destination | 称量原料和批次，保留配方、含水量测试和调理日志；原始汇总与分配：按批次汇总并连接生产周期 | kg、%、m3、h、°C | 每批 | 全周期 | 每条基质线或场址 | 每声明的参考流 | 校准秤；含水量方法；批次签核 |
 | `cp_nutrient_amendment_records` | `substrate_preparation_and_conditioning` | 条件性改良剂 | 发票和施用日志 | product_name; product_mass; nutrient_content; purpose; application_date; batch_id; supplier | 核验发票、标签或规格及施用记录；原始汇总与分配：只分配至实际接收批次 | kg product；kg nutrient | 每次施用 | 全周期 | 每场址和批次 | 每声明的参考流 | 标签或规格；施用记录 |
-| `cp_container_material_records` | `substrate_preparation_and_conditioning` | 袋、块、盘、支撑物 | 采购和领用记录 | material; mass_or_count; capacity; reuse_cycles; return_rate; losses; batch_id | 核对采购、领用、返还和损失；原始汇总与分配：按容量和服务寿命分配 | kg 或 item | 每批及返还周期 | 全周期 | 每场址或生产线 | 每声明的参考流 | 规格；库存；返还日志 |
-| `cp_substrate_energy_records` | `substrate_preparation_and_conditioning` | 调理用电和燃料或热量 | 电表、燃料日志或发票 | meter_id; carrier; equipment; batch_id; energy; fuel_volume; conversion_factor | 读取专用表或按运行分配共享公用工程；原始汇总与分配：按实测运行或运行时间分配 | kWh、MJ、L、kg | 每次运行及月度核对 | 全周期 | 每个调理单元 | 每声明的参考流 | 电表校准；燃料交付；换算记录 |
+| `cp_container_material_records` | `substrate_preparation_and_conditioning` | 袋、块、盘、支撑物 | 采购和领用记录 | material; mass_or_count; capacity; reuse_cycles; return_rate; losses; batch_id | 核对采购、领用、返还和损失；原始汇总与分配：按容量和服务寿命分配 `substrate_container_material_input_specific_input`: 记录基质承载材料及其质量或件数、容量、周转、返还和损失。材料身份保持证据缺口。 以采购、领用、返还和损失记录分配到批次。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 或 item | 每批及返还周期 | 全周期 | 每场址或生产线 | 每声明的参考流 | 规格；库存；返还日志 |
+| `cp_substrate_energy_records` | `substrate_preparation_and_conditioning` | 调理用电和燃料或热量 | 电表、燃料日志或发票 | meter_id; carrier; equipment; batch_id; energy; fuel_volume; conversion_factor | 读取专用表或按运行分配共享公用工程；原始汇总与分配：按实测运行或运行时间分配 按路线确认要求：`substrate_conditioning_fuel_identification`: 基质巴氏处理、灭菌或调理：保留热需求调查，确认实际加热器、燃烧燃料或外购热规格。现有电力卡已覆盖用电，不另建重复的笼统能源投入。 原始活动或阶段基准：同一周期每 1,000 kg 合格新鲜蘑菇. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh、MJ、L、kg | 每次运行及月度核对 | 全周期 | 每个调理单元 | 每声明的参考流 | 电表校准；燃料交付；换算记录 |
 | `cp_inoculation_records` | `inoculation_and_incubation` | 已调理基质和菌种 | 接种日志 | batch_id; species; strain; spawn_lot; spawn_mass; substrate_mass; inoculation_date; room; accepted_units | 记录接种时质量或数量并保留批次；原始汇总与分配：按批次和菌种批次汇总 | kg 或 item | 每批 | 全周期 | 每个接种房间 | 每声明的参考流 | 批次追溯；秤检查 |
-| `cp_incubation_climate_records` | `inoculation_and_incubation` | 培养用水、能源、产出、污染和 CO2 | 房间日志和电表 | room_id; batch_id; start; end; temperature; humidity; ventilation; water; electricity; fuel; CO2; accepted_units; failed_units | 每日房间记录并与计量核对；原始汇总与分配：按房间天数和批次汇总 | °C、%、m3、kWh、MJ、kg、item | 每日及月度核对 | 全周期 | 每个培养房间 | 每声明的参考流 | 校准传感器；电表；批次放行 |
-| `cp_fruiting_climate_records` | `fruiting_and_cropping` | 已定殖投入、覆土、水、能源、卫生、面积和 CO2 | 房间日志、领用记录和电表 | room_id; batch_id; species; casing_mass; water; electricity; fuel; sanitation_product; room_area; occupied_time; temperature; humidity; CO2; flush_dates | 合并房间日志、领用记录和计量；原始汇总与分配：按房间、批次和潮次汇总 | kg、m3、kWh、MJ、L、m2、h、°C、% | 每日或每潮次 | 全周期 | 每个出菇房间和场址 | 每声明的参考流 | 传感器校准；领用记录；分配日志 |
+| `cp_incubation_climate_records` | `inoculation_and_incubation` | 培养用水、能源、产出、污染和 CO2 | 房间日志和电表 | room_id; batch_id; start; end; temperature; humidity; ventilation; water; electricity; fuel; CO2; accepted_units; failed_units | 每日房间记录并与计量核对；原始汇总与分配：按房间天数和批次汇总 按路线确认要求：`incubation_fuel_identification`: 培养温度维持：保留热需求调查，确认实际加热器、燃烧燃料或外购热规格。现有电力卡已覆盖用电，不另建重复的笼统能源投入。 原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | °C、%、m3、kWh、MJ、kg、item | 每日及月度核对 | 全周期 | 每个培养房间 | 每声明的参考流 | 校准传感器；电表；批次放行 |
+| `cp_fruiting_climate_records` | `fruiting_and_cropping` | 已定殖投入、覆土、水、能源、卫生、面积和 CO2 | 房间日志、领用记录和电表 | room_id; batch_id; species; casing_mass; water; electricity; fuel; sanitation_product; room_area; occupied_time; temperature; humidity; CO2; flush_dates | 合并房间日志、领用记录和计量；原始汇总与分配：按房间、批次和潮次汇总 按路线确认要求：`fruiting_fuel_identification`: 出菇室温度维持：保留热需求调查，确认实际加热器、燃烧燃料或外购热规格。现有电力卡已覆盖用电，不另建重复的笼统能源投入。 原始活动或阶段基准：每 1,000 kg 合格新鲜蘑菇. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `casing_or_covering_material_input_specific_input`: 记录实际使用的覆土、覆盖层或支撑材料，区分湿基和干基并记录来源。 按房间、批次和配方记录施用量，保留批次和供应方。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、m3、kWh、MJ、L、m2、h、°C、% | 每日或每潮次 | 全周期 | 每个出菇房间和场址 | 每声明的参考流 | 传感器校准；领用记录；分配日志 |
 | `cp_facility_area_records` | `fruiting_and_cropping` | 设施面积占用 | 设施登记和排程 | room_id; usable_area; service_area; occupied_start; occupied_end; shared_use; allocation_basis | 根据排程核验面积和占用期间；原始汇总与分配：将面积时间分配到周期 | m2 及天或年 | 每周期 | 全周期 | 每场址 | 每声明的参考流 | 设施测量；排程 |
 | `cp_cropping_records` | `fruiting_and_cropping` | 作物、废菌糠和损失 | 采收及周期关闭日志 | batch_id; room_id; species; flush; harvest_date; fresh_mass; spent_substrate_mass; moisture; loss_mass; contamination; destination | 称量每潮次和最终基质；原始汇总与分配：分级核对后汇总潮次 | kg 和含水量 % | 每潮次及关闭时 | 全周期 | 每房间和批次 | 每声明的参考流 | 秤检查；采收票据；去向 |
-| `cp_packaging_records` | `harvest_grading_and_primary_packaging` | 周转箱、包装和包装废物 | 领用和包装记录 | package_type; mass_or_count; capacity; filled_units; reuse_cycles; returns; damaged_units; waste_mass; destination | 核对领用、装填件数、返还和废物；原始汇总与分配：按合格质量和类型分配 | kg 或 item | 每次包装及月度核对 | 全周期 | 每包装厂或门 | 每声明的参考流 | 规格；库存；废物票据 |
+| `cp_packaging_records` | `harvest_grading_and_primary_packaging` | 周转箱、包装和包装废物 | 领用和包装记录 | package_type; mass_or_count; capacity; filled_units; reuse_cycles; returns; damaged_units; waste_mass; destination | 核对领用、装填件数、返还和废物；原始汇总与分配：按合格质量和类型分配 `harvest_crate_or_pallet_input_specific_input`: 作业 harvest_grading_and_primary_packaging：记录周转箱或托盘的质量、容量、周转次数、返还和损坏，按服务周期分配。 原数量方法：按实际装载服务和记录周转次数分摊箱或托盘质量，考虑返还和损失。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `rigid_primary_packaging_input_specific_input`: 作业 harvest_grading_and_primary_packaging：记录硬质盒、托盘、罐或其他初级容器的产品身份、质量、件数和装填量。 原数量方法：按包装运行领用量和装填单位分配到合格产出。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `flexible_primary_packaging_input_specific_input`: 作业 harvest_grading_and_primary_packaging：记录薄膜、袋和盖膜的质量、规格、装填和损失，身份待绑定。 原数量方法：按采购、领用、装填和损失记录分配。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 或 item | 每次包装及月度核对 | 全周期 | 每包装厂或门 | 每声明的参考流 | 规格；库存；废物票据 |
 | `cp_wash_water_records` | `harvest_grading_and_primary_packaging` | 清洗水和废水 | 水表、平衡和处理记录 | water_source; supplied_volume; recirculated_volume; discharge_volume; product_washed; cleaning_use; treatment; destination | 计量供水和排放或核验水量平衡；原始汇总与分配：按运行和合格质量汇总 | m3，实测时含 kg | 每次清洗及月度核对 | 全周期 | 每条清洗或包装线 | 每声明的参考流 | 水表或平衡；处理凭证 |
 | `cp_harvest_grade_records` | `harvest_grading_and_primary_packaging` | 合格品、降级品、拒收物和冷却电力 | 采收票、分级日志和电表 | batch_id; species; harvest_mass; accepted_mass; downgraded_mass; reject_mass; grade; size; maturity; trim; cooling_energy; gate_date | 称量分级前后产出并连接电表；原始汇总与分配：按批次、物种、等级和门汇总 | kg、grade、size、kWh | 每次采收和包装 | 全周期 | 每包装厂或门 | 每声明的参考流 | 校准秤；等级记录；冷库电表 |
 | `cp_transport_records` | `purchased_transport_to_gate` | 公路运输和交付产出 | 货运记录和发票 | shipment_id; origin; destination; distance; product_mass; package_mass; vehicle; temperature; load; return; received_mass; loss | 核验货运、路线、服务和收货；原始汇总与分配：汇总 t*km 并核对收货质量 | t、km、t*km、°C、kg | 每次发运 | 全周期 | 声明路线至门 | 每声明的参考流 | 承运商记录；路线证据；收货单 |
@@ -1294,3 +1162,4 @@ sync_with: pcr.en-US.md
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

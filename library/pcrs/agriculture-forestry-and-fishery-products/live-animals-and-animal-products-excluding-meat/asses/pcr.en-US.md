@@ -126,31 +126,6 @@ Raw collection or process basis: per animal lot or herd entering the foreground 
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Purchased feed and forage for breeding basis (`purchased_feed_and_forage_for_breeding_basis`)
-
-Feed and forage used to maintain breeding or replacement stock before allocation to marketable animals are recorded by feed type and moisture basis.
-
-- Selected flow: Assorted Feed `cb2b142b-0ed1-4d6f-9283-cfef94451a75`
-- Flow property / unit: Mass / kg dry matter and kg as-fed
-- Amount rule: measured purchased or produced feed mass, converted to dry matter where needed
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw collection or process basis: per herd maintenance period or allocated kg live-weight output
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_feed_and_forage_records`
-- Sources: `fao-leap-animal-feeds-2016`
-- Range: Provisional breeding-basis feed screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 50
-  - Unit: kg dry matter/kg live-weight output
-  - Basis: broad first-pass feed dry matter assigned to live-ass production
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 No waste input is normally required for stock entry. Include recovered bedding, recovered feed, or waste-derived feed only when it crosses the foreground boundary as a declared input.
@@ -259,38 +234,13 @@ Raw collection or process basis: per animal lot
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_live_weight_records`
 
-###### Feed and forage consumed during rearing (`feed_and_forage_consumed_during_rearing`)
-
-Feed, forage, crop residues, grazing intake estimates, concentrates, mineral supplements, and purchased feed are recorded separately when records allow.
-
-- Selected flow: Assorted Feed `cb2b142b-0ed1-4d6f-9283-cfef94451a75`
-- Flow property / unit: Mass / kg dry matter and kg as-fed
-- Amount rule: measured feed issue, grazing estimate, or feed balance by animal class
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw collection or process basis: per kg live-weight output or animal-day
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_feed_and_forage_records`
-- Sources: `fao-leap-animal-feeds-2016`
-- Range: Provisional rearing feed screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 80
-  - Unit: kg dry matter/kg live-weight output
-  - Basis: broad first-pass feed dry matter assigned to live-ass rearing
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Drinking and husbandry water (`drinking_and_husbandry_water`)
 
-Water used for drinking, cleaning, cooling, and animal handling is recorded by source and use where possible.
+Record water supplied across the represented process boundary by actual source and use. Distinguish purchased supply, a linked on-site abstraction/supply node, direct abstraction within this process, and internal reuse. Use this product card only for a compatible supplied-water exchange, with provider and covered operations declared; direct abstraction modelled here uses the elementary resource plus actual supply operations instead of an additional upstream supply for the same volume. Reuse is not a new purchase or abstraction. For prepared feed, count only water actually added here; do not repurchase water already included in purchased feed.
 
 - Selected flow: Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - Flow property / unit: Mass or volume / kg, L, or m3
-- Amount rule: measured water meter, tank fill, well pump, or estimated drinking-water use by animal class
+- Amount rule: Record the actual compatible supplied-water quantity crossing this process boundary using the documented water-source and supply-responsibility records; exclude direct abstraction modelled here, internal reuse and water already included in purchased feed.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 Raw collection or process basis: per kg live-weight output or animal-day
@@ -299,6 +249,7 @@ Raw collection or process basis: per kg live-weight output or animal-day
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_water_records`
+- Sources: `ecoinvent-water-supply-2023`
 - Range: Provisional water screening estimate
   - Range role: Default estimate (`default_estimate`)
   - Lower: 0
@@ -369,7 +320,7 @@ Activate only when this concrete identity is actually used or generated by this 
 
 Electricity and fuel used for pumping, lighting, housing, feed handling, manure movement, weighing, and internal transport are recorded by carrier.
 
-- Selected flow: Electricity at equipment supply
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components.
 - Value mode: Foreground record (`foreground_record`)
@@ -381,13 +332,15 @@ Raw collection or process basis: per animal lot or kg live-weight output
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_records`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel (`farm_energy_for_husbandry_diesel`)
 
 Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited.
 
 Electricity and fuel used for pumping, lighting, housing, feed handling, manure movement, weighing, and internal transport are recorded by carrier.
 
-- Selected flow: Diesel fuel
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components.
 - Value mode: Foreground record (`foreground_record`)
@@ -399,6 +352,8 @@ Raw collection or process basis: per animal lot or kg live-weight output
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_energy_records`
 
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
 ##### Waste flows
 
 No waste input is normally required for rearing and husbandry. Include waste-derived feed or recovered bedding only when used as an input under the declared scope.
@@ -407,11 +362,11 @@ No waste input is normally required for rearing and husbandry. Include waste-der
 
 ###### Water withdrawal for animal production (`water_withdrawal_for_animal_production`)
 
-Water withdrawal is calculated from drinking and husbandry water records when the data package reports elementary water flows.
+Record only actual environmental abstraction assigned to this foreground process. Do not derive it automatically from supplied-water use or water contained in purchased feed. Exclude extraction already represented by a linked water supplier or on-site supply node; direct on-site abstraction belongs here only when not counted at that node. Internal reuse is not new abstraction. Match source, withdrawal point, period, raw extracted quantity and upstream extraction/treatment/distribution coverage; account for documented supply losses before the use point rather than equating delivered use to abstraction. Confirm that the resource identity and compartment are compatible with the actual source; otherwise retain a specific unresolved identity before a final exchange.
 
 - Selected flow: water `419682fe-60fb-4b43-be89-bf2824b51104`
 - Flow property / unit: Mass / kg
-- Amount rule: calculated from water source and quantity records
+- Amount rule: Calculate the documented raw abstraction assigned to this process using the documented water-source and supply-responsibility records, excluding supplier-covered extraction and reuse; convert units and normalize once.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 Raw collection or process basis: per kg live-weight output
@@ -420,6 +375,7 @@ Raw collection or process basis: per kg live-weight output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_water_records`
+- Sources: `ecoinvent-water-supply-2023`
 - Range: Provisional water withdrawal screening estimate
   - Range role: Default estimate (`default_estimate`)
   - Lower: 0
@@ -428,6 +384,7 @@ Raw collection or process basis: per kg live-weight output
   - Basis: broad first-pass water withdrawal assigned to live-ass production
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 
 #### Outputs
 
@@ -597,7 +554,7 @@ Raw collection or process basis: per kg live-weight output
 
 Enteric methane is calculated using the declared IPCC tier or reviewed regional method for non-ruminant equines.
 
-- Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8ea-0050c2490048`
+- Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg
 - Amount rule: calculate from animal population, animal class, live weight, feed intake, and declared IPCC or regional emission factor
 - Value mode: Calculated value (`calculated_value`)
@@ -618,11 +575,13 @@ Raw collection or process basis: per animal-year or kg live-weight output
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
+This identity is biogenic methane to unspecified air. Retain the actual receiving compartment; use a more specific compatible variant when the dataset requires it. Urban near-ground air is not assumed from the livestock activity alone.
+
 ###### Manure methane to air (`manure_methane_to_air`)
 
 Manure methane is calculated from manure-management system, climate, volatile solids, and storage or deposition route.
 
-- Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8ea-0050c2490048`
+- Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass / kg
 - Amount rule: calculate from volatile solids and declared manure-management methane method
 - Value mode: Calculated value (`calculated_value`)
@@ -642,6 +601,8 @@ Raw collection or process basis: per manure-management route
   - Basis: broad first-pass manure methane after applying declared manure-management method
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+This identity is biogenic methane to unspecified air. Retain the actual receiving compartment; use a more specific compatible variant when the dataset requires it. Urban near-ground air is not assumed from the livestock activity alone.
 
 ###### Manure nitrous oxide to air (`manure_nitrous_oxide_to_air`)
 
@@ -713,7 +674,7 @@ Activate only when this concrete identity is actually used or generated by this 
 
 Electricity, fuel, loading equipment, and route-specific transport service are recorded when the declared gate includes handling or delivery beyond normal farm-gate transfer.
 
-- Selected flow: Electricity at equipment supply
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components.
 - Value mode: Foreground record (`foreground_record`)
@@ -725,13 +686,15 @@ Raw collection or process basis: per delivered kg live weight
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_gate_handling_and_transport_records`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel (`handling_energy_and_delivery_transport_diesel`)
 
 Activate only when this concrete identity is actually used or generated by this process; this is not a default recipe or recommended input. Retain its raw amount, composition, state and actual function under the original collection protocol and attribute it separately to the declared reference flow. Add a separate concrete card for other actual materials; never substitute their quantities here or treat missing records as zero. Aggregate ranges do not establish component defaults and are not inherited.
 
 Electricity, fuel, loading equipment, and route-specific transport service are recorded when the declared gate includes handling or delivery beyond normal farm-gate transfer.
 
-- Selected flow: Diesel fuel
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Measure only the actual quantity of this identity under the original collection protocol, retaining raw composition, state and units; normalize using matching-period output and the original allocation rules. Do not duplicate the former aggregate total across components.
 - Value mode: Foreground record (`foreground_record`)
@@ -742,6 +705,8 @@ Raw collection or process basis: per delivered kg live weight
 - Basis kind: Transport service (`transport_service`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_gate_handling_and_transport_records`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Road freight service (`handling_energy_and_delivery_transport_road_freight`)
 
@@ -842,8 +807,8 @@ Preferred hierarchy:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_stock_entry_records | stock_entry_and_breeding_basis | declared breeding herd or purchased stock entry | animal receiving, birth, purchase, or herd inventory record | animal or lot id; source; age class; sex; breed or type; intended use; live weight; acquisition or birth date; health status; upstream burden treatment | scale record, veterinary certificate, herd book, purchase invoice, or birth record; original activity aggregation: sum live weight by animal class and allocate breeding-basis burdens to live-weight output when included | head and kg live weight | per birth, purchase, transfer, or inventory period | rearing cycle or herd maintenance period | declared herd, farm, or lot | per declared reference flow | scale calibration, herd book, animal movement record, purchase invoice, health certificate |
 | cp_live_weight_records | rearing_and_husbandry; farm_gate_handling_and_delivery | live ass weight and output | weighing, sale, dispatch, or animal movement record | animal or lot id; age class; sex; breed or type; weighing date; live weight; gate; buyer or destination; health status | calibrated scale, weigh tape with conversion, sale ticket, or animal movement record; original activity aggregation: sum live weight at declared gate and reconcile with entries, births, purchases, deaths, and sales | kg live weight and head | per weighing, sale, or dispatch event | rearing cycle and delivery period | animal lot, farm, and transfer gate | per declared reference flow | scale calibration, sale ticket, movement certificate, dispatch note |
-| cp_feed_and_forage_records | stock_entry_and_breeding_basis; rearing_and_husbandry | feed and forage | feed purchase, grazing, feed issue, or feed balance record | feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period | invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record; original activity aggregation: convert to dry matter where needed; allocate by animal-days, live weight, or documented ration group | kg as-fed and kg dry matter | daily, batch, month, or feeding period | rearing cycle or herd maintenance period | farm, pasture, housing unit, or animal class | per declared reference flow | invoice, feed analysis, inventory reconciliation, pasture record |
-| cp_water_records | rearing_and_husbandry | drinking and husbandry water | water meter, tank fill, pump, well, or use estimate record | source; volume; period; animal class; use type; allocation method | meter reading, pump log, water invoice, tank record, or documented estimate; original activity aggregation: sum by source and convert to kg where needed; allocate by animal-days or live weight | L, m3, or kg | daily, month, batch, or reporting period | rearing cycle | water source, housing unit, pasture, or animal lot | per declared reference flow | meter calibration, pump log, water invoice, documented estimate |
+| cp_feed_and_forage_records | stock_entry_and_breeding_basis; rearing_and_husbandry | feed and forage | feed purchase, grazing, feed issue, or feed balance record | feed type; source; dry matter or as-fed basis; quantity; moisture; animal class; feeding period | invoice, feed issue log, pasture allocation record, feed inventory, or nutrition record; original activity aggregation: convert to dry matter where needed; allocate by animal-days, live weight, or documented ration group `purchased_feed_and_forage_for_breeding_basis_specific_input`: Feed and forage used to maintain breeding or replacement stock before allocation to marketable animals are recorded by feed type and moisture basis. measured purchased or produced feed mass, converted to dry matter where needed This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `fao-leap-animal-feeds-2016` `feed_and_forage_consumed_during_rearing_specific_input`: Feed, forage, crop residues, grazing intake estimates, concentrates, mineral supplements, and purchased feed are recorded separately when records allow. measured feed issue, grazing estimate, or feed balance by animal class This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `fao-leap-animal-feeds-2016` | kg as-fed and kg dry matter | daily, batch, month, or feeding period | rearing cycle or herd maintenance period | farm, pasture, housing unit, or animal class | per declared reference flow | invoice, feed analysis, inventory reconciliation, pasture record |
+| cp_water_records | rearing_and_husbandry | drinking and husbandry water | water meter, tank fill, pump, well, or use estimate record | source; volume; period; animal class; use type; allocation method | meter reading, pump log, water invoice, tank record, or documented estimate; original activity aggregation: sum by source and convert to kg where needed; allocate by animal-days or live weight Water records additionally identify purchased/direct/reused source, abstraction point and source compartment, raw abstracted and delivered volumes, internal reuse, losses, supplier or on-site node, covered extraction/treatment/distribution, conversion basis, period and burden owner. Keep these quantities separate; no automatic conversion of all use into foreground abstraction. | L, m3, or kg | daily, month, batch, or reporting period | rearing cycle | water source, housing unit, pasture, or animal lot | per declared reference flow | meter calibration, pump log, water invoice, documented estimate |
 | cp_bedding_and_housing_records | rearing_and_husbandry | bedding and housing materials | bedding purchase, issue, or replacement record | material type; quantity; moisture where relevant; replacement frequency; housing unit; fate | invoice, stock issue log, housing operation record, or bedding balance; original activity aggregation: sum bedding input and assign to manure or waste route where relevant | kg | per delivery, replacement, or reporting period | rearing cycle | housing unit or animal lot | per declared reference flow | invoice, inventory log, housing record |
 | cp_veterinary_and_health_records | rearing_and_husbandry | veterinary and animal health inputs | treatment, vaccine, medicine, disinfectant, or identification record | product; active ingredient if applicable; dose; item count; treated animals; date; reason | veterinary log, invoice, product label, treatment certificate, or farm health record; original activity aggregation: sum product amount by animal lot and normalize to live-weight output when material | kg, L, dose, item, or product-specific unit | per treatment event or reporting period | rearing cycle | animal lot or farm | per declared reference flow | veterinary record, invoice, treatment log, product label |
 | cp_energy_records | rearing_and_husbandry | farm energy | electricity, fuel, equipment, or service energy record | carrier; quantity; meter or invoice id; operation; period; allocation method | utility bill, meter reading, fuel invoice, equipment log, or telematics; original activity aggregation: convert to MJ or kWh and allocate to live-ass production using documented basis | kWh, MJ, L, or kg fuel | month, batch, or operation | rearing cycle | farm, housing unit, pump, feed system, or manure system | per declared reference flow | invoice, meter record, fuel log, equipment record |
@@ -864,6 +829,7 @@ Preferred hierarchy:
 | calculate_manure_nh3 | manure ammonia | apply declared EMEP/EEA or regional ammonia method using manure nitrogen, housing, storage, field application, grazing deposition, and climate or management data where required | cp_manure_and_excreta_records | kg NH3 per reference output | `emep-eea-2023-manure-management` |
 | calculate_energy_co2 | farm energy fossil CO2 | Calculate fossil fuel combustion CO2 only for directly operated foreground equipment, then normalize to accepted output; purchased electricity and outsourced transport emissions belong to their linked upstream datasets and must not be duplicated | cp_energy_records; cp_gate_handling_and_transport_records | kg fossil CO2 per reference output |  |
 | allocate_breeding_basis | breeding herd burdens | allocate breeding herd maintenance burdens to marketable live-ass output using documented herd output basis when breeding herd is inside scope | cp_stock_entry_records; cp_feed_and_forage_records; cp_live_weight_records | breeding-basis burden per kg live-weight output |  |
+| calculate_water_boundary | `drinking_and_husbandry_water`; `water_withdrawal_for_animal_production` | Partition water records by purchased supply, directly modelled abstraction, linked on-site supply and internal reuse. Assign environmental abstraction once to its actual node; supplier-covered extraction is not another foreground resource input. Use source-specific raw extraction records including documented supply losses, not total delivered use; keep reuse separate. Retain any missing source/provider coverage as an evidence gap, not zero abstraction. Convert volume to mass only on a documented basis and normalize attributable quantities once. | `cp_water_records`; supplier coverage and source records | separate supplied product, assigned elementary abstraction and reuse ledgers | `ecoinvent-water-supply-2023` |
 
 ### Data Quality Requirements
 
@@ -890,6 +856,7 @@ Before publishing a foreground data package using this PCR, check:
 - mortality, culls, manure products, bedding waste, and other outputs have declared fates
 - allocation or subdivision is declared when manure, milk, work service, breeding service, or other co-products are credited
 - values outside provisional screening ranges include source notes, corrected data, or method rationale
+- Before dataset completeness, verify calculate_water_boundary against source and provider records: no supplier-covered extraction repeated in the foreground, no reuse treated as new abstraction, no unverified water-source/compartment binding, and no missing coverage treated as zero.
 
 ## 10. Published Dataset Profile
 
@@ -913,3 +880,4 @@ Before publishing a foreground data package using this PCR, check:
 | `emep-eea-2023-manure-management` | official_guidance | <https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023/> | ammonia and air-pollutant process decomposition for manure management |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for live-weight output, animal inventory reconciliation, and process reference outputs. | QA guardrails for reference outputs and animal mass-balance checks |
 | `aphis-equine-treatment-context` | official_guidance | APHIS equine import treatment context; identity example only, not a universal treatment rule or evidence of use, https://www.aphis.usda.gov/news/program-update/resumption-equine-imports-mexico-after-new-world-screwworm-detection | Conditional identity context; verify actual site use, quantities and applicability separately |
+| `ecoinvent-water-supply-2023` | literature | [ecoinvent, Water Supply, 2023](https://support.ecoinvent.org/water-supply) | Method context: water supply can cover extraction, treatment and distribution; the actual provider boundary must be verified. No assumption that this PCR uses an ecoinvent provider or that a generic water UUID fits every source. |

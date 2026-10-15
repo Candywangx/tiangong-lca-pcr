@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -134,12 +134,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`truffle_host_establishment_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -149,6 +151,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`truffle_host_establishment_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -218,7 +222,7 @@ sync_with: pcr.en-US.md
 
 记录新建或重建受管理种植群落的占用面积和持续时间。在主写作阶段，土地使用身份保持参数化。
 
-- 选定流：Land occupation, managed perennial or woodland-or-orchard stand
+- 选定流：受管理多年生作物、林地或果园用地占用
 - 流属性/单位：Area-time / m2*a
 - 数量规则：种植面积乘以声明的占用持续时间，并分配至报告期间
 - 数值来源模式：计算值（`calculated_value`）
@@ -286,7 +290,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_stand_management_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -296,12 +300,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_stand_management_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`truffle_stand_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_stand_management_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -311,6 +317,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_stand_management_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`truffle_stand_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -376,7 +384,7 @@ sync_with: pcr.en-US.md
 
 按区块和报告期间记录施用的灌溉水。雨养生产只有在具有文件化水管理依据时，才记录施用灌溉为零。
 
-- 选定流：Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 数量规则：按种植群落区块和报告期间记录计量或计算的施用灌溉水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -389,28 +397,26 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_stand_management_records`
 - 来源：
 
-###### 种植群落机械燃料（`stand_machinery_fuel_input`）
+###### 柴油 (`stand_machinery_fuel_input_diesel`)
 
-记录割草、植被管理、修剪、通行、灌溉设备和其他跨越前景边界的机械燃料。
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`stand_machinery_fuel_input_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：Mobile agricultural machinery fuel
-- 流属性/单位：Mass or energy carrier / kg or MJ
-- 数量规则：使用油箱记录、发票、承包商记录或设备活动记录换算，并保留燃料载体身份
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每管理 hectare，并换算至 1 kg 合格新鲜松露.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：根据采集计算（`calculated_from_collection`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_stand_management_records`采集`truffle_stand_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_stand_management_records`
-- 来源：
+- 来源：`route-energy-fao`
 
 ###### 种植群落服务用外购电力（`stand_electricity_input`）
 
 当泵、监测、防霜、照明或其他种植群落服务用电跨越前景边界时，记录其电力消耗。
 
-- 选定流：Electricity supply
+- 选定流：电力供应
 - 流属性/单位：Energy / kWh
 - 数量规则：按报告期间记录电表、发票或设备记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -431,7 +437,7 @@ sync_with: pcr.en-US.md
 
 仅当在声明的系统边界内建立种植群落导致既有土地状态发生变化时，记录土地转化。没有转化时，保留有证据支持的零值。
 
-- 选定流：Land transformation for managed perennial or woodland-or-orchard stand
+- 选定流：受管理多年生作物、林地或果园土地转型
 - 流属性/单位：Area / m2
 - 数量规则：按转化前和转化后的土地状态记录实测转化面积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -484,23 +490,6 @@ sync_with: pcr.en-US.md
 - 来源：
 
 ##### 基本流
-
-###### 受管理土壤氮排放（`managed_soil_nitrogen_emission`）
-
-仅根据采集的养分、改良剂、残余物和相关土壤管理记录计算直接或间接氮排放。在方法和身份复核完成前，排放身份保持证据缺口。
-
-- 选定流：Managed-soil nitrogen emission (identity 证据缺口)
-- 流属性/单位：Mass / kg N or kg substance
-- 数量规则：根据声明的养分、改良剂、残余物和土壤活动投入按方法计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1 kg 合格新鲜松露.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：根据采集计算（`calculated_from_collection`）
-- 采集协议：`cp_stand_management_records`
-- 来源：`ipcc-2019-afolu`
 
 ### 过程：新鲜松露采收（`truffle_harvest`）
 
@@ -614,7 +603,7 @@ sync_with: pcr.en-US.md
 
 仅当过程水或清洗介质跨越农场交付前整理边界时记录。应说明水是施用、循环使用、排放，还是已包含在上游服务中。
 
-- 选定流：Process water for fresh-truffle conditioning
+- 选定流：鲜松露整理生产用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据整理用水的水表或批次记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -681,7 +670,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Truffles, farmed
+- 选定流：人工种植松露
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -707,7 +696,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Truffles, farmed
+- 选定流：人工种植松露
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -746,6 +735,15 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `stand_machinery_fuel_input_specific_input` | `cp_stand_management_records` | 作业 truffle_stand_management：记录割草、植被管理、修剪、通行、灌溉设备和其他跨越前景边界的机械燃料。 原数量方法：使用油箱记录、发票、承包商记录或设备活动记录换算，并保留燃料载体身份 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -754,7 +752,7 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_establishment_records` | `truffle_host_establishment` | establishment inputs, stand hand-off, mortality, land occupation | planting and nursery record | host species; inoculation status; nursery source; planted items or mass; planted area; establishment date; replacement; mortality; amendment product and nutrient basis | supplier invoices, planting registers, block maps, and field interviews reconciled to planted area；原始汇总与分配：aggregate by host species, block, and reporting period; retain source records | kg, item, ha, m2*a, kg nutrient | each establishment or replacement event | full establishment period and replacement events | each stand block | 每声明的参考流 | signed planting records, supplier documents, block map, and survival check |
-| `cp_stand_management_records` | `truffle_stand_management` | nutrient or amendment, irrigation, fuel, electricity, soil transformation, soil emissions inputs | stand-period activity record | stand age; area; irrigation meter; product identity; product mass; nutrient basis; fuel; electricity; soil state; residues; management dates | meters, invoices, equipment logs, agronomic records, and method-ready soil or residue inventory；原始汇总与分配：aggregate by stand block and period after removing duplicates and shared-service double counting | kg product, kg nutrient, m3, kg, MJ, kWh, ha | monthly or per application, reconciled annually | declared reporting period plus linked stand establishment basis | each stand block or contributing site | 每声明的参考流 | meter or invoice reconciliation, site log, soil plan, and period completeness review |
+| `cp_stand_management_records` | `truffle_stand_management` | nutrient or amendment, irrigation, fuel, electricity, soil transformation, soil emissions inputs; 必须完成的具体排放识别与计算 | stand-period activity record | stand age; area; irrigation meter; product identity; product mass; nutrient basis; fuel; electricity; soil state; residues; management dates; 物质名称；接收环境；报告单位及元素或化合物基准；方法和因子来源；实际活动量；期间；数量不确定性；相关既有交换 | meters, invoices, equipment logs, agronomic records, and method-ready soil or residue inventory；原始汇总与分配：aggregate by stand block and period after removing duplicates and shared-service double counting `stand_machinery_fuel_input_specific_input`: 作业 truffle_stand_management：记录割草、植被管理、修剪、通行、灌溉设备和其他跨越前景边界的机械燃料。 原数量方法：使用油箱记录、发票、承包商记录或设备活动记录换算，并保留燃料载体身份 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。; managed_soil_nitrogen_emission_specific_emission: 依据实际松露种植地的养分、改良剂、残余物和土壤管理记录，按适用方法及场址、土壤、气候条件评估直接和间接土壤氮排放。保留种植地期间归属及合格鲜松露分母；方法或物种未知仍是完整性缺口。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | kg product, kg nutrient, m3, kg, MJ, kWh, ha; kg 具体物质与 kg N 分开记录 | monthly or per application, reconciled annually | declared reporting period plus linked stand establishment basis | each stand block or contributing site | 每声明的参考流 | meter or invoice reconciliation, site log, soil plan, and period completeness review |
 | `cp_harvest_output_records` | `truffle_harvest` | harvest service, harvested product, rejects, soil disturbance | harvest lot record | harvest date; block; method; labor or service; incoming mass; accepted mass; reject mass; maturity; grade; soil disturbance; destination | weighed lot records and harvest logs reconciled to sales or transfer records；原始汇总与分配：sum lots by block and period; reconcile harvested = accepted + rejected + documented loss | kg, h, service unit | each harvest lot | complete harvest season and declared reporting period | each harvest block | 每声明的参考流 | calibrated scale, lot ticket, sales or transfer record, and reject destination |
 | `cp_conditioning_records` | `truffle_farm_gate_conditioning` | incoming truffle, water, accepted output, rejects and removed soil | conditioning batch record | batch id; incoming mass; water; energy if applicable; operation; accepted mass; grade; moisture or soil state; rejects; destination | batch sheets, scale records, utility meter, and farm-gate hand-off record；原始汇总与分配：aggregate batches and reconcile incoming mass to accepted output and rejects | kg, m3, kWh | each conditioning batch | only the included pre-farm-gate conditioning period | conditioning facility or site | 每声明的参考流 | scale calibration, batch reconciliation, market-state specification, and hand-off record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
@@ -768,6 +766,7 @@ sync_with: pcr.en-US.md
 | `calc_nutrient_basis` | nutrient or soil-amendment input | `nutrient basis = supplied product mass × declared nutrient fraction`; retain product mass and each declared nutrient basis as separate outputs. | product mass; label, invoice, or supplier nutrient fraction | kg product and kg nutrient basis | `iso-14044-2006` |
 | `calc_managed_soil_emissions` | managed-soil nitrogen emission | Apply the selected geographically appropriate method to collected nutrient, amendment, residue, and soil activity records; document factors and avoid counting the same nitrogen source twice. | nutrient basis; residue and soil activity; selected method factors | method-calculated elementary emissions | `ipcc-2019-afolu` |
 | `calc_mass_reconciliation` | harvest and conditioning | `incoming mass = accepted output + rejects + documented process loss` for each lot or batch, with moisture and soil state retained. | lot or batch incoming mass; accepted mass; rejects; losses | reconciled mass balance and QA finding | `iso-14044-2006` |
+| `managed_soil_nitrogen_emission_specific_emission` | `truffle_stand_management` | 依据实际松露种植地的养分、改良剂、残余物和土壤管理记录，按适用方法及场址、土壤、气候条件评估直接和间接土壤氮排放。保留种植地期间归属及合格鲜松露分母；方法或物种未知仍是完整性缺口。 这是必须落实的身份识别与计算要求，不是一项交换。完成数据集前，应按每个实际物质和接收环境建立具体基本流卡。kg 物质与 kg 元素 N 分开保留，只能依据已识别物种的有据组成或化学计量分数，将方法报告的基准换算为目标基准。不得把所有氮等同于某种化合物，也不得将元素 N 和对应化合物质量重复作为两项排放。保留原活动量、因子单位、期间、不确定性、边界与归一化；已有匹配卡时建立关联而不重复计数。确认兼容 UUID，或明确登记具体未解析身份。身份、方法或活动证据缺失不能表示零，也不能据此省略排放。 | `cp_stand_management_records` | 逐物质和介质的排放交换及独立元素台账 | `ipcc-2019-afolu` |
 
 ### 数据质量要求
 
@@ -814,3 +813,4 @@ sync_with: pcr.en-US.md
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

@@ -130,38 +130,15 @@ Record actual species/provenance stock net mass and surviving establishment even
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
 
-###### Actual stand-management fertilizers and amendments (`management_materials`)
-
-One umbrella for actual fertilizer or amendment products: preserve each product and nutrient assay; zero, one or several concrete exchanges follow records, never a guessed nitrogen dose.
-
-- Selected flow: Actual stand-management fertilizers and amendments
-- Flow property / unit: Mass / kg
-- Amount rule: One umbrella for actual fertilizer or amendment products: preserve each product and nutrient assay; zero, one or several concrete exchanges follow records, never a guessed nitrogen dose.
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: cp_management
-- Sources: fao-woodfuel-planting
-- Range: Replaceable provisional broad QA screen, not an allowed ceiling or yield
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ###### Electricity at the equipment supply point (`management_energy_electricity`)
 
 **Collection scope and applicability for management_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 One energy umbrella; retain metered electricity, actual fuel and machinery task records with their original units and supported conversions. Do not add carrier use already inside a purchased service.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_management` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -172,11 +149,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_management`
 - Sources: `fao-woodfuel-planting`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`management_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_management` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -186,6 +165,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_management`
 - Sources: `fao-woodfuel-planting`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Irrigation water supplied to the managed stand (`irrigation_water`)
 
@@ -330,9 +311,9 @@ Match actual managed standing_stock_handoff to the receiving harvest event and s
 
 One actual-energy umbrella for manual/mechanical felling, stump-side sizing and extraction up to the next handoff; human labour is a task record, not presumed fossil fuel.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_harvest` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -343,11 +324,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest`
 - Sources: `fao-fuelwood-harvesting`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`harvest_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_harvest` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -357,6 +340,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest`
 - Sources: `fao-fuelwood-harvesting`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -524,9 +509,9 @@ Record pruning/branch/harvest source, original generation event, transfer status
 
 One umbrella for actual gathering, local movement and loading energy; retain actual transport loads and distances and avoid repeating the original harvest energy.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_residue` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -536,6 +521,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_residue`
 - Sources: `fao-fuelwood-harvesting`; `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ##### Waste flows
 
@@ -634,9 +621,9 @@ Match actual gross feed mass, moisture, bark and species to harvested_raw_wood o
 
 One actual-energy umbrella for the performed cutting/splitting/handling operation; natural air seasoning does not imply purchased heat. Preserve original energy units and factor evidence.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_preparation` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -646,6 +633,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preparation`
 - Sources: `fao-fuelwood-harvesting`; `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ###### Purchased heat at the process inlet (`preparation_energy_heat`)
 
@@ -805,9 +794,9 @@ Record actual incoming wood from the selected source/preparation handoff, includ
 
 One umbrella for actual weighing/sorting/loading energy at the producer gate; exclude customer delivery and avoid carrier burdens already in bought handling services.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_dispatch` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -817,6 +806,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_dispatch`
 - Sources: `fao-fuelwood-harvesting`; `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ##### Waste flows
 
@@ -909,52 +900,6 @@ one shared service ledger with consuming-node and period attribution. Actual roa
 
 ##### Product flows
 
-###### Attributed shared forest access and landing service (`shared_access_service`)
-
-Measure actual service use by stand/source, consuming node, reporting period and intended output; assign road/landing burdens once through one ledger. Expand actual underlying exchanges only when not embedded in service supply.
-
-- Selected flow: Attributed shared forest access and landing service
-- Flow property / unit: Service / h
-- Amount rule: Measure actual service use by stand/source, consuming node, reporting period and intended output; assign road/landing burdens once through one ledger. Expand actual underlying exchanges only when not embedded in service supply.
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: cp_shared
-- Sources: fao-fuelwood-harvesting
-- Range: Replaceable provisional broad QA screen, not an allowed ceiling or yield
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
-###### Attributed shared equipment and measurement service (`shared_equipment_service`)
-
-Record actual saw/splitter/tractor/scales service time and useful-life/repair boundary; allocate by evidenced use across harvesting, collection, preparation and dispatch, excluding fuel already charged to node energy rows.
-
-- Selected flow: Attributed shared equipment and measurement service
-- Flow property / unit: Service / h
-- Amount rule: Record actual saw/splitter/tractor/scales service time and useful-life/repair boundary; allocate by evidenced use across harvesting, collection, preparation and dispatch, excluding fuel already charged to node energy rows.
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: cp_shared
-- Sources: fao-fuelwood-harvesting
-- Range: Replaceable provisional broad QA screen, not an allowed ceiling or yield
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -980,16 +925,27 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `management_materials_specific_input` | `cp_management` | Operation stand_management: One umbrella for actual fertilizer or amendment products: preserve each product and nutrient assay; zero, one or several concrete exchanges follow records, never a guessed nitrogen dose. Original quantity method: One umbrella for actual fertilizer or amendment products: preserve each product and nutrient assay; zero, one or several concrete exchanges follow records, never a guessed nitrogen dose. |
+| `shared_access_service_specific_input` | `cp_shared` | Operation shared_assets: Measure actual service use by stand/source, consuming node, reporting period and intended output; assign road/landing burdens once through one ledger. Expand actual underlying exchanges only when not embedded in service supply. Original quantity method: Measure actual service use by stand/source, consuming node, reporting period and intended output; assign road/landing burdens once through one ledger. Expand actual underlying exchanges only when not embedded in service supply. |
+| `shared_equipment_service_specific_input` | `cp_shared` | Operation shared_assets: Record actual saw/splitter/tractor/scales service time and useful-life/repair boundary; allocate by evidenced use across harvesting, collection, preparation and dispatch, excluding fuel already charged to node energy rows. Original quantity method: Record actual saw/splitter/tractor/scales service time and useful-life/repair boundary; allocate by evidenced use across harvesting, collection, preparation and dispatch, excluding fuel already charged to node energy rows. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_management | stand_management | management and stock handoff | foreground events and raw measurements | stand/species; source map; stool cohort; establishment/replant/termination event; planted stock; actual material/product assay; water; energy carrier and original unit; area/time; stock and harvest-ready mass; consuming output/period | Use stand registers, invoices, meter readings and paired stock surveys; separate initial seedling from each retained-stool harvest. | carrier-native; kg; m2a | each event/lot or service period | actual reporting period and attributable historical source phases | stand/source and rotation phase | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
+| cp_management | stand_management | management and stock handoff | foreground events and raw measurements | stand/species; source map; stool cohort; establishment/replant/termination event; planted stock; actual material/product assay; water; energy carrier and original unit; area/time; stock and harvest-ready mass; consuming output/period | Use stand registers, invoices, meter readings and paired stock surveys; separate initial seedling from each retained-stool harvest. `management_materials_specific_input`: Operation stand_management: One umbrella for actual fertilizer or amendment products: preserve each product and nutrient assay; zero, one or several concrete exchanges follow records, never a guessed nitrogen dose. Original quantity method: One umbrella for actual fertilizer or amendment products: preserve each product and nutrient assay; zero, one or several concrete exchanges follow records, never a guessed nitrogen dose. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | carrier-native; kg; m2a | each event/lot or service period | actual reporting period and attributable historical source phases | stand/source and rotation phase | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | cp_harvest | harvest_removal | harvest/remove wood and co-products | foreground events and raw measurements | event/source/species/plant part; management owner; removed wet/dry mass; retained biomass; fuel and equipment; extraction leg and load; all product/waste destinations; source carbon/land-use evidence | Match authorized source map and harvesting/extraction records to paired scales/moisture samples and product dispatch/waste manifests. | kg; carrier-native; km | each event/lot or service period | actual reporting period and attributable historical source phases | harvest event and next handoff | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | cp_residue | residue_collection | already-generated raw woody-source collection | foreground events and raw measurements | original generation event; species/part; product versus waste status; transfer and upstream burden owner; wet/dry/foreign mass; actual collection energy/load/distance; retained versus collected material | Use source supplier and generation/transfer records plus collection scales and sampling; preserve original burden handoff instead of assuming free residue. | kg; carrier-native; km | each event/lot or service period | actual reporting period and attributable historical source phases | collection event and source | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | cp_preparation | primary_preparation | raw-to-sized/air-seasoned wood handoff | foreground events and raw measurements | matched feed/output lots; species/form/bark; gross/net/wet/dry mass; moisture basis; rewetting; residue/waste; stock period; energy carrier/unit; measured solid/stacked volume and density pairing | Take paired incoming/outgoing scales and moisture/dry-matter samples; reconcile stock and rejects before interpreting water evaporation. | kg; m3; carrier-native | each event/lot or service period | actual reporting period and attributable historical source phases | conditioning lot and stock interval | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | cp_dispatch | qualification_dispatch | final reference, independent products and rejects | foreground events and raw measurements | lot/species/origin/form/gate; accepted grade; fuel destination; gross; tare; foreign matter; net as-received mass; wet/dry moisture; bark; accepted/rejected/diverted destinations; stock inflow/outflow; energy | Weigh actual accepted wood using calibrated scales; reconcile incoming wood, accepted fuelwood, independently diverted non-fuel products, waste and stock changes; exclude packaging. | kg; carrier-native | each event/lot or service period | actual reporting period and attributable historical source phases | accepted producer dispatch lot | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
-| cp_shared | shared_assets | shared assets, service and period attribution | foreground events and raw measurements | asset/service id; construction/maintenance/repair boundary; actual useful life; period; consumers; task hours; area/load/distance where relevant; allocation key; embedded energy; charge owner | Use asset registers and service/task meters; reconcile a single total ledger across every consuming node and period and exclude charges embedded elsewhere. | h; underlying-native units | each event/lot or service period | actual reporting period and attributable historical source phases | asset service period and all consumers | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
+| cp_shared | shared_assets | shared assets, service and period attribution | foreground events and raw measurements | asset/service id; construction/maintenance/repair boundary; actual useful life; period; consumers; task hours; area/load/distance where relevant; allocation key; embedded energy; charge owner | Use asset registers and service/task meters; reconcile a single total ledger across every consuming node and period and exclude charges embedded elsewhere. `shared_access_service_specific_input`: Operation shared_assets: Measure actual service use by stand/source, consuming node, reporting period and intended output; assign road/landing burdens once through one ledger. Expand actual underlying exchanges only when not embedded in service supply. Original quantity method: Measure actual service use by stand/source, consuming node, reporting period and intended output; assign road/landing burdens once through one ledger. Expand actual underlying exchanges only when not embedded in service supply. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `shared_equipment_service_specific_input`: Operation shared_assets: Record actual saw/splitter/tractor/scales service time and useful-life/repair boundary; allocate by evidenced use across harvesting, collection, preparation and dispatch, excluding fuel already charged to node energy rows. Original quantity method: Record actual saw/splitter/tractor/scales service time and useful-life/repair boundary; allocate by evidenced use across harvesting, collection, preparation and dispatch, excluding fuel already charged to node energy rows. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | h; underlying-native units | each event/lot or service period | actual reporting period and attributable historical source phases | asset service period and all consumers | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | `cp_emissions_at_harvest_removal` | `harvest_removal` | actual substance-specific direct releases | foreground events and raw measurements | equipment/source; substance/species/particle size; air/water/soil medium; direct boundary; measured release or factor and original activity unit; factor provenance and uncertainty; capture controls; assigned process/period; event_id; transfer_id; counterparty_process_id | Prefer measured site releases; otherwise apply an explicitly cited factor matched to the actual carrier, equipment and control. Record other actual pollutants separately; do not assign bulk dust to PM2.5.; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | kg; activity-native | each event/lot or service period | actual reporting period and attributable historical source phases | actual emitting operation and period | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | `cp_emissions_at_primary_preparation` | `primary_preparation` | actual substance-specific direct releases | foreground events and raw measurements | equipment/source; substance/species/particle size; air/water/soil medium; direct boundary; measured release or factor and original activity unit; factor provenance and uncertainty; capture controls; assigned process/period; event_id; transfer_id; counterparty_process_id | Prefer measured site releases; otherwise apply an explicitly cited factor matched to the actual carrier, equipment and control. Record other actual pollutants separately; do not assign bulk dust to PM2.5.; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | kg; activity-native | each event/lot or service period | actual reporting period and attributable historical source phases | actual emitting operation and period | per 1 kg reference flow | calibration/source handoff evidence, matched ledgers, factor provenance and uncertainty |
 | `cp_direct_release_stand_management` | `stand_management` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |

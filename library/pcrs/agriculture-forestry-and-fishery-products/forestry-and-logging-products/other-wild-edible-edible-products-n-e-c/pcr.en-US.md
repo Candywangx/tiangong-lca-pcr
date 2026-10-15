@@ -127,38 +127,6 @@ Record each actual purchased receipt, paired internal transfer or rework return 
 
 Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
-###### Actual operational energy supply (`source_energy`)
-
-One conditional energy requirement: identify each actual carrier/provider and native quantity from meters, fuel records or included-service coverage. Keep electricity, fuel and heat as separate concrete exchanges in the eventual dataset; do not add unlike units or duplicate inclusive service energy.
-
-- Selected flow: Actual operational energy supply
-- Flow property / unit: Actual carrier property / native unit
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual auxiliary materials and services (`source_materials_services`)
-
-One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles.
-
-- Selected flow: Actual auxiliary materials and services
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ###### Actual supplied process water (`source_water`)
 
 Record supplied water when used in management, washing or treatment, in the actual product unit. A direct withdrawal belongs to the natural-water role instead, unless a separately modelled supply process converts that withdrawal into this product. Internal recirculation is not repeated new supply; retain make-up, discharge and stock records.
@@ -265,57 +233,9 @@ Measure actual output state and net quantity with recipient/next-node and lot ID
 
 Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
-###### Actual other intended goods or reusable material exits (`source_other_goods`)
-
-Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation.
-
-- Selected flow: Actual other intended goods or reusable material exits
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Waste flows
 
-###### Actual waste transferred to a managed recipient (`source_waste`)
-
-Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero.
-
-- Selected flow: Actual waste transferred to a managed recipient
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Elementary flows
-
-###### Actual environmental returns and identified direct releases (`source_returns_releases`)
-
-Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit.
-
-- Selected flow: Actual environmental returns and identified direct releases
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
 ### Process: Primary preparation and grade separation (`prepare`)
 
@@ -331,38 +251,6 @@ Record each actual purchased receipt, paired internal transfer or rework return 
 
 - Selected flow: Actual received material in its evidenced incoming state
 - Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_prepare`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual operational energy supply (`prepare_energy`)
-
-One conditional energy requirement: identify each actual carrier/provider and native quantity from meters, fuel records or included-service coverage. Keep electricity, fuel and heat as separate concrete exchanges in the eventual dataset; do not add unlike units or duplicate inclusive service energy.
-
-- Selected flow: Actual operational energy supply
-- Flow property / unit: Actual carrier property / native unit
-- Amount rule: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_prepare`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual auxiliary materials and services (`prepare_materials_services`)
-
-One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles.
-
-- Selected flow: Actual auxiliary materials and services
-- Flow property / unit: Actual material or service property / native unit
 - Amount rule: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -431,57 +319,9 @@ Measure actual output state and net quantity with recipient/next-node and lot ID
 
 Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
-###### Actual other intended goods or reusable material exits (`prepare_other_goods`)
-
-Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation.
-
-- Selected flow: Actual other intended goods or reusable material exits
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_prepare`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Waste flows
 
-###### Actual waste transferred to a managed recipient (`prepare_waste`)
-
-Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero.
-
-- Selected flow: Actual waste transferred to a managed recipient
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_prepare`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Elementary flows
-
-###### Actual environmental returns and identified direct releases (`prepare_returns_releases`)
-
-Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit.
-
-- Selected flow: Actual environmental returns and identified direct releases
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_prepare`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
 ### Process: State treatment, preservation and holding (`treat`)
 
@@ -507,60 +347,12 @@ Record each actual purchased receipt, paired internal transfer or rework return 
 
 Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
-###### Actual operational energy supply (`treat_energy`)
-
-One conditional energy requirement: identify each actual carrier/provider and native quantity from meters, fuel records or included-service coverage. Keep electricity, fuel and heat as separate concrete exchanges in the eventual dataset; do not add unlike units or duplicate inclusive service energy.
-
-- Selected flow: Actual operational energy supply
-- Flow property / unit: Actual carrier property / native unit
-- Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treat`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual auxiliary materials and services (`treat_materials_services`)
-
-One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles.
-
-- Selected flow: Actual auxiliary materials and services
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treat`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ###### Actual supplied process water (`treat_water`)
 
 Record supplied water when used in management, washing or treatment, in the actual product unit. A direct withdrawal belongs to the natural-water role instead, unless a separately modelled supply process converts that withdrawal into this product. Internal recirculation is not repeated new supply; retain make-up, discharge and stock records.
 
 - Selected flow: Actual supplied process water
 - Flow property / unit: Actual water property / kg or m3 with recorded conversion
-- Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treat`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual treatment or preservation ingredients (`treat_treatment_inputs`)
-
-Identify each actual agent/formulation, concentration, make-up and withdrawal, reused bath stock and retained product fraction. Record carrier water separately without double counting formulation water. A hypothetical treatment recipe or the full bath capacity is not the consumed amount; verify product-class eligibility after treatment.
-
-- Selected flow: Actual treatment or preservation ingredients
-- Flow property / unit: Mass / kg
 - Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -613,57 +405,9 @@ Measure actual output state and net quantity with recipient/next-node and lot ID
 
 Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
-###### Actual other intended goods or reusable material exits (`treat_other_goods`)
-
-Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation.
-
-- Selected flow: Actual other intended goods or reusable material exits
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treat`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Waste flows
 
-###### Actual waste transferred to a managed recipient (`treat_waste`)
-
-Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero.
-
-- Selected flow: Actual waste transferred to a managed recipient
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treat`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Elementary flows
-
-###### Actual environmental returns and identified direct releases (`treat_returns_releases`)
-
-Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit.
-
-- Selected flow: Actual environmental returns and identified direct releases
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_treat`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
 ### Process: Final acceptance, packaging and producer handover (`dispatch`)
 
@@ -678,54 +422,6 @@ Weigh the actual accepted final state with cp_reference and record the producer/
 Record each actual purchased receipt, paired internal transfer or rework return separately by material, supplier/source, state and gate. Receipt may bypass already completed upstream nodes, but must inherit compatible upstream burdens once. Do not insert an input for a route that has none.
 
 - Selected flow: Actual received material in its evidenced incoming state
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_dispatch`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual operational energy supply (`dispatch_energy`)
-
-One conditional energy requirement: identify each actual carrier/provider and native quantity from meters, fuel records or included-service coverage. Keep electricity, fuel and heat as separate concrete exchanges in the eventual dataset; do not add unlike units or duplicate inclusive service energy.
-
-- Selected flow: Actual operational energy supply
-- Flow property / unit: Actual carrier property / native unit
-- Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_dispatch`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual auxiliary materials and services (`dispatch_materials_services`)
-
-One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles.
-
-- Selected flow: Actual auxiliary materials and services
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_dispatch`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
-###### Actual detachable transport packaging (`dispatch_packaging`)
-
-Identify material, measured tare and single-use or returnable status; retain service-cycle, replacement, cleaning and end-of-use records for reusable items. Product components are not package tare. Include packaging burdens even though packaging is excluded from reference net mass.
-
-- Selected flow: Actual detachable transport packaging
 - Flow property / unit: Mass / kg
 - Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
 - Value mode: Foreground record (`foreground_record`)
@@ -774,57 +470,9 @@ The only reference output: accepted product of one declared material/composition
 
 Range evidence: the normalized reference equals 1 kg by definition, not an empirical yield or a required actual lot size. Check actual accepted lot mass is positive and retain its measurement uncertainty.
 
-###### Actual other intended goods or reusable material exits (`dispatch_other_goods`)
-
-Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation.
-
-- Selected flow: Actual other intended goods or reusable material exits
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_dispatch`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Waste flows
 
-###### Actual waste transferred to a managed recipient (`dispatch_waste`)
-
-Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero.
-
-- Selected flow: Actual waste transferred to a managed recipient
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_dispatch`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
-
 ##### Elementary flows
-
-###### Actual environmental returns and identified direct releases (`dispatch_returns_releases`)
-
-Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit.
-
-- Selected flow: Actual environmental returns and identified direct releases
-- Flow property / unit: Mass / kg
-- Amount rule: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_dispatch`
-
-Range evidence requirement: no category-wide numerical bound is prescribed for this conditional role. Establish a quantitative screen only after the concrete identity, state, native unit, denominator and compatible route/site/period evidence are known; document bounds and uncertainty without clipping measured values. Until then range screening is explicitly unavailable, not a default zero or a completeness claim.
 
 ## 7. Allocation and Co-product Handling
 
@@ -838,15 +486,42 @@ Range evidence requirement: no category-wide numerical bound is prescribed for t
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `source_materials_services_specific_input` | `cp_source` | Operation source: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. |
+| `prepare_materials_services_specific_input` | `cp_prepare` | Operation prepare: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. |
+| `treat_materials_services_specific_input` | `cp_treat` | Operation treat: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. |
+| `dispatch_materials_services_specific_input` | `cp_dispatch` | Operation dispatch: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. |
+| `dispatch_packaging_specific_input` | `cp_dispatch` | Operation dispatch: Identify material, measured tare and single-use or returnable status; retain service-cycle, replacement, cleaning and end-of-use records for reusable items. Product components are not package tare. Include packaging burdens even though packaging is excluded from reference net mass. Original quantity method: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `source_energy_identification` | `cp_source` | Actual source management, collection or purchased receipt. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) |
+| `prepare_energy_identification` | `cp_prepare` | Actual cleaning, trimming and grade separation. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) |
+| `treat_energy_identification` | `cp_treat` | Actual eligible drying, preservation and holding. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) |
+| `dispatch_energy_identification` | `cp_dispatch` | Actual packaging and producer-gate handling. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_reference` | `dispatch` | accepted reference product | final acceptance and weighing | lot; material/species/part; category eligibility; intended use; state; moisture method; whole-good and botanical/retained-treatment/structural mass breakdown; edible fraction if relevant; gross; excluded transport tare/soil/free water/rejects; net accepted mass; producer gate; recipient; dates; scale/calibration | Weigh the accepted good on a calibrated scale; reconcile the same configuration/state/composition and acceptance record, tare and all exclusions. Record actual positive net lot mass before normalization. | kg | each final accepted dispatch lot | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
-| `cp_source` | `source` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; untended-source evidence; gathered species/part and seasonal campaign; collection and unsuccessful trips; digging/removal and attached soil; target/incidental transfers and returns; purchased portions and completed upstream coverage | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
-| `cp_prepare` | `prepare` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; incoming/output parts and grades; actual cleaning, trimming, peeling, splitting or opening actions; removed parts, soil and washwater composition; every grade/recipient; before/after moisture and stocks | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
-| `cp_treat` | `treat` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; state intervention and time; initial/final substrate moisture; bath opening/closing stock, make-up/withdrawal, formulation and concentration; retained agents and water; discharge, evaporation, named releases; cold-store service and refrigerant stocks/leaks if actual | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
-| `cp_dispatch` | `dispatch` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; actual acceptance specification and grade; final product state/gate; net product versus detachable package tare; permanent product components; packaging reuse and losses; stock release versus current production; final handling/warehouse service ownership | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
+| `cp_source` | `source` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; untended-source evidence; gathered species/part and seasonal campaign; collection and unsuccessful trips; digging/removal and attached soil; target/incidental transfers and returns; purchased portions and completed upstream coverage | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. Route-specific requirements: `source_energy_identification`: Actual source management, collection or purchased receipt. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `source_materials_services_specific_input`: Operation source: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `source_returns_releases_specific_emission`: Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit. Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `source_other_goods_specific_output`: Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation. Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `source_waste_specific_output`: Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero. Actual attributable quantity from cp_source divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
+| `cp_prepare` | `prepare` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; incoming/output parts and grades; actual cleaning, trimming, peeling, splitting or opening actions; removed parts, soil and washwater composition; every grade/recipient; before/after moisture and stocks | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. Route-specific requirements: `prepare_energy_identification`: Actual cleaning, trimming and grade separation. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `prepare_materials_services_specific_input`: Operation prepare: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `prepare_returns_releases_specific_emission`: Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit. Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `prepare_other_goods_specific_output`: Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation. Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `prepare_waste_specific_output`: Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero. Actual attributable quantity from cp_prepare divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
+| `cp_treat` | `treat` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; state intervention and time; initial/final substrate moisture; bath opening/closing stock, make-up/withdrawal, formulation and concentration; retained agents and water; discharge, evaporation, named releases; cold-store service and refrigerant stocks/leaks if actual | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. Route-specific requirements: `treat_energy_identification`: Actual eligible drying, preservation and holding. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `treat_materials_services_specific_input`: Operation treat: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `treat_treatment_inputs_specific_input`: Identify each actual agent/formulation, concentration, make-up and withdrawal, reused bath stock and retained product fraction. Record carrier water separately without double counting formulation water. A hypothetical treatment recipe or the full bath capacity is not the consumed amount; verify product-class eligibility after treatment. Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `treat_returns_releases_specific_emission`: Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit. Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `treat_other_goods_specific_output`: Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation. Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `treat_waste_specific_output`: Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero. Actual attributable quantity from cp_treat divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
+| `cp_dispatch` | `dispatch` | all actual node exchange roles | activity, material and service ledger | lot/site/source/species/part/composition/state; branch; upstream dataset and process coverage; incoming/outgoing/returned IDs; gross/tare/net mass and moisture; incidental-matter ledgers; opening/closing stocks and dates; actual activity, setup/cleaning/changeover; each supply/service/carrier/provider/native quantity; actual waste recipient; named release/substance/compartment/activity/factor provenance; shared assets/consumers/periods; exclusions and uncertainty; actual acceptance specification and grade; final product state/gate; net product versus detachable package tare; permanent product components; packaging reuse and losses; stock release versus current production; final handling/warehouse service ownership | Measure physical receipts, outputs, stocks and relevant moisture/composition; meter actual supplies and retain invoices/operation and factor records. Identify material/grade/state at each handoff and preserve independent evidence of absence. Keep each concrete exchange in its native unit; do not backfill missing values. Route-specific requirements: `dispatch_energy_identification`: Actual packaging and producer-gate handling. Identify the product state and manual or powered route before selecting a carrier; broad category coverage alone supports no particular energy input. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `dispatch_materials_services_specific_input`: Operation dispatch: One conditional supplies/service requirement. Identify every actual consumable, tool/asset service, cleaning input and provider; retain its own unit and consuming node/period. No input is mandatory merely because it is named as a possible role. Final datasets must resolve each concrete exchange and avoid overlap with the separately listed water, treatment, component and package roles. Original quantity method: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `dispatch_packaging_specific_input`: Operation dispatch: Identify material, measured tare and single-use or returnable status; retain service-cycle, replacement, cleaning and end-of-use records for reusable items. Product components are not package tare. Include packaging burdens even though packaging is excluded from reference net mass. Original quantity method: Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `dispatch_returns_releases_specific_emission`: Separate returned target/incidental matter, discharged water and each named emitted substance with receiving compartment. Use measured quantities or a documented compatible activity-factor calculation, including treatment emissions, evaporation, combustion, field losses or refrigerant leakage only when actual and evidenced. Reconcile returns with available receipts/removal. A balancing residual is not an emission, and a return is not an automatic credit. Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `dispatch_other_goods_specific_output`: Separate each intentionally supplied grade, co-product or actual rework return, with state, recipient and destination. Internal rework retains original burdens and is not an independent co-product; a sold downgrade and a waste must not share the same classification. Enumerate the complete independent output set for allocation. Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `dispatch_waste_specific_output`: Identify each actual solid reject, spent agent, used package or wastewater and its recipient/treatment. Separate water and solute composition when required; record physical waste once and treatment burden once. Do not record waste to treatment as a direct environmental emission, or assume unmeasured conditional waste is zero. Actual attributable quantity from cp_dispatch divided by the same accepted net dispatch mass from cp_reference; retain each concrete exchange and its actual unit separately. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; actual concrete exchange units | each lot, activity, stock movement and attributable service period | complete declared source/production and dispatch periods, with stock and asset carryover | all actual contributing source, preparation, treatment and handover sites | per 1 kg reference flow | calibration, traceable raw records, source/classification and recipient evidence, compatible factors and complete attribution |
 
 ### Calculation Rules
 
@@ -900,3 +575,4 @@ Range evidence requirement: no category-wide numerical bound is prescribed for t
 | `fao-food-storage` | official_guidance | FAO, Food security, nutrition and health, processing and storage distinctions; https://www.fao.org/4/W6864E/w6864e06.htm | Distinguish fresh handling from food processing; no historic nutrient-loss or shelf-life defaults |
 
 These sources support classification and possible responsibilities only. The equations and collection requirements above are explicit mass-accounting/attribution rules, not numerical values copied from a representative study. No historic recipe, universal yield, loss, life, dose, emission factor or food-safety assurance is adopted.
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

@@ -190,33 +190,6 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: stand_fertilizer
-          role: "Fertilizer applied to the stand"
-          name: "Applied fertilizer product of the recorded formulation; UUID unresolved"
-          flow_type: "product"
-          property_unit: "Mass of commercial fertilizer product / kg"
-          description: "Activate only for recorded fertilization in the foreground stand. Instantiate one exchange per commercial formulation; retain N/P/K composition, product mass, date and area. Nutrient mass is a parallel calculation, not the fertilizer-product exchange amount. Nursery fertilizer embedded in purchased seedlings is not duplicated."
-          amount:
-            expression: "Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero."
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_stand_management
-              source_ids:
-                - fao-planted-forest-management
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg/kg"
-                basis: "1 kg as-received other-use coniferous roundwood reference output; screen only for investigating exceptions, not a substitute for measurement or a universal rate."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: stand_watering_water
           role: "Supplied water for establishment or tending"
           name: "Supplied watering water with recorded source and treatment; UUID unresolved"
@@ -273,10 +246,12 @@ process_inventory:
                 source_ids: []
         - row_id: stand_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for stand_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Use one conditional energy card for this process, without splitting PCR cards by fuel grade or electricity specification. During dataset construction, expand the actual recorded carriers into concrete exchanges with verified UUIDs, supply specifications and units. Do not double count energy already included in contractor services or foreground generation. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for stand_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Use one conditional energy card for this process, without splitting PCR cards by fuel grade or electricity specification. During dataset construction, expand the actual recorded carriers into concrete exchanges with verified UUIDs, supply specifications and units. Do not double count energy already included in contractor services or foreground generation. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_stand_management and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -293,10 +268,12 @@ process_inventory:
             ranges: []
         - row_id: stand_energy_diesel
           role: "Diesel fuel supplied to equipment"
-          name: "Diesel fuel supplied to equipment"
+          name: "Diesel fuel"
           flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_stand_management and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -311,33 +288,6 @@ process_inventory:
                 - fao-wood-harvesting
                 - fao-agricultural-energy
             ranges: []
-        - row_id: stand_service
-          role: "Recorded establishment and tending operation — Contracted operation with declared service boundary"
-          name: "Recorded contractor operation, machine and service boundary; UUID unresolved"
-          flow_type: "product"
-          property_unit: "Measured equipment operating time / h"
-          description: "Task: Recorded establishment and tending operation. Activate only for a contractor dataset whose reference is operating hours of the named task/equipment. Record supplier, task, technology, service unit and included fuels, machinery and emissions. If its service unit differs, create an appropriately measured task card. Components already included in the service dataset are not also burdened through separate fuel or machine inputs."
-          amount:
-            expression: "Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_stand_management
-              source_ids:
-                - fao-wood-harvesting
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "h/kg"
-                basis: "1 kg as-received other-use coniferous roundwood reference output; screen only for investigating exceptions, not a substitute for measurement or a universal rate."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -412,10 +362,12 @@ process_inventory:
                 source_ids: []
         - row_id: harvest_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for harvest_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Use one conditional energy card for this process, without splitting PCR cards by fuel grade or electricity specification. During dataset construction, expand the actual recorded carriers into concrete exchanges with verified UUIDs, supply specifications and units. Do not double count energy already included in contractor services or foreground generation. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for harvest_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Use one conditional energy card for this process, without splitting PCR cards by fuel grade or electricity specification. During dataset construction, expand the actual recorded carriers into concrete exchanges with verified UUIDs, supply specifications and units. Do not double count energy already included in contractor services or foreground generation. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_harvest_energy and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -432,10 +384,12 @@ process_inventory:
             ranges: []
         - row_id: harvest_energy_diesel
           role: "Diesel fuel supplied to equipment"
-          name: "Diesel fuel supplied to equipment"
+          name: "Diesel fuel"
           flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_harvest_energy and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -450,60 +404,6 @@ process_inventory:
                 - fao-wood-harvesting
                 - fao-agricultural-energy
             ranges: []
-        - row_id: harvest_lubricant
-          role: "Felling, bucking and extraction — Lubricant consumed by equipment"
-          name: "Recorded lubricant formulation and application; UUID unresolved"
-          flow_type: "product"
-          property_unit: "Mass of lubricant product / kg"
-          description: "Task: Felling, bucking and extraction. Activate only for lubricant consumption recorded separately from fuel. Identify chain oil, hydraulic oil or engine lubricant and formulation; instantiate separate exchanges for different uses/products. Convert measured volume using documented density. Retain leakage, spent-oil collection and receiver records rather than assuming an emission or disposal route."
-          amount:
-            expression: "Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_harvest_energy
-              source_ids:
-                - fao-wood-harvesting
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg/kg"
-                basis: "1 kg as-received other-use coniferous roundwood reference output; screen only for investigating exceptions, not a substitute for measurement or a universal rate."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: harvest_service
-          role: "Felling, bucking and extraction — Contracted operation with declared service boundary"
-          name: "Recorded contractor operation, machine and service boundary; UUID unresolved"
-          flow_type: "product"
-          property_unit: "Measured equipment operating time / h"
-          description: "Task: Felling, bucking and extraction. Activate only for a contractor dataset whose reference is operating hours of the named task/equipment. Record supplier, task, technology, service unit and included fuels, machinery and emissions. If its service unit differs, create an appropriately measured task card. Components already included in the service dataset are not also burdened through separate fuel or machine inputs."
-          amount:
-            expression: "Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per 1 kg reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_harvest_energy
-              source_ids:
-                - fao-wood-harvesting
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "h/kg"
-                basis: "1 kg as-received other-use coniferous roundwood reference output; screen only for investigating exceptions, not a substitute for measurement or a universal rate."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -547,10 +447,12 @@ process_inventory:
       product:
         - row_id: grading_energy_electricity
           role: "Electricity at the equipment supply point"
-          name: "Electricity at the equipment supply point"
+          name: "Alternating current"
           flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
           property_unit: "Energy / kWh"
-          description: "**Collection scope and applicability for grading_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Use one conditional energy card for this process, without splitting PCR cards by fuel grade or electricity specification. During dataset construction, expand the actual recorded carriers into concrete exchanges with verified UUIDs, supply specifications and units. Do not double count energy already included in contractor services or foreground generation. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "**Collection scope and applicability for grading_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Use one conditional energy card for this process, without splitting PCR cards by fuel grade or electricity specification. During dataset construction, expand the actual recorded carriers into concrete exchanges with verified UUIDs, supply specifications and units. Do not double count energy already included in contractor services or foreground generation. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden."
           amount:
             expression: "Collect raw quantities for this identity under cp_assortment_energy and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -567,10 +469,12 @@ process_inventory:
             ranges: []
         - row_id: grading_energy_diesel
           role: "Diesel fuel supplied to equipment"
-          name: "Diesel fuel supplied to equipment"
+          name: "Diesel fuel"
           flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_assortment_energy and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -826,7 +730,7 @@ dataset_production:
       flow_role: "management inputs and shared road"
       record_type: "stand plan, invoice, activity log"
       raw_fields: "stand; phase; date; species; planted/natural; input/service; quantity; asset  ; stock species/form; fertilizer composition; protection active substance/concentration; water source/treatment; supply specification; activation/missing flag; actual task/service boundary ; fuel grade/density; electricity voltage/mix; task operating hours"
-      collection_method: "reconcile plan, invoice, and field log; Raw aggregation operation: assign to period then lot/output; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance."
+      collection_method: "reconcile plan, invoice, and field log; Raw aggregation operation: assign to period then lot/output; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. stand_fertilizer_specific_input: Operation managed_stand: Activate only for recorded fertilization in the foreground stand. Instantiate one exchange per commercial formulation; retain N/P/K composition, product mass, date and area. Nutrient mass is a parallel calculation, not the fertilizer-product exchange amount. Nursery fertilizer embedded in purchased seedlings is not duplicated. Original quantity method: Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stand_service_specific_input: Task: Recorded establishment and tending operation. Activate only for a contractor dataset whose reference is operating hours of the named task/equipment. Record supplier, task, technology, service unit and included fuels, machinery and emissions. If its service unit differs, create an appropriately measured task card. Components already included in the service dataset are not also burdened through separate fuel or machine inputs. Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "item; kg; L; m3; kWh; h; ha; year"
       frequency: "each activity and annual close"
       temporal_coverage: "establishment through harvest"
@@ -862,7 +766,7 @@ dataset_production:
       flow_role: "harvest energy/services"
       record_type: "machine/fuel log"
       raw_fields: "machine; task; hours; fuel; electricity; extraction distance; asset  ; fuel grade/density; electricity voltage/supply mix; lubricant application/formulation; contractor boundary; activation/missing flag"
-      collection_method: "meter, issue ticket, invoice; Raw aggregation operation: sum by task; apportion shared use once; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance."
+      collection_method: "meter, issue ticket, invoice; Raw aggregation operation: sum by task; apportion shared use once; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. harvest_lubricant_specific_input: Operation harvest_extraction: Task: Felling, bucking and extraction. Activate only for lubricant consumption recorded separately from fuel. Identify chain oil, hydraulic oil or engine lubricant and formulation; instantiate separate exchanges for different uses/products. Convert measured volume using documented density. Retain leakage, spent-oil collection and receiver records rather than assuming an emission or disposal route. Original quantity method: Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. harvest_service_specific_input: Task: Felling, bucking and extraction. Activate only for a contractor dataset whose reference is operating hours of the named task/equipment. Record supplier, task, technology, service unit and included fuels, machinery and emissions. If its service unit differs, create an appropriately measured task card. Components already included in the service dataset are not also burdened through separate fuel or machine inputs. Collect measured quantity by task, lot and period; attribute to the actual consumer before normalization. Inactive activities are omitted; missing records are not zero. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; L; kWh; h; km"
       frequency: "each shift or lot"
       temporal_coverage: "harvest campaign"
@@ -1123,7 +1027,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a59600d5f9e0f4a1855db6ee8d5dec31a266b79972d8cba0a1cff9d9ba22ee5c"
+  source_sha256: "sha256:020ed56fa76c5e000a9e18d5e67cdb3e212ebf30b84c57f52b90454ef0f8a7d5"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4927"
@@ -1174,16 +1078,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52346"
+    - unit_id: "normative_48383"
       family: "allocation"
       span:
         start:
-          offset: 52346
-          line: 704
+          offset: 48383
+          line: 624
           column: 1
         end:
-          offset: 55196
-          line: 718
+          offset: 51233
+          line: 638
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nThe allocation rules below are methodological choices of this PCR, not LCA allocation requirements prescribed by FAO statistical definitions. The FAO source supports product distinctions and the under-bark volume convention only. Justify the selected physical allocation driver against the actual joint production system and retain the required sensitivity comparison.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_direct_first` | All nodes | Assign directly recorded activities to the actual stand, lot, and assortment first. Enumerate all saleable output classes and roadside handovers; distinguish co-product, retained slash, and removed waste. | `fao-wood-harvesting`; `fao-jfsq-definitions` |\n| `allocation_shared_volume` | Joint stand and harvest burdens | Allocate residual joint burdens among all saleable log assortments by measured under-bark solid m³ at the same gate and period. Record denominator, bark deduction, zero-output lots, and sensitivity to another defensible physical basis. Do not allocate unrecovered slash as a saleable output. | `fao-jfsq-definitions` |\n| `allocation_period` | Establishment, maintenance, thinning, final harvest | Link every input, output, disturbance, and replacement event to stand phase and reporting period. Assign stand burdens over the declared production horizon by attributable harvested under-bark volume, counting thinning outputs once. No universal rotation duration is imposed. | `fao-wood-harvesting` |\n| `allocation_shared_asset` | Shared roads, landing, machinery | Identify every consuming node and service period. Charge construction, maintenance, and operation once by logged use where possible; otherwise use documented harvested-volume share over the service period. | `fao-wood-harvesting` |\n| `physical_ledger_before_allocation` | Physical ledgers and attributed burdens | Retain unallocated physical values for original material balances, handoffs and co-products: q_B = Q_B/R. Apply this PCR's allocation method separately to shared burdens: b_ref = B_shared * a_ref/R; assign direct burdens directly and apply each period/output share once. R is the selected final reference output, excluding internal transfers. Never apply burden share a_ref to original co-product or transfer quantities; distinguish any allocated single-product process projection from the unallocated whole-package material ledger. |  |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1202,12 +1106,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52346
-              line: 704
+              offset: 48383
+              line: 624
               column: 1
             end:
-              offset: 52386
-              line: 704
+              offset: 48423
+              line: 624
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1222,16 +1126,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_76453"
+    - unit_id: "normative_80658"
       family: "validation"
       span:
         start:
-          offset: 76453
-          line: 757
+          offset: 80658
+          line: 687
           column: 1
         end:
-          offset: 79547
-          line: 770
+          offset: 83752
+          line: 700
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | Reference product | Require exactly 1 kg normalized as-received other-use coniferous logs at forest roadside, with the verified Mass flow/property/unit group and separate measured under-bark m³. Reject volume-property assertions for the Mass UUID. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `validate_category` | Roadside output set | Check species and intended use; reject saw/veneer, pulp/panel, fuelwood, non-coniferous, or treated/fabricated goods as reference product. Account for every other output once. | `unsd-cpc-03119`; `fao-jfsq-definitions` |\n| `validate_balance` | Harvest and sorting | Reconcile mass and under-bark volume; separately disclose retained biomass, removed waste, unsold stock, and co-products. | `fao-jfsq-definitions` |\n| `validate_period_asset` | Shared activities | Trace each stand phase and shared road/landing service period into one ledger; reject missing disturbance/replacement treatment or duplicate charges. | `fao-wood-harvesting` |\n| `validate_identity_coverage` | Conditional exchanges | Final exchanges need actual material/state, direction, type, property/unit, and verified UUID. Semantic collection requirements cannot be published as fabricated fixed identities. | `fao-wood-harvesting` |\n| `validate_card_activation_units` | All refined cards | Verify activation and actual material/formulation/task/supply specification; missing records are not zero. Each amount and Range uses one compatible property/unit; retain density and wood mass/volume bridges. Check contractor-service components against fuel, equipment and emissions to avoid double burdens. | `fao-wood-harvesting` |\n| `validate_direct_release_coverage` | `managed_stand`; `harvest_extraction`; `roadside_assortment` | For every activated node, reconcile its activity list against cp_direct_release_managed_stand; cp_direct_release_harvest_extraction; cp_direct_release_roadside_assortment: each relevant event must have quantified concrete elementary exchanges, evidenced upstream-service coverage, or evidenced absence of the activity. Missing/unknown is not zero and blocks data-package completeness. Check each actual substance/medium amount, method/factor units, concrete UUID and existing-card/service coverage for omissions or duplication; empty groups, purchased-electricity upstream emissions or another node's single CO2 card do not replace this node's on-site reconciliation. Shared-asset services must not create duplicate physical release events. |  |\n| `validate_forest_carbon_land_coverage` | stand boundary and source responsibility | Require the selected LCA method/period, pool and land applicability decisions, traceable compatible evidence/exclusions and unique coverage ownership before completeness. Unknown or missing relevant pool/history/time/unit evidence fails the completeness claim; do not interpret missing data as zero or borrow national Tier-1 defaults without justified product-LCA applicability. | `ipcc-forest-land-2006` |\n\n"
       headings:
@@ -1250,12 +1154,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 76453
-              line: 757
+              offset: 80658
+              line: 687
               column: 1
             end:
-              offset: 76475
-              line: 757
+              offset: 80680
+              line: 687
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1339,197 +1243,197 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 52388
-          line: 706
+          offset: 48425
+          line: 626
           column: 1
         end:
-          offset: 52756
-          line: 706
+          offset: 48793
+          line: 626
           column: 369
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_direct_first"
       identity_kind: "explicit"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 52829
-          line: 710
+          offset: 48866
+          line: 630
           column: 1
         end:
-          offset: 53125
-          line: 710
+          offset: 49162
+          line: 630
           column: 297
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared_volume"
       identity_kind: "explicit"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 53126
-          line: 711
+          offset: 49163
+          line: 631
           column: 1
         end:
-          offset: 53509
-          line: 711
+          offset: 49546
+          line: 631
           column: 384
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 53510
-          line: 712
+          offset: 49547
+          line: 632
           column: 1
         end:
-          offset: 53889
-          line: 712
+          offset: 49926
+          line: 632
           column: 380
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_shared_asset"
       identity_kind: "explicit"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 53890
-          line: 713
+          offset: 49927
+          line: 633
           column: 1
         end:
-          offset: 54186
-          line: 713
+          offset: 50223
+          line: 633
           column: 297
     - pointer: "/allocation_rules/5"
       rule_id: "physical_ledger_before_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 54187
-          line: 714
+          offset: 50224
+          line: 634
           column: 1
         end:
-          offset: 54806
-          line: 714
+          offset: 50843
+          line: 634
           column: 620
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_rule_7"
       identity_kind: "snapshot_local"
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 54808
-          line: 716
+          offset: 50845
+          line: 636
           column: 1
         end:
-          offset: 55194
-          line: 716
+          offset: 51231
+          line: 636
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 76548
-          line: 761
+          offset: 80753
+          line: 691
           column: 1
         end:
-          offset: 76865
-          line: 761
+          offset: 81070
+          line: 691
           column: 318
     - pointer: "/validation_rules/1"
       rule_id: "validate_category"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 76866
-          line: 762
+          offset: 81071
+          line: 692
           column: 1
         end:
-          offset: 77132
-          line: 762
+          offset: 81337
+          line: 692
           column: 267
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 77133
-          line: 763
+          offset: 81338
+          line: 693
           column: 1
         end:
-          offset: 77326
-          line: 763
+          offset: 81531
+          line: 693
           column: 194
     - pointer: "/validation_rules/3"
       rule_id: "validate_period_asset"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 77327
-          line: 764
+          offset: 81532
+          line: 694
           column: 1
         end:
-          offset: 77550
-          line: 764
+          offset: 81755
+          line: 694
           column: 224
     - pointer: "/validation_rules/4"
       rule_id: "validate_identity_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 77551
-          line: 765
+          offset: 81756
+          line: 695
           column: 1
         end:
-          offset: 77813
-          line: 765
+          offset: 82018
+          line: 695
           column: 263
     - pointer: "/validation_rules/5"
       rule_id: "validate_card_activation_units"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 77814
-          line: 766
+          offset: 82019
+          line: 696
           column: 1
         end:
-          offset: 78204
-          line: 766
+          offset: 82409
+          line: 696
           column: 391
     - pointer: "/validation_rules/6"
       rule_id: "validate_direct_release_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 78205
-          line: 767
+          offset: 82410
+          line: 697
           column: 1
         end:
-          offset: 79052
-          line: 767
+          offset: 83257
+          line: 697
           column: 848
     - pointer: "/validation_rules/7"
       rule_id: "validate_forest_carbon_land_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 79053
-          line: 768
+          offset: 83258
+          line: 698
           column: 1
         end:
-          offset: 79545
-          line: 768
+          offset: 83750
+          line: 698
           column: 493
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1558,99 +1462,99 @@ normative_context:
           column: 180
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 52346
-          line: 704
+          offset: 48383
+          line: 624
           column: 1
         end:
-          offset: 52386
-          line: 704
+          offset: 48423
+          line: 624
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 52388
-          line: 706
+          offset: 48425
+          line: 626
           column: 1
         end:
-          offset: 52756
-          line: 706
+          offset: 48793
+          line: 626
           column: 369
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 52829
-          line: 710
+          offset: 48866
+          line: 630
           column: 1
         end:
-          offset: 53125
-          line: 710
+          offset: 49162
+          line: 630
           column: 297
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 53126
-          line: 711
+          offset: 49163
+          line: 631
           column: 1
         end:
-          offset: 53509
-          line: 711
+          offset: 49546
+          line: 631
           column: 384
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 53510
-          line: 712
+          offset: 49547
+          line: 632
           column: 1
         end:
-          offset: 53889
-          line: 712
+          offset: 49926
+          line: 632
           column: 380
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 53890
-          line: 713
+          offset: 49927
+          line: 633
           column: 1
         end:
-          offset: 54186
-          line: 713
+          offset: 50223
+          line: 633
           column: 297
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_52346"
+      unit_id: "normative_48383"
       source_span:
         start:
-          offset: 54187
-          line: 714
+          offset: 50224
+          line: 634
           column: 1
         end:
-          offset: 54806
-          line: 714
+          offset: 50843
+          line: 634
           column: 620
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_76453"
+      unit_id: "normative_80658"
       source_span:
         start:
-          offset: 76453
-          line: 757
+          offset: 80658
+          line: 687
           column: 1
         end:
-          offset: 76475
-          line: 757
+          offset: 80680
+          line: 687
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1659,5 +1563,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a59600d5f9e0f4a1855db6ee8d5dec31a266b79972d8cba0a1cff9d9ba22ee5c"
-  generated_content_sha256: "sha256:5ed5f3c763ffb5955da5c97a18040307c976da7a6a9406041393671e72616279"
+    sha256: "sha256:020ed56fa76c5e000a9e18d5e67cdb3e212ebf30b84c57f52b90454ef0f8a7d5"
+  generated_content_sha256: "sha256:6e198e60060496f9541cf47fa08978e68f0b494166dd2c012cf1f2b551322090"

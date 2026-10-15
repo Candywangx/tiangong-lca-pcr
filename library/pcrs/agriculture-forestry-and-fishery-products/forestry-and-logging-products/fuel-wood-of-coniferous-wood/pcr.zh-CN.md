@@ -112,29 +112,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 实际造林及抚育材料 (`management_materials`)
-
-实际苗木、配方肥料及其他抚育材料使用一条条件合并卡。数据包内分别识别实际材料；保留配方质量、养分或有效成分换算及供应商范围。非经营自然来源不得继承造林配方。
-
-- 选定流：实际造林及抚育材料
-- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：归属于采收薪材群组的记录材料数量
-- 数值来源模式：foreground_record
-- 适用范围：site_specific
-- 归一化基准：每 1 kg 参考流
-- 基准类型：reference_flow
-- 证据类型：collected_record
-- 采集协议：`cp_management`
-- 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
-- 数量范围：按前景记录条件确定的范围；无统一数值默认值
-  - 范围角色：qa_guardrail
-  - 下限：0
-  - 上限：reference_record_max
-  - 单位：kg
-  - 基准：每 1 kg 参考流；在采集台账保留实际批次或来源分母
-  - 基准类型：reference_flow
-  - 证据类型：collected_record
-
 ###### 设备供电点的电力（`stand_management_energy_electricity`）
 
 **stand_management_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -143,7 +120,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_operation_at_stand_management` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,11 +131,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_stand_management`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`stand_management_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_operation_at_stand_management` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -168,6 +147,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_stand_management`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`stand_management_energy_heat`）
 
@@ -321,7 +302,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_operation_at_wood_collection` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -332,11 +313,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_wood_collection`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`wood_collection_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_operation_at_wood_collection` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -346,6 +329,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_wood_collection`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`wood_collection_energy_heat`）
 
@@ -552,7 +537,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_operation_at_primary_extraction` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,11 +548,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_primary_extraction`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`primary_extraction_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_operation_at_primary_extraction` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -577,6 +564,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_primary_extraction`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`primary_extraction_energy_heat`）
 
@@ -735,7 +724,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_operation_at_wood_preparation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -746,11 +735,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_wood_preparation`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`wood_preparation_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_operation_at_wood_preparation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -760,6 +751,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_wood_preparation`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`wood_preparation_energy_heat`）
 
@@ -943,7 +936,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_operation_at_handover_sorting` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -954,11 +947,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_operation_at_handover_sorting`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`handover_sorting_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_operation_at_handover_sorting` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -968,6 +963,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_operation_at_handover_sorting`
 - 来源：`fao-fuelwood-harvesting`；`fao-forest-product-definitions`；`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 过程入口的外购热量（`handover_sorting_energy_heat`）
 
@@ -1071,13 +1068,22 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `management_materials_specific_input` | `cp_management` | 作业 stand_management：实际苗木、配方肥料及其他抚育材料使用一条条件合并卡。数据包内分别识别实际材料；保留配方质量、养分或有效成分换算及供应商范围。非经营自然来源不得继承造林配方。 原数量方法：归属于采收薪材群组的记录材料数量 |
+
+
 ### 数据采集协议
 
 所有协议均保留原始批次、来源面积时间及期间总量及其原始分母。外包服务数量保留原生属性及单位、供应服务包含项，不属于 MJ 能源卡范围。来源或产出或期间归属一次，在匹配记录上换算单位一次，再除以匹配合格净交接 kg 一次，报告每 1 kg 参考流。已归一化记录不再除第二次。这些步骤也适用于各具体身份卡中的交换，不把内部投入或中间产出固定为 1 千克。
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_management` | stand_management | management inputs/land | cohort records | 地块；树种；造林或抚育日期；材料及原始单位；面积；占用年数；资产ID；产出群组；分配份额 | 可追溯原始记录与校准测量；匹配批次、期间及范围 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
+| `cp_management` | stand_management | management inputs/land | cohort records | 地块；树种；造林或抚育日期；材料及原始单位；面积；占用年数；资产ID；产出群组；分配份额 | 可追溯原始记录与校准测量；匹配批次、期间及范围 `management_materials_specific_input`: 作业 stand_management：实际苗木、配方肥料及其他抚育材料使用一条条件合并卡。数据包内分别识别实际材料；保留配方质量、养分或有效成分换算及供应商范围。非经营自然来源不得继承造林配方。 原数量方法：归属于采收薪材群组的记录材料数量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_source_at_wood_collection` | `wood_collection` | source/harvest/removal | lot ledger | 来源地块或群组；自然或经营或剩余物状态；活木或死木；形态；树皮；毛重、皮重和净重；水分；实际产出与去向；保留剩余物；前期负荷关联; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_source_at_stand_management` | `stand_management` | source/harvest/removal | lot ledger | 来源地块或群组；自然或经营或剩余物状态；活木或死木；形态；树皮；毛重、皮重和净重；水分；实际产出与去向；保留剩余物；前期负荷关联; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_operation_at_stand_management` | `stand_management` | energy/material service | operation records | 过程与批次；实际载体或服务；供应商；原始数量及单位；燃料系数或 kWh 换算；小时或距离；使用者；服务包含项；零值证据; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |

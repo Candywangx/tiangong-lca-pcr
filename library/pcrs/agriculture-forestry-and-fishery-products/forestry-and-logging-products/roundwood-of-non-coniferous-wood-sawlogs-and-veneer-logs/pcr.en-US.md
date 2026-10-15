@@ -110,138 +110,6 @@ Node `stand` must complete the direct-release coverage reconciliation in `cp_dir
 
 ##### Product flows
 
-###### Energy inputs for stand management (`stand_energy`)
-
-Conditionally expand the actual fuel or electricity carriers; do not add carrier amounts with unlike units.
-
-- Selected flow: Energy inputs for stand management
-- Flow property / unit: Actual fuel mass / kg; actual electricity / kWh; retain L and density separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_stand`
-- Sources: `fao-wood-harvesting`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kWh)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Fertilizer inputs for stand management (`stand_fertilizer`)
-
-One conditional fertilizer class; collect each actual formulation and nutrient content without assuming fertilization.
-
-- Selected flow: Fertilizer inputs for stand management
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_stand`
-- Sources: `fao-wood-harvesting`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Planting and management material inputs (`stand_materials`)
-
-Conditionally collect nursery stock, guards, irrigation water and crop-protection materials separately by actual material and unit; natural regeneration does not imply purchased seedlings.
-
-- Selected flow: Planting and management material inputs
-- Flow property / unit: Actual component property / kg, count, m3 or h, recorded separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_stand`
-- Sources: `fao-wood-harvesting`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (count)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: count
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (m3)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: m3
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (h)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Stand management and shared-asset services (`stand_services`)
-
-Record contracted establishment, tending and road/equipment service shares only where not included in own inputs; identify consumers and service periods.
-
-- Selected flow: Stand management and shared-asset services
-- Flow property / unit: Actual service time / h
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_stand`
-- Sources: `fao-wood-harvesting`
-
-- Range: Provisional broad component-specific QA screen, not a default value (h)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg this process primary wood output
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
 ##### Elementary flows
 
 ###### Carbon dioxide uptake from air in documented stand growth (`stand_carbon_uptake`)
@@ -330,62 +198,24 @@ Use only documented managed standing stock transferred from stand management or 
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Energy inputs for felling and resource removal (`harvest_energy`)
+###### Gasoline (`harvest_energy_gasoline`)
 
-One conditional class for actual energy carriers; exclude fuel already covered by contractor service or foreground generator.
+Felling and resource removal with an actual gasoline saw: this card covers only the gasoline component prepared on site, with two-stroke oil separately identified. Purchased premix needs its own compatible identity; diesel harvesters or electric saws require their actual separate identities.
 
-- Selected flow: Energy inputs for felling and resource removal
-- Flow property / unit: Actual fuel mass / kg; actual electricity / kWh; retain L and density separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_harvest`
-- Sources: `fao-wood-harvesting`
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. For on-site two-stroke mixing, count gasoline and the documented mixing oil separately; never assign the entire premix mass to gasoline. A purchased premix is a different product and must not be substituted with this UUID.
 
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kWh)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Felling and removal services (`harvest_services`)
-
-Conditional contractor and shared-equipment services; document the source boundary, machine hours and included operations.
-
-- Selected flow: Felling and removal services
-- Flow property / unit: Actual service time / h
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
+- Selected flow: Gasoline `e6677cd5-b574-4e00-a3bd-c373ac796135`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_harvest`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
 - Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_harvest`
-- Sources: `fao-wood-harvesting`
+- Sources: `saw-fuel-identity`
 
-- Range: Provisional broad component-specific QA screen, not a default value (h)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg this process primary wood output
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+Apply `harvest_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Elementary flows
 
@@ -469,30 +299,6 @@ Only residues crossing the boundary for waste management; material left onsite r
 
 ##### Elementary flows
 
-###### Actual felling combustion emissions to air (`harvest_air_emissions`)
-
-Conditional collection requirement: record each actual emitted substance, fossil/biogenic origin, receiving medium and estimation method separately; unspecified mixtures cannot receive one UUID.
-
-- Selected flow: Actual felling combustion emissions to air
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_harvest`
-- Sources: `fao-wood-harvesting`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
 ### Process: Extraction to forest landing (`extraction`)
 
 Node `extraction` must complete the direct-release coverage reconciliation in `cp_direct_release_extraction`. Expand each actual substance/medium into an output elementary exchange at this node with a measured or evidence-calculated amount; link existing emission cards to the same event record rather than duplicating them. Distinguish non-occurrence, verified upstream-service coverage and missing evidence; an empty elementary-flow group does not satisfy this requirement.
@@ -525,62 +331,24 @@ Reconcile the actual transferred state and same-lot mass with harvest output; an
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Energy inputs for forest extraction (`extraction_energy`)
+###### Diesel fuel (`extraction_energy_diesel`)
 
-Actual carriers for skidding, forwarding or cable extraction are recorded within one class; retain each carrier unit and actual distance/topography.
+Actual diesel-powered tractor/skidder extraction; record travel, terrain and loaded/empty cycles. Other extraction systems require their own actual supply evidence.
 
-- Selected flow: Energy inputs for forest extraction
-- Flow property / unit: Actual fuel mass / kg; actual electricity / kWh; retain L and density separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_extraction`
-- Sources: `fao-wood-harvesting`
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
 
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kWh)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Extraction and shared-access services (`extraction_services`)
-
-Use actual outsourced extraction and attributed access-road/equipment services; machine/distance logs define the share, not default forest area.
-
-- Selected flow: Extraction and shared-access services
-- Flow property / unit: Actual service time / h
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_extraction`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
 - Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_extraction`
-- Sources: `fao-wood-harvesting`
+- Sources: `forest-operation-energy`
 
-- Range: Provisional broad component-specific QA screen, not a default value (h)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg this process primary wood output
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+Apply `extraction_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 #### Outputs
 
@@ -642,89 +410,58 @@ Same-lot landing input; cut-to-length material already prepared must not undergo
   - Basis kind: `process_output`
   - Evidence kind: `reasoned_estimate`
 
-###### Energy inputs for primary log preparation (`preparation_energy`)
+###### Gasoline (`preparation_energy_gasoline`)
 
-Actual delimbing, bucking and optional debarking carriers are collected separately inside one class; no sawing into finished goods or veneer peeling.
+Delimbing and bucking using an actual gasoline saw, with separately identified mixing oil; record optional debarking equipment separately. Exclude finished sawn goods and veneer production.
 
-- Selected flow: Energy inputs for primary log preparation
-- Flow property / unit: Actual fuel mass / kg; actual electricity / kWh; retain L and density separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_preparation`
-- Sources: `fao-wood-harvesting`
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. For on-site two-stroke mixing, count gasoline and the documented mixing oil separately; never assign the entire premix mass to gasoline. A purchased premix is a different product and must not be substituted with this UUID.
 
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kWh)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Preparation consumables and service inputs (`preparation_materials`)
-
-Conditionally collect lubricants, replacement cutting consumables and external preparation services separately in their native units; prevent own-input/service overlap.
-
-- Selected flow: Preparation consumables and service inputs
-- Flow property / unit: Actual component property / kg, count, m3 or h, recorded separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
+- Selected flow: Gasoline `e6677cd5-b574-4e00-a3bd-c373ac796135`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_preparation`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
 - Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_preparation`
-- Sources: `fao-wood-harvesting`
+- Sources: `saw-fuel-identity`
 
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+Apply `preparation_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
-- Range: Provisional broad component-specific QA screen, not a default value (count)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: count
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+###### Lubricating oil (`preparation_materials_mineral_oil`)
 
-- Range: Provisional broad component-specific QA screen, not a default value (m3)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: m3
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+Only for actual petroleum-based lubricant used by preparation equipment. Confirm supplier formulation; do not apply this petroleum identity to vegetable-based or PAO oils. Record destinations and losses separately without treating all consumption as combustion or assuming all oil is recovered.
 
-- Range: Provisional broad component-specific QA screen, not a default value (h)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg this process primary wood output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+- Selected flow: Lubricating oil `66628f20-9d33-4997-bd6c-6357453fa268`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_preparation`
+- Sources: `saw-chain-oils`
+
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
+
+###### Rapeseed-based formulated saw-chain lubricant (`preparation_materials_vegetable_oil`)
+
+Only when the documented chain-oil formulation is rapeseed-based; retain additive composition and supplier grade. Raw edible rapeseed oil is not an interchangeable finished-lubricant identity.
+
+- Selected flow: Rapeseed-based formulated saw-chain lubricant
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the matched final accepted reference-output mass. Preserve raw quantities and do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_preparation`
+- Sources: `saw-chain-oils`
+
+No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero.
 
 #### Outputs
 
@@ -812,62 +549,24 @@ Declare all incoming prepared forms and record saleable versus rejected destinat
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
-###### Energy inputs for grading and roadside handover (`grading_energy`)
+###### Diesel fuel (`grading_energy_diesel`)
 
-Conditional sorting/loading carriers; collection stops at the forest-roadside producer gate, not outbound mill transport.
+Sorting and loading only where a diesel loader actually operates before the roadside producer gate; manual scaling does not activate this card and outbound mill transport is excluded.
 
-- Selected flow: Energy inputs for grading and roadside handover
-- Flow property / unit: Actual fuel mass / kg; actual electricity / kWh; retain L and density separately
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
-- Specificity: `technology_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_grading`
-- Sources: `fao-wood-harvesting`
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
 
-- Range: Provisional broad component-specific QA screen, not a default value (kg)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg
-  - Basis: per 1 kg roadside reference-category output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
-- Range: Provisional broad component-specific QA screen, not a default value (kWh)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kWh
-  - Basis: per 1 kg roadside reference-category output; apply to each actual component separately, not unlike-unit totals
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
-
-###### Grading and roadside handling services (`grading_services`)
-
-Record actual grading, handling and shared-yard service amounts only once with grade and destination records.
-
-- Selected flow: Grading and roadside handling services
-- Flow property / unit: Actual service time / h
-- Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens.
-- Value mode: `foreground_record`
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_grading`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
 - Specificity: `site_specific`
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: `collected_record`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_grading`
-- Sources: `fao-wood-harvesting`
+- Sources: `forest-operation-energy`
 
-- Range: Provisional broad component-specific QA screen, not a default value (h)
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 100
-  - Unit: h
-  - Basis: per 1 kg roadside reference-category output
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
+Apply `grading_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 #### Outputs
 
@@ -988,15 +687,50 @@ Actual rejected material transferred to waste management; downgrade sale does no
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `stand_fertilizer_specific_input` | `cp_stand` | Operation stand: One conditional fertilizer class; collect each actual formulation and nutrient content without assuming fertilization. Original quantity method: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. |
+| `stand_services_specific_input` | `cp_stand` | Operation stand: Record contracted establishment, tending and road/equipment service shares only where not included in own inputs; identify consumers and service periods. Original quantity method: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. |
+| `extraction_services_specific_input` | `cp_extraction` | Operation extraction: Use actual outsourced extraction and attributed access-road/equipment services; machine/distance logs define the share, not default forest area. Original quantity method: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `stand_energy_identification` | `cp_stand` | Stand establishment and management equipment inside the declared forest boundary. Select fuel only from the actual silvicultural operation and engine specification; do not presume powered treatment. (`forest-operation-energy`) |
+| `harvest_energy_identification` | `cp_harvest` | Felling and resource removal with an actual gasoline saw: this card covers only the gasoline component prepared on site, with two-stroke oil separately identified. Purchased premix needs its own compatible identity; diesel harvesters or electric saws require their actual separate identities. (`saw-fuel-identity`) |
+| `extraction_energy_identification` | `cp_extraction` | Actual diesel-powered tractor/skidder extraction; record travel, terrain and loaded/empty cycles. Other extraction systems require their own actual supply evidence. (`forest-operation-energy`) |
+| `preparation_energy_identification` | `cp_preparation` | Delimbing and bucking using an actual gasoline saw, with separately identified mixing oil; record optional debarking equipment separately. Exclude finished sawn goods and veneer production. (`saw-fuel-identity`) |
+| `grading_energy_identification` | `cp_grading` | Sorting and loading only where a diesel loader actually operates before the roadside producer gate; manual scaling does not activate this card and outbound mill transport is excluded. (`forest-operation-energy`) |
+
+
+### Material and service identification requirements
+
+Identify each actual material or independently supplied service from supplier and activity records; record composition/specification, quantity, unit, node and period separately. Add one concrete exchange per identity before dataset completion; these requirements are not a single exchange. Reconcile with existing cards and inclusive services to avoid duplication. Allocate reusable assets over evidenced use and preserve physical quantities; normalize once to the matched final reference output. Missing identity or use evidence is a completeness gap, not zero use. Conditional examples below are not an exhaustive bill of materials and do not prescribe use or amounts.
+
+| requirement_id | collection_protocol_id | Required scope |
+| --- | --- | --- |
+| `preparation_materials_identification` | `cp_preparation` | preparation lubricants, tool replacements, cleaning materials and separately purchased preparation services |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_stand` | `stand` | Inputs, stock, carbon and site ledgers | Management and stock records | species/cohort/origin/area; start/end stocks; planting/tending/inputs; moisture/density/carbon; periods; actual resource/soil/land events | Compartment records, invoices, measured surveys and supplier records; Raw aggregation operation: Separate phases, output shares and components, normalize once; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. | kg; original volume/area/count; actual component units | Each event and stock survey | Actual full applicable production cycle | Identified compartment/site | per 1 kg reference flow | Survey uncertainty; assay; source history; period reconciliation |
-| `cp_harvest` | `harvest` | Source removal, outputs and emissions | Campaign records | lot/source mode; transferred standing mass or natural resource; cut trees/forms; fuels/services; removed/remaining/residue mass; emissions substance/medium/method | Weighing or same-lot bridge; operation logs; measured or documented emission estimation; Raw aggregation operation: Reconcile source/stock/removal; separate substances and sources; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. | kg; actual carrier units; h | Each lot and operation | Actual harvest campaign | Identified source compartment | per 1 kg reference flow | Weighbridge calibration; route and compartment records; method uncertainty |
-| `cp_extraction` | `extraction` | Transfers and access services | Movement records | input/output lot mass/state; distance/topography; carriers; machine hours; access shares; actual losses | Lot tracking and equipment/service logs; Raw aggregation operation: Reconcile same-lot transfers and allocate only used services; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. | kg; actual carrier units; h | Each movement | Actual campaign | Source to named landing | per 1 kg reference flow | Matching lot IDs; meter and service scope evidence |
-| `cp_preparation` | `preparation` | Preparation inputs and outputs | Preparation records | incoming/prepared kg; bark/moisture; operations; consumables/service; offcuts/bark destinations; root/burl forms | Weighing, lot reconciliation, machine logs and invoices; Raw aggregation operation: Reconcile prepared wood, co-output/waste/residue and changes of moisture; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. | kg; actual component units; h | Each lot and operation | Actual campaign | Named landing/yard | per 1 kg reference flow | Calibration; measured moisture; duplicate-operation checks |
-| `cp_grading` | `grading` | Reference and destination outputs | Grade and dispatch records | input/output kg; species/form/grade; sawnwood/sleeper/veneer or other destination; bark/moisture; gate; prices/driver; energy/services | Grade sheets, weigh tickets and roadside acceptance records; Raw aggregation operation: Sum actual destinations; normalize reference output to 1 kg once; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. | kg; actual component units; h | Each lot and dispatch | Actual harvest/dispatch period | Declared forest-roadside gate | per 1 kg reference flow | Acceptance specification; customer intended-use evidence; traceable reconciliation |
+| `cp_stand` | `stand` | Inputs, stock, carbon and site ledgers | Management and stock records | species/cohort/origin/area; start/end stocks; planting/tending/inputs; moisture/density/carbon; periods; actual resource/soil/land events | Compartment records, invoices, measured surveys and supplier records; Raw aggregation operation: Separate phases, output shares and components, normalize once; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: `stand_energy_identification`: Stand establishment and management equipment inside the declared forest boundary. Select fuel only from the actual silvicultural operation and engine specification; do not presume powered treatment. (`forest-operation-energy`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `stand_fertilizer_specific_input`: Operation stand: One conditional fertilizer class; collect each actual formulation and nutrient content without assuming fertilization. Original quantity method: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `stand_services_specific_input`: Operation stand: Record contracted establishment, tending and road/equipment service shares only where not included in own inputs; identify consumers and service periods. Original quantity method: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `stand_materials_specific_input`: Conditionally collect nursery stock, guards, irrigation water and crop-protection materials separately by actual material and unit; natural regeneration does not imply purchased seedlings.  Amount rule: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; original volume/area/count; actual component units | Each event and stock survey | Actual full applicable production cycle | Identified compartment/site | per 1 kg reference flow | Survey uncertainty; assay; source history; period reconciliation |
+| `cp_harvest` | `harvest` | Source removal, outputs and emissions | Campaign records | lot/source mode; transferred standing mass or natural resource; cut trees/forms; fuels/services; removed/remaining/residue mass; emissions substance/medium/method | Weighing or same-lot bridge; operation logs; measured or documented emission estimation; Raw aggregation operation: Reconcile source/stock/removal; separate substances and sources; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: `harvest_energy_identification`: Felling and resource removal with an actual gasoline saw: this card covers only the gasoline component prepared on site, with two-stroke oil separately identified. Purchased premix needs its own compatible identity; diesel harvesters or electric saws require their actual separate identities. (`saw-fuel-identity`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `harvest_services_specific_input`: Conditional contractor and shared-equipment services; document the source boundary, machine hours and included operations. Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `harvest_air_emissions_specific_emission`: Conditional collection requirement: record each actual emitted substance, fossil/biogenic origin, receiving medium and estimation method separately; unspecified mixtures cannot receive one UUID. Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-wood-harvesting` | kg; actual carrier units; h | Each lot and operation | Actual harvest campaign | Identified source compartment | per 1 kg reference flow | Weighbridge calibration; route and compartment records; method uncertainty |
+| `cp_extraction` | `extraction` | Transfers and access services | Movement records | input/output lot mass/state; distance/topography; carriers; machine hours; access shares; actual losses | Lot tracking and equipment/service logs; Raw aggregation operation: Reconcile same-lot transfers and allocate only used services; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: `extraction_energy_identification`: Actual diesel-powered tractor/skidder extraction; record travel, terrain and loaded/empty cycles. Other extraction systems require their own actual supply evidence. (`forest-operation-energy`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `extraction_services_specific_input`: Operation extraction: Use actual outsourced extraction and attributed access-road/equipment services; machine/distance logs define the share, not default forest area. Original quantity method: Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; actual carrier units; h | Each movement | Actual campaign | Source to named landing | per 1 kg reference flow | Matching lot IDs; meter and service scope evidence |
+| `cp_preparation` | `preparation` | Preparation inputs and outputs | Preparation records | incoming/prepared kg; bark/moisture; operations; consumables/service; offcuts/bark destinations; root/burl forms | Weighing, lot reconciliation, machine logs and invoices; Raw aggregation operation: Reconcile prepared wood, co-output/waste/residue and changes of moisture; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: `preparation_energy_identification`: Delimbing and bucking using an actual gasoline saw, with separately identified mixing oil; record optional debarking equipment separately. Exclude finished sawn goods and veneer production. (`saw-fuel-identity`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg; actual component units; h | Each lot and operation | Actual campaign | Named landing/yard | per 1 kg reference flow | Calibration; measured moisture; duplicate-operation checks |
+| `cp_grading` | `grading` | Reference and destination outputs | Grade and dispatch records | input/output kg; species/form/grade; sawnwood/sleeper/veneer or other destination; bark/moisture; gate; prices/driver; energy/services | Grade sheets, weigh tickets and roadside acceptance records; Raw aggregation operation: Sum actual destinations; normalize reference output to 1 kg once; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: `grading_energy_identification`: Sorting and loading only where a diesel loader actually operates before the roadside producer gate; manual scaling does not activate this card and outbound mill transport is excluded. (`forest-operation-energy`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `grading_services_specific_input`: Record actual grading, handling and shared-yard service amounts only once with grade and destination records. Collect non-duplicated component or same-lot transfer total Q; use the matched boundary/period final accepted reference mass M_ref (positive kg) as the sole final denominator: Q/M_ref. For a local process intensity q_i = Q/O_i, multiply by the measured O_i/M_ref; do not divide an already final-reference amount again. Preserve unallocated physical transfers and co-output ledgers; apply only still-required period/output attribution separately to environmental burdens. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; actual component units; h | Each lot and dispatch | Actual harvest/dispatch period | Declared forest-roadside gate | per 1 kg reference flow | Acceptance specification; customer intended-use evidence; traceable reconciliation |
 | `cp_direct_release_stand` | `stand` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |
 | `cp_direct_release_harvest` | `harvest` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |
 | `cp_direct_release_extraction` | `extraction` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |
@@ -1058,3 +792,6 @@ Actual rejected material transferred to waste management; downgrade sale does no
 | --- | --- | --- | --- |
 | `unsd-roundwood-scope` | official_guidance | UNSD CPC product detail 03121, https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/03121 ; retrieved 2026-10-08 | Product inclusion/exclusion and intended-use classification, not a quantity factor |
 | `fao-wood-harvesting` | official_guidance | FAO Sustainable Forest Management Toolbox, Wood harvesting, https://www.fao.org/sustainable-forest-management-toolbox/modules/wood-harvesting/2/en?tabInx=1 ; retrieved 2026-10-08 | Harvest, extraction, landing preparation and alternative technology responsibilities, not universal quantitative parameters |
+| `saw-chain-oils` | literature | Skoupy, Biologically Degradable Oils for Power Saws, FAO World Forestry Congress, 2003. https://www.fao.org/4/XII/0093-B1.htm | Mineral and vegetable-based chain lubricant distinction; no regional legal rule, numerical consumption or environmental-loss fraction is adopted. |
+| `forest-operation-energy` | official_guidance | FAO, Guidelines for implementation of forest management operations, harvesting/extraction and landing. https://www.fao.org/4/w8212e/w8212e08.htm | Conditional equipment and boundary context; no fuel intensity, universal powertrain or logging prescription is adopted. |
+| `saw-fuel-identity` | handbook | STIHL, Mixing Oil and Gasoline. https://www.stihlusa.com/en/guides-projects/how-to-use-start/mixing-oil-and-gasoline | Distinguishes gasoline and mixing oil for an actual compatible saw; no universal mix ratio is prescribed. |

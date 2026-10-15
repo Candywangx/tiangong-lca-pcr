@@ -269,32 +269,6 @@ sync_with: pcr.en-US.md
 
 ##### Product flows
 
-###### 采集介质（`recovery_medium`）
-
-记录实际采集或抽吸介质及该批组成。
-
-分母与范围要求：每次采集事件
-
-原始数量及计算要求：逐次测量领用及退回介质。 原始采集分母类型：process_output。
-
-- 选定流：胚胎或卵母细胞采集介质（UUID 未解析）
-- 流属性/单位：质量 / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_recovery`
-- 数量范围：暂定采集介质筛查值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1000
-  - 单位：kg/事件
-  - 基准：记录事件中领用的介质
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -687,32 +661,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 保存能源（`preservation_energy`）
-
-仅实际冷藏或冷冻批次使用此节点；鲜品绕过。
-
-分母与范围要求：每枚保存后合格胚胎
-
-原始数量及计算要求：计量实际干预及储存期间能源。 原始采集分母类型：process_output。
-
-- 选定流：保存能源供应（UUID 未解析）
-- 流属性/单位：能量 / kWh
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_preserve`
-- 数量范围：暂定保存能源筛查值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100000
-  - 单位：kWh/保存后合格胚胎
-  - 基准：计量能源除以干预后合格数
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 低温液氮（`nitrogen`）
 
 仅实际使用液氮的路线和储罐记录。
@@ -835,32 +783,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 保护性容器（`container`）
-
-记录实际细管、小瓶或安瓿及新用/复用状态，区分产品封装与门点后运输。
-
-分母与范围要求：每枚放行胚胎
-
-原始数量及计算要求：计量新材料和唯一归属的复用容器服务。 原始采集分母类型：reference_flow。
-
-- 选定流：胚胎保护性包装（UUID 未解析）
-- 流属性/单位：质量 / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议：`cp_release`
-- 数量范围：暂定包装筛查值
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/放行胚胎
-  - 基准：新包装及归属的复用包装除以放行数
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -916,16 +838,36 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `container_specific_input` | `cp_release` | 作业 release：记录实际细管、小瓶或安瓿及新用/复用状态，区分产品封装与门点后运输。 分母与范围要求：每枚放行胚胎 原始数量及计算要求：计量新材料和唯一归属的复用容器服务。 原始采集分母类型：reference_flow。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `preservation_energy_identification` | `cp_preserve` | 胚胎实际冷藏或冷冻保存设备及储存期间；鲜品绕过本节点。区分动力冷冻与被动低温储存，液氮为材料投入，不换算成电力替代项。 原始数量及计算要求：计量实际干预及储存期间能源。 原始采集分母类型：process_output。 (`route-energy-fao`) |
+
+
 ### 数据采集协议
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_donor` | `donor` | 饲料、用水、粪便、供体服务 | 饲养台账 | donor_id, species, period, donor_days, feed_DM, water_kg, manure_kg, replacement, room_hours | 称重、计量、事件日志；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | day, kg, h | 每日/事件 | 全部关联供体期间 | 所有供体 | 每参考流 | 有日期签字台账；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_recovery` | `recovery` | 介质及原始胚胎/卵母细胞 | 事件登记 | event_id, donor_id, route, medium_kg, raw_embryo_count, oocyte_count, losses, room_hours | 领用单、计数、称重；原始汇总要求：逐事件核对。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg, item, h | 每次事件 | 包括失败的全部尝试 | 采集单元 | 每参考流 | 保管链记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_recovery` | `recovery` | 介质及原始胚胎/卵母细胞 | 事件登记 | event_id, donor_id, route, medium_kg, raw_embryo_count, oocyte_count, losses, room_hours | 领用单、计数、称重；原始汇总要求：逐事件核对。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `recovery_medium_specific_input`: 记录实际采集或抽吸介质及该批组成。 分母与范围要求：每次采集事件 原始数量及计算要求：逐次测量领用及退回介质。 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg, item, h | 每次事件 | 包括失败的全部尝试 | 采集单元 | 每参考流 | 保管链记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_lab` | `preparation` | 介质、精液、制备胚胎、废介质 | 实验室批记录 | lot_id, route, media_kg, semen_lot, dose_count, retrieved_count, fertilised_count, prepared_count, waste_kg, incubator_hours | 领用与检测日志；原始汇总要求：路线特定平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg, dose, item, h | 每批 | 全部批次 | 实验室 | 每参考流 | 检测与批记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_grade` | `grading` | 合格、降级、暂存、拒收 | 分级登记 | lot_id, stage, grade, accepted, downgraded, held, rejected, destination | 合格人员评估；原始汇总要求：核对所有去向。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | item | 每批 | 全部评估材料 | 实验室 | 每参考流 | 签字分级单；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_preserve` | `preservation` | 能源、液氮、保存数、拒收 | 冷链日志 | lot_id, state, kWh, nitrogen_kg, storage_days, tank_hours, pre_count, accepted, rejected | 计量、库存平衡、记录仪；原始汇总要求：路线特定计数与占用平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kWh, kg, day, item | 每批/每日 | 全部干预与储存 | 冷藏室/储罐 | 每参考流 | 记录仪与质控；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_release` | `release` | 容器与放行胚胎 | 放行台账 | lot_id, route, stage, grade, state, new_package_kg, reuse_cycles, released, gate_time | 领用计数及质控签字；原始汇总要求：只计签字放行。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg, embryo | 每批 | 所有交接 | 实验室门点 | 每参考流 | 标签与签字收据；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_preserve` | `preservation` | 能源、液氮、保存数、拒收 | 冷链日志 | lot_id, state, kWh, nitrogen_kg, storage_days, tank_hours, pre_count, accepted, rejected | 计量、库存平衡、记录仪；原始汇总要求：路线特定计数与占用平衡。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 按路线确认要求：`preservation_energy_identification`: 胚胎实际冷藏或冷冻保存设备及储存期间；鲜品绕过本节点。区分动力冷冻与被动低温储存，液氮为材料投入，不换算成电力替代项。 原始数量及计算要求：计量实际干预及储存期间能源。 原始采集分母类型：process_output。 (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh, kg, day, item | 每批/每日 | 全部干预与储存 | 冷藏室/储罐 | 每参考流 | 记录仪与质控；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_release` | `release` | 容器与放行胚胎 | 放行台账 | lot_id, route, stage, grade, state, new_package_kg, reuse_cycles, released, gate_time | 领用计数及质控签字；原始汇总要求：只计签字放行。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 `container_specific_input`: 作业 release：记录实际细管、小瓶或安瓿及新用/复用状态，区分产品封装与门点后运输。 分母与范围要求：每枚放行胚胎 原始数量及计算要求：计量新材料和唯一归属的复用容器服务。 原始采集分母类型：reference_flow。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg, embryo | 每批 | 所有交接 | 实验室门点 | 每参考流 | 标签与签字收据；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_pathway_emissions` | `donor` | 路径专属气体及粪污氮/碳 | 动物、饲料、粪污、田间及方法台账 | 物种/类别；动物日；采食/干物质/消化率；挥发性固体；粪污氮/铵态氮；系统份额；气候；贮存时间；肥料氮；放牧；挥发/淋溶；甲烷回收；因子来源/单位；最终合格产出 ；收集粪污湿质量；干物质；去向| 按节点及期间采集一手活动数据，证明参数适用性，保留各路径计算表及链接的处理/牧地数据集  保留原始总量，可归属数量仅对实测最终合格参考产出归一化一次。| animal-day；kg DM；kg VS；kg N；kg CH4；kg N2O；kg NH3 | 各运行期间及管理变化时 | 完整所代表群体与服务期间 | 仅实际运行节点 | 每参考流 | 计量/分析记录、氮级联、方法与因子证据、防重复台账 |
 | `cp_feed_supply_and_intake` | `donor` | 饲料投入、采食及损失 | 库存、收货、发料及损失台账 | 饲料身份/来源；群体/阶段；期间；期初/期末库存；收货；自产供给；未用退回/转出；未食用/变质质量及去向；原物/干物质；实际采食量；负担归属；合格最终产出 | 按 calc_feed_supply_and_intake 核对匹配的库存、称重、日粮/采草估算及处置记录。保留原始总量及阶段分母，生产与处理负担各归属一次，再对合格最终产出归一化。 | kg as-fed; kg DM | 每次发料及期间结算 | 完整所代表群体/期间 | 实际运行饲喂节点 | 每参考流 | 库存及供应商记录；水分证据；损失及无重复核算核对 |
 | `cp_manure_n2o_coverage` | `donor` | 粪污/土壤直接及间接 N2O 覆盖 | 分路径氮台账及方法计算表 | 物种/类别；期间；排泄氮；阶段库存/转移；系统份额；挥发 NH3-N/NOx-N；淋溶/径流氮；施用/放牧氮；因子来源、单位及适用性；直接/间接分项；接受介质；已链接过程及归属卡；合格最终产出 | 按 calc_manure_n2o_coverage 保留原始阶段氮及分项计算，并匹配实际作业与现有粪污协议。记录缺证据或不适用路径及覆盖边界，可归属 N2O 归一化一次。 | kg N; kg N2O | 每个报告期间及管理变化 | 完整所代表管理期间 | 实际运行及明确链接节点 | 每参考流 | 氮平衡、因子单位/适用性、分项到卡片及无重复核算表 |
@@ -987,3 +929,4 @@ sync_with: pcr.en-US.md
 | `review-ipcc-livestock-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 10: Emissions from Livestock and Manure Management](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf) | 物种与路径适用性；CH4 和 N2O 方法选择，不作为通用排放因子 |
 | `review-eea-manure-2023` | official_guidance | [EMEP/EEA Air Pollutant Emission Inventory Guidebook 2023, 3.B Manure Management](https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023/part-b-sectoral-guidance-chapters/3-agriculture/3-b-manure-management-2023) | NH3 氮流方法；采用参数前核实实际物种、管理方式及地域适用性 |
 | `review-ipcc-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 管理土壤直接及间接氮路径与边界核对 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

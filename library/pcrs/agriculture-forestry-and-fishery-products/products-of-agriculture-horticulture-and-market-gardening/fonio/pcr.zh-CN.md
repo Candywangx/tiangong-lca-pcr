@@ -101,7 +101,7 @@ sync_with: pcr.en-US.md
 
 记录跨入作物周期的购买种子或保留种子。识别白或黑福尼奥及当地种子批次；不得用收获籽粒参考流替代播种种子。
 
-- 选定流：Fonio seed for sowing
+- 选定流：播种用福尼奥米种子
 - 流属性/单位：Mass / kg
 - 数量规则：按田块和播种事件记录实测播种种子质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -131,7 +131,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_activity_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,12 +141,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_activity_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`fonio_field_production_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_activity_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -156,6 +158,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_activity_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`fonio_field_production_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -221,7 +225,7 @@ sync_with: pcr.en-US.md
 
 将田间灌溉与降雨分开记录，包括前景边界内的抽水或购水活动。
 
-- 选定流：Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 数量规则：水表计量或经验证的泵流量计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -245,49 +249,21 @@ sync_with: pcr.en-US.md
 
 记录自有或受控机械消耗的柴油。当承包服务单独建模时，将承包商燃料归入上游服务数据集。
 
-- 选定流：Diesel fuel for agricultural machinery
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Volume / L
 - 数量规则：按福尼奥田间作业分摊的实测或发票柴油量
-- 数值来源模式：前景记录（`foreground_record`）
+- 数值来源模式：`calculated_value`
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每公顷种植面积，并换算为 1,000 kg 籽粒.
 
 - 归一化基准：每声明的参考流
 - 基准类型：燃料清单（`fuel_inventory`）
-- 证据类型：采集记录（`collected_record`）
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_activity_records`
-- 数量范围：暂定田间柴油筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：150
-  - 单位：L/ha
-  - 基准：一个作物周期；由上游服务或非柴油设备表示的作业为零
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 施用的农药配方（`fonio_crop_protection_input`）
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
-每种实际除草剂、杀菌剂、杀虫剂或其他配方建立一条交换，并保留有效成分、浓度和施用事件。
-
-- 选定流：Crop-protection formulation by physical product identity
-- 流属性/单位：Mass / kg formulation
-- 数量规则：按产品和施用事件记录实测配方质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每公顷种植面积，并换算为 1,000 kg 籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_field_activity_records`
-- 数量范围：暂定单一配方筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：10
-  - 单位：kg formulation/ha
-  - 基准：一个作物周期内单独识别的每种配方
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+此卡仅表示实际柴油；其他燃料或包含用油的外包服务须各用独立身份，不在此卡重复计入。链接数量为柴油kg：保留油罐或票据原始单位；kg = L × 记录温度下有依据的密度(kg/L)，或kg = MJ / 相同能量基准下有依据的柴油低位热值(MJ/kg)。直接质量记录不需载能体换算。缺失密度或热值须补证，不得假定。完成载能体换算后，按实测面积、期间及合格产出仅归一化一次，保留原最终参考数量；不设置通用单位面积燃料筛查限值。
 
 ##### 废物流
 
@@ -297,7 +273,7 @@ sync_with: pcr.en-US.md
 
 将福尼奥作物周期的种植面积和占用时间作为基本资源干预记录；仅在有文件证明的土地利用变化时纳入土地转化。
 
-- 选定流：Land occupation, arable crop, annual
+- 选定流：一年生农作物耕地占用
 - 流属性/单位：Area-time / m2·year
 - 数量规则：种植面积乘以声明作物周期的占用时间
 - 数值来源模式：计算值（`calculated_value`）
@@ -324,7 +300,7 @@ sync_with: pcr.en-US.md
 
 记录田间生产的末端干燥脱粒带壳籽粒。当初级收获后处理单独建模时，这是转入该过程的实测中间流。
 
-- 选定流：Fonio, production mix, at farm gate, harvested grain, unprocessed `0cd0dc39-a4ec-4caf-addb-1ec276c2f286`
+- 选定流：福尼奥米 `0cd0dc39-a4ec-4caf-addb-1ec276c2f286`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明水分和异物基准记录实测可销售籽粒质量
 
@@ -350,7 +326,7 @@ sync_with: pcr.en-US.md
 
 仅当茎叶被有意收集并转移为有用饲料或材料共产品时记录。留田或还田残余物不属于此输出。
 
-- 选定流：Fonio straw removed at field edge
+- 选定流：在田边移出的福尼奥米秸秆
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：按去向和水分基准记录实测移出秸秆质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -378,7 +354,7 @@ sync_with: pcr.en-US.md
 
 根据收集的矿质和有机氮、残余物去向及适用的 IPCC 层级或审查过的区域方法计算土壤一氧化二氮。
 
-- 选定流：Nitrous oxide emission to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：根据收集的氮活动数据和声明排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -395,7 +371,7 @@ sync_with: pcr.en-US.md
 
 根据养分产品、施用方式、时间和地理适用因子计算氨挥发。
 
-- 选定流：Ammonia emission to ambient air
+- 选定流：氨向环境空气排放
 - 流属性/单位：Mass / kg NH3
 - 数量规则：根据氮施用记录和适用因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -412,7 +388,7 @@ sync_with: pcr.en-US.md
 
 仅当有地理适用模型、监测平衡或审查过的清单方法支持时，记录硝酸盐淋失或径流。
 
-- 选定流：Nitrate emission to water
+- 选定流：硝酸根向水体排放
 - 流属性/单位：Mass / kg nitrate
 - 数量规则：根据氮投入、作物和土壤条件、排水或径流及选定方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -434,7 +410,7 @@ sync_with: pcr.en-US.md
 
 记录从田间生产转入单独脱粒、风选、干法清选或强制通风干燥的籽粒批次，且这些作业发生在农场交接前。
 
-- 选定流：Fonio, production mix, at farm gate, harvested grain, unprocessed `0cd0dc39-a4ec-4caf-addb-1ec276c2f286`
+- 选定流：福尼奥米 `0cd0dc39-a4ec-4caf-addb-1ec276c2f286`
 - 流属性/单位：Mass / kg
 - 数量规则：按匹配批次记录实测进料籽粒质量和水分
 - 数值来源模式：前景记录（`foreground_record`）
@@ -450,7 +426,7 @@ sync_with: pcr.en-US.md
 
 记录交接前纳入的机械脱粒、风机、输送机、干法清选机或强制通风干燥机所用电力。
 
-- 选定流：Electricity supply for fonio primary post-harvest preparation
+- 选定流：福尼奥米采后初步整理用电力供应
 - 流属性/单位：Energy / kWh
 - 数量规则：电表计量，或设备功率乘以经验证的运行时间
 - 数值来源模式：计算值（`calculated_value`）
@@ -474,7 +450,7 @@ sync_with: pcr.en-US.md
 
 记录交接前强制通风或其他主动干燥使用的供热或燃料能量；日晒作业记录为零购买热能。
 
-- 选定流：Process heat for fonio grain drying
+- 选定流：福尼奥米籽粒干燥用工艺热量
 - 流属性/单位：Energy / MJ
 - 数量规则：将实测燃料或热量换算为输送能量，同时保留载能体身份
 - 数值来源模式：计算值（`calculated_value`）
@@ -505,7 +481,7 @@ sync_with: pcr.en-US.md
 
 记录经过纳入的脱粒、风选、干法清选或干燥后，在声明农场交接水分和异物基准下的合格籽粒。脱壳不属于本过程。
 
-- 选定流：Fonio, production mix, at farm gate, harvested grain, unprocessed `0cd0dc39-a4ec-4caf-addb-1ec276c2f286`
+- 选定流：福尼奥米 `0cd0dc39-a4ec-4caf-addb-1ec276c2f286`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明水分和异物基准记录实测合格籽粒质量
 
@@ -533,7 +509,7 @@ sync_with: pcr.en-US.md
 
 按物质类别和去向记录谷壳、石块、土壤、杂草材料、受损籽粒和其他废弃物。交付为饲料或其他用途的有用籽粒组分应作为单独产品共产品。
 
-- 选定流：Fonio primary-preparation rejects and foreign matter
+- 选定流：福尼奥米初步整理拒收物及异物
 - 流属性/单位：Mass / kg
 - 数量规则：按物质类别和去向记录实测废弃物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -557,7 +533,7 @@ sync_with: pcr.en-US.md
 
 将无法解释或不可避免的籽粒损失与可识别异物和废弃物分开记录；在将损失分配到处置或残余物路径前先调查损失。
 
-- 选定流：Fonio grain loss during primary post-harvest preparation
+- 选定流：福尼奥米采后初步整理籽粒损失
 - 流属性/单位：Mass / kg
 - 数量规则：进料籽粒减去合格籽粒、有用共产品、已识别废弃物及实测水分或过程损失
 - 数值来源模式：计算值（`calculated_value`）
@@ -586,7 +562,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Fonio, production mix, at farm gate, harvested grain, unprocessed
+- 选定流：福尼奥米，农场门收获籽粒，生产混合，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -612,7 +588,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Fonio, production mix, at farm gate, harvested grain, unprocessed
+- 选定流：福尼奥米，农场门收获籽粒，生产混合，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -650,6 +626,15 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `fonio_crop_protection_input_specific_input` | `cp_field_activity_records` | 作业 fonio_field_production：每种实际除草剂、杀菌剂、杀虫剂或其他配方建立一条交换，并保留有效成分、浓度和施用事件。 原数量方法：按产品和施用事件记录实测配方质量 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -657,7 +642,7 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_field_activity_records` | `fonio_field_production` | seed, nutrients, irrigation, fuel, crop protection, land | field log, input invoice, application record, meter, or contractor record | field_id; species; cultivar; area; input_product; amount; nutrient_content; date; operation; contractor_scope; sowing_date; harvest_date | 将物理投入和作业与每个田块及作物周期核对；原始汇总与分配：按物理身份汇总；计算养分时不合并产品；用同周期面积和产量归一化 | kg; kg nutrient; L; m3; ha; m2·year | each event | complete crop cycle | all represented fields | 每声明的参考流 | 发票；产品标签；校准计量器；田间记录 |
+| `cp_field_activity_records` | `fonio_field_production` | seed, nutrients, irrigation, fuel, crop protection, land | field log, input invoice, application record, meter, or contractor record | field_id; species; cultivar; area; input_product; amount; nutrient_content; date; operation; contractor_scope; sowing_date; harvest_date | 将物理投入和作业与每个田块及作物周期核对；原始汇总与分配：按物理身份汇总；计算养分时不合并产品；用同周期面积和产量归一化 `fonio_crop_protection_input_specific_input`: 作业 fonio_field_production：每种实际除草剂、杀菌剂、杀虫剂或其他配方建立一条交换，并保留有效成分、浓度和施用事件。 原数量方法：按产品和施用事件记录实测配方质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; kg nutrient; L; m3; ha; m2·year | each event | complete crop cycle | all represented fields | 每声明的参考流 | 发票；产品标签；校准计量器；田间记录 |
 | `cp_harvest_output_records` | `fonio_field_production` | grain, straw, residue fate | scale, yield estimate, moisture test, bale record, or destination record | field_id; harvest_date; grain_mass; grain_moisture; foreign_matter; straw_mass; straw_moisture; residue_fate; destination | 将收获和移出质量与田块面积及作物周期核对；原始汇总与分配：分别汇总合格籽粒和每个残余物去向 | kg; percent; ha | each harvest or field lot | complete crop cycle | all represented fields | 每声明的参考流 | 地秤或产量监测检查；水分记录；去向证据 |
 | `cp_field_emission_activity` | `fonio_field_production` | emissions to air and water | nutrient, soil, weather, residue, and emission-model records | fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version | 使用一个声明的地理适用方法计算每项排放；原始汇总与分配：按田块计算、按面积加权，再用同周期产量归一化 | kg N; kg emission; ha | each event and crop-cycle calculation | complete crop cycle | all represented fields | 每声明的参考流 | 来源记录；因子出处；模型文件；养分平衡审查 |
 | `cp_primary_postharvest_records` | `fonio_primary_postharvest` | incoming grain, energy, accepted grain, rejects, losses | batch ticket, scale, moisture test, electricity meter, fuel record, and destination record | batch_id; incoming_mass; incoming_moisture; operation; electricity; heat; accepted_mass; accepted_moisture; rejects; loss; destination | 将匹配批次和计量器与合格输出核对；将脱壳和清洗排除在此协议外；原始汇总与分配：汇总匹配批次；按时间或处理质量分摊共用计量；闭合湿质量平衡 | kg; percent; kWh; MJ | each batch or meter period | all included pre-gate preparation | all included equipment and batches | 每声明的参考流 | 校准秤和水分仪；计量核对；去向记录 |

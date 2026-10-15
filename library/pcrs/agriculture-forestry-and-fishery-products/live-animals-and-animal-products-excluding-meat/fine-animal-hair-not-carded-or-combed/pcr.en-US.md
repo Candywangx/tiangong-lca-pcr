@@ -250,9 +250,9 @@ Expand actual electricity, thermal energy or fuel by carrier only for powered op
 Denominator and scope requirements：per kg raw fibre received
 Raw quantity and calculation requirements: Meter actual carrier; allocate shared use by service record. Original collection denominator kind: process_output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_utility` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -263,11 +263,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_utility`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`conditioning_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_utility` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -277,6 +279,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_utility`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -495,32 +499,6 @@ Raw quantity and calculation requirements: Net fibre mass transferred from gradi
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Collected record (`collected_record`)
 
-###### Protective fibre package (`fibre_package`)
-
-Select actual clean flexible sack or other documented compatible protective packaging; record reuse and avoid fibre contamination.
-
-Denominator and scope requirements：per kg net packed fine hair
-
-Raw quantity and calculation requirements: Weigh new package mass; allocate reusable package burden by evidenced turns. Original collection denominator kind: process_output.
-
-- Selected flow: Flexible protective fibre packaging (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_handover`
-- Range: Provisional package screen, not a sack-size default
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg/kg
-  - Basis: per kg net packed fine hair
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -571,6 +549,15 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `fibre_package_specific_input` | `cp_handover` | Operation present: Select actual clean flexible sack or other documented compatible protective packaging; record reuse and avoid fibre contamination. Denominator and scope requirements：per kg net packed fine hair Raw quantity and calculation requirements: Weigh new package mass; allocate reusable package burden by evidenced turns. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
@@ -580,7 +567,7 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 | `cp_utility` | condition | optional water and energy | meter/fuel record | lot; cleaning route; water; carrier; energy; meter; period | meter and operation log; Raw aggregation requirements: assign carrier/lot once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;MJ | each operation | conditioning period | each site | per reference flow | meter and operation ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_grade` | grade | product grades | assay and sale ticket | lot; species; fineness; length; colour; moisture; accepted; downgraded; buyer | test and calibrated weighing; Raw aggregation requirements: reconcile grades by destination. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | µm;mm;kg | each lot | grade to sale | all lots | per reference flow | test and buyer record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_rejects` | harvest;condition;grade | waste/loss | material destination log | lot; stage; material; mass; sample; treatment | segregate, weigh and retain receipt; Raw aggregation requirements: sum material by fate once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each removal | full route | all sites | per reference flow | weigh/disposal receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_handover` | present | final fibre and package | sale/pack ledger | lot; species; grade; state; gross; tare; net; package; reuse; moisture; buyer; gate | gross/tare weighing and receipt; Raw aggregation requirements: net as-sold mass. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;item | handover | grade to gate | each seller | per reference flow | pack and signed receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_handover` | present | final fibre and package | sale/pack ledger | lot; species; grade; state; gross; tare; net; package; reuse; moisture; buyer; gate | gross/tare weighing and receipt; Raw aggregation requirements: net as-sold mass. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `fibre_package_specific_input`: Operation present: Select actual clean flexible sack or other documented compatible protective packaging; record reuse and avoid fibre contamination. Denominator and scope requirements：per kg net packed fine hair Raw quantity and calculation requirements: Weigh new package mass; allocate reusable package burden by evidenced turns. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg;item | handover | grade to gate | each seller | per reference flow | pack and signed receipt; traceable numerator, accepted reference-output denominator and normalization worksheet |
 
 ### Calculation Rules
 

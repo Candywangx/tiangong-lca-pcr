@@ -134,9 +134,9 @@ Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_carob_orchard_lifecycle_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -146,12 +146,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_carob_orchard_lifecycle_records`
 - Sources: `carob-macronutrients-water-2005`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`carob_orchard_production_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_carob_orchard_lifecycle_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -161,6 +163,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_carob_orchard_lifecycle_records`
 - Sources: `carob-macronutrients-water-2005`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`carob_orchard_production_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -239,37 +243,24 @@ Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob
 - Collection protocol: `cp_carob_irrigation_records`
 - Sources: `carob-macronutrients-water-2005`
 
-###### Crop-protection formulations actually applied (`carob_orchard_crop_protection_input`)
+###### Diesel fuel (`carob_orchard_energy_inputs_diesel`)
 
-Record each actual formulation, active ingredient or formulation identity when available, application event, applied mass, block, and target. Do not replace a missing formulation identity with a generic pesticide default.
+Actual diesel orchard machinery for mowing, pruning support, nutrient application and access; irrigation pumps require their own equipment-specific supply evidence.
 
-- Selected flow: Actual crop-protection formulation for carob production (UUID unresolved; intentionally blank)
-- Flow property / unit: Product mass / kg formulation
-- Amount rule: sum measured formulation mass by product, event, block, and crop year
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods.
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
 
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_carob_orchard_lifecycle_records`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_carob_orchard_lifecycle_records`
+- Sources: `route-energy-fao`
 
-###### Orchard fuel and electricity (`carob_orchard_energy_inputs`)
-
-Record energy for irrigation pumping, pruning, mowing, nutrient application, crop protection, access, and other orchard operations. Keep electricity, fuel, and contracted activity records distinguishable.
-
-- Selected flow: Energy supply for managed carob orchard operations (UUID unresolved; resolve from actual carrier)
-- Flow property / unit: Energy, mass, or volume / kWh, MJ, L, or kg as recorded
-- Amount rule: meter, invoice, contractor record, or documented equipment calculation by operation, block, and crop year
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_carob_orchard_lifecycle_records`
+Apply `carob_orchard_energy_inputs_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ##### Waste flows
 
@@ -435,22 +426,6 @@ Raw activity or stage basis: per harvest campaign and per 1,000 kg accepted whol
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_carob_harvest_lot_records`
 
-###### Harvest and collection energy (`carob_harvest_energy_input`)
-
-Record fuel or electricity for shaking, beating, collection, nets, conveyors, or other harvest and collection operations. Fully manual harvest records a justified zero with labour and route evidence.
-
-- Selected flow: Energy supply for carob harvest and collection (UUID unresolved; resolve from actual carrier)
-- Flow property / unit: Energy, mass, or volume / kWh, MJ, L, or kg as recorded
-- Amount rule: fuel invoice, equipment meter, contractor statement, or documented equipment calculation assigned to the harvest campaign
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per harvest campaign and per 1,000 kg accepted whole carob pods.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_carob_harvest_lot_records`
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -537,21 +512,24 @@ Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_carob_conditioning_records`
 
-###### Conditioning energy (`carob_conditioning_energy_input`)
+###### Alternating current (`carob_conditioning_energy_input_electricity`)
 
-Record electricity or fuel for supplied-air drying, fans, conveyors, cleaning, sorting, grading, and short handling inside the declared gate. Natural drying without supplied energy records the documented zero-energy condition.
+Actual electric fans, conveyors, cleaning and grading equipment; do not impose forced drying on a documented natural-drying route, and identify any heater separately.
 
-- Selected flow: Energy supply for carob primary conditioning (UUID unresolved; resolve from actual carrier)
-- Flow property / unit: Energy, mass, or volume / kWh, MJ, L, or kg as recorded
-- Amount rule: meter, invoice, equipment record, or documented energy calculation by conditioning campaign
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods.
+Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat.
 
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_carob_conditioning_records`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_carob_conditioning_records`
+- Sources: `route-energy-fao`
+
+Apply `carob_conditioning_energy_input_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
 
 ###### Conditioning process water (`carob_conditioning_process_water_input`)
 
@@ -672,6 +650,28 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `carob_orchard_crop_protection_input_specific_input` | `cp_carob_orchard_lifecycle_records` | Operation carob_orchard_production: Record each actual formulation, active ingredient or formulation identity when available, application event, applied mass, block, and target. Do not replace a missing formulation identity with a generic pesticide default. Original quantity method: sum measured formulation mass by product, event, block, and crop year |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `carob_orchard_energy_inputs_identification` | `cp_carob_orchard_lifecycle_records` | Actual diesel orchard machinery for mowing, pruning support, nutrient application and access; irrigation pumps require their own equipment-specific supply evidence. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods. (`route-energy-fao`) |
+| `carob_harvest_energy_input_identification` | `cp_carob_harvest_lot_records` | Actual manual beating/collection or powered shaking and conveying. A documented fully manual route can have no purchased operational energy; absent records cannot establish that condition. Raw activity or stage basis: per harvest campaign and per 1,000 kg accepted whole carob pods. (`route-energy-fao`) |
+| `carob_conditioning_energy_input_identification` | `cp_carob_conditioning_records` | Actual electric fans, conveyors, cleaning and grading equipment; do not impose forced drying on a documented natural-drying route, and identify any heater separately. Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods. (`route-energy-fao`) |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -679,10 +679,10 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_carob_orchard_lifecycle_records` | `carob_orchard_production` | planting stock, tree replacement, orchard area, nutrients, soil amendments, crop protection, fuel, electricity, residues, and orchard activities | orchard register, block map, planting or replacement invoices, application logs, supplier records, equipment logs, and residue destination records | block_id; species; cultivar_or_type; tree_age; bearing_area_ha; establishment_year; replacement_event; planting_material_quantity; product_name; product_mass; nutrient_basis; application_date; target; fuel; electricity; residue_mass; residue_destination; crop_year | collect event records by block and reconcile with supplier, operator, and equipment records; Raw aggregation and attribution: sum by block and crop year; retain product and nutrient fields before normalization; link annualized events to the declared output basis | mixed activity-specific units | each planting, replacement, application, energy event, and residue event; reconciled each crop year | one declared crop year plus productive-period records for annualization | each managed orchard or cultivated-grove block | per declared reference flow | invoices, field logs, orchard register, operator confirmation, and completeness reconciliation |
+| `cp_carob_orchard_lifecycle_records` | `carob_orchard_production` | planting stock, tree replacement, orchard area, nutrients, soil amendments, crop protection, fuel, electricity, residues, and orchard activities | orchard register, block map, planting or replacement invoices, application logs, supplier records, equipment logs, and residue destination records | block_id; species; cultivar_or_type; tree_age; bearing_area_ha; establishment_year; replacement_event; planting_material_quantity; product_name; product_mass; nutrient_basis; application_date; target; fuel; electricity; residue_mass; residue_destination; crop_year | collect event records by block and reconcile with supplier, operator, and equipment records; Raw aggregation and attribution: sum by block and crop year; retain product and nutrient fields before normalization; link annualized events to the declared output basis Route-specific requirements: `carob_orchard_energy_inputs_identification`: Actual diesel orchard machinery for mowing, pruning support, nutrient application and access; irrigation pumps require their own equipment-specific supply evidence. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `carob_orchard_crop_protection_input_specific_input`: Operation carob_orchard_production: Record each actual formulation, active ingredient or formulation identity when available, application event, applied mass, block, and target. Do not replace a missing formulation identity with a generic pesticide default. Original quantity method: sum measured formulation mass by product, event, block, and crop year Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | mixed activity-specific units | each planting, replacement, application, energy event, and residue event; reconciled each crop year | one declared crop year plus productive-period records for annualization | each managed orchard or cultivated-grove block | per declared reference flow | invoices, field logs, orchard register, operator confirmation, and completeness reconciliation |
 | `cp_carob_irrigation_records` | `carob_orchard_production` | irrigation water, direct water withdrawal, and pumping energy | meter logs, pump records, electricity bills, water bills, permits, source records, and documented water balances | block_id; source_type; rainfed_flag; meter_start; meter_end; irrigation_date; delivered_volume_m3; withdrawal_volume_m3; pump_kwh; source_quality; crop_year | read meters or reconcile invoices and source records to irrigation events and block area; Raw aggregation and attribution: sum by source, block, and crop year; prevent double counting delivered supply and direct withdrawal | m3 and kWh | each irrigation event or billing period; reconciled each crop year | one declared crop year and irrigation season | each source and orchard block | per declared reference flow | meter or invoice evidence, permit or source checks, and water-balance reconciliation |
-| `cp_carob_harvest_lot_records` | `carob_harvest_and_collection` | harvestable pods, collected raw pods, harvest energy, field loss, and harvest rejects | harvest log, scale ticket, block record, contractor statement, lot record, and destination record | block_id; harvest_date; lot_id; harvest_method; harvestable_mass_kg; collected_mass_kg; field_loss_mass_kg; damaged_mass_kg; destination; fuel_quantity; electricity; crop_year | weigh or reconcile each harvest lot and record the removal and collection method; Raw aggregation and attribution: sum harvestable, collected, lost, and rejected masses by block and lot before normalization | kg pods and activity-specific energy unit | every harvest lot; reconciled each campaign | one harvest campaign and crop year | each managed block and receiving lot | per declared reference flow | calibrated scale or verified ticket, lot traceability, contractor evidence, destination evidence, and mass-balance check |
-| `cp_carob_conditioning_records` | `carob_primary_conditioning` | incoming raw pods, drying, cleaning, sorting, grading, process water, accepted pods, downgraded pods, rejects, and water loss | intake ticket, conditioning batch record, moisture test, energy meter, water meter, grade record, reject record, and destination record | campaign_id; lot_id; input_mass_kg; input_moisture; drying_method; drying_start; drying_end; fuel; electricity; process_water_m3; cleaning_method; grade; accepted_mass_kg; downgraded_mass_kg; reject_mass_kg; reject_class; reject_destination; output_moisture; container_tare; gate | record each conditioning batch and reconcile moisture, mass, grade, energy, water, and destination records; Raw aggregation and attribution: sum by lot and grade; preserve incoming and output moisture and tare; calculate water loss only after mass and moisture reconciliation | kg, percent, m3, kWh, L, or MJ as recorded | each conditioning batch; reconciled each campaign | one declared conditioning campaign and gate | each batch, lot, and declared receiving facility | per declared reference flow | calibrated scale, moisture method, meter records, buyer or grade specification, destination evidence, and batch balance |
+| `cp_carob_harvest_lot_records` | `carob_harvest_and_collection` | harvestable pods, collected raw pods, harvest energy, field loss, and harvest rejects | harvest log, scale ticket, block record, contractor statement, lot record, and destination record | block_id; harvest_date; lot_id; harvest_method; harvestable_mass_kg; collected_mass_kg; field_loss_mass_kg; damaged_mass_kg; destination; fuel_quantity; electricity; crop_year | weigh or reconcile each harvest lot and record the removal and collection method; Raw aggregation and attribution: sum harvestable, collected, lost, and rejected masses by block and lot before normalization Route-specific requirements: `carob_harvest_energy_input_identification`: Actual manual beating/collection or powered shaking and conveying. A documented fully manual route can have no purchased operational energy; absent records cannot establish that condition. Raw activity or stage basis: per harvest campaign and per 1,000 kg accepted whole carob pods. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg pods and activity-specific energy unit | every harvest lot; reconciled each campaign | one harvest campaign and crop year | each managed block and receiving lot | per declared reference flow | calibrated scale or verified ticket, lot traceability, contractor evidence, destination evidence, and mass-balance check |
+| `cp_carob_conditioning_records` | `carob_primary_conditioning` | incoming raw pods, drying, cleaning, sorting, grading, process water, accepted pods, downgraded pods, rejects, and water loss | intake ticket, conditioning batch record, moisture test, energy meter, water meter, grade record, reject record, and destination record | campaign_id; lot_id; input_mass_kg; input_moisture; drying_method; drying_start; drying_end; fuel; electricity; process_water_m3; cleaning_method; grade; accepted_mass_kg; downgraded_mass_kg; reject_mass_kg; reject_class; reject_destination; output_moisture; container_tare; gate | record each conditioning batch and reconcile moisture, mass, grade, energy, water, and destination records; Raw aggregation and attribution: sum by lot and grade; preserve incoming and output moisture and tare; calculate water loss only after mass and moisture reconciliation Route-specific requirements: `carob_conditioning_energy_input_identification`: Actual electric fans, conveyors, cleaning and grading equipment; do not impose forced drying on a documented natural-drying route, and identify any heater separately. Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg, percent, m3, kWh, L, or MJ as recorded | each conditioning batch; reconciled each campaign | one declared conditioning campaign and gate | each batch, lot, and declared receiving facility | per declared reference flow | calibrated scale, moisture method, meter records, buyer or grade specification, destination evidence, and batch balance |
 
 ### Calculation Rules
 
@@ -748,3 +748,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html | boundary, normalization, allocation, mass reconciliation, and data-quality method rules |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

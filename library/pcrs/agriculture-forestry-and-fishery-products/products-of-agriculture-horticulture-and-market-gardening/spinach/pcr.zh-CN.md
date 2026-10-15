@@ -94,7 +94,7 @@ sync_with: pcr.en-US.md
 
 记录进入每个声明苗床或设施单元的采购种植材料，并区分种子和移栽苗。
 
-- 选定流：Spinach seed or transplant material
+- 选定流：菠菜种子或移栽材料
 - 流属性/单位：Number of viable units or mass / seed、plant 或 kg
 - 数量规则：按苗床记录采购批次数量和有活力的播种或移栽数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -125,7 +125,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -135,12 +135,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
 - 来源：`ucanr-spinach-production-2011`；`govnl-spinach-production-guide-2025`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`crop_establishment_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_establishment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -150,6 +152,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_establishment_records`
 - 来源：`ucanr-spinach-production-2011`；`govnl-spinach-production-guide-2025`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`crop_establishment_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -215,7 +219,7 @@ sync_with: pcr.en-US.md
 
 将整床、萌发或移栽建植供水与后续作物灌溉分开记录。
 
-- 选定流：Irrigation water
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 流集分组：`irrigation-water`
 - 数量规则：按苗床和水源记录的计量或水量平衡建植灌溉量。
@@ -237,31 +241,20 @@ sync_with: pcr.en-US.md
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估计 (`reasoned_estimate`)
 
-###### 流：整床用移动机械燃料（`establishment_machinery_fuel`）
+###### 柴油 (`establishment_machinery_fuel_diesel`)
 
-田间机械跨越前景边界时记录整床、耕作、播种或移栽用燃料。
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`establishment_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：Mobile machinery fuel
-- 流属性/单位：Energy or mass / MJ 或 kg
-- 流集分组：`mobile-machinery-fuel`
-- 数量规则：按苗床分配计量燃料或设备燃料日志。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：同一作物周期每 1,000 kg 商品新鲜菠菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：燃料清单（`fuel_inventory`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_energy_records`采集`crop_establishment`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_energy_records`
-- 来源：`ucanr-spinach-production-2011`
-- 数量范围：整床和播种燃料筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：50
-  - 上限：400
-  - 单位：MJ/ha
-  - 基准：整床和播种作业
-  - 基准类型：燃料清单（`fuel_inventory`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -271,7 +264,7 @@ sync_with: pcr.en-US.md
 
 记录苗床或设施单元在作物周期建植和归属期间占用的面积。
 
-- 选定流：Occupation, agricultural land
+- 选定流：农业用地占用
 - 流属性/单位：Area-time / m2*a
 - 数量规则：声明生产面积乘以代表的作物周期持续时间。
 - 数值来源模式：计算值（`calculated_value`）
@@ -313,7 +306,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -323,12 +316,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`ucanr-spinach-production-2011`；`govnl-spinach-production-guide-2025`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`crop_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -338,6 +333,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`ucanr-spinach-production-2011`；`govnl-spinach-production-guide-2025`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`crop_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -399,36 +396,11 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_nutrient_records`
 - 来源：`ucanr-spinach-production-2011`；`govnl-spinach-production-guide-2025`；`fao-organic-nutrients`
 
-###### 流：植保产品（`crop_protection_input`）
-
-菠菜施用植保产品时，按有效成分或商业制剂记录各项产品。
-
-- 选定流：Crop-protection product
-- 流属性/单位：Mass / kg product or kg active ingredient
-- 数量规则：按田块和作物周期使用供应商发票、喷施日志或施用记录。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 商品新鲜菠菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_protection_records`
-- 来源：`govnl-spinach-production-guide-2025`
-- 数量范围：植保产品数量筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：20
-  - 单位：kg product/ha
-  - 基准：代表作物周期的植保产品施用总量
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 流：作物生长期间的灌溉水（`crop_irrigation_water`）
 
 按田块、水源和灌溉事件或计量周期记录作物生长期间的供水。
 
-- 选定流：Irrigation water
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 流集分组：`irrigation-water`
 - 数量规则：汇总代表作物周期的计量或有文件的水量平衡灌溉量。
@@ -451,31 +423,20 @@ sync_with: pcr.en-US.md
   - 证据类型：外部来源（`external_source`）
   - 来源：`ucanr-spinach-production-2011`
 
-###### 流：作物管理移动机械燃料（`crop_machinery_fuel`）
+###### 柴油 (`crop_machinery_fuel_diesel`)
 
-记录分配给作物周期的耕作、机械除草、施肥灌溉设备及其他移动机械燃料。
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`crop_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：Mobile machinery fuel
-- 流属性/单位：Energy or mass / MJ 或 kg
-- 流集分组：`mobile-machinery-fuel`
-- 数量规则：按照燃料日志或设备活动估算分配至菠菜作物周期。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每 1,000 kg 商品新鲜菠菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：燃料清单（`fuel_inventory`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_energy_records`采集`crop_management`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_energy_records`
-- 来源：`ucanr-spinach-production-2011`
-- 数量范围：作物管理燃料筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：100
-  - 上限：800
-  - 单位：MJ/ha
-  - 基准：耕作和作物管理作业
-  - 基准类型：燃料清单（`fuel_inventory`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -485,7 +446,7 @@ sync_with: pcr.en-US.md
 
 将未采收的菠菜生物量或切割残体与商品产品和场外拒收物分开记录。
 
-- 选定流：Spinach crop residue
+- 选定流：菠菜作物残余物
 - 流属性/单位：Mass / kg wet residue
 - 数量规则：依据田间记录核对采前生物量、采收量和残体量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -513,7 +474,7 @@ sync_with: pcr.en-US.md
 
 记录离开作物管理过程、进入切割、拔取或包装场准备的鲜菠菜质量。
 
-- 选定流：Harvest-ready fresh spinach
+- 选定流：待收鲜菠菜
 - 流属性/单位：Mass / kg
 - 数量规则：记录清洗、修整和拒收物分离前的田块或苗床采收量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -540,7 +501,7 @@ sync_with: pcr.en-US.md
 
 记录留在田间或交付门准备前移除的未采收、受损、抽薹或其他不可销售菠菜及其去向。
 
-- 选定流：Unmarketable spinach and crop loss
+- 选定流：不可销售菠菜及作物损失
 - 流属性/单位：Mass / kg wet material
 - 数量规则：用潜在或采收作物量与有文件的商品产出差额计算，并声明物理去向。
 - 数值来源模式：计算值（`calculated_value`）
@@ -567,7 +528,7 @@ sync_with: pcr.en-US.md
 
 根据声明的氮投入和选定的 IPCC 兼容方法计算土壤直接氧化亚氮，并报告排放至空气。
 
-- 选定流：Nitrous oxide, emissions to air
+- 选定流：一氧化二氮向空气排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：将声明的氮排放因子应用于符合条件的作物周期氮投入，并考虑选定的气候和土壤方法。
 - 数值来源模式：计算值（`calculated_value`）
@@ -592,7 +553,7 @@ sync_with: pcr.en-US.md
 
 只有声明的前景水量平衡或排放方法支持时，才建模进入淡水的硝酸盐损失。
 
-- 选定流：Nitrate, emissions to freshwater
+- 选定流：硝酸根向淡水排放
 - 流属性/单位：Mass / kg NO3-
 - 数量规则：根据符合条件的氮盈余和选定的场址或方法因子计算；不得仅从肥料采购量推断损失。
 - 数值来源模式：计算值（`calculated_value`）
@@ -622,7 +583,7 @@ sync_with: pcr.en-US.md
 
 记录从田间或设施单元转入分级、修整、清洗、冷却或一次包装的采收菠菜。
 
-- 选定流：Harvest-ready fresh spinach
+- 选定流：待收鲜菠菜
 - 流属性/单位：Mass / kg
 - 数量规则：用交接单或收料秤记录核对来源作物周期采收量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -647,7 +608,7 @@ sync_with: pcr.en-US.md
 
 在声明交付门之前发生清洗时，记录用于去除土壤和异物的用水。
 
-- 选定流：Process water
+- 选定流：生产用水
 - 流属性/单位：Volume / m3
 - 流集分组：`process-water`
 - 数量规则：记录菠菜清洗的计量或批次供水量，不含作物灌溉水。
@@ -673,7 +634,7 @@ sync_with: pcr.en-US.md
 
 在相关作业纳入范围时，记录清洗、强制风冷、称量、分选和包装设备用电。
 
-- 选定流：Electricity supply
+- 选定流：电力供应
 - 流属性/单位：Energy / kWh
 - 流集分组：`electricity-supply`
 - 数量规则：按菠菜吞吐量分配计量或设备级用电。
@@ -695,32 +656,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 流：新鲜菠菜一次包装（`primary_packaging_input`）
-
-记录与菠菜一起跨越交付门准备边界的袋、束带、周转箱、纸箱或其他包装。
-
-- 选定流：Primary packaging
-- 流属性/单位：Mass / kg packaging material
-- 流集分组：`flexible-packaging`
-- 数量规则：用包装物料清单和计数单位核对包装后的商品产出。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 包装商品菠菜.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
-- 来源：`usda-ams-bunched-spinach-standard`
-- 数量范围：一次包装筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：2
-  - 上限：35
-  - 单位：kg packaging material per 1,000 kg spinach
-  - 基准：声明的一次包装形式和可重复使用容器核算
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 废物流
 
 ##### 基本流
@@ -732,7 +667,7 @@ sync_with: pcr.en-US.md
 
 记录分级以及范围内清洗或冷却之后，跨越声明农场门或包装场门的包装或未包装菠菜产品。
 
-- 选定流：Fresh spinach at farm gate
+- 选定流：农场门鲜菠菜
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：用秤、发运或批次记录获得拒收物和修剪物核对后的最终销售质量。
 
@@ -764,7 +699,7 @@ sync_with: pcr.en-US.md
 
 清洗发生在声明交付门之前并排放或送处理时，记录准备过程离开的清洗水。
 
-- 选定流：Wastewater from spinach washing
+- 选定流：菠菜清洗废水
 - 流属性/单位：Volume / m3
 - 数量规则：清洗水投入减去有文件的保留或蒸发量，并与排放或处理记录核对。
 - 数值来源模式：计算值（`calculated_value`）
@@ -790,7 +725,7 @@ sync_with: pcr.en-US.md
 
 记录准备过程中去除的土壤、受损叶片、粗茎和修剪物及其物理去向。
 
-- 选定流：Spinach washing and trimming reject
+- 选定流：菠菜清洗及修整拒收物
 - 流属性/单位：Mass / kg wet material
 - 数量规则：称量或用收料量和包装商品菠菜核对移除量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -816,7 +751,7 @@ sync_with: pcr.en-US.md
 
 记录分级或包装后拒收的产品，包括其饲料、堆肥、处理或处置去向。
 
-- 选定流：Final spinach rejects
+- 选定流：菠菜最终拒收物
 - 流属性/单位：Mass / kg wet material
 - 数量规则：用最终分级和包装拒收物重量核对收料量和商品产出。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -851,6 +786,18 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `establishment_machinery_fuel_specific_input` | `cp_field_energy_records` | 作业 crop_establishment：田间机械跨越前景边界时记录整床、耕作、播种或移栽用燃料。 原数量方法：按苗床分配计量燃料或设备燃料日志。 |
+| `crop_protection_input_specific_input` | `cp_crop_protection_records` | 作业 crop_management：菠菜施用植保产品时，按有效成分或商业制剂记录各项产品。 原数量方法：按田块和作物周期使用供应商发票、喷施日志或施用记录。 |
+| `crop_machinery_fuel_specific_input` | `cp_field_energy_records` | 作业 crop_management：记录分配给作物周期的耕作、机械除草、施肥灌溉设备及其他移动机械燃料。 原数量方法：按照燃料日志或设备活动估算分配至菠菜作物周期。 |
+| `primary_packaging_input_specific_input` | `cp_packaging_records` | 作业 harvest_and_gate_preparation：记录与菠菜一起跨越交付门准备边界的袋、束带、周转箱、纸箱或其他包装。 原数量方法：用包装物料清单和计数单位核对包装后的商品产出。 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -860,14 +807,14 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_establishment_records` | `crop_establishment` | seed, transplant, and establishment nutrients | seed invoice, seed lot, transplant, and input application records | lot id; material type; viable quantity; field or bed; date; product mass; nutrient concentration | retain supplier record and field application log；原始汇总与分配：sum by campaign and normalize to marketable output | seed, plant, kg product, kg nutrient | each campaign and application | full represented crop cycle | each spinach bed or protected unit | 每声明的参考流 | supplier label, lot trace, application record, and crop-cycle reconciliation |
 | `cp_irrigation_records` | `crop_establishment`; `crop_management` | establishment and crop irrigation | meter, pump, irrigation controller, or water-balance record | source; meter start and end; event date; area; irrigation method; rainfall adjustment | meter reading or documented water-balance calculation；原始汇总与分配：sum delivered irrigation by crop cycle and source | m3 | each event or meter period | full represented crop cycle | each field, bed, or protected unit | 每声明的参考流 | calibrated meter or documented balance inputs |
-| `cp_field_energy_records` | `crop_establishment`; `crop_management` | mobile machinery fuel | fuel invoice and equipment activity log | fuel type; quantity; equipment; operation; field; date; allocation basis | supplier invoice plus equipment log or activity estimate；原始汇总与分配：allocate shared operations by area, hours, or fuel record | L, kg, or MJ | each refuelling or operation | full represented crop cycle | each spinach production unit | 每声明的参考流 | invoice, equipment log, and allocation calculation |
+| `cp_field_energy_records` | `crop_establishment`; `crop_management` | mobile machinery fuel | fuel invoice and equipment activity log | fuel type; quantity; equipment; operation; field; date; allocation basis | supplier invoice plus equipment log or activity estimate；原始汇总与分配：allocate shared operations by area, hours, or fuel record `establishment_machinery_fuel_specific_input`: 作业 crop_establishment：田间机械跨越前景边界时记录整床、耕作、播种或移栽用燃料。 原数量方法：按苗床分配计量燃料或设备燃料日志。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `crop_machinery_fuel_specific_input`: 作业 crop_management：记录分配给作物周期的耕作、机械除草、施肥灌溉设备及其他移动机械燃料。 原数量方法：按照燃料日志或设备活动估算分配至菠菜作物周期。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L, kg, or MJ | each refuelling or operation | full represented crop cycle | each spinach production unit | 每声明的参考流 | invoice, equipment log, and allocation calculation |
 | `cp_nutrient_records` | `crop_management` | crop nutrients and nitrogen basis | nutrient plan, supplier invoice, and application log | product; nutrient concentration; application date; area; quantity; method | reconcile product records with field application records；原始汇总与分配：sum nutrient mass by crop cycle and declared basis | kg product and kg nutrient | each application | full represented crop cycle | each spinach production unit | 每声明的参考流 | soil test, label or supplier specification, and application log |
-| `cp_crop_protection_records` | `crop_management` | crop-protection products | spray or treatment log and supplier record | product; active ingredient; rate; area; date; target; equipment | record each application and product lot；原始汇总与分配：sum by active ingredient and crop cycle | kg product or kg active ingredient | each application | full represented crop cycle | each spinach production unit | 每声明的参考流 | application log and product label |
+| `cp_crop_protection_records` | `crop_management` | crop-protection products | spray or treatment log and supplier record | product; active ingredient; rate; area; date; target; equipment | record each application and product lot；原始汇总与分配：sum by active ingredient and crop cycle `crop_protection_input_specific_input`: 作业 crop_management：菠菜施用植保产品时，按有效成分或商业制剂记录各项产品。 原数量方法：按田块和作物周期使用供应商发票、喷施日志或施用记录。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product or kg active ingredient | each application | full represented crop cycle | each spinach production unit | 每声明的参考流 | application log and product label |
 | `cp_field_records` | `crop_establishment` | land occupation and area | field register or protected-unit register | area; unit; land use; crop dates; bed identifier; protection structure | verify area and dates against production register；原始汇总与分配：calculate area-time and normalize to gate output | ha, m2, and days | each crop cycle | full represented crop cycle | each spinach field or protected unit | 每声明的参考流 | field map, register, and date evidence |
 | `cp_harvest_reconciliation` | `crop_management`; `harvest_and_gate_preparation` | harvest, field residue, and field loss | harvest ticket, scale record, and field loss record | field; cut number; date; gross mass; marketable mass; residue; loss; destination | weigh each harvest or use documented lot reconciliation；原始汇总与分配：reconcile gross harvest, marketable output, rejects, and residue | kg wet material | each cut or harvest lot | full represented harvest campaign | each spinach field or bed | 每声明的参考流 | scale record, lot ticket, and destination record |
 | `cp_postharvest_records` | `harvest_and_gate_preparation` | wash water, electricity, rejects, and wastewater | pack-house batch and utility records | received mass; wash water; discharge; electricity; trim; batch; date; fate | batch record plus meter allocation；原始汇总与分配：aggregate by batch and normalize to marketable packed output | kg, m3, and kWh | each batch or meter period | full represented harvest campaign | each preparation line or pack-house | 每声明的参考流 | meter record, batch sheet, and waste or treatment receipt |
 | `cp_postharvest_energy_records` | `harvest_and_gate_preparation` | washing, cooling, and packing electricity | electricity meter and equipment throughput record | meter period; line; kWh; throughput; cooling duration; batch | meter allocation by throughput or run time；原始汇总与分配：allocate shared electricity by throughput and reconcile to batch output | kWh | each meter period or batch | full represented harvest campaign | each in-scope preparation line | 每声明的参考流 | meter data and allocation calculation |
-| `cp_packaging_records` | `harvest_and_gate_preparation` | primary packaging | packaging specification, bill of materials, and count record | material; unit mass; units; reuse status; batch; output mass | packaging count and specification reconciliation；原始汇总与分配：sum virgin and reusable packaging separately per packed output | kg material and units | each packaging lot or batch | full represented harvest campaign | each preparation line | 每声明的参考流 | supplier specification, count sheet, and reuse declaration |
+| `cp_packaging_records` | `harvest_and_gate_preparation` | primary packaging | packaging specification, bill of materials, and count record | material; unit mass; units; reuse status; batch; output mass | packaging count and specification reconciliation；原始汇总与分配：sum virgin and reusable packaging separately per packed output `primary_packaging_input_specific_input`: 作业 harvest_and_gate_preparation：记录与菠菜一起跨越交付门准备边界的袋、束带、周转箱、纸箱或其他包装。 原数量方法：用包装物料清单和计数单位核对包装后的商品产出。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg material and units | each packaging lot or batch | full represented harvest campaign | each preparation line | 每声明的参考流 | supplier specification, count sheet, and reuse declaration |
 | `cp_gate_output_records` | `harvest_and_gate_preparation` | marketable product and final rejects | dispatch scale, lot record, and reject record | lot; date; packed mass; unpacked mass; grade; reject; destination; gate | final scale and lot reconciliation；原始汇总与分配：sum saleable output and reject streams; normalize to 1,000 kg | kg wet spinach | each dispatch lot | full represented harvest campaign | declared gate | 每声明的参考流 | certified scale or lot record and grade record |
 
 ### 计算规则
@@ -927,3 +874,4 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-refinement-nitrogen` | method_factor | IPCC, *2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories*, https://www.ipcc.ch/report/2019-refinement-to-the-2006-ipcc-guidelines-for-national-greenhouse-gas-inventories/ | managed-soil nitrogen-emission method and calculation rule |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

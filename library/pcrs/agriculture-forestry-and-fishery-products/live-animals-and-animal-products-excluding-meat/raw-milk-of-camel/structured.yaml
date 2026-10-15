@@ -158,33 +158,6 @@ process_inventory:
     label: "Camel herd management"
     inputs:
       product:
-        - row_id: herd_feed
-          role: "Feed and grazed forage"
-          name: "Camel feed or grazed biomass (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg dry matter"
-          description: "Record feed-supply dry matter, actual dry-matter intake and losses separately by route and animal phase. Denominator and scope requirements：per kg net producer-gate milk Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_herd
-              source_ids:
-                - fao-camel-production
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg DM/kg milk"
-                basis: "feed and grazed forage per stated denominator"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: herd_water
           role: "Herd drinking water"
           name: "Herd water (UUID unresolved)"
@@ -209,32 +182,6 @@ process_inventory:
                 upper: "2"
                 unit: "m3/kg milk"
                 basis: "herd drinking water per stated denominator"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: herd_energy
-          role: "Pumping and herd energy"
-          name: "Herd energy (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Energy / MJ"
-          description: "Fuel or electricity used for producer-side water and herd operations, shared service assigned once. Denominator and scope requirements：per kg net producer-gate milk Raw quantity and calculation requirements: Obtain by event, route and period, then normalize to MJ/kg milk. Original collection denominator kind: reference_flow."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_herd
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "MJ/kg milk"
-                basis: "pumping and herd energy per stated denominator"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
@@ -709,32 +656,27 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: cooling_energy
-          role: "Cooling energy"
-          name: "Cooling energy supply (UUID unresolved)"
+        - row_id: cooling_energy_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy / MJ"
-          description: "Meter on-herd refrigerator electricity or fuel, including one share of generator service. Denominator and scope requirements：per kg net producer-gate milk Raw quantity and calculation requirements: Obtain by event, route and period, then normalize to MJ/kg chilled milk. Original collection denominator kind: reference_flow."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Milk refrigeration and agitation only when actually performed under the producing herd/farm control. Measure the cooling period; establish backup generation separately and do not infer fuel from refrigeration demand. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply cooling_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Collect only this carrier quantity attributable to this node under cp_cooling. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per reference flow"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_cooling
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "MJ/kg chilled milk"
-                basis: "cooling energy per stated denominator"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - milk-cooling-energy
+            ranges: []
       waste:
         []
       elementary:
@@ -1012,7 +954,7 @@ dataset_production:
       flow_role: "herd inputs and outputs"
       record_type: "herd log"
       raw_fields: "species; class; route; phase; animal-days; feed; grazing; water; fuel; births; culls; manure; mortality"
-      collection_method: "weigh, meter, dated register; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output."
+      collection_method: "weigh, meter, dated register; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. herd_feed_specific_input: Operation herd_management: Record feed-supply dry matter, actual dry-matter intake and losses separately by route and animal phase. Denominator and scope requirements：per kg net producer-gate milk Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. herd_energy_specific_input: Operation herd_management: Fuel or electricity used for producer-side water and herd operations, shared service assigned once. Denominator and scope requirements：per kg net producer-gate milk Raw quantity and calculation requirements: Obtain by event, route and period, then normalize to MJ/kg milk. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; m3; MJ; head; day"
       frequency: "daily/event"
       temporal_coverage: "full supporting period"
@@ -1048,7 +990,7 @@ dataset_production:
       flow_role: "warm, energy, chilled, loss"
       record_type: "cooler log"
       raw_fields: "mass; time; temperature; fuel/electricity; reject"
-      collection_method: "scale, thermometer, meter; Raw aggregation requirements: input = chilled + loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "scale, thermometer, meter; Raw aggregation requirements: input = chilled + loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: cooling_energy_identification: Milk refrigeration and agitation only when actually performed under the producing herd/farm control. Measure the cooling period; establish backup generation separately and do not infer fuel from refrigeration demand. Denominator and scope requirements：per kg net producer-gate milk Raw quantity and calculation requirements: Obtain by event, route and period, then normalize to MJ/kg chilled milk. Original collection denominator kind: reference_flow. (milk-cooling-energy) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg; °C; MJ"
       frequency: "each applicable batch"
       temporal_coverage: "milk period"
@@ -1273,9 +1215,13 @@ data_sources:
     type: "official_guidance"
     reference: "[IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf)"
     used_for: "Direct/indirect nitrogen pathways and coordination of manure storage with managed-soil emissions; select applicable species and management evidence."
+  - id: "milk-cooling-energy"
+    type: "official_guidance"
+    reference: "FAO, Solar energy in small-scale milk collection and processing, Chapter 2. https://www.fao.org/4/X6541E/X6541E02.htm"
+    used_for: "Electric refrigeration mechanism only; no species-specific quantity or assumed cooling/generation route is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ded0c2d648a2424e8afebbf7707b2ff5761be45e89ffaf8cbd0d36c54c3e92aa"
+  source_sha256: "sha256:5712e1e5cc3a3a365f20e3263796590842a28bc9a674bf314ac19d51a2a7dd3d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7558"
@@ -1326,16 +1272,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_53902"
+    - unit_id: "normative_51265"
       family: "allocation"
       span:
         start:
-          offset: 53902
-          line: 961
+          offset: 51265
+          line: 901
           column: 1
         end:
-          offset: 55195
-          line: 970
+          offset: 52558
+          line: 910
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `output_set` | herd and handover | Enumerate raw milk, independently sold/transferred calves and culls, and any marketed manure, dung fuel or fibre at first external handover. Own-herd suckling and retained replacements are internal; dead stock and discarded milk are waste. | `fao-camel-dairy` |\n| `allocation_precedence` | inseparable herd burden | Subdivide directly measured milking and calf-rearing services first. For inseparable herd burdens use a defensible documented biophysical relation, otherwise period-specific economic allocation with prices and sensitivity. Never assign all breeding/dry-period burden to milk or silently expand the system. | `fao-camel-dairy` |\n| `period_attribution` | herd periods | Link lactation, dry, pregnancy, calf-rearing and replacement periods to inputs, assets, births, deaths and outputs; allocate supporting-period burden once, with no universal annualization factor. | `fao-camel-production` |\n| `shared_service` | shared assets | List all consumers and service periods of wells, pumps, vehicles, shelters, milking devices and coolers. Apportion measured water, energy or runtime once and disclose proxies. | `fao-camel-dairy` |\n\n"
       headings:
@@ -1354,12 +1300,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 53902
-              line: 961
+              offset: 51265
+              line: 901
               column: 1
             end:
-              offset: 53942
-              line: 961
+              offset: 51305
+              line: 901
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1374,16 +1320,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_66286"
+    - unit_id: "normative_72656"
       family: "validation"
       span:
         start:
-          offset: 66286
-          line: 1006
+          offset: 72656
+          line: 967
           column: 1
         end:
-          offset: 69288
-          line: 1020
+          offset: 75658
+          line: 981
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_cpc_milk_scope` | final reference product and classification | Check the lot-matched measured milk-fat fraction is at least 3.5% (35 g/kg milk) and that the milk is neither skimmed nor partly skimmed. Reject use of this exact CPC-linked scope for lower-fat or separated milk; missing evidence leaves classification eligibility undetermined, not assumed. Do not reinterpret this as a quality acceptance limit or change the actual composition. | `un-cpc-3-02293` |\n| `v_gate` | reference milk | Reject the fixed chilled-farm UUID for warm, mobile, unspecified-gate or processed milk. Broad reference remains unbound. | `un-cpc-3`; `fao-camel-dairy` |\n| `v_mass` | milk stages | Reconcile collected, calf-consumed, conditioned, chilled, rejected and handed-over milk, with one final output per batch. | `fao-camel-production`; `mass-balance-identity` |\n| `v_route` | mixed herd | Verify route-specific feed, water, energy, manure and mutually exclusive animal-days; conditional interventions need batch records. | `fao-camel-dairy`; `fao-camel-production` |\n| `v_attribution` | co-products and assets | Verify independent calves/culls, supporting periods and shared consumers; reject duplicate burdens. | `fao-camel-dairy` |\n| `v_range` | amount QA | Provisional reasoned ranges are screening guardrails only, not measured defaults or acceptance limits. | `mass-balance-identity` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `fao-feed-loss-accounting-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `ipcc-livestock-2019`; `ipcc-managed-soils-2019` |\n\n"
       headings:
@@ -1402,12 +1348,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 66286
-              line: 1006
+              offset: 72656
+              line: 967
               column: 1
             end:
-              offset: 66308
-              line: 1006
+              offset: 72678
+              line: 967
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1491,171 +1437,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "output_set"
       identity_kind: "explicit"
-      unit_id: "normative_53902"
+      unit_id: "normative_51265"
       source_span:
         start:
-          offset: 54015
-          line: 965
+          offset: 51378
+          line: 905
           column: 1
         end:
-          offset: 54313
-          line: 965
+          offset: 51676
+          line: 905
           column: 299
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_53902"
+      unit_id: "normative_51265"
       source_span:
         start:
-          offset: 54314
-          line: 966
+          offset: 51677
+          line: 906
           column: 1
         end:
-          offset: 54695
-          line: 966
+          offset: 52058
+          line: 906
           column: 382
     - pointer: "/allocation_rules/2"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_53902"
+      unit_id: "normative_51265"
       source_span:
         start:
-          offset: 54696
-          line: 967
+          offset: 52059
+          line: 907
           column: 1
         end:
-          offset: 54958
-          line: 967
+          offset: 52321
+          line: 907
           column: 263
     - pointer: "/allocation_rules/3"
       rule_id: "shared_service"
       identity_kind: "explicit"
-      unit_id: "normative_53902"
+      unit_id: "normative_51265"
       source_span:
         start:
-          offset: 54959
-          line: 968
+          offset: 52322
+          line: 908
           column: 1
         end:
-          offset: 55193
-          line: 968
+          offset: 52556
+          line: 908
           column: 235
     - pointer: "/validation_rules/0"
       rule_id: "v_cpc_milk_scope"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 66381
-          line: 1010
+          offset: 72751
+          line: 971
           column: 1
         end:
-          offset: 66848
-          line: 1010
+          offset: 73218
+          line: 971
           column: 468
     - pointer: "/validation_rules/1"
       rule_id: "v_gate"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 66849
-          line: 1011
+          offset: 73219
+          line: 972
           column: 1
         end:
-          offset: 67034
-          line: 1011
+          offset: 73404
+          line: 972
           column: 186
     - pointer: "/validation_rules/2"
       rule_id: "v_mass"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 67035
-          line: 1012
+          offset: 73405
+          line: 973
           column: 1
         end:
-          offset: 67235
-          line: 1012
+          offset: 73605
+          line: 973
           column: 201
     - pointer: "/validation_rules/3"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 67236
-          line: 1013
+          offset: 73606
+          line: 974
           column: 1
         end:
-          offset: 67440
-          line: 1013
+          offset: 73810
+          line: 974
           column: 205
     - pointer: "/validation_rules/4"
       rule_id: "v_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 67441
-          line: 1014
+          offset: 73811
+          line: 975
           column: 1
         end:
-          offset: 67607
-          line: 1014
+          offset: 73977
+          line: 975
           column: 167
     - pointer: "/validation_rules/5"
       rule_id: "v_range"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 67608
-          line: 1015
+          offset: 73978
+          line: 976
           column: 1
         end:
-          offset: 67764
-          line: 1015
+          offset: 74134
+          line: 976
           column: 157
     - pointer: "/validation_rules/6"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 67765
-          line: 1016
+          offset: 74135
+          line: 977
           column: 1
         end:
-          offset: 68365
-          line: 1016
+          offset: 74735
+          line: 977
           column: 601
     - pointer: "/validation_rules/7"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 68366
-          line: 1017
+          offset: 74736
+          line: 978
           column: 1
         end:
-          offset: 68812
-          line: 1017
+          offset: 75182
+          line: 978
           column: 447
     - pointer: "/validation_rules/8"
       rule_id: "v_manure_n2o_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 68813
-          line: 1018
+          offset: 75183
+          line: 979
           column: 1
         end:
-          offset: 69286
-          line: 1018
+          offset: 75656
+          line: 979
           column: 474
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1684,27 +1630,27 @@ normative_context:
           column: 120
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_53902"
+      unit_id: "normative_51265"
       source_span:
         start:
-          offset: 53902
-          line: 961
+          offset: 51265
+          line: 901
           column: 1
         end:
-          offset: 53942
-          line: 961
+          offset: 51305
+          line: 901
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_66286"
+      unit_id: "normative_72656"
       source_span:
         start:
-          offset: 66286
-          line: 1006
+          offset: 72656
+          line: 967
           column: 1
         end:
-          offset: 66308
-          line: 1006
+          offset: 72678
+          line: 967
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1713,5 +1659,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ded0c2d648a2424e8afebbf7707b2ff5761be45e89ffaf8cbd0d36c54c3e92aa"
-  generated_content_sha256: "sha256:763e43fa6d0a76399d7bf12188bfa98929bce5251de5d12a5f5f2b70010211f7"
+    sha256: "sha256:5712e1e5cc3a3a365f20e3263796590842a28bc9a674bf314ac19d51a2a7dd3d"
+  generated_content_sha256: "sha256:14276997885077bb3450118c4b33e4bcb90b1a31e78941172844759cb9ad4ca3"

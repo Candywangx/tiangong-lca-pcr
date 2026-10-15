@@ -159,32 +159,6 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: nutrient_supply
-          role: "Consolidated agricultural nutrient supply"
-          name: "Agricultural nutrient supply"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record this flow with field or lot identity, route and destination evidence. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off."
-          amount:
-            expression: "Sum all nutrient-product masses while retaining composition"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_crop_cycle
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1500"
-                unit: "kg/1,000 kg reference product"
-                basis: "per 1,000 kg reference product or declared internal hand-off"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: irrigation_water
           role: "Irrigation water"
           name: "Irrigation water"
@@ -211,14 +185,16 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: field_energy
-          role: "Field energy supply"
-          name: "Field-operation energy supply"
+        - row_id: field_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Energy / MJ"
-          description: "Record this flow with field or lot identity, route and destination evidence. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel field machinery for establishment and crop care; identify irrigation-pump power independently and retain field/crop-cycle attribution. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply field_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Convert measured carriers by operation"
+            expression: "Collect only this carrier quantity attributable to this node under cp_crop_cycle. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -227,16 +203,9 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_crop_cycle
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "15000"
-                unit: "MJ/1,000 kg reference product"
-                basis: "per 1,000 kg reference product or declared internal hand-off"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -354,14 +323,16 @@ process_inventory:
                 evidence_kind: "method_formula"
                 source_ids:
                   - mass-balance-identity
-        - row_id: harvest_energy
-          role: "Harvest energy supply"
-          name: "Harvest machinery energy supply"
+        - row_id: harvest_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Energy / MJ"
-          description: "Record this flow with field or lot identity, route and destination evidence. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel harvesting machinery and pre-gate lot movement; manual or other-power routes need their own evidence instead of this input. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply harvest_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Convert measured carriers by operation"
+            expression: "Collect only this carrier quantity attributable to this node under cp_harvest_lot. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -370,16 +341,9 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_harvest_lot
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5000"
-                unit: "MJ/1,000 kg reference product"
-                basis: "per 1,000 kg reference product or declared internal hand-off"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -498,32 +462,27 @@ process_inventory:
                 evidence_kind: "method_formula"
                 source_ids:
                   - mass-balance-identity
-        - row_id: conditioning_energy
-          role: "Conditioning energy supply"
-          name: "Conditioning energy supply"
+        - row_id: conditioning_energy_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy / MJ"
-          description: "Record this flow with field or lot identity, route and destination evidence. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electrically driven soybean cleaning, conveying and drying fans; establish drying heat separately. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply conditioning_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Meter cleaning, grading and active drying energy"
+            expression: "Collect only this carrier quantity attributable to this node under cp_conditioning_lot. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_conditioning_lot
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "12000"
-                unit: "MJ/1,000 kg reference product"
-                basis: "per 1,000 kg reference product or declared internal hand-off"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
         - row_id: conditioning_water
           role: "Conditional process water"
           name: "Process water"
@@ -693,14 +652,16 @@ process_inventory:
                 evidence_kind: "method_formula"
                 source_ids:
                   - mass-balance-identity
-        - row_id: storage_energy
-          role: "Storage energy supply"
-          name: "Storage energy supply"
+        - row_id: storage_energy_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy / MJ"
-          description: "Record this flow with field or lot identity, route and destination evidence. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric soybean storage aeration, temperature control and handling over the lot storage period. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply storage_energy_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Meter energy by lot and occupied duration"
+            expression: "Collect only this carrier quantity attributable to this node under cp_storage_handoff. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -709,42 +670,9 @@ process_inventory:
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_storage_handoff
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5000"
-                unit: "MJ/1,000 kg reference product"
-                basis: "per 1,000 kg reference product or declared internal hand-off"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: presentation_packaging
-          role: "Presentation packaging"
-          name: "Packaging serving the declared hand-off"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record this flow with field or lot identity, route and destination evidence. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off."
-          amount:
-            expression: "Net packaging adjusted for verified reuse; zero for bulk"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_storage_handoff
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg/1,000 kg reference product"
-                basis: "per 1,000 kg reference product or declared internal hand-off"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
       waste:
         []
       elementary:
@@ -834,7 +762,7 @@ dataset_production:
       flow_role: "Inputs, crop output and loss"
       record_type: "Field log, invoice, meter, yield record"
       raw_fields: "field_id; area; dates; prior_crop; seed; nutrients; irrigation; energy; yield; loss; residue_route"
-      collection_method: "Reconcile records and calibrated measurements; Raw aggregation and attribution: Sum by field, then normalize by accepted output"
+      collection_method: "Reconcile records and calibrated measurements; Raw aggregation and attribution: Sum by field, then normalize by accepted output Route-specific requirements: field_energy_identification: Actual diesel field machinery for establishment and crop care; identify irrigation-pump power independently and retain field/crop-cycle attribution. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. nutrient_supply_specific_input: Operation crop_production: Record this flow with field or lot identity, route and destination evidence. Original quantity method: Sum all nutrient-product masses while retaining composition Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "ha; kg; m3; MJ"
       frequency: "Each event/cycle"
       temporal_coverage: "Representative crop year"
@@ -858,7 +786,7 @@ dataset_production:
       flow_role: "Energy, beans, residues, rejects"
       record_type: "Machine log and weigh ticket"
       raw_fields: "lot_id; field_id; energy; crop_mass; bean_mass; moisture; residues; rejects; destinations"
-      collection_method: "Meter and weigh each hand-off; Raw aggregation and attribution: Reconcile by field and route"
+      collection_method: "Meter and weigh each hand-off; Raw aggregation and attribution: Reconcile by field and route Route-specific requirements: harvest_energy_identification: Actual diesel harvesting machinery and pre-gate lot movement; manual or other-power routes need their own evidence instead of this input. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg; MJ; %"
       frequency: "Each lot"
       temporal_coverage: "Complete campaign"
@@ -870,7 +798,7 @@ dataset_production:
       flow_role: "Utilities and material balance"
       record_type: "Run sheet, meter, lab result"
       raw_fields: "lot_id; input_mass; moisture; energy; water; outputs; grade; rejects; route"
-      collection_method: "Weigh, meter and sample; Raw aggregation and attribution: Conserve dry solids and aggregate by grade/technology"
+      collection_method: "Weigh, meter and sample; Raw aggregation and attribution: Conserve dry solids and aggregate by grade/technology Route-specific requirements: conditioning_energy_identification: Actual electrically driven soybean cleaning, conveying and drying fans; establish drying heat separately. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg; MJ; m3; %"
       frequency: "Each batch/run"
       temporal_coverage: "Complete campaign"
@@ -882,7 +810,7 @@ dataset_production:
       flow_role: "Storage, packaging, loss, dispatch"
       record_type: "Ledger, meter and dispatch record"
       raw_fields: "lot_id; grade; masses; moisture; dates; energy; packaging; reuse; loss; gate"
-      collection_method: "Link occupancy, utility, packaging and dispatch; Raw aggregation and attribution: Attribute shared storage by occupied mass-time"
+      collection_method: "Link occupancy, utility, packaging and dispatch; Raw aggregation and attribution: Attribute shared storage by occupied mass-time Route-specific requirements: storage_energy_identification: Actual electric soybean storage aeration, temperature control and handling over the lot storage period. Raw activity or stage basis: per 1,000 kg reference product or declared internal hand-off. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. presentation_packaging_specific_input: Operation storage_handoff: Record this flow with field or lot identity, route and destination evidence. Original quantity method: Net packaging adjusted for verified reuse; zero for bulk Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; MJ; day; %"
       frequency: "Each lot/dispatch"
       temporal_coverage: "Entire declared period"
@@ -1002,9 +930,13 @@ data_sources:
     type: "method_factor"
     reference: "Mass-balance identity"
     used_for: "Handoffs and closure"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+    used_for: ""
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3522dbe21ca4d87f737cf26dd19330dffb5d28afcab781d6e2878b84c2e96b12"
+  source_sha256: "sha256:13030a146666db67bffb63153b0c71e86d1294d305389ffa06fc65d9f7e5dedf"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_3577"
@@ -1055,16 +987,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_30015"
+    - unit_id: "normative_30265"
       family: "allocation"
       span:
         start:
-          offset: 30015
-          line: 749
+          offset: 30265
+          line: 684
           column: 1
         end:
-          offset: 30738
-          line: 758
+          offset: 30988
+          line: 693
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide` | All nodes | Subdivide and meter fields, lots, runs and storage periods before allocation. | `iso-14044` |\n| `allocation_outputs` | Beans, downgraded outputs and residues | Use a documented physical causal relation; if none is defensible, use economic allocation and sensitivity. | `iso-14044` |\n| `allocation_shared` | Shared machinery, dryers and stores | Attribute once by measured time, throughput or occupied mass-time. | `iso-14044` |\n| `allocation_rework` | Rework | Return mass and burdens once to the producing node; never count rework as accepted and rejected output. |  |\n\n"
       headings:
@@ -1083,12 +1015,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 30015
-              line: 749
+              offset: 30265
+              line: 684
               column: 1
             end:
-              offset: 30055
-              line: 749
+              offset: 30305
+              line: 684
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1103,16 +1035,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35658"
+    - unit_id: "normative_45257"
       family: "validation"
       span:
         start:
-          offset: 35658
-          line: 792
+          offset: 45257
+          line: 751
           column: 1
         end:
-          offset: 36658
-          line: 803
+          offset: 46257
+          line: 762
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | Reference | Reject planting seed and manufactured products; require one whole-bean grade and gate. |  |\n| `validate_reference_uuid` | Binding | Fix a route-specific UUID only when grade, use, state and gate all match; otherwise leave blank. |  |\n| `validate_balance` | Harvest onward | Reconcile dry solids among accepted, downgraded, rejected and lost outputs within uncertainty. | `mass-balance-identity` |\n| `validate_flow_identitys` | Product inputs | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_routes` | Alternatives | Do not merge mutually exclusive routes without weights and complete route records. |  |\n| `validate_ranges` | All cards | Use ranges as QA screens, investigate exceptions and retain evidenced foreground values. |  |\n\n"
       headings:
@@ -1131,12 +1063,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35658
-              line: 792
+              offset: 45257
+              line: 751
               column: 1
             end:
-              offset: 35680
-              line: 792
+              offset: 45279
+              line: 751
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1220,132 +1152,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_30015"
+      unit_id: "normative_30265"
       source_span:
         start:
-          offset: 30128
-          line: 753
+          offset: 30378
+          line: 688
           column: 1
         end:
-          offset: 30260
-          line: 753
+          offset: 30510
+          line: 688
           column: 133
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_30015"
+      unit_id: "normative_30265"
       source_span:
         start:
-          offset: 30261
-          line: 754
+          offset: 30511
+          line: 689
           column: 1
         end:
-          offset: 30449
-          line: 754
+          offset: 30699
+          line: 689
           column: 189
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared"
       identity_kind: "explicit"
-      unit_id: "normative_30015"
+      unit_id: "normative_30265"
       source_span:
         start:
-          offset: 30450
-          line: 755
+          offset: 30700
+          line: 690
           column: 1
         end:
-          offset: 30594
-          line: 755
+          offset: 30844
+          line: 690
           column: 145
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_30015"
+      unit_id: "normative_30265"
       source_span:
         start:
-          offset: 30595
-          line: 756
+          offset: 30845
+          line: 691
           column: 1
         end:
-          offset: 30736
-          line: 756
+          offset: 30986
+          line: 691
           column: 142
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 35753
-          line: 796
+          offset: 45352
+          line: 755
           column: 1
         end:
-          offset: 35877
-          line: 796
+          offset: 45476
+          line: 755
           column: 125
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference_uuid"
       identity_kind: "explicit"
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 35878
-          line: 797
+          offset: 45477
+          line: 756
           column: 1
         end:
-          offset: 36019
-          line: 797
+          offset: 45618
+          line: 756
           column: 142
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 36020
-          line: 798
+          offset: 45619
+          line: 757
           column: 1
         end:
-          offset: 36182
-          line: 798
+          offset: 45781
+          line: 757
           column: 163
     - pointer: "/validation_rules/3"
       rule_id: "validate_flow_identitys"
       identity_kind: "explicit"
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 36183
-          line: 799
+          offset: 45782
+          line: 758
           column: 1
         end:
-          offset: 36403
-          line: 799
+          offset: 46002
+          line: 758
           column: 221
     - pointer: "/validation_rules/4"
       rule_id: "validate_routes"
       identity_kind: "explicit"
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 36404
-          line: 800
+          offset: 46003
+          line: 759
           column: 1
         end:
-          offset: 36528
-          line: 800
+          offset: 46127
+          line: 759
           column: 125
     - pointer: "/validation_rules/5"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 36529
-          line: 801
+          offset: 46128
+          line: 760
           column: 1
         end:
-          offset: 36656
-          line: 801
+          offset: 46255
+          line: 760
           column: 128
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1374,27 +1306,27 @@ normative_context:
           column: 191
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_30015"
+      unit_id: "normative_30265"
       source_span:
         start:
-          offset: 30015
-          line: 749
+          offset: 30265
+          line: 684
           column: 1
         end:
-          offset: 30055
-          line: 749
+          offset: 30305
+          line: 684
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35658"
+      unit_id: "normative_45257"
       source_span:
         start:
-          offset: 35658
-          line: 792
+          offset: 45257
+          line: 751
           column: 1
         end:
-          offset: 35680
-          line: 792
+          offset: 45279
+          line: 751
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1403,5 +1335,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3522dbe21ca4d87f737cf26dd19330dffb5d28afcab781d6e2878b84c2e96b12"
-  generated_content_sha256: "sha256:1e5c5fdd8c0b3290b2452d648d53086dcde0e3f8be642170539dc59f0b9e4ef0"
+    sha256: "sha256:13030a146666db67bffb63153b0c71e86d1294d305389ffa06fc65d9f7e5dedf"
+  generated_content_sha256: "sha256:07bc2863a5a1284c4da5a3fb2921dfcb6a03fa64a2e2cad644826414153efb68"

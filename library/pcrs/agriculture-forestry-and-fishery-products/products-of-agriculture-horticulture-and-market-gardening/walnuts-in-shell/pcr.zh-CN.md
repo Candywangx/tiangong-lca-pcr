@@ -147,7 +147,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_walnut_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -157,12 +157,14 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_walnut_orchard_input_records`
 - 来源：`ipcc-2019-afolu`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`walnut_orchard_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_walnut_orchard_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -172,6 +174,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_walnut_orchard_input_records`
 - 来源：`ipcc-2019-afolu`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`walnut_orchard_establishment_and_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -266,7 +270,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -277,11 +281,13 @@ translation_status: aligned
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`walnut_field_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -291,6 +297,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 供应设备的汽油（`walnut_field_energy_gasoline`）
 
@@ -312,32 +320,6 @@ translation_status: aligned
 #### 输出
 
 ##### 基本流
-
-###### 受管理土壤和植保排放（`walnut_field_emissions`）
-
-使用选定方法和接收介质，记录养分施用、残余物处理、植保使用及受管理土壤的计算排放。
-
-- 选定流：前景排放计算中报告的物质和接收介质
-- 流属性/单位：质量 / kg 物质
-- 数量规则：根据有记录的投入、残余物去向、土壤条件及方法因子计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 合格带壳核桃。
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_walnut_emission_records`
-- 来源：`ipcc-2019-afolu`
-- 数量范围：暂定田间排放筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg 物质，每 1,000 kg 参考产品
-  - 基准：受管理土壤和植保排放的初步宽泛筛选范围
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 
 ##### 废物流
 
@@ -375,7 +357,7 @@ translation_status: aligned
 
 记录采收作业中可供收集的成熟或达到其他声明成熟度的完整果实，计量点位于收集损失和交接之前。
 
-- 选定流：Walnuts, in shell `b87dc835-33df-4974-a2e7-679529cdec70`
+- 选定流：带壳核桃 `b87dc835-33df-4974-a2e7-679529cdec70`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：去外果皮或调理前实测采收果实质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -404,7 +386,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -415,11 +397,13 @@ translation_status: aligned
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`walnut_harvest_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -429,6 +413,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### 废物流
 
@@ -474,7 +460,7 @@ translation_status: aligned
 
 在调理边界记录来料批次状态、外果皮状态、成熟度和质量。
 
-- 选定流：Walnuts, in shell `b87dc835-33df-4974-a2e7-679529cdec70`
+- 选定流：带壳核桃 `b87dc835-33df-4974-a2e7-679529cdec70`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测批次接收质量，并声明完整果实或去外果皮状态
 - 数值来源模式：前景记录（`foreground_record`）
@@ -503,7 +489,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -514,11 +500,13 @@ translation_status: aligned
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`walnut_conditioning_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -528,6 +516,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### 产品流
 
@@ -565,7 +555,7 @@ translation_status: aligned
 记录保留硬壳的合格完整或去外果皮核桃，以及等级、成熟度、外果皮状态和声明交接节点。
 合格核桃批次是本调理过程的预期输出。
 
-- 选定流：Walnuts, in shell `b87dc835-33df-4974-a2e7-679529cdec70`
+- 选定流：带壳核桃 `b87dc835-33df-4974-a2e7-679529cdec70`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始输出测量与核对：实测净合格批次输出，排除皮重
 
@@ -666,30 +656,6 @@ translation_status: aligned
 
 ##### 基本流
 
-###### 调理废水、粉尘和清洗固体（`walnut_conditioning_residuals`）
-
-仅在废水、粉尘、土壤、纤维和清洗固体跨越边界或接受处理时记录，并识别接收介质和去向。
-
-- 选定流：报告的残余物质和接收介质
-- 流属性/单位：质量 / kg 物质或废物
-- 数量规则：实测残余物质量，或根据批次水量和固体平衡计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 合格调理节点产品。
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_walnut_dehulling_conditioning_records`
-- 数量范围：调理残余物筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg，每 1,000 kg 合格调理节点产品
-  - 基准：跨越边界的废水固体、粉尘、土壤及其他残余物
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估计（`reasoned_estimate`）
-
 ### 过程：核桃储存和交接（`walnut_storage_and_gate_handoff`）
 
 本过程有条件纳入。声明前景边界包含储存、发货准备或采后交接节点时纳入。
@@ -702,7 +668,7 @@ translation_status: aligned
 
 记录期初库存或批次收货、产品状态、外果皮状态、水分或鲜度、等级及储存开始时间。
 
-- 选定流：Walnuts, in shell `b87dc835-33df-4974-a2e7-679529cdec70`
+- 选定流：带壳核桃 `b87dc835-33df-4974-a2e7-679529cdec70`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测库存收货质量，排除皮重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -732,7 +698,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -743,11 +709,13 @@ translation_status: aligned
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`walnut_storage_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_walnut_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -757,6 +725,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_walnut_energy_records`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### 产品流
 
@@ -803,7 +773,7 @@ translation_status: aligned
 
 记录净发货产品，并声明完整果实或去外果皮保留硬壳状态、等级、鲜度或水分及交接节点。
 
-- 选定流：Walnuts, in shell `b87dc835-33df-4974-a2e7-679529cdec70`
+- 选定流：带壳核桃 `b87dc835-33df-4974-a2e7-679529cdec70`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始输出测量与核对：实测净发货质量，排除皮重
 
@@ -859,7 +829,7 @@ translation_status: aligned
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Walnuts, in shell
+- 选定流：带壳核桃
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -885,7 +855,7 @@ translation_status: aligned
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Walnuts, in shell
+- 选定流：带壳核桃
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -938,9 +908,9 @@ translation_status: aligned
 | `cp_walnut_orchard_input_records` | `walnut_orchard_establishment_and_management` | 养分、改良剂、植保 | 投入施用记录 | 产品名；配方；养分含量；有效成分；数量；日期；地块；用途；方法 | 发票、施用日志及供应商记录；原始汇总与归属：按产品、养分、地块和作物年度汇总 | kg 产品、kg 养分、kg 有效成分 | 每次施用 | 作物年度 | 所有贡献产出的地块 | 每声明的参考流 | 发票、产品标签、施用日志 |
 | `cp_walnut_irrigation_records` | `walnut_orchard_establishment_and_management` | 灌溉和水 | 灌溉计量表或水量台账 | 水源；体积；地块；日期；计量表；水质；取水和回流水 | 计量表、泵记录或透明水量平衡；原始汇总与归属：核对输送水量、取水量和声明耗水量 | m3 或 kg | 事件和月度 | 作物年度 | 所有灌溉地块 | 每声明的参考流 | 计量校准、泵日志、水量台账 |
 | `cp_walnut_energy_records` | 所有田间、采收、调理和储存过程 | 能源和载体 | 燃料、电力和设备记录 | 载体；数量；设备；作业；批次或地块；日期；时长；换算因子 | 发票、计量表、燃料日志或设备记录；原始汇总与归属：按载体、作业、批次和期间汇总 | L、kg、MJ 或 kWh | 事件和月度 | 作物年度和声明采后期间 | 每项作业和设施 | 每声明的参考流 | 发票、计量表、燃料日志、设备规格 |
-| `cp_walnut_emission_records` | `walnut_orchard_establishment_and_management` | 直接和间接田间排放 | 排放计算输入记录 | 养分投入；残余物；土壤条件；植保记录；排放物质；方法；因子 | 关联原始记录的计算工作簿；原始汇总与归属：保留物质、接收介质、因子和来源 | kg 物质 | 年度和事件 | 作物年度 | 所有贡献产出的地块 | 每声明的参考流 | 计算复核、因子版本、来源引用 |
+| `cp_walnut_emission_records` | `walnut_orchard_establishment_and_management` | 直接和间接田间排放 | 排放计算输入记录 | 养分投入；残余物；土壤条件；植保记录；排放物质；方法；因子 | 关联原始记录的计算工作簿；原始汇总与归属：保留物质、接收介质、因子和来源 `walnut_field_emissions_specific_emission`: 使用选定方法和接收介质，记录养分施用、残余物处理、植保使用及受管理土壤的计算排放。 根据有记录的投入、残余物去向、土壤条件及方法因子计算 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `ipcc-2019-afolu` | kg 物质 | 年度和事件 | 作物年度 | 所有贡献产出的地块 | 每声明的参考流 | 计算复核、因子版本、来源引用 |
 | `cp_walnut_harvest_lot_records` | `walnut_harvest_and_collection` | 采收、收集、田间损失、残余物 | 采收批次登记 | 地块；采收轮次；成熟度；采收质量；未收集质量；杂物；外果皮状态；去向 | 地磅、田间秤和批次日志；原始汇总与归属：核对可收集、已收集、损失和残余物质量 | kg、日期、批次 | 每轮收集 | 采收季 | 所有贡献产出的地块 | 每声明的参考流 | 秤校准、批次单、田间检查 |
-| `cp_walnut_dehulling_conditioning_records` | `walnut_primary_conditioning_and_grading` | 去外果皮、清理、水、能源、水分、批次产率 | 调理批次记录 | 投入质量；外果皮状态；方法；时长；能源；水；输出状态；输出质量；外果皮质量；清理损失；废水 | 批次日志、计量表、秤、水分或鲜度检测及水量平衡；原始汇总与归属：将全部投入与输出关联至一个批次和交接节点 | kg、%、小时、L、kWh | 每批次 | 声明采后期间 | 每个调理设施或农场单元 | 每声明的参考流 | 校准秤、批次单、鲜度或水分检测 |
+| `cp_walnut_dehulling_conditioning_records` | `walnut_primary_conditioning_and_grading` | 去外果皮、清理、水、能源、水分、批次产率 | 调理批次记录 | 投入质量；外果皮状态；方法；时长；能源；水；输出状态；输出质量；外果皮质量；清理损失；废水 | 批次日志、计量表、秤、水分或鲜度检测及水量平衡；原始汇总与归属：将全部投入与输出关联至一个批次和交接节点 `walnut_conditioning_residuals_specific_emission`: 仅在废水、粉尘、土壤、纤维和清洗固体跨越边界或接受处理时记录，并识别接收介质和去向。 实测残余物质量，或根据批次水量和固体平衡计算 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。  | kg、%、小时、L、kWh | 每批次 | 声明采后期间 | 每个调理设施或农场单元 | 每声明的参考流 | 校准秤、批次单、鲜度或水分检测 |
 | `cp_walnut_hull_destination_records` | `walnut_primary_conditioning_and_grading` | 外果皮副产品、残余物或废物 | 去向和转移记录 | 外果皮质量；干物质或水分；去向；接收方；价格或用途；最终处理方式；转移日期 | 称量、转移记录及去向确认；原始汇总与归属：区分预期输出、残余物和废物 | kg 和声明分数 | 每次转移 | 调理期间 | 每个外果皮去向 | 每声明的参考流 | 收据、转移单、去向证据 |
 | `cp_walnut_grade_reject_records` | `walnut_primary_conditioning_and_grading` | 等级、降级、拒收、异物 | 检验和分级记录 | 批次；成熟度；外果皮状态；硬壳状况；霉变；虫害；异物；合格质量；返工；去向 | 检验、抽样和称量记录；原始汇总与归属：等级和拒收状态互斥 | kg、%、等级代码 | 每批次 | 声明采后期间 | 每个分级点 | 每声明的参考流 | 检验表、抽样方案、秤校准 |
 | `cp_walnut_storage_records` | `walnut_storage_and_gate_handoff` | 储存投入、损失、包装、交接输出 | 库存和发货台账 | 期初库存；收货；批次；产品状态；水分或鲜度；储存时长；包装；能源；损伤；期末库存；发货质量；交接节点 | 库存台账、发货单和储存日志；原始汇总与归属：期初库存 + 收货 = 发货 + 期末库存 + 损失 | kg、%、天、kWh、item | 收货、检查和发货 | 声明储存期间 | 每个储存设施 | 每声明的参考流 | 库存核对、发货单、鲜度或水分及虫害记录 |

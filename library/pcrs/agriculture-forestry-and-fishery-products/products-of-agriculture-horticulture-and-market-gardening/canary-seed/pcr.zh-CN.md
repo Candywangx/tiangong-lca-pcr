@@ -134,7 +134,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_activity_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -144,12 +144,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_activity_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`canary_seed_field_production_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_activity_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -159,6 +161,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_activity_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`canary_seed_field_production_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -249,49 +253,21 @@ sync_with: pcr.en-US.md
 
 记录自有或受控机械消耗的柴油。若单独建模外包服务，承包商燃料应归入上游服务数据集。
 
-- 选定流：农业机械用柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：体积 / L
 - 数量规则：按作业分配的实测或发票柴油量，并换算到参考流
-- 数值来源模式：前景记录（`foreground_record`）
+- 数值来源模式：`calculated_value`
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1,000 kg 参考籽粒；作物周期燃料总量除以同周期可销售产量.
 
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_activity_records`
-- 数量范围：暂定田间燃料筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：220
-  - 单位：L/ha
-  - 基准：完整田间作业周期；用同周期可销售产量换算
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 施用的植保制剂（`crop_protection_input`）
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
-按产品身份和施用事件记录每一种除草剂、杀菌剂、杀虫剂、脱叶剂或其他制剂，在合并前保留有效成分和产品身份。
-
-- 选定流：植保制剂
-- 流属性/单位：质量 / kg 制剂
-- 数量规则：按制剂记录实测或发票质量，按田块汇总并换算到参考流
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 参考籽粒；作物周期制剂质量除以同周期可销售产量.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_field_activity_records`
-- 数量范围：暂定植保筛选估计
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：20
-  - 单位：kg 制剂/ha
-  - 基准：完整作物周期；用同周期可销售产量换算，并保留产品标签
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+此卡仅表示实际柴油；其他燃料或包含用油的外包服务须各用独立身份，不在此卡重复计入。链接数量为柴油kg：保留油罐或票据原始单位；kg = L × 记录温度下有依据的密度(kg/L)，或kg = MJ / 相同能量基准下有依据的柴油低位热值(MJ/kg)。直接质量记录不需载能体换算。缺失密度或热值须补证，不得假定。完成载能体换算后，按实测面积、期间及合格产出仅归一化一次，保留原最终参考数量；不设置通用单位面积燃料筛查限值。
 
 ##### 废物流
 
@@ -328,7 +304,7 @@ sync_with: pcr.en-US.md
 
 记录离开田间生产的可销售收获籽粒。若包含整理，该行是进入整理过程的匹配进料，而不是终端参考输出。
 
-- 选定流：Canary seed, production mix, at farm gate, harvested grain, unprocessed `b390e8bf-4421-40ac-9881-10792f8fef57`
+- 选定流：金丝雀种子 `b390e8bf-4421-40ac-9881-10792f8fef57`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：记录声明水分和杂质基准的实测合格或收获籽粒质量，并缩放到 1,000 kg 参考籽粒
 
@@ -406,7 +382,7 @@ sync_with: pcr.en-US.md
 
 使用选定区域方法，根据肥料、有机投入、残余物氮、挥发和淋失路径计算直接及间接 N2O 排放。
 
-- 选定流：Nitrous oxide, to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - 流属性/单位：质量 / kg N2O
 - 数量规则：将选定 IPCC 或区域方法应用于采集的氮活动数据和残余物去向
 - 数值来源模式：计算值（`calculated_value`）
@@ -431,7 +407,7 @@ sync_with: pcr.en-US.md
 
 根据氮产品类型、施用位置、时间、天气和适用方法因子计算氨挥发。
 
-- 选定流：Ammonia, to ambient air
+- 选定流：氨向环境空气排放
 - 流属性/单位：质量 / kg NH3
 - 数量规则：将按产品和施用方式的挥发方法应用于采集的氮记录
 - 数值来源模式：计算值（`calculated_value`）
@@ -456,7 +432,7 @@ sync_with: pcr.en-US.md
 
 根据氮投入、土壤、排水和当地水文，使用选定方法计算水体硝酸盐损失；不得仅由肥料质量推断硝酸盐损失。
 
-- 选定流：Nitrate, to water
+- 选定流：硝酸根向水体排放
 - 流属性/单位：质量 / kg NO3-
 - 数量规则：将选定区域淋失方法应用于氮活动、土壤、排水和气候记录
 - 数值来源模式：计算值（`calculated_value`）
@@ -481,7 +457,7 @@ sync_with: pcr.en-US.md
 
 当选定排放方法要求时，记录田间燃烧和氮相关过程产生的氮氧化物。
 
-- 选定流：Nitrogen oxides, to ambient air
+- 选定流：氮氧化物向环境空气排放
 - 流属性/单位：质量 / kg NOx
 - 数量规则：将选定燃烧或农业排放因子应用于采集的活动数据
 - 数值来源模式：计算值（`calculated_value`）
@@ -588,7 +564,7 @@ sync_with: pcr.en-US.md
 
 整理纳入声明路线时使用该终端输出。该输出使用相同参考流身份，并必须声明最终水分和质量基准。
 
-- 选定流：Canary seed, production mix, at farm gate, harvested grain, unprocessed `b390e8bf-4421-40ac-9881-10792f8fef57`
+- 选定流：金丝雀种子 `b390e8bf-4421-40ac-9881-10792f8fef57`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：记录整理后的合格籽粒质量并缩放到 1,000 kg 参考籽粒
 
@@ -671,7 +647,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Canary seed, production mix, at farm gate, harvested grain, unprocessed
+- 选定流：加那利草籽，农场门收获籽粒，生产混合，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -697,7 +673,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Canary seed, production mix, at farm gate, harvested grain, unprocessed
+- 选定流：加那利草籽，农场门收获籽粒，生产混合，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -735,6 +711,15 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_field_activity_records` | 作业 canary_seed_field_production：按产品身份和施用事件记录每一种除草剂、杀菌剂、杀虫剂、脱叶剂或其他制剂，在合并前保留有效成分和产品身份。 原数量方法：按制剂记录实测或发票质量，按田块汇总并换算到参考流 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -742,7 +727,7 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_field_activity_records` | `canary_seed_field_production` | seed, nutrients, irrigation, fuel, crop protection, land | 田间日志、发票、施用记录、计量表或承包商记录 | field_id; area; cultivar; input_product; amount; nutrient_content; date; operation; contractor_scope | 将物理投入和作业核对至每一代表田块和作物周期；原始汇总与分配：按物理身份汇总；不合并产品而计算养分；按同周期面积和产量换算 | kg; kg nutrient; L; m3; ha | 每个事件 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 发票；标签；计量表校准；田间日志 |
+| `cp_field_activity_records` | `canary_seed_field_production` | seed, nutrients, irrigation, fuel, crop protection, land | 田间日志、发票、施用记录、计量表或承包商记录 | field_id; area; cultivar; input_product; amount; nutrient_content; date; operation; contractor_scope | 将物理投入和作业核对至每一代表田块和作物周期；原始汇总与分配：按物理身份汇总；不合并产品而计算养分；按同周期面积和产量换算 `crop_protection_input_specific_input`: 作业 canary_seed_field_production：按产品身份和施用事件记录每一种除草剂、杀菌剂、杀虫剂、脱叶剂或其他制剂，在合并前保留有效成分和产品身份。 原数量方法：按制剂记录实测或发票质量，按田块汇总并换算到参考流 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; kg nutrient; L; m3; ha | 每个事件 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 发票；标签；计量表校准；田间日志 |
 | `cp_harvest_output_records` | `canary_seed_field_production` | grain and removed residue | 地磅、产量监测、含水率检测、打捆记录 | field_id; harvest_date; grain_mass; grain_moisture; impurity; residue_mass; residue_moisture; residue_fate; destination | 将合格籽粒和每一残余物去向核对至田块面积和作物周期；原始汇总与分配：分别汇总合格籽粒和各残余物去向 | kg; percent; ha | 每次收获 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 计量或产量监测校准；水分检测；去向证据 |
 | `cp_field_emission_activity` | `canary_seed_field_production` | emissions to air and water | 养分、土壤、天气、残余物、排水和排放模型记录 | fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version | 使用一个声明的地域适用方法计算每种排放；原始汇总与分配：按田块计算、按面积加权，再按同周期产量换算 | kg N; kg emission; ha | 每个事件及作物周期计算 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 来源记录；因子来源；模型文件；氮平衡审查 |
 | `cp_residue_and_waste_fate` | `canary_seed_field_production` | retained and removed residues | 田间残余物日志、打捆票据、焚烧或还田记录 | field_id; residue_mass; dry_matter; fate; destination; date | 将残余物去向连接到产量所用的同一收获和田块记录；原始汇总与分配：按去向汇总；从副产品输出排除保留残余物 | kg; percent; ha | 每田块每次收获 | 完整作物周期 | 所有代表田块 | 每声明的参考流 | 田间记录；去向收据；残余物计算证据 |

@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -137,12 +137,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_inputs`
 - 来源：`manitoba-flax-management`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`flax_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -152,6 +154,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_field_inputs`
 - 来源：`manitoba-flax-management`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`flax_cultivation_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -213,54 +217,20 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_field_inputs`
 - 来源：`manitoba-flax-management`；`fao-organic-nutrients`
 
-###### 施用植保产品（`linseed_crop_protection`）
+###### 柴油 (`linseed_field_fuel_diesel`)
 
-分别记录实际除草剂、杀菌剂和杀虫剂的有效成分及田块；未施用则为零。[manitoba-flax-management]
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`linseed_field_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：实际植保产品；每一清单实例对应一种产品，身份待施用记录确认
-- 流属性/单位：质量 / kg
-- 数量规则：每块田实记的产品质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：田块和种植周期.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_inputs`采集`flax_cultivation`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_inputs`
-- 来源：`manitoba-flax-management`
-- 数量范围：临时 QA 宽区间；超界须核查，不能替代实测值
-  - 范围角色：QA 筛查界限（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/ha
-  - 基准：按 separately recorded crop-care formulation mass per cultivated hectare 及所列单位作宽区间筛查；逐批使用实测与计算记录，超界须说明；该值不是默认值或合规限值
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-###### 田间机械燃料（`linseed_field_fuel`）
-
-记录整地、播种和田间管理设备实际使用的柴油或其他燃料。
-
-- 选定流：实际移动机械燃料产品，身份待设备记录确认
-- 流属性/单位：能源 / MJ
-- 数量规则：计量或作业记录的田间燃料能源
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：田块和种植周期.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_field_inputs`
-- 数量范围：临时 QA 宽区间；超界须核查，不能替代实测值
-  - 范围角色：QA 筛查界限（`qa_guardrail`）
-  - 下限：0
-  - 上限：10000
-  - 单位：MJ/ha
-  - 基准：按 field-machine fuel energy per cultivated hectare 及所列单位作宽区间筛查；逐批使用实测与计算记录，超界须说明；该值不是默认值或合规限值
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ###### 田间电力（`linseed_field_electricity`）
 
@@ -385,55 +355,20 @@ sync_with: pcr.en-US.md
 
 收获节点接收有记录的成熟田块状态及面积；不得将其另计为外购产品。
 
-###### 收获机械燃料（`linseed_harvest_fuel`）
+###### 柴油 (`linseed_harvest_fuel_diesel`)
 
-按田间作业记录联合收获机及适用时割晒作业的燃料。[manitoba-flax-management]
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`linseed_harvest_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：收获用实际移动机械燃料产品，身份待作业记录确认
-- 流属性/单位：能源 / MJ
-- 数量规则：每次收获作业的燃料记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：收获作业.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_harvest`采集`flax_harvest`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_harvest`
-- 来源：`manitoba-flax-management`
-- 数量范围：临时 QA 宽区间；超界须核查，不能替代实测值
-  - 范围角色：QA 筛查界限（`qa_guardrail`）
-  - 下限：0
-  - 上限：10000
-  - 单位：MJ/ha
-  - 基准：按 harvest fuel energy per harvested hectare 及所列单位作宽区间筛查；逐批使用实测与计算记录，超界须说明；该值不是默认值或合规限值
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-###### 收前干燥剂（`linseed_desiccant`）
-
-仅记录生理成熟后实际施用的干燥剂；它不是必选投入。[manitoba-flax-management]
-
-- 选定流：实际干燥剂产品，身份待施用记录确认
-- 流属性/单位：质量 / kg
-- 数量规则：每田块实际施用质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：收获作业.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_harvest`
-- 来源：`manitoba-flax-management`
-- 数量范围：临时 QA 宽区间；超界须核查，不能替代实测值
-  - 范围角色：QA 筛查界限（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/ha
-  - 基准：按 preharvest desiccant formulation per treated hectare; conditional route 及所列单位作宽区间筛查；逐批使用实测与计算记录，超界须说明；该值不是默认值或合规限值
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -704,31 +639,6 @@ sync_with: pcr.en-US.md
   - 基准类型：过程产出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 干燥机燃料（`linseed_drying_fuel`）
-
-若使用燃料干燥机，按能源载体和批次记录实际燃料。[manitoba-growing-flax]
-
-- 选定流：干燥机用实际固定燃烧燃料产品，身份待设备记录确认
-- 流属性/单位：能源 / MJ
-- 数量规则：批次实记燃料能源
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：调质批次.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程产出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning`
-- 来源：`manitoba-growing-flax`
-- 数量范围：临时 QA 宽区间；超界须核查，不能替代实测值
-  - 范围角色：QA 筛查界限（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：MJ/kg damp grain
-  - 基准：按 dryer fuel energy per kilogram damp grain treated 及所列单位作宽区间筛查；逐批使用实测与计算记录，超界须说明；该值不是默认值或合规限值
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 废物流
 
 稳定处理不预设废物流投入。
@@ -958,7 +868,7 @@ sync_with: pcr.en-US.md
 
 单独识别的收获批次进入额外种子等级清选和纯度、发芽率检验。其质量不得计入油用籽粒的合格或降级产出。[cfia-common-seed]
 
-- 选定流：亚麻籽 `b5ee43d6-cd60-48df-8ac2-c3bc5ca9011f`，仅作为尚未取得种用资格的入料
+- 选定流：亚麻籽 `b5ee43d6-cd60-48df-8ac2-c3bc5ca9011f`
 - 流属性/单位：质量 / kg
 - 数量规则：称量的转入批次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -988,7 +898,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_seed_grade` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -999,11 +909,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_seed_grade`
 - 来源：`cfia-common-seed`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`linseed_seed_cleaning_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_seed_grade` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1014,30 +926,7 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_seed_grade`
 - 来源：`cfia-common-seed`；`fao-agricultural-energy`
 
-###### 种子处理产品（`linseed_seed_treatment`）
-
-仅在实际处理种子批次时记录所用材料。[cfia-common-seed]
-
-- 选定流：实际种子处理产品，身份待处理记录确认
-- 流属性/单位：质量 / kg
-- 数量规则：批次实记产品质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：种子批次.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程产出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_seed_grade`
-- 来源：`cfia-common-seed`
-- 数量范围：临时 QA 宽区间；超界须核查，不能替代实测值
-  - 范围角色：QA 筛查界限（`qa_guardrail`）
-  - 下限：0
-  - 上限：2
-  - 单位：kg/kg treated seed
-  - 基准：按 seed treatment formulation per kilogram treated seed; conditional route 及所列单位作宽区间筛查；逐批使用实测与计算记录，超界须说明；该值不是默认值或合规限值
-  - 基准类型：过程产出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 种子纯度及发芽率检验服务（`linseed_seed_testing`）
 
@@ -1173,6 +1062,20 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `linseed_crop_protection_specific_input` | `cp_field_inputs` | 作业 flax_cultivation：分别记录实际除草剂、杀菌剂和杀虫剂的有效成分及田块；未施用则为零。[manitoba-flax-management] 原数量方法：每块田实记的产品质量 |
+| `linseed_field_fuel_specific_input` | `cp_field_inputs` | 作业 flax_cultivation：记录整地、播种和田间管理设备实际使用的柴油或其他燃料。 原数量方法：计量或作业记录的田间燃料能源 |
+| `linseed_harvest_fuel_specific_input` | `cp_harvest` | 作业 flax_harvest：按田间作业记录联合收获机及适用时割晒作业的燃料。[manitoba-flax-management] 原数量方法：每次收获作业的燃料记录 |
+| `linseed_desiccant_specific_input` | `cp_harvest` | 作业 flax_harvest：仅记录生理成熟后实际施用的干燥剂；它不是必选投入。[manitoba-flax-management] 原数量方法：每田块实际施用质量 |
+| `linseed_drying_fuel_specific_input` | `cp_conditioning` | 作业 linseed_stabilization：若使用燃料干燥机，按能源载体和批次记录实际燃料。[manitoba-growing-flax] 原数量方法：批次实记燃料能源 |
+| `linseed_seed_treatment_specific_input` | `cp_seed_grade` | 作业 linseed_seed_grade：仅在实际处理种子批次时记录所用材料。[cfia-common-seed] 原数量方法：批次实记产品质量 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -1181,13 +1084,13 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_field_area` | `flax_cultivation` | 田块和作物 | 田间记录 | 田块编号、年份、品种、前茬、播种与收获面积、土壤、灌溉 | 农场记录和 GIS；原始汇总与分配：仅累加不重叠的收获面积 | ha | 每周期 | 全种植周期 | 每块田 | 每声明的参考流 | 田块图、播种记录 |
-| `cp_field_inputs` | `flax_cultivation` | 种子、养分、药剂、燃料、水 | 采购和作业记录 | 产品身份、数量、养分或有效成分、施用日期、田块、机械燃料、水源 | 发票、施用和仪表记录；原始汇总与分配：按材料和田块求和并核对库存 | kg、L、kWh、m3 | 每次施用 | 全种植周期 | 每块田 | 每声明的参考流 | 发票、仪表校准 |
+| `cp_field_inputs` | `flax_cultivation` | 种子、养分、药剂、燃料、水 | 采购和作业记录 | 产品身份、数量、养分或有效成分、施用日期、田块、机械燃料、水源 | 发票、施用和仪表记录；原始汇总与分配：按材料和田块求和并核对库存 `linseed_crop_protection_specific_input`: 作业 flax_cultivation：分别记录实际除草剂、杀菌剂和杀虫剂的有效成分及田块；未施用则为零。[manitoba-flax-management] 原数量方法：每块田实记的产品质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `linseed_field_fuel_specific_input`: 作业 flax_cultivation：记录整地、播种和田间管理设备实际使用的柴油或其他燃料。 原数量方法：计量或作业记录的田间燃料能源 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、L、kWh、m3 | 每次施用 | 全种植周期 | 每块田 | 每声明的参考流 | 发票、仪表校准 |
 | `cp_soil_emissions` | `flax_cultivation` | 管理土壤排放 | 田间及方法记录 | 氮投入、粪肥氮、残茬量及氮、土壤、气候、排放方法与因子 | 田间记录和声明的方法；原始汇总与分配：每个氮库只应用所选方法一次 | kg N、kg N2O | 每周期 | 全种植周期 | 每块田 | 每声明的参考流 | 因子版本、计算表 |
-| `cp_harvest` | `flax_harvest` | 籽粒、路线、燃料、田间损失 | 收获记录 | 田块、作业编号、直收或割晒、面积、湿籽粒质量、水分、燃料、干燥剂、估计损失 | 地磅、收割机和作业记录；原始汇总与分配：不重叠田块部分关联批次 | ha、kg、%、L | 每次作业 | 收获季 | 每田块/作业 | 每声明的参考流 | 称重票、设备日志 |
+| `cp_harvest` | `flax_harvest` | 籽粒、路线、燃料、田间损失 | 收获记录 | 田块、作业编号、直收或割晒、面积、湿籽粒质量、水分、燃料、干燥剂、估计损失 | 地磅、收割机和作业记录；原始汇总与分配：不重叠田块部分关联批次 `linseed_harvest_fuel_specific_input`: 作业 flax_harvest：按田间作业记录联合收获机及适用时割晒作业的燃料。[manitoba-flax-management] 原数量方法：每次收获作业的燃料记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `linseed_desiccant_specific_input`: 作业 flax_harvest：仅记录生理成熟后实际施用的干燥剂；它不是必选投入。[manitoba-flax-management] 原数量方法：每田块实际施用质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | ha、kg、%、L | 每次作业 | 收获季 | 每田块/作业 | 每声明的参考流 | 称重票、设备日志 |
 | `cp_straw_fate` | `flax_harvest` | 秸秆和残茬 | 残茬及销售记录 | 秸秆质量、干物质、销售票、留田、焚烧或处置、打捆燃料 | 地磅、田间记录和发票；原始汇总与分配：核对收获、移出和留田份额 | kg 干物质、L | 每田块/作业 | 收获季 | 每块田 | 每声明的参考流 | 买方单据、田间照片 |
-| `cp_conditioning` | `linseed_cleaning` | 清选和稳定处理 | 批次作业记录 | 批次、处理前后质量与水分、杂物、变质、电力与燃料、运行时间 | 地磅、水分仪、设备仪表；原始汇总与分配：关联重复处理，不重复计质量或能耗 | kg、%、kWh、L | 每批和每次作业 | 收获至交付 | 每批次 | 每声明的参考流 | 磅秤及仪表校准 |
+| `cp_conditioning` | `linseed_cleaning` | 清选和稳定处理 | 批次作业记录 | 批次、处理前后质量与水分、杂物、变质、电力与燃料、运行时间 | 地磅、水分仪、设备仪表；原始汇总与分配：关联重复处理，不重复计质量或能耗 `linseed_drying_fuel_specific_input`: 作业 linseed_stabilization：若使用燃料干燥机，按能源载体和批次记录实际燃料。[manitoba-growing-flax] 原数量方法：批次实记燃料能源 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、%、kWh、L | 每批和每次作业 | 收获至交付 | 每批次 | 每声明的参考流 | 磅秤及仪表校准 |
 | `cp_grading` | `linseed_grading` | 合格、降级、拒收 | 交付和等级票 | 批次、净质量、等级、水分、买方、降级、拒收和返工去向 | 交付磅秤、等级检验和销售票；原始汇总与分配：汇总最终互斥产出状态 | kg、% | 每交付批次 | 收获至交付 | 每批次 | 每声明的参考流 | 签收票及等级票 |
-| `cp_seed_grade` | `linseed_seed_grade` | 播种用种子、降级籽粒、拒收物 | 种子批次及检验记录 | 批次、转入质量、额外清选和处理、纯度、发芽率、种子等级、买方、合格及拒收质量 | 交付磅秤、种子检验合格证明和作业记录；原始汇总与分配：核对种用、油用降级和拒收量，避免重复计数 | kg、%、kWh | 每种子批次 | 收获至交付 | 每种子批次 | 每声明的参考流 | 签发的种子检验及销售记录 |
+| `cp_seed_grade` | `linseed_seed_grade` | 播种用种子、降级籽粒、拒收物 | 种子批次及检验记录 | 批次、转入质量、额外清选和处理、纯度、发芽率、种子等级、买方、合格及拒收质量 | 交付磅秤、种子检验合格证明和作业记录；原始汇总与分配：核对种用、油用降级和拒收量，避免重复计数 `linseed_seed_treatment_specific_input`: 作业 linseed_seed_grade：仅在实际处理种子批次时记录所用材料。[cfia-common-seed] 原数量方法：批次实记产品质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、%、kWh | 每种子批次 | 收获至交付 | 每种子批次 | 每声明的参考流 | 签发的种子检验及销售记录 |
 
 ### 计算规则
 
@@ -1244,3 +1147,4 @@ sync_with: pcr.en-US.md
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

@@ -126,7 +126,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_fertilizer_and_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -136,12 +136,14 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fertilizer_and_amendment_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`pineapple_crop_production_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_fertilizer_and_amendment_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -151,6 +153,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fertilizer_and_amendment_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-refinement`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`pineapple_crop_production_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -227,37 +231,20 @@ translation_status: aligned
 - 采集协议：`cp_irrigation_and_withdrawal_records`
 - 来源：`fao-crop-evapotranspiration-56`；`fao-gap-framework-2003`
 
-###### 作物保护产品（`crop_protection_input`）
+###### 柴油 (`field_machinery_fuel_diesel`)
 
-- 选定流：作物保护产品（unmapped）
-- 流属性/单位：质量 / kg 产品及适用时的 kg 有效成分
-- 数量规则：按有效成分和施用事件记录产品质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 声明门合格新鲜菠萝产出.
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`field_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_protection_records`
-- 来源：`fao-gap-framework-2003`
-
-###### 田间机械燃料（`field_machinery_fuel`）
-
-记录燃料类型、数量、机械或服务商、田间作业和报告期间。
-
-- 选定流：移动机械燃料
-- 流属性/单位：质量、体积或能量 / kg、L、MJ 或 kWh
-- 数量规则：按作业和周期的燃料实测或承包商记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 声明门合格新鲜菠萝产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_energy_records`采集`pineapple_crop_production`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_energy_records`
-- 来源：`fao-gap-framework-2003`
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -361,22 +348,20 @@ translation_status: aligned
 - 采集协议：`cp_harvest_and_output_records`
 - 来源：`fao-gap-framework-2003`
 
-###### 采收机械燃料（`harvest_machinery_fuel`）
+###### 柴油 (`harvest_machinery_fuel_diesel`)
 
-记录采收及相关机械作业或承包服务使用的燃料或能源。
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`harvest_machinery_fuel_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：移动机械燃料或能源
-- 流属性/单位：质量、体积或能量 / kg、L、MJ 或 kWh
-- 数量规则：按批次或事件记录采收作业能源
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 声明门合格新鲜菠萝产出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_harvest_energy_records`采集`pineapple_harvest_and_delivery`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_harvest_energy_records`
-- 来源：`fao-gap-framework-2003`
+- 来源：`route-energy-fao`
 
 ###### 采收到声明门的公路运输服务（`harvest_road_transport`）
 
@@ -632,6 +617,17 @@ translation_status: aligned
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_crop_protection_records` | 作业 pineapple_crop_production： 原数量方法：按有效成分和施用事件记录产品质量 |
+| `field_machinery_fuel_specific_input` | `cp_field_energy_records` | 作业 pineapple_crop_production：记录燃料类型、数量、机械或服务商、田间作业和报告期间。 原数量方法：按作业和周期的燃料实测或承包商记录 |
+| `harvest_machinery_fuel_specific_input` | `cp_harvest_energy_records` | 作业 pineapple_harvest_and_delivery：记录采收及相关机械作业或承包服务使用的燃料或能源。 原数量方法：按批次或事件记录采收作业能源 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -642,11 +638,11 @@ translation_status: aligned
 | `cp_propagation_and_cycle_records` | `pineapple_crop_production` | propagation and cycle | planting or ratoon record | material; source; lot; count; mass; date; field; cycle | supplier record, planting log, or survey；原始汇总与分配：sum by field and cycle and retain conversion | count, kg, date | per establishment or cycle | represented crop cycle | field or farm | 每声明的参考流 | supplier document, field log |
 | `cp_fertilizer_and_amendment_records` | `pineapple_crop_production` | fertilizer and amendment | purchase and application record | product; nutrient; product mass; nutrient mass; date; field | invoice, analysis, log, or applicator record；原始汇总与分配：sum by product and nutrient and normalize | kg product and kg nutrient | per application | crop cycle | field or farm | 每声明的参考流 | invoice, label, analysis, log |
 | `cp_irrigation_and_withdrawal_records` | `pineapple_crop_production` | irrigation and withdrawal | meter or pumping record | source; meter; readings; volume; pumping energy; date; field | calibrated meter, pumping log, or invoice；原始汇总与分配：keep withdrawal and delivered irrigation distinct | m3 and energy | per event or period | irrigation season | field and source | 每声明的参考流 | calibration, readings, invoice |
-| `cp_crop_protection_records` | `pineapple_crop_production` | crop protection | application record | product; active ingredient; rate; date; field | farm log, invoice, and label；原始汇总与分配：sum by product and active ingredient | kg product and kg active ingredient | per application | crop cycle | field or farm | 每声明的参考流 | label, invoice, log |
-| `cp_field_energy_records` | `pineapple_crop_production` | field energy | machine or contractor record | machine; operation; carrier; quantity; date; field | fuel log, meter, telematics, or invoice；原始汇总与分配：aggregate by operation and normalize | L, kg, MJ, or kWh | per operation or period | crop cycle | field and farm | 每声明的参考流 | invoice, meter, telematics |
+| `cp_crop_protection_records` | `pineapple_crop_production` | crop protection | application record | product; active ingredient; rate; date; field | farm log, invoice, and label；原始汇总与分配：sum by product and active ingredient `crop_protection_input_specific_input`: 作业 pineapple_crop_production： 原数量方法：按有效成分和施用事件记录产品质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product and kg active ingredient | per application | crop cycle | field or farm | 每声明的参考流 | label, invoice, log |
+| `cp_field_energy_records` | `pineapple_crop_production` | field energy | machine or contractor record | machine; operation; carrier; quantity; date; field | fuel log, meter, telematics, or invoice；原始汇总与分配：aggregate by operation and normalize `field_machinery_fuel_specific_input`: 作业 pineapple_crop_production：记录燃料类型、数量、机械或服务商、田间作业和报告期间。 原数量方法：按作业和周期的燃料实测或承包商记录 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L, kg, MJ, or kWh | per operation or period | crop cycle | field and farm | 每声明的参考流 | invoice, meter, telematics |
 | `cp_land_and_cycle_records` | `pineapple_crop_production` | land and cycle | field record | field; area; planting date; ratoon status; duration; year | field map and production register；原始汇总与分配：reconcile area and duration before allocation | ha, date, year | per field and cycle | represented cycle | field or farm | 每声明的参考流 | field map, register |
 | `cp_harvest_and_output_records` | `pineapple_harvest_and_delivery` | harvest and outputs | harvest and delivery record | field; lot; date; mass; quality; culls; losses; fate; gate | calibrated scale, harvest log, delivery ticket；原始汇总与分配：reconcile inputs and outputs by lot | kg, date, quality | per event | crop cycle | field to gate | 每声明的参考流 | calibration, log, ticket |
-| `cp_harvest_energy_records` | `pineapple_harvest_and_delivery` | harvest energy | machine or contractor record | machine; operation; carrier; quantity; mass; period | fuel log, telematics, meter, or invoice；原始汇总与分配：allocate by harvested mass | L, kg, MJ, or kWh | per event or period | crop cycle | harvest operation | 每声明的参考流 | invoice, telematics, meter |
+| `cp_harvest_energy_records` | `pineapple_harvest_and_delivery` | harvest energy | machine or contractor record | machine; operation; carrier; quantity; mass; period | fuel log, telematics, meter, or invoice；原始汇总与分配：allocate by harvested mass `harvest_machinery_fuel_specific_input`: 作业 pineapple_harvest_and_delivery：记录采收及相关机械作业或承包服务使用的燃料或能源。 原数量方法：按批次或事件记录采收作业能源 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | L, kg, MJ, or kWh | per event or period | crop cycle | harvest operation | 每声明的参考流 | invoice, telematics, meter |
 | `cp_harvest_transport_records` | `pineapple_harvest_and_delivery` | field delivery | transport record | vehicle; payload; distance; route; date; lot; gate | weighbridge, route log, and invoice；原始汇总与分配：sum payload-distance by lot and route | tonne-km or service unit | per movement | crop cycle | harvest to gate | 每声明的参考流 | weighbridge, route record |
 | `cp_conditioning_and_gate_records` | `pineapple_primary_conditioning` | fruit, outputs, and gate | conditioning batch record | input; water; electricity; culls; wastewater; output; quality; gate | batch sheet, meters, scale, treatment record；原始汇总与分配：reconcile input, output, culls, wastewater, and loss | kg, m3, kWh, quality | per batch | conditioning period | conditioning site | 每声明的参考流 | calibration, batch and treatment records |
 | `cp_conditioning_water_records` | `pineapple_primary_conditioning` | conditioning water | meter or batch record | source; meter; batch; volume; date; lot | calibrated meter or batch sheet；原始汇总与分配：sum by source and batch | m3 | per batch or period | conditioning period | conditioning site | 每声明的参考流 | calibration, batch record |
@@ -718,3 +714,4 @@ translation_status: aligned
 | `fao-postharvest-handling-ae075e` | official_guidance | Kitinoja and Kader, Small-Scale Postharvest Handling Practices: A Manual for Horticultural Crops, 4th edition (2002), FAO-hosted original, https://www.fao.org/4/ae075e/ae075e00.htm | 仅为一般采后处理、冷却和损失记录背景；作物特定参数及本 PCR 截止点和归属须另行证据支持。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

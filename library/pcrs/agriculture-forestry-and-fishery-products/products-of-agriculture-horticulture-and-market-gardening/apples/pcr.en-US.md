@@ -103,32 +103,6 @@ The foreground boundary includes material nursery-tree and support-system instal
 
 ##### Product flows
 
-###### Annualized establishment inputs (`annualized_establishment_inputs`)
-
-Annualized establishment inputs represent nursery trees, support systems, irrigation infrastructure, replacements, and removal attributable to the reference product.
-
-- Selected flow: site-specific nursery trees, supports, and irrigation-system materials
-- Flow property / unit: declared property / declared unit
-- Amount rule: measured installation, replacement, and removal quantities annualized over lifetime marketable output
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_orchard_lifecycle_records`
-- Sources: `baima-apple-orchard-lca-2024`
-- Range: Annualization reconciliation
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg attributable material/kg reference product
-  - Basis: attributable mass divided by lifetime marketable output
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
-
 ###### Urea fertilizer (`orchard_lifecycle_and_production_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for orchard_lifecycle_and_production_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -136,9 +110,9 @@ Raw activity or stage basis: per 1 kg reference product.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1 kg reference product.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_orchard_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -148,12 +122,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `baima-apple-orchard-lca-2024`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`orchard_lifecycle_and_production_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_orchard_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -163,6 +139,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `baima-apple-orchard-lca-2024`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`orchard_lifecycle_and_production_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -224,32 +202,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_orchard_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `baima-apple-orchard-lca-2024`; `fao-organic-nutrients`
 
-###### Crop-protection inputs (`crop_protection_inputs`)
-
-Crop-protection inputs record each named formulated product and active ingredient applied to the orchard.
-
-- Selected flow: Herbicide `c1370404-9e2b-4ed6-ba96-c094f74e0f2d`; Insecticide `ba2ec0c8-d5da-4ca8-bf9f-317478a1ce1b`; product-specific fungicide where applicable
-- Flow property / unit: Mass / kg active ingredient and kg product
-- Amount rule: measured application by named product and active ingredient
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1 kg reference product.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_orchard_input_records`
-- Sources: `baima-apple-orchard-lca-2024`
-- Range: Foreground plausibility guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg active ingredient/kg reference product
-  - Basis: broad non-negative screening interval, not a default
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Source rule (`source_rule`)
-  - Sources: `baima-apple-orchard-lca-2024`
-
 ###### Irrigation water (`irrigation_water`)
 
 Irrigation water records delivered water entering the orchard production system from each declared source.
@@ -268,31 +220,35 @@ Raw activity or stage basis: per 1 kg reference product.
 - Sources: `dzikiti-apple-water-footprint-2019`
 Range evidence need: collect delivered irrigation and source withdrawal separately. The cited total water-footprint observations (187–237 m3/t, including green/blue components) are contextual indicators and are not a range for either exchange.
 
-###### Orchard energy (`orchard_energy`)
+###### Diesel fuel (`orchard_energy_diesel`)
 
-Orchard energy records fuel and electricity consumed by field operations and irrigation pumping.
+Only for documented diesel-powered operations. Retain grade and actual use; convert recorded L using supplier-supported or measured density in kg/L. Link fuel supply once, and retain actual combustion emissions separately unless already included in the supplying service. Other carriers and inclusive machinery services require separate actual identities; these conditional cards do not prescribe site equipment.
 
-- Selected flow: Diesel, burned in agricultural machinery `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`; Electricity, medium voltage `01bf1ecc-b94c-4a03-ab88-ee79081aae24`
-- Flow property / unit: Mass or Energy / kg, L, MJ, or kWh
-- Amount rule: measured fuel and electricity by operation, including pumping
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg reference product.
-
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Record this carrier separately under `cp_energy_records` by operation, including pumping. Attribute shared use once, divide the attributed raw quantity by measured matched accepted final fruit output in kg, then multiply by the 1 kg reference amount. Retain stage-to-final output ratios and do not normalize an already normalized quantity again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_energy_records`
 - Sources: `baima-apple-orchard-lca-2024`; `ucdavis-orchard-lca-findings-2020`
-- Range: Foreground energy plausibility guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kWh-equivalent/kg reference product
-  - Basis: broad non-negative screening interval, not a default
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Source rule (`source_rule`)
-  - Sources: `baima-apple-orchard-lca-2024`; `ucdavis-orchard-lca-findings-2020`
+
+###### Alternating current (`orchard_energy_electricity`)
+
+Only for actual alternating-current supply. Record voltage, provider and supply technology; convert metered kWh to MJ once with 1 kWh = 3.6 MJ. Internally generated electricity links to its foreground generator without another purchased-electricity burden. Other carriers and inclusive machinery services require separate actual identities; these conditional cards do not prescribe site equipment.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Record this carrier separately under `cp_energy_records` by operation, including pumping. Attribute shared use once, divide the attributed raw quantity by measured matched accepted final fruit output in kg, then multiply by the 1 kg reference amount. Retain stage-to-final output ratios and do not normalize an already normalized quantity again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_energy_records`
+- Sources: `baima-apple-orchard-lca-2024`; `ucdavis-orchard-lca-findings-2020`
 
 ##### Waste flows
 
@@ -638,6 +594,15 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `annualized_establishment_inputs_specific_input` | `cp_orchard_lifecycle_records` | Operation orchard_lifecycle_and_production: Annualized establishment inputs represent nursery trees, support systems, irrigation infrastructure, replacements, and removal attributable to the reference product. Original quantity method: measured installation, replacement, and removal quantities annualized over lifetime marketable output Use measured lifetime output; input/output mass ratios are not bounded by one. |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -645,8 +610,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_orchard_lifecycle_records | orchard_lifecycle_and_production | establishment and removal | orchard asset record | block; planting year; productive life; trees; replacements; supports; irrigation materials; removal; fate | invoices, field logs, asset register; Raw aggregation and attribution: annualize over lifetime marketable output | item, kg, L, kWh, year | per event | complete orchard model | orchard block | per declared reference flow | invoices, asset register, calculation workbook |
-| cp_orchard_input_records | orchard_lifecycle_and_production | fertilizer and crop protection | purchase and application record | product; active ingredient or nutrients; mass; date; area; block | invoice, label, application log; Raw aggregation and attribution: sum by substance and normalize to accepted mass | kg product, kg nutrient, kg active ingredient | per application | harvest year | orchard block | per declared reference flow | invoice, label, applicator log |
+| cp_orchard_lifecycle_records | orchard_lifecycle_and_production | establishment and removal | orchard asset record | block; planting year; productive life; trees; replacements; supports; irrigation materials; removal; fate | invoices, field logs, asset register; Raw aggregation and attribution: annualize over lifetime marketable output `annualized_establishment_inputs_specific_input`: Operation orchard_lifecycle_and_production: Annualized establishment inputs represent nursery trees, support systems, irrigation infrastructure, replacements, and removal attributable to the reference product. Original quantity method: measured installation, replacement, and removal quantities annualized over lifetime marketable output Use measured lifetime output; input/output mass ratios are not bounded by one. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | item, kg, L, kWh, year | per event | complete orchard model | orchard block | per declared reference flow | invoices, asset register, calculation workbook |
+| cp_orchard_input_records | orchard_lifecycle_and_production | fertilizer and crop protection | purchase and application record | product; active ingredient or nutrients; mass; date; area; block | invoice, label, application log; Raw aggregation and attribution: sum by substance and normalize to accepted mass `crop_protection_inputs_specific_input`: Crop-protection inputs record each named formulated product and active ingredient applied to the orchard. measured application by named product and active ingredient This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `baima-apple-orchard-lca-2024` | kg product, kg nutrient, kg active ingredient | per application | harvest year | orchard block | per declared reference flow | invoice, label, applicator log |
 | cp_irrigation_records | orchard_lifecycle_and_production | irrigation and withdrawal | meter and pumping record | source; meter; readings; volume; pumping energy; date; block | calibrated meter, pumping log, invoice; Raw aggregation and attribution: sum by source and normalize to accepted mass | m3 and energy unit | per event or month | irrigation season | block and source | per declared reference flow | calibration, readings, invoice |
 | cp_energy_records | orchard_lifecycle_and_production | fuel and electricity | energy record | operation; machine; energy type; quantity; period; block | fuel log, telematics, meter, invoice; Raw aggregation and attribution: allocate by operation and normalize to accepted mass | L, kg, MJ, kWh | per operation or billing interval | harvest year | orchard block | per declared reference flow | invoice, meter, equipment log |
 | cp_land_and_output_records | orchard_lifecycle_and_production | land and apple outputs | block and harvest record | area; age; cultivar; harvest date; gross; tare; accepted; industrial; culled; biomass; grade; fate | GIS, calibrated scale, dispatch and fate records; Raw aggregation and attribution: reconcile outputs and normalize by accepted mass | ha, year, kg | per harvest and annual reconciliation | complete harvest year | orchard block and gate | per declared reference flow | field map, calibration, tickets, grade and fate records |

@@ -118,56 +118,6 @@ Denominator and scope requirements：per kg reference live weight and period
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Feed, forage and browse (`feed_browse`)
-
-Record managed feed, forage, browse and supplements by actual source, state, species group and biological phase.
-Denominator and scope requirements：per kg reference live weight
-
-- Selected flow: Actual feed, forage or browse identity (UUID unresolved)
-- Flow property / unit: Mass / kg dry matter and kg as-fed
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_feed_movement`
-- Sources: `ipcc-2019-livestock-manure`; `fao-ruminant-lca-2013`
-QA scope for this card: the intake range below screens only separately recorded biological intake on its stated unit and denominator, reconstructed under calc_feed_supply_and_intake. It does not bound or substitute for the supplied-feed exchange, which retains in-boundary uneaten losses and their production burden. Do not compare feed supply with intake bounds or subtract losses merely to fit a range. A supply-specific range requires separate evidence; missing intake/loss records leave this intake QA unassessed, not passing.
-
-- Range: Feed-intake QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.5
-  - Upper: 80
-  - Unit: kg dry matter/kg reference live weight
-  - Basis: broad replaceable screen, not a ration; QA variable is recorded biological intake only, not the supplied-feed inventory amount
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Animal-health products (`health_products`)
-
-Record medicines, vaccines, disinfectants and other health products that cross the foreground boundary.
-Denominator and scope requirements：per kg reference live weight
-
-- Selected flow: Health product by actual formulation (UUID unresolved)
-- Flow property / unit: Mass, volume or dose / kg, L or dose
-- Amount rule: Record formulation, administered/discarded quantity, species/class, date and purpose; zero when unused.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_health_inputs`
-- Sources: `fao-gleam`
-- Range: Health-input QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.1
-  - Unit: kg or L product/kg reference live weight
-  - Basis: broad conditional screen, not a dose
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Supplied water (`supplied_water`)
 
 Record managed drinking and service water supplied to the represented animals and activities.
@@ -198,9 +148,9 @@ Denominator and scope requirements：per kg reference live weight
 Record purchased electricity, fuels, heat and other energy carriers by actual use and reporting period.
 Denominator and scope requirements：per kg reference live weight
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_water_energy_transport` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -211,11 +161,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_water_energy_transport`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`energy_supply_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_water_energy_transport` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -225,6 +177,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_water_energy_transport`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Purchased heat at the process inlet (`energy_supply_heat`)
 
@@ -532,13 +486,23 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `feed_browse_specific_input` | `cp_feed_movement` | Operation managed_camelid_production: Record managed feed, forage, browse and supplements by actual source, state, species group and biological phase. Denominator and scope requirements：per kg reference live weight Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `health_products_specific_input` | `cp_health_inputs` | Operation managed_camelid_production: Record medicines, vaccines, disinfectants and other health products that cross the foreground boundary. Denominator and scope requirements：per kg reference live weight Original quantity method: Record formulation, administered/discarded quantity, species/class, date and purpose; zero when unused. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_herd_events` | managed_camelid_production | entries, births, class changes, transfers, deaths and reference output | herd, weight and transfer records | id; species; class; sex; purpose; event; date; head; weight; scale; origin/destination | calibrated weighing linked to herd records; Raw aggregation requirements: reconcile opening + entries + births = closing + transfers + deaths; normalize transferred mass. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | head; kg | each event | complete cohort/period | all represented groups | per reference flow | calibration, signed transfer, reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_feed_movement` | managed_camelid_production | feed, browse, grazing and managed movement | invoice, ration, land and movement log | identity; source; as-fed; dry matter; class; parcel; distance; duration; refusals | weigh supply; declare method for unmeasured intake; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg; animal-days; km | event/period | all phases | group, land and shelter | per reference flow | invoice, analysis, land/movement logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_health_inputs` | managed_camelid_production | health inputs | treatment and purchase record | product; formulation; dose; quantity; species/class; date; purpose; discard | reconcile treatments, purchases and stock; Raw aggregation requirements: sum by formulation. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | dose; kg; L | treatment | full period | all groups | per reference flow | signed log, invoice, stock balance; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_feed_movement` | managed_camelid_production | feed, browse, grazing and managed movement | invoice, ration, land and movement log | identity; source; as-fed; dry matter; class; parcel; distance; duration; refusals | weigh supply; declare method for unmeasured intake; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `feed_browse_specific_input`: Operation managed_camelid_production: Record managed feed, forage, browse and supplements by actual source, state, species group and biological phase. Denominator and scope requirements：per kg reference live weight Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; animal-days; km | event/period | all phases | group, land and shelter | per reference flow | invoice, analysis, land/movement logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_health_inputs` | managed_camelid_production | health inputs | treatment and purchase record | product; formulation; dose; quantity; species/class; date; purpose; discard | reconcile treatments, purchases and stock; Raw aggregation requirements: sum by formulation. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `health_products_specific_input`: Operation managed_camelid_production: Record medicines, vaccines, disinfectants and other health products that cross the foreground boundary. Denominator and scope requirements：per kg reference live weight Original quantity method: Record formulation, administered/discarded quantity, species/class, date and purpose; zero when unused. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | dose; kg; L | treatment | full period | all groups | per reference flow | signed log, invoice, stock balance; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_water_energy_transport` | managed_camelid_production | water, energy and transport | meter, invoice, fuel and trip logs | source/carrier; quantity; activity; cargo; mass; distance; vehicle; date | meters, invoices, tanks and route records; Raw aggregation requirements: direct assignment, otherwise documented driver. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | m3; kg; L; kWh; MJ; t*km | month/trip/event | full period | all relevant activities | per reference flow | calibration, invoice, trip and allocation records; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_outputs_losses` | managed_camelid_production | milk, fibre, mortality and other outputs/losses | output, transfer, mortality and waste records | identity; species; mass; basis; class; date; destination; cause; fate | weigh/meter; matching-class estimate only for mortality; Raw aggregation requirements: aggregate by identity and hand-off; separate internal use, product and waste. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; L; head | event | full period | all groups/gates | per reference flow | scale/meter, transfer and loss logs; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_manure_emissions` | managed_camelid_production | manure pathways and emissions | population, feed, excretion, pathway and climate records | species/class; animal-days; feed/energy; N; pathway; storage; climate; tier; factors | records plus declared reviewed equations; Raw aggregation requirements: calculate by species/class/period/pathway and reconcile material. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg manure; kg CH4; kg N2O; kg NH3 | month/phase | all phases/pathways | deposition, collection, storage, application, export | per reference flow | source records, worksheet, factor provenance; traceable numerator, accepted reference-output denominator and normalization worksheet |

@@ -98,7 +98,7 @@ sync_with: pcr.en-US.md
 
 记录进入所代表种植园单元的种植材料，并说明其为吸芽、球茎、组织培养苗或其他声明的建立材料。
 
-- 选定流：Banana planting material
+- 选定流：香蕉种植材料
 - 流属性/单位：Count or mass / plant, sucker, corm, or kg
 - 数量规则：记录购买批次数量以及每个田块或种植园单元实际种植的有效数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -119,7 +119,7 @@ sync_with: pcr.en-US.md
 
 记录所代表种植园单元或田块在建立阶段及声明作物周期或生产年度内的面积时间占用。
 
-- 选定流：Land occupation by banana plantation
+- 选定流：香蕉园用地占用
 - 流属性/单位：Area-time / ha*a
 - 数量规则：将所代表的种植园或田块面积乘以声明的占用期间；披露既有土地利用，除非明确纳入，不包括无关土地转化。
 - 数值来源模式：计算值（`calculated_value`）
@@ -153,7 +153,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -163,12 +163,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-banana-production-guide-2015`；`ipcc-2019-refinement-afolu`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`managed_banana_crop_cycle_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -178,6 +180,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-banana-production-guide-2015`；`ipcc-2019-refinement-afolu`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`managed_banana_crop_cycle_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -239,28 +243,11 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-banana-production-guide-2015`；`ipcc-2019-refinement-afolu`；`fao-organic-nutrients`
 
-###### 香蕉作物保护产品（`crop_protection_input`）
-
-记录所代表香蕉作物周期使用的每种作物保护产品或有效成分，包括目标和施用方法。
-
-- 选定流：Banana crop-protection product
-- 流属性/单位：Mass of product or active ingredient / kg
-- 数量规则：汇总供应商产品数量；在有配方文件时，依据文件计算有效成分质量。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：归属于同一作物周期或生产年度的每 1,000 kg 可销售新鲜香蕉.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_protection_records`
-- 来源：`globalgap-ifa-fruit-vegetables-v6`; `globalgap-tr4-banana-biosecurity`
-
 ###### 供应香蕉种植园的灌溉水（`irrigation_water_input`）
 
 记录输送至所代表香蕉种植园或田块用于作物灌溉的水。
 
-- 选定流：Irrigation water
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 数量规则：使用水表、泵、控制器或有记录的水平衡数据记录输送至作物的水量；分开记录来源和方法。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -282,7 +269,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_field_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -293,11 +280,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_field_energy_records`
 - 来源：`fao-banana-production-guide-2015`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`plantation_energy_input_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -308,6 +297,8 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_field_energy_records`
 - 来源：`fao-banana-production-guide-2015`；`fao-agricultural-energy`
 
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 ##### 废物流
 
 ##### 基本流
@@ -316,7 +307,7 @@ sync_with: pcr.en-US.md
 
 当水源和取用活动处于声明的前景边界内时，记录作物灌溉所对应的环境水资源取用量。
 
-- 选定流：Water-resource withdrawal for banana irrigation
+- 选定流：香蕉灌溉用自然水资源取用
 - 流属性/单位：Volume / m3
 - 数量规则：使用与灌溉水投入对应的实测或计算取用量，并披露水源、回流和方法。
 - 数值来源模式：计算值（`calculated_value`）
@@ -338,7 +329,7 @@ sync_with: pcr.en-US.md
 
 记录假茎、叶片、淘汰果穗材料和其他作物残余物离开作物管理过程后进入田间返还、堆肥、饲料利用、移除或处置的去向。
 
-- 选定流：Banana field residue
+- 选定流：香蕉田间残余物
 - 流属性/单位：Mass / kg wet or dry material
 - 数量规则：按田块或种植园单元实测或计算残余物，并记录声明的去向；不得仅凭残余物留在田间就推断其具有产品用途。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -357,7 +348,7 @@ sync_with: pcr.en-US.md
 
 使用声明的方法以及记录的养分或残余物基准，计算适用的养分投入和受管理作物残余物产生的直接氧化亚氮排放。
 
-- 选定流：Direct nitrous oxide from managed banana soil
+- 选定流：香蕉管理土壤直接一氧化二氮排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：对合格氮投入和残余物处理应用声明的方法因子；说明结果按 N2O 还是 N2O-N 报告。
 - 数值来源模式：计算值（`calculated_value`）
@@ -384,7 +375,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_postharvest_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -395,11 +386,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_postharvest_energy_records`
 - 来源：`fao-banana-production-guide-2015`；`globalgap-ifa-fruit-vegetables-v6`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`harvest_energy_input_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_postharvest_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -410,11 +403,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_postharvest_energy_records`
 - 来源：`fao-banana-production-guide-2015`；`globalgap-ifa-fruit-vegetables-v6`；`fao-agricultural-energy`
 
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
 ###### 调理或清洗水（`conditioning_water_input`）
 
 记录在声明的农场门或包装厂门之前用于可选清洗、消毒或调理的水。
 
-- 选定流：Banana conditioning or wash water
+- 选定流：香蕉整理或清洗用水
 - 流属性/单位：Volume / m3
 - 数量规则：按批次或电表周期记录输送水量，并将作物灌溉水与采后调理水分开。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -426,23 +421,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_postharvest_records`
 - 来源：`fao-banana-production-guide-2015`
-
-###### 新鲜香蕉初级包装（`primary_packaging_input`）
-
-记录在声明交接门之前跨越边界的初级包装；当有文件支持所代表批次的分摊份额时，也包括可重复使用的周转箱或托盘。
-
-- 选定流：Fresh-banana primary packaging
-- 流属性/单位：Mass or count / kg material or packaging unit
-- 数量规则：使用供应商规格和批次数量；披露材料、单位质量、重复使用状态以及分配到香蕉产出的份额。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：声明交接门处每 1,000 kg 可销售新鲜香蕉.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_records`
-- 来源：`globalgap-ifa-fruit-vegetables-v6`
 
 ##### 废物流
 
@@ -479,7 +457,7 @@ sync_with: pcr.en-US.md
 
 将不可销售的果穗、香蕉手、指蕉、修整物以及分级或调理废弃物与田间残余物分开记录，并记录其去向。
 
-- 选定流：Banana harvest and conditioning rejects
+- 选定流：香蕉收获及整理拒收物
 - 流属性/单位：Mass / kg wet material
 - 数量规则：核对接收采收量、交接门可销售产出、废弃物、残余物、与废水相关的固体以及已记录的处理损失。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -496,7 +474,7 @@ sync_with: pcr.en-US.md
 
 记录包含的调理作业排出的清洗或调理废水，并说明其被处理、再利用、排放或转移到其他数据集的情况。
 
-- 选定流：Banana conditioning wastewater
+- 选定流：香蕉整理废水
 - 流属性/单位：Volume or mass / m3 or kg
 - 数量规则：使用水表或批次记录，并将废水量与清洁调理水投入分开。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -518,23 +496,6 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 边界内处理的香蕉残余物或废弃物流（`residue_reject_routing_input`）
-
-记录在声明交接门之前进入现场或纳入范围的回收、处理、堆肥、饲料利用或处置路径的田间残余物、采收废弃物、调理修整物或废水。
-
-- 选定流：Banana residue, reject, or wastewater stream
-- 流属性/单位：Mass or volume / kg or m3
-- 数量规则：使用相应田间、采收或调理记录中的实测数量和声明去向；不得重复记录已转移到边界外的物流。
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：声明交接门处每 1,000 kg 可销售新鲜香蕉.
-
-- 归一化基准：每声明的参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_residue_and_reject_records`
-- 来源：`fao-banana-production-guide-2015`; `globalgap-ifa-fruit-vegetables-v6`
-
 ##### 基本流
 
 #### 输出
@@ -544,7 +505,7 @@ sync_with: pcr.en-US.md
 
 仅在存在有文件支持的接收方、数量、质量基准和预期用途时，记录堆肥、覆盖物、饲料材料或其他回收产品。
 
-- 选定流：Recovered organic material from banana residues or rejects
+- 选定流：从香蕉残余物或拒收物回收的有机材料
 - 流属性/单位：Mass / kg wet or dry material
 - 数量规则：记录回收产出和质量基准；仅当接收方和预期用途有文件支持时，才应用共产品或回收材料规则。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,7 +524,7 @@ sync_with: pcr.en-US.md
 
 记录回收、处理、堆肥、饲料利用或处置之后仍作为废物流的残余物或废弃物部分。
 
-- 选定流：Residual banana organic waste
+- 选定流：香蕉剩余有机废物
 - 流属性/单位：Mass / kg wet or dry material
 - 数量规则：以进入路径的投入量减去有文件支持的回收产品和其他实测产出进行计算；报告处理或处置去向。
 - 数值来源模式：计算值（`calculated_value`）
@@ -580,7 +541,7 @@ sync_with: pcr.en-US.md
 
 记录经过包含在边界内的处理路径后排出的废水，并将其与转移给下游服务的未经处理调理废水区分开。
 
-- 选定流：Treated banana conditioning wastewater
+- 选定流：已处理香蕉整理废水
 - 流属性/单位：Volume or mass / m3 or kg
 - 数量规则：使用处理记录或水平衡，并披露处理后物流是转移到下游服务、再利用还是在边界内排放。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -643,6 +604,16 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_crop_protection_records` | 作业 managed_banana_crop_cycle：记录所代表香蕉作物周期使用的每种作物保护产品或有效成分，包括目标和施用方法。 原数量方法：汇总供应商产品数量；在有配方文件时，依据文件计算有效成分质量。 |
+| `primary_packaging_input_specific_input` | `cp_packaging_records` | 作业 banana_harvest_and_conditioning：记录在声明交接门之前跨越边界的初级包装；当有文件支持所代表批次的分摊份额时，也包括可重复使用的周转箱或托盘。 原数量方法：使用供应商规格和批次数量；披露材料、单位质量、重复使用状态以及分配到香蕉产出的份额。 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -654,13 +625,13 @@ sync_with: pcr.en-US.md
 | `cp_plantation_register` | `plantation_establishment`; `managed_banana_crop_cycle` | area, crop dates, stand age, cycle number, and shared plantation attribution | field, plantation-unit, and crop-cycle register | area; unit; prior land use; planting or regrowth date; stand age; cycle number; crop dates; shared-use flag | verify register against field map and production records；原始汇总与分配：calculate area-time and assign shared burdens with the declared rule | ha, m2, days, years, and crop-cycle identifier | each crop cycle or production year | full represented crop cycle or production year | each banana field, plantation unit, or smallholder site | 每声明的参考流 | field map, production register, dates, and stand evidence |
 | `cp_irrigation_records` | `managed_banana_crop_cycle` | crop irrigation and water withdrawal | meter, pump, controller, or water-balance record | source; meter start and end; event date; area; method; rainfall adjustment; withdrawal and return flow | meter reading or documented water-balance calculation；原始汇总与分配：sum delivered irrigation and withdrawal by cycle, year, and source | m3 | each event or meter period | full represented crop cycle or production year | each banana field or plantation unit | 每声明的参考流 | calibrated meter or documented balance inputs |
 | `cp_field_energy_records` | `managed_banana_crop_cycle` | plantation fuel and electricity | fuel invoice, equipment activity log, and electricity meter | fuel or electricity; equipment; operation; field; date; allocation basis | supplier record plus equipment or meter log；原始汇总与分配：allocate shared operations by area, hours, throughput, or declared physical basis | L, MJ, or kWh | each refuelling, operation, or meter period | full represented crop cycle or production year | each banana field or plantation unit | 每声明的参考流 | invoice, equipment log, meter record, and allocation calculation |
-| `cp_nutrient_records` | `managed_banana_crop_cycle` | nutrient and soil-amendment inputs | nutrient plan, supplier invoice, and application log | product; material description; nutrient concentration; date; area; quantity; method; soil or tissue test | reconcile product records with field application records；原始汇总与分配：sum product and nutrient mass by cycle or year and declared basis | kg product and kg nutrient | each application | full represented crop cycle or production year | each banana field or plantation unit | 每声明的参考流 | label or supplier specification, soil or tissue evidence, and application log |
-| `cp_crop_protection_records` | `managed_banana_crop_cycle` | crop-protection products and biosecurity actions | treatment log, supplier record, and site hygiene register | product; active ingredient; rate; area; date; target; equipment; hygiene action; site | record each application and relevant hygiene or biosecurity action；原始汇总与分配：sum by product, active ingredient, action, and cycle or year | kg product, kg active ingredient, and declared action count | each application or action | full represented crop cycle or production year | each banana field or plantation unit | 每声明的参考流 | application log, product label, and site record |
-| `cp_residue_and_reject_records` | `managed_banana_crop_cycle`; `banana_harvest_and_conditioning`; `banana_residue_and_reject_routing` | field residue, rejects, trim, recovered material, and wastewater fate | residue, reject, treatment, recovery, and destination record | source stream; field or batch; date; wet or dry mass; volume; destination; recipient; quality basis | weigh or meter each stream and retain destination evidence；原始汇总与分配：reconcile each source stream to recovered product, residual waste, treatment, or downstream transfer | kg wet, kg dry, and m3 | each harvest lot, treatment batch, or routing event | full represented crop cycle or production year | each field, plantation unit, preparation line, or treatment route | 每声明的参考流 | scale or meter record, recipient record, and treatment or disposal receipt |
+| `cp_nutrient_records` | `managed_banana_crop_cycle` | nutrient and soil-amendment inputs | nutrient plan, supplier invoice, and application log | product; material description; nutrient concentration; date; area; quantity; method; soil or tissue test | reconcile product records with field application records；原始汇总与分配：sum product and nutrient mass by cycle or year and declared basis `nutrient_loss_emission_specific_emission`: 依据养分记录、土壤或气候信息以及有文件支持的水体或土壤路径，使用声明的盈余或损失因子方法；不得仅由购买量推断损失。 每种适用养分流失物质及实际接收环境须分别建立基本交换，保留匹配的氮磷活动量、兼容因子基准及元素质量到化合物质量的有记录换算。保留原作物周期或产出归一化及实际上游覆盖，缺少路径记录不等于零。总养分流失不是一条流，不得全部归为硝酸根或磷酸根。完成数据集前须实例化并核验具体身份，或明确登记未解析身份。 `ipcc-2019-refinement-afolu` | kg product and kg nutrient | each application | full represented crop cycle or production year | each banana field or plantation unit | 每声明的参考流 | label or supplier specification, soil or tissue evidence, and application log |
+| `cp_crop_protection_records` | `managed_banana_crop_cycle` | crop-protection products and biosecurity actions | treatment log, supplier record, and site hygiene register | product; active ingredient; rate; area; date; target; equipment; hygiene action; site | record each application and relevant hygiene or biosecurity action；原始汇总与分配：sum by product, active ingredient, action, and cycle or year `crop_protection_input_specific_input`: 作业 managed_banana_crop_cycle：记录所代表香蕉作物周期使用的每种作物保护产品或有效成分，包括目标和施用方法。 原数量方法：汇总供应商产品数量；在有配方文件时，依据文件计算有效成分质量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product, kg active ingredient, and declared action count | each application or action | full represented crop cycle or production year | each banana field or plantation unit | 每声明的参考流 | application log, product label, and site record |
+| `cp_residue_and_reject_records` | `managed_banana_crop_cycle`; `banana_harvest_and_conditioning`; `banana_residue_and_reject_routing` | field residue, rejects, trim, recovered material, and wastewater fate | residue, reject, treatment, recovery, and destination record | source stream; field or batch; date; wet or dry mass; volume; destination; recipient; quality basis | weigh or meter each stream and retain destination evidence；原始汇总与分配：reconcile each source stream to recovered product, residual waste, treatment, or downstream transfer `residue_reject_routing_input_specific_input`: 记录在声明交接门之前进入现场或纳入范围的回收、处理、堆肥、饲料利用或处置路径的田间残余物、采收废弃物、调理修整物或废水。 使用相应田间、采收或调理记录中的实测数量和声明去向；不得重复记录已转移到边界外的物流。 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-banana-production-guide-2015`; `globalgap-ifa-fruit-vegetables-v6` | kg wet, kg dry, and m3 | each harvest lot, treatment batch, or routing event | full represented crop cycle or production year | each field, plantation unit, preparation line, or treatment route | 每声明的参考流 | scale or meter record, recipient record, and treatment or disposal receipt |
 | `cp_harvest_records` | `managed_banana_crop_cycle`; `banana_harvest_and_conditioning` | harvest and crop-cycle output | harvest ticket, bunch or lot register, and scale record | field; bunch or lot; date; gross mass; marketable mass; maturity; grade; reject; destination | weigh each harvest lot or use documented lot reconciliation；原始汇总与分配：sum gross harvest, marketable output, rejects, and losses by cycle or year | kg wet bananas | each harvest lot or campaign | full represented harvest campaign | each banana field or plantation unit | 每声明的参考流 | calibrated scale, lot ticket, and grade record |
 | `cp_postharvest_records` | `banana_harvest_and_conditioning` | washing, wastewater, rejects, and batch conditioning | conditioning batch and utility records | received mass; wash water; discharge; trim; packaging; batch; date; fate; gate state | batch record plus meter and packaging allocation；原始汇总与分配：aggregate by batch and normalize to marketable gate output | kg, m3, kWh, and packaging units | each batch or meter period | full represented harvest campaign | each preparation line or pack-house | 每声明的参考流 | meter record, batch sheet, and waste or treatment receipt |
 | `cp_postharvest_energy_records` | `banana_harvest_and_conditioning` | cooling, grading, washing, and packing electricity or fuel | electricity meter, fuel record, and throughput record | meter period; line; kWh or fuel; throughput; cooling duration; batch | meter or fuel allocation by throughput or run time；原始汇总与分配：allocate shared utility by throughput or run time and reconcile to batch output | kWh, MJ, or L | each meter period or batch | full represented harvest campaign | each in-scope preparation line | 每声明的参考流 | meter data, fuel record, and allocation calculation |
-| `cp_packaging_records` | `banana_harvest_and_conditioning` | primary packaging | packaging specification, bill of materials, and count record | material; unit mass; units; reuse status; batch; output mass | packaging count and specification reconciliation；原始汇总与分配：sum packaging material per gate output and disclose reuse | kg material and packaging units | each packaging lot or batch | full represented harvest campaign | each preparation line or pack-house | 每声明的参考流 | supplier specification, count sheet, and reuse declaration |
+| `cp_packaging_records` | `banana_harvest_and_conditioning` | primary packaging | packaging specification, bill of materials, and count record | material; unit mass; units; reuse status; batch; output mass | packaging count and specification reconciliation；原始汇总与分配：sum packaging material per gate output and disclose reuse `primary_packaging_input_specific_input`: 作业 banana_harvest_and_conditioning：记录在声明交接门之前跨越边界的初级包装；当有文件支持所代表批次的分摊份额时，也包括可重复使用的周转箱或托盘。 原数量方法：使用供应商规格和批次数量；披露材料、单位质量、重复使用状态以及分配到香蕉产出的份额。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg material and packaging units | each packaging lot or batch | full represented harvest campaign | each preparation line or pack-house | 每声明的参考流 | supplier specification, count sheet, and reuse declaration |
 | `cp_gate_output_records` | `banana_harvest_and_conditioning` | marketable output and final rejects | dispatch scale, lot record, and reject record | lot; date; gate; packed mass; maturity; grade; reject; destination; gate state | final scale and lot reconciliation；原始汇总与分配：sum marketable output and final reject streams; normalize to 1,000 kg | kg wet bananas | each dispatch lot | full represented harvest campaign | declared gate | 每声明的参考流 | calibrated scale or lot record and grade record |
 
 ### 计算规则
@@ -724,21 +695,3 @@ sync_with: pcr.en-US.md
 | `eea-emission-methods` | official_guidance | EMEP/EEA air pollutant emission inventory guidebook 2023, https://www.eea.europa.eu/en/analysis/publications/emep-eea-guidebook-2023 | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `ipcc-soils-n2o-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `ipcc-biological-waste-2006` | method_factor | IPCC 2006 Guidelines, Volume 5, Chapter 4: Biological Treatment of Solid Waste, https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/5_Volume5/V5_4_Ch4_Bio_Treat.pdf | 仅适用于声明的实际路径；活动量和适用因子另行记录 |
-
-
-###### 氮和养分向水体或土壤的损失（`nutrient_loss_emission`）
-
-仅在选定的方法和场址记录支持该路径时，计算硝酸盐、磷酸盐或其他有文件依据的养分损失。
-
-- 选定流：Nutrient loss from managed banana plantation
-- 流属性/单位：Mass / kg nutrient or substance
-- 数量规则：依据养分记录、土壤或气候信息以及有文件支持的水体或土壤路径，使用声明的盈余或损失因子方法；不得仅由购买量推断损失。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：归属于同一作物周期或生产年度的每 1,000 kg 可销售新鲜香蕉.
-
-- 归一化基准：每声明的参考流
-- 基准类型：氮投入（`n_input`）
-- 证据类型：基于采集计算（`calculated_from_collection`）
-- 采集协议：`cp_nutrient_records`
-- 来源：`ipcc-2019-refinement-afolu`

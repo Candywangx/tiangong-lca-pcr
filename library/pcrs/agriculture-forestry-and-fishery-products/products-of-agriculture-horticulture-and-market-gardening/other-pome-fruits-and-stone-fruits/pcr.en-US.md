@@ -120,9 +120,9 @@ Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_orchard_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -132,12 +132,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_records`
 - Sources: `foreground-farm-records`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`p_orchard_management_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_orchard_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -147,6 +149,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_records`
 - Sources: `foreground-farm-records`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`p_orchard_management_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -225,23 +229,6 @@ Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 - Collection protocol: `cp_orchard_records`
 - Sources: `foreground-farm-records`, `fao-crop-evapotranspiration-56`
 
-###### Crop-protection products actually used (`crop_protection_products`)
-Record each crop-protection product and application event used for the declared orchard or crop cycle.
-
-- Selected flow: Actual crop-protection product(s) used for the declared crop (unmapped)
-- Flow property / unit: Mass or volume / kg or L
-- Amount: site-specific
-- Amount rule: Application logs, invoices, or stock reconciliation
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: 1 kg marketable fruit at hand-off.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_orchard_records`
-- Sources: `foreground-farm-records`
-
 ###### Electricity at the equipment supply point (`orchard_energy_electricity`)
 
 **Collection scope and applicability for orchard_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -249,9 +236,9 @@ Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 Record actual fuel or electricity consumed by in-scope orchard operations and retain the energy carrier and allocation basis.
 Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_orchard_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -262,11 +249,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_orchard_records`
 - Sources: `foreground-farm-records`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`orchard_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_orchard_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -276,6 +265,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_orchard_records`
 - Sources: `foreground-farm-records`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -455,9 +446,9 @@ Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 Record actual energy used for harvest and allocate shared consumption to the reporting fruit output.
 Raw activity or stage basis: 1 kg marketable fruit at hand-off.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_harvest_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -468,11 +459,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest_records`
 - Sources: `foreground-farm-records`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`harvest_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_harvest_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -483,22 +476,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest_records`
 - Sources: `foreground-farm-records`; `fao-agricultural-energy`
 
-###### Reusable or single-use harvest containers (`harvest_containers`)
-Record container number or mass, reuse cycles, and loss rate from harvest-container records.
-
-- Selected flow: Crate, bin, or harvest container where applicable
-- Flow property / unit: Mass or item count / kg or item
-- Amount: site-specific
-- Amount rule: Number, mass, reuse cycles, and loss rate from container records
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: 1 kg marketable fruit at hand-off.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_harvest_records`
-- Sources: `foreground-farm-records`
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 ##### Elementary flows
@@ -852,6 +830,15 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `crop_protection_products_specific_input` | `cp_orchard_records` | Operation p_orchard_management: Record each crop-protection product and application event used for the declared orchard or crop cycle. Original quantity method: Application logs, invoices, or stock reconciliation |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -859,8 +846,8 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_orchard_records` | `p_orchard_management` | orchard inputs, land, residues, operations | farm and orchard primary records | site_id; block_id; species; cultivar; area; orchard_age; establishment_year; operation_date; input_name; product_quantity; nutrient_content; water_volume; fuel; electricity; residue_mass; destination | invoices, application logs, meters, field logs, supplier records; Raw aggregation and attribution: sum by block then divide by reconciled hand-off mass | native units normalized to PCR units | each operation and annual reconciliation | one harvest year plus disclosed perennial attribution | every contributing block/unit | per declared reference flow | source documents, meter reads, stock reconciliation, block register |
-| `cp_harvest_records` | `p_harvest` | harvest inputs and outputs | harvest ticket, weighbridge, loss record | date; block_id; harvested_mass; transferred_mass; loss_mass; grade; container_count; container_mass; fuel; electricity; destination | lot-level weighing and harvest records; Raw aggregation and attribution: reconcile crop-ready, collected, transferred, and loss masses | kg fruit; kg/item containers; L/MJ/kWh energy | every harvest lot | reporting harvest season | every contributing block and crew | per declared reference flow | calibrated scale, lot tickets, supervisor reconciliation |
+| `cp_orchard_records` | `p_orchard_management` | orchard inputs, land, residues, operations | farm and orchard primary records | site_id; block_id; species; cultivar; area; orchard_age; establishment_year; operation_date; input_name; product_quantity; nutrient_content; water_volume; fuel; electricity; residue_mass; destination | invoices, application logs, meters, field logs, supplier records; Raw aggregation and attribution: sum by block then divide by reconciled hand-off mass `crop_protection_products_specific_input`: Operation p_orchard_management: Record each crop-protection product and application event used for the declared orchard or crop cycle. Original quantity method: Application logs, invoices, or stock reconciliation Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | native units normalized to PCR units | each operation and annual reconciliation | one harvest year plus disclosed perennial attribution | every contributing block/unit | per declared reference flow | source documents, meter reads, stock reconciliation, block register |
+| `cp_harvest_records` | `p_harvest` | harvest inputs and outputs | harvest ticket, weighbridge, loss record | date; block_id; harvested_mass; transferred_mass; loss_mass; grade; container_count; container_mass; fuel; electricity; destination | lot-level weighing and harvest records; Raw aggregation and attribution: reconcile crop-ready, collected, transferred, and loss masses `harvest_containers_specific_input`: Record container number or mass, reuse cycles, and loss rate from harvest-container records. Number, mass, reuse cycles, and loss rate from container records Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg fruit; kg/item containers; L/MJ/kWh energy | every harvest lot | reporting harvest season | every contributing block and crew | per declared reference flow | calibrated scale, lot tickets, supervisor reconciliation |
 | `cp_grade_records` | `p_grading_sorting` | grading inputs, outputs, rejects, water, energy | grading sheet and facility records | incoming_mass; accepted_mass; downgraded_mass; reject_mass; grade; destination; water; electricity; date; line_id | line records, weigh tickets, meters, facility allocation; Raw aggregation and attribution: sum outputs and rejects to incoming mass by species and grade | kg, m3, kWh, or MJ | every lot or day | all in-boundary grading periods | each line/facility | per declared reference flow | scale calibration, grade records, reject-path evidence |
 | `cp_conditioning_records` | `p_primary_conditioning_handoff` | conditioning inputs, packaging, losses, reference output | packing, cooling, and hand-off records | incoming_mass; handoff_mass; package_type; package_mass; reuse_cycles; cooling_energy; wash_water; fruit_loss; package_reject; handoff_date; destination | packhouse records, material reconciliation, meters, hand-off tickets; Raw aggregation and attribution: reconcile incoming fruit, hand-off fruit, fruit loss, and rejects | kg fruit/packaging; m3; kWh/MJ | every lot or day | all in-boundary conditioning periods | each facility, line, hand-off | per declared reference flow | scales, packaging inventory, meters, hand-off documents |
 | `cp_emission_model_inputs` | `p_orchard_management` | calculated soil and agricultural emissions | derived calculation input record | nutrient_mass; application_method; application_date; soil; climate; drainage; residue_management; combustion_input; receiving_medium | calculate from collected records and selected method parameters; Raw aggregation and attribution: calculate by site/block then normalize by hand-off mass | kg nutrient, kg fuel, declared emission unit | each reporting cycle and method update | reporting harvest year | each site/block with different inputs | per declared reference flow | method version, input reconciliation, parameter provenance |

@@ -192,34 +192,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: feed_and_forage_input
-          role: "Feed, forage, supplements, and milk replacer"
-          name: "Cattle feed and forage products"
-          flow_type: "product"
-          property_unit: "Mass / kg as-fed and kg dry matter"
-          description: "Record supplied feed separately from actual intake and losses, by identity, source, as-fed mass, dry matter, composition, cattle class and feeding period; grazing intake may be calculated from measured pasture and animal records. Denominator and scope requirements：per 1,000 kg farm-gate live cattle output and by cohort-period Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_feed_and_grazing
-              source_ids:
-                - fao-leap-large-ruminants-2016
-                - ipcc-2019-livestock-manure
-            ranges:
-              - role: qa_guardrail
-                lower: "0.5"
-                upper: "50"
-                unit: "kg dry matter/kg farm-gate live output"
-                basis: "broad multi-route and multi-period screen; replace with cohort feed and pasture records"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: herd_water_input
           role: "Drinking and husbandry water"
           name: "Process water supply"
@@ -246,58 +218,48 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: herd_energy_input
-          role: "Herd-production energy carriers"
-          name: "Energy supply for herd production"
+        - row_id: herd_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy or carrier quantity / kWh, MJ, L, or kg"
-          description: "Record carrier-specific electricity, heat and fuels used for feeding, ventilation, cooling, milking when shared with the cattle system, fencing, pasture management and mobile machinery. Denominator and scope requirements：per 1,000 kg farm-gate live cattle output Raw quantity and calculation requirements: meter, invoice or equipment log by carrier, consuming node and service period Original collection denominator kind: process_output."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Feeding, ventilation, pumping, cooling, shared milking, fencing and pasture machinery within the herd boundary; activate electricity only for electric equipment and diesel only for documented diesel machinery. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply herd_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Collect only this carrier quantity attributable to this node under cp_energy_and_infrastructure. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
-              text: "per reference flow"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_and_infrastructure
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5000"
-                unit: "kWh-equivalent/1,000 kg farm-gate live output"
-                basis: "broad screen spanning pasture to housed routes; retain concrete carriers"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: animal_health_input
-          role: "Veterinary and animal-health products"
-          name: "Veterinary and animal-health products"
+              source_ids:
+                - route-energy-fao
+            ranges: []
+        - row_id: herd_energy_input_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Mass, volume, dose, or item / native unit with product identity"
-          description: "Record medicines, vaccines, disinfectants and other health products actually used; veterinary services are recorded separately from physical products and are not the cattle reference product. Denominator and scope requirements：per treated cohort and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: treatment and purchase records by product, dose, animal class and event Original collection denominator kind: process_output."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Feeding, ventilation, pumping, cooling, shared milking, fencing and pasture machinery within the herd boundary; activate electricity only for electric equipment and diesel only for documented diesel machinery. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply herd_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Collect only this carrier quantity attributable to this node under cp_energy_and_infrastructure. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
-            specificity: "product_specific"
+            specificity: "site_specific"
             basis:
-              text: "per reference flow"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
-              collection_protocol_id: cp_health_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "treatment events/1,000 kg farm-gate live output"
-                basis: "broad event-count screen; concrete product quantities remain mandatory"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              collection_protocol_id: cp_energy_and_infrastructure
+              source_ids:
+                - route-energy-fao
+            ranges: []
         - row_id: inbound_transport_input
           role: "Controlled inbound cattle and feed transport"
           name: "Inbound road freight transport service"
@@ -474,32 +436,27 @@ process_inventory:
     label: "Manure Collection, Storage, Treatment, and Use"
     inputs:
       product:
-        - row_id: manure_energy_input
-          role: "Manure-management energy carriers"
-          name: "Energy supply for manure management"
+        - row_id: manure_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy or carrier quantity / kWh, MJ, L, or kg"
-          description: "Record energy for scraping, pumping, separation, storage, aeration, treatment and land application under farm control. Denominator and scope requirements：per kg manure handled and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: carrier-specific meter, invoice or equipment log assigned to manure pathways Original collection denominator kind: process_output."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Scraping, pumping, separation, aeration, storage, treatment and land application under farm control. Electricity applies only to actual electric drives; identify the actual power source of mobile spreading separately. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply manure_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Collect only this carrier quantity attributable to this node under cp_energy_and_infrastructure. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
             value_mode: "calculated_value"
-            specificity: "technology_specific"
+            specificity: "site_specific"
             basis:
-              text: "per reference flow"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_energy_and_infrastructure
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "2000"
-                unit: "kWh-equivalent/1,000 kg farm-gate live output"
-                basis: "broad screen from passive deposition to mechanically managed systems"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - route-energy-fao
+            ranges: []
         - row_id: manure_water_input
           role: "Manure-management water"
           name: "Process water supply"
@@ -558,62 +515,9 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: exported_manure_product
-          role: "Exported manure or recovered nutrient product"
-          name: "Exported cattle manure or recovered nutrient product"
-          flow_type: "product"
-          property_unit: "Mass and nutrient content / kg"
-          description: "Treat manure as a product only when it is intentionally recovered and transferred with a measured quantity, composition, recipient, handover and upstream burden treatment. Denominator and scope requirements：per manure pathway and per 1,000 kg farm-gate live output after attribution Raw quantity and calculation requirements: measured exported mass with dry matter, nitrogen and other declared nutrient content Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "product_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_outputs_and_allocation
-              source_ids:
-                - fao-leap-nutrient-flows-2018
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg exported manure/kg manure available after storage losses"
-                basis: "recovered export fraction bounded by manure pathway mass balance"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+        []
       waste:
-        - row_id: unusable_manure_waste
-          role: "Unusable manure and treatment residues"
-          name: "Unusable cattle manure and treatment residue"
-          flow_type: "waste"
-          property_unit: "Mass / kg wet and dry basis"
-          description: "Record manure, sludge, bedding residue or treatment residue not intentionally transferred as a product, including actual fate and treatment destination. Denominator and scope requirements：per manure pathway and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: measured or reconciled waste mass by pathway and destination Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_manure_and_emissions
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg residue/kg manure received"
-                basis: "residual fraction after products, field use, emissions and stock change are documented"
-                basis_kind: "process_output"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
+        []
       elementary:
         - row_id: manure_methane_air
           role: "Manure methane to air"
@@ -673,35 +577,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: manure_nitrogen_losses
-          role: "Ammonia and other reported nitrogen losses to air or water"
-          name: "Reported nitrogen loss species from cattle manure"
-          flow_type: "elementary"
-          property_unit: "Mass of named species or nitrogen / kg"
-          description: "Record NH3, NOx, nitrate, nitrogen runoff and other reported nitrogen species separately by receiving medium before final identity binding. Denominator and scope requirements：per manure pathway and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: measured amount or method calculation with species, elemental basis, receiving medium and pathway retained Original collection denominator kind: n_input."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_manure_and_emissions
-              source_ids:
-                - fao-leap-nutrient-flows-2018
-                - ipcc-2019-livestock-manure
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg N in reported losses/kg manure N available"
-                basis: "summed nitrogen-loss fraction must not exceed available manure nitrogen after exported and retained nitrogen"
-                basis_kind: "n_input"
-                evidence_kind: "method_formula"
-                source_ids:
-                  - mass-balance-identity
   - id: farm_gate_transfer
     label: "Selection, Weighing, and Farm-gate Transfer"
     inputs:
@@ -729,32 +604,6 @@ process_inventory:
                 upper: "2"
                 unit: "kg cattle entering selection/kg farm-gate reference output"
                 basis: "broad selection and short holding-loss screen; investigate values outside the range"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: gate_energy_input
-          role: "Farm-gate handling energy"
-          name: "Energy supply for farm-gate handling"
-          flow_type: "product"
-          property_unit: "Energy or carrier quantity / kWh, MJ, L, or kg"
-          description: "Record electricity or fuel for short holding, handling, weighing and loading before the handover; exclude transport after transfer. Denominator and scope requirements：per 1,000 kg farm-gate live cattle output Raw quantity and calculation requirements: meter, invoice or equipment runtime assigned to gate operations Original collection denominator kind: reference_flow."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "technology_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_energy_and_infrastructure
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "500"
-                unit: "kWh-equivalent/1,000 kg farm-gate live output"
-                basis: "broad handling and weighing screen excluding post-transfer transport"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
@@ -819,13 +668,13 @@ process_inventory:
                   - reference-definition
       waste:
         - row_id: gate_rejects_and_losses
-          role: "Gate rejects, deaths, and measured live-mass loss"
-          name: "Gate cattle rejects and biological losses"
+          role: "Dead cattle carcasses at the gate"
+          name: "Dead cattle carcasses"
           flow_type: "waste"
-          property_unit: "Mass and count / kg and head"
-          description: "Record rejected animals, deaths and any measured short-holding mass loss separately from accepted product, with fate and reason. Denominator and scope requirements：per transfer lot and per kg reference output Raw quantity and calculation requirements: input live mass minus accepted reference output and separately documented retained or returned cattle, reconciled with measured loss Original collection denominator kind: reference_flow."
+          property_unit: "Mass / kg"
+          description: "Record only actual dead cattle carcasses generated within the gate operation and assigned a documented waste destination. Retain weighing or a documented carcass-mass estimate, head count, event, location, destination and treatment responsibility. Rejected animals that remain alive, retained or returned animals, excreta and short-holding live-weight change are not this carcass exchange. Cross-check mortality records in preceding processes so the same carcass and its treatment are counted once. Denominator and scope requirements: per transfer lot and per kg accepted reference output Raw quantity and calculation requirements: sum the documented actual carcass mass attributable to this gate operation; keep head count as supporting activity data. A live-mass balance deficit is not a substitute for carcass mass or a waste-treatment amount. Normalize the attributable carcass mass exactly once under inventory_reference_normalization and stage_throughput_linkage."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Use the documented gate carcass quantity and waste destination; do not infer it from input live mass minus accepted output."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -838,10 +687,10 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "1"
-                unit: "kg reject and loss/kg live cattle entering selection"
-                basis: "transfer-lot mass balance excluding retained or returned live cattle"
-                basis_kind: "process_output"
+                upper: "Q_carcass_gate / Q_accepted"
+                unit: "kg carcass/kg accepted live cattle output"
+                basis: "per 1 kg accepted live cattle output from the matched gate lot and period. Q_carcass_gate is the documented actual mass of unique carcasses newly generated within this gate operation, before burden attribution; Q_accepted is the measured positive accepted live output mass from the same lot and period. This is a site-calculated physical availability bound, not an empirical rate, default amount or permission to infer carcass mass from live-weight deficit."
+                basis_kind: "reference_flow"
                 evidence_kind: "method_formula"
                 source_ids:
                   - mass-balance-identity
@@ -893,7 +742,7 @@ dataset_production:
       flow_role: "feed, forage and grazing intake"
       record_type: "purchase, ration, feed issue, pasture and residue records"
       raw_fields: "feed identity; source; as-fed mass; dry matter; nutrient or energy composition; leftovers; pasture area and period; cattle class"
-      collection_method: "invoices, feed inventory, ration logs, pasture records and documented intake calculation; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output."
+      collection_method: "invoices, feed inventory, ration logs, pasture records and documented intake calculation; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. feed_and_forage_input_specific_input: Operation herd_production: Record supplied feed separately from actual intake and losses, by identity, source, as-fed mass, dry matter, composition, cattle class and feeding period; grazing intake may be calculated from measured pasture and animal records. Denominator and scope requirements：per 1,000 kg farm-gate live cattle output and by cohort-period Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg as-fed, kg dry matter, ha-day"
       frequency: "daily issue or period summary"
       temporal_coverage: "all feeding and grazing phases"
@@ -917,7 +766,7 @@ dataset_production:
       flow_role: "energy and shared assets"
       record_type: "meter, invoice, fuel, equipment and asset register"
       raw_fields: "carrier; quantity; meter; equipment; service; users; operating hours; asset life; service period; allocation driver"
-      collection_method: "submeter, invoice, tank record, runtime log and asset register; Raw aggregation requirements: direct meter assignment first; allocate residual shared amount once by documented causal driver. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "submeter, invoice, tank record, runtime log and asset register; Raw aggregation requirements: direct meter assignment first; allocate residual shared amount once by documented causal driver. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: herd_energy_input_identification: Feeding, ventilation, pumping, cooling, shared milking, fencing and pasture machinery within the herd boundary; activate electricity only for electric equipment and diesel only for documented diesel machinery. Denominator and scope requirements：per 1,000 kg farm-gate live cattle output Raw quantity and calculation requirements: meter, invoice or equipment log by carrier, consuming node and service period Original collection denominator kind: process_output. (route-energy-fao) manure_energy_input_identification: Scraping, pumping, separation, aeration, storage, treatment and land application under farm control. Electricity applies only to actual electric drives; identify the actual power source of mobile spreading separately. Denominator and scope requirements：per kg manure handled and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: carrier-specific meter, invoice or equipment log assigned to manure pathways Original collection denominator kind: process_output. (route-energy-fao) gate_energy_input_identification: Short holding, weighing and loading before farm-gate handover. Identify the actual handling equipment first; neither powered handling nor a fuel is assumed. Exclude post-transfer transport. Denominator and scope requirements：per 1,000 kg farm-gate live cattle output Raw quantity and calculation requirements: meter, invoice or equipment runtime assigned to gate operations Original collection denominator kind: reference_flow. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kWh, MJ, L, kg, hours"
       frequency: "monthly and each major operation"
       temporal_coverage: "full reporting and asset service period"
@@ -929,7 +778,7 @@ dataset_production:
       flow_role: "animal-health products and interventions"
       record_type: "medicine register, purchase and treatment record"
       raw_fields: "product; active substance; dose; unit; animal class; count; date; reason; withdrawal status"
-      collection_method: "farm treatment register and supplier record; Raw aggregation requirements: sum product quantity by identity and class; retain services separately. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "farm treatment register and supplier record; Raw aggregation requirements: sum product quantity by identity and class; retain services separately. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. animal_health_input_specific_input: Operation herd_production: Record medicines, vaccines, disinfectants and other health products actually used; veterinary services are recorded separately from physical products and are not the cattle reference product. Denominator and scope requirements：per treated cohort and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: treatment and purchase records by product, dose, animal class and event Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "native product unit and event"
       frequency: "each treatment"
       temporal_coverage: "complete reporting period"
@@ -950,11 +799,11 @@ dataset_production:
       quality_evidence: "manifest, scale ticket and route evidence; traceable numerator, accepted reference-output denominator and normalization worksheet"
     - protocol_id: cp_manure_and_emissions
       process_id: "herd_production_manure_management"
-      flow_role: "excretion, manure pathways, methane and nitrogen losses"
+      flow_role: "excretion, manure pathways, methane and nitrogen losses; required specific-emission identification and calculation"
       record_type: "animal, feed, manure, storage, treatment, recovery and application record"
-      raw_fields: "animal category; population; days; intake; digestibility; volatile solids; nitrogen; system; storage days; climate; recovery; export; application; factor tier"
-      collection_method: "measurements plus IPCC-consistent calculation from collected activity data; Raw aggregation requirements: calculate by category-pathway-period; reconcile manure and nitrogen transfers; aggregate after retaining components. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
-      unit: "kg manure, kg VS, kg N, kg gas species"
+      raw_fields: "animal category; population; days; intake; digestibility; volatile solids; nitrogen; system; storage days; climate; recovery; export; application; factor tier; substance name; receiving compartment; reported unit and elemental/compound basis; method and factor source; actual activity; period; quantity uncertainty; related existing exchanges"
+      collection_method: "measurements plus IPCC-consistent calculation from collected activity data; Raw aggregation requirements: calculate by category-pathway-period; reconcile manure and nitrogen transfers; aggregate after retaining components. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. unusable_manure_waste_specific_output: Record manure, sludge, bedding residue or treatment residue not intentionally transferred as a product, including actual fate and treatment destination. Denominator and scope requirements：per manure pathway and per 1,000 kg farm-gate live output Raw quantity and calculation requirements: measured or reconciled waste mass by pathway and destination Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. mass-balance-identity; manure_nitrogen_losses_specific_emission: For each actual cattle-manure pathway, identify reported ammonia, nitrogen oxides, nitrate and other evidenced nitrogen species and their receiving media separately. Retain the original manure-pathway and live-output attribution. Reconcile nitrogen on a common elemental-N ledger: the non-overlapping sum of losses cannot exceed available manure N after exported and retained N; the original 0 to 1 fraction is a total N-budget check, not a compound emission factor. Do not count the same nitrogen twice across linked pathways. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission."
+      unit: "kg manure, kg VS, kg N, kg gas species; kg of each identified substance and kg N recorded separately"
       frequency: "monthly or management event"
       temporal_coverage: "every animal phase and manure pathway"
       site_scope: "barn, pasture, storage, treatment and field pathway"
@@ -965,7 +814,7 @@ dataset_production:
       flow_role: "intended outputs, handovers and attribution"
       record_type: "sales, milk, breeding, cull, manure export and allocation record"
       raw_fields: "product; quantity; property; handover; recipient; date; direct burden; shared pool; allocation driver; price if used"
-      collection_method: "invoice, meter, scale and allocation worksheet; Raw aggregation requirements: direct assignment first; allocate only residual pools; shares sum to one. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "invoice, meter, scale and allocation worksheet; Raw aggregation requirements: direct assignment first; allocate only residual pools; shares sum to one. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. exported_manure_product_specific_output: Treat manure as a product only when it is intentionally recovered and transferred with a measured quantity, composition, recipient, handover and upstream burden treatment. Denominator and scope requirements：per manure pathway and per 1,000 kg farm-gate live output after attribution Raw quantity and calculation requirements: measured exported mass with dry matter, nitrogen and other declared nutrient content Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. fao-leap-nutrient-flows-2018"
       unit: "product-specific"
       frequency: "each handover and reporting-period close"
       temporal_coverage: "complete period"
@@ -977,7 +826,7 @@ dataset_production:
       flow_role: "selection, pre-transfer weighing and handover"
       record_type: "selection list, calibrated scale ticket, health or market document and transfer record"
       raw_fields: "lot; animal class; sex; route; count; live mass; weighing time; scale; gut-fill or shrink convention; accept/reject; retained; destination; handover time"
-      collection_method: "calibrated scale and signed transfer record; Raw aggregation requirements: reconcile input, accepted output, retained or returned cattle, rejects, deaths and measured loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "calibrated scale and signed transfer record; Raw aggregation requirements: reconcile input, accepted output, retained or returned cattle, rejects, deaths and measured loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Keep mutually exclusive accepted, retained/returned, other live transfers and deaths by animal/lot and time. Retain actual carcass mass and disposal evidence separately from live-weight change, excreta, water/carbon transfers and measurement uncertainty. Investigate unexplained residuals rather than turning them into waste; preserve non-carcass waste duties in their actual existing pathway records. Match preceding mortality and treatment records to prevent duplication."
       unit: "kg and head"
       frequency: "each transfer lot"
       temporal_coverage: "full gate operation"
@@ -1086,11 +935,12 @@ dataset_production:
       source_ids:
         - mass-balance-identity
     - id: c_gate_balance
-      applies_to: "transfer lot"
-      rule: "cattle entering selection = accepted output + retained or returned cattle + rejects + deaths + measured live-mass change on one consistent weighing basis."
+      applies_to: "gate records and gate_rejects_and_losses"
+      rule: "Reconcile animal counts using mutually exclusive accepted, retained/returned, other live transfers and deaths within matched lot/time records. Reconcile live mass separately, recording measured weight change and applicable feed/water, excreta or carbon transfers and uncertainty; investigate residuals without assigning them to waste. The carcass exchange uses documented actual carcass mass and fate only, reconciled with prior mortality records, then normalized once."
       inputs:
-        - "gate input and output records"
-      output: "transfer-lot balance and residual"
+        - cp_gate_transfer
+        - "matched mortality and weighing records"
+      output: "animal-count and live-mass reconciliation; separately evidenced kg carcass"
       source_ids:
         - mass-balance-identity
     - id: calc_feed_supply_and_intake
@@ -1110,6 +960,25 @@ dataset_production:
       source_ids:
         - ipcc-2019-livestock-manure
         - ipcc-managed-soils-2019
+    - id: manure_nitrogen_losses_specific_emission
+      applies_to: "manure_management"
+      rule: "For each actual cattle-manure pathway, identify reported ammonia, nitrogen oxides, nitrate and other evidenced nitrogen species and their receiving media separately. Retain the original manure-pathway and live-output attribution. Reconcile nitrogen on a common elemental-N ledger: the non-overlapping sum of losses cannot exceed available manure N after exported and retained N; the original 0 to 1 fraction is a total N-budget check, not a compound emission factor. Do not count the same nitrogen twice across linked pathways. This is a mandatory identification and calculation requirement, not an exchange. Before dataset completeness, instantiate one concrete elementary card per actual substance and receiving compartment. Retain kg substance separately from kg elemental N; convert only from the method-reported basis using the documented composition or stoichiometric fraction of the identified species. Never equate all nitrogen with a chosen compound or add elemental-N and compound masses as separate releases. Preserve source activity, factor units, period, uncertainty, boundary and original normalization; link to an existing matching card instead of counting a duplicate. Verify a compatible UUID or explicitly register the concrete unresolved identity. Missing identity, method or activity evidence does not establish zero or justify omission."
+      inputs:
+        - cp_manure_and_emissions
+      output: "separate substance/compartment emissions and elemental ledgers"
+      source_ids:
+        - fao-leap-nutrient-flows-2018
+        - ipcc-2019-livestock-manure
+        - mass-balance-identity
+    - id: c_gate_carcass_availability
+      applies_to: "gate_rejects_and_losses range QA"
+      rule: "Q_carcass_gate = sum of documented actual mass for unique carcasses newly generated in this gate operation, excluding prior-phase carcasses and duplicate movements or treatment tickets. Q_accepted = measured accepted live output mass for the same lot and period, strictly positive. After the existing non-negative attribution and final-reference normalization, the carcass exchange in kg per kg accepted output must lie between 0 and Q_carcass_gate / Q_accepted. Use the range only to check independently recorded actual quantities; never generate an exchange from its upper bound or from a live-weight residual. Missing or incompatible carcass/output records make this QA unevaluable, not zero or a pass. A zero carcass amount requires documented absence; a lot with zero accepted output cannot normalize a 1 kg product dataset. Investigate mismatches and weighing uncertainty without clipping records to the bound."
+      inputs:
+        - cp_gate_transfer
+        - "actual carcass event/mass/fate and accepted-output records"
+      output: "site-specific QA upper bound in kg carcass/kg accepted live output"
+      source_ids:
+        - mass-balance-identity
   data_quality_requirements:
     - id: dq_identity
       applies_to: "reference and all final exchanges"
@@ -1193,6 +1062,11 @@ validation_rules:
     source_ids:
       - ipcc-2019-livestock-manure
       - ipcc-managed-soils-2019
+  - rule_id: v_gate_waste_quantity
+    applies_to: "gate waste and live-weight reconciliation"
+    rule: "Reject assigning live-weight deficit, live returns or retained animals to carcass waste or its treatment amount. Require actual carcass mass, fate and responsibility, investigate unexplained residuals and exclude duplicate prior-phase mortality or treatment."
+    source_ids:
+      - mass-balance-identity
 published_dataset_profile:
   dataset_role: "foreground cattle-production package that may become a secondary_dataset or background_dataset only after identity and methodology review"
   downstream_use: "input to downstream livestock, slaughter, food, leather, manure-use and agricultural lifecycle models beginning after the producing-farm gate"
@@ -1230,9 +1104,13 @@ data_sources:
     type: "official_guidance"
     reference: "[IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf)"
     used_for: "Direct/indirect nitrogen pathways and coordination of manure storage with managed-soil emissions; select applicable species and management evidence."
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:af0d8d9c4cba7939bf75de02fa8773a9a88ae28d3c8e6c74e4ac48ae75fe5a3d"
+  source_sha256: "sha256:0d78edcb804ac6c1ac580f12898f9f6bc412bb7728fa46be943ede45b8c9a3ba"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8303"
@@ -1283,16 +1161,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51179"
+    - unit_id: "normative_44318"
       family: "allocation"
       span:
         start:
-          offset: 51179
-          line: 810
+          offset: 44318
+          line: 654
           column: 1
         end:
-          offset: 53155
-          line: 820
+          offset: 46294
+          line: 664
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_output_hierarchy` | live cattle, milk, breeding stock, culled animals and exported manure | Partition directly measured product-specific records first. Enumerate each intended output and handover. If indivisible burdens remain, use an explicit PCR-specific physical causal relation; use economic allocation only when physical causality is not defensible, and disclose prices, period and sensitivity. | `fao-leap-large-ruminants-2016`; `fao-leap-nutrient-flows-2018` |\n| `a_residue_status` | manure, mortalities and biological losses | Treat exported manure as a co-product only with intentional recovery and a documented transfer; treat mortalities and unusable manure as waste or loss. Do not convert a residue to a product merely to obtain a credit. | `fao-leap-nutrient-flows-2018` |\n| `a_multi_period` | breeding stock, replacement animals, calves, growing and finishing phases | Index starting stock, births, purchases, sales, deaths, culls and ending stock by cohort-period. Attribute prior and current-period burdens once, reconcile stock change, and document replacement or termination treatment. | `fao-leap-large-ruminants-2016` |\n| `a_shared_infrastructure` | shared housing, milking, feeding, pasture, water, energy and manure assets | Identify all consuming nodes and service periods; allocate measured service directly, then equipment hours, animal-days, live-mass-days or another documented causal driver. Fractions must sum to one and the shared burden must be counted once. | `fao-leap-large-ruminants-2016` |\n| `a_route_separation` | coexisting grazing, mixed, dairy-linked, housed and feedlot variants | Keep route-specific feed, manure, infrastructure and emissions records separate. A portfolio average may be published only with production-weighted route shares and no duplicate animals or periods. | `fao-leap-large-ruminants-2016` |\n\n"
       headings:
@@ -1311,12 +1189,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51179
-              line: 810
+              offset: 44318
+              line: 654
               column: 1
             end:
-              offset: 51219
-              line: 810
+              offset: 44358
+              line: 654
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1331,18 +1209,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70879"
+    - unit_id: "normative_84132"
       family: "validation"
       span:
         start:
-          offset: 70879
-          line: 864
+          offset: 84132
+          line: 733
           column: 1
         end:
-          offset: 74887
-          line: 880
+          offset: 88499
+          line: 750
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_reference_gate` | reference output | Reject a package unless 1 kg represents live *Bos* cattle weighed immediately before producing-farm ownership or control transfer with all required qualifiers; count alone is not acceptable. | `reference-definition` |\n| `v_route_delta` | grazing, mixed, dairy-linked, housed and feedlot variants | Require the managed parent and current evidence for changed topology, feed, manure, infrastructure, calculation or validation; reject label-only variants and unexplained aggregation of mutually exclusive periods. | `fao-leap-large-ruminants-2016` |\n| `v_output_status` | every product, residue and loss | Require one classification as intended output, residue or waste and one actual handover or fate; milk, breeding stock, culls and exported manure are not automatic co-products. | `fao-leap-large-ruminants-2016`; `fao-leap-nutrient-flows-2018` |\n| `v_period_attribution` | all cohort phases and replacements | Require phase and period indexing, opening and ending stock, replacement and termination treatment, and no duplicate attribution of prior-period or starting-stock burdens. | `fao-leap-large-ruminants-2016` |\n| `v_shared_infrastructure` | assets or services used by multiple nodes, products or periods | Require all consumers and service periods, one evidence-backed attribution decision, fractions summing to one, and no duplicate burden across milk, cattle, manure or other products. | `fao-leap-large-ruminants-2016` |\n| `v_manure_and_emissions` | manure and direct emissions | Require animal category, manure pathway, VS and N basis, selected factor tier, climate or storage conditions, recovery and species-specific outputs; reject generic gas or nitrogen labels in final exchanges. | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |\n| `v_flow_binding` | all final exchanges | Expand unresolved conditional flow identities from actual records and verify every concrete UUID, property and unit. Keep unresolved identities blank; do not bind raw milk, veterinary service, buffalo, goat, beef, count-only ox or another near match as the live-cattle mass reference. | `reference-definition` |\n| `v_mass_balance` | herd, manure and gate records | Investigate animal, live-mass, manure and nitrogen balance residuals and disclose measurement uncertainty before secondary or background use. | `mass-balance-identity` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `fao-feed-loss-accounting-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `ipcc-2019-livestock-manure`; `ipcc-managed-soils-2019` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_reference_gate` | reference output | Reject a package unless 1 kg represents live *Bos* cattle weighed immediately before producing-farm ownership or control transfer with all required qualifiers; count alone is not acceptable. | `reference-definition` |\n| `v_route_delta` | grazing, mixed, dairy-linked, housed and feedlot variants | Require the managed parent and current evidence for changed topology, feed, manure, infrastructure, calculation or validation; reject label-only variants and unexplained aggregation of mutually exclusive periods. | `fao-leap-large-ruminants-2016` |\n| `v_output_status` | every product, residue and loss | Require one classification as intended output, residue or waste and one actual handover or fate; milk, breeding stock, culls and exported manure are not automatic co-products. | `fao-leap-large-ruminants-2016`; `fao-leap-nutrient-flows-2018` |\n| `v_period_attribution` | all cohort phases and replacements | Require phase and period indexing, opening and ending stock, replacement and termination treatment, and no duplicate attribution of prior-period or starting-stock burdens. | `fao-leap-large-ruminants-2016` |\n| `v_shared_infrastructure` | assets or services used by multiple nodes, products or periods | Require all consumers and service periods, one evidence-backed attribution decision, fractions summing to one, and no duplicate burden across milk, cattle, manure or other products. | `fao-leap-large-ruminants-2016` |\n| `v_manure_and_emissions` | manure and direct emissions | Require animal category, manure pathway, VS and N basis, selected factor tier, climate or storage conditions, recovery and species-specific outputs; reject generic gas or nitrogen labels in final exchanges. | `ipcc-2019-livestock-manure`; `fao-leap-nutrient-flows-2018` |\n| `v_flow_binding` | all final exchanges | Expand unresolved conditional flow identities from actual records and verify every concrete UUID, property and unit. Keep unresolved identities blank; do not bind raw milk, veterinary service, buffalo, goat, beef, count-only ox or another near match as the live-cattle mass reference. | `reference-definition` |\n| `v_mass_balance` | herd, manure and gate records | Investigate animal, live-mass, manure and nitrogen balance residuals and disclose measurement uncertainty before secondary or background use. | `mass-balance-identity` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `fao-feed-loss-accounting-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `ipcc-2019-livestock-manure`; `ipcc-managed-soils-2019` |\n| `v_gate_waste_quantity` | gate waste and live-weight reconciliation | Reject assigning live-weight deficit, live returns or retained animals to carcass waste or its treatment amount. Require actual carcass mass, fate and responsibility, investigate unexplained residuals and exclude duplicate prior-phase mortality or treatment. | `mass-balance-identity` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1359,12 +1237,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70879
-              line: 864
+              offset: 84132
+              line: 733
               column: 1
             end:
-              offset: 70901
-              line: 864
+              offset: 84154
+              line: 733
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1474,211 +1352,224 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_output_hierarchy"
       identity_kind: "explicit"
-      unit_id: "normative_51179"
+      unit_id: "normative_44318"
       source_span:
         start:
-          offset: 51292
-          line: 814
+          offset: 44431
+          line: 658
           column: 1
         end:
-          offset: 51764
-          line: 814
+          offset: 44903
+          line: 658
           column: 473
     - pointer: "/allocation_rules/1"
       rule_id: "a_residue_status"
       identity_kind: "explicit"
-      unit_id: "normative_51179"
+      unit_id: "normative_44318"
       source_span:
         start:
-          offset: 51765
-          line: 815
+          offset: 44904
+          line: 659
           column: 1
         end:
-          offset: 52083
-          line: 815
+          offset: 45222
+          line: 659
           column: 319
     - pointer: "/allocation_rules/2"
       rule_id: "a_multi_period"
       identity_kind: "explicit"
-      unit_id: "normative_51179"
+      unit_id: "normative_44318"
       source_span:
         start:
-          offset: 52084
-          line: 816
+          offset: 45223
+          line: 660
           column: 1
         end:
-          offset: 52437
-          line: 816
+          offset: 45576
+          line: 660
           column: 354
     - pointer: "/allocation_rules/3"
       rule_id: "a_shared_infrastructure"
       identity_kind: "explicit"
-      unit_id: "normative_51179"
+      unit_id: "normative_44318"
       source_span:
         start:
-          offset: 52438
-          line: 817
+          offset: 45577
+          line: 661
           column: 1
         end:
-          offset: 52823
-          line: 817
+          offset: 45962
+          line: 661
           column: 386
     - pointer: "/allocation_rules/4"
       rule_id: "a_route_separation"
       identity_kind: "explicit"
-      unit_id: "normative_51179"
+      unit_id: "normative_44318"
       source_span:
         start:
-          offset: 52824
-          line: 818
+          offset: 45963
+          line: 662
           column: 1
         end:
-          offset: 53153
-          line: 818
+          offset: 46292
+          line: 662
           column: 330
     - pointer: "/validation_rules/0"
       rule_id: "v_reference_gate"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 70974
-          line: 868
+          offset: 84227
+          line: 737
           column: 1
         end:
-          offset: 71233
-          line: 868
+          offset: 84486
+          line: 737
           column: 260
     - pointer: "/validation_rules/1"
       rule_id: "v_route_delta"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 71234
-          line: 869
+          offset: 84487
+          line: 738
           column: 1
         end:
-          offset: 71562
-          line: 869
+          offset: 84815
+          line: 738
           column: 329
     - pointer: "/validation_rules/2"
       rule_id: "v_output_status"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 71563
-          line: 870
+          offset: 84816
+          line: 739
           column: 1
         end:
-          offset: 71862
-          line: 870
+          offset: 85115
+          line: 739
           column: 300
     - pointer: "/validation_rules/3"
       rule_id: "v_period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 71863
-          line: 871
+          offset: 85116
+          line: 740
           column: 1
         end:
-          offset: 72134
-          line: 871
+          offset: 85387
+          line: 740
           column: 272
     - pointer: "/validation_rules/4"
       rule_id: "v_shared_infrastructure"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 72135
-          line: 872
+          offset: 85388
+          line: 741
           column: 1
         end:
-          offset: 72447
-          line: 872
+          offset: 85700
+          line: 741
           column: 313
     - pointer: "/validation_rules/5"
       rule_id: "v_manure_and_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 72448
-          line: 873
+          offset: 85701
+          line: 742
           column: 1
         end:
-          offset: 72778
-          line: 873
+          offset: 86031
+          line: 742
           column: 331
     - pointer: "/validation_rules/6"
       rule_id: "v_flow_binding"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 72779
-          line: 874
+          offset: 86032
+          line: 743
           column: 1
         end:
-          offset: 73133
-          line: 874
+          offset: 86386
+          line: 743
           column: 355
     - pointer: "/validation_rules/7"
       rule_id: "v_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 73134
-          line: 875
+          offset: 86387
+          line: 744
           column: 1
         end:
-          offset: 73356
-          line: 875
+          offset: 86609
+          line: 744
           column: 223
     - pointer: "/validation_rules/8"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 73357
-          line: 876
+          offset: 86610
+          line: 745
           column: 1
         end:
-          offset: 73957
-          line: 876
+          offset: 87210
+          line: 745
           column: 601
     - pointer: "/validation_rules/9"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 73958
-          line: 877
+          offset: 87211
+          line: 746
           column: 1
         end:
-          offset: 74404
-          line: 877
+          offset: 87657
+          line: 746
           column: 447
     - pointer: "/validation_rules/10"
       rule_id: "v_manure_n2o_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 74405
-          line: 878
+          offset: 87658
+          line: 747
           column: 1
         end:
-          offset: 74885
-          line: 878
+          offset: 88138
+          line: 747
           column: 481
+    - pointer: "/validation_rules/11"
+      rule_id: "v_gate_waste_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_84132"
+      source_span:
+        start:
+          offset: 88139
+          line: 748
+          column: 1
+        end:
+          offset: 88497
+          line: 748
+          column: 359
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1706,27 +1597,27 @@ normative_context:
           column: 294
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51179"
+      unit_id: "normative_44318"
       source_span:
         start:
-          offset: 51179
-          line: 810
+          offset: 44318
+          line: 654
           column: 1
         end:
-          offset: 51219
-          line: 810
+          offset: 44358
+          line: 654
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70879"
+      unit_id: "normative_84132"
       source_span:
         start:
-          offset: 70879
-          line: 864
+          offset: 84132
+          line: 733
           column: 1
         end:
-          offset: 70901
-          line: 864
+          offset: 84154
+          line: 733
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1735,5 +1626,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:af0d8d9c4cba7939bf75de02fa8773a9a88ae28d3c8e6c74e4ac48ae75fe5a3d"
-  generated_content_sha256: "sha256:a287c943158813025d42f332633f757930d5f1caeda764bf7b801b4d7f034dc9"
+    sha256: "sha256:0d78edcb804ac6c1ac580f12898f9f6bc412bb7728fa46be943ede45b8c9a3ba"
+  generated_content_sha256: "sha256:a7e7e4bf829f161a0aaaff82817350a89914c8ff031379ba8707bc174c9c5c90"

@@ -190,10 +190,12 @@ process_inventory:
             ranges: []
         - row_id: carob_orchard_production_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
-          name: "Urea fertilizer"
+          name: "Urea"
           flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
           property_unit: "Mass / kg"
-          description: "**Collection scope and applicability for carob_orchard_production_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "**Collection scope and applicability for carob_orchard_production_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_carob_orchard_lifecycle_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -210,10 +212,12 @@ process_inventory:
             ranges: []
         - row_id: carob_orchard_production_agricultural_nutrient_inputs_ammonium_sulfate
           role: "Ammonium sulfate fertilizer"
-          name: "Ammonium sulfate fertilizer"
+          name: "Ammonium sulfate"
           flow_type: "product"
+          flow_ref:
+            uuid: "8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_carob_orchard_lifecycle_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -327,41 +331,26 @@ process_inventory:
               source_ids:
                 - carob-macronutrients-water-2005
             ranges: []
-        - row_id: carob_orchard_crop_protection_input
-          role: "Crop-protection formulations actually applied"
-          name: "Actual crop-protection formulation for carob production (UUID unresolved; intentionally blank)"
+        - row_id: carob_orchard_energy_inputs_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
           flow_type: "product"
-          property_unit: "Product mass / kg formulation"
-          description: "Record each actual formulation, active ingredient or formulation identity when available, application event, applied mass, block, and target. Do not replace a missing formulation identity with a generic pesticide default. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods."
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel orchard machinery for mowing, pruning support, nutrient application and access; irrigation pumps require their own equipment-specific supply evidence. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply carob_orchard_energy_inputs_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "sum measured formulation mass by product, event, block, and crop year"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_carob_orchard_lifecycle_records
-              source_ids: []
-            ranges: []
-        - row_id: carob_orchard_energy_inputs
-          role: "Orchard fuel and electricity"
-          name: "Energy supply for managed carob orchard operations (UUID unresolved; resolve from actual carrier)"
-          flow_type: "product"
-          property_unit: "Energy, mass, or volume / kWh, MJ, L, or kg as recorded"
-          description: "Record energy for irrigation pumping, pruning, mowing, nutrient application, crop protection, access, and other orchard operations. Keep electricity, fuel, and contracted activity records distinguishable. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods."
-          amount:
-            expression: "meter, invoice, contractor record, or documented equipment calculation by operation, block, and crop year"
-            value_mode: "foreground_record"
+            expression: "Collect only this carrier quantity attributable to this node under cp_carob_orchard_lifecycle_records. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "crop_cycle"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_carob_orchard_lifecycle_records
-              source_ids: []
+              source_ids:
+                - route-energy-fao
             ranges: []
       waste:
         []
@@ -533,24 +522,6 @@ process_inventory:
               collection_protocol_id: cp_carob_harvest_lot_records
               source_ids: []
             ranges: []
-        - row_id: carob_harvest_energy_input
-          role: "Harvest and collection energy"
-          name: "Energy supply for carob harvest and collection (UUID unresolved; resolve from actual carrier)"
-          flow_type: "product"
-          property_unit: "Energy, mass, or volume / kWh, MJ, L, or kg as recorded"
-          description: "Record fuel or electricity for shaking, beating, collection, nets, conveyors, or other harvest and collection operations. Fully manual harvest records a justified zero with labour and route evidence. Raw activity or stage basis: per harvest campaign and per 1,000 kg accepted whole carob pods."
-          amount:
-            expression: "fuel invoice, equipment meter, contractor statement, or documented equipment calculation assigned to the harvest campaign"
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "crop_cycle"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_carob_harvest_lot_records
-              source_ids: []
-            ranges: []
       waste:
         []
       elementary:
@@ -636,23 +607,26 @@ process_inventory:
               collection_protocol_id: cp_carob_conditioning_records
               source_ids: []
             ranges: []
-        - row_id: carob_conditioning_energy_input
-          role: "Conditioning energy"
-          name: "Energy supply for carob primary conditioning (UUID unresolved; resolve from actual carrier)"
+        - row_id: carob_conditioning_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
           flow_type: "product"
-          property_unit: "Energy, mass, or volume / kWh, MJ, L, or kg as recorded"
-          description: "Record electricity or fuel for supplied-air drying, fans, conveyors, cleaning, sorting, grading, and short handling inside the declared gate. Natural drying without supplied energy records the documented zero-energy condition. Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods."
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric fans, conveyors, cleaning and grading equipment; do not impose forced drying on a documented natural-drying route, and identify any heater separately. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply carob_conditioning_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
           amount:
-            expression: "meter, invoice, equipment record, or documented energy calculation by conditioning campaign"
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
+            expression: "Collect only this carrier quantity attributable to this node under cp_carob_conditioning_records. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
               text: "per declared reference flow"
-              kind: "process_output"
+              kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_carob_conditioning_records
-              source_ids: []
+              source_ids:
+                - route-energy-fao
             ranges: []
         - row_id: carob_conditioning_process_water_input
           role: "Conditioning process water"
@@ -806,7 +780,7 @@ dataset_production:
       flow_role: "planting stock, tree replacement, orchard area, nutrients, soil amendments, crop protection, fuel, electricity, residues, and orchard activities"
       record_type: "orchard register, block map, planting or replacement invoices, application logs, supplier records, equipment logs, and residue destination records"
       raw_fields: "block_id; species; cultivar_or_type; tree_age; bearing_area_ha; establishment_year; replacement_event; planting_material_quantity; product_name; product_mass; nutrient_basis; application_date; target; fuel; electricity; residue_mass; residue_destination; crop_year"
-      collection_method: "collect event records by block and reconcile with supplier, operator, and equipment records; Raw aggregation and attribution: sum by block and crop year; retain product and nutrient fields before normalization; link annualized events to the declared output basis"
+      collection_method: "collect event records by block and reconcile with supplier, operator, and equipment records; Raw aggregation and attribution: sum by block and crop year; retain product and nutrient fields before normalization; link annualized events to the declared output basis Route-specific requirements: carob_orchard_energy_inputs_identification: Actual diesel orchard machinery for mowing, pruning support, nutrient application and access; irrigation pumps require their own equipment-specific supply evidence. Raw activity or stage basis: per crop year and per 1,000 kg accepted whole carob pods. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. carob_orchard_crop_protection_input_specific_input: Operation carob_orchard_production: Record each actual formulation, active ingredient or formulation identity when available, application event, applied mass, block, and target. Do not replace a missing formulation identity with a generic pesticide default. Original quantity method: sum measured formulation mass by product, event, block, and crop year Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "mixed activity-specific units"
       frequency: "each planting, replacement, application, energy event, and residue event; reconciled each crop year"
       temporal_coverage: "one declared crop year plus productive-period records for annualization"
@@ -830,7 +804,7 @@ dataset_production:
       flow_role: "harvestable pods, collected raw pods, harvest energy, field loss, and harvest rejects"
       record_type: "harvest log, scale ticket, block record, contractor statement, lot record, and destination record"
       raw_fields: "block_id; harvest_date; lot_id; harvest_method; harvestable_mass_kg; collected_mass_kg; field_loss_mass_kg; damaged_mass_kg; destination; fuel_quantity; electricity; crop_year"
-      collection_method: "weigh or reconcile each harvest lot and record the removal and collection method; Raw aggregation and attribution: sum harvestable, collected, lost, and rejected masses by block and lot before normalization"
+      collection_method: "weigh or reconcile each harvest lot and record the removal and collection method; Raw aggregation and attribution: sum harvestable, collected, lost, and rejected masses by block and lot before normalization Route-specific requirements: carob_harvest_energy_input_identification: Actual manual beating/collection or powered shaking and conveying. A documented fully manual route can have no purchased operational energy; absent records cannot establish that condition. Raw activity or stage basis: per harvest campaign and per 1,000 kg accepted whole carob pods. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg pods and activity-specific energy unit"
       frequency: "every harvest lot; reconciled each campaign"
       temporal_coverage: "one harvest campaign and crop year"
@@ -842,7 +816,7 @@ dataset_production:
       flow_role: "incoming raw pods, drying, cleaning, sorting, grading, process water, accepted pods, downgraded pods, rejects, and water loss"
       record_type: "intake ticket, conditioning batch record, moisture test, energy meter, water meter, grade record, reject record, and destination record"
       raw_fields: "campaign_id; lot_id; input_mass_kg; input_moisture; drying_method; drying_start; drying_end; fuel; electricity; process_water_m3; cleaning_method; grade; accepted_mass_kg; downgraded_mass_kg; reject_mass_kg; reject_class; reject_destination; output_moisture; container_tare; gate"
-      collection_method: "record each conditioning batch and reconcile moisture, mass, grade, energy, water, and destination records; Raw aggregation and attribution: sum by lot and grade; preserve incoming and output moisture and tare; calculate water loss only after mass and moisture reconciliation"
+      collection_method: "record each conditioning batch and reconcile moisture, mass, grade, energy, water, and destination records; Raw aggregation and attribution: sum by lot and grade; preserve incoming and output moisture and tare; calculate water loss only after mass and moisture reconciliation Route-specific requirements: carob_conditioning_energy_input_identification: Actual electric fans, conveyors, cleaning and grading equipment; do not impose forced drying on a documented natural-drying route, and identify any heater separately. Raw activity or stage basis: per conditioning campaign and per 1,000 kg accepted whole carob pods. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kg, percent, m3, kWh, L, or MJ as recorded"
       frequency: "each conditioning batch; reconciled each campaign"
       temporal_coverage: "one declared conditioning campaign and gate"
@@ -1063,9 +1037,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:d80aefd53299110c8f5ffb7c442b3f1f6d47ffc6693b9e62aa0c48b3866aabe6"
+  source_sha256: "sha256:9f463b16816e927d38f61b2a75bf8e397967a4245e57fdec3430f44398e54129"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8205"
@@ -1116,16 +1094,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_46687"
+    - unit_id: "normative_46610"
       family: "allocation"
       span:
         start:
-          offset: 46687
-          line: 661
+          offset: 46610
+          line: 639
           column: 1
         end:
-          offset: 49325
-          line: 673
+          offset: 49248
+          line: 651
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_single_intended_pod_output` | a process with one deliberately transferred whole-pod product output | Assign the process burdens to the single intended whole-pod output. Treat field loss, rejects, and residues as waste only when their destination is not a deliberately transferred product. | `iso-14044-2006` |\n| `allocation_quality_destination_outputs` | conditioning with accepted and downgraded or alternate-destination whole-pod outputs | First subdivide the route when grade-specific operations are independently measured. If common burdens remain shared, allocate them between deliberately transferred whole-pod outputs using mass allocation because the outputs retain the same whole-pod physical identity; use documented economic allocation only when a product-specific study demonstrates that mass does not represent the causal relationship. Report output masses, grade, destination, reference period, and factors. | `iso-14044-2006` |\n| `allocation_rejects_not_products` | field losses, harvest rejects, and conditioning rejects | Do not allocate burdens to a rejected or residue stream merely because it has a possible downstream use. Reclassify it as an intended co-product only when it is deliberately transferred with a declared destination and identity, then apply `allocation_quality_destination_outputs` or a separately justified method. | `iso-14044-2006` |\n| `allocation_perennial_establishment_and_replacement` | planting, establishment, replacement, and immature-tree activity | Annualize attributable events over the documented productive period and assign the annualized amount to the crop-year output basis. Retain original event mass, date, block, and assumption for audit. | `fao-feedipedia-carob`; `carob-macronutrients-water-2005`; `iso-14044-2006` |\n| `allocation_period_and_phase_linkage` | multiple crop years, bearing phases, and replacement events | Link every input, output, establishment event, replacement event, and allocation factor to a declared crop year or life-cycle phase. Never attribute one event to two reporting periods without an explicit reconciliation. | `iso-14044-2006` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1144,12 +1122,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 46687
-              line: 661
+              offset: 46610
+              line: 639
               column: 1
             end:
-              offset: 46727
-              line: 661
+              offset: 46650
+              line: 639
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1164,15 +1142,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_61416"
+    - unit_id: "normative_69199"
       family: "validation"
       span:
         start:
-          offset: 61416
+          offset: 69199
           line: 714
           column: 1
         end:
-          offset: 63666
+          offset: 71449
           line: 726
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_identity_and_state` | reference flow and terminal product output | Confirm that the terminal output is a whole ripe carob pod with pulp and seeds retained, expressed as net kg at the declared gate. A separated seed, pulp, gum, flour, or processed product must fail this PCR identity check. | `fao-feedipedia-carob`; `carob-drying-characteristics-2016` |\n| `validation_period_and_phase_linkage` | perennial production and allocation | Confirm that every establishment, replacement, crop-year, bearing phase, output, and allocation event has a declared period or phase and cannot be attributed twice. | `iso-14044-2006` |\n| `validation_harvest_and_conditioning_mass_balance` | harvest and primary conditioning | Confirm reconciliation of harvestable, collected, accepted, downgraded, rejected, field-loss, other destination, and moisture-loss masses. Unexplained residuals block finalization. | `iso-14044-2006` |\n| `validation_quality_output_attribution` | grading and sorting outputs | Confirm every deliberately transferred grade or destination output has a hand-off, output mass, quality or destination descriptor, and an explicit allocation decision. Rejected material cannot be counted as accepted output. | `iso-14044-2006` |\n| `validation_nutrient_emission_linkage` | nutrient inputs and elementary emissions | Confirm that nutrient-related emissions link to actual product and amendment records, residue and soil data, the selected method tier, and the declared receiving medium. | `ipcc-2019-refinement-vol-4` |\n| `validation_flow_identity_resolution` | parameterized and unmapped inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_boundary_exclusions` | complete foreground dataset | Reject or flag datasets that include kibbling, milling, seed separation, gum, flour, roasting, syrup, downstream storage, transport after the gate, unmanaged wild collection, or packaging end-of-life unless an explicitly reviewed boundary extension is recorded. | `iso-14044-2006` |\n\n"
@@ -1192,11 +1170,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 61416
+              offset: 69199
               line: 714
               column: 1
             end:
-              offset: 61438
+              offset: 69221
               line: 714
               column: 23
           text: "## 9. Validation Rules"
@@ -1333,170 +1311,170 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_single_intended_pod_output"
       identity_kind: "explicit"
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 46800
-          line: 665
+          offset: 46723
+          line: 643
           column: 1
         end:
-          offset: 47123
-          line: 665
+          offset: 47046
+          line: 643
           column: 324
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_quality_destination_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 47124
-          line: 666
+          offset: 47047
+          line: 644
           column: 1
         end:
-          offset: 47756
-          line: 666
+          offset: 47679
+          line: 644
           column: 633
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rejects_not_products"
       identity_kind: "explicit"
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 47757
-          line: 667
+          offset: 47680
+          line: 645
           column: 1
         end:
-          offset: 48187
-          line: 667
+          offset: 48110
+          line: 645
           column: 431
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_perennial_establishment_and_replacement"
       identity_kind: "explicit"
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 48188
-          line: 668
+          offset: 48111
+          line: 646
           column: 1
         end:
-          offset: 48590
-          line: 668
+          offset: 48513
+          line: 646
           column: 403
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_period_and_phase_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 48591
-          line: 669
+          offset: 48514
+          line: 647
           column: 1
         end:
-          offset: 48935
-          line: 669
+          offset: 48858
+          line: 647
           column: 345
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 48937
-          line: 671
+          offset: 48860
+          line: 649
           column: 1
         end:
-          offset: 49323
-          line: 671
+          offset: 49246
+          line: 649
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_identity_and_state"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 61511
+          offset: 69294
           line: 718
           column: 1
         end:
-          offset: 61888
+          offset: 69671
           line: 718
           column: 378
     - pointer: "/validation_rules/1"
       rule_id: "validation_period_and_phase_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 61889
+          offset: 69672
           line: 719
           column: 1
         end:
-          offset: 62154
+          offset: 69937
           line: 719
           column: 266
     - pointer: "/validation_rules/2"
       rule_id: "validation_harvest_and_conditioning_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 62155
+          offset: 69938
           line: 720
           column: 1
         end:
-          offset: 62446
+          offset: 70229
           line: 720
           column: 292
     - pointer: "/validation_rules/3"
       rule_id: "validation_quality_output_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 62447
+          offset: 70230
           line: 721
           column: 1
         end:
-          offset: 62765
+          offset: 70548
           line: 721
           column: 319
     - pointer: "/validation_rules/4"
       rule_id: "validation_nutrient_emission_linkage"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 62766
+          offset: 70549
           line: 722
           column: 1
         end:
-          offset: 63054
+          offset: 70837
           line: 722
           column: 289
     - pointer: "/validation_rules/5"
       rule_id: "validation_flow_identity_resolution"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 63055
+          offset: 70838
           line: 723
           column: 1
         end:
-          offset: 63314
+          offset: 71097
           line: 723
           column: 260
     - pointer: "/validation_rules/6"
       rule_id: "validation_boundary_exclusions"
       identity_kind: "explicit"
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 63315
+          offset: 71098
           line: 724
           column: 1
         end:
-          offset: 63664
+          offset: 71447
           line: 724
           column: 350
   diagnostics:
@@ -1526,26 +1504,26 @@ normative_context:
           column: 415
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_46687"
+      unit_id: "normative_46610"
       source_span:
         start:
-          offset: 46687
-          line: 661
+          offset: 46610
+          line: 639
           column: 1
         end:
-          offset: 46727
-          line: 661
+          offset: 46650
+          line: 639
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_61416"
+      unit_id: "normative_69199"
       source_span:
         start:
-          offset: 61416
+          offset: 69199
           line: 714
           column: 1
         end:
-          offset: 61438
+          offset: 69221
           line: 714
           column: 23
 projection_metadata:
@@ -1555,5 +1533,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:d80aefd53299110c8f5ffb7c442b3f1f6d47ffc6693b9e62aa0c48b3866aabe6"
-  generated_content_sha256: "sha256:7f9f8b6f824e642be3efdf4cba6935ec6289de87931461b91b84052e485f1cf0"
+    sha256: "sha256:9f463b16816e927d38f61b2a75bf8e397967a4245e57fdec3430f44398e54129"
+  generated_content_sha256: "sha256:9dc83467c0205b000870b558ca88a24e9edd59f5cb298303a7907ef7bda6d488"

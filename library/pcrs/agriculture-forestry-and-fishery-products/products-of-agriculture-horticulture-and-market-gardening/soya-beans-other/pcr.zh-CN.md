@@ -117,29 +117,6 @@ sync_with: pcr.en-US.md
   - 基准：每1,000 kg基准产品或所声明内部交接
   - 基准类型：基准流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
-###### 农业养分综合供应 (`nutrient_supply`)
-
-记录该流并保留批次、路线与去向证据。
-
-- 选定流：农业养分供应
-- 流属性/单位：Mass / kg
-- 数量规则：汇总所有养分产品质量并保留组成
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
-原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接.
-
-- 归一化基准：每声明的参考流
-- 基准类型：基准流（`reference_flow`）
-- 证据类型：`collected_record`
-- 采集协议：`cp_crop_cycle`
-- 数量范围：QA校验范围
-  - 范围角色：QA校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1500
-  - 单位：kg/1,000 kg reference product
-  - 基准：每1,000 kg基准产品或所声明内部交接
-  - 基准类型：基准流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 ###### 灌溉水 (`irrigation_water`)
 
 记录该流并保留批次、路线与去向证据。
@@ -163,29 +140,24 @@ sync_with: pcr.en-US.md
   - 基准：每1,000 kg基准产品或所声明内部交接
   - 基准类型：基准流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
-###### 田间能源供应 (`field_energy`)
+###### 柴油 (`field_energy_diesel`)
 
-记录该流并保留批次、路线与去向证据。
+实际柴油田间机械建植及作物照护；灌溉泵动力另行确认，保留田块及作物周期归属。
 
-- 选定流：田间作业能源供应
-- 流属性/单位：Energy / MJ
-- 数量规则：按作业换算实测能源载体
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_crop_cycle`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 适用范围：`site_specific`
-原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接.
-
-- 归一化基准：每声明的参考流
-- 基准类型：基准流（`reference_flow`）
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_crop_cycle`
-- 数量范围：QA校验范围
-  - 范围角色：QA校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：15000
-  - 单位：MJ/1,000 kg reference product
-  - 基准：每1,000 kg基准产品或所声明内部交接
-  - 基准类型：基准流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
+
+执行第8节`field_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -301,29 +273,24 @@ sync_with: pcr.en-US.md
   - 基准类型：基准流（`reference_flow`）
   - 证据类型：方法公式（`method_formula`）
   - 来源：`mass-balance-identity`
-###### 收获能源供应 (`harvest_energy`)
+###### 柴油 (`harvest_energy_diesel`)
 
-记录该流并保留批次、路线与去向证据。
+实际柴油收获机械及出口前批次移动；人工或其他动力路线按自身证据处理，不套用本投入。
 
-- 选定流：收获机械能源供应
-- 流属性/单位：Energy / MJ
-- 数量规则：按作业换算实测能源载体
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_harvest_lot`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 适用范围：`site_specific`
-原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接.
-
-- 归一化基准：每声明的参考流
-- 基准类型：基准流（`reference_flow`）
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_harvest_lot`
-- 数量范围：QA校验范围
-  - 范围角色：QA校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：5000
-  - 单位：MJ/1,000 kg reference product
-  - 基准：每1,000 kg基准产品或所声明内部交接
-  - 基准类型：基准流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
+
+执行第8节`harvest_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -439,29 +406,25 @@ sync_with: pcr.en-US.md
   - 基准类型：基准流（`reference_flow`）
   - 证据类型：方法公式（`method_formula`）
   - 来源：`mass-balance-identity`
-###### 整理能源供应 (`conditioning_energy`)
+###### 交流电 (`conditioning_energy_electricity`)
 
-记录该流并保留批次、路线与去向证据。
+实际电驱大豆清选、输送及干燥风机；干燥热源单独确认。
 
-- 选定流：整理能源供应
-- 流属性/单位：Energy / MJ
-- 数量规则：计量清理、分级和主动干燥能源
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_conditioning_lot`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 适用范围：`technology_specific`
-原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接.
-
-- 归一化基准：每声明的参考流
-- 基准类型：基准流（`reference_flow`）
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_conditioning_lot`
-- 数量范围：QA校验范围
-  - 范围角色：QA校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：12000
-  - 单位：MJ/1,000 kg reference product
-  - 基准：每1,000 kg基准产品或所声明内部交接
-  - 基准类型：基准流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
+
+执行第8节`conditioning_energy_identification`要求。不继承原集合卡的数值范围或默认值。
+
 ###### 条件性工艺用水 (`conditioning_water`)
 
 记录该流并保留批次、路线与去向证据。
@@ -623,52 +586,24 @@ sync_with: pcr.en-US.md
   - 基准类型：基准流（`reference_flow`）
   - 证据类型：方法公式（`method_formula`）
   - 来源：`mass-balance-identity`
-###### 储存能源供应 (`storage_energy`)
+###### 交流电 (`storage_energy_electricity`)
 
-记录该流并保留批次、路线与去向证据。
+大豆批次储存期内实际电动通风、温控及搬运。
 
-- 选定流：储存能源供应
-- 流属性/单位：Energy / MJ
-- 数量规则：按批次和占用时长计量能源
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_storage_handoff`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
 - 数值来源模式：`calculated_value`
-- 适用范围：`site_specific`
-原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接.
-
-- 归一化基准：每声明的参考流
-- 基准类型：基准流（`reference_flow`）
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_storage_handoff`
-- 数量范围：QA校验范围
-  - 范围角色：QA校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：5000
-  - 单位：MJ/1,000 kg reference product
-  - 基准：每1,000 kg基准产品或所声明内部交接
-  - 基准类型：基准流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-###### 交付包装 (`presentation_packaging`)
+- 来源：`route-energy-fao`
 
-记录该流并保留批次、路线与去向证据。
-
-- 选定流：服务于声明交接的包装
-- 流属性/单位：Mass / kg
-- 数量规则：按核实复用次数调整净包装；散装为零
-- 数值来源模式：`foreground_record`
-- 适用范围：`site_specific`
-原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接.
-
-- 归一化基准：每声明的参考流
-- 基准类型：基准流（`reference_flow`）
-- 证据类型：`collected_record`
-- 采集协议：`cp_storage_handoff`
-- 数量范围：QA校验范围
-  - 范围角色：QA校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/1,000 kg reference product
-  - 基准：每1,000 kg基准产品或所声明内部交接
-  - 基准类型：基准流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+执行第8节`storage_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -746,6 +681,30 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `nutrient_supply_specific_input` | `cp_crop_cycle` | 作业 crop_production：记录该流并保留批次、路线与去向证据。 原数量方法：汇总所有养分产品质量并保留组成 |
+| `presentation_packaging_specific_input` | `cp_storage_handoff` | 作业 storage_handoff：记录该流并保留批次、路线与去向证据。 原数量方法：按核实复用次数调整净包装；散装为零 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `field_energy_identification` | `cp_crop_cycle` | 实际柴油田间机械建植及作物照护；灌溉泵动力另行确认，保留田块及作物周期归属。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) |
+| `harvest_energy_identification` | `cp_harvest_lot` | 实际柴油收获机械及出口前批次移动；人工或其他动力路线按自身证据处理，不套用本投入。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) |
+| `conditioning_energy_identification` | `cp_conditioning_lot` | 实际电驱大豆清选、输送及干燥风机；干燥热源单独确认。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) |
+| `storage_energy_identification` | `cp_storage_handoff` | 大豆批次储存期内实际电动通风、温控及搬运。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -753,11 +712,11 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_crop_cycle` | `crop_production` | 投入、作物产出与损失 | 田间日志、发票、仪表、产量记录 | field_id; area; dates; prior_crop; seed; nutrients; irrigation; energy; yield; loss; residue_route | 核对记录和校准测量；原始汇总与分配：按田地汇总后按合格产出归一化 | ha; kg; m3; MJ | 每事件/周期 | 代表性作物年 | 每个纳入田地 | 每声明的参考流 | 文件、校准和平衡 |
+| `cp_crop_cycle` | `crop_production` | 投入、作物产出与损失 | 田间日志、发票、仪表、产量记录 | field_id; area; dates; prior_crop; seed; nutrients; irrigation; energy; yield; loss; residue_route | 核对记录和校准测量；原始汇总与分配：按田地汇总后按合格产出归一化 按路线确认要求：`field_energy_identification`: 实际柴油田间机械建植及作物照护；灌溉泵动力另行确认，保留田块及作物周期归属。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `nutrient_supply_specific_input`: 作业 crop_production：记录该流并保留批次、路线与去向证据。 原数量方法：汇总所有养分产品质量并保留组成 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | ha; kg; m3; MJ | 每事件/周期 | 代表性作物年 | 每个纳入田地 | 每声明的参考流 | 文件、校准和平衡 |
 | `cp_field_emissions` | `crop_production` | 农田土壤排放 | 计算表和活动记录 | N_inputs; residue_N; fixation_context; factors; method_version | 应用一种声明方法；原始汇总与分配：按物质和环境介质计算 | kg物质 | 每周期 | 与种植数据相同周期 | 每个田地 | 每声明的参考流 | 可复算公式和独立复核 |
-| `cp_harvest_lot` | `harvest_thresh` | 能源、大豆、残体、废弃物 | 机械日志和称重单 | lot_id; field_id; energy; crop_mass; bean_mass; moisture; residues; rejects; destinations | 计量并称量每次交接；原始汇总与分配：按田地与路线核对 | kg; MJ; % | 每批 | 完整活动 | 每项收获作业 | 每声明的参考流 | 票据、校准和批次关联 |
-| `cp_conditioning_lot` | `condition_grade_dry` | 公用工程和物料平衡 | 运行表、仪表和实验结果 | lot_id; input_mass; moisture; energy; water; outputs; grade; rejects; route | 称量、计量和取样；原始汇总与分配：守恒干物质并按等级/技术汇总 | kg; MJ; m3; % | 每批/运行 | 完整活动 | 每条产线 | 每声明的参考流 | 校准、取样和闭合 |
-| `cp_storage_handoff` | `storage_handoff` | 储存、包装、损失、发运 | 台账、仪表和发运记录 | lot_id; grade; masses; moisture; dates; energy; packaging; reuse; loss; gate | 关联占用、公用工程、包装和发运；原始汇总与分配：共享仓储按质量时间分配 | kg; MJ; day; % | 每批/发运 | 完整声明期 | 每个仓库/场址 | 每声明的参考流 | 台账、仪表、检查和发运证据 |
+| `cp_harvest_lot` | `harvest_thresh` | 能源、大豆、残体、废弃物 | 机械日志和称重单 | lot_id; field_id; energy; crop_mass; bean_mass; moisture; residues; rejects; destinations | 计量并称量每次交接；原始汇总与分配：按田地与路线核对 按路线确认要求：`harvest_energy_identification`: 实际柴油收获机械及出口前批次移动；人工或其他动力路线按自身证据处理，不套用本投入。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg; MJ; % | 每批 | 完整活动 | 每项收获作业 | 每声明的参考流 | 票据、校准和批次关联 |
+| `cp_conditioning_lot` | `condition_grade_dry` | 公用工程和物料平衡 | 运行表、仪表和实验结果 | lot_id; input_mass; moisture; energy; water; outputs; grade; rejects; route | 称量、计量和取样；原始汇总与分配：守恒干物质并按等级/技术汇总 按路线确认要求：`conditioning_energy_identification`: 实际电驱大豆清选、输送及干燥风机；干燥热源单独确认。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg; MJ; m3; % | 每批/运行 | 完整活动 | 每条产线 | 每声明的参考流 | 校准、取样和闭合 |
+| `cp_storage_handoff` | `storage_handoff` | 储存、包装、损失、发运 | 台账、仪表和发运记录 | lot_id; grade; masses; moisture; dates; energy; packaging; reuse; loss; gate | 关联占用、公用工程、包装和发运；原始汇总与分配：共享仓储按质量时间分配 按路线确认要求：`storage_energy_identification`: 大豆批次储存期内实际电动通风、温控及搬运。 原始活动或阶段基准：每1,000 kg基准产品或所声明内部交接. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `presentation_packaging_specific_input`: 作业 storage_handoff：记录该流并保留批次、路线与去向证据。 原数量方法：按核实复用次数调整净包装；散装为零 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; MJ; day; % | 每批/发运 | 完整声明期 | 每个仓库/场址 | 每声明的参考流 | 台账、仪表、检查和发运证据 |
 
 ### 计算规则
 
@@ -810,3 +769,4 @@ sync_with: pcr.en-US.md
 | `ipcc-2019-managed-soils` | `method_factor` | IPCC 2019 Refinement, Volume 4 | https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 农田土壤排放 |
 | `iso-14044` | `standard` | ISO 14044:2006 | ISO 14044:2006 | 分配 |
 | `mass-balance-identity` | `method_factor` | 质量与干物质守恒 | 质量平衡恒等式 | 交接与闭合 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

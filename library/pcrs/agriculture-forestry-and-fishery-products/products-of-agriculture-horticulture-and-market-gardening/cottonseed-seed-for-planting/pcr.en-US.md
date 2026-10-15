@@ -134,9 +134,9 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1 kg accepted planting cottonseed.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_field_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -146,12 +146,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 - Sources: `usda-aphis-cotton-seed-2012`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`crop_management_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_field_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -161,6 +163,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 - Sources: `usda-aphis-cotton-seed-2012`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`crop_management_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -221,31 +225,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_field_inputs`
 - Sources: `usda-aphis-cotton-seed-2012`; `fao-organic-nutrients`
-
-###### Crop-protection products (`field_crop_protection_products`)
-
-Record every crop-protection product separately with its formulation, active-substance content, application time, and field.
-
-- Selected flow: Named crop-protection product
-- Flow property / unit: Mass / kg product and kg active substance as applicable
-- Amount rule: Record each actual product, formulation, amount, timing, and field; retain product and active-substance masses separately.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted planting cottonseed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_field_inputs`
-- Sources: `usda-aphis-cotton-seed-2012`
-- Range: Provisional crop-protection-product QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 50000
-  - Unit: kg/ha
-  - Basis: sum of separately recorded crop-protection product masses per cultivated hectare; screen only, not a default, mandatory limit, or substitute for measured records
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Irrigation water (`irrigation_water`)
 
@@ -347,9 +326,9 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
 Record fuel or electricity of the actual picking/stripping method by field and harvest event.
 Raw activity or stage basis: per 1 kg accepted planting cottonseed.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_harvest` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -360,11 +339,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest`
 - Sources: `usda-aphis-cotton-seed-2012`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`harvest_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_harvest` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -374,6 +355,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_harvest`
 - Sources: `usda-aphis-cotton-seed-2012`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -476,9 +459,9 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
 Record actual gin metered energy and assign shared meter periods to traced seed-cotton runs.
 Raw activity or stage basis: per 1 kg accepted planting cottonseed.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_shared_services` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -489,11 +472,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_shared_services`
 - Sources: `usda-ars-ginning-2015`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`gin_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_shared_services` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -503,6 +488,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_shared_services`
 - Sources: `usda-ars-ginning-2015`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -704,31 +691,6 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources: `usda-ams-nop-5029`; `usda-ams-acid-delinting`
 
-###### Delinting energy (`delint_energy`)
-
-Record mechanical or acid equipment energy by route and run, including drying and ventilation when used.
-
-- Selected flow: Delinting energy
-- Flow property / unit: Declared property / MJ
-- Amount rule: Record mechanical or acid equipment energy by route and run, including drying and ventilation when used.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted planting cottonseed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_shared_services`
-- Sources: usda-ams-acid-delinting
-- Range: Provisional broad QA screen; investigate outliers and use foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: MJ/kg treated fuzzy seed
-  - Basis: delinting energy per kilogram fuzzy seed treated; screen only, not a default, mandatory limit, or substitute for measured records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -789,31 +751,6 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
   - Sources: `iso-14044-lci`
 
 ##### Waste flows
-
-###### Acid effluent and contaminated residue (`acid_residue`)
-
-For acid route record reacted lint, excess or unreacted acid solution, neutralization products, dust and wastewater by actual destination; recirculated reagent stays within the node, and untreated residue is not a product.
-
-- Selected flow: Acid delinting effluent and residue
-- Flow property / unit: Mass / kg
-- Amount rule: For acid route record reacted lint, excess or unreacted acid solution, neutralization products, dust and wastewater by actual destination; recirculated reagent stays within the node, and untreated residue is not a product.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted planting cottonseed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_delint_balance`
-- Sources: usda-ams-acid-delinting
-- Range: Provisional broad QA screen; investigate outliers and use foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2
-  - Unit: kg/kg treated fuzzy seed
-  - Basis: acid-route effluent and contaminated residues per kilogram fuzzy seed treated; route conditional; screen only, not a default, mandatory limit, or substitute for measured records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
 
@@ -969,31 +906,6 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Treatment material and service (`seed_treatment_input`)
-
-If applied, record each treatment formulation, amount and service by lot; mark untreated lots explicitly.
-
-- Selected flow: Declared seed-treatment products
-- Flow property / unit: Mass / kg
-- Amount rule: If applied, record each treatment formulation, amount and service by lot; mark untreated lots explicitly.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted planting cottonseed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_stabilization`
-- Sources: usda-ams-nop-5029
-- Range: Provisional broad QA screen; investigate outliers and use foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2
-  - Unit: kg/kg treated seed
-  - Basis: treatment formulations per kilogram treated seed; conditional route and separate products; screen only, not a default, mandatory limit, or substitute for measured records
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -1028,32 +940,6 @@ Raw activity or stage basis: per 1 kg accepted planting cottonseed.
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
-
-###### Storage or treatment loss (`stabilization_loss`)
-
-Record damaged or nonviable seed and treatment residues with actual disposal or downgrade path.
-
-- Selected flow: Off-grade seed and treatment residue
-- Flow property / unit: Mass / kg
-- Amount rule: Record damaged or nonviable seed and treatment residues with actual disposal or downgrade path.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted planting cottonseed.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_stabilization`
-- Sources: usda-ams-nop-5029
-- Range: Provisional broad QA screen; investigate outliers and use foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg seed before treatment
-  - Basis: damaged or lost seed per kilogram input seed
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `iso-14044-lci`
 
 ##### Elementary flows
 
@@ -1145,6 +1031,16 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `field_crop_protection_products_specific_input` | `cp_field_inputs` | Operation crop_management: Record every crop-protection product separately with its formulation, active-substance content, application time, and field. Original quantity method: Record each actual product, formulation, amount, timing, and field; retain product and active-substance masses separately. |
+| `delint_energy_specific_input` | `cp_shared_services` | Operation seed_delinting: Record mechanical or acid equipment energy by route and run, including drying and ventilation when used. Original quantity method: Record mechanical or acid equipment energy by route and run, including drying and ventilation when used. |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -1152,14 +1048,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_field_inputs` | `crop_management` | planted seed, fertilizer, pesticides, irrigation and field fuel | field ledger and invoices | field ID; crop season; planted seed kg; product and nutrient kg; application dates; irrigation m3; pump energy; field area | supplier records, meters and application logs; Raw aggregation and attribution: sum by field and allocate shared operation by actual area or machine time | kg, m3, MJ, ha | each application | one crop season | each seed field | per declared reference flow | dated invoices, calibration and irrigation meter evidence |
+| `cp_field_inputs` | `crop_management` | planted seed, fertilizer, pesticides, irrigation and field fuel | field ledger and invoices | field ID; crop season; planted seed kg; product and nutrient kg; application dates; irrigation m3; pump energy; field area | supplier records, meters and application logs; Raw aggregation and attribution: sum by field and allocate shared operation by actual area or machine time `field_crop_protection_products_specific_input`: Operation crop_management: Record every crop-protection product separately with its formulation, active-substance content, application time, and field. Original quantity method: Record each actual product, formulation, amount, timing, and field; retain product and active-substance masses separately. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, m3, MJ, ha | each application | one crop season | each seed field | per declared reference flow | dated invoices, calibration and irrigation meter evidence |
 | `cp_soil_emissions` | `crop_management` | managed-soil N inputs and emissions | calculation worksheet | mineral and organic N kg; crop residue N; soil/region; emission factors; irrigation status | field N ledger and declared IPCC or national method; Raw aggregation and attribution: calculate direct and indirect pathways separately; convert N2O-N to N2O once | kg N and kg N2O | each season | one crop season | each seed field | per declared reference flow | factor source, assumptions and worksheet |
 | `cp_harvest` | `seed_cotton_harvest` | harvested seed cotton, losses and energy | harvest log | field ID; date; harvested seed-cotton kg; moisture; loss estimate; residue destination; fuel/energy | weighbridge, harvest logs and field checks; Raw aggregation and attribution: sum matched harvested lots; reconcile to gin intake | kg, MJ | each harvest | one crop season | each seed field | per declared reference flow | scale tickets and fuel records |
 | `cp_gin_balance` | `gin_separation` | seed cotton, lint, fuzzy seed and trash | gin batch ledger | lot/run ID; source field; incoming kg/moisture; lint kg; fuzzy seed kg; trash kg; destinations | gin scales and output sale/transfer tickets; Raw aggregation and attribution: mass-balance each run, then aggregate traceable lots | kg | each gin run | linked harvest/conditioning campaign | each gin and lot | per declared reference flow | scale calibration and sale records |
-| `cp_delint_balance` | `seed_delinting` | delinting route, reagents and residues | conditioning batch ledger | lot/run ID; mechanical/acid/bypass route; incoming fuzzy seed kg; acid/water/neutralizer kg; delinted seed kg; linters kg; effluent/waste kg | batch meter, chemical inventory and waste manifest; Raw aggregation and attribution: reconcile dry-equivalent incoming/outgoing material and reagent inventory | kg | each conditioning run | linked seed lot | each conditioner and lot | per declared reference flow | chemical invoices, meter and waste records |
-| `cp_shared_services` | `gin_separation` | shared energy, cleaning and assets | service meter log | meter period; kWh/fuel; machine hours; active run IDs; changeover/cleaning; building use | utility meters and maintenance logs; Raw aggregation and attribution: assign each shared service once to observed consuming lots by energy or hours | kWh, MJ, h | each run or meter period | linked campaign | gin and conditioner | per declared reference flow | meter logs and allocation worksheet |
+| `cp_delint_balance` | `seed_delinting` | delinting route, reagents and residues | conditioning batch ledger | lot/run ID; mechanical/acid/bypass route; incoming fuzzy seed kg; acid/water/neutralizer kg; delinted seed kg; linters kg; effluent/waste kg | batch meter, chemical inventory and waste manifest; Raw aggregation and attribution: reconcile dry-equivalent incoming/outgoing material and reagent inventory `acid_residue_specific_output`: For acid route record reacted lint, excess or unreacted acid solution, neutralization products, dust and wastewater by actual destination; recirculated reagent stays within the node, and untreated residue is not a product. For acid route record reacted lint, excess or unreacted acid solution, neutralization products, dust and wastewater by actual destination; recirculated reagent stays within the node, and untreated residue is not a product. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. usda-ams-acid-delinting | kg | each conditioning run | linked seed lot | each conditioner and lot | per declared reference flow | chemical invoices, meter and waste records |
+| `cp_shared_services` | `gin_separation` | shared energy, cleaning and assets | service meter log | meter period; kWh/fuel; machine hours; active run IDs; changeover/cleaning; building use | utility meters and maintenance logs; Raw aggregation and attribution: assign each shared service once to observed consuming lots by energy or hours `delint_energy_specific_input`: Operation seed_delinting: Record mechanical or acid equipment energy by route and run, including drying and ventilation when used. Original quantity method: Record mechanical or acid equipment energy by route and run, including drying and ventilation when used. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kWh, MJ, h | each run or meter period | linked campaign | gin and conditioner | per declared reference flow | meter logs and allocation worksheet |
 | `cp_grade_balance` | `seed_grading` | accepted, rework, downgraded and waste states | grading ledger | lot ID; incoming kg; purity; germination; accepted kg; rework kg; non-planting kg; waste kg; destinations | scales, lab reports and disposition log; Raw aggregation and attribution: track repeat passes and final disposition without duplicate accepted mass | kg, % | each lot and rework pass | conditioning campaign | each conditioner | per declared reference flow | lab certificate and scale records |
-| `cp_stabilization` | `seed_stabilization` | pre/post seed condition and treatment | storage or treatment log | lot ID; pre/post kg, moisture and germination; dates; energy; treatment product and kg; residue/damage kg | lot scale, moisture and germination tests, treatment meters; Raw aggregation and attribution: sum event inputs once and link to final lot | kg, %, MJ | each lot/event | pre-handoff interval | each conditioning site | per declared reference flow | test results, treatment label and meter logs |
+| `cp_stabilization` | `seed_stabilization` | pre/post seed condition and treatment | storage or treatment log | lot ID; pre/post kg, moisture and germination; dates; energy; treatment product and kg; residue/damage kg | lot scale, moisture and germination tests, treatment meters; Raw aggregation and attribution: sum event inputs once and link to final lot `seed_treatment_input_specific_input`: If applied, record each treatment formulation, amount and service by lot; mark untreated lots explicitly. If applied, record each treatment formulation, amount and service by lot; mark untreated lots explicitly. This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. usda-ams-nop-5029 `stabilization_loss_specific_output`: Record damaged or nonviable seed and treatment residues with actual disposal or downgrade path. Record damaged or nonviable seed and treatment residues with actual disposal or downgrade path. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. usda-ams-nop-5029 | kg, %, MJ | each lot/event | pre-handoff interval | each conditioning site | per declared reference flow | test results, treatment label and meter logs |
 | `cp_release` | `seed_release` | net accepted reference seed | release and shipment ledger | lot ID; accepted net kg; cultivar/class; purity; germination; moisture; delinting/treatment route; hand-off date; failed kg and disposition | certification/test certificate and final scale ticket; Raw aggregation and attribution: sum unique accepted lot IDs only | kg, % | each release lot | one marketing season | each producer/conditioner | per declared reference flow | signed test, release and transfer records |
 
 ### Calculation Rules

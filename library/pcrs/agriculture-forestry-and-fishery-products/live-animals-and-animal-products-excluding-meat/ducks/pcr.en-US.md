@@ -96,32 +96,6 @@ The integrated route shares the managed duck-production parent with ordinary rea
 
 ##### Product flows
 
-###### Breeder feed (`breeder_feed`)
-
-Record feed types and as-fed mass issued to the breeder flock in the attributed period.
-
-Denominator and scope requirements：per breeder period and hatching eggs transferred
-
-Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output.
-
-- Selected flow: Breeder feed; supplier identity unresolved
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_breeder_inputs`
-- Range: Provisional screening interval
-  - Range role: `default_estimate`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/kg hatching eggs transferred
-  - Basis: per breeder period and hatching eggs transferred
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
 ###### Breeder-house water (`breeder_water`)
 
 Record supplied drinking and service water at this operated node; the actual water-use group is determined from foreground uses.
@@ -156,9 +130,9 @@ Record electricity and fuel by actual carrier, avoiding shared-meter double coun
 Denominator and scope requirements：per breeder period and hatching eggs transferred
 Raw quantity and calculation requirements: Metered or invoiced carrier quantities. Original collection denominator kind: process_output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_breeder_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -169,11 +143,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_breeder_inputs`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`breeder_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_breeder_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -183,6 +159,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_breeder_inputs`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -219,33 +197,6 @@ Raw quantity and calculation requirements: Measured egg mass and count by batch.
   - Evidence kind: `method_formula`
   - Sources: `mass-balance-identity`
 
-###### Other sold breeder outputs (`breeder_coproducts`)
-
-Record table eggs and spent live breeders only when independently sold, each at its own gate.
-
-Denominator and scope requirements：per breeder laying period
-
-Raw quantity and calculation requirements: Measure each independently transferred output. Original collection denominator kind: process_output.
-
-- Selected flow: Sold eggs or spent live ducks; concrete identities unresolved
-- Flow property / unit: Mass / kg; count
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_breeder_outputs`
-- Range: Mass-balance QA interval
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg corresponding measured output
-  - Basis: per breeder laying period
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
-
 ###### Independently sold breeder manure (`breeder_manure_export`)
 
 Record only when breeder manure is independently transferred as a sold product with handover evidence.
@@ -273,33 +224,6 @@ Raw quantity and calculation requirements: Weigh by breeder period and document 
   - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
-
-###### Breeder deaths and egg rejects (`breeder_losses`)
-
-Separate mortality and unmarketable eggs from products; document disposal.
-
-Denominator and scope requirements：per breeder laying period
-
-Raw quantity and calculation requirements: Weigh or calculate from observed counts and mean mass. Original collection denominator kind: process_output.
-
-- Selected flow: Biological waste; concrete identities unresolved
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_breeder_outputs`
-- Range: Mass-balance QA interval
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg relevant measured bird or egg mass
-  - Basis: per breeder laying period
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
 
 ###### Unsold breeder manure (`breeder_manure_residue`)
 
@@ -451,9 +375,9 @@ Assign actual incubator energy by carrier and batch.
 Denominator and scope requirements：per kg live duckling output
 Raw quantity and calculation requirements: Metered or invoiced batch energy. Original collection denominator kind: process_output.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_incubation_batch` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -463,6 +387,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_incubation_batch`
 - Sources: `fao-agricultural-energy`
+
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
 
 ###### Hatchery water (`incubation_water`)
 
@@ -527,33 +453,6 @@ Raw quantity and calculation requirements: Measured live duckling lot mass and c
 
 ##### Waste flows
 
-###### Unhatched eggs and hatchery losses (`hatchery_losses`)
-
-Record unhatched eggs, shells and dead ducklings by real disposal stream.
-
-Denominator and scope requirements：per incubation batch
-
-Raw quantity and calculation requirements: Weigh or calculate from batch counts and observed mass. Original collection denominator kind: process_output.
-
-- Selected flow: Hatchery biological waste; UUID unresolved
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_incubation_batch`
-- Range: Mass-balance QA interval
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg relevant weighed hatchery material
-  - Basis: per incubation batch
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
-
 ##### Elementary flows
 
 ### Process: Brooding and rearing (`duck_rearing`)
@@ -586,32 +485,6 @@ Raw quantity and calculation requirements: Measured starting live mass and count
   - Unit: kg/kg final live duck
   - Basis: per rearing batch
   - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
-
-###### Rearing feed (`rearing_feed`)
-
-Include purchased or on-farm feed supplied to rearing, retaining actual intake and losses separately; integrated foraging is not zero burden.
-
-Denominator and scope requirements：per kg final live duck
-
-Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow.
-
-- Selected flow: Duck feed by type and provenance; UUID unresolved
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_rearing_inputs`
-- Range: Provisional screening interval
-  - Range role: `default_estimate`
-  - Lower: 0
-  - Upper: 50
-  - Unit: kg/kg final live duck
-  - Basis: per kg final live duck
-  - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
 ###### Rearing water (`rearing_water`)
@@ -648,9 +521,9 @@ Record brooder, ventilation, pump and equipment energy by actual carrier.
 Denominator and scope requirements：per kg final live duck
 Raw quantity and calculation requirements: Metered or allocated carrier energy by batch. Original collection denominator kind: reference_flow.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_rearing_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -661,11 +534,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_rearing_inputs`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`rearing_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_rearing_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -675,6 +550,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_rearing_inputs`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -711,60 +588,7 @@ Raw quantity and calculation requirements: Measured live mass and heads transfer
   - Evidence kind: `method_formula`
   - Sources: `mass-balance-identity`
 
-###### Independently transferred rearing co-products (`rearing_coproducts`)
-
-Record intentionally sold manure, rice or fish only for actual integrated enterprises, each with own gate.
-
-Denominator and scope requirements：per rearing batch and co-product handover
-
-Raw quantity and calculation requirements: Measure each independently transferred product. Original collection denominator kind: process_output.
-
-- Selected flow: Separately transferred co-products; concrete UUIDs unresolved
-- Flow property / unit: Product-specific / measured unit
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `route_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_rearing_outputs`
-- Range: Mass-balance QA interval
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg corresponding measured output
-  - Basis: per rearing batch and co-product handover
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
-
 ##### Waste flows
-
-###### Mortality and unsold manure (`rearing_residues`)
-
-Classify dead birds, litter and manure not intentionally transferred as products by destination.
-
-Denominator and scope requirements：per rearing batch
-
-Raw quantity and calculation requirements: Weigh removals or calculate from logs and measured class mean mass. Original collection denominator kind: process_output.
-
-- Selected flow: Biological residue/waste; concrete UUIDs unresolved
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_rearing_outputs`
-- Range: Provisional screening interval
-  - Range role: `default_estimate`
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg/kg final live duck
-  - Basis: per rearing batch
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
 
 ##### Elementary flows
 
@@ -919,33 +743,6 @@ Denominator and scope requirements：per reference flow
 
 ##### Waste flows
 
-###### Capture mortalities and rejects (`capture_losses`)
-
-Record birds lost between presentation and sold-live weighing separately.
-
-Denominator and scope requirements：per final producer-gate lot
-
-Raw quantity and calculation requirements: Reconcile presented minus sold mass with loss and rejection logs. Original collection denominator kind: process_output.
-
-- Selected flow: Capture waste; UUID unresolved
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_live_capture`
-- Range: Mass-balance QA interval
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg presented live birds
-  - Basis: per final producer-gate lot
-  - Basis kind: `process_output`
-  - Evidence kind: `method_formula`
-  - Sources: `mass-balance-identity`
-
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -961,19 +758,28 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `rearing_feed_specific_input` | `cp_rearing_inputs` | Operation duck_rearing: Include purchased or on-farm feed supplied to rearing, retaining actual intake and losses separately; integrated foraging is not zero burden. Denominator and scope requirements：per kg final live duck Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_breeder_inputs` | `breeder_flock` | Feed, water, energy | Ledgers, meter, invoice | period; flock; feed type/stocks; water; carrier; quantity | Reconcile issues and meters to laying period; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg; kWh; MJ | per issue/meter | whole breeder period | breeder unit | per reference flow | ledger; invoice; meter; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_breeder_outputs` | `breeder_flock` | Eggs, spent birds, losses and manure | Collection/disposal ledger | period; egg count/mass; destination; spent birds; deaths; manure mass/fate | Count/weigh lots and manure transfers/disposals; Raw aggregation requirements: separate product from waste by handover. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; head | per lot | whole breeder period | breeder unit | per reference flow | scale; sales; disposal; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_breeder_inputs` | `breeder_flock` | Feed, water, energy | Ledgers, meter, invoice | period; flock; feed type/stocks; water; carrier; quantity | Reconcile issues and meters to laying period; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `breeder_feed_specific_input`: Record feed types and as-fed mass issued to the breeder flock in the attributed period. Denominator and scope requirements：per breeder period and hatching eggs transferred Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied.  | kg; kWh; MJ | per issue/meter | whole breeder period | breeder unit | per reference flow | ledger; invoice; meter; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_breeder_outputs` | `breeder_flock` | Eggs, spent birds, losses and manure | Collection/disposal ledger | period; egg count/mass; destination; spent birds; deaths; manure mass/fate | Count/weigh lots and manure transfers/disposals; Raw aggregation requirements: separate product from waste by handover. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `breeder_coproducts_specific_output`: Record table eggs and spent live breeders only when independently sold, each at its own gate. Denominator and scope requirements：per breeder laying period Raw quantity and calculation requirements: Measure each independently transferred output. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `breeder_losses_specific_output`: Separate mortality and unmarketable eggs from products; document disposal. Denominator and scope requirements：per breeder laying period Raw quantity and calculation requirements: Weigh or calculate from observed counts and mean mass. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. `mass-balance-identity` | kg; head | per lot | whole breeder period | breeder unit | per reference flow | scale; sales; disposal; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_breeder_manure_emissions` | `breeder_flock` | Species-specific breeder manure emissions | Manure, N and NH3 measurement records | breeder period; manure; volatile solids; N; housing/storage pathway; CH4/N2O factors; independent NH3 measurement | Calculate CH4/N2O by actual breeder-manure system; report NH3 only from independent measurement or separately sourced method; Raw aggregation requirements: assign each manure fraction one pathway, once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg substance | per breeder period | whole manure period | breeder unit/manure node | per reference flow | analysis; factor worksheet; NH3 record; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_incubation_batch` | `incubation` | Eggs, services, ducklings, losses | Batch sheet and meters | batch; egg count/mass/origin; ducklings; losses; energy; water | Link input/output/services by batch; Raw aggregation requirements: assign shared services once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; head; kWh; MJ | per batch | full incubation | hatchery | per reference flow | batch sheet; scale; meter; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_incubation_batch` | `incubation` | Eggs, services, ducklings, losses | Batch sheet and meters | batch; egg count/mass/origin; ducklings; losses; energy; water | Link input/output/services by batch; Raw aggregation requirements: assign shared services once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `hatchery_losses_specific_output`: Record unhatched eggs, shells and dead ducklings by real disposal stream. Denominator and scope requirements：per incubation batch Raw quantity and calculation requirements: Weigh or calculate from batch counts and observed mass. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. `mass-balance-identity` | kg; head; kWh; MJ | per batch | full incubation | hatchery | per reference flow | batch sheet; scale; meter; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_rearing_batch` | `duck_rearing` | Starting/ending birds | Movement/weight ledger | batch; age; count; starting/ending mass | Count/weigh each handover; Raw aggregation requirements: reconcile bird movements. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; head | per movement | whole rearing period | flock | per reference flow | scale; register; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_rearing_inputs` | `duck_rearing` | Feed, water, energy | Ledger and meters | batch; stocks; feed; water; carrier; meter | Reconcile actual consumption; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg; kWh; MJ | per delivery/meter | whole rearing period | flock and shared assets | per reference flow | invoices; meter; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_rearing_outputs` | `duck_rearing` | Co-products, manure, deaths | Sales/removal records | batch; product; mass; destination; mortality | Weigh output or waste removal; Raw aggregation requirements: classify by actual handover. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; head | per movement | whole rearing period | flock/integrated unit | per reference flow | sales; removal ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_rearing_inputs` | `duck_rearing` | Feed, water, energy | Ledger and meters | batch; stocks; feed; water; carrier; meter | Reconcile actual consumption; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `rearing_feed_specific_input`: Operation duck_rearing: Include purchased or on-farm feed supplied to rearing, retaining actual intake and losses separately; integrated foraging is not zero burden. Denominator and scope requirements：per kg final live duck Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg; kWh; MJ | per delivery/meter | whole rearing period | flock and shared assets | per reference flow | invoices; meter; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_rearing_outputs` | `duck_rearing` | Co-products, manure, deaths | Sales/removal records | batch; product; mass; destination; mortality | Weigh output or waste removal; Raw aggregation requirements: classify by actual handover. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `rearing_coproducts_specific_output`: Record intentionally sold manure, rice or fish only for actual integrated enterprises, each with own gate. Denominator and scope requirements：per rearing batch and co-product handover Raw quantity and calculation requirements: Measure each independently transferred product. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `rearing_residues_specific_output`: Classify dead birds, litter and manure not intentionally transferred as products by destination. Denominator and scope requirements：per rearing batch Raw quantity and calculation requirements: Weigh removals or calculate from logs and measured class mean mass. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion.  | kg; head | per movement | whole rearing period | flock/integrated unit | per reference flow | sales; removal ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_manure_emissions` | `duck_rearing` | Species-specific rearing emissions | Manure, N and NH3 measurement records | batch; manure; volatile solids; N; housing/storage pathway; CH4/N2O factors; independent NH3 measurement | Calculate CH4/N2O by actual rearing-manure system; report NH3 only from independent measurement or separately sourced method; Raw aggregation requirements: assign each manure fraction one pathway, once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg substance | per batch | manure period | flock/manure node | per reference flow | analysis; factor worksheet; NH3 record; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_live_capture` | `live_capture` | Presented/sold/lost birds | Gate weighing sheet | lot; gate; age; count; presented/sold/lost mass | Weigh/count at final gate; Raw aggregation requirements: normalize sold live kg to 1 kg. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; head | per lot | capture to handover | selected gate | per reference flow | scale; delivery note; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_live_capture` | `live_capture` | Presented/sold/lost birds | Gate weighing sheet | lot; gate; age; count; presented/sold/lost mass | Weigh/count at final gate; Raw aggregation requirements: normalize sold live kg to 1 kg. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `capture_losses_specific_output`: Record birds lost between presentation and sold-live weighing separately. Denominator and scope requirements：per final producer-gate lot Raw quantity and calculation requirements: Reconcile presented minus sold mass with loss and rejection logs. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion. `mass-balance-identity` | kg; head | per lot | capture to handover | selected gate | per reference flow | scale; delivery note; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_feed_supply_and_intake` | `breeder_flock`; `duck_rearing` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 | `cp_manure_n2o_coverage` | `breeder_flock`; `duck_rearing` | Direct and indirect manure/soil N2O coverage | pathway N ledger and method worksheet | species/class; period; excreted N; stage stocks/transfers; system shares; volatilised NH3-N/NOx-N; leached/runoff N; application/grazing N; factor source, unit and applicability; direct/indirect components; receiving medium; linked process and assigned card; accepted final output | Retain raw stage N and component calculations under calc_manure_n2o_coverage, matched to actual operation and existing manure protocols. Document unsupported or inapplicable paths and coverage boundaries; normalize attributable N2O once. | kg N; kg N2O | each reporting period and management change | complete represented management period | actual operated and explicitly linked nodes | per reference flow | N balance, factor unit/applicability, component-to-card and no-duplication worksheet |
 

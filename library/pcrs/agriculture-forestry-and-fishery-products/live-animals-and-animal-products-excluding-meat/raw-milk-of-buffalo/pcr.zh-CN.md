@@ -106,33 +106,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 饲料与粗饲料 (`feed`)
-
-按水牛类别和期间记录购入饲料与放牧采食量，区分原物与干物质。
-
-分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层
-
-原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output.
-
-- 选定流：水牛饲料及粗饲料
-- 流属性/单位： Mass / kg dry matter
-- 数量规则：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_herd`
-- 来源： `fao-large-ruminants-2016`
-- 数量范围：暂定完整性筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 100
-  - 单位： kg dry matter/kg accepted milk
-  - 基准：宽泛首轮完整性筛选，非通用因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 牛群供水 (`water`)
 
 按来源记录饮用及饲养用水，不计入未管理降水。
@@ -159,31 +132,24 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 畜群管理能源 (`herd_energy`)
+###### 交流电 (`herd_energy_electricity`)
 
-按能源载体分别记录圈舍、抽水、喂养和粪污设备的能源。
+归属水牛畜群期间的实际电动圈舍、泵送、饲喂及粪污设备，排除另行计量的乳冷却节点。
 
-分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-原始数量及计算要求：按服务期间分配仪表和发票数量 原始采集分母类型：process_output。
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_utilities`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_utilities`
+- 来源：`route-energy-fao`
 
-- 选定流：水牛群能源供应
-- 流属性/单位： Energy or carrier quantity / kWh, MJ, L or kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_utilities`
-- 数量范围：暂定完整性筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 30
-  - 单位： kWh-equivalent/kg accepted milk
-  - 基准：宽泛首轮完整性筛选，非通用因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+执行第8节`herd_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -290,7 +256,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：水牛活动量乘以匹配的肠道排放因子 原始采集分母类型：process_output。
 
-- 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位： Mass / kg CH4
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -317,7 +283,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：路径粪污挥发性固体乘以匹配的甲烷因子 原始采集分母类型：process_output。
 
-- 选定流：甲烷 (生物源)（排放至空气） `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
+- 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：Mass / kg CH4
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -346,7 +312,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：按路径计算直接及适用的间接 N2O 原始采集分母类型：process_output。
 
-- 选定流：一氧化二氮（排放至空气） `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位： Mass / kg N2O
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -373,7 +339,7 @@ sync_with: pcr.en-US.md
 
 原始数量及计算要求：按路径氮挥发量计算 NH3 原始采集分母类型：process_output。
 
-- 选定流：氨（排放至空气） `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位： Mass / kg NH3
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -398,31 +364,20 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 挤乳设备能源 (`milking_energy`)
+###### 交流电 (`milking_energy_electricity`)
 
-挤乳采集能源与畜群管理及冷却分别计量。
+仅适用于本作业有记录的交流电设备。记录电压及供电技术，电表kWh按1 kWh = 3.6 MJ换算；其他动力来源须使用其实际载能体。执行`milking_energy_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层
-
-原始数量及计算要求：按载体计量挤乳服务能源 原始采集分母类型：process_output。
-
-- 选定流：挤奶能源供应
-- 流属性/单位： Energy or carrier quantity / kWh, MJ, L or kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_utilities`
-- 数量范围：暂定完整性筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 20
-  - 单位： kWh-equivalent/kg gross milk
-  - 基准：宽泛首轮完整性筛选，非通用因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_utilities`采集`milking`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_utilities`
+- 来源：`route-energy-fao`
 
 ##### 废物流
 
@@ -544,32 +499,6 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 拒收原奶与过滤残余 (`conditioning_reject`)
-
-按数量、原因和去向分类记录拒收原奶与过滤残余。
-
-分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层
-
-原始数量及计算要求：计量拒收奶并单独记录固体残余 原始采集分母类型：process_output。
-
-- 选定流：剔除的水牛生乳及初次整理残余物
-- 流属性/单位： Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_milk`
-- 数量范围：暂定完整性筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 1
-  - 单位： kg rejected milk/kg gross
-  - 基准：宽泛首轮完整性筛选，非通用因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 基本流
 
 无单独报告的此类流。
@@ -580,31 +509,24 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 农场冷却能源 (`cooling_energy`)
+###### 交流电 (`cooling_energy_electricity`)
 
-仅在产奶农场控制冷却时记录制冷用电及备用燃料。
+仅覆盖生产畜群或农场控制下实际实施的乳冷却及搅拌；记录冷却期间，备用发电另行取证，不从制冷需求推定燃料。
 
-分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-原始数量及计算要求：按载体和批次计量冷却能源 原始采集分母类型：process_output。
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_utilities`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_utilities`
+- 来源：`milk-cooling-energy`
 
-- 选定流：农场乳冷却能源供应
-- 流属性/单位： Energy or carrier quantity / kWh, MJ, L or kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议： `cp_utilities`
-- 数量范围：暂定完整性筛选区间
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 20
-  - 单位： kWh-equivalent/kg chilled milk
-  - 基准：宽泛首轮完整性筛选，非通用因子
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+执行第8节`cooling_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -628,7 +550,7 @@ sync_with: pcr.en-US.md
 
 生产者交付关联：仅当本状态／交付门专属行被选为实际路线的最终来源时，才向 reference_handover_input 提供同一批实际合格产品。此时它是内部交付记录，不是第二次对外参考产品销售；否则保留原有中间移交角色。保留确切身份及原有路线条件，只选实际最终来源，不汇总所有连续移交；匹配同批次及相容的物种／状态／交付门证据。较窄固定身份的交付门或物种不得扩大。交付接口不增加加工、运输、产率假设或重复处理负担。
 
-- 选定流：水牛生奶（冷藏，农场交付） `790fcd48-b398-4049-898a-f9535f08f97b`
+- 选定流：水牛生奶 `790fcd48-b398-4049-898a-f9535f08f97b`
 - 流属性/单位： Mass / kg
 - 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -767,14 +689,36 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算和质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `feed_specific_input` | `cp_herd` | 作业 herd：按水牛类别和期间记录购入饲料与放牧采食量，区分原物与干物质。 分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 |
+| `milking_energy_specific_input` | `cp_utilities` | 作业 milking：挤乳采集能源与畜群管理及冷却分别计量。 分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层 原始数量及计算要求：按载体计量挤乳服务能源 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `herd_energy_identification` | `cp_utilities` | 归属水牛畜群期间的实际电动圈舍、泵送、饲喂及粪污设备，排除另行计量的乳冷却节点。 原始数量及计算要求：按服务期间分配仪表和发票数量 原始采集分母类型：process_output。 (`route-energy-fao`) |
+| `cooling_energy_identification` | `cp_utilities` | 仅覆盖生产畜群或农场控制下实际实施的乳冷却及搅拌；记录冷却期间，备用发电另行取证，不从制冷需求推定燃料。 原始数量及计算要求：按载体和批次计量冷却能源 原始采集分母类型：process_output。 (`milk-cooling-energy`) |
+
+
 ### 数据采集协议
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_herd` | `herd` | 饲料、活体转让、肠道 CH4 | 畜群/饲料台账 | 类别、头日、饲料及含水率、放牧估算、出生、后备、淘汰、来源 | 农场记录及磅秤；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 | 头日、kg | 事件及每日 | 完整报告期间 | 产奶农场 | 每参考流 | 畜群盘点及称重票据；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_herd` | `herd` | 饲料、活体转让、肠道 CH4 | 畜群/饲料台账 | 类别、头日、饲料及含水率、放牧估算、出生、后备、淘汰、来源 | 农场记录及磅秤；原始汇总要求： 按 calc_feed_supply_and_intake 区分承担生产负担的饲料投入、实际采食量及损失；保留原生库存及期间记录，可归属量对合格最终产出归一化一次。 `feed_specific_input`: 作业 herd：按水牛类别和期间记录购入饲料与放牧采食量，区分原物与干物质。 分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层 原始数量及计算要求：按 calc_feed_supply_and_intake 分别建立饲料投入、采食及损失台账。承担饲料生产负担的数量包含边界内拒食、变质及未食用饲料，不得缩减为动物采食量。保留来源、物种/群体、阶段及原始质量/水分基准。最终贡献依 inventory_reference_normalization 和 stage_throughput_linkage 恰归一化一次。 原始采集分母类型：process_output. 原数量方法：采用保留边界内损失及其生产负担的已核对饲料投入记录，依 inventory_reference_normalization 和 stage_throughput_linkage 计算可归属最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 头日、kg | 事件及每日 | 完整报告期间 | 产奶农场 | 每参考流 | 畜群盘点及称重票据；可追溯分子、合格参考产出分母及归一化计算表 |
 | `cp_manure` | `herd` | 粪污产出、CH4、N2O、NH3 | 粪污台账 | 排泄氮、挥发性固体、路径比例、质量、氮品质、转让 | 库存、采样及路径模型；原始汇总要求：核对路径且不重复计土壤负担。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg、kg N、kg VS | 事件及每月 | 完整报告期间 | 产奶农场 | 每参考流 | 贮存和转让记录；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_utilities` | `herd`; `milking`; `conditioning`; `cooling` | 水及能源 | 仪表/发票 | 来源、载体、数量、设施、节点、服务时间、期间 | 仪表及分配日志；原始汇总要求：共享仪表只分配一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | m3、kWh、MJ、L、kg | 每月及每批 | 完整报告期间 | 产奶农场 | 每参考流 | 校准与发票；可追溯分子、合格参考产出分母及归一化计算表 |
-| `cp_milk` | `milking`; `conditioning`; `cooling` | 原奶产出及拒收 | 批次台账 | 批次及路线标识；总量、接收、拒收和损失质量；温乳入冷却转移；期初/期末库存；最终状态、温度、成分和交付门；分状态负担归属 | 使用校准罐体记录及样品。核对每批及其实际最终温乳或冷却乳交付，保留库存变化和内部转移。仅在同一声明状态/交付门/等级分层内汇总合格最终质量。直接温乳与冷却乳合计仅用于全场质量核对，不得作为合并参考分母。畜群及共享负担依分配规则归属于所选产出分层；冷却负担仅归属于实际冷却批次。按 c_milk_state_normalization，使用各分层自身实测合格最终产出恰归一化一次。 | kg、°C、% | 每批 | 完整报告期间，按状态分层 | 产奶农场 | 每参考流 | 批次及状态台账；原奶平衡；接收票据；可追溯归属及分状态分母计算表 |
+| `cp_utilities` | `herd`; `milking`; `conditioning`; `cooling` | 水及能源 | 仪表/发票 | 来源、载体、数量、设施、节点、服务时间、期间 | 仪表及分配日志；原始汇总要求：共享仪表只分配一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 按路线确认要求：`herd_energy_identification`: 归属水牛畜群期间的实际电动圈舍、泵送、饲喂及粪污设备，排除另行计量的乳冷却节点。 原始数量及计算要求：按服务期间分配仪表和发票数量 原始采集分母类型：process_output。 (`route-energy-fao`) `cooling_energy_identification`: 仅覆盖生产畜群或农场控制下实际实施的乳冷却及搅拌；记录冷却期间，备用发电另行取证，不从制冷需求推定燃料。 原始数量及计算要求：按载体和批次计量冷却能源 原始采集分母类型：process_output。 (`milk-cooling-energy`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `milking_energy_specific_input`: 作业 milking：挤乳采集能源与畜群管理及冷却分别计量。 分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层 原始数量及计算要求：按载体计量挤乳服务能源 原始采集分母类型：process_output。 原数量方法：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | m3、kWh、MJ、L、kg | 每月及每批 | 完整报告期间 | 产奶农场 | 每参考流 | 校准与发票；可追溯分子、合格参考产出分母及归一化计算表 |
+| `cp_milk` | `milking`; `conditioning`; `cooling` | 原奶产出及拒收 | 批次台账 | 批次及路线标识；总量、接收、拒收和损失质量；温乳入冷却转移；期初/期末库存；最终状态、温度、成分和交付门；分状态负担归属 | 使用校准罐体记录及样品。核对每批及其实际最终温乳或冷却乳交付，保留库存变化和内部转移。仅在同一声明状态/交付门/等级分层内汇总合格最终质量。直接温乳与冷却乳合计仅用于全场质量核对，不得作为合并参考分母。畜群及共享负担依分配规则归属于所选产出分层；冷却负担仅归属于实际冷却批次。按 c_milk_state_normalization，使用各分层自身实测合格最终产出恰归一化一次。 `conditioning_reject_specific_output`: 按数量、原因和去向分类记录拒收原奶与过滤残余。 分母与范围要求：每 kg 最终接收原奶，保留畜群期间或批次分层 原始数量及计算要求：计量拒收奶并单独记录固体残余 原始采集分母类型：process_output。 依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg、°C、% | 每批 | 完整报告期间，按状态分层 | 产奶农场 | 每参考流 | 批次及状态台账；原奶平衡；接收票据；可追溯归属及分状态分母计算表 |
 | `cp_reference_handover` | `reference_handover` | 合格产品及匹配的内部来源移交 | 生产者交付台账 | lot_id, species, state, grade, route_id, gate, period, accepted_quantity, native_unit, source_row_id, source_lot_id, allocation_link | 在同一实际交付门测量合格净产品，将列出的状态／交付门专属来源行及关联输入与唯一实际产出核对。拒收、库存变化及其他销售单独记录；不假设新增处理或运输。 | kg；原生来源数量 | 每次实际交付 | 匹配来源及交付期间 | 仅声明生产者交付门 | 每参考流 | 可追溯验收记录、同批来源至产出台账、校准数量方法及归一化计算表 |
 | `cp_feed_supply_and_intake` | `herd` | 饲料投入、采食及损失 | 库存、收货、发料及损失台账 | 饲料身份/来源；群体/阶段；期间；期初/期末库存；收货；自产供给；未用退回/转出；未食用/变质质量及去向；原物/干物质；实际采食量；负担归属；合格最终产出 | 按 calc_feed_supply_and_intake 核对匹配的库存、称重、日粮/采草估算及处置记录。保留原始总量及阶段分母，生产与处理负担各归属一次，再对合格最终产出归一化。 | kg as-fed; kg DM | 每次发料及期间结算 | 完整所代表群体/期间 | 实际运行饲喂节点 | 每参考流 | 库存及供应商记录；水分证据；损失及无重复核算核对 |
 | `cp_manure_n2o_coverage` | `herd` | 粪污/土壤直接及间接 N2O 覆盖 | 分路径氮台账及方法计算表 | 物种/类别；期间；排泄氮；阶段库存/转移；系统份额；挥发 NH3-N/NOx-N；淋溶/径流氮；施用/放牧氮；因子来源、单位及适用性；直接/间接分项；接受介质；已链接过程及归属卡；合格最终产出 | 按 calc_manure_n2o_coverage 保留原始阶段氮及分项计算，并匹配实际作业与现有粪污协议。记录缺证据或不适用路径及覆盖边界，可归属 N2O 归一化一次。 | kg N; kg N2O | 每个报告期间及管理变化 | 完整所代表管理期间 | 实际运行及明确链接节点 | 每参考流 | 氮平衡、因子单位/适用性、分项到卡片及无重复核算表 |
@@ -840,3 +784,5 @@ sync_with: pcr.en-US.md
 | `ipcc-livestock-2019` | method_factor | IPCC, 2019 Refinement, Volume 4 Chapter 10, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf | 水牛排放及粪污路径 |
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | 饲料投入、采食及废料负担的区分，不提供动物参数。将该核算原则用于声明类群是本 PCR 的方法学选择；不移植猪的日粮或排放因子。 |
 | `ipcc-managed-soils-2019` | official_guidance | [IPCC 2019 Refinement, Volume 4, Chapter 11](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf) | 直接及间接氮路径，以及粪污贮存与管理土壤排放的衔接；须选择适用的物种及管理证据。 |
+| `milk-cooling-energy` | official_guidance | FAO, Solar energy in small-scale milk collection and processing, Chapter 2. https://www.fao.org/4/X6541E/X6541E02.htm | 仅支持电制冷机制，不采用物种特定用量或预设冷却及发电路线。 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

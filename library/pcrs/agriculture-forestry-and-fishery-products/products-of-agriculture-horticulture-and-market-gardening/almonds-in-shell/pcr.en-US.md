@@ -103,23 +103,6 @@ The foreground boundary runs from the declared orchard starting condition throug
 
 ##### Product flows
 
-###### Orchard planting material and support inputs (`orchard_planting_material`)
-
-Record nursery trees, grafted planting material, support materials, and attributable irrigation-system materials crossing the orchard boundary. Retained orchard assets and replacements are linked to the declared orchard life.
-
-- Selected flow: almond nursery trees and orchard support materials
-- Flow property / unit: declared property / item, kg, or unit
-- Amount rule: measured quantity by orchard block and establishment or replacement event, annualized over accepted output
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_almond_orchard_lifecycle_records`
-- Sources: `fao-gap-framework-2003`; `iso-14067`
-
 ###### Urea fertilizer (`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for almond_orchard_establishment_and_management_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -127,9 +110,9 @@ Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_almond_orchard_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -139,12 +122,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_almond_orchard_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `almond-board-water-quality`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_almond_orchard_input_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -154,6 +139,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_almond_orchard_input_records`
 - Sources: `ipcc-2019-managed-soils-n2o`; `almond-board-water-quality`; `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`almond_orchard_establishment_and_management_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -239,9 +226,9 @@ Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 Record energy for pumping, nutrient application, mowing, pruning, orchard-floor management, and other field operations. Keep fuel separate from electricity.
 Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_almond_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -252,11 +239,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_almond_energy_records`
 - Sources: `fao-gap-framework-2003`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`orchard_energy_input_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_almond_energy_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -267,22 +256,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_almond_energy_records`
 - Sources: `fao-gap-framework-2003`; `fao-agricultural-energy`
 
-###### Crop-protection products (`orchard_crop_protection`)
-
-Record named formulations and active ingredients used for insects, diseases, weeds, or hull-split protection.
-
-- Selected flow: named crop-protection product or active substance
-- Flow property / unit: Mass / kg product or active substance
-- Amount rule: measured application by product, active ingredient, date, and block
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_almond_orchard_input_records`
-- Sources: `ucipm-almond-hull-split`
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -351,24 +325,6 @@ Record only orchard material leaving the declared boundary as waste or unmanaged
 
 ##### Elementary flows
 
-###### Nutrient-related field emissions (`orchard_field_emissions`)
-
-Calculate direct and indirect nutrient- and residue-related emissions from the same activity records and method tier used for nutrient accounting.
-
-- Selected flow: Nutrient- and residue-related elementary emissions to air, water, or soil; expand by reported pollutant and receiving medium during foreground-data generation
-- Flow property / unit: Mass / kg substance
-- Group selection: deferred until foreground records identify the pollutant and receiving medium
-- Amount rule: selected geographically applicable method applied to collected nutrient and residue records
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Method formula (`method_formula`)
-- Collection protocol: `cp_almond_orchard_input_records`
-- Sources: `ipcc-2019-managed-soils-n2o`
-
 ### Process: Almond Harvest and Collection (`almond_harvest_and_collection`)
 
 #### Inputs
@@ -392,22 +348,20 @@ Raw activity or stage basis: harvest process output.
 - Collection protocol: `cp_almond_harvest_records`
 - Sources: `mass-balance-identity`
 
-###### Harvest and collection energy (`harvest_energy_input`)
+###### Diesel fuel (`harvest_energy_input_diesel`)
 
-Record tree shaking, sweeping, pickup, field transport, and loading energy or contracted services not already included in orchard management.
+Only for documented diesel-powered machinery within this operation. Retain fuel grade and formulation; convert recorded volume with measured or supplier-supported density. Other powertrains require their actual carrier, not a diesel equivalent. Apply `harvest_energy_input_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
 
-- Selected flow: Harvest mobile-machinery fuel
-- Flow property / unit: Mass, energy, or service unit / kg, L, MJ, kWh, or declared service unit
-- Amount rule: measured or supplier-recorded harvest activity by block and crop year
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1,000 kg harvested almond crop.
-
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect this carrier under `cp_almond_harvest_records` for `almond_harvest_and_collection`. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_almond_harvest_records`
-- Sources: `ucipm-almond-hull-split`
+- Sources: `route-energy-fao`
 
 ###### Contracted harvest service (`harvest_contracted_service`)
 
@@ -506,9 +460,9 @@ Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 Record electricity, fuel, and any process water used for hulling, conveying, drying, cleaning, and grading. Drying is recorded only when it occurs in the declared route.
 Raw activity or stage basis: per 1,000 kg accepted almonds in shell.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_almond_conditioning_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -519,11 +473,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_almond_conditioning_records`
 - Sources: `usda-almond-commercial-storage`; `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`conditioning_energy_and_water_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_almond_conditioning_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -533,6 +489,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_almond_conditioning_records`
 - Sources: `usda-almond-commercial-storage`; `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Conditioning process water (`conditioning_process_water`)
 
@@ -649,6 +607,17 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `orchard_planting_material_specific_input` | `cp_almond_orchard_lifecycle_records` | Operation almond_orchard_establishment_and_management: Record nursery trees, grafted planting material, support materials, and attributable irrigation-system materials crossing the orchard boundary. Retained orchard assets and replacements are linked to the declared orchard life. Original quantity method: measured quantity by orchard block and establishment or replacement event, annualized over accepted output |
+| `orchard_crop_protection_specific_input` | `cp_almond_orchard_input_records` | Operation almond_orchard_establishment_and_management: Record named formulations and active ingredients used for insects, diseases, weeds, or hull-split protection. Original quantity method: measured application by product, active ingredient, date, and block |
+| `harvest_energy_input_specific_input` | `cp_almond_harvest_records` | Operation almond_harvest_and_collection: Record tree shaking, sweeping, pickup, field transport, and loading energy or contracted services not already included in orchard management. Original quantity method: measured or supplier-recorded harvest activity by block and crop year |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -656,11 +625,11 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_almond_orchard_lifecycle_records` | `almond_orchard_establishment_and_management` | establishment, replacement, removal, and land | orchard asset and land record | block; area; cultivar; planting year; orchard age; productive life; trees; supports; irrigation assets; prior land use; replacement; removal; fate | GIS, asset register, invoices, field records; Raw aggregation and attribution: annualize attributable inputs over accepted output | ha, item, kg, year | establishment, replacement, and annual update | declared orchard life and crop year | each orchard block | per declared reference flow | maps, invoices, asset register, replacement records |
-| `cp_almond_orchard_input_records` | `almond_orchard_establishment_and_management` | nutrients, crop protection, and field emissions | purchase and application record | product; formulation; nutrient or active ingredient; mass; date; block; purpose; method | invoice, label, application log, agronomist record; Raw aggregation and attribution: sum by product and nutrient or active ingredient | kg product, kg nutrient, kg active ingredient | each application | complete crop year | each orchard block | per declared reference flow | invoice, label, application log |
+| `cp_almond_orchard_lifecycle_records` | `almond_orchard_establishment_and_management` | establishment, replacement, removal, and land | orchard asset and land record | block; area; cultivar; planting year; orchard age; productive life; trees; supports; irrigation assets; prior land use; replacement; removal; fate | GIS, asset register, invoices, field records; Raw aggregation and attribution: annualize attributable inputs over accepted output `orchard_planting_material_specific_input`: Operation almond_orchard_establishment_and_management: Record nursery trees, grafted planting material, support materials, and attributable irrigation-system materials crossing the orchard boundary. Retained orchard assets and replacements are linked to the declared orchard life. Original quantity method: measured quantity by orchard block and establishment or replacement event, annualized over accepted output Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | ha, item, kg, year | establishment, replacement, and annual update | declared orchard life and crop year | each orchard block | per declared reference flow | maps, invoices, asset register, replacement records |
+| `cp_almond_orchard_input_records` | `almond_orchard_establishment_and_management` | nutrients, crop protection, and field emissions | purchase and application record | product; formulation; nutrient or active ingredient; mass; date; block; purpose; method | invoice, label, application log, agronomist record; Raw aggregation and attribution: sum by product and nutrient or active ingredient `orchard_crop_protection_specific_input`: Operation almond_orchard_establishment_and_management: Record named formulations and active ingredients used for insects, diseases, weeds, or hull-split protection. Original quantity method: measured application by product, active ingredient, date, and block Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `orchard_field_emissions_specific_emission`: Calculate direct and indirect nutrient- and residue-related emissions from the same activity records and method tier used for nutrient accounting. selected geographically applicable method applied to collected nutrient and residue records This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `ipcc-2019-managed-soils-n2o` | kg product, kg nutrient, kg active ingredient | each application | complete crop year | each orchard block | per declared reference flow | invoice, label, application log |
 | `cp_almond_irrigation_records` | `almond_orchard_establishment_and_management` | irrigation and withdrawal | meter and pumping record | source; meter; reading; volume; pumping energy; date; block; rain-fed flag; water quality | calibrated meter, pump log, invoice, water analysis; Raw aggregation and attribution: sum by source and normalize to accepted output | m3, kg, kWh, MJ | event or month | irrigation season and crop year | block and water source | per declared reference flow | meter calibration, readings, invoice, water analysis |
 | `cp_almond_energy_records` | `almond_orchard_establishment_and_management` | orchard and harvest energy | fuel, electricity, and contractor record | operation; machine; carrier; amount; date; block; service provider | fuel log, telematics, meter, invoice; Raw aggregation and attribution: allocate by operation and normalize to accepted output | L, kg, kWh, MJ, service unit | operation or billing interval | complete crop year | orchard block and contractor | per declared reference flow | invoice, meter, equipment log |
-| `cp_almond_harvest_records` | `almond_harvest_and_collection` | harvested crop and losses | harvest ticket and receiving record | block; cultivar; harvest pass; date; gross mass; moisture; hull condition; rejected mass; loss; destination | calibrated scale and harvest log; Raw aggregation and attribution: reconcile harvested crop, losses, and receiving mass | kg and moisture fraction | each harvest pass | full crop year | each block and receiving point | per declared reference flow | scale calibration, tickets, moisture record |
+| `cp_almond_harvest_records` | `almond_harvest_and_collection` | harvested crop and losses | harvest ticket and receiving record | block; cultivar; harvest pass; date; gross mass; moisture; hull condition; rejected mass; loss; destination | calibrated scale and harvest log; Raw aggregation and attribution: reconcile harvested crop, losses, and receiving mass `harvest_energy_input_specific_input`: Operation almond_harvest_and_collection: Record tree shaking, sweeping, pickup, field transport, and loading energy or contracted services not already included in orchard management. Original quantity method: measured or supplier-recorded harvest activity by block and crop year Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg and moisture fraction | each harvest pass | full crop year | each block and receiving point | per declared reference flow | scale calibration, tickets, moisture record |
 | `cp_almond_conditioning_records` | `almond_hulling_drying_and_grading` | accepted output, hulls, rejects, energy, water, and packaging | campaign, batch, and grade record | input mass; moisture; hulling date; drying energy; water; grade; accepted mass; hull mass; reject mass; fate; package | receiving scale, batch sheet, meters, grade record, dispatch record; Raw aggregation and attribution: reconcile input to accepted, hull, reject, and loss outputs | kg, moisture fraction, kWh, MJ, m3, item | batch or campaign | crop year and declared gate period | huller or conditioning facility | per declared reference flow | calibrated scales, meter records, grade certificates, dispatch and fate records |
 
 ### Calculation Rules
@@ -730,3 +699,4 @@ Evidence applicability: cited general farm-record and postharvest frameworks do 
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

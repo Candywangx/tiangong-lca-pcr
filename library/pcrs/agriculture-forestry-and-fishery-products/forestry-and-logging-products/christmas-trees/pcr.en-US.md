@@ -143,30 +143,15 @@ Nursery seedlings or transplants enter the managed cohort with species/provenanc
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual supplied material and attributable service requirement (`grow_materials`)
-
-Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge.
-
-- Selected flow: Supplied material and attributable service requirements
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grow`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
-
 ###### Electricity at the equipment supply point (`grow_energy_electricity`)
 
 **Collection scope and applicability for grow_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
 
 Identify each actual fuel or electricity exchange in its own conditional card and preserve its delivered-energy basis. Activation requires actual use.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_grow` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -177,11 +162,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_grow`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`grow_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_grow` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -191,6 +178,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grow`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ##### Waste flows
 
@@ -212,29 +201,6 @@ Conditional collection requirement: record actual managed field/yard occupation 
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_grow`
 Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
-
-###### Actual natural water or other resource uptake (`grow_resources`)
-
-Record actual abstracted environmental water separately from purchased water and method-defined biogenic uptake; no natural whole-tree removal applies to the managed crop.
-
-- Selected flow: Natural resources by actual substance and source
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grow`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 #### Outputs
 
@@ -288,54 +254,7 @@ Only an independently intended and accepted bough product crossing its documente
 
 ##### Waste flows
 
-###### Material actually discarded across the boundary (`grow_waste`)
-
-Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste.
-
-- Selected flow: Discarded material by real destination
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grow`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
-
-###### Actual direct substance releases and losses (`grow_releases`)
-
-Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities.
-
-- Selected flow: Direct substance releases by receiving medium
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grow`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ### Process: Aggregated harvest-to-producer-dispatch inventory (`harvest_to_dispatch`)
 
@@ -391,24 +310,6 @@ Link the same cohort interface to standing_crop; its measurement is not the fina
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual supplied material and attributable service requirement (`harvest_materials`)
-
-Activity owner: harvest.
-
-
-Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge.
-
-- Selected flow: Supplied material and attributable service requirements
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Measured attributable quantity under cp_harvest, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_harvest`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
-
 ###### Electricity at the equipment supply point (`harvest_energy_electricity`)
 
 **Collection scope and applicability for harvest_energy.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -416,9 +317,9 @@ Range evidence requirement: No numerical bound is prescribed until the concrete 
 Activity owner: harvest.
 Identify each actual fuel or electricity exchange in its own conditional card and preserve its delivered-energy basis. Activation requires actual use.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_harvest` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -429,11 +330,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`harvest_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_harvest` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -444,23 +347,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_harvest`
 - Sources: `fao-agricultural-energy`
 
-###### Actual supplied material and attributable service requirement (`condition_materials`)
-
-Activity owner: condition.
-
-
-Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge.
-
-- Selected flow: Supplied material and attributable service requirements
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Measured attributable quantity under cp_condition, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_condition`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Electricity at the equipment supply point (`condition_energy_electricity`)
 
@@ -469,9 +356,9 @@ Range evidence requirement: No numerical bound is prescribed until the concrete 
 Activity owner: condition.
 Identify each actual fuel or electricity exchange in its own conditional card and preserve its delivered-energy basis. Activation requires actual use.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_condition` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -482,11 +369,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_condition`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`condition_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_condition` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -497,41 +386,7 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_condition`
 - Sources: `fao-agricultural-energy`
 
-###### Actual energy and operation service requirement (`grade_energy`)
-
-Activity owner: grade.
-
-
-Conditional collection requirement for actual energy and operation services at this node. Identify fuel/electricity, actual contracted handling and shared asset/service use separately with their own native property/unit and actual period/consumer. Apply delivered_energy only to actual energy subexchanges; services are not converted to MJ. Retain attributed service quantities and ensure the shared ledger charges each consumer once.
-
-- Selected flow: Energy and operation service requirements
-- Flow property / unit: Actual energy or service property / native unit
-- Amount rule: Measured attributable quantity under cp_grade, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grade`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
-
-###### Actual supplied material and attributable service requirement (`hold_materials`)
-
-Activity owner: hold.
-
-
-Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge.
-
-- Selected flow: Supplied material and attributable service requirements
-- Flow property / unit: Actual material or service property / native unit
-- Amount rule: Measured attributable quantity under cp_hold, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_hold`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Electricity at the equipment supply point (`hold_energy_electricity`)
 
@@ -540,9 +395,9 @@ Range evidence requirement: No numerical bound is prescribed until the concrete 
 Activity owner: hold.
 Identify each actual fuel or electricity exchange in its own conditional card and preserve its delivered-energy basis. Activation requires actual use.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_hold` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -553,11 +408,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_hold`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`hold_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_hold` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -567,6 +424,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_hold`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Wooden crate (`dispatch_packaging_wood_crate`)
 
@@ -617,24 +476,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_dispatch`
 - Sources: `fao-package-identities`
-
-###### Actual energy and operation service requirement (`dispatch_energy`)
-
-Activity owner: dispatch.
-
-
-Conditional collection requirement for actual energy and operation services at this node. Identify fuel/electricity, actual contracted handling and shared asset/service use separately with their own native property/unit and actual period/consumer. Apply delivered_energy only to actual energy subexchanges; services are not converted to MJ. Retain attributed service quantities and ensure the shared ledger charges each consumer once.
-
-- Selected flow: Energy and operation service requirements
-- Flow property / unit: Actual energy or service property / native unit
-- Amount rule: Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_dispatch`
-Range evidence requirement: No numerical bound is prescribed until the concrete exchange, reference property, comparison unit and normalization denominator are identified. Retain the linked protocol’s measured quantities. If a quantitative QA screen is established, document its applicable material/service, route and period, reviewed evidence and derivation; express values and both bounds in the same explicit unit and denominator. Convert both bounds together with the value when units change. Until that evidence exists, quantitative range screening is unavailable and is disclosed as a gap; a missing screen does not supply a default or prove completeness.
 
 ###### Actual receipt of purchased fresh cut trees (`purchased_cut_tree_feed`)
 
@@ -722,270 +563,9 @@ The sole reference product output: managed-grown fresh whole cut trees, species/
 
 Reference normalization identity: Let R > 0 kg be the actual accepted net final product mass measured under the linked collection protocol for the same lot, boundary and period, excluding packaging, rejects and other products. Its normalized reference output is (R/R) × 1 kg = 1 kg. The 1..1 interval verifies that identity; it does not describe yield or uncertainty in the underlying measurement of R. Retain those measurements and their uncertainty independently.
 
-###### Packaging accompanying tree handover (`dispatch_package_output`)
-
-Activity owner: dispatch.
-
-
-Declare packaging handed to the next actor as a separate mass record paired to tree lot; it is neither a second tree output nor automatically a co-product with independent sales value.
-
-- Selected flow: Accompanying packaging by real identity
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_dispatch`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
-###### Material actually discarded across the boundary (`harvest_waste`)
-
-Activity owner: harvest.
-
-
-Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste.
-
-- Selected flow: Discarded material by real destination
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_harvest, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_harvest`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Material actually discarded across the boundary (`condition_waste`)
-
-Activity owner: condition.
-
-
-Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste.
-
-- Selected flow: Discarded material by real destination
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_condition, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_condition`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Material actually discarded across the boundary (`grade_waste`)
-
-Activity owner: grade.
-
-
-Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste.
-
-- Selected flow: Discarded material by real destination
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_grade, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grade`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Material actually discarded across the boundary (`hold_waste`)
-
-Activity owner: hold.
-
-
-Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste.
-
-- Selected flow: Discarded material by real destination
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_hold, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_hold`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Material actually discarded across the boundary (`dispatch_waste`)
-
-Activity owner: dispatch.
-
-
-Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste.
-
-- Selected flow: Discarded material by real destination
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_dispatch`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
-
-###### Actual direct substance releases and losses (`harvest_releases`)
-
-Activity owner: harvest.
-
-
-Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities.
-
-- Selected flow: Direct substance releases by receiving medium
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_harvest, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_harvest`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Actual direct substance releases and losses (`condition_releases`)
-
-Activity owner: condition.
-
-
-Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities.
-
-- Selected flow: Direct substance releases by receiving medium
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_condition, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_condition`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Actual direct substance releases and losses (`hold_releases`)
-
-Activity owner: hold.
-
-
-Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities.
-
-- Selected flow: Direct substance releases by receiving medium
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_hold, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_hold`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Actual direct substance releases and losses (`dispatch_releases`)
-
-Activity owner: dispatch.
-
-
-Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities.
-
-- Selected flow: Direct substance releases by receiving medium
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per 1 kg reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_dispatch`
-- Range: Provisional non-default investigation screen; replace with reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg
-  - Basis: per 1 kg reference flow; provisional non-enforcing screen, not a default or a physical acceptance limit
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 
 ## 7. Allocation and Co-product Handling
 
@@ -1002,16 +582,26 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `grade_energy_specific_input` | `cp_grade` | Operation harvest_to_dispatch: Activity owner: grade. Conditional collection requirement for actual energy and operation services at this node. Identify fuel/electricity, actual contracted handling and shared asset/service use separately with their own native property/unit and actual period/consumer. Apply delivered_energy only to actual energy subexchanges; services are not converted to MJ. Retain attributed service quantities and ensure the shared ledger charges each consumer once. Original quantity method: Measured attributable quantity under cp_grade, divided by accepted net dispatch mass; retain the actual internal quantity before normalization |
+| `dispatch_energy_specific_input` | `cp_dispatch` | Operation harvest_to_dispatch: Activity owner: dispatch. Conditional collection requirement for actual energy and operation services at this node. Identify fuel/electricity, actual contracted handling and shared asset/service use separately with their own native property/unit and actual period/consumer. Apply delivered_energy only to actual energy subexchanges; services are not converted to MJ. Retain attributed service quantities and ensure the shared ledger charges each consumer once. Original quantity method: Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_grow` | `grow` | All actual grow card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; land area; occupation start/end; prior/new land use; transformation evidence; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree | kg; native area and area-time; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Establishment through each cultivation year, harvest and residual stock closure | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
-| `cp_harvest` | `harvest_to_dispatch` | All actual harvest card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
-| `cp_condition` | `harvest_to_dispatch` | All actual condition card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
-| `cp_grade` | `harvest_to_dispatch` | All actual grade card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
-| `cp_hold` | `harvest_to_dispatch` | All actual hold card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
-| `cp_dispatch` | `harvest_to_dispatch` | All actual dispatch card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
+| `cp_grow` | `grow` | All actual grow card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; land area; occupation start/end; prior/new land use; transformation evidence; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree `grow_materials_specific_input`: Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge. Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `grow_resources_specific_input`: Record actual abstracted environmental water separately from purchased water and method-defined biogenic uptake; no natural whole-tree removal applies to the managed crop. Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `grow_releases_specific_emission`: Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities. Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `grow_waste_specific_output`: Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste. Measured attributable quantity under cp_grow, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; native area and area-time; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Establishment through each cultivation year, harvest and residual stock closure | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
+| `cp_harvest` | `harvest_to_dispatch` | All actual harvest card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree `harvest_materials_specific_input`: Activity owner: harvest. Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge. Measured attributable quantity under cp_harvest, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `harvest_releases_specific_emission`: Activity owner: harvest. Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities. Measured attributable quantity under cp_harvest, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `harvest_waste_specific_output`: Activity owner: harvest. Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste. Measured attributable quantity under cp_harvest, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
+| `cp_condition` | `harvest_to_dispatch` | All actual condition card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree `condition_materials_specific_input`: Activity owner: condition. Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge. Measured attributable quantity under cp_condition, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `condition_releases_specific_emission`: Activity owner: condition. Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities. Measured attributable quantity under cp_condition, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `condition_waste_specific_output`: Activity owner: condition. Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste. Measured attributable quantity under cp_condition, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
+| `cp_grade` | `harvest_to_dispatch` | All actual grade card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree `grade_energy_specific_input`: Operation harvest_to_dispatch: Activity owner: grade. Conditional collection requirement for actual energy and operation services at this node. Identify fuel/electricity, actual contracted handling and shared asset/service use separately with their own native property/unit and actual period/consumer. Apply delivered_energy only to actual energy subexchanges; services are not converted to MJ. Retain attributed service quantities and ensure the shared ledger charges each consumer once. Original quantity method: Measured attributable quantity under cp_grade, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `grade_waste_specific_output`: Activity owner: grade. Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste. Measured attributable quantity under cp_grade, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
+| `cp_hold` | `harvest_to_dispatch` | All actual hold card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree `hold_materials_specific_input`: Activity owner: hold. Conditional collection requirement for actual supplied materials and attributable services. Distinguish water, fertilizers/agents, cleaning supplies, consumed tools and services by substance/function/provider and native property/unit. Shared tractor, shed, irrigation or handling services retain actual consumer node and year; the single shared-service ledger expands concrete exchanges at their true consuming nodes, including grade and dispatch, without adding a compulsory exchange or duplicate full asset charge. Measured attributable quantity under cp_hold, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `hold_releases_specific_emission`: Activity owner: hold. Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities. Measured attributable quantity under cp_hold, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `hold_waste_specific_output`: Activity owner: hold. Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste. Measured attributable quantity under cp_hold, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
+| `cp_dispatch` | `harvest_to_dispatch` | All actual dispatch card exchanges, transfers and attributed assets | Calibrated records and indexed activity ledger | site; block; cohort; year; lot; species/provenance; event; actual substance/service; flow state; direction; actual amount/unit; acceptance/destination; linked upstream lot; shared asset period/use; cleanup/changeover; return status; actual tree count; height-grade; net fresh mass; moisture/state; gross/package tare where applicable | Calibrated weighing and paired lot/count measurements; actual meter/fuel/material invoices reconciled with consumption; stock/event records and destination receipts; explicit method/substance/medium records for direct releases; no assumed mass per tree `dispatch_energy_specific_input`: Operation harvest_to_dispatch: Activity owner: dispatch. Conditional collection requirement for actual energy and operation services at this node. Identify fuel/electricity, actual contracted handling and shared asset/service use separately with their own native property/unit and actual period/consumer. Apply delivered_energy only to actual energy subexchanges; services are not converted to MJ. Retain attributed service quantities and ensure the shared ledger charges each consumer once. Original quantity method: Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `dispatch_releases_specific_emission`: Activity owner: dispatch. Conditional collection requirement: identify each actual substance, water/air/soil receiving medium and mass basis from measurements or an explicitly evidenced model. Separate evaporation from solid residues; do not assume pollutant totals are concrete identities. Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `dispatch_package_output_specific_output`: Activity owner: dispatch. Declare packaging handed to the next actor as a separate mass record paired to tree lot; it is neither a second tree output nor automatically a co-product with independent sales value. Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `dispatch_waste_specific_output`: Activity owner: dispatch. Conditional collection requirement for actual removed material sent to treatment; preserve organic, package and hazardous identities. Returned field residues and intended goods are not automatically waste. Measured attributable quantity under cp_dispatch, divided by accepted net dispatch mass; retain the actual internal quantity before normalization This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion.  | kg; original energy/service units retained before justified conversion | Every actual event and lot; cultivation indexed annually within complete cohort | Actual campaign and every cut-to-dispatch event including period-crossing stocks | Every contributing actual field or grower handling site; retain site boundaries | per 1 kg reference flow | Scale calibration; paired count/net-mass record; buyer acceptance and height-grade convention; traceable site/cohort ledger; consumption/stock reconciliation; actual return/treatment receipts |
 | `cp_direct_release_grow` | `grow` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |
 | `cp_direct_release_harvest` | `harvest_to_dispatch` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |
 | `cp_direct_release_condition` | `harvest_to_dispatch` | Per-node actual direct releases and coverage decisions | Activity, measurement and method-evidence ledger | site; process_id; lot/cohort; period; event_id; activation/evidence; carrier/formulation; activity_amount/unit; substance/species/particle_basis; receiving_medium; fossil/biogenic_origin; method/source/version/applicability; factor/value/unit; conversion; abatement_scope; measured_release; supplier_service_coverage; existing_row_id; shared_event_owner; allocation_state; reference_total | Match this node's input/application/equipment logs to release events. Determine each substance/medium amount by measurement or an applicable evidenced method and factor; retain factor provenance, unit conversions, abatement scope and uncertainty, without subtracting control twice when already included. Reconcile existing emission cards and contractor services once; create concrete output elementary exchanges for uncovered events and retain UUID verification evidence. Missing method, amount or identity prevents claiming a complete data package. | kg per substance/medium; retain native activity units | Each event and lot/reporting-period reconciliation | Periods matched to node activity and final reference lots | Actual activity sites; one owner for each shared event | per 1 kg reference flow | Meter/test evidence; activity records; original method/factor source; service scope; deduplication and coverage matrix |

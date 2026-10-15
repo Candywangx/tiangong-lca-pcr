@@ -182,31 +182,6 @@ Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 - Sources: `robinson-2018-mushroom-lca`
 
-###### Flow: Substrate conditioning fuel or heat (`substrate_conditioning_fuel`)
-
-Record fuel or externally supplied heat used to pasteurise, sterilise, or condition substrate.
-
-- Selected flow: Fuel or process heat supplied for substrate conditioning
-- Flow property / unit: Energy or mass / MJ, L, or kg
-- Amount rule: Record each fuel or heat carrier by batch, equipment, and measured consumption; retain the carrier and conversion basis.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Fuel inventory (`fuel_inventory`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_substrate_energy_records`
-- Range: Conditioning-fuel QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 3,000
-  - Unit: MJ per 1,000 kg accepted fresh mushrooms
-  - Basis: steam, hot-water, or direct-heat conditioning pending records
-  - Basis kind: Fuel inventory (`fuel_inventory`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-- Sources: `robinson-2018-mushroom-lca`
-
 ###### Urea fertilizer (`substrate_preparation_and_conditioning_agricultural_nutrient_inputs_urea`)
 
 **Collection scope and applicability for substrate_preparation_and_conditioning_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
@@ -214,9 +189,9 @@ Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_nutrient_amendment_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -226,12 +201,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_amendment_records`
 - Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`substrate_preparation_and_conditioning_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_nutrient_amendment_records` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -241,6 +218,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_amendment_records`
 - Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`substrate_preparation_and_conditioning_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -301,30 +280,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_nutrient_amendment_records`
 - Sources: `fao-organic-nutrients`
-
-###### Flow: Substrate bag, block, tray, or support material (`substrate_container_material_input`)
-
-Record bags, sleeves, trays, racks, plugs, or other supports entering the process. Reusable supports require service life and loss rate.
-
-- Selected flow: Substrate container or support material
-- Flow property / unit: Mass or item / kg or item
-- Amount rule: Record purchased or issued mass or item count by batch, capacity, reuse cycles, return rate, and loss.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_container_material_records`
-- Range: Support-material QA screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg material per 1,000 kg accepted fresh mushrooms
-  - Basis: single-use or reusable support pending mass and cycle records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -491,22 +446,6 @@ Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 - Sources: `robinson-2018-mushroom-lca`
 
-###### Flow: Incubation fuel or heat (`incubation_fuel`)
-
-Record fuel or externally supplied heat used to maintain incubation temperature.
-
-- Selected flow: Fuel or process heat supplied for incubation
-- Flow property / unit: Energy or mass / MJ, L, or kg
-- Amount rule: Record measured carrier consumption by room and incubation period.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Fuel inventory (`fuel_inventory`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_incubation_climate_records`
-
 ##### Waste flows
 
 #### Outputs
@@ -597,30 +536,6 @@ Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_fruiting_climate_records`
 
-###### Flow: Casing or covering material (`casing_or_covering_material_input`)
-
-Record peat, soil, coir, vermiculite, paper, plastic cover, or other casing when the route uses it; omit when unused.
-
-- Selected flow: Mushroom casing or covering material
-- Flow property / unit: Mass or item / kg or item
-- Amount rule: Record casing or covering by batch, moisture, recipe, and application surface.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_fruiting_climate_records`
-- Range: Conditional casing screen
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 5,000
-  - Unit: kg wet casing or covering per 1,000 kg accepted fresh mushrooms
-  - Basis: route-specific casing pending recipe and application records
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Flow: Fruiting water and humidification supply (`fruiting_water_input`)
 
 Record water supplied for fruiting, humidification, misting, or watering of the fruiting medium, with source and recirculation state.
@@ -669,22 +584,6 @@ Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 - Sources: `robinson-2018-mushroom-lca`
-
-###### Flow: Fruiting climate-control fuel or heat (`fruiting_fuel`)
-
-Record fuel or heat used to maintain fruiting-room temperature when it crosses the boundary.
-
-- Selected flow: Fuel or process heat supplied for fruiting
-- Flow property / unit: Energy or mass / MJ, L, or kg
-- Amount rule: Record measured carrier use by room and campaign and preserve conversion basis.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Fuel inventory (`fuel_inventory`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_fruiting_climate_records`
 
 ###### Flow: Cleaning or sanitation product (`cleaning_sanitation_product_input`)
 
@@ -843,54 +742,6 @@ Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same
 #### Inputs
 
 ##### Product flows
-
-###### Flow: Reusable harvest crate or pallet function (`harvest_crate_or_pallet_input`)
-
-Record reusable crates, pallets, bins, or harvest containers used before the gate, including capacity, turns, return rate, and loss.
-
-- Selected flow: Reusable crate or pallet packaging function
-- Flow property / unit: Mass or item / kg or item
-- Amount rule: Record container service and allocate manufacture, reuse, return, and loss by documented service life.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms at the declared gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_packaging_records`
-
-###### Flow: Rigid primary packaging (`rigid_primary_packaging_input`)
-
-Record trays, punnets, tubs, clamshells, or other rigid primary packaging applied before the gate; omit when sold loose.
-
-- Selected flow: Rigid primary packaging function
-- Flow property / unit: Mass or item / kg or item
-- Amount rule: Record package type, mass or count, fill capacity, and campaign allocation.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms at the declared gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_records`
-
-###### Flow: Flexible primary packaging or lidding (`flexible_primary_packaging_input`)
-
-Record films, bags, wraps, lidding, labels, or other flexible materials applied before the gate; omit when unused.
-
-- Selected flow: Flexible primary packaging function
-- Flow property / unit: Mass or item / kg or item
-- Amount rule: Record film or bag mass or item count by package type, fill capacity, and campaign.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms at the declared gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_records`
 
 ###### Flow: Harvest washing water (`harvest_washing_water`)
 
@@ -1203,6 +1054,30 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `harvest_crate_or_pallet_input_specific_input` | `cp_packaging_records` | Operation harvest_grading_and_primary_packaging: Record reusable crates, pallets, bins, or harvest containers used before the gate, including capacity, turns, return rate, and loss. Original quantity method: Record container service and allocate manufacture, reuse, return, and loss by documented service life. |
+| `rigid_primary_packaging_input_specific_input` | `cp_packaging_records` | Operation harvest_grading_and_primary_packaging: Record trays, punnets, tubs, clamshells, or other rigid primary packaging applied before the gate; omit when sold loose. Original quantity method: Record package type, mass or count, fill capacity, and campaign allocation. |
+| `flexible_primary_packaging_input_specific_input` | `cp_packaging_records` | Operation harvest_grading_and_primary_packaging: Record films, bags, wraps, lidding, labels, or other flexible materials applied before the gate; omit when unused. Original quantity method: Record film or bag mass or item count by package type, fill capacity, and campaign. |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `substrate_conditioning_fuel_identification` | `cp_substrate_energy_records` | Substrate pasteurisation, sterilisation or conditioning: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (`route-energy-fao`) |
+| `incubation_fuel_identification` | `cp_incubation_climate_records` | Incubation temperature maintenance: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (`route-energy-fao`) |
+| `fruiting_fuel_identification` | `cp_fruiting_climate_records` | Fruiting-room temperature maintenance: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (`route-energy-fao`) |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -1212,14 +1087,14 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_substrate_batch_records` | `substrate_preparation_and_conditioning` | feedstock, water, residual, conditioned substrate, ammonia | batch log and supplier record | batch_id; species; feedstock; supplier; wet_mass; dry_matter; moisture; water_added; conditioning_method; time; temperature; residual_mass; destination | weigh ingredients and batch; retain recipe, moisture test, and conditioning log; Raw aggregation and attribution: aggregate by batch and join to campaign | kg, %, m3, h, °C | every batch | full campaign | each substrate line or site | per declared reference flow | calibrated scale; moisture method; batch sign-off |
 | `cp_nutrient_amendment_records` | `substrate_preparation_and_conditioning` | conditional amendment | invoice and application log | product_name; product_mass; nutrient_content; purpose; application_date; batch_id; supplier | verify invoice, label or specification, and application; Raw aggregation and attribution: allocate only to receiving batches | kg product; kg nutrient | each application | full campaign | each site and batch | per declared reference flow | label or specification; application record |
-| `cp_container_material_records` | `substrate_preparation_and_conditioning` | bags, blocks, trays, supports | purchasing and issue record | material; mass_or_count; capacity; reuse_cycles; return_rate; losses; batch_id | reconcile purchase, issue, return, and loss; Raw aggregation and attribution: allocate by capacity and service life | kg or item | each batch and return cycle | full campaign | each site or line | per declared reference flow | specification; inventory; return log |
-| `cp_substrate_energy_records` | `substrate_preparation_and_conditioning` | conditioning electricity and fuel or heat | meter, fuel log, or invoice | meter_id; carrier; equipment; batch_id; energy; fuel_volume; conversion_factor | read dedicated meter or allocate shared utility by run; Raw aggregation and attribution: allocate by measured run or operating time | kWh, MJ, L, kg | every run and monthly reconciliation | full campaign | each conditioning unit | per declared reference flow | meter calibration; fuel delivery; conversion record |
+| `cp_container_material_records` | `substrate_preparation_and_conditioning` | bags, blocks, trays, supports | purchasing and issue record | material; mass_or_count; capacity; reuse_cycles; return_rate; losses; batch_id | reconcile purchase, issue, return, and loss; Raw aggregation and attribution: allocate by capacity and service life `substrate_container_material_input_specific_input`: Record bags, sleeves, trays, racks, plugs, or other supports entering the process. Reusable supports require service life and loss rate. Record purchased or issued mass or item count by batch, capacity, reuse cycles, return rate, and loss. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg or item | each batch and return cycle | full campaign | each site or line | per declared reference flow | specification; inventory; return log |
+| `cp_substrate_energy_records` | `substrate_preparation_and_conditioning` | conditioning electricity and fuel or heat | meter, fuel log, or invoice | meter_id; carrier; equipment; batch_id; energy; fuel_volume; conversion_factor | read dedicated meter or allocate shared utility by run; Raw aggregation and attribution: allocate by measured run or operating time Route-specific requirements: `substrate_conditioning_fuel_identification`: Substrate pasteurisation, sterilisation or conditioning: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kWh, MJ, L, kg | every run and monthly reconciliation | full campaign | each conditioning unit | per declared reference flow | meter calibration; fuel delivery; conversion record |
 | `cp_inoculation_records` | `inoculation_and_incubation` | conditioned substrate and spawn | inoculation log | batch_id; species; strain; spawn_lot; spawn_mass; substrate_mass; inoculation_date; room; accepted_units | record mass or count at inoculation and retain lot; Raw aggregation and attribution: aggregate by batch and spawn lot | kg or item | every batch | full campaign | each inoculation room | per declared reference flow | lot traceability; scale check |
-| `cp_incubation_climate_records` | `inoculation_and_incubation` | incubation water, energy, output, contamination, CO2 | room log and meter | room_id; batch_id; start; end; temperature; humidity; ventilation; water; electricity; fuel; CO2; accepted_units; failed_units | daily room record with meter reconciliation; Raw aggregation and attribution: aggregate by room days and batch | °C, %, m3, kWh, MJ, kg, item | daily and monthly reconciliation | full campaign | each incubation room | per declared reference flow | calibrated sensors; meter; batch release |
-| `cp_fruiting_climate_records` | `fruiting_and_cropping` | colonized input, casing, water, energy, sanitation, area, CO2 | room log, issue record, and meter | room_id; batch_id; species; casing_mass; water; electricity; fuel; sanitation_product; room_area; occupied_time; temperature; humidity; CO2; flush_dates | combine room log, issue records, and meters; Raw aggregation and attribution: aggregate by room, batch, and flush | kg, m3, kWh, MJ, L, m2, h, °C, % | daily or per flush | full campaign | each fruiting room and site | per declared reference flow | sensor calibration; issue record; allocation log |
+| `cp_incubation_climate_records` | `inoculation_and_incubation` | incubation water, energy, output, contamination, CO2 | room log and meter | room_id; batch_id; start; end; temperature; humidity; ventilation; water; electricity; fuel; CO2; accepted_units; failed_units | daily room record with meter reconciliation; Raw aggregation and attribution: aggregate by room days and batch Route-specific requirements: `incubation_fuel_identification`: Incubation temperature maintenance: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | °C, %, m3, kWh, MJ, kg, item | daily and monthly reconciliation | full campaign | each incubation room | per declared reference flow | calibrated sensors; meter; batch release |
+| `cp_fruiting_climate_records` | `fruiting_and_cropping` | colonized input, casing, water, energy, sanitation, area, CO2 | room log, issue record, and meter | room_id; batch_id; species; casing_mass; water; electricity; fuel; sanitation_product; room_area; occupied_time; temperature; humidity; CO2; flush_dates | combine room log, issue records, and meters; Raw aggregation and attribution: aggregate by room, batch, and flush Route-specific requirements: `fruiting_fuel_identification`: Fruiting-room temperature maintenance: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. `casing_or_covering_material_input_specific_input`: Record peat, soil, coir, vermiculite, paper, plastic cover, or other casing when the route uses it; omit when unused. Record casing or covering by batch, moisture, recipe, and application surface. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, m3, kWh, MJ, L, m2, h, °C, % | daily or per flush | full campaign | each fruiting room and site | per declared reference flow | sensor calibration; issue record; allocation log |
 | `cp_facility_area_records` | `fruiting_and_cropping` | facility area occupation | facility register and schedule | room_id; usable_area; service_area; occupied_start; occupied_end; shared_use; allocation_basis | verify area and occupied period against schedule; Raw aggregation and attribution: allocate area-time to campaign | m2 and days or years | each campaign | full campaign | each site | per declared reference flow | facility measurement; schedule |
 | `cp_cropping_records` | `fruiting_and_cropping` | crop, spent substrate, crop loss | harvest and campaign-close log | batch_id; room_id; species; flush; harvest_date; fresh_mass; spent_substrate_mass; moisture; loss_mass; contamination; destination | weigh each flush and final substrate; Raw aggregation and attribution: sum flushes after grade reconciliation | kg and % moisture | each flush and final close | full campaign | each room and batch | per declared reference flow | scale check; harvest ticket; destination |
-| `cp_packaging_records` | `harvest_grading_and_primary_packaging` | crates, packaging, packaging waste | issue and packing record | package_type; mass_or_count; capacity; filled_units; reuse_cycles; returns; damaged_units; waste_mass; destination | reconcile issue, filled units, returns, and waste; Raw aggregation and attribution: allocate by accepted mass and type | kg or item | each packing run and monthly reconciliation | full campaign | each pack-house or gate | per declared reference flow | specification; inventory; waste ticket |
+| `cp_packaging_records` | `harvest_grading_and_primary_packaging` | crates, packaging, packaging waste | issue and packing record | package_type; mass_or_count; capacity; filled_units; reuse_cycles; returns; damaged_units; waste_mass; destination | reconcile issue, filled units, returns, and waste; Raw aggregation and attribution: allocate by accepted mass and type `harvest_crate_or_pallet_input_specific_input`: Operation harvest_grading_and_primary_packaging: Record reusable crates, pallets, bins, or harvest containers used before the gate, including capacity, turns, return rate, and loss. Original quantity method: Record container service and allocate manufacture, reuse, return, and loss by documented service life. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `rigid_primary_packaging_input_specific_input`: Operation harvest_grading_and_primary_packaging: Record trays, punnets, tubs, clamshells, or other rigid primary packaging applied before the gate; omit when sold loose. Original quantity method: Record package type, mass or count, fill capacity, and campaign allocation. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. `flexible_primary_packaging_input_specific_input`: Operation harvest_grading_and_primary_packaging: Record films, bags, wraps, lidding, labels, or other flexible materials applied before the gate; omit when unused. Original quantity method: Record film or bag mass or item count by package type, fill capacity, and campaign. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg or item | each packing run and monthly reconciliation | full campaign | each pack-house or gate | per declared reference flow | specification; inventory; waste ticket |
 | `cp_wash_water_records` | `harvest_grading_and_primary_packaging` | washing water and wastewater | meter, balance, and treatment record | water_source; supplied_volume; recirculated_volume; discharge_volume; product_washed; cleaning_use; treatment; destination | meter supply and discharge or validate water balance; Raw aggregation and attribution: aggregate by run and accepted mass | m3 and kg where measured | each wash run and monthly reconciliation | full campaign | each wash or pack line | per declared reference flow | meter or balance; treatment receipt |
 | `cp_harvest_grade_records` | `harvest_grading_and_primary_packaging` | accepted, downgraded, rejects, cooling electricity | harvest ticket, grade log, and meter | batch_id; species; harvest_mass; accepted_mass; downgraded_mass; reject_mass; grade; size; maturity; trim; cooling_energy; gate_date | weigh pre- and post-grading outputs and link meters; Raw aggregation and attribution: aggregate by batch, species, grade, and gate | kg, grade, size, kWh | each harvest and packing run | full campaign | each pack-house or gate | per declared reference flow | calibrated scale; grade record; cold-room meter |
 | `cp_transport_records` | `purchased_transport_to_gate` | road transport and delivered output | shipment record and invoice | shipment_id; origin; destination; distance; product_mass; package_mass; vehicle; temperature; load; return; received_mass; loss | verify shipment, route, service, and receipt; Raw aggregation and attribution: sum t*km and reconcile received mass | t, km, t*km, °C, kg | every shipment | full campaign | declared route to gate | per declared reference flow | carrier record; route evidence; receipt |
@@ -1298,3 +1173,4 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `declared-handoff-measurement-definition` | `method_factor` | This PCR, Sections 3, 6 and 8: measured net mass at the same state and gate is its own normalization denominator, giving a mass ratio of 1; handoff measurement adds no physical processing. | Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication. |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

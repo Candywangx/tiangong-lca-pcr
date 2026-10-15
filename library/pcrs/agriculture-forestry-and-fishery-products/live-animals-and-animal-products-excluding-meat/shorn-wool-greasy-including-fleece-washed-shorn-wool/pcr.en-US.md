@@ -92,33 +92,6 @@ Include managed sheep production, feed and pasture, manure, conditional pre-shea
 
 ##### Product flows
 
-###### Feed and pasture intake (`feed`)
-
-Quantify purchased rations and grazed biomass by cohort, feed type, dry matter and year; owned-land feed production is linked once.
-
-Denominator and scope requirements：per kg greasy wool after flock-year attribution
-
-Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow.
-
-- Selected flow: Sheep feed and grazed biomass by actual identity
-- Flow property / unit: Mass / kg dry matter
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_flock_feed`
-- Sources: `iwto-wool-lca-2016`
-- Range: Provisional feed screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: kg dry matter/kg greasy wool
-  - Basis: broad first-pass screen, replace with flock records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Drinking and husbandry water (`flock_water`)
 
 Separate drinking and cleaning by purpose and source; concrete exchanges follow records.
@@ -153,9 +126,9 @@ When owned pasture production is in scope, record mineral and organic nutrient p
 Denominator and scope requirements：per kg greasy wool after field attribution
 Raw quantity and calculation requirements: application records by product, nutrient and field-year Original collection denominator kind: reference_flow.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_flock_feed` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -165,12 +138,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_flock_feed`
 - Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`nutrient_input_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_flock_feed` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -180,6 +155,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_flock_feed`
 - Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`nutrient_input_triple_superphosphate`)
 
@@ -240,32 +217,6 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_flock_feed`
 - Sources: `fao-organic-nutrients`
-
-###### Flock energy carriers (`flock_energy`)
-
-Expand carriers from meter/fuel records by use and service year, including shared housing and manure equipment.
-
-Denominator and scope requirements：per kg greasy wool after allocation
-
-Raw quantity and calculation requirements: meter and fuel records by carrier and year Original collection denominator kind: reference_flow.
-
-- Selected flow: Energy supply for flock operations
-- Flow property / unit: Energy or carrier quantity / kWh, MJ, L or kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_water_energy`
-- Range: Provisional energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 500
-  - Unit: kWh-equivalent/kg greasy wool
-  - Basis: broad cross-carrier screen, retain original units
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -544,31 +495,20 @@ Independent harvest: fleece is removed from a living production animal and moves
 
 ##### Product flows
 
-###### Shearing equipment energy (`shear_energy`)
+###### Alternating current (`shear_energy_electricity`)
 
-Record electric or fuel-powered clippers and related equipment by carrier and event.
+Only for documented alternating-current equipment within this operation. Record voltage and supply technology; convert metered kWh with 1 kWh = 3.6 MJ. Other power sources require their actual carrier. Apply `shear_energy_specific_input`; this example is not mandatory. Do not double count inclusive machinery services or a purchased-electricity supply for electricity transferred internally from an on-site generator. Actual fuel combustion and generator emissions remain separately accountable.
 
-Denominator and scope requirements：per kg captured fleece
-
-Raw quantity and calculation requirements: meter or equipment log per event Original collection denominator kind: process_output.
-
-- Selected flow: Energy for shearing
-- Flow property / unit: Energy or carrier / kWh, MJ or L
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy (database reference property: net calorific value) `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: Collect this carrier under `cp_wash_shear` for `shearing`. Attribute shared use once; scale attributed raw quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit, retaining measured stage throughput and original allocation rules. Do not normalize an already normalized amount again.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_wash_shear`
-- Range: Provisional shearing energy screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kWh-equivalent/kg captured fleece
-  - Basis: broad clipper-energy screen
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Sources: `route-energy-fao`
 
 #### Outputs
 
@@ -731,32 +671,6 @@ Pack or present accepted greasy wool for protection at farm. Record bale reuse, 
 
 ##### Product flows
 
-###### Bale and wrap materials (`bale_material`)
-
-Record actual textile, film, ties and labels; determine reuse cycles from farm records.
-
-Denominator and scope requirements：per kg net greasy wool at farm gate
-
-Raw quantity and calculation requirements: net material consumed per bale, net of documented reuse Original collection denominator kind: reference_flow.
-
-- Selected flow: Baling and presentation materials
-- Flow property / unit: Mass or count / kg or item
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Product-specific (`product_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_grade_bale`
-- Range: Presentation-material screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg material/kg greasy wool
-  - Basis: zero permitted for unpackaged transfer
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 #### Outputs
 
 ##### Product flows
@@ -801,16 +715,38 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `feed_specific_input` | `cp_flock_feed` | Operation flock: Quantify purchased rations and grazed biomass by cohort, feed type, dry matter and year; owned-land feed production is linked once. Denominator and scope requirements：per kg greasy wool after flock-year attribution Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. |
+| `shear_energy_specific_input` | `cp_wash_shear` | Operation shearing: Record electric or fuel-powered clippers and related equipment by carrier and event. Denominator and scope requirements：per kg captured fleece Raw quantity and calculation requirements: meter or equipment log per event Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+| `bale_material_specific_input` | `cp_grade_bale` | Operation baling: Record actual textile, film, ties and labels; determine reuse cycles from farm records. Denominator and scope requirements：per kg net greasy wool at farm gate Raw quantity and calculation requirements: net material consumed per bale, net of documented reuse Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. |
+
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `flock_energy_identification` | `cp_water_energy` | Flock-year housing and manure machinery, excluding separately represented shearing. Select carriers from actual equipment records; pasture husbandry alone does not establish fuel use. Denominator and scope requirements：per kg greasy wool after allocation Raw quantity and calculation requirements: meter and fuel records by carrier and year Original collection denominator kind: reference_flow. (`route-energy-fao`) |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_flock_feed` | `flock` | feed, nutrients | flock/field/invoice | cohort; pasture area; diet; dry matter; nutrient composition; date; stock | farm records and documented intake model; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg, ha | monthly/event | flock and rearing years | farm | per reference flow | receipts, feed tests; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_water_energy` | `flock` | water, energy | meter/invoice | source; carrier; purpose; period; shared consumer | meter and invoice; Raw aggregation requirements: allocate by consumer. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | m3, kWh, L | monthly | flock year | farm | per reference flow | meter images, invoices; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_flock_feed` | `flock` | feed, nutrients | flock/field/invoice | cohort; pasture area; diet; dry matter; nutrient composition; date; stock | farm records and documented intake model; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `feed_specific_input`: Operation flock: Quantify purchased rations and grazed biomass by cohort, feed type, dry matter and year; owned-land feed production is linked once. Denominator and scope requirements：per kg greasy wool after flock-year attribution Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, ha | monthly/event | flock and rearing years | farm | per reference flow | receipts, feed tests; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_water_energy` | `flock` | water, energy | meter/invoice | source; carrier; purpose; period; shared consumer | meter and invoice; Raw aggregation requirements: allocate by consumer. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: `flock_energy_identification`: Flock-year housing and manure machinery, excluding separately represented shearing. Select carriers from actual equipment records; pasture husbandry alone does not establish fuel use. Denominator and scope requirements：per kg greasy wool after allocation Raw quantity and calculation requirements: meter and fuel records by carrier and year Original collection denominator kind: reference_flow. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | m3, kWh, L | monthly | flock year | farm | per reference flow | meter images, invoices; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_flock_outputs` | `flock` | live animals | sale/stock register | cohort; head; live mass; date; gate | weighbridge and stock count; Raw aggregation requirements: opening + additions - removals = closing. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, head | event | flock year | farm | per reference flow | sale slips, register; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_manure` | `flock` | manure and emissions | activity register | cohort; N intake/excretion; management; storage; transfer; factors | collect activity and IPCC tier; Raw aggregation requirements: distinct CH4, N2O, NH3 pathways. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg N, kg manure | monthly/event | flock year | farm | per reference flow | activity/factor sheets; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_wash_shear` | `fleece_wash`, `shearing` | wash and capture | event | sheep; wash date/water/effluent/dry-off; shear date; raw mass; energy | event log, scale, meter; Raw aggregation requirements: link one route to one fleece. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, m3, kWh | event | shear season | farm | per reference flow | event and calibration sheets; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_grade_bale` | `conditioning`, `grading`, `baling` | mass/presentation | grade/bale register | capture; skirtings; grade; moisture; tare; packing/reuse; dispatch | scale and buyer docket; Raw aggregation requirements: capture = grades + rejects + change/loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, item | bale | shear season | farm | per reference flow | scale tickets, grading records; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_wash_shear` | `fleece_wash`, `shearing` | wash and capture | event | sheep; wash date/water/effluent/dry-off; shear date; raw mass; energy | event log, scale, meter; Raw aggregation requirements: link one route to one fleece. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `shear_energy_specific_input`: Operation shearing: Record electric or fuel-powered clippers and related equipment by carrier and event. Denominator and scope requirements：per kg captured fleece Raw quantity and calculation requirements: meter or equipment log per event Original collection denominator kind: process_output. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, m3, kWh | event | shear season | farm | per reference flow | event and calibration sheets; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_grade_bale` | `conditioning`, `grading`, `baling` | mass/presentation | grade/bale register | capture; skirtings; grade; moisture; tare; packing/reuse; dispatch | scale and buyer docket; Raw aggregation requirements: capture = grades + rejects + change/loss. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `bale_material_specific_input`: Operation baling: Record actual textile, film, ties and labels; determine reuse cycles from farm records. Denominator and scope requirements：per kg net greasy wool at farm gate Raw quantity and calculation requirements: net material consumed per bale, net of documented reuse Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, item | bale | shear season | farm | per reference flow | scale tickets, grading records; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_pathway_emissions` | `flock` | pathway-specific gases and manure N/C | herd, feed, manure, field and method ledger | species/class; animal-days; intake/DM/digestibility; volatile solids; manure N/TAN; system shares; climate; storage time; fertiliser N; grazing; volatilisation/leaching; methane recovery; factor source/unit; final accepted output ; collected manure wet mass; dry matter; destination| collect primary activity by node and period, document parameter applicability, retain each pathway worksheet and any linked treatment/pasture dataset  Retain raw totals and normalize attributed quantities once to the measured accepted final reference output.| animal-day; kg DM; kg VS; kg N; kg CH4; kg N2O; kg NH3 | each operating period and management change | complete represented cohort and service period | actual operated nodes only | per reference flow | meter/analysis records, nitrogen cascade, method and factor evidence, no-duplication ledger |
 | `cp_feed_supply_and_intake` | `flock` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 | `cp_manure_n2o_coverage` | `flock` | Direct and indirect manure/soil N2O coverage | pathway N ledger and method worksheet | species/class; period; excreted N; stage stocks/transfers; system shares; volatilised NH3-N/NOx-N; leached/runoff N; application/grazing N; factor source, unit and applicability; direct/indirect components; receiving medium; linked process and assigned card; accepted final output | Retain raw stage N and component calculations under calc_manure_n2o_coverage, matched to actual operation and existing manure protocols. Document unsupported or inapplicable paths and coverage boundaries; normalize attributable N2O once. | kg N; kg N2O | each reporting period and management change | complete represented management period | actual operated and explicitly linked nodes | per reference flow | N balance, factor unit/applicability, component-to-card and no-duplication worksheet |
@@ -875,3 +811,4 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 | `fao-feed-loss-accounting-2018` | official_guidance | [FAO 2018, Environmental performance of pig supply chains, section 11.2.2](https://www.fao.org/4/i8686en/I8686EN.pdf) | Feed supply versus intake and waste burden, not animal parameters. Applying this accounting principle to the declared taxon is this PCR's methodological choice; no pig diet or emission factor is transferred. |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

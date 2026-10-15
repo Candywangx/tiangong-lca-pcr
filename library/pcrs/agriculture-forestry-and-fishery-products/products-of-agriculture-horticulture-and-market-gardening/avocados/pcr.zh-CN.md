@@ -100,7 +100,7 @@ sync_with: pcr.en-US.md
 
 记录进入果园建立环节的苗木、嫁接苗或其他种植材料。留种或自繁材料应说明来源和分摊处理。
 
-- 选定流：Avocado planting material for orchard establishment
+- 选定流：鳄梨果园建植材料
 - 流属性/单位：Mass or item count / kg or item
 - 数量规则：按果园地块和建立年份记录实测种植材料数量；使用数量到质量换算时保留换算关系
 - 数值来源模式：前景记录（`foreground_record`）
@@ -130,7 +130,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_management_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -140,12 +140,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`avocado_orchard_establishment_and_management_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_management_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -155,6 +157,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`avocado_orchard_establishment_and_management_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -220,7 +224,7 @@ sync_with: pcr.en-US.md
 
 仅在果园实际施用灌溉水时记录。雨养生产应有水量平衡或农场管理依据支持，并记录施用灌溉为零。
 
-- 选定流：Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 数量规则：按果园地块和生产年计量或计算灌溉水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -250,7 +254,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_orchard_management_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -261,11 +265,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`orchard_energy_input_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_orchard_management_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -275,6 +281,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-agricultural-energy`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 供应设备的汽油（`orchard_energy_input_gasoline`）
 
@@ -291,23 +299,6 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_orchard_management_records`
 - 来源：`fao-forest-equipment`
 
-###### 供应的植保产品（`crop_protection_input`）
-
-按产品、有效成分、施用事件和处理面积记录每种农药或其他植保配方。不同配方必须保持可识别。
-
-- 选定流：Crop-protection formulation for avocado orchard management
-- 流属性/单位：Mass of formulation / kg
-- 数量规则：按产品和施用事件汇总实测配方质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每果园年，并换算为 1,000 kg 合格果实.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_orchard_management_records`
-- 来源：
-
 ##### 废物流
 
 ##### 基本流
@@ -316,7 +307,7 @@ sync_with: pcr.en-US.md
 
 记录管理型多年生生产系统的果园面积和占用时间；当其属于声明的果园寿命时，应包括建立期未结果年份。
 
-- 选定流：Land occupation, orchard area
+- 选定流：果园用地占用
 - 流属性/单位：Area-time / m2*a or ha*year
 - 数量规则：果园面积乘以声明占用时间，并分摊到合格果实输出
 - 数值来源模式：计算值（`calculated_value`）
@@ -336,7 +327,7 @@ sync_with: pcr.en-US.md
 
 将果园年度管理生产基准传递给收获过程，作为内部过程链接。该项不得计为额外的可销售鳄梨流。
 
-- 选定流：Managed avocado orchard production output
+- 选定流：受管理鳄梨果园生产产出
 - 流属性/单位：Area or mass / ha or kg accepted fruit basis
 - 数量规则：声明的果园年度面积及其对应合格果实输出基准
 - 数值来源模式：计算值（`calculated_value`）
@@ -356,7 +347,7 @@ sync_with: pcr.en-US.md
 
 当移除的树木不成为声明共产品时，将建立期或结果期替换移除的树木记录为废物。作为覆盖物或生物质转移的树木应说明去向和分摊处理。
 
-- 选定流：Removed avocado orchard trees to waste treatment or unmanaged residue
+- 选定流：移除鳄梨果树，送往废物处理或作为未管理残余物
 - 流属性/单位：Mass / kg dry or as-received biomass
 - 数量规则：按果园地块和年份实测或计算移除树木生物质
 - 数值来源模式：计算值（`calculated_value`）
@@ -372,23 +363,6 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 养分和残余物相关的空气、水和土壤排放（`orchard_emissions`）
-
-使用采集的养分、植保、残余物和灌溉活动数据，按照选定的适用地理区域方法计算相关排放。最终流绑定审查前不得假定具体基本流身份。
-
-- 选定流：Managed-soil and crop-production emissions to air, water, or soil
-- 流属性/单位：Mass of emitted substance / kg substance
-- 数量规则：使用采集活动数据和声明方法计算排放；在证据支持时保持各物质和受纳环境介质区分
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每果园年，并换算为 1,000 kg 合格果实.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_orchard_management_records`
-- 来源：`ipcc-2019-refinement`; `emep-eea-2023-guidebook`
-
 ### 过程：鳄梨收获与农场交付处理（`avocado_harvest_and_farm_gate_handling`）
 
 #### 输入
@@ -398,7 +372,7 @@ sync_with: pcr.en-US.md
 
 接收果园管理过程传递的果园年度生产背景。该行用于过程链接，不得重复上游果园清单。
 
-- 选定流：Managed avocado orchard production output
+- 选定流：受管理鳄梨果园生产产出
 - 流属性/单位：Area or mass / ha or kg accepted fruit basis
 - 数量规则：分级或调制前按果园年度关联的收获量
 - 数值来源模式：计算值（`calculated_value`）
@@ -408,23 +382,6 @@ sync_with: pcr.en-US.md
 - 归一化基准：每声明的参考流
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_harvest_output_records`
-- 来源：
-
-###### 收获能源和外包收获服务（`harvest_energy_input`）
-
-当采摘、收集、田间周转箱和农场交付处理所用燃料、电力或承包商活动未包含在果园管理记录中时记录。
-
-- 选定流：Harvest energy supply or contracted harvest service
-- 流属性/单位：Energy, carrier mass, or service / kWh, L, kg, or activity unit
-- 数量规则：按实测载体使用量或有证据的承包商活动计量，并分配到合格收获输出
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每次收获活动，并换算为 1,000 kg 合格果实.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_harvest_output_records`
 - 来源：
 
@@ -439,7 +396,7 @@ sync_with: pcr.en-US.md
 
 记录按声明农场交付状态转移的果实。不包含调制时，该项是终端参考输出。
 
-- 选定流：Fresh avocado fruit, production mix, at farm gate, unprocessed
+- 选定流：鲜鳄梨果实，生产混合，农场门，未经加工
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明交付状态实测合格果实质量
 
@@ -468,7 +425,7 @@ sync_with: pcr.en-US.md
 
 记录留在田间、采摘损伤、未声明共产品用途的降级果实或交付前其他拒收果实。发送到明确去向的果实，若有依据，应作为共产品单独记录。
 
-- 选定流：Avocado harvest reject or loss to waste
+- 选定流：送往废物处理的鳄梨收获拒收物或损失
 - 流属性/单位：Mass / kg
 - 数量规则：按收获、合格和声明去向质量之间的差额实测或核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -492,26 +449,9 @@ sync_with: pcr.en-US.md
 
 当农场交付前发生单独的清洗、分选、分级或处理环节时，记录进入该环节的收获果实。
 
-- 选定流：Fresh avocado fruit entering farm-gate conditioning
+- 选定流：进入农场门整理的鲜鳄梨果实
 - 流属性/单位：Mass / kg
 - 数量规则：调制前实测进入果实质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每 1,000 kg 调制后合格果实.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_conditioning_records`
-- 来源：
-
-###### 调制用水、电力和包装辅材（`conditioning_inputs`）
-
-记录交付前使用的水、电力、清洗剂和包装辅材。随产品交付的包装应披露材料和质量；仅用于内部处理的包装在跨越边界时也应记录。
-
-- 选定流：Conditioning water, electricity, cleaning agent, or packaging aid
-- 流属性/单位：Volume, energy, or mass / m3, kWh, or kg
-- 数量规则：按水表、电表、发票、批次记录或实测包装质量分配到调制后合格果实
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 原始活动或阶段基准：每 1,000 kg 调制后合格果实.
@@ -533,7 +473,7 @@ sync_with: pcr.en-US.md
 
 当声明边界包含调制时，记录调制后、场外运输前的合格果实作为终端参考输出。
 
-- 选定流：Fresh avocado fruit, conditioned at farm gate, unprocessed
+- 选定流：农场门已整理鲜鳄梨果实，未经加工
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：调制后、场外运输前实测合格果实质量
 
@@ -554,7 +494,7 @@ sync_with: pcr.en-US.md
 
 当清洗、分选、分级或修整移除的果实和材料没有转移到声明的共产品去向时，记录为废物。
 
-- 选定流：Conditioning rejects and removed material to waste
+- 选定流：送往废物处理的整理拒收物及移出材料
 - 流属性/单位：Mass / kg
 - 数量规则：进入质量减去合格输出和有名称的去向，并根据实测或核对得到
 - 数值来源模式：计算值（`calculated_value`）
@@ -576,7 +516,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Fresh avocado fruit, production mix, at farm gate, unprocessed
+- 选定流：鲜鳄梨果实，生产混合，农场门，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -602,7 +542,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Fresh avocado fruit, production mix, at farm gate, unprocessed
+- 选定流：鲜鳄梨果实，生产混合，农场门，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -642,6 +582,27 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_input_specific_input` | `cp_orchard_management_records` | 作业 avocado_orchard_establishment_and_management：按产品、有效成分、施用事件和处理面积记录每种农药或其他植保配方。不同配方必须保持可识别。 原数量方法：按产品和施用事件汇总实测配方质量 |
+| `conditioning_inputs_specific_input` | `cp_conditioning_records` | 作业 farm_gate_avocado_conditioning：记录交付前使用的水、电力、清洗剂和包装辅材。随产品交付的包装应披露材料和质量；仅用于内部处理的包装在跨越边界时也应记录。 原数量方法：按水表、电表、发票、批次记录或实测包装质量分配到调制后合格果实 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `harvest_energy_input_identification` | `cp_harvest_output_records` | 采摘、采集、田间箱及出口前搬运：先确认手工作业、动力设备及承包服务覆盖。现有载能体卡按其记录范围使用，额外采收消耗须单独归属，不重复计入。 原始活动或阶段基准：每次收获活动，并换算为 1,000 kg 合格果实. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -650,9 +611,9 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_orchard_establishment_records` | `avocado_orchard_establishment_and_management` | planting material; replacement trees; land occupation | orchard register, nursery invoice, planting map, removal log | block_id; cultivar; tree count; planting year; replacement count; area; previous land use; removed biomass; destination | reconcile orchard register, maps, invoices, and field records；原始汇总与分配：aggregate by block, establishment year, and declared allocation horizon | trees, ha, kg, orchard-year | establishment and each replacement event; annual update | full establishment period and declared productive life | each orchard block | 每声明的参考流 | signed farm register, planting map, supplier record, or auditable field log |
-| `cp_orchard_management_records` | `avocado_orchard_establishment_and_management` | nutrients; irrigation; energy; crop protection; emissions | input ledger, water meter, energy meter, spray record, contractor invoice | block_id; product; formulation; nutrient analysis; amount; date; area; water volume; energy carrier; fuel; treatment; soil or residue event | collect primary records and reconcile invoices, meters, and application logs；原始汇总与分配：sum by block and year, then allocate shared inputs by documented area or activity | kg product, kg nutrient, m3, kWh, L, ha | each application or operation; annual aggregation | one production year plus establishment records where applicable | each orchard block and shared facility | 每声明的参考流 | invoices, meter readings, product labels, application logs, method calculation record |
-| `cp_harvest_output_records` | `avocado_harvest_and_farm_gate_handling` | orchard output; harvest energy; accepted fruit; rejects and losses | harvest tickets, weighbridge record, bin log, contractor record, grading log | block_id; harvest date; cultivar; harvested mass; accepted mass; rejected mass; destination; carrier use; contractor activity; maturity or grade | reconcile field, bin, scale, grading, and destination records；原始汇总与分配：aggregate by block, lot, and destination; retain mass balance | kg, L, kWh, activity unit | each harvest lot; annual closure | one production year | each orchard block and harvest facility | 每声明的参考流 | weighbridge or scale record, lot traceability, grading report, contractor invoice |
-| `cp_conditioning_records` | `farm_gate_avocado_conditioning` | incoming fruit; water; energy; packaging; accepted output; rejects | batch sheet, meter record, packaging ledger, waste log | batch_id; incoming mass; accepted mass; reject mass; water; electricity; cleaning agent; packaging material and mass; destination | batch reconciliation with meter and material records；原始汇总与分配：reconcile inputs, accepted output, rejects, and named destinations by batch | kg, m3, kWh, kg packaging | each conditioning batch | declared production year | farm conditioning site | 每声明的参考流 | batch sheet, scale record, meter reading, packaging invoice, waste receipt |
+| `cp_orchard_management_records` | `avocado_orchard_establishment_and_management` | nutrients; irrigation; energy; crop protection; emissions | input ledger, water meter, energy meter, spray record, contractor invoice | block_id; product; formulation; nutrient analysis; amount; date; area; water volume; energy carrier; fuel; treatment; soil or residue event | collect primary records and reconcile invoices, meters, and application logs；原始汇总与分配：sum by block and year, then allocate shared inputs by documented area or activity `crop_protection_input_specific_input`: 作业 avocado_orchard_establishment_and_management：按产品、有效成分、施用事件和处理面积记录每种农药或其他植保配方。不同配方必须保持可识别。 原数量方法：按产品和施用事件汇总实测配方质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `orchard_emissions_specific_emission`: 使用采集的养分、植保、残余物和灌溉活动数据，按照选定的适用地理区域方法计算相关排放。最终流绑定审查前不得假定具体基本流身份。 使用采集活动数据和声明方法计算排放；在证据支持时保持各物质和受纳环境介质区分 这是必需的排放身份确认要求，不是集合式基本交换。每种适用物质及其实际接收介质须分别识别，保留兼容单位、实测活动量或有依据的计算方法、参数适用性及不确定性。保留原作业、期间、分配及最终参考流归一化规则。直接、间接路径及上游覆盖仅核算一次，不用总氮、燃烧总排放或泛称污染物替代具体化合物。适用时另行记录实际归还环境的材料及去向。完成数据集前须为每项必需交换建立具体卡片，并核验兼容UUID或明确保留未解析身份。缺少记录不等于零排放或不适用。 `ipcc-2019-refinement`; `emep-eea-2023-guidebook` | kg product, kg nutrient, m3, kWh, L, ha | each application or operation; annual aggregation | one production year plus establishment records where applicable | each orchard block and shared facility | 每声明的参考流 | invoices, meter readings, product labels, application logs, method calculation record |
+| `cp_harvest_output_records` | `avocado_harvest_and_farm_gate_handling` | orchard output; harvest energy; accepted fruit; rejects and losses | harvest tickets, weighbridge record, bin log, contractor record, grading log | block_id; harvest date; cultivar; harvested mass; accepted mass; rejected mass; destination; carrier use; contractor activity; maturity or grade | reconcile field, bin, scale, grading, and destination records；原始汇总与分配：aggregate by block, lot, and destination; retain mass balance 按路线确认要求：`harvest_energy_input_identification`: 采摘、采集、田间箱及出口前搬运：先确认手工作业、动力设备及承包服务覆盖。现有载能体卡按其记录范围使用，额外采收消耗须单独归属，不重复计入。 原始活动或阶段基准：每次收获活动，并换算为 1,000 kg 合格果实. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg, L, kWh, activity unit | each harvest lot; annual closure | one production year | each orchard block and harvest facility | 每声明的参考流 | weighbridge or scale record, lot traceability, grading report, contractor invoice |
+| `cp_conditioning_records` | `farm_gate_avocado_conditioning` | incoming fruit; water; energy; packaging; accepted output; rejects | batch sheet, meter record, packaging ledger, waste log | batch_id; incoming mass; accepted mass; reject mass; water; electricity; cleaning agent; packaging material and mass; destination | batch reconciliation with meter and material records；原始汇总与分配：reconcile inputs, accepted output, rejects, and named destinations by batch `conditioning_inputs_specific_input`: 作业 farm_gate_avocado_conditioning：记录交付前使用的水、电力、清洗剂和包装辅材。随产品交付的包装应披露材料和质量；仅用于内部处理的包装在跨越边界时也应记录。 原数量方法：按水表、电表、发票、批次记录或实测包装质量分配到调制后合格果实 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg, m3, kWh, kg packaging | each conditioning batch | declared production year | farm conditioning site | 每声明的参考流 | batch sheet, scale record, meter reading, packaging invoice, waste receipt |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 
 ### 计算规则
@@ -719,3 +680,4 @@ sync_with: pcr.en-US.md
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-forest-equipment` | official_guidance | FAO Appropriate technologies for forest harvesting, https://www.fao.org/4/x5596E/x5596e06.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

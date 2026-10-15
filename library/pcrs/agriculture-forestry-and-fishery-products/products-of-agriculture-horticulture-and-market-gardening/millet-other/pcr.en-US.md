@@ -121,9 +121,9 @@ Raw activity or stage basis: crop-cycle seed divided by accepted grain mass.
 Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
 Raw activity or stage basis: crop-cycle nutrient inputs divided by accepted grain mass.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Urea fertilizer
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_millet_field` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -133,12 +133,14 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_millet_field`
 - Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Ammonium sulfate fertilizer (`millet_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
 
-- Selected flow: Ammonium sulfate fertilizer
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_millet_field` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -148,6 +150,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_millet_field`
 - Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Triple superphosphate fertilizer (`millet_cultivation_agricultural_nutrient_inputs_triple_superphosphate`)
 
@@ -231,32 +235,6 @@ Raw activity or stage basis: crop-cycle irrigation divided by accepted grain mas
   - Upper: 10000
   - Unit: m3/ha
   - Basis: broad rainfed-to-irrigated screen
-  - Basis kind: Crop cycle (`crop_cycle`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources: `fao-millet-systems`
-
-###### Formulated crop-protection product (`crop_protection_product`)
-
-Record each applied formulation as a separate physical identity with active ingredient and concentration.
-
-- Selected flow: Formulated crop-protection product applied to millet
-- Flow property / unit: Mass or volume / kg or L
-- Amount rule: Measure each formulation separately; do not combine unlike products into one exchange.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: crop-cycle application divided by accepted grain mass.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Crop cycle (`crop_cycle`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_millet_field`
-- Sources:
-- Range: Provisional crop-protection application screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg or L/ha
-  - Basis: broad first-pass formulation application screen; preserve the selected physical unit
   - Basis kind: Crop cycle (`crop_cycle`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources: `fao-millet-systems`
@@ -437,6 +415,15 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `crop_protection_product_specific_input` | `cp_millet_field` | Operation millet_cultivation: Record each applied formulation as a separate physical identity with active ingredient and concentration. Original quantity method: Measure each formulation separately; do not combine unlike products into one exchange. |
+
+
 Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
 
 
@@ -444,7 +431,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_millet_field` | `millet_cultivation` | Seed, nutrients, irrigation, and crop-protection products | Invoices, application logs, meters, and field records | field_id; cycle; species; area; product_identity; quantity; unit; composition; water | Reconcile purchases and stock to field applications and retain labels.; Raw aggregation and attribution: Sum by physical identity and normalize by accepted grain. | kg, L, m3, ha | Each application and cycle | Complete crop cycle | Each farm and field | per declared reference flow | Invoices, labels, meters, logs, and stock reconciliation |
+| `cp_millet_field` | `millet_cultivation` | Seed, nutrients, irrigation, and crop-protection products | Invoices, application logs, meters, and field records | field_id; cycle; species; area; product_identity; quantity; unit; composition; water | Reconcile purchases and stock to field applications and retain labels.; Raw aggregation and attribution: Sum by physical identity and normalize by accepted grain. `crop_protection_product_specific_input`: Operation millet_cultivation: Record each applied formulation as a separate physical identity with active ingredient and concentration. Original quantity method: Measure each formulation separately; do not combine unlike products into one exchange. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, L, m3, ha | Each application and cycle | Complete crop cycle | Each farm and field | per declared reference flow | Invoices, labels, meters, logs, and stock reconciliation |
 | `cp_millet_emissions` | `millet_cultivation` | Managed-soil N2O | Field inputs and calculation record | nitrogen_sources; nitrogen_mass; residue_N; soil; climate; water_regime; factor_identity | Apply the accepted IPCC tier to each field or stratum.; Raw aggregation and attribution: Calculate by stratum and aggregate by accepted grain. | kg N, kg N2O-N, kg N2O | Each crop cycle | Complete crop cycle | Each field or stratum | per declared reference flow | Calculation workbook, factor identity, conversions, and review |
 | `cp_millet_harvest` | `millet_harvest_preparation` | Harvest fuel, grain, straw or stover, and chaff | Machinery logs, scale tickets, moisture tests, and destination records | field_id; batch_id; area; fuel; grain_mass; moisture; straw_mass; chaff_mass; destinations | Reconcile outputs and fuel by field and batch.; Raw aggregation and attribution: Aggregate by batch and normalize to accepted grain. | kg, t, L, percent, ha | Each harvest and batch | Complete harvest period | Each farm and field | per declared reference flow | Scale checks, tickets, moisture tests, fuel logs, and receipts |
 

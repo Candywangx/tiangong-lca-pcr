@@ -270,39 +270,14 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: substrate_conditioning_fuel
-          role: "Substrate conditioning fuel or heat"
-          name: "Fuel or process heat supplied for substrate conditioning"
-          flow_type: "product"
-          property_unit: "Energy or mass / MJ, L, or kg"
-          description: "Record fuel or externally supplied heat used to pasteurise, sterilise, or condition substrate. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign."
-          amount:
-            expression: "Record each fuel or heat carrier by batch, equipment, and measured consumption; retain the carrier and conversion basis."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "fuel_inventory"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_substrate_energy_records
-              source_ids:
-                - robinson-2018-mushroom-lca
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "3,000"
-                unit: "MJ per 1,000 kg accepted fresh mushrooms"
-                basis: "steam, hot-water, or direct-heat conditioning pending records"
-                basis_kind: "fuel_inventory"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: substrate_preparation_and_conditioning_agricultural_nutrient_inputs_urea
           role: "Urea fertilizer"
-          name: "Urea fertilizer"
+          name: "Urea"
           flow_type: "product"
+          flow_ref:
+            uuid: "3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e"
           property_unit: "Mass / kg"
-          description: "**Collection scope and applicability for substrate_preparation_and_conditioning_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "**Collection scope and applicability for substrate_preparation_and_conditioning_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services. Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_nutrient_amendment_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -318,10 +293,12 @@ process_inventory:
             ranges: []
         - row_id: substrate_preparation_and_conditioning_agricultural_nutrient_inputs_ammonium_sulfate
           role: "Ammonium sulfate fertilizer"
-          name: "Ammonium sulfate fertilizer"
+          name: "Ammonium sulfate"
           flow_type: "product"
+          flow_ref:
+            uuid: "8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf"
           property_unit: "Mass / kg"
-          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock."
+          description: "Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock. Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor."
           amount:
             expression: "Collect raw quantities for this identity under cp_nutrient_amendment_records and calculate the exchange per declared reference flow using the original attribution rules."
             value_mode: "foreground_record"
@@ -411,32 +388,6 @@ process_inventory:
               source_ids:
                 - fao-organic-nutrients
             ranges: []
-        - row_id: substrate_container_material_input
-          role: "Substrate bag, block, tray, or support material"
-          name: "Substrate container or support material"
-          flow_type: "product"
-          property_unit: "Mass or item / kg or item"
-          description: "Record bags, sleeves, trays, racks, plugs, or other supports entering the process. Reusable supports require service life and loss rate. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign."
-          amount:
-            expression: "Record purchased or issued mass or item count by batch, capacity, reuse cycles, return rate, and loss."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_container_material_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg material per 1,000 kg accepted fresh mushrooms"
-                basis: "single-use or reusable support pending mass and cycle records"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -610,24 +561,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: incubation_fuel
-          role: "Incubation fuel or heat"
-          name: "Fuel or process heat supplied for incubation"
-          flow_type: "product"
-          property_unit: "Energy or mass / MJ, L, or kg"
-          description: "Record fuel or externally supplied heat used to maintain incubation temperature. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign."
-          amount:
-            expression: "Record measured carrier consumption by room and incubation period."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "fuel_inventory"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_incubation_climate_records
-              source_ids: []
-            ranges: []
       waste:
         []
       elementary:
@@ -720,32 +653,6 @@ process_inventory:
               collection_protocol_id: cp_fruiting_climate_records
               source_ids: []
             ranges: []
-        - row_id: casing_or_covering_material_input
-          role: "Casing or covering material"
-          name: "Mushroom casing or covering material"
-          flow_type: "product"
-          property_unit: "Mass or item / kg or item"
-          description: "Record peat, soil, coir, vermiculite, paper, plastic cover, or other casing when the route uses it; omit when unused. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign."
-          amount:
-            expression: "Record casing or covering by batch, moisture, recipe, and application surface."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_fruiting_climate_records
-              source_ids: []
-            ranges:
-              - role: default_estimate
-                lower: "0"
-                upper: "5,000"
-                unit: "kg wet casing or covering per 1,000 kg accepted fresh mushrooms"
-                basis: "route-specific casing pending recipe and application records"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: fruiting_water_input
           role: "Fruiting water and humidification supply"
           name: "Water supplied for fruiting and humidification"
@@ -799,24 +706,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: fruiting_fuel
-          role: "Fruiting climate-control fuel or heat"
-          name: "Fuel or process heat supplied for fruiting"
-          flow_type: "product"
-          property_unit: "Energy or mass / MJ, L, or kg"
-          description: "Record fuel or heat used to maintain fruiting-room temperature when it crosses the boundary. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign."
-          amount:
-            expression: "Record measured carrier use by room and campaign and preserve conversion basis."
-            value_mode: "foreground_record"
-            specificity: "technology_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "fuel_inventory"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_fruiting_climate_records
-              source_ids: []
-            ranges: []
         - row_id: cleaning_sanitation_product_input
           role: "Cleaning or sanitation product"
           name: "Cleaning or sanitation product"
@@ -970,60 +859,6 @@ process_inventory:
     label: "Harvest, grading, and primary packaging"
     inputs:
       product:
-        - row_id: harvest_crate_or_pallet_input
-          role: "Reusable harvest crate or pallet function"
-          name: "Reusable crate or pallet packaging function"
-          flow_type: "product"
-          property_unit: "Mass or item / kg or item"
-          description: "Record reusable crates, pallets, bins, or harvest containers used before the gate, including capacity, turns, return rate, and loss. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms at the declared gate."
-          amount:
-            expression: "Record container service and allocate manufacture, reuse, return, and loss by documented service life."
-            value_mode: "calculated_value"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_packaging_records
-              source_ids: []
-            ranges: []
-        - row_id: rigid_primary_packaging_input
-          role: "Rigid primary packaging"
-          name: "Rigid primary packaging function"
-          flow_type: "product"
-          property_unit: "Mass or item / kg or item"
-          description: "Record trays, punnets, tubs, clamshells, or other rigid primary packaging applied before the gate; omit when sold loose. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms at the declared gate."
-          amount:
-            expression: "Record package type, mass or count, fill capacity, and campaign allocation."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_packaging_records
-              source_ids: []
-            ranges: []
-        - row_id: flexible_primary_packaging_input
-          role: "Flexible primary packaging or lidding"
-          name: "Flexible primary packaging function"
-          flow_type: "product"
-          property_unit: "Mass or item / kg or item"
-          description: "Record films, bags, wraps, lidding, labels, or other flexible materials applied before the gate; omit when unused. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms at the declared gate."
-          amount:
-            expression: "Record film or bag mass or item count by package type, fill capacity, and campaign."
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_packaging_records
-              source_ids: []
-            ranges: []
         - row_id: harvest_washing_water
           role: "Harvest washing water"
           name: "Water supplied for mushroom washing"
@@ -1387,7 +1222,7 @@ dataset_production:
       flow_role: "bags, blocks, trays, supports"
       record_type: "purchasing and issue record"
       raw_fields: "material; mass_or_count; capacity; reuse_cycles; return_rate; losses; batch_id"
-      collection_method: "reconcile purchase, issue, return, and loss; Raw aggregation and attribution: allocate by capacity and service life"
+      collection_method: "reconcile purchase, issue, return, and loss; Raw aggregation and attribution: allocate by capacity and service life substrate_container_material_input_specific_input: Record bags, sleeves, trays, racks, plugs, or other supports entering the process. Reusable supports require service life and loss rate. Record purchased or issued mass or item count by batch, capacity, reuse cycles, return rate, and loss. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg or item"
       frequency: "each batch and return cycle"
       temporal_coverage: "full campaign"
@@ -1399,7 +1234,7 @@ dataset_production:
       flow_role: "conditioning electricity and fuel or heat"
       record_type: "meter, fuel log, or invoice"
       raw_fields: "meter_id; carrier; equipment; batch_id; energy; fuel_volume; conversion_factor"
-      collection_method: "read dedicated meter or allocate shared utility by run; Raw aggregation and attribution: allocate by measured run or operating time"
+      collection_method: "read dedicated meter or allocate shared utility by run; Raw aggregation and attribution: allocate by measured run or operating time Route-specific requirements: substrate_conditioning_fuel_identification: Substrate pasteurisation, sterilisation or conditioning: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "kWh, MJ, L, kg"
       frequency: "every run and monthly reconciliation"
       temporal_coverage: "full campaign"
@@ -1423,7 +1258,7 @@ dataset_production:
       flow_role: "incubation water, energy, output, contamination, CO2"
       record_type: "room log and meter"
       raw_fields: "room_id; batch_id; start; end; temperature; humidity; ventilation; water; electricity; fuel; CO2; accepted_units; failed_units"
-      collection_method: "daily room record with meter reconciliation; Raw aggregation and attribution: aggregate by room days and batch"
+      collection_method: "daily room record with meter reconciliation; Raw aggregation and attribution: aggregate by room days and batch Route-specific requirements: incubation_fuel_identification: Incubation temperature maintenance: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
       unit: "°C, %, m3, kWh, MJ, kg, item"
       frequency: "daily and monthly reconciliation"
       temporal_coverage: "full campaign"
@@ -1435,7 +1270,7 @@ dataset_production:
       flow_role: "colonized input, casing, water, energy, sanitation, area, CO2"
       record_type: "room log, issue record, and meter"
       raw_fields: "room_id; batch_id; species; casing_mass; water; electricity; fuel; sanitation_product; room_area; occupied_time; temperature; humidity; CO2; flush_dates"
-      collection_method: "combine room log, issue records, and meters; Raw aggregation and attribution: aggregate by room, batch, and flush"
+      collection_method: "combine room log, issue records, and meters; Raw aggregation and attribution: aggregate by room, batch, and flush Route-specific requirements: fruiting_fuel_identification: Fruiting-room temperature maintenance: retain the thermal demand but identify the actual heater, combustion fuel or externally supplied heat specification. Existing electricity cards already cover electrical consumption; do not create a second generic energy input. Raw activity or stage basis: per 1,000 kg accepted fresh mushrooms from the same campaign. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. casing_or_covering_material_input_specific_input: Record peat, soil, coir, vermiculite, paper, plastic cover, or other casing when the route uses it; omit when unused. Record casing or covering by batch, moisture, recipe, and application surface. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg, m3, kWh, MJ, L, m2, h, °C, %"
       frequency: "daily or per flush"
       temporal_coverage: "full campaign"
@@ -1471,7 +1306,7 @@ dataset_production:
       flow_role: "crates, packaging, packaging waste"
       record_type: "issue and packing record"
       raw_fields: "package_type; mass_or_count; capacity; filled_units; reuse_cycles; returns; damaged_units; waste_mass; destination"
-      collection_method: "reconcile issue, filled units, returns, and waste; Raw aggregation and attribution: allocate by accepted mass and type"
+      collection_method: "reconcile issue, filled units, returns, and waste; Raw aggregation and attribution: allocate by accepted mass and type harvest_crate_or_pallet_input_specific_input: Operation harvest_grading_and_primary_packaging: Record reusable crates, pallets, bins, or harvest containers used before the gate, including capacity, turns, return rate, and loss. Original quantity method: Record container service and allocate manufacture, reuse, return, and loss by documented service life. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. rigid_primary_packaging_input_specific_input: Operation harvest_grading_and_primary_packaging: Record trays, punnets, tubs, clamshells, or other rigid primary packaging applied before the gate; omit when sold loose. Original quantity method: Record package type, mass or count, fill capacity, and campaign allocation. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. flexible_primary_packaging_input_specific_input: Operation harvest_grading_and_primary_packaging: Record films, bags, wraps, lidding, labels, or other flexible materials applied before the gate; omit when unused. Original quantity method: Record film or bag mass or item count by package type, fill capacity, and campaign. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg or item"
       frequency: "each packing run and monthly reconciliation"
       temporal_coverage: "full campaign"
@@ -1751,9 +1586,13 @@ data_sources:
     type: "official_guidance"
     reference: "FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf"
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:934eb8ac845ad4657239a93f318fb2e9b643c2273d1272d78d3244e64ece5b90"
+  source_sha256: "sha256:5ada1b3a8f83904b2f37b9f2b2643b942fe7f319aad5d4eca88267ab824d174e"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8058"
@@ -1804,16 +1643,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_67382"
+    - unit_id: "normative_60488"
       family: "allocation"
       span:
         start:
-          offset: 67382
-          line: 1191
+          offset: 60488
+          line: 1042
           column: 1
         end:
-          offset: 69192
-          line: 1204
+          offset: 62298
+          line: 1055
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n### Allocation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_process_subdivision_first` | shared substrate, rooms, utilities, and packing | Subdivide activities and collect separate batch records wherever practical; allocate only genuinely shared activities after physical separation is no longer feasible. | `iso-14044-2006` |\n| `allocation_mushroom_and_spent_substrate` | marketable mushrooms and spent substrate | Treat marketable mushrooms as the reference product. Treat spent substrate as waste unless intentionally transferred to a documented recipient as a product or co-product. A saleable secondary product requires a declared physical or economic basis, sensitivity, and recipient evidence. | `robinson-2018-mushroom-lca`; `iso-14044-2006` |\n| `allocation_multiple_flushes` | successive flushes from one campaign | Attribute shared substrate, incubation, and room burdens to all flushes from the same campaign and aggregate by accepted output. | `robinson-2018-mushroom-lca` |\n| `allocation_downgraded_mushrooms` | downgraded mushrooms and grading rejects | Classify downgraded mushrooms as a co-product only with a documented recipient and intended use. Material without a recipient or with disposal treatment remains waste and receives no avoided-product credit. | `iso-14044-2006`; `usda-ams-mushroom-grade-standard` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1832,12 +1671,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 67382
-              line: 1191
+              offset: 60488
+              line: 1042
               column: 1
             end:
-              offset: 67422
-              line: 1191
+              offset: 60528
+              line: 1042
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1852,16 +1691,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_83478"
+    - unit_id: "normative_90088"
       family: "validation"
       span:
         start:
-          offset: 83478
-          line: 1258
+          offset: 90088
+          line: 1133
           column: 1
         end:
-          offset: 86089
-          line: 1275
+          offset: 92699
+          line: 1150
           column: 1
       markdown: "## 9. Validation Rules\n\n### Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_identity` | reference flow | Require declared species, route, gate, qualifiers, and compatible concrete product, mass property, and mass unit-group identity before final publication; this draft requires foreground identity binding. |  |\n| `validation_campaign_reconciliation` | all campaigns | Check substrate, spawn, room, flush, accepted, downgraded, reject, spent-substrate, and transport records share identifiers and reconcile to reference mass. | `robinson-2018-mushroom-lca` |\n| `validation_moisture_basis` | fresh mushrooms, substrate, casing, and spent substrate | Reject mixed wet and dry amounts without documented measured conversion and moisture basis. | `robinson-2018-mushroom-lca` |\n| `validation_route_conditionals` | casing, fertilizer or soil amendment, washing, packaging, and transport | Include each conditional exchange only when its route condition is true and retain omission evidence when unused. | `fao-make-money-growing-mushrooms-2010`; `usda-ams-mushroom-grade-standard` |\n| `validation_parameterized_flows` | parameterized rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_unmapped_flows` | unmapped rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validation_emission_reporting` | ammonia and carbon-dioxide rows | Require receiving medium, reported substance, method, amount basis, and duplicate-pathway check for every elementary emission. | `robinson-2018-mushroom-lca` |\n| `validation_spent_substrate_destination` | spent and contaminated substrate | Require destination, recipient or treatment, mass, moisture basis, and transport evidence; apply credit only under the allocation or substitution rule. | `robinson-2018-mushroom-lca`; `iso-14044-2006` |\n| `validation_allocation_disclosure` | shared activities and secondary outputs | Require process subdivision evidence or allocation basis, shared-utility allocation, sensitivity, and recipient evidence for any co-product claim. | `iso-14044-2006` |\n| `validation_grade_and_gate` | accepted output and primary packaging | Confirm species, freshness, maturity, size or grade, trim, cleanliness, wash and cooling state, packaging, and gate for each accepted lot. | `usda-ams-mushroom-grade-standard` |\n\n"
       headings:
@@ -1880,12 +1719,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 83478
-              line: 1258
+              offset: 90088
+              line: 1133
               column: 1
             end:
-              offset: 83500
-              line: 1258
+              offset: 90110
+              line: 1133
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1969,197 +1808,197 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_process_subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_67382"
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 67517
-          line: 1197
+          offset: 60623
+          line: 1048
           column: 1
         end:
-          offset: 67797
-          line: 1197
+          offset: 60903
+          line: 1048
           column: 281
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_mushroom_and_spent_substrate"
       identity_kind: "explicit"
-      unit_id: "normative_67382"
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 67798
-          line: 1198
+          offset: 60904
+          line: 1049
           column: 1
         end:
-          offset: 68222
-          line: 1198
+          offset: 61328
+          line: 1049
           column: 425
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_multiple_flushes"
       identity_kind: "explicit"
-      unit_id: "normative_67382"
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 68223
-          line: 1199
+          offset: 61329
+          line: 1050
           column: 1
         end:
-          offset: 68457
-          line: 1199
+          offset: 61563
+          line: 1050
           column: 235
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_downgraded_mushrooms"
       identity_kind: "explicit"
-      unit_id: "normative_67382"
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 68458
-          line: 1200
+          offset: 61564
+          line: 1051
           column: 1
         end:
-          offset: 68802
-          line: 1200
+          offset: 61908
+          line: 1051
           column: 345
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_67382"
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 68804
-          line: 1202
+          offset: 61910
+          line: 1053
           column: 1
         end:
-          offset: 69190
-          line: 1202
+          offset: 62296
+          line: 1053
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 83595
-          line: 1264
+          offset: 90205
+          line: 1139
           column: 1
         end:
-          offset: 83855
-          line: 1264
+          offset: 90465
+          line: 1139
           column: 261
     - pointer: "/validation_rules/1"
       rule_id: "validation_campaign_reconciliation"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 83856
-          line: 1265
+          offset: 90466
+          line: 1140
           column: 1
         end:
-          offset: 84102
-          line: 1265
+          offset: 90712
+          line: 1140
           column: 247
     - pointer: "/validation_rules/2"
       rule_id: "validation_moisture_basis"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 84103
-          line: 1266
+          offset: 90713
+          line: 1141
           column: 1
         end:
-          offset: 84317
-          line: 1266
+          offset: 90927
+          line: 1141
           column: 215
     - pointer: "/validation_rules/3"
       rule_id: "validation_route_conditionals"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 84318
-          line: 1267
+          offset: 90928
+          line: 1142
           column: 1
         end:
-          offset: 84621
-          line: 1267
+          offset: 91231
+          line: 1142
           column: 304
     - pointer: "/validation_rules/4"
       rule_id: "validation_parameterized_flows"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 84622
-          line: 1268
+          offset: 91232
+          line: 1143
           column: 1
         end:
-          offset: 84853
-          line: 1268
+          offset: 91463
+          line: 1143
           column: 232
     - pointer: "/validation_rules/5"
       rule_id: "validation_unmapped_flows"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 84854
-          line: 1269
+          offset: 91464
+          line: 1144
           column: 1
         end:
-          offset: 85075
-          line: 1269
+          offset: 91685
+          line: 1144
           column: 222
     - pointer: "/validation_rules/6"
       rule_id: "validation_emission_reporting"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 85076
-          line: 1270
+          offset: 91686
+          line: 1145
           column: 1
         end:
-          offset: 85305
-          line: 1270
+          offset: 91915
+          line: 1145
           column: 230
     - pointer: "/validation_rules/7"
       rule_id: "validation_spent_substrate_destination"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 85306
-          line: 1271
+          offset: 91916
+          line: 1146
           column: 1
         end:
-          offset: 85588
-          line: 1271
+          offset: 92198
+          line: 1146
           column: 283
     - pointer: "/validation_rules/8"
       rule_id: "validation_allocation_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 85589
-          line: 1272
+          offset: 92199
+          line: 1147
           column: 1
         end:
-          offset: 85837
-          line: 1272
+          offset: 92447
+          line: 1147
           column: 249
     - pointer: "/validation_rules/9"
       rule_id: "validation_grade_and_gate"
       identity_kind: "explicit"
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 85838
-          line: 1273
+          offset: 92448
+          line: 1148
           column: 1
         end:
-          offset: 86087
-          line: 1273
+          offset: 92697
+          line: 1148
           column: 250
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2188,27 +2027,27 @@ normative_context:
           column: 363
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_67382"
+      unit_id: "normative_60488"
       source_span:
         start:
-          offset: 67382
-          line: 1191
+          offset: 60488
+          line: 1042
           column: 1
         end:
-          offset: 67422
-          line: 1191
+          offset: 60528
+          line: 1042
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_83478"
+      unit_id: "normative_90088"
       source_span:
         start:
-          offset: 83478
-          line: 1258
+          offset: 90088
+          line: 1133
           column: 1
         end:
-          offset: 83500
-          line: 1258
+          offset: 90110
+          line: 1133
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2217,5 +2056,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:934eb8ac845ad4657239a93f318fb2e9b643c2273d1272d78d3244e64ece5b90"
-  generated_content_sha256: "sha256:5fcefd92c8a9f43c382fff9f4e81205930d17817c8cccc8ccf60e48a4cbd2077"
+    sha256: "sha256:5ada1b3a8f83904b2f37b9f2b2643b942fe7f319aad5d4eca88267ab824d174e"
+  generated_content_sha256: "sha256:b61f1f9834b0b52226cc10e2c65e9406c4b0ac81a5c7d889d6ccbc36c105e72f"

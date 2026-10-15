@@ -99,7 +99,7 @@ sync_with: pcr.en-US.md
 
 记录进入种植周期的购买或保留藜麦种子。不得用收获籽粒参考流替代种子身份。
 
-- 选定流：Quinoa seed for sowing
+- 选定流：播种用藜麦种子
 - 流属性/单位：Mass / kg
 - 数量规则：实测播种种子质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -129,7 +129,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_quinoa_field_activity_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -139,12 +139,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_quinoa_field_activity_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`quinoa_field_production_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_quinoa_field_activity_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,6 +156,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_quinoa_field_activity_records`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`quinoa_field_production_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -219,7 +223,7 @@ sync_with: pcr.en-US.md
 
 将进入田间的水与降水分开记录；仅在证明为雨养田时使用零值。
 
-- 选定流：Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位：Volume / m3
 - 数量规则：计量体积或经验证的泵流量计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -239,35 +243,26 @@ sync_with: pcr.en-US.md
   - 基准类型：种植周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 供应的移动机械燃料（`field_mobile_fuel_input`）
+###### 柴油 (`field_mobile_fuel_input_diesel`)
 
-记录田间作业消耗的柴油或其他机械燃料；不得包含在上游投入数据集中的燃料。
+仅适用于本作业有记录的柴油机械。保留燃料牌号及配方，体积按实测或供应商支持的密度换算。其他动力系统按实际载能体记录，不用柴油当量替代。执行`field_mobile_fuel_input_specific_input`，本示例不是必用投入。不重复计入机械服务包含项，也不对现场发电内部转移的电力再计外购供电；实际燃料燃烧及发电排放仍须单独核算。
 
-- 选定流：Mobile machinery fuel
-- 流属性/单位：Energy or mass / MJ or kg
-- 数量规则：按作业实测燃料用量或经验证的承包商分摊
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每公顷种植面积，并换算到 1,000 kg 籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：基于采集记录计算（`calculated_from_collection`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_quinoa_field_activity_records`采集`quinoa_field_production`的该载能体用量。共用量仅归属一次，归属原始量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量；保留实测阶段吞吐及原有分配规则，不对已归一化量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_quinoa_field_activity_records`
-- 数量范围：暂定田间燃料筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：180
-  - 单位：L/ha
-  - 基准：一个种植周期的田间作业
-  - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
 ###### 灌溉或田间设备用电（`field_electricity_input`）
 
 仅记录前景边界内田间设备或灌溉抽水使用的外购电力。
 
-- 选定流：Electricity supply
+- 选定流：电力供应
 - 流属性/单位：Energy / kWh
 - 数量规则：将电表读数或泵能耗计算分配至藜麦田
 - 数值来源模式：计算值（`calculated_value`）
@@ -287,54 +282,6 @@ sync_with: pcr.en-US.md
   - 基准类型：种植周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 供应的农药产品（`crop_protection_input`）
-
-按产品、有效成分和施用事件记录每种除草剂、杀虫剂、杀菌剂或其他农药制剂。制剂身份在验证兼容产品流前保持证据缺口。
-
-- 选定流：Crop-protection formulation by product and active ingredient
-- 流属性/单位：Mass / kg product
-- 数量规则：按产品和事件记录制剂实测质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每公顷种植面积，并换算到 1,000 kg 籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_quinoa_input_identity_records`
-- 数量范围：暂定农药筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：15
-  - 单位：kg product/ha
-  - 基准：一个种植周期；未施用产品时零值有效
-  - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
-###### 供应的土壤改良剂（`soil_amendment_input`）
-
-仅在石灰、石膏、堆肥或其他改良剂跨越所声明的田间边界时记录，并识别其组成和施用事件。
-
-- 选定流：Soil amendment by material identity
-- 流属性/单位：Mass / kg product
-- 数量规则：按材料和地块记录改良剂实测质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每公顷种植面积，并换算到 1,000 kg 籽粒.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_quinoa_field_activity_records`
-- 数量范围：暂定土壤改良剂筛选范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：2500
-  - 单位：kg product/ha
-  - 基准：一个种植周期；必须说明材料组成
-  - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ##### 废物流
 
 ##### 基本流
@@ -343,7 +290,7 @@ sync_with: pcr.en-US.md
 
 将地块面积和种植周期占用时间作为基本资源投入记录。
 
-- 选定流：Land occupation by agricultural cultivation
+- 选定流：农业种植用地占用
 - 流属性/单位：Area-time / m2*a
 - 数量规则：种植面积乘以占用时间
 - 数值来源模式：计算值（`calculated_value`）
@@ -359,7 +306,7 @@ sync_with: pcr.en-US.md
 
 在前景操作者从自然来源抽水时记录直接取水。不得重复计算已由上游灌溉供水数据集表示的水。
 
-- 选定流：Water resource withdrawal for irrigation
+- 选定流：灌溉用自然水资源取用
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：计量取水量或经验证的水源流量计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -378,7 +325,7 @@ sync_with: pcr.en-US.md
 
 记录离开田间过程的已收获、可销售籽粒。包含整理时这是内部产品转移，不包含整理时这是终端参考输出。
 
-- 选定流：Quinoa, production mix, at farm gate, harvested grain, unprocessed `21dd21b4-e6ec-43c2-b2c8-c18f47567236`
+- 选定流：藜麦 `21dd21b4-e6ec-43c2-b2c8-c18f47567236`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明水分和异物基础记录收获籽粒实测质量
 
@@ -404,7 +351,7 @@ sync_with: pcr.en-US.md
 
 只有在残余物被测量并有意转移至声明用途时，才记录从田间移出的地上残余物。留在田间或翻入土壤的残余物通过残余物去向和排放计算记录，不作为产品共产品。
 
-- 选定流：Quinoa crop residue for declared use
+- 选定流：用于声明用途的藜麦作物残余物
 - 流属性/单位：Mass / kg dry matter
 - 数量规则：按去向和水分基础记录移出残余物实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -430,7 +377,7 @@ sync_with: pcr.en-US.md
 
 仅在对质量平衡有意义时记录留在田间或整理前被剔除的籽粒实测量。说明其留在田间、饲喂、堆肥或作为废物处理的去向。
 
-- 选定流：Non-marketable quinoa grain and harvest loss
+- 选定流：不可销售藜麦籽粒及收获损失
 - 流属性/单位：Mass / kg
 - 数量规则：按去向记录或计算收获籽粒与可销售籽粒的差值
 - 数值来源模式：计算值（`calculated_value`）
@@ -456,7 +403,7 @@ sync_with: pcr.en-US.md
 
 纳入与氮投入、残余物去向和适用排水或淋失路径有关的直接和间接土壤 N2O。
 
-- 选定流：Nitrous oxide emission to ambient air
+- 选定流：一氧化二氮向环境空气排放
 - 流属性/单位：Mass / kg N2O
 - 数量规则：使用适用于地理区域的土壤排放方法计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -472,7 +419,7 @@ sync_with: pcr.en-US.md
 
 根据施用方式和当地因子纳入肥料及有机养分施用的氨挥发。
 
-- 选定流：Ammonia emission to ambient air
+- 选定流：氨向环境空气排放
 - 流属性/单位：Mass / kg NH3
 - 数量规则：根据氮源、施用方式和适用挥发因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -488,7 +435,7 @@ sync_with: pcr.en-US.md
 
 在所选方法要求时，纳入田间燃料燃烧和含氮农业排放产生的氮氧化物。
 
-- 选定流：Nitrogen oxides emission to ambient air
+- 选定流：氮氧化物向环境空气排放
 - 流属性/单位：Mass / kg NOx
 - 数量规则：根据燃料活动和适用农业排放方法计算，不重复计算上游燃料数据集
 - 数值来源模式：计算值（`calculated_value`）
@@ -504,7 +451,7 @@ sync_with: pcr.en-US.md
 
 在排水、土壤和养分记录支持时，纳入管理田地的硝酸盐淋失或径流。
 
-- 选定流：Nitrate emission to water
+- 选定流：硝酸根向水体排放
 - 流属性/单位：Mass / kg nitrate
 - 数量规则：用适用于地理区域的方法计算氮淋失或径流
 - 数值来源模式：计算值（`calculated_value`）
@@ -520,7 +467,7 @@ sync_with: pcr.en-US.md
 
 当土壤、坡度和养分数据支持场址或区域方法时，纳入径流或侵蚀造成的磷酸盐释放。
 
-- 选定流：Phosphate emission to water
+- 选定流：磷酸根向水体排放
 - 流属性/单位：Mass / kg phosphate
 - 数量规则：用所选方法计算径流或侵蚀损失，并说明结果是模型值还是实测值
 - 数值来源模式：计算值（`calculated_value`）
@@ -541,7 +488,7 @@ sync_with: pcr.en-US.md
 
 当清选或干燥位于农场边界内时，记录从田间过程接收的籽粒。
 
-- 选定流：Quinoa, production mix, at farm gate, harvested grain, unprocessed `21dd21b4-e6ec-43c2-b2c8-c18f47567236`
+- 选定流：藜麦 `21dd21b4-e6ec-43c2-b2c8-c18f47567236`
 - 流属性/单位：Mass / kg
 - 数量规则：按记录水分测量进入批次质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -557,7 +504,7 @@ sync_with: pcr.en-US.md
 
 记录边界内风机、清选机、输送机和其他整理设备使用的电力。
 
-- 选定流：Electricity supply
+- 选定流：电力供应
 - 流属性/单位：Energy / kWh
 - 数量规则：将电表读数分配到匹配的藜麦整理批次
 - 数值来源模式：计算值（`calculated_value`）
@@ -581,7 +528,7 @@ sync_with: pcr.en-US.md
 
 记录交付前降低籽粒水分所使用的供应热量或燃料能量。
 
-- 选定流：Process heat for grain drying
+- 选定流：谷物干燥用工艺热量
 - 流属性/单位：Energy / MJ
 - 数量规则：将实测燃料或交付热量换算为能量，并保留载能体身份
 - 数值来源模式：计算值（`calculated_value`）
@@ -605,7 +552,7 @@ sync_with: pcr.en-US.md
 
 仅在用水跨越整理过程边界时记录除尘或清洁用水。
 
-- 选定流：Process water
+- 选定流：生产用水
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：将计量用水量匹配到整理批次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -628,7 +575,7 @@ sync_with: pcr.en-US.md
 
 记录在包含的清选或干燥后、处于声明水分和异物状态的接收籽粒。
 
-- 选定流：Quinoa, production mix, at farm gate, harvested grain, unprocessed `21dd21b4-e6ec-43c2-b2c8-c18f47567236`
+- 选定流：藜麦 `21dd21b4-e6ec-43c2-b2c8-c18f47567236`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明交付水分和杂质基础记录接收籽粒实测质量
 
@@ -654,7 +601,7 @@ sync_with: pcr.en-US.md
 
 仅在筛下物或降级籽粒被测量并有意转移至声明用途时将其记录为产品。
 
-- 选定流：Quinoa screenings for declared use
+- 选定流：用于声明用途的藜麦筛下物
 - 流属性/单位：Mass / kg
 - 数量规则：按去向记录有用筛下物实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -680,7 +627,7 @@ sync_with: pcr.en-US.md
 
 按材料身份和去向记录石块、土壤、杂草材料、污染籽粒、粉尘和其他剔除物。
 
-- 选定流：Quinoa-conditioning foreign matter and rejected grain
+- 选定流：藜麦整理异物及废弃籽粒
 - 流属性/单位：Mass / kg
 - 数量规则：按材料类别和去向记录剔除物实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -709,7 +656,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Quinoa, production mix, at farm gate, harvested grain, unprocessed
+- 选定流：藜麦，农场门收获籽粒，生产混合，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -735,7 +682,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Quinoa, production mix, at farm gate, harvested grain, unprocessed
+- 选定流：藜麦，农场门收获籽粒，生产混合，未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -773,6 +720,16 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `field_mobile_fuel_input_specific_input` | `cp_quinoa_field_activity_records` | 作业 quinoa_field_production：记录田间作业消耗的柴油或其他机械燃料；不得包含在上游投入数据集中的燃料。 原数量方法：按作业实测燃料用量或经验证的承包商分摊 |
+| `crop_protection_input_specific_input` | `cp_quinoa_input_identity_records` | 作业 quinoa_field_production：按产品、有效成分和施用事件记录每种除草剂、杀虫剂、杀菌剂或其他农药制剂。制剂身份在验证兼容产品流前保持证据缺口。 原数量方法：按产品和事件记录制剂实测质量 |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -780,8 +737,8 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_quinoa_field_activity_records` | `quinoa_field_production` | seed, nutrients, water, fuel, electricity, amendments, crop protection | field log, invoice, application record, meter, or contractor record | field_id; area; cultivar; input_product; amount; nutrient_content; date; operation; irrigation; contractor_scope | 将物理投入和作业与每个地块、种植周期核对；原始汇总与分配：按物理身份汇总；不合并产品后计算养分含量；使用同周期面积和产量归一化 | kg; kg nutrient; L; m3; kWh; ha | each event | complete crop cycle | all represented fields | 每声明的参考流 | invoices; labels; calibrated meters; field logs |
-| `cp_quinoa_input_identity_records` | `quinoa_field_production` | seed, crop protection, amendments | seed certificate, product label, invoice, supplier record | product_name; active_ingredient; formulation; lot; supplier; amount; application_date; field_id | 保留投入身份，并将每项投入匹配到施用记录；原始汇总与分配：不合并身份或有效成分不同的制剂 | kg; percent; date | each input event | complete crop cycle | all represented suppliers and fields | 每声明的参考流 | labels; certificates; supplier documents |
+| `cp_quinoa_field_activity_records` | `quinoa_field_production` | seed, nutrients, water, fuel, electricity, amendments, crop protection | field log, invoice, application record, meter, or contractor record | field_id; area; cultivar; input_product; amount; nutrient_content; date; operation; irrigation; contractor_scope | 将物理投入和作业与每个地块、种植周期核对；原始汇总与分配：按物理身份汇总；不合并产品后计算养分含量；使用同周期面积和产量归一化 `field_mobile_fuel_input_specific_input`: 作业 quinoa_field_production：记录田间作业消耗的柴油或其他机械燃料；不得包含在上游投入数据集中的燃料。 原数量方法：按作业实测燃料用量或经验证的承包商分摊 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `soil_amendment_input_specific_input`: 仅在石灰、石膏、堆肥或其他改良剂跨越所声明的田间边界时记录，并识别其组成和施用事件。 按材料和地块记录改良剂实测质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; kg nutrient; L; m3; kWh; ha | each event | complete crop cycle | all represented fields | 每声明的参考流 | invoices; labels; calibrated meters; field logs |
+| `cp_quinoa_input_identity_records` | `quinoa_field_production` | seed, crop protection, amendments | seed certificate, product label, invoice, supplier record | product_name; active_ingredient; formulation; lot; supplier; amount; application_date; field_id | 保留投入身份，并将每项投入匹配到施用记录；原始汇总与分配：不合并身份或有效成分不同的制剂 `crop_protection_input_specific_input`: 作业 quinoa_field_production：按产品、有效成分和施用事件记录每种除草剂、杀虫剂、杀菌剂或其他农药制剂。制剂身份在验证兼容产品流前保持证据缺口。 原数量方法：按产品和事件记录制剂实测质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; percent; date | each input event | complete crop cycle | all represented suppliers and fields | 每声明的参考流 | labels; certificates; supplier documents |
 | `cp_quinoa_harvest_output_records` | `quinoa_field_production` | grain, residue, harvest loss, residue fate | weighbridge, yield monitor, moisture test, bale record, field inspection | field_id; harvest_date; grain_mass; grain_moisture; residue_mass; residue_moisture; fate; destination | 将收获和移出质量与地块面积、种植周期核对；原始汇总与分配：分别汇总接收籽粒以及各残余物或损失去向 | kg; percent; ha | each harvest | complete crop cycle | all represented fields | 每声明的参考流 | scale or yield-monitor calibration; moisture records; destination evidence |
 | `cp_quinoa_emission_activity` | `quinoa_field_production` | soil and crop emissions | nutrient, soil, weather, residue, drainage, and emission-model records | fertilizer_N; organic_N; residue_N; application_method; soil; climate; drainage; factor_set; model_version | 用一个声明的、适用于地理区域的方法计算各排放路径；原始汇总与分配：按地块计算、按面积加权，再按同周期产量归一化 | kg N; kg emission; ha | each event and crop-cycle calculation | complete crop cycle | all represented fields | 每声明的参考流 | source records; factor provenance; model file; nutrient-balance review |
 | `cp_quinoa_conditioning_records` | `quinoa_grain_conditioning` | incoming grain, energy, water, accepted grain, screenings, rejects | batch ticket, scale, moisture test, meter, fuel, and destination record | batch_id; incoming_mass; incoming_moisture; electricity; heat; water; accepted_mass; accepted_moisture; screenings; rejects | 将批次和计量器与接收输出核对；原始汇总与分配：汇总匹配批次；按时间或处理质量分配共享计量器；闭合湿质量平衡 | kg; percent; kWh; MJ; m3 | each batch or meter period | all pre-gate conditioning | all included equipment and batches | 每声明的参考流 | calibrated scales and moisture meters; meter reconciliation |
@@ -849,3 +806,4 @@ sync_with: pcr.en-US.md
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Cabbage `aed02ce8-12e2-4410-be27-38b4abc01fc4` |
+| 参考产品流 | 卷心菜 `aed02ce8-12e2-4410-be27-38b4abc01fc4` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -128,7 +128,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_cultivation_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -138,12 +138,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cultivation_inputs`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`field_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_cultivation_inputs` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -153,6 +155,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_cultivation_inputs`
 - 来源：`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`field_cultivation_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -240,56 +244,24 @@ sync_with: pcr.en-US.md
   - 基准类型：种植周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 田间作业机械能（`field_operation_energy`）
+###### 柴油 (`field_operation_energy_diesel`)
 
-记录整地、定植、灌溉泵送、养分施用、植保和田间移动所使用的能源；最终数据集发布前须按实际载体或供应者解析。
+实际柴油拖拉机耕作、种植、施肥、植保及田间移动。灌溉泵按实际原动机另行评估，不自动归为柴油。
 
-- 选定流：田间作业机械动力能源供给
-- 流属性/单位：Energy / MJ
-- 流集分组：`mechanical-power`
-- 数量规则：汇总田间作业所用的载体特定能源，并保留能源载体、设备和换算基准。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每 ha 甘蓝种植面积、每种植周期.
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
 
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：根据采集数据计算（`calculated_from_collection`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_energy`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_field_energy`
-- 来源：
-- 数量范围：暂定田间能源筛选估算
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：20000
-  - 单位：MJ/ha
-  - 基准：直接田间作业能源的宽泛首轮区间；以载体特定记录替换
-  - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`route-energy-fao`
 
-###### 植保活性成分（`crop_protection_inputs`）
-
-植保投入以实际施用的除草剂、杀虫剂、杀菌剂或其他活性成分跨越边界。前景记录须分别保留每种物理身份和配方产品。
-
-- 选定流：由前景记录指定的植保活性成分
-- 流属性/单位：Mass / kg active ingredient
-- 数量规则：依据配方产品数量和组成计算每种活性成分；最终交换中不得合并不同物质。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 ha 甘蓝种植面积、每种植周期.
-
-- 归一化基准：每声明的参考流
-- 基准类型：种植周期（`crop_cycle`）
-- 证据类型：根据采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_cultivation_inputs`
-- 来源：`codex-fresh-produce-hygiene`
-- 数量范围：暂定活性成分总量筛选估算
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：50
-  - 单位：kg active ingredient/ha
-  - 基准：全部施用的宽泛筛选总量；最终交换仍保持物质特定
-  - 基准类型：种植周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+执行第8节`field_operation_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -410,7 +382,7 @@ sync_with: pcr.en-US.md
 
 适销的修整甘蓝球在声明的农场门交接处离开前景系统。流身份固定，而品种、成熟度、修整、水分、包装和地点限定信息仍为前景事实。
 
-- 选定流：Cabbage `aed02ce8-12e2-4410-be27-38b4abc01fc4`
+- 选定流：卷心菜 `aed02ce8-12e2-4410-be27-38b4abc01fc4`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：在声明的农场门交接处称量或核算适销甘蓝质量。
 
@@ -499,6 +471,17 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `field_operation_energy_identification` | `cp_field_energy` | 实际柴油拖拉机耕作、种植、施肥、植保及田间移动。灌溉泵按实际原动机另行评估，不自动归为柴油。 原始活动或阶段基准：每 ha 甘蓝种植面积、每种植周期. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -506,8 +489,8 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_cultivation_inputs` | `field_cultivation` | 种植材料、养分产品、灌溉水、植保产品 | 采购、施用、计量和田间作业记录 | 产品身份；批次；数量；组成；活性成分；施用日期；处理面积；供水量 | 核对发票、施用日志、组成标签、灌溉表计和田间日志；原始汇总与分配：按物理身份汇总并用有文件支持的组成换算；保留零使用声明 | item; kg product; kg nutrient; kg active ingredient; m3 | 每次交付和施用 | 完整种植周期 | 每一田块和种植周期 | 每声明的参考流 | 发票；标签；校准记录；施用日志；表计读数 |
-| `cp_field_energy` | `field_cultivation` | 田间作业能源 | 燃料、电力和设备工时记录 | 载体身份；数量；单位；设备；作业；表计或发票期间 | 将载体采购和表计与设备及田间作业日志核对；原始汇总与分配：使用有文件支持的因子逐载体换算能源，避免采购能源与设备估算重复 | L; kg; kWh; MJ; h | 每次作业或计费期 | 完整种植周期 | 每一田块和设备组 | 每声明的参考流 | 发票；表计；设备日志；换算因子来源 |
+| `cp_cultivation_inputs` | `field_cultivation` | 种植材料、养分产品、灌溉水、植保产品 | 采购、施用、计量和田间作业记录 | 产品身份；批次；数量；组成；活性成分；施用日期；处理面积；供水量 | 核对发票、施用日志、组成标签、灌溉表计和田间日志；原始汇总与分配：按物理身份汇总并用有文件支持的组成换算；保留零使用声明 `crop_protection_inputs_specific_input`: 植保投入以实际施用的除草剂、杀虫剂、杀菌剂或其他活性成分跨越边界。前景记录须分别保留每种物理身份和配方产品。 依据配方产品数量和组成计算每种活性成分；最终交换中不得合并不同物质。 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `codex-fresh-produce-hygiene` | item; kg product; kg nutrient; kg active ingredient; m3 | 每次交付和施用 | 完整种植周期 | 每一田块和种植周期 | 每声明的参考流 | 发票；标签；校准记录；施用日志；表计读数 |
+| `cp_field_energy` | `field_cultivation` | 田间作业能源 | 燃料、电力和设备工时记录 | 载体身份；数量；单位；设备；作业；表计或发票期间 | 将载体采购和表计与设备及田间作业日志核对；原始汇总与分配：使用有文件支持的因子逐载体换算能源，避免采购能源与设备估算重复 按路线确认要求：`field_operation_energy_identification`: 实际柴油拖拉机耕作、种植、施肥、植保及田间移动。灌溉泵按实际原动机另行评估，不自动归为柴油。 原始活动或阶段基准：每 ha 甘蓝种植面积、每种植周期. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | L; kg; kWh; MJ; h | 每次作业或计费期 | 完整种植周期 | 每一田块和设备组 | 每声明的参考流 | 发票；表计；设备日志；换算因子来源 |
 | `cp_crop_area_cycle` | `field_cultivation` | 农业土地占用 | 地籍、GIS 和种植日历记录 | 种植面积；建立日期；采收完成日期；共享面积比例 | 测量或核实田块面积和作物占用日期；原始汇总与分配：面积乘以占用时间；共享田块按有文件支持的占用比例分配 | ha; date | 每田块和种植周期一次 | 建立至采收完成 | 每一田块 | 每声明的参考流 | GIS 或地籍记录；种植日历 |
 | `cp_crop_output` | `field_cultivation` | 成熟甘蓝作物交接 | 采收和抽样质量记录 | 采收面积；甘蓝球数量；抽样球质量；总采收质量；田块标识 | 称量采收批次，或依据分层球数和质量样本计算；原始汇总与分配：汇总总成熟作物，并与适销产出和残余物产出核对 | kg wet crop | 每次采收 | 完整采收窗口 | 每一田块和种植周期 | 每声明的参考流 | 校准秤记录；抽样计划；采收日志 |
 | `cp_soil_emissions` | `field_cultivation` | 受管理土壤氧化亚氮 | 养分、残余物、土壤改良剂、挥发、淋失和田间管理记录 | 各路径 N 投入；残余物干物质和含氮量；移除比例；排放因子；换算基准 | 对采集的田间记录应用声明的 IPCC 层级或有充分依据的更高层级模型；原始汇总与分配：各路径分别计算后无重复汇总，并按作物产出归一化 | kg N; kg dry matter; fraction; kg N2O-N | 每次施用及年度或种植周期计算 | 完整种植周期并声明年化方式 | 每一田块和排放分层 | 每声明的参考流 | 源记录；因子版本；计算工作簿；独立公式检查 |
@@ -568,3 +551,4 @@ sync_with: pcr.en-US.md
 | `codex-fresh-produce-hygiene` | `official_guidance` | Codex/FAO, Code of Hygienic Practice for the Primary Production, Harvesting and Packing of Fresh Fruits and Vegetables, https://www.fao.org/4/x8735e/x8735e0n.htm | 投入、施用、采收、批次、水质和包装记录要求 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

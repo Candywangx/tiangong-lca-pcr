@@ -106,7 +106,7 @@ translation_status: aligned
 
 记录建立黑麦种子路线的声明源批次。批次身份、等级、处理、水分和来源位置应与本周期接收输出分开。
 
-- 选定流：Rye, seed `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
+- 选定流：黑麦，种子 `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
 - 流属性/单位：Mass / kg
 - 数量规则：按田块或生产单元计量源批次质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -128,7 +128,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -138,12 +138,14 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`rye_seed_multiplication_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_nutrient_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -153,6 +155,8 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_input_records`
 - 来源：`ipcc-2019-managed-soils-n2o`；`ipcc-2019-cropland`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`rye_seed_multiplication_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -240,7 +244,7 @@ translation_status: aligned
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：设备供电点的电力
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - 流属性 / 单位：能源 / kWh
 - 数量规则：依 `cp_field_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -251,11 +255,13 @@ translation_status: aligned
 - 采集协议：`cp_field_energy_records`
 - 来源：`ipcc-2019-cropland`；`fao-agricultural-energy`
 
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
 ###### 供应设备的柴油（`field_energy_diesel`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
 
-- 选定流：供应设备的柴油
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_field_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -266,22 +272,7 @@ translation_status: aligned
 - 采集协议：`cp_field_energy_records`
 - 来源：`ipcc-2019-cropland`；`fao-agricultural-energy`
 
-###### 作物保护产品（`crop_protection_products`）
-
-记录用于杂草、害虫或病害管理的配方产品和有效成分。
-
- - 选定流：已命名作物保护产品或有效成分
-- 流属性/单位：Mass / kg product or active substance
-- 数量规则：按产品和有效成分记录施用量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每 1,000 kg 收获黑麦种子作物.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_crop_protection_records`
-- 来源：`fao-seed-systems`
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ##### 废物流
 
@@ -472,39 +463,24 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_input_records`
 
-###### 处理能源（`conditioning_energy`）
+###### 交流电 (`conditioning_energy_electricity`)
 
-按活动或生产线记录干燥、清选、分级、检验、处理和包装能源。
+种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。
 
-- 选定流：黑麦种子处理用电力或过程能源
-- 流属性/单位：Energy or carrier mass / kWh, MJ, L, or kg
-- 数量规则：按作业和活动计量处理能源
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每接收的清选黑麦种子输出.
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_conditioning_energy_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_conditioning_energy_records`
-- 来源：`usda-seed-cleaning-handling`
+- 来源：`route-energy-fao`
 
-###### 种子处理材料（`seed_treatment_material`）
-
-记录每种处理产品和有效成分。输出处理状态是必需限定信息。
-
- - 选定流：已命名种子处理产品或有效成分
-- 流属性/单位：Mass / kg product or active substance
-- 数量规则：按处理批次记录处理产品质量和有效成分含量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每处理黑麦种子输出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_seed_treatment_records`
-- 来源：`fao-seeds`
+执行第8节`conditioning_energy_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ###### 木制板条箱（`packaging_materials_wood_crate`）
 
@@ -583,7 +559,7 @@ translation_status: aligned
 
 记录在声明种子门放行的已清选、分级、检验并可选处理的黑麦播种种子。
 
-- 选定流：Rye, seed `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
+- 选定流：黑麦，种子 `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：记录放行批次质量以及水分、纯度、发芽率或活力、处理、包装和门属性
 
@@ -642,39 +618,7 @@ translation_status: aligned
 - 采集协议：`cp_reject_and_screening_records`
 - 来源：`usda-seed-cleaning-handling`; `mass-balance-identity`
 
-###### 包装废物（`packaging_waste`）
-
-按材料和去向记录包装边角料、损坏包装和废弃包装。
-
-- 选定流：黑麦种子制备产生的包装废物
-- 流属性/单位：Mass / kg
-- 数量规则：废物质量和声明处理或回收去向的实测记录
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每包装的接收黑麦种子输出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_packaging_waste_records`
-
 ##### 基本流
-
-###### 处理粉尘向空气排放（`conditioning_dust_emission_to_air`）
-
-只有在有实测或记录的设施排放证据时记录直接粉尘排放。收集粉尘和排放粉尘不是同一流。
-
-- 选定流：排放到环境空气的颗粒物或粉尘
-- 流属性/单位：Mass / kg
-- 数量规则：设施排放实测值或声明方法的排放计算
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每接收的清选黑麦种子输出.
-
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：根据采集计算（`calculated_from_collection`）
-- 采集协议：`cp_conditioning_emission_records`
 
 ###### 处理产生的化石二氧化碳（`fossil_carbon_dioxide_from_conditioning`）
 
@@ -738,7 +682,7 @@ translation_status: aligned
 
 仅当交付是声明参考门时记录交付批次。同一批次不得在种子设施门和交付门重复计数。
 
-- 选定流：Rye, seed `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
+- 选定流：黑麦，种子 `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：记录具有门和水分属性的交付批次质量
 
@@ -795,7 +739,7 @@ translation_status: aligned
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Rye, seed
+- 选定流：黑麦种子
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -821,7 +765,7 @@ translation_status: aligned
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Rye, seed
+- 选定流：黑麦种子
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -860,6 +804,26 @@ translation_status: aligned
 
 ## 8. 前景数据采集、计算和质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_products_specific_input` | `cp_crop_protection_records` | 作业 rye_seed_multiplication：记录用于杂草、害虫或病害管理的配方产品和有效成分。 - 选定流：已命名作物保护产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获黑麦种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-systems` 原数量方法：按产品和有效成分记录施用量 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `conditioning_energy_identification` | `cp_conditioning_energy_records` | 种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。 原始活动或阶段基准：每接收的清选黑麦种子输出. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -871,19 +835,19 @@ translation_status: aligned
 | `cp_nutrient_input_records` | `rye_seed_multiplication` | 养分和改良投入 | 施用记录 | 产品；配方；养分；质量；日期；田块；方法 | 发票、标签、施用日志；原始汇总与分配：按田块汇总 | kg 产品和 kg 养分 | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 发票、标签、记录 |
 | `cp_irrigation_records` | `rye_seed_multiplication` | 灌溉和取水 | 计量或水源记录 | 水源；仪表；读数；体积；日期；田块；泵送能源 | 校准仪表、泵送日志、水源记录；原始汇总与分配：区分供水和取水 | m3、kg、kWh | 事件或月度 | 作物周期 | 田块和水源 | 每声明的参考流 | 校准、读数 |
 | `cp_field_energy_records` | `rye_seed_multiplication` | 田间燃料和电力 | 燃料或公用事业记录 | 作业；载能体；数量；机器；日期；田块 | 燃料日志、仪表、发票、遥测；原始汇总与分配：分配能源且不得重复计数 | L、kg、MJ、kWh | 作业或计费周期 | 作物周期 | 田块或单元 | 每声明的参考流 | 仪表、发票、日志 |
-| `cp_crop_protection_records` | `rye_seed_multiplication` | 作物保护 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；目标 | 标签和施用日志；原始汇总与分配：按产品和成分汇总 | kg 产品、kg 有效成分、ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、记录 |
+| `cp_crop_protection_records` | `rye_seed_multiplication` | 作物保护 | 施用记录 | 产品；有效成分；剂量；面积；日期；田块；目标 | 标签和施用日志；原始汇总与分配：按产品和成分汇总 `crop_protection_products_specific_input`: 作业 rye_seed_multiplication：记录用于杂草、害虫或病害管理的配方产品和有效成分。 - 选定流：已命名作物保护产品或有效成分 - 流属性/单位：Mass / kg product or active substance - 数量规则：按产品和有效成分记录施用量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 收获黑麦种子作物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` - 来源：`fao-seed-systems` 原数量方法：按产品和有效成分记录施用量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg 产品、kg 有效成分、ha | 每次施用 | 作物周期 | 田块 | 每声明的参考流 | 标签、记录 |
 | `cp_land_use_records` | `rye_seed_multiplication` | 土地占用 | 田块面积记录 | 田块；种植面积；日期；周期 | 田块记录、GIS、农场登记；原始汇总与分配：计算面积-时间并归一化 | ha 和作物周期 | 每周期 | 作物周期 | 田块 | 每声明的参考流 | 田图、GIS |
 | `cp_harvested_seed_mass` | `rye_seed_multiplication` | 收获种子作物 | 收获记录 | 田块；日期；质量；水分；路线；拒收物 | 校准秤和收获记录；原始汇总与分配：处理前核对 | kg 和水分分数 | 每次收获 | 作物周期 | 田块和接收点 | 每声明的参考流 | 秤、收获记录 |
 | `cp_field_residue_records` | `rye_seed_multiplication` | 田间残余物和废物 | 残余物记录 | 流；质量；去向；日期；田块 | 秤、票据、田间日志；原始汇总与分配：按去向和边界汇总 | kg | 每事件 | 作物周期 | 田块 | 每声明的参考流 | 秤、票据 |
 | `cp_conditioning_input_records` | `rye_seed_conditioning_and_treatment` | 收获种子投入 | 批次接收记录 | 批次；投入质量；水分；来源；日期 | 批次表和校准秤；原始汇总与分配：核对接收与输出 | kg 和水分分数 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 批次表、秤 |
-| `cp_conditioning_energy_records` | `rye_seed_conditioning_and_treatment` | 处理能源 | 仪表或设备记录 | 活动；能源；数量；作业；期间 | 仪表、账单、设备日志；原始汇总与分配：按作业汇总并归一化 | kWh、MJ、kg、L | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单、日志 |
+| `cp_conditioning_energy_records` | `rye_seed_conditioning_and_treatment` | 处理能源 | 仪表或设备记录 | 活动；能源；数量；作业；期间 | 仪表、账单、设备日志；原始汇总与分配：按作业汇总并归一化 按路线确认要求：`conditioning_energy_identification`: 种子清选、分级、检测、处理、包装的实际电机，以及确有安装的干燥风机。干燥热源另行确认，不根据除水需求推定燃烧器燃料。 原始活动或阶段基准：每接收的清选黑麦种子输出. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh、MJ、kg、L | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单、日志 |
 | `cp_conditioning_water_records` | `rye_seed_conditioning_and_treatment` | 处理用水 | 仪表或设施记录 | 水源；仪表；数量；日期；活动 | 仪表、账单、设施日志；原始汇总与分配：汇总跨边界用水 | m3 或 kg | 活动或间隔 | 处理活动期 | 设施 | 每声明的参考流 | 仪表、账单 |
-| `cp_seed_treatment_records` | `rye_seed_conditioning_and_treatment` | 处理材料 | 处理记录 | 产品；有效成分；剂量；处理质量；批次 | 处理日志、标签、供应商证书；原始汇总与分配：按产品和批次汇总 | kg 产品、kg 有效成分、kg 种子 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 日志、标签 |
+| `cp_seed_treatment_records` | `rye_seed_conditioning_and_treatment` | 处理材料 | 处理记录 | 产品；有效成分；剂量；处理质量；批次 | 处理日志、标签、供应商证书；原始汇总与分配：按产品和批次汇总 `seed_treatment_material_specific_input`: 记录每种处理产品和有效成分。输出处理状态是必需限定信息。 按处理批次记录处理产品质量和有效成分含量 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。 `fao-seeds` | kg 产品、kg 有效成分、kg 种子 | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 日志、标签 |
 | `cp_packaging_input_records` | `rye_seed_conditioning_and_treatment` | 包装 | 包装领用记录 | 类型；件数；容量；质量；批次 | 库存记录或包装日志；原始汇总与分配：按容量或质量换算 | 件和 kg | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 包装日志 |
 | `cp_accepted_seed_mass` | `rye_seed_conditioning_and_treatment` | 接收种子 | 放行记录 | 批次；质量；水分；纯度；发芽率；处理；门 | 校准秤和质量检验；原始汇总与分配：按声明基准汇总 | kg 和属性 | 每批次 | 处理活动期 | 设施和门 | 每声明的参考流 | 秤、检验、放行记录 |
 | `cp_reject_and_screening_records` | `rye_seed_conditioning_and_treatment` | 拒收物、筛下物、粉尘和清扫物 | 拒收记录 | 批次；流；质量；去向 | 秤或质量平衡；原始汇总与分配：按流和去向汇总 | kg | 每批次 | 处理活动期 | 设施 | 每声明的参考流 | 秤、日志、去向记录 |
-| `cp_packaging_waste_records` | `rye_seed_conditioning_and_treatment` | 包装废物 | 废物记录 | 材料；质量；去向；期间 | 秤或承包商记录；原始汇总与分配：按材料和去向汇总 | kg | 每次发运或活动 | 处理活动期 | 设施 | 每声明的参考流 | 秤票、承包商记录 |
-| `cp_conditioning_emission_records` | `rye_seed_conditioning_and_treatment` | 处理排放 | 排放记录 | 物质；介质；质量或因子；活动 | 粉尘日志、维护记录、计算；原始汇总与分配：按物种和介质汇总 | kg | 活动或期间 | 处理活动期 | 设施 | 每声明的参考流 | 日志、计算 |
+| `cp_packaging_waste_records` | `rye_seed_conditioning_and_treatment` | 包装废物 | 废物记录 | 材料；质量；去向；期间 | 秤或承包商记录；原始汇总与分配：按材料和去向汇总 `packaging_waste_specific_output`: 按材料和去向记录包装边角料、损坏包装和废弃包装。 废物质量和声明处理或回收去向的实测记录 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 每次发运或活动 | 处理活动期 | 设施 | 每声明的参考流 | 秤票、承包商记录 |
+| `cp_conditioning_emission_records` | `rye_seed_conditioning_and_treatment` | 处理排放 | 排放记录 | 物质；介质；质量或因子；活动 | 粉尘日志、维护记录、计算；原始汇总与分配：按物种和介质汇总 `conditioning_dust_emission_to_air_specific_output`: 只有在有实测或记录的设施排放证据时记录直接粉尘排放。收集粉尘和排放粉尘不是同一流。 设施排放实测值或声明方法的排放计算 这是必需的具体产出采集要求，不是选定交换。保留本作业全部实际废物、残余物、拒收物及联产品的核算责任。完成数据集前，物理上不同的物流须分别成卡，记录实际材料、组成或状态、数量、接收路线及产品或废物角色，并核验兼容UUID或明确保留未解析身份。真正混合的物流可按有组成记录支持的一条物理混合物流记录，不编造分离，也不重复计入组分。液体与固体处理数量分别记录。保留原期间、产出平衡、参考流归一化和分配规则，缺失记录不等于零数量或可排除。  | kg | 活动或期间 | 处理活动期 | 设施 | 每声明的参考流 | 日志、计算 |
 | `cp_storage_energy_records` | `rye_seed_storage_and_delivery` | 储存电力 | 库存或公用事业记录 | 批次；仪表；数量；期间；储存质量 | 仪表或账单；原始汇总与分配：按质量和时间分配 | kWh 或 MJ | 期间 | 储存时间 | 储存地点 | 每声明的参考流 | 仪表、账单 |
 | `cp_delivery_transport_records` | `rye_seed_storage_and_delivery` | 交付运输 | 运输记录 | 路线；距离；车辆；燃料或 tonne-km；质量 | 承运商发票、发运记录、燃料日志；原始汇总与分配：汇总服务并归一化 | kg 燃料或 tonne-km | 每次发运 | 交付期间 | 路线 | 每声明的参考流 | 发票、发运、日志 |
 | `cp_storage_loss_records` | `rye_seed_storage_and_delivery` | 储存损失 | 损失记录 | 批次；损失质量；类别；去向；期间 | 库存核对和秤；原始汇总与分配：按去向汇总 | kg | 每批次或期间 | 储存时间 | 储存地点 | 每声明的参考流 | 库存、处置记录 |
@@ -967,3 +931,4 @@ translation_status: aligned
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

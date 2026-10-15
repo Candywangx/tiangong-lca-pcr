@@ -134,7 +134,7 @@ sync_with: pcr.en-US.md
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：尿素肥料
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_carob_orchard_lifecycle_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -144,12 +144,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_carob_orchard_lifecycle_records`
 - 来源：`carob-macronutrients-water-2005`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 硫酸铵肥料（`carob_orchard_production_agricultural_nutrient_inputs_ammonium_sulfate`）
 
 用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
 
-- 选定流：硫酸铵肥料
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
 - 流属性 / 单位：质量 / kg
 - 数量规则：依 `cp_carob_orchard_lifecycle_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -159,6 +161,8 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_carob_orchard_lifecycle_records`
 - 来源：`carob-macronutrients-water-2005`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
 
 ###### 重过磷酸钙肥料（`carob_orchard_production_agricultural_nutrient_inputs_triple_superphosphate`）
 
@@ -237,37 +241,24 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_carob_irrigation_records`
 - 来源：`carob-macronutrients-water-2005`
 
-###### 实际施用的作物保护制剂（`carob_orchard_crop_protection_input`）
+###### 柴油 (`carob_orchard_energy_inputs_diesel`)
 
-记录每种实际制剂、可获得时的有效成分或制剂身份、施用活动、施用质量、地块和目标。不得用通用农药默认值替代缺失的制剂身份。
+实际柴油果园机械割草、修剪辅助、施肥及作业通行；灌溉泵按其设备单独确认供能。
 
-- 选定流：角豆生产用实际作物保护制剂（UUID 未解析；有意留空）
-- 流属性/单位：产品质量 / kg formulation
-- 数量规则：按产品、活动、地块和作物年度汇总测量的制剂质量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：产品特定（`product_specific`）
-原始活动或阶段基准：每个作物年度、每 1,000 kg 可接受整荚角豆.
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
 
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_carob_orchard_lifecycle_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_carob_orchard_lifecycle_records`
+- 来源：`route-energy-fao`
 
-###### 园地燃料和电力（`carob_orchard_energy_inputs`）
-
-记录灌溉抽水、修剪、割草、养分施用、作物保护、通行和其他园地活动的能量。应保持电力、燃料和承包活动记录可区分。
-
-- 选定流：受管理角豆园作业能量供应（UUID 未解析；根据实际载体解析）
-- 流属性/单位：能量、质量或体积 / kWh、MJ、L 或记录单位
-- 数量规则：按作业、地块和作物年度使用计量表、发票、承包商记录或有文件依据的设备计算
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每个作物年度、每 1,000 kg 可接受整荚角豆.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_carob_orchard_lifecycle_records`
+执行第8节`carob_orchard_energy_inputs_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -431,22 +422,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_carob_harvest_lot_records`
 
-###### 采收与收集能量（`carob_harvest_energy_input`）
-
-记录振摇、敲击、收集网、输送设备或其他采收和收集活动的燃料或电力。完全人工采收应以劳务和路线证据记录有依据的零值。
-
-- 选定流：角豆采收与收集能量供应（UUID 未解析；根据实际载体解析）
-- 流属性/单位：能量、质量或体积 / kWh、MJ、L 或记录单位
-- 数量规则：将燃料发票、设备计量表、承包商声明或有文件依据的设备计算分配到申报采收活动
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-原始活动或阶段基准：每个采收活动、每 1,000 kg 可接受整荚角豆.
-
-- 归一化基准：每声明的参考流
-- 基准类型：作物周期（`crop_cycle`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_carob_harvest_lot_records`
-
 ##### 废物流
 
 ##### 基本流
@@ -531,21 +506,24 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_carob_conditioning_records`
 
-###### 调理能量（`carob_conditioning_energy_input`）
+###### 交流电 (`carob_conditioning_energy_input_electricity`)
 
-记录申报边界内供气干燥、风机、输送、清洁、分拣、分级和短距离处理使用的电力或燃料。没有供能的自然干燥应记录有文件依据的零能量状态。
+实际电动风机、输送、清洁及分级设备；对有证据的自然干燥路线不强制加装动力干燥，任何加热器另行确认。
 
-- 选定流：角豆初级调理能量供应（UUID 未解析；根据实际载体解析）
-- 流属性/单位：能量、质量或体积 / kWh、MJ、L 或记录单位
-- 数量规则：按调理活动使用计量表、发票、设备记录或有文件依据的能量计算
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-原始活动或阶段基准：每个调理活动、每 1,000 kg 可接受整荚角豆.
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-- 归一化基准：每声明的参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_carob_conditioning_records`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
 - 采集协议：`cp_carob_conditioning_records`
+- 来源：`route-energy-fao`
+
+执行第8节`carob_conditioning_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ###### 调理过程水（`carob_conditioning_process_water_input`）
 
@@ -665,6 +643,28 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `carob_orchard_crop_protection_input_specific_input` | `cp_carob_orchard_lifecycle_records` | 作业 carob_orchard_production：记录每种实际制剂、可获得时的有效成分或制剂身份、施用活动、施用质量、地块和目标。不得用通用农药默认值替代缺失的制剂身份。 原数量方法：按产品、活动、地块和作物年度汇总测量的制剂质量 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `carob_orchard_energy_inputs_identification` | `cp_carob_orchard_lifecycle_records` | 实际柴油果园机械割草、修剪辅助、施肥及作业通行；灌溉泵按其设备单独确认供能。 原始活动或阶段基准：每个作物年度、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) |
+| `carob_harvest_energy_input_identification` | `cp_carob_harvest_lot_records` | 实际人工敲落及收集，或动力摇树及输送。有证据的全手工路线可无外购作业能源，缺少记录不能证明此条件。 原始活动或阶段基准：每个采收活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) |
+| `carob_conditioning_energy_input_identification` | `cp_carob_conditioning_records` | 实际电动风机、输送、清洁及分级设备；对有证据的自然干燥路线不强制加装动力干燥，任何加热器另行确认。 原始活动或阶段基准：每个调理活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -672,10 +672,10 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_carob_orchard_lifecycle_records` | `carob_orchard_production` | 种植材料、树体更新、园地面积、养分、土壤改良剂、作物保护、燃料、电力、残余物和园地活动 | 园地登记、地块图、种植或更新发票、施用日志、供应商记录、设备日志和残余物去向记录 | block_id；species；cultivar_or_type；tree_age；bearing_area_ha；establishment_year；replacement_event；planting_material_quantity；product_name；product_mass；nutrient_basis；application_date；target；fuel；electricity；residue_mass；residue_destination；crop_year | 按地块采集活动记录，并与供应商、操作员和设备记录核对；原始汇总与分配：按地块和作物年度汇总；归一化前保留产品和养分字段；将年度化活动关联到申报输出基准 | 活动特定混合单位 | 每次种植、更新、施用、能量和残余物活动；每个作物年度核对 | 一个申报作物年度以及用于年度化的生产期记录 | 每个受管理园地或栽培型角豆林地块 | 每声明的参考流 | 发票、田间日志、园地登记、操作员确认和完整性核对 |
+| `cp_carob_orchard_lifecycle_records` | `carob_orchard_production` | 种植材料、树体更新、园地面积、养分、土壤改良剂、作物保护、燃料、电力、残余物和园地活动 | 园地登记、地块图、种植或更新发票、施用日志、供应商记录、设备日志和残余物去向记录 | block_id；species；cultivar_or_type；tree_age；bearing_area_ha；establishment_year；replacement_event；planting_material_quantity；product_name；product_mass；nutrient_basis；application_date；target；fuel；electricity；residue_mass；residue_destination；crop_year | 按地块采集活动记录，并与供应商、操作员和设备记录核对；原始汇总与分配：按地块和作物年度汇总；归一化前保留产品和养分字段；将年度化活动关联到申报输出基准 按路线确认要求：`carob_orchard_energy_inputs_identification`: 实际柴油果园机械割草、修剪辅助、施肥及作业通行；灌溉泵按其设备单独确认供能。 原始活动或阶段基准：每个作物年度、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `carob_orchard_crop_protection_input_specific_input`: 作业 carob_orchard_production：记录每种实际制剂、可获得时的有效成分或制剂身份、施用活动、施用质量、地块和目标。不得用通用农药默认值替代缺失的制剂身份。 原数量方法：按产品、活动、地块和作物年度汇总测量的制剂质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 活动特定混合单位 | 每次种植、更新、施用、能量和残余物活动；每个作物年度核对 | 一个申报作物年度以及用于年度化的生产期记录 | 每个受管理园地或栽培型角豆林地块 | 每声明的参考流 | 发票、田间日志、园地登记、操作员确认和完整性核对 |
 | `cp_carob_irrigation_records` | `carob_orchard_production` | 灌溉水、直接取水和抽水能量 | 计量记录、泵记录、电费单、水费单、许可证、水源记录和有文件依据的水量平衡 | block_id；source_type；rainfed_flag；meter_start；meter_end；irrigation_date；delivered_volume_m3；withdrawal_volume_m3；pump_kwh；source_quality；crop_year | 读取计量表，或将发票和水源记录与灌溉活动及地块面积核对；原始汇总与分配：按水源、地块和作物年度汇总；防止供应水与直接取水重复计算 | m3 和 kWh | 每次灌溉活动或账单期；每个作物年度核对 | 一个申报作物年度和灌溉季 | 每个水源和园地地块 | 每声明的参考流 | 计量表或发票证据、许可证或水源核查以及水量平衡核对 |
-| `cp_carob_harvest_lot_records` | `carob_harvest_and_collection` | 可采收豆荚、收集原始豆荚、采收能量、田间损失和采收拒收物 | 采收日志、称重单、地块记录、承包商声明、批次记录和去向记录 | block_id；harvest_date；lot_id；harvest_method；harvestable_mass_kg；collected_mass_kg；field_loss_mass_kg；damaged_mass_kg；destination；fuel_quantity；electricity；crop_year | 对每个采收批次称量或核对，并记录移除和收集方法；原始汇总与分配：在归一化前按地块和批次汇总可采收、收集、损失和拒收质量 | kg 豆荚及活动特定能量单位 | 每个采收批次；每个活动核对 | 一个采收活动和作物年度 | 每个受管理地块和接收批次 | 每声明的参考流 | 校准称重或经验证的称重单、批次可追溯性、承包商证据、去向证据和质量平衡核对 |
-| `cp_carob_conditioning_records` | `carob_primary_conditioning` | 原始豆荚输入、干燥、清洁、分拣、分级、过程水、可接受豆荚、降级豆荚、拒收物和水分损失 | 接收单、调理批次记录、水分测试、能量计量、水表、等级记录、拒收记录和去向记录 | campaign_id；lot_id；input_mass_kg；input_moisture；drying_method；drying_start；drying_end；fuel；electricity；process_water_m3；cleaning_method；grade；accepted_mass_kg；downgraded_mass_kg；reject_mass_kg；reject_class；reject_destination；output_moisture；container_tare；gate | 记录每个调理批次，并核对水分、质量、等级、能量、用水和去向记录；原始汇总与分配：按批次和等级汇总；保留输入、输出水分和皮重；只有在质量和水分核对后计算水分损失 | kg、percent、m3、kWh、L 或 MJ | 每个调理批次；每个活动核对 | 一个申报调理活动和交接点 | 每个批次、批号和申报接收设施 | 每声明的参考流 | 校准称重、水分方法、计量记录、采购方或等级规格、去向证据和批次平衡 |
+| `cp_carob_harvest_lot_records` | `carob_harvest_and_collection` | 可采收豆荚、收集原始豆荚、采收能量、田间损失和采收拒收物 | 采收日志、称重单、地块记录、承包商声明、批次记录和去向记录 | block_id；harvest_date；lot_id；harvest_method；harvestable_mass_kg；collected_mass_kg；field_loss_mass_kg；damaged_mass_kg；destination；fuel_quantity；electricity；crop_year | 对每个采收批次称量或核对，并记录移除和收集方法；原始汇总与分配：在归一化前按地块和批次汇总可采收、收集、损失和拒收质量 按路线确认要求：`carob_harvest_energy_input_identification`: 实际人工敲落及收集，或动力摇树及输送。有证据的全手工路线可无外购作业能源，缺少记录不能证明此条件。 原始活动或阶段基准：每个采收活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg 豆荚及活动特定能量单位 | 每个采收批次；每个活动核对 | 一个采收活动和作物年度 | 每个受管理地块和接收批次 | 每声明的参考流 | 校准称重或经验证的称重单、批次可追溯性、承包商证据、去向证据和质量平衡核对 |
+| `cp_carob_conditioning_records` | `carob_primary_conditioning` | 原始豆荚输入、干燥、清洁、分拣、分级、过程水、可接受豆荚、降级豆荚、拒收物和水分损失 | 接收单、调理批次记录、水分测试、能量计量、水表、等级记录、拒收记录和去向记录 | campaign_id；lot_id；input_mass_kg；input_moisture；drying_method；drying_start；drying_end；fuel；electricity；process_water_m3；cleaning_method；grade；accepted_mass_kg；downgraded_mass_kg；reject_mass_kg；reject_class；reject_destination；output_moisture；container_tare；gate | 记录每个调理批次，并核对水分、质量、等级、能量、用水和去向记录；原始汇总与分配：按批次和等级汇总；保留输入、输出水分和皮重；只有在质量和水分核对后计算水分损失 按路线确认要求：`carob_conditioning_energy_input_identification`: 实际电动风机、输送、清洁及分级设备；对有证据的自然干燥路线不强制加装动力干燥，任何加热器另行确认。 原始活动或阶段基准：每个调理活动、每 1,000 kg 可接受整荚角豆. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg、percent、m3、kWh、L 或 MJ | 每个调理批次；每个活动核对 | 一个申报调理活动和交接点 | 每个批次、批号和申报接收设施 | 每声明的参考流 | 校准称重、水分方法、计量记录、采购方或等级规格、去向证据和批次平衡 |
 
 ### 计算规则
 
@@ -741,3 +741,4 @@ sync_with: pcr.en-US.md
 | `iso-14044-2006` | standard | ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines，https://www.iso.org/standard/38498.html | 边界、归一化、分配、质量核对和数据质量方法规则 |
 | `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
 | `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

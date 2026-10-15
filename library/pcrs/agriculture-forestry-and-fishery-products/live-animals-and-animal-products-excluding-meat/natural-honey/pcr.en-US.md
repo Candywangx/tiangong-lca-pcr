@@ -96,30 +96,6 @@ The raw-honey farm-gate platform flow `fec12529-d2e9-429f-8adb-aaa39b2e88b1` is 
 
 ##### Product flows
 
-###### Managed colony supplement feed (`feed`)
-
-Feed used for managed colonies only, net of returns; natural nectar is not purchased feed.
-
-Denominator and scope requirements：per 1 kg saleable honey constituent
-
-- Selected flow: Supplementary bee feed (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_colony`
-- Range: Provisional replaceable screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg/kg honey constituent
-  - Basis: broad first-pass screen per kg honey constituent; replace with records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ###### Managed colony supplied water (`water`)
 
 Meter actual supplied water; no imputed management water for wild harvest.
@@ -139,30 +115,6 @@ Denominator and scope requirements：per 1 kg saleable honey constituent
   - Range role: QA guardrail (`qa_guardrail`)
   - Lower: 0
   - Upper: 100
-  - Unit: kg/kg honey constituent
-  - Basis: broad first-pass screen per kg honey constituent; replace with records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Hive and frame replacements (`hive_material`)
-
-Allocate hive and frame replacements over observed service periods.
-
-Denominator and scope requirements：per 1 kg saleable honey constituent
-
-- Selected flow: Hive replacement materials (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Collect by lot and reconcile with actual handovers and stock changes.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_assets`
-- Range: Provisional replaceable screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 10
   - Unit: kg/kg honey constituent
   - Basis: broad first-pass screen per kg honey constituent; replace with records
   - Basis kind: Reference flow (`reference_flow`)
@@ -370,9 +322,9 @@ Meter electricity or fuel for extraction and primary straining.
 Denominator and scope requirements：per 1 kg saleable honey constituent
 Energy accounting basis: retain separate carrier quantities in their native units. Convert electricity from kWh to MJ using 3.6; convert fuel mass/volume only with documented carrier-specific calorific value and, where needed, density. This card reports the MJ accounting quantity, not a mass exchange or a summed mixed-carrier flow. Final exchanges retain their actual carrier property and unit; do not add kg, L, kWh and MJ or assign one carrier UUID to their total.
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Electricity at the equipment supply point
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
 - Flow property / unit: Energy / kWh
 - Amount rule: Collect raw quantities for this identity under `cp_extraction` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -383,11 +335,13 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Collection protocol: `cp_extraction`
 - Sources: `fao-agricultural-energy`
 
+This binding is alternating current at the use point with supply technology, voltage and provider unspecified. Confirm actual AC supply; DC requires a different identity. The database reference is 1 MJ: preserve meter kWh and convert once using 1 kWh = 3.6 MJ when linking reference quantities. Internal generation links to its foreground generator, without an additional purchased-electricity burden.
+
 ###### Diesel fuel supplied to equipment (`extraction_energy_diesel`)
 
-Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Retain the electricity supply point, fuel grade, density and heating-value basis. Distinguish purchased heat from on-site fuel conversion without counting its input fuel again.
 
-- Selected flow: Diesel fuel supplied to equipment
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass / kg
 - Amount rule: Collect raw quantities for this identity under `cp_extraction` and calculate the exchange per declared reference flow using the original attribution rules.
 - Value mode: Foreground record (`foreground_record`)
@@ -397,6 +351,8 @@ Confirm identity, grade, state and unit from equipment, supplier and contemporan
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_extraction`
 - Sources: `fao-agricultural-energy`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
 
 ###### Extraction-room cleaning water (`cleaning_water`)
 
@@ -631,30 +587,6 @@ Denominator and scope requirements：per 1 kg saleable honey constituent
 
 ##### Waste flows
 
-###### Rejected honey and comb material (`grading_reject`)
-
-Weigh spoiled or unrecoverable material and record destination.
-
-Denominator and scope requirements：per 1 kg saleable honey constituent
-
-- Selected flow: Rejected honey or comb waste (UUID unresolved)
-- Flow property / unit: Mass / kg
-- Amount rule: Collect by lot and reconcile with actual handovers and stock changes.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_grading`
-- Range: Provisional replaceable screening range
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2
-  - Unit: kg/kg honey constituent
-  - Basis: broad first-pass screen per kg honey constituent; replace with records
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Elementary flows
 
 No prescribed flow; record actual exchanges if present.
@@ -672,16 +604,25 @@ Concrete cards do not inherit numerical ranges from the former aggregate card. D
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
+### Specific input identification before dataset completion
+
+Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default.
+
+| requirement_id | collection_protocol_id | Preserved collection scope |
+| --- | --- | --- |
+| `hive_material_specific_input` | `cp_assets` | Operation managed: Allocate hive and frame replacements over observed service periods. Denominator and scope requirements：per 1 kg saleable honey constituent Original quantity method: Collect by lot and reconcile with actual handovers and stock changes. |
+
+
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_colony` | `managed` | managed feed, water, comb | hive log | colony id; route; feed issue/return; water; season; mature comb | dated hive logs and invoices; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. | kg | each event | full harvest season | apiary | per reference flow | hive logs and stock reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_assets` | `managed` | hive and shared assets | asset register | asset id; mass; service life; user node; hours | invoice and service log; Raw aggregation requirements: assign once by use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, h | purchase and annual | complete service life | all consumers | per reference flow | asset register; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_colony` | `managed` | managed feed, water, comb | hive log | colony id; route; feed issue/return; water; season; mature comb | dated hive logs and invoices; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. `feed_specific_input`: Feed used for managed colonies only, net of returns; natural nectar is not purchased feed. Denominator and scope requirements：per 1 kg saleable honey constituent Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied.  | kg | each event | full harvest season | apiary | per reference flow | hive logs and stock reconciliation; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_assets` | `managed` | hive and shared assets | asset register | asset id; mass; service life; user node; hours | invoice and service log; Raw aggregation requirements: assign once by use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `hive_material_specific_input`: Operation managed: Allocate hive and frame replacements over observed service periods. Denominator and scope requirements：per 1 kg saleable honey constituent Original quantity method: Collect by lot and reconcile with actual handovers and stock changes. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | kg, h | purchase and annual | complete service life | all consumers | per reference flow | asset register; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_migration` | `harvest` | hive freight | trip log | hive load; origin; destination; distance; mode | dispatch/odometer; Raw aggregation requirements: load times distance. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, km | each trip | represented season | migratory apiary | per reference flow | trip evidence; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_harvest` | `harvest` | comb and rejects | lot log | managed or wild source; date; gross comb; sampled honey; wax; loss; destination | calibrated scale and sample; Raw aggregation requirements: reconcile harvested and lost. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each lot | full season | producer/source | per reference flow | ticket and sample log; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_extraction` | `extraction` | honey, wax, utilities | batch log | comb input; honey; wax; rejects; water; energy; moisture | scales, meters and assay; Raw aggregation requirements: reconcile material and utility. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, MJ | each batch | full season | producer room | per reference flow | batch sheet/calibration; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| `cp_grading` | `grading` | reference and grade outputs | sale lot | presentation; sale gross; sampled honey/wax/other fractions; accepted; downgrade; reject; gate; prices | weighed sale plus representative destructive comb sample; Raw aggregation requirements: gross less wax/other = honey constituent. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg, fraction | each lot and sample | full season | producer gate | per reference flow | sale ticket and sample method; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| `cp_grading` | `grading` | reference and grade outputs | sale lot | presentation; sale gross; sampled honey/wax/other fractions; accepted; downgrade; reject; gate; prices | weighed sale plus representative destructive comb sample; Raw aggregation requirements: gross less wax/other = honey constituent. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. `grading_reject_specific_output`: Weigh spoiled or unrecoverable material and record destination. Denominator and scope requirements：per 1 kg saleable honey constituent Collect by lot and reconcile with actual handovers and stock changes. This is a mandatory specific-output collection requirement, not a selected exchange. Preserve every actual waste, residue, reject and co-product from this operation. Create separate cards for physically distinct streams with actual material, composition/state, quantity, receiving route and Product/Waste role before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. A genuinely mixed stream may remain one physically defined mixture supported by composition records; never invent separation or count its components again. Keep liquid and solid treatment quantities separate. Preserve original period, output balance, reference normalization and allocation rules; missing records do not establish zero or exclusion.  | kg, fraction | each lot and sample | full season | producer gate | per reference flow | sale ticket and sample method; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | `cp_feed_supply_and_intake` | `managed` | Feed supply, intake and loss | stock, receipt, issue and loss ledger | feed identity/source; cohort/phase; period; opening/closing stock; receipts; on-site provision; unused returns/transfers; uneaten/spoiled mass and destination; as-fed/DM; actual intake; burden owner; accepted final output | Reconcile matched stock, scales, ration/forage estimates and disposal records under calc_feed_supply_and_intake. Keep raw totals and stage denominators; assign production and treatment burden once, then normalize to accepted final output. | kg as-fed; kg DM | each issue and period close | complete represented cohort/period | actual operated feeding nodes | per reference flow | stock and supplier records; moisture evidence; loss and no-duplication reconciliation |
 
 ### Calculation Rules

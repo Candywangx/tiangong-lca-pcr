@@ -105,7 +105,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Cottonseed, seed for planting `5ec327e3-1046-4478-9010-0733b798aa56`
+- 选定流：棉籽种子（用于种植） `5ec327e3-1046-4478-9010-0733b798aa56`
 - 流属性/单位: Mass / kg
 - 数量规则: measured seed mass by cultivar, treatment and sowing event
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -125,35 +125,11 @@ sync_with: pcr.en-US.md
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 农业养分与肥料投入 (`field_nutrient_inputs`)
-
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
-
-- 选定流: Agricultural nutrient and fertilizer supply
-- 流属性/单位: Product quantity and nutrient content / kg product, m3 product, kg N, kg P2O5 and kg K2O
-- 数量规则: collect each applied product once and calculate nutrients from assay
-- 数值来源模式: 前景记录（`foreground_record`）
-- 适用范围: 场址特定（`site_specific`）
-原始活动或阶段基准：per cultivated hectare and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 作物周期（`crop_cycle`）
-- 证据类型: 采集记录（`collected_record`）
-- 采集协议: `cp_field_activity`
-- 数量范围：Provisional nutrient-product screen
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1500
-  - 单位：kg product/ha
-  - 基准：one crop cycle; nutrient composition remains explicit
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
-
 ###### 灌溉水 (`field_irrigation_input`)
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Irrigation water supply
+- 选定流：灌溉供水
 - 流属性/单位: Volume / m3
 - 数量规则: metered or calculated applied irrigation water
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -173,53 +149,24 @@ sync_with: pcr.en-US.md
   - 基准类型：作物周期（`crop_cycle`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 田间机械能源 (`field_energy_input`)
+###### 柴油 (`field_energy_input_diesel`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+实际柴油田间机械进行棉花建植、照护及采收；棉花共产品按现有分配规则归属。
 
-- 选定流: Energy supply for mobile field machinery
-- 流属性/单位: Carrier quantity or energy / kg, L, kWh or MJ
-- 数量规则: measured carrier or contractor activity with documented conversion
-- 数值来源模式: 计算值（`calculated_value`）
-- 适用范围: 场址特定（`site_specific`）
-原始活动或阶段基准：per cultivated hectare and crop cycle.
+仅在本节点设备及采购记录确认使用此燃料时启用。记录牌号、配方、供应商及实际质量，体积按有证据的密度换算，不用默认密度。UUID标识燃料产品，不是燃烧服务或排放因子；实际前景燃烧另行计入，避免重复已含燃烧的上游服务。
 
-- 归一化基准：每声明的参考流
-- 基准类型: 作物周期（`crop_cycle`）
-- 证据类型: 根据采集数据计算（`calculated_from_collection`）
-- 采集协议: `cp_field_activity`
-- 数量范围：Provisional machinery-energy screen
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：500
-  - 单位：L diesel-equivalent/ha
-  - 基准：one crop cycle; actual carrier remains explicit
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：按`cp_field_activity`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_field_activity`
+- 来源：`route-energy-fao`
 
-###### 植保制剂 (`field_crop_protection_input`)
-
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
-
-- 选定流: Crop-protection formulation used in cotton production
-- 流属性/单位: Mass or volume / kg or L
-- 数量规则: measured formulation by product and application event
-- 数值来源模式: 前景记录（`foreground_record`）
-- 适用范围: 产品特定（`product_specific`）
-原始活动或阶段基准：per cultivated hectare and crop cycle.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 作物周期（`crop_cycle`）
-- 证据类型: 采集记录（`collected_record`）
-- 采集协议: `cp_field_activity`
-- 数量范围：Provisional formulation screen
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg formulation/ha
-  - 基准：one crop cycle; actual products govern
-  - 基准类型：作物周期（`crop_cycle`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+执行第8节`field_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -232,7 +179,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Harvested seed cotton before ginning
+- 选定流：轧花前已收获籽棉
 - 流属性/单位: Mass / kg
 - 数量规则: measured accepted mass with moisture and trash fraction
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -258,7 +205,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Cotton field residues and rejected seed cotton
+- 选定流：棉田残余物及废弃籽棉
 - 流属性/单位: Mass / kg
 - 数量规则: field balance by residue class, removal and fate
 - 数值来源模式: 计算值（`calculated_value`）
@@ -284,7 +231,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Nitrous oxide, emissions to air, unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
 - 数量规则: applicable method for direct and indirect nitrogen pathways
 - 数值来源模式: 计算值（`calculated_value`）
@@ -309,7 +256,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Ammonia, emissions to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
 - 数量规则: method calculation by nutrient product and event
 - 数值来源模式: 计算值（`calculated_value`）
@@ -334,7 +281,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Nitrate, emissions to water, unspecified `fe0acd60-3ddc-11dd-aa31-0050c2490048`
+- 选定流：硝酸根 `fe0acd60-3ddc-11dd-aa31-0050c2490048`
 - 流属性/单位: Mass / kg nitrate
 - 数量规则: monitored loss or method calculation from matched nitrogen and water records
 - 数值来源模式: 计算值（`calculated_value`）
@@ -364,7 +311,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Harvested seed cotton before ginning
+- 选定流：轧花前已收获籽棉
 - 流属性/单位: Mass / kg
 - 数量规则: receiving-scale mass with moisture, trash, origin and lot link
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -384,35 +331,30 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 轧花能源供应 (`gin_energy_input`)
+###### 交流电 (`gin_energy_input_electricity`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+实际轧花电动机械、输送风机及控制设备。干燥热须确认已安装燃烧器及供能；保留现有棉籽与皮棉分配，不向两种产品各计整厂能耗。
 
-- 选定流: Gin energy supply
-- 流属性/单位: Energy or carrier quantity / kWh, MJ, kg, L or m3
-- 数量规则: measured meters and carrier purchases allocated once to the lot
-- 数值来源模式: 计算值（`calculated_value`）
-- 适用范围: 场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg accepted cottonseed.
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-- 归一化基准：每声明的参考流
-- 基准类型: 过程输出（`process_output`）
-- 证据类型: 根据采集数据计算（`calculated_from_collection`）
-- 采集协议: `cp_gin_utility`
-- 数量范围：Provisional gin-energy screen
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：2000
-  - 单位：kWh-equivalent/1,000 kg cottonseed
-  - 基准：receiving through separation and conveying
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_gin_utility`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_gin_utility`
+- 来源：`cotton-gin-energy`
+
+执行第8节`gin_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ###### 轧花工艺用水 (`gin_process_water_input`)
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Process water supply
+- 选定流：生产用水供应
 - 流属性/单位: Volume / m3
 - 数量规则: metered or batch-calculated net water entering the gin
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -443,7 +385,7 @@ sync_with: pcr.en-US.md
 
 将验收的完整毛棉籽作为有意联产品记录，并保持批次可追溯。
 
-- 选定流: Cottonseed, other, production mix at farm gate, fresh unprocessed `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：measured accepted mass at declared moisture, foreign matter and gate
 
@@ -470,7 +412,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Ginned cotton lint
+- 选定流：轧花皮棉
 - 流属性/单位: Mass / kg
 - 数量规则: measured bale mass linked to the gin lot
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -496,7 +438,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Cotton gin trash and rejected material
+- 选定流：轧花杂物及废弃材料
 - 流属性/单位: Mass / kg
 - 数量规则: measured or reconciled mass by material class and destination
 - 数值来源模式: 计算值（`calculated_value`）
@@ -522,7 +464,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Reported particulate matter from cotton ginning to air
+- 选定流：记录的轧花颗粒物向空气排放
 - 流属性/单位: Mass / kg
 - 数量规则: monitoring or permit method by particle-size fraction
 - 数值来源模式: 计算值（`calculated_value`）
@@ -552,7 +494,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Cottonseed, other, production mix at farm gate, fresh unprocessed `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - 流属性/单位: Mass / kg
 - 数量规则: measured incoming fuzzy-cottonseed mass, moisture and temperature
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -572,53 +514,24 @@ sync_with: pcr.en-US.md
   - 基准类型：过程输出（`process_output`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 通风和输送能源 (`storage_energy_input`)
+###### 交流电 (`storage_energy_input_electricity`)
 
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
+所声明储存期内实际电动棉籽输送、通风及温控；无储存路线不虚构储存负荷。
 
-- 选定流: Energy supply for cottonseed handling and aeration
-- 流属性/单位: Energy or carrier quantity / kWh, MJ, kg, L or m3
-- 数量规则: metered energy or runtime-power calculation
-- 数值来源模式: 计算值（`calculated_value`）
-- 适用范围: 场址特定（`site_specific`）
-原始活动或阶段基准：per 1,000 kg accepted cottonseed.
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
 
-- 归一化基准：每声明的参考流
-- 基准类型: 过程输出（`process_output`）
-- 证据类型: 根据采集数据计算（`calculated_from_collection`）
-- 采集协议: `cp_storage_lot`
-- 数量范围：Provisional storage-energy screen
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：500
-  - 单位：kWh-equivalent/1,000 kg cottonseed
-  - 基准：declared storage period; no-storage route may be zero
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp_storage_lot`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 特异性：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_storage_lot`
+- 来源：`route-energy-fao`
 
-###### 棉籽包装 (`cottonseed_packaging_input`)
-
-记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
-
-- 选定流: Packaging function for cottonseed hand-off
-- 流属性/单位: Mass or item count / kg or item
-- 数量规则: measured packaging divided by verified reuse cycles
-- 数值来源模式: 前景记录（`foreground_record`）
-- 适用范围: 产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg accepted cottonseed.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 过程输出（`process_output`）
-- 证据类型: 采集记录（`collected_record`）
-- 采集协议: `cp_storage_lot`
-- 数量范围：Provisional packaging screen
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：100
-  - 单位：kg/1,000 kg cottonseed
-  - 基准：packaging crossing the gate; bulk route may be zero
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+执行第8节`storage_energy_input_identification`要求。不继承原集合卡的数值范围或默认值。
 
 ##### 废物流
 
@@ -631,7 +544,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Cottonseed, other, production mix at farm gate, fresh unprocessed `5ec72013-512e-4bb6-a5e6-648551f35d9d`
+- 选定流：其他棉籽 `5ec72013-512e-4bb6-a5e6-648551f35d9d`
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：measured accepted mass with moisture, temperature, foreign matter and duration
 
@@ -661,7 +574,7 @@ sync_with: pcr.en-US.md
 
 记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。
 
-- 选定流: Rejected or lost cottonseed from storage
+- 选定流：储存废弃或损失棉籽
 - 流属性/单位: Mass / kg
 - 数量规则: mass-balance difference supported by inspection and disposition
 - 数值来源模式: 计算值（`calculated_value`）
@@ -690,7 +603,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Cottonseed, other, production mix at farm gate, fresh unprocessed
+- 选定流：其他棉籽，农场门生产混合，新鲜且未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -716,7 +629,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Cottonseed, other, production mix at farm gate, fresh unprocessed
+- 选定流：其他棉籽，农场门生产混合，新鲜且未经加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -753,6 +666,30 @@ sync_with: pcr.en-US.md
 
 ## 8. 前景数据采集、计算与质量规则
 
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `field_nutrient_inputs_specific_input` | `cp_field_activity` | 作业 cotton_field_production：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：collect each applied product once and calculate nutrients from assay |
+| `field_crop_protection_input_specific_input` | `cp_field_activity` | 作业 cotton_field_production：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：measured formulation by product and application event |
+| `cottonseed_packaging_input_specific_input` | `cp_storage_lot` | 作业 cottonseed_handling_storage：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：measured packaging divided by verified reuse cycles |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `field_energy_input_identification` | `cp_field_activity` | 实际柴油田间机械进行棉花建植、照护及采收；棉花共产品按现有分配规则归属。 原始活动或阶段基准：per cultivated hectare and crop cycle. (`route-energy-fao`) |
+| `gin_energy_input_identification` | `cp_gin_utility` | 实际轧花电动机械、输送风机及控制设备。干燥热须确认已安装燃烧器及供能；保留现有棉籽与皮棉分配，不向两种产品各计整厂能耗。 原始活动或阶段基准：per 1,000 kg accepted cottonseed. (`cotton-gin-energy`) |
+| `storage_energy_input_identification` | `cp_storage_lot` | 所声明储存期内实际电动棉籽输送、通风及温控；无储存路线不虚构储存负荷。 原始活动或阶段基准：per 1,000 kg accepted cottonseed. (`route-energy-fao`) |
+
+
 先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
 
 
@@ -760,13 +697,13 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_field_activity` | `cotton_field_production` | inputs | collected | field; area; cultivar; dates; product; assay; amount; meter; carrier | invoices, logs and meters；原始汇总与分配：sum by field and identity | ha; kg; L; m3; kWh; MJ | each event | full crop cycle | each field/farm | 每声明的参考流 | invoices, calibration, logs, field map |
+| `cp_field_activity` | `cotton_field_production` | inputs | collected | field; area; cultivar; dates; product; assay; amount; meter; carrier | invoices, logs and meters；原始汇总与分配：sum by field and identity 按路线确认要求：`field_energy_input_identification`: 实际柴油田间机械进行棉花建植、照护及采收；棉花共产品按现有分配规则归属。 原始活动或阶段基准：per cultivated hectare and crop cycle. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `field_nutrient_inputs_specific_input`: 作业 cotton_field_production：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：collect each applied product once and calculate nutrients from assay 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 `field_crop_protection_input_specific_input`: 作业 cotton_field_production：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：measured formulation by product and application event 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | ha; kg; L; m3; kWh; MJ | each event | full crop cycle | each field/farm | 每声明的参考流 | invoices, calibration, logs, field map |
 | `cp_harvest_balance` | `cotton_field_production` | seed cotton/residues | collected/calculated | field; mass; module; moisture; trash; reject; residue; fate | scales, tickets, samples, balance；原始汇总与分配：sum accepted lot; separate fate | kg; % | each harvest/lot | full harvest | each field/harvest unit | 每声明的参考流 | scale checks, tickets, samples |
 | `cp_field_emissions` | `cotton_field_production` | soil emissions | calculated | N products; assay; timing; residues; soil; climate; irrigation; factors | approved method on matched records；原始汇总与分配：calculate pathways then sum | kg | crop cycle | full crop cycle | each field | 每声明的参考流 | input trace, factors, worksheet |
 | `cp_gin_lot_balance` | `cotton_ginning` | input/outputs/residuals | collected/calculated | lot; origin; input/output mass/moisture/grade; reject; destination | scales, sampling, reconciliation；原始汇总与分配：reconcile lot then aggregate | kg; %; item | each lot/shift | full campaign | each gin line/site | 每声明的参考流 | calibration, tickets, grade, balance |
-| `cp_gin_utility` | `cotton_ginning` | energy/water | collected/calculated | meter; purchase; runtime; power; water; period | meters, invoices, runtime；原始汇总与分配：allocate shared total once | kWh; MJ; kg; L; m3 | shift/bill | full campaign | each gin/meter | 每声明的参考流 | calibration, invoice, log |
+| `cp_gin_utility` | `cotton_ginning` | energy/water | collected/calculated | meter; purchase; runtime; power; water; period | meters, invoices, runtime；原始汇总与分配：allocate shared total once 按路线确认要求：`gin_energy_input_identification`: 实际轧花电动机械、输送风机及控制设备。干燥热须确认已安装燃烧器及供能；保留现有棉籽与皮棉分配，不向两种产品各计整厂能耗。 原始活动或阶段基准：per 1,000 kg accepted cottonseed. (`cotton-gin-energy`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kWh; MJ; kg; L; m3 | shift/bill | full campaign | each gin/meter | 每声明的参考流 | calibration, invoice, log |
 | `cp_gin_emissions` | `cotton_ginning` | particulate | measured/calculated | source; control; fraction; concentration; flow; runtime; factor | test or approved permit method；原始汇总与分配：calculate by source/fraction without overlap | kg; mg/m3; m3; h | test/period | representative campaign | each source | 每声明的参考流 | report, permit, controls, runtime |
-| `cp_storage_lot` | `cottonseed_handling_storage` | cottonseed/energy/package/loss | collected/calculated | lot; mass; moisture; temperature; foreign matter; duration; runtime; package; reject | scales, probes, meters, logs；原始汇总与分配：reconcile input, accepted, reject, moisture | kg; %; C; h; kWh; item | receipt/daily/dispatch | full storage period | each bin/pile/site | 每声明的参考流 | calibration, monitoring, inspection, ticket |
+| `cp_storage_lot` | `cottonseed_handling_storage` | cottonseed/energy/package/loss | collected/calculated | lot; mass; moisture; temperature; foreign matter; duration; runtime; package; reject | scales, probes, meters, logs；原始汇总与分配：reconcile input, accepted, reject, moisture 按路线确认要求：`storage_energy_input_identification`: 所声明储存期内实际电动棉籽输送、通风及温控；无储存路线不虚构储存负荷。 原始活动或阶段基准：per 1,000 kg accepted cottonseed. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 `cottonseed_packaging_input_specific_input`: 作业 cottonseed_handling_storage：记录该流的实际身份、状态、数量和去向，并与同一批次或作物周期保持可追溯。 原数量方法：measured packaging divided by verified reuse cycles 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg; %; C; h; kWh; item | receipt/daily/dispatch | full storage period | each bin/pile/site | 每声明的参考流 | calibration, monitoring, inspection, ticket |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 
 ### 计算规则
@@ -830,3 +767,5 @@ sync_with: pcr.en-US.md
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `cotton-gin-energy` | handbook | Funk and Hardin (2017), Energy Utilization and Conservation in Cotton Gins, Cotton Ginners Handbook. https://www.cotton.org/journal/2017-21/2/156.cfm | 支持电动输送、轧花设备及独立干燥需求，不强制采用每包强度或特定燃料身份。 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |

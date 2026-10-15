@@ -171,32 +171,6 @@ process_inventory:
     label: "Donor husbandry"
     inputs:
       product:
-        - row_id: feed
-          role: "Species-specific feed"
-          name: "Feed and forage for identified non-bovine donor (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Dry matter mass / kg"
-          description: "Record feed supply, measured intake and losses for eligible donor maintenance over the recorded period; intake is not the upstream feed inventory. Denominator and scope requirements：per linked accepted dose Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. QA scope for this card: the intake range below screens only separately recorded biological intake on its stated unit and denominator, reconstructed under calc_feed_supply_and_intake. It does not bound or substitute for the supplied-feed exchange, which retains in-boundary uneaten losses and their production burden. Do not compare feed supply with intake bounds or subtract losses merely to fit a range. A supply-specific range requires separate evidence; missing intake/loss records leave this intake QA unassessed, not passing."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_donor
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg dry matter/dose"
-                basis: "recorded donor-period intake over linked accepted doses; QA variable is recorded biological intake only, not the supplied-feed inventory amount"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: donor_water
           role: "Donor water"
           name: "Water supply for donor management (UUID unresolved)"
@@ -357,32 +331,25 @@ process_inventory:
     label: "Independent collection"
     inputs:
       product:
-        - row_id: collection_supplies
-          role: "Collection consumables"
-          name: "Species-compatible semen collection consumables (UUID unresolved)"
+        - row_id: collection_supplies_glove
+          role: "Disposable polyethylene protective glove"
+          name: "Disposable polyethylene protective glove"
           flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Disposable apparatus is charged to collection; reusable apparatus belongs to shared service attribution. Denominator and scope requirements：per collection event Raw quantity and calculation requirements: Count or weigh items issued to each collection event. Original collection denominator kind: process_output."
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when compatible polyethylene gloves are actually consumed for operator protection during collection. Record mass per item, item count and returns. This non-sterile example does not establish suitability for semen contact; retain actual hygiene requirements. No numerical range is inherited from the former group. Collect actual quantity and uncertainty; lack of applicable range evidence does not justify a default or zero."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Record actual material mass consumed at this node, excluding returns and upstream-service inclusions; apply documented period/output attribution once and divide by the number of accepted released doses for the matched batch and period (kg glove per dose); retain measured glove mass per item and do not divide by semen mass. Preserve raw quantities and do not normalize an already normalized amount again."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
-              text: "per reference flow"
+              text: "per declared reference flow"
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_collect
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "kg/event"
-                basis: "disposable supplies issued to one event"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+              source_ids:
+                - collection-pe-gloves
+            ranges: []
       waste:
         []
       elementary:
@@ -565,32 +532,7 @@ process_inventory:
     label: "First preparation"
     inputs:
       product:
-        - row_id: medium
-          role: "Preparation medium"
-          name: "Semen preparation medium (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Volume / mL"
-          description: "Use actual species-compatible diluent or extender recipe; do not assume a universal formulation. Denominator and scope requirements：per preparation lot Raw quantity and calculation requirements: Record prepared and issued liquid by batch. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_prepare
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "mL/lot"
-                basis: "issued preparation liquid"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       waste:
         []
       elementary:
@@ -656,32 +598,7 @@ process_inventory:
     label: "Discrete dose filling"
     inputs:
       product:
-        - row_id: dose_container
-          role: "Dose straws or vials"
-          name: "Species/route-compatible dose container (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Count / item"
-          description: "Issued containers are reconciled with correctly filled and rejected units. Denominator and scope requirements：per filling batch Raw quantity and calculation requirements: Count straws or vials and seals issued. Original collection denominator kind: process_output."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_fill
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000000"
-                unit: "items/batch"
-                basis: "issued containers"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       waste:
         []
       elementary:
@@ -773,32 +690,6 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: cryogen
-          role: "Cryogenic medium"
-          name: "Route-specific cryogenic medium (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Frozen lots record actual cryogen replenishment; chilled and fresh lots do not inherit this input. Denominator and scope requirements：per frozen dose Raw quantity and calculation requirements: Record issued and recovered quantity with storage-service attribution. Original collection denominator kind: reference_flow."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_preserve
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg/frozen dose"
-                basis: "issued cryogen over accepted frozen doses"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -864,32 +755,7 @@ process_inventory:
     label: "Protective packing and release"
     inputs:
       product:
-        - row_id: packaging
-          role: "Protective packaging"
-          name: "Protective packaging for non-bovine semen doses (UUID unresolved)"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Only centre-issued protective packaging is included; reusable containers are apportioned over actual reuse cycles. Denominator and scope requirements：per released dose Raw quantity and calculation requirements: Weigh issued packaging and attribute reusable service once. Original collection denominator kind: reference_flow."
-          amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_release
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1000"
-                unit: "kg/dose"
-                basis: "packaging mass over accepted released doses"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+        []
       waste:
         []
       elementary:
@@ -984,7 +850,7 @@ dataset_production:
       flow_role: "donor inputs and outputs"
       record_type: "donor register and meters"
       raw_fields: "donor_id, species, period, feed_mass, water_mass, health_event, eligible_days, manure_mass"
-      collection_method: "dated record and calibrated meter; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output."
+      collection_method: "dated record and calibrated meter; Raw aggregation requirements: Use calc_feed_supply_and_intake to distinguish supplied feed carrying production burden, actual intake and losses; preserve all native stock and period records, then normalize the attributable quantity once to accepted final output. feed_specific_input: Operation donor: Record feed supply, measured intake and losses for eligible donor maintenance over the recorded period; intake is not the upstream feed inventory. Denominator and scope requirements：per linked accepted dose Raw quantity and calculation requirements: Use separate feed-supply, intake and loss ledgers under calc_feed_supply_and_intake. The quantity carrying feed-production burden includes in-boundary refusals, spoilage and uneaten feed; it is not reduced to animal intake. Retain source, species/cohort, phase and original mass/moisture basis. Calculate the final contribution with inventory_reference_normalization and stage_throughput_linkage exactly once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using reconciled feed-supply records that retain in-boundary losses and their production burden. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "day; kg"
       frequency: "each event and monthly reconciliation"
       temporal_coverage: "full donor period"
@@ -1020,7 +886,7 @@ dataset_production:
       flow_role: "medium, bulk and loss"
       record_type: "batch sheet"
       raw_fields: "lot_id, accepted_mL, medium_mL, bulk_mL, loss_mL"
-      collection_method: "calibrated dispense and volume balance; Raw aggregation requirements: balance per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "calibrated dispense and volume balance; Raw aggregation requirements: balance per lot. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. medium_specific_input: Use actual species-compatible diluent or extender recipe; do not assume a universal formulation. Denominator and scope requirements：per preparation lot Raw quantity and calculation requirements: Record prepared and issued liquid by batch. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "mL"
       frequency: "each batch"
       temporal_coverage: "all prepared batches"
@@ -1032,7 +898,7 @@ dataset_production:
       flow_role: "containers and filled/rejected units"
       record_type: "filling sheet"
       raw_fields: "lot_id, issued_items, filled_doses, rejected_items, dose_mL, sperm_count"
-      collection_method: "counter and seal check; Raw aggregation requirements: reconcile issued and filled units. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "counter and seal check; Raw aggregation requirements: reconcile issued and filled units. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. dose_container_specific_input: Issued containers are reconciled with correctly filled and rejected units. Denominator and scope requirements：per filling batch Raw quantity and calculation requirements: Count straws or vials and seals issued. Original collection denominator kind: process_output. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "item; dose; mL"
       frequency: "each batch"
       temporal_coverage: "all filled batches"
@@ -1044,7 +910,7 @@ dataset_production:
       flow_role: "power, cryogen, preserved/rejected units"
       record_type: "preservation log"
       raw_fields: "batch_id, state, kWh, cryogen_kg, start, end, accepted_doses, rejected_items"
-      collection_method: "meter, supply ledger and temperature log; Raw aggregation requirements: allocate by batch and service time. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "meter, supply ledger and temperature log; Raw aggregation requirements: allocate by batch and service time. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. cryogen_specific_input: Frozen lots record actual cryogen replenishment; chilled and fresh lots do not inherit this input. Denominator and scope requirements：per frozen dose Raw quantity and calculation requirements: Record issued and recovered quantity with storage-service attribution. Original collection denominator kind: reference_flow. Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kWh; kg; dose"
       frequency: "each batch"
       temporal_coverage: "full intervention and hold"
@@ -1056,7 +922,7 @@ dataset_production:
       flow_role: "packaging, product, rejects"
       record_type: "release ledger"
       raw_fields: "lot_id, species, state, packaging_kg, reuse_cycles, accepted_doses, rejected_kg"
-      collection_method: "count, weigh and release certificate; Raw aggregation requirements: group accepted units by species and state. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "count, weigh and release certificate; Raw aggregation requirements: group accepted units by species and state. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. packaging_specific_input: Operation release: Only centre-issued protective packaging is included; reusable containers are apportioned over actual reuse cycles. Denominator and scope requirements：per released dose Raw quantity and calculation requirements: Weigh issued packaging and attribute reusable service once. Original collection denominator kind: reference_flow. Original quantity method: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records. Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
       unit: "kg; dose"
       frequency: "each release"
       temporal_coverage: "all released lots"
@@ -1260,9 +1126,13 @@ data_sources:
     type: "official_guidance"
     reference: "[IPCC 2019 Refinement, Volume 4, Chapter 11: N2O Emissions from Managed Soils](https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf)"
     used_for: "Managed-soil direct and indirect nitrogen pathways and boundary reconciliation"
+  - id: "collection-pe-gloves"
+    type: "handbook"
+    reference: "IMV Technologies, Polyethylene protective gloves. https://www.imv-technologies.us/product/polyethylene-protective-gloves"
+    used_for: "Polyethylene glove identity for a documented compatible operator-protection use; non-sterile product evidence does not authorize semen-contact or sterile use."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:58a71bf74f051e66e88fcff8a1036a15f5bbb7685ecb45789717bb07c724925b"
+  source_sha256: "sha256:e6f921aced43e5abeeccb61211ef8f60acd2323f1e609106fd5cf5df0b563b00"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6821"
@@ -1313,16 +1183,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47922"
+    - unit_id: "normative_40834"
       family: "allocation"
       span:
         start:
-          offset: 47922
-          line: 897
+          offset: 40834
+          line: 756
           column: 1
         end:
-          offset: 49687
-          line: 907
+          offset: 42599
+          line: 766
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `period_attribution` | donor | Link feed, water, health, manure, collection and accepted lots to dated donor phases; record replacement and cull events. Never charge a donor-period twice. | `review-fao-pig-lca-2018` |\n| `shared_service` | housing, collection apparatus, lab and cooling | Enumerate consumers and service periods, then assign each burden once by measured occupancy, usage time or another justified causal service basis. | `review-fao-pig-lca-2018` |\n| `quality_outputs` | grading and filling | Downgraded material is a co-product only with independent legal handover; otherwise treat rejects as waste. Disclose any causal or physical/economic allocation decision and sensitivity. | `review-fao-pig-lca-2018` |\n| `mixed_state` | fresh, chilled and frozen | Assign common donor/collection burden to actual accepted lots using documented causal service or counts; preserve state-specific energy, cryogen and loss for applicable lots only. | `review-fao-pig-lca-2018` |\n| `allocation_method_basis` | Residual joint burdens and shared service | Apply the general LCA hierarchy: examine subdivision or an appropriately justified system expansion before residual allocation; then prefer a supported physical causal relationship, and justify an economic basis when physical attribution is not established. The donor-day, occupancy or throughput driver is a PCR modelling choice requiring case-specific evidence and sensitivity, not a requirement of sanitary guidance. Include failed attempts and losses in the service period; do not select only successful outputs or introduce hypothetical substitution credits. | `review-fao-pig-lca-2018` |\n\n"
       headings:
@@ -1341,12 +1211,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47922
-              line: 897
+              offset: 40834
+              line: 756
               column: 1
             end:
-              offset: 47962
-              line: 897
+              offset: 40874
+              line: 756
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1361,16 +1231,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_62981"
+    - unit_id: "normative_66552"
       family: "validation"
       span:
         start:
-          offset: 62981
-          line: 944
+          offset: 66552
+          line: 822
           column: 1
         end:
-          offset: 66127
-          line: 958
+          offset: 69698
+          line: 836
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `non_bovine` | reference | Reject bovine donor, mismatched CPC or any UUID not detail-confirmed as non-bovine breeding semen with matching gate/property. | `un-cpc-3-2025` |\n| `balance` | graded-to-release chain | Reconcile liquid and discrete units across accepted, downgraded, rejected and lost states within documented measurement tolerances. | `woah-semen-hygiene-2024` |\n| `branch` | final state | Require one fresh/chilled/frozen final state per lot; chilled/frozen lots need observed intervention and duration, never bovine default factors. | `fao-cryoconservation-2012` |\n| `no_double_count` | donor and assets | Dated donor phases and housing, laboratory, collection and refrigeration shares must charge each service once per period. | `woah-semen-hygiene-2024` |\n| `gate_quality` | release | Require donor species, count, volume, sperm specification and quality release; reject insemination/distribution activity. | `woah-semen-hygiene-2024` |\n| `v_pathway_emission_coverage` | `donor` | Require a pathway coverage ledger for enteric CH4 where biologically applicable, manure CH4, direct/indirect N2O, NH3 and relevant field emissions. Every pathway needs a measured/calculated value, a named linked process with matching coverage, or supported inapplicability; absent data cannot become zero. Keep wild life before capture outside managed husbandry, assess actual managed holding separately, and retain species-specific evidence. | `review-ipcc-livestock-2019`; `review-ipcc-soils-2019`; `review-eea-manure-2023` |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `review-fao-pig-lca-2018` |\n| `v_manure_n2o_coverage` | Applicable manure and managed-soil N pathways | Require explicit direct and indirect pathway coverage, stage N balances and molecular-mass conversion. Map each component to an existing N2O card or an explicitly covering linked process once under calc_manure_n2o_coverage. Missing indirect-pathway evidence prevents a completeness claim; no default zero or duplicate aggregate-plus-components. | `review-ipcc-livestock-2019`; `review-ipcc-soils-2019` |\n\n"
       headings:
@@ -1389,12 +1259,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 62981
-              line: 944
+              offset: 66552
+              line: 822
               column: 1
             end:
-              offset: 63003
-              line: 944
+              offset: 66574
+              line: 822
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1478,184 +1348,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_47922"
+      unit_id: "normative_40834"
       source_span:
         start:
-          offset: 48035
-          line: 901
+          offset: 40947
+          line: 760
           column: 1
         end:
-          offset: 48254
-          line: 901
+          offset: 41166
+          line: 760
           column: 220
     - pointer: "/allocation_rules/1"
       rule_id: "shared_service"
       identity_kind: "explicit"
-      unit_id: "normative_47922"
+      unit_id: "normative_40834"
       source_span:
         start:
-          offset: 48255
-          line: 902
+          offset: 41167
+          line: 761
           column: 1
         end:
-          offset: 48501
-          line: 902
+          offset: 41413
+          line: 761
           column: 247
     - pointer: "/allocation_rules/2"
       rule_id: "quality_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_47922"
+      unit_id: "normative_40834"
       source_span:
         start:
-          offset: 48502
-          line: 903
+          offset: 41414
+          line: 762
           column: 1
         end:
-          offset: 48761
-          line: 903
+          offset: 41673
+          line: 762
           column: 260
     - pointer: "/allocation_rules/3"
       rule_id: "mixed_state"
       identity_kind: "explicit"
-      unit_id: "normative_47922"
+      unit_id: "normative_40834"
       source_span:
         start:
-          offset: 48762
-          line: 904
+          offset: 41674
+          line: 763
           column: 1
         end:
-          offset: 49017
-          line: 904
+          offset: 41929
+          line: 763
           column: 256
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_method_basis"
       identity_kind: "explicit"
-      unit_id: "normative_47922"
+      unit_id: "normative_40834"
       source_span:
         start:
-          offset: 49018
-          line: 905
+          offset: 41930
+          line: 764
           column: 1
         end:
-          offset: 49685
-          line: 905
+          offset: 42597
+          line: 764
           column: 668
     - pointer: "/validation_rules/0"
       rule_id: "non_bovine"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 63076
-          line: 948
+          offset: 66647
+          line: 826
           column: 1
         end:
-          offset: 63251
-          line: 948
+          offset: 66822
+          line: 826
           column: 176
     - pointer: "/validation_rules/1"
       rule_id: "balance"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 63252
-          line: 949
+          offset: 66823
+          line: 827
           column: 1
         end:
-          offset: 63453
-          line: 949
+          offset: 67024
+          line: 827
           column: 202
     - pointer: "/validation_rules/2"
       rule_id: "branch"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 63454
-          line: 950
+          offset: 67025
+          line: 828
           column: 1
         end:
-          offset: 63657
-          line: 950
+          offset: 67228
+          line: 828
           column: 204
     - pointer: "/validation_rules/3"
       rule_id: "no_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 63658
-          line: 951
+          offset: 67229
+          line: 829
           column: 1
         end:
-          offset: 63850
-          line: 951
+          offset: 67421
+          line: 829
           column: 193
     - pointer: "/validation_rules/4"
       rule_id: "gate_quality"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 63851
-          line: 952
+          offset: 67422
+          line: 830
           column: 1
         end:
-          offset: 64031
-          line: 952
+          offset: 67602
+          line: 830
           column: 181
     - pointer: "/validation_rules/5"
       rule_id: "v_pathway_emission_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 64032
-          line: 953
+          offset: 67603
+          line: 831
           column: 1
         end:
-          offset: 64603
-          line: 953
+          offset: 68174
+          line: 831
           column: 572
     - pointer: "/validation_rules/6"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 64604
-          line: 954
+          offset: 68175
+          line: 832
           column: 1
         end:
-          offset: 65204
-          line: 954
+          offset: 68775
+          line: 832
           column: 601
     - pointer: "/validation_rules/7"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 65205
-          line: 955
+          offset: 68776
+          line: 833
           column: 1
         end:
-          offset: 65645
-          line: 955
+          offset: 69216
+          line: 833
           column: 441
     - pointer: "/validation_rules/8"
       rule_id: "v_manure_n2o_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 65646
-          line: 956
+          offset: 69217
+          line: 834
           column: 1
         end:
-          offset: 66125
-          line: 956
+          offset: 69696
+          line: 834
           column: 480
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1684,27 +1554,27 @@ normative_context:
           column: 138
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47922"
+      unit_id: "normative_40834"
       source_span:
         start:
-          offset: 47922
-          line: 897
+          offset: 40834
+          line: 756
           column: 1
         end:
-          offset: 47962
-          line: 897
+          offset: 40874
+          line: 756
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_62981"
+      unit_id: "normative_66552"
       source_span:
         start:
-          offset: 62981
-          line: 944
+          offset: 66552
+          line: 822
           column: 1
         end:
-          offset: 63003
-          line: 944
+          offset: 66574
+          line: 822
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1713,5 +1583,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:58a71bf74f051e66e88fcff8a1036a15f5bbb7685ecb45789717bb07c724925b"
-  generated_content_sha256: "sha256:2d7e569b6f6b1a6ec853931ca2086db6afa043c37cc6faca3073263d0cccba67"
+    sha256: "sha256:e6f921aced43e5abeeccb61211ef8f60acd2323f1e609106fd5cf5df0b563b00"
+  generated_content_sha256: "sha256:6520a73ce5a1f6430a468c748db9aafb5b4970dcefb867e0c449b331ae410f00"
