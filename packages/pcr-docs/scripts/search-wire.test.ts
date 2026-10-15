@@ -67,7 +67,7 @@ test('v4 score masks shrink v3 while restoring exact engine exports and multilin
     const v3 = encodeSearchEntries(original, 3), v4 = encodeSearchEntries(original, 4);
     const wire: unknown = JSON.parse(JSON.stringify(v4));
     assert.ok(wire !== null && typeof wire === 'object' && 'entries' in wire && 'sparseMaps' in wire && 'scoreMasks' in wire && 'postingDeltas' in wire);
-    const restored = decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas);
+    const restored = decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas, wire.columnarMaps);
     assert.deepEqual(Object.keys(restored), Object.keys(original));
     for (const [key, value] of Object.entries(restored)) {
       assert.equal(JSON.stringify(value), JSON.stringify(original[key]), 'Every engine import string must round-trip exactly');
@@ -85,7 +85,7 @@ test('v4 preserves empty and trailing score slots, posting order, string IDs and
   const original = {'1.map': [['__proto__', [null, [], null, null, null, null, null, null, ['constructor', 0, '文献']]], ['empty', []]], '1.reg': [0, 'constructor'], 'foreign.map': [null]};
   const wire = encodeSearchEntries(original, 4);
   assert.deepEqual(wire.sparseMaps, ['1.map']);
-  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas)), JSON.stringify(original));
+  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas, wire.columnarMaps)), JSON.stringify(original));
   assert.equal(JSON.stringify(original['1.map'][0]), '["__proto__",[null,[],null,null,null,null,null,null,["constructor",0,"文献"]]]', 'Encoding must not mutate input');
   assert.deepEqual(decodeSearchEntries({'1.map': [['empty', 0]]}, ['1.map'], 4)['1.map'], [['empty', []]]);
 });
@@ -102,7 +102,7 @@ test('v4 masks and signed deltas retain out-of-order IDs, repeats, mixed strings
   const wire = encodeSearchEntries(original, 4);
   assert.deepEqual(wire.sparseMaps, ['1.map']);
   assert.equal(wire.scoreMasks, true); assert.equal(wire.postingDeltas, true);
-  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, true, true)), JSON.stringify(original));
+  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, true, true, wire.columnarMaps)), JSON.stringify(original));
   const flat = {'1.map': [['legacy', 9, 8, [100, 2, 2]]]};
   assert.deepEqual(decodeSearchEntries(flat, ['1.map'], 4)['1.map'], [['legacy', [null, null, null, null, null, null, null, null, [100, 2, 2]]]]);
   assert.throws(() => decodeSearchEntries({'1.map': [['mask', 4864, [100, 2]]]}, ['1.map'], 4, true), /Invalid serialized/);
@@ -117,4 +117,25 @@ test('v4 rejects malformed mask headers, posting counts, delta overflow and fore
   }
   assert.throws(() => decodeSearchEntries({}, [], 3, true), /Invalid serialized/);
   assert.throws(() => decodeSearchEntries({}, [], 4, undefined, true), /Invalid serialized/);
+});
+
+test('v4 columnar maps restore exact term order and reject malformed column lengths or postings', () => {
+  const map = Array.from({length: 1000}, (_, id) => [`term-${id}`, [null, null, null, null, null, null, null, null, [id]]]);
+  const original = {'1.reg': [0, 1], '1.map': map};
+  const wire = encodeSearchEntries(original, 4);
+  assert.deepEqual(wire.columnarMaps, ['1.map']);
+  assert.equal(JSON.stringify(decodeSearchEntries(wire.entries, wire.sparseMaps, 4, true, true, wire.columnarMaps)), JSON.stringify(original));
+  const columns = wire.entries['1.map']!;
+  for (const invalid of [
+    [columns[0], (columns[1] as unknown[]).slice(1), columns[2]],
+    [columns[0], columns[1], (columns[2] as unknown[]).slice(1)],
+    [columns[0], columns[1], [...columns[2] as unknown[], [1]]],
+    [[...columns[0] as unknown[], 7], [...columns[1] as unknown[], 4864], [...columns[2] as unknown[], [1]]],
+    [columns[0], [(columns[1] as unknown[])[0], -1, ...(columns[1] as unknown[]).slice(2)], columns[2]],
+  ]) assert.throws(() => decodeSearchEntries({'1.map': invalid}, ['1.map'], 4, true, true, ['1.map']), /Invalid serialized/);
+  for (const metadata of [['1.reg'], ['1.map', '1.map'], null, true])
+    assert.throws(() => decodeSearchEntries(wire.entries, wire.sparseMaps, 4, true, true, metadata), /Invalid serialized/);
+  assert.throws(() => decodeSearchEntries(wire.entries, wire.sparseMaps, 3, true, true, wire.columnarMaps), /Invalid serialized/);
+  assert.deepEqual(decodeSearchEntries({'1.map': [['old', 4864, [2]]]}, ['1.map'], 4, true, true)['1.map'],
+    [['old', [null, null, null, null, null, null, null, null, [2]]]], 'previous v4 wire remains readable');
 });
