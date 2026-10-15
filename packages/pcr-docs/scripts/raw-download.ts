@@ -1,7 +1,7 @@
 import { parseYaml } from '../../pcr-core/src/yaml-lite.ts';
 import { isUnknownRecord } from '../../pcr-core/src/types.ts';
 
-export const INLINE_MANIFEST_LIMIT = 8192;
+export const INLINE_MANIFEST_LIMIT = 16384;
 const prefix = 'data:application/octet-stream;base64,';
 const currentManifest = /^library\/pcrs\/[^/.][^/]*\/[^/.][^/]*\/[^/.][^/]*\/manifest\.yaml$/u;
 
