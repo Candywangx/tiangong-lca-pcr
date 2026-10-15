@@ -66,7 +66,7 @@ test('v4 score masks shrink v3 while restoring exact engine exports and multilin
     await index.export((key, value) => { const parsed: unknown = JSON.parse(value); assert.ok(Array.isArray(parsed)); original[key] = parsed; });
     const v3 = encodeSearchEntries(original, 3), v4 = encodeSearchEntries(original, 4);
     const wire: unknown = JSON.parse(JSON.stringify(v4));
-    assert.ok(wire !== null && typeof wire === 'object' && 'entries' in wire && 'sparseMaps' in wire && 'scoreMasks' in wire && 'postingDeltas' in wire);
+    assert.ok(wire !== null && typeof wire === 'object' && 'entries' in wire && 'sparseMaps' in wire && 'scoreMasks' in wire && 'postingDeltas' in wire && 'columnarMaps' in wire);
     const restored = decodeSearchEntries(wire.entries, wire.sparseMaps, 4, wire.scoreMasks, wire.postingDeltas, wire.columnarMaps);
     assert.deepEqual(Object.keys(restored), Object.keys(original));
     for (const [key, value] of Object.entries(restored)) {
